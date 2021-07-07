@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { customer, activeUsers } from 'mission-control/test-story-data';
+import { customer, activeUsers } from '../../test-story-data';
 import { ActiveUsersBoard } from './active-users-board.component';
 
 describe('ActiveUsersBoard', () => {
@@ -15,7 +15,7 @@ describe('ActiveUsersBoard', () => {
   const onEditUserClick = jest.fn();
   const onDeleteUserClick = jest.fn();
 
-  xit.each(cases)("Displays all active user's %s", (_, text) => {
+  it.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={activeUsers}
@@ -27,7 +27,7 @@ describe('ActiveUsersBoard', () => {
     );
   });
 
-  xit('Displays user Orb licence names', () => {
+  it('Displays user Orb licence names', () => {
     const { getAllByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={activeUsers}
@@ -38,7 +38,7 @@ describe('ActiveUsersBoard', () => {
     expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
   });
 
-  xit('Displays a placeholder when customer is present but has no licences', () => {
+  it('Displays a placeholder when customer is present but has no licences', () => {
     const { getAllByText, queryByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={activeUsers}
@@ -53,7 +53,7 @@ describe('ActiveUsersBoard', () => {
     );
   });
 
-  xit('Displays a placeholder when user has no licences', () => {
+  it('Displays a placeholder when user has no licences', () => {
     const TEST_USER = {
       ...activeUsers[0],
       id: '99',
@@ -71,32 +71,34 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Disables `Change Role` button when only 1 admin remains', () => {
-    const { queryByTestId, getByText } = render(
+    const { getByRole } = render(
       <ActiveUsersBoard
-        activeCustomerUsers={activeUsers}
+        activeCustomerUsers={[
+          { type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
+          { type: 'MEMBER', user: { id: '456', name: 'Steve Brown' } },
+        ]}
         oneAdminRemaining={true}
-        customer={customer}
+        customer={{ name: 'Customer Name' }}
       />,
     );
-    expect(queryByTestId('test-id-123')).toBeDisabled();
+    expect(getByRole('button', { name: 'Admin' })).toBeDisabled();
   });
 
-  xit('Calls `changeRole` function with user when buttons are clicked', () => {
-    const MEMBER = {
-      id: 1,
-      type: 'MEMBER',
-      user: { id: '123', name: 'Steve Brown' },
-    };
+  it('Calls `changeRole` function with user when buttons are clicked', () => {
+    const MEMBER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
 
-    const { getByRole, getByText, getAllByText } = render(
+    const { getByText, getAllByText } = render(
       <ActiveUsersBoard
-        activeCustomerUsers={activeUsers}
-        customer={customer}
+        activeCustomerUsers={[
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
+          MEMBER,
+        ]}
+        customer={{ name: 'Customer Name' }}
         onChangeRoleClick={onChangeRoleClick}
       />,
     );
 
-    userEvent.click(getByRole('button', { name: 'Standard' }));
+    userEvent.click(getByText('Standard'));
 
     expect(getAllByText('Admin').length).toEqual(2);
 
@@ -104,21 +106,17 @@ describe('ActiveUsersBoard', () => {
     expect(onChangeRoleClick).toHaveBeenCalledWith(MEMBER);
   });
 
-  xit('Calls `editCustomerUser` function with user when buttons are clicked', () => {
-    const USER = {
-      id: 1,
-      type: 'MEMBER',
-      user: { id: '123', name: 'Steve Brown' },
-    };
+  it('Calls `editCustomerUser` function with user when buttons are clicked', () => {
+    const USER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
 
     const { getByText, getAllByTestId } = render(
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
         activeCustomerUsers={[
-          { id: 1, type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           USER,
         ]}
-        customer={customer}
+        customer={{ name: 'Customer Name' }}
         onEditUserClick={onEditUserClick}
       />,
     );
@@ -130,14 +128,13 @@ describe('ActiveUsersBoard', () => {
     expect(onEditUserClick).toHaveBeenCalledWith(USER);
   });
 
-  xit('Does not show `Delete User` button for currently logged-in user', () => {
+  it('Does not show `Delete User` button for currently logged-in user', () => {
     const { queryByText, getByText, getAllByTestId } = render(
       <ActiveUsersBoard
-        customer={customer}
         currentUser={{ id: '123' }}
         activeCustomerUsers={[
-          { id: 1, type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
-          { id: 2, type: 'MEMBER', user: { id: '456', name: 'Steve Brown' } },
+          { type: 'MANAGER', user: { id: '123', name: 'John Smith' } },
+          { type: 'MEMBER', user: { id: '456', name: 'Steve Brown' } },
         ]}
       />,
     );
@@ -149,21 +146,17 @@ describe('ActiveUsersBoard', () => {
     expect(getByText('Delete User')).toBeInTheDocument();
   });
 
-  xit('Calls `deleteCustomerUser` function with user when buttons are clicked', () => {
-    const USER = {
-      id: 1,
-      type: 'MEMBER',
-      user: { id: '123', name: 'Steve Brown' },
-    };
+  it('Calls `deleteCustomerUser` function with user when buttons are clicked', () => {
+    const USER = { type: 'MEMBER', user: { id: '123', name: 'Steve Brown' } };
 
     const { getByText, getAllByTestId } = render(
       <ActiveUsersBoard
         currentUser={{ id: '456' }}
         activeCustomerUsers={[
-          { id: 2, type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
           USER,
         ]}
-        customer={customer}
+        customer={{ name: 'Customer Name' }}
         onDeleteUserClick={onDeleteUserClick}
       />,
     );
@@ -182,11 +175,11 @@ describe('ActiveUsersBoard', () => {
       ['empty array', []],
     ];
 
-    xit.each(cases)('%s', (_, value) => {
+    it.each(cases)('%s', (_, value) => {
       const { getByText } = render(
         <ActiveUsersBoard activeCustomerUsers={value} customer={customer} />,
       );
-      expect(getByText('No rows')).toBeInTheDocument();
+      expect(getByText('No Active Users')).toBeInTheDocument();
     });
   });
 });

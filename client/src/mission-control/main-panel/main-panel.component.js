@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { VIEWS } from '../mission-control.constants';
-import UsersView from './main-panel-views/users-view/users-view.component';
+import HomeView from './main-panel-views/home-view/home-view.component';
 
 export const MainPanel = ({
   user,
@@ -21,7 +21,7 @@ export const MainPanel = ({
   switch (mainPanelView) {
     case VIEWS.users:
       return (
-        <UsersView
+        <HomeView
           currentUser={user}
           activeUsers={activeUsers}
           pendingUsers={pendingUsers}

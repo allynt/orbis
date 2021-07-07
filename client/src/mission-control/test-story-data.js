@@ -57,19 +57,21 @@ export const activeUsers = [
   {
     id: '1',
     licences: ['1', '2'],
-    status: 'ADMIN',
+    type: 'MANAGER',
     invitation_date: '2020-01-31T11:46:12.618090Z',
     user: { name: 'Test One', email: 'test1@test.com' },
   },
   {
     id: '2',
     licences: ['3', '4'],
+    type: 'MEMBER',
     invitation_date: '2020-01-31T11:46:12.618090Z',
     user: { name: 'Test Two', email: 'test2@test.com' },
   },
   {
     id: '3',
     licences: ['5', '6'],
+    type: 'MEMBER',
     invitation_date: '2020-01-31T11:46:12.618090Z',
     user: { name: 'Test Three', email: 'test3@test.com' },
   },

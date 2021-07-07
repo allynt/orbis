@@ -66,7 +66,7 @@ export const ActiveUsersBoard = ({
       alignItems="center"
       width="100%"
     >
-      <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
+      {/* <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} /> */}
       <ActiveUsersGridTable
         customer={customer}
         activeCustomerUsers={activeCustomerUsers}

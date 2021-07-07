@@ -76,6 +76,7 @@ export const ActiveUsersGridTable = ({
           }
           size="small"
           endIcon={<TriangleIcon style={{ transform: 'rotate(180deg)' }} />}
+          data-testid="test-id-123"
         >
           {customerUser.type === ADMIN_STATUS.manager
             ? USER_LABELS.admin
@@ -146,19 +147,19 @@ export const ActiveUsersGridTable = ({
     {
       field: 'user',
       headerName: 'User',
-      width: 213,
+      width: 150,
     },
-    { field: 'email', headerName: 'Email', width: 213 },
+    // { field: 'email', headerName: 'Email', width: 150 },
     {
       field: 'licence',
       headerName: 'Licence',
-      width: 213,
+      width: 150,
     },
-    { field: 'type', headerName: 'Type', width: 213 },
+    { field: 'type', headerName: 'Type', width: 150 },
     {
       field: 'adminStatusActions',
       headerName: 'Update user status',
-      width: 213,
+      width: 150,
       renderCell: ({ row }) => (
         <AdminStatusActions
           customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
@@ -168,7 +169,7 @@ export const ActiveUsersGridTable = ({
     {
       field: 'editButtonActions',
       headerName: 'Edit user',
-      width: 213,
+      width: 150,
       renderCell: ({ row }) => (
         <EditButtonActions
           customerUser={activeCustomerUsers?.find(u => u.id === row.id)}
