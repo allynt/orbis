@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react';
 
 import {
-  Checkbox as AuiCheckbox,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
   Button,
+  Checkbox as AuiCheckbox,
   Divider,
-  Well,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   makeStyles,
+  Well,
 } from '@astrosat/astrosat-ui/';
 
 import { subDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { InfoButton } from 'components';
-
-import { SATELLITE, TIER } from '../../satellites.component';
+import { InfoType } from 'satellites/satellite.constants';
 
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
@@ -175,7 +174,7 @@ const SatelliteSearchForm = ({
               control={control}
               label={satellite.label}
               onInfoClick={handleInfoClick({
-                type: SATELLITE,
+                type: InfoType.SATELLITE,
                 data: satellite,
               })}
             />
@@ -224,7 +223,7 @@ const SatelliteSearchForm = ({
               name={`tiers.${tier.id}`}
               control={control}
               label={tier.label}
-              onInfoClick={handleInfoClick({ type: TIER, data: tier })}
+              onInfoClick={handleInfoClick({ type: InfoType.TIER, data: tier })}
             />
           ))}
         </FormGroup>

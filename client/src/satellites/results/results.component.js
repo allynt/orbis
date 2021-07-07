@@ -14,9 +14,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { SCENE } from 'satellites/satellites.component';
-
-import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
+import { DEFAULT_CLOUD_COVER, InfoType } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
@@ -114,7 +112,7 @@ const Results = ({
                     onSceneClick={onSceneClick}
                     onInfoClick={scene => {
                       onInfoClick({
-                        type: SCENE,
+                        type: InfoType.SCENE,
                         data: scene,
                       });
                     }}

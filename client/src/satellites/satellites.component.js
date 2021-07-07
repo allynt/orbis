@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
+import { InfoType } from './satellite.constants';
 import {
   SatelliteInfoTable,
   SceneInfoTable,
@@ -32,19 +33,16 @@ import {
 } from './satellites.slice';
 import Visualisation from './visualisation/visualisation.component';
 
-export const SEARCH = 'Search';
-export const RESULTS = 'Results';
-export const VISUALISATION = 'Visualisation';
-export const PINS = 'Pins';
-
-export const SATELLITE = 'Satellite';
-export const SCENE = 'Scene';
-export const TIER = 'Tier';
+const Panels = {
+  SEARCH: 'Search',
+  RESULTS: 'Results',
+  VISUALISATION: 'Visualisation',
+};
 
 const Satellites = () => {
   const dispatch = useDispatch();
 
-  const [visiblePanel, setVisiblePanel] = useState(SEARCH);
+  const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
   const [selectedMoreInfo, setSelectedMoreInfo] = useState({
     type: null,
     data: null,
@@ -101,20 +99,23 @@ const Satellites = () => {
         orientation="vertical"
         aria-label="small outlined primary button group"
       >
-        <Button onClick={() => setVisiblePanel(SEARCH)}>Search</Button>
-        <Button disabled={!scenes} onClick={() => setVisiblePanel(RESULTS)}>
+        <Button onClick={() => setVisiblePanel(Panels.SEARCH)}>Search</Button>
+        <Button
+          disabled={!scenes}
+          onClick={() => setVisiblePanel(Panels.RESULTS)}
+        >
           Results
         </Button>
         <Button
           disabled={!visualisations}
-          onClick={() => setVisiblePanel(VISUALISATION)}
+          onClick={() => setVisiblePanel(Panels.VISUALISATION)}
         >
           Visualisation
         </Button>
         {/* <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button> */}
       </ButtonGroup>
 
-      {satellites && visiblePanel === SEARCH && (
+      {satellites && visiblePanel === Panels.SEARCH && (
         <SatelliteSearch
           satellites={satellites}
           savedSearches={savedSearches}
@@ -124,7 +125,7 @@ const Satellites = () => {
             const newSearch = { ...search, aoi: [[]] };
             dispatch(setCurrentSatelliteSearchQuery(newSearch));
             dispatch(fetchSatelliteScenes(newSearch));
-            setVisiblePanel(RESULTS);
+            setVisiblePanel(Panels.RESULTS);
           }}
           onSearchReload={search =>
             dispatch(setCurrentSatelliteSearchQuery(search))
@@ -133,7 +134,7 @@ const Satellites = () => {
           onInfoClick={handleInfoClick}
         />
       )}
-      {visiblePanel === RESULTS && (
+      {visiblePanel === Panels.RESULTS && (
         <Results
           scenes={scenes}
           pinnedScenes={pinnedScenes}
@@ -147,7 +148,7 @@ const Satellites = () => {
           }
         />
       )}
-      {visiblePanel === VISUALISATION && (
+      {visiblePanel === Panels.VISUALISATION && (
         <Visualisation
           visualisations={visualisations}
           onVisualisationClick={visualisation =>
@@ -178,13 +179,13 @@ const Satellites = () => {
         <DialogContent>
           {!selectedMoreInfo && <p>No information currently available</p>}
 
-          {selectedMoreInfo && selectedMoreInfo.type === SATELLITE && (
+          {selectedMoreInfo && selectedMoreInfo.type === InfoType.SATELLITE && (
             <SatelliteInfoTable satellite={selectedMoreInfo.data} />
           )}
-          {selectedMoreInfo && selectedMoreInfo.type === SCENE && (
+          {selectedMoreInfo && selectedMoreInfo.type === InfoType.SCENE && (
             <SceneInfoTable scene={selectedMoreInfo.data} />
           )}
-          {selectedMoreInfo && selectedMoreInfo.type === TIER && (
+          {selectedMoreInfo && selectedMoreInfo.type === InfoType.TIER && (
             <TierInfoTable tier={selectedMoreInfo.data} />
           )}
         </DialogContent>

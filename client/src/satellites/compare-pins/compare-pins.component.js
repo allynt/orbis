@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 
 import {
-  Switch,
   Checkbox,
-  List,
-  Link,
   DeleteIcon,
   FormControlLabel,
   IconButton,
+  Link,
+  List,
+  Switch,
 } from '@astrosat/astrosat-ui';
 
-import { SCENE } from 'satellites/satellites.component';
+import { InfoType } from 'satellites/satellite.constants';
 
 import SceneListItem from '../scene-list-item/scene-list-item.component';
 
@@ -117,7 +117,7 @@ const ComparePins = ({
                   }
                   onInfoClick={scene => {
                     onInfoClick({
-                      type: SCENE,
+                      type: InfoType.SCENE,
                       data: scene,
                     });
                   }}
