@@ -1,49 +1,42 @@
 import React from 'react';
 
-import { Button, TextField, useForm, Typography } from '@astrosat/astrosat-ui';
+import { Button, TextField, Typography } from '@astrosat/astrosat-ui';
 
-import validate from './save-search-form.validator';
+import { useForm } from 'react-hook-form';
 
 /**
  * @param {{
- *  query: Partial<import('typings/satellites').SavedSearch>
- *  close: () => void
- *  saveSearch: (search: import('typings/satellites').SavedSearch) => void
+ *  onSubmit: (name: string) => void
  * }} props
  */
-const SaveSearchForm = ({ query, close, saveSearch }) => {
-  const { handleChange, handleSubmit, values, errors } = useForm(
-    onSubmit,
-    validate,
-  );
+const SaveSearchForm = ({ onSubmit: onSubmitProp }) => {
+  const { register, errors, handleSubmit, formState } = useForm();
 
-  function onSubmit() {
-    saveSearch({ ...values, ...query });
-    close();
+  function onSubmit(values) {
+    onSubmitProp(values.name);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Typography>
         Please name your search. Find your saved searches alongside your saved
         AOIs under "Saved Searches"
       </Typography>
       <TextField
+        inputRef={register({
+          minLength: {
+            value: 3,
+            message: 'Name field must exceed 3 characters',
+          },
+        })}
         name="name"
-        value={values.name || ''}
         label="Name"
-        onChange={handleChange}
         required
         autoFocus
         error={!!errors.name}
-        helperText={errors.name}
+        helperText={errors.name?.message}
       />
-      <Button
-        type="submit"
-        disabled={
-          Object.keys(errors).length > 0 || Object.keys(values).length === 0
-        }
-      >
+      <Button type="submit" disabled={!formState.isDirty || !!errors.name}>
         Save Search
       </Button>
     </form>

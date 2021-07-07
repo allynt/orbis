@@ -5,7 +5,7 @@ import SaveSearchForm from './save-search-form.component';
 export default {
   title: 'Satellites/Results/SaveSearchForm',
   argTypes: {
-    saveSearch: { action: true },
+    onSubmit: { action: true },
   },
 };
 

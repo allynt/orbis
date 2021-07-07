@@ -1,67 +1,50 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import SaveSearchForm from './save-search-form.component';
 
 const renderComponent = () => {
-  const saveSearch = jest.fn();
-  const close = jest.fn();
-  const utils = render(
-    <SaveSearchForm close={close} saveSearch={saveSearch} />,
-  );
-  return { ...utils, saveSearch, close };
+  const onSubmit = jest.fn();
+  const utils = render(<SaveSearchForm onSubmit={onSubmit} />);
+  return { ...utils, onSubmit };
 };
 
 describe('Save Satellite Search Form Component', () => {
-  it('should display a form with a single text field and button', () => {
-    const { getByRole } = renderComponent();
-
-    expect(getByRole('textbox')).toBeInTheDocument();
-    expect(getByRole('button')).toBeInTheDocument();
-  });
-
-  it('should display an error message when `name` text field is invalid', () => {
+  it('should display an error message when `name` text field is invalid', async () => {
     const { getByRole, getByText } = renderComponent();
 
     userEvent.type(getByRole('textbox'), 'id');
-    expect(
-      getByText('Name field must exceed 3 characters'),
-    ).toBeInTheDocument();
+    userEvent.click(getByRole('button'));
+    await waitFor(() =>
+      expect(
+        getByText('Name field must exceed 3 characters'),
+      ).toBeInTheDocument(),
+    );
   });
 
-  it('should disable `Save Search` button when form is invalid', () => {
+  it('should disable `Save Search` button when form is invalid', async () => {
     const { getByRole } = renderComponent();
 
     expect(getByRole('button')).toBeDisabled();
     userEvent.type(getByRole('textbox'), 'id');
-    expect(getByRole('button')).toBeDisabled();
+    userEvent.click(getByRole('button'));
+    await waitFor(() => expect(getByRole('button')).toBeDisabled());
   });
 
-  it('should enable `Save Search` button when form is valid', () => {
+  it('should enable `Save Search` button when form is valid', async () => {
     const { getByRole } = renderComponent();
 
     expect(getByRole('button')).toBeDisabled();
     userEvent.type(getByRole('textbox'), 'test');
-    expect(getByRole('button')).not.toBeDisabled();
+    await waitFor(() => expect(getByRole('button')).not.toBeDisabled());
   });
 
-  it('should not call `saveSatelliteSearch` function when form is invalid and `Save Search` button clicked', () => {
-    const { getByRole, saveSearch } = renderComponent();
-
-    userEvent.type(getByRole('textbox'), 'id');
+  it('calls onSubmit with the name when submitted', async () => {
+    const { getByRole, onSubmit } = renderComponent();
+    userEvent.type(getByRole('textbox'), 'Test Name');
     userEvent.click(getByRole('button'));
-    expect(saveSearch).not.toHaveBeenCalled();
-  });
-
-  it('should call `saveSatelliteSearch` and `close` function when form is valid and `Save Search` button clicked', () => {
-    const { getByRole, saveSearch, close } = renderComponent();
-
-    userEvent.type(getByRole('textbox'), 'test');
-    userEvent.click(getByRole('button'));
-
-    expect(saveSearch).toHaveBeenCalled();
-    expect(close).toHaveBeenCalled();
+    await waitFor(() => expect(onSubmit).toBeCalledWith('Test Name'));
   });
 });
