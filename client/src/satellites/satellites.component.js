@@ -41,11 +41,10 @@ export const SATELLITE = 'Satellite';
 export const SCENE = 'Scene';
 export const TIER = 'Tier';
 
-const Satellites = ({ map }) => {
+const Satellites = () => {
   const dispatch = useDispatch();
 
   const [visiblePanel, setVisiblePanel] = useState(SEARCH);
-  const [visualisations, setVisualisations] = useState(null);
   const [selectedMoreInfo, setSelectedMoreInfo] = useState({
     type: null,
     data: null,
@@ -65,6 +64,9 @@ const Satellites = ({ map }) => {
   const savedSearches = useSelector(
     state => state.satellites.satelliteSearches,
   );
+  const visualisations = satellites?.find(
+    sat => sat.id === selectedScene?.satellite,
+  )?.visualisations;
 
   useEffect(() => {
     if (!satellites) {
@@ -83,15 +85,6 @@ const Satellites = ({ map }) => {
       dispatch(fetchSavedSatelliteSearches());
     }
   }, [savedSearches, dispatch]);
-
-  useEffect(() => {
-    if (selectedScene) {
-      const satellite = satellites.find(
-        sat => sat.id === selectedScene.satellite,
-      );
-      setVisualisations(satellite.visualisations);
-    }
-  }, [satellites, selectedScene]);
 
   /**
    * @param {{type: string, data: any}} info
