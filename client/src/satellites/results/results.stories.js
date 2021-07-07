@@ -4,7 +4,16 @@ import faker from 'faker/locale/en_GB';
 
 import Results from './results.component';
 
-export default { title: 'Satellites/Results' };
+export default {
+  title: 'Satellites/Results',
+  argTypes: {
+    onSceneClick: { action: true },
+    onScenePin: { action: true },
+    onSceneUnpin: { action: true },
+    onInfoClick: { action: true },
+    onSaveSearchSubmit: { action: true },
+  },
+};
 
 const Template = args => <Results {...args} />;
 

@@ -129,7 +129,7 @@ const Satellites = ({ map }) => {
           selectScene={scene => dispatch(selectScene(scene))}
           onInfoClick={handleInfoClick}
           pinnedScenes={pinnedScenes}
-          pinScene={scene => dispatch(pinScene(scene))}
+          onScenePin={scene => dispatch(pinScene(scene))}
           deletePinnedScene={id => dispatch(deletePinnedScene(id))}
           saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
           currentSearchQuery={currentSearchQuery}

@@ -25,44 +25,49 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
 /**
  * @param {{
  *  scenes: import('typings/satellites').Scene[]
- *  setVisiblePanel: (panel: string) => void,
- *  selectScene: (scene: import('typings/satellites').Scene) => void,
+ *  pinnedScenes: import('typings/satellites').Scene[],
+ *  visualisationId: string
+ *  defaultCloudCover?: number
+ *  onSceneClick: (scene: import('typings/satellites').Scene) => void,
+ *  onScenePin: (scene: import('typings/satellites').Scene) => void,
+ *  onSceneUnpin: (scene: import('typings/satellites').Scene) => void,
  *  onInfoClick: (info: {
  *    type: string;
  *    data: any;
  *  }) => void,
- *  pinnedScenes: import('typings/satellites').Scene[],
- *  pinScene: (scene: import('typings/satellites').Scene) => void,
- *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
- *  saveSatelliteSearch: (search: import('typings/satellites').SavedSearch) => void,
- *  currentSearchQuery: Partial<import('typings/satellites').SavedSearch>,
- *  visualisationId: string
+ *  onSaveSearchSubmit: (name: string) => void
  * }} props
  */
 const Results = ({
   scenes,
-  setVisiblePanel,
-  selectScene,
-  onInfoClick,
   pinnedScenes,
-  pinScene,
-  deletePinnedScene,
-  saveSatelliteSearch,
-  currentSearchQuery,
   visualisationId,
+  defaultCloudCover = DEFAULT_CLOUD_COVER,
+  onSceneClick,
+  onScenePin,
+  onSceneUnpin,
+  onInfoClick,
+  onSaveSearchSubmit,
 }) => {
   const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
-    DEFAULT_CLOUD_COVER,
+    defaultCloudCover,
   );
 
   const [isSaveDialogVisible, setIsSaveDialogVisible] = useState(false);
 
   const resultCountText = scenes
     ? `Showing ${
-        scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage[0])
-          .length
+        scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage).length
       } Results of ${scenes.length}`
     : 'Loading Results...';
+
+  /**
+   * @param {string} name
+   */
+  const handleSaveSearchSubmit = name => {
+    setIsSaveDialogVisible(false);
+    onSaveSearchSubmit(name);
+  };
 
   return (
     <>
@@ -92,7 +97,7 @@ const Results = ({
                   <IconButton
                     key={`${scene.id}-icon`}
                     onClick={() => {
-                      isPinned ? deletePinnedScene(scene.id) : pinScene(scene);
+                      isPinned ? onSceneUnpin(scene) : onScenePin(scene);
                     }}
                   >
                     <PinIcon titleAccess={`pin-icon-${scene.id}`} />
@@ -104,10 +109,7 @@ const Results = ({
                     scene={scene}
                     secondaryAction={Icon}
                     visualisationId={visualisationId}
-                    onSceneClick={scene => {
-                      selectScene(scene);
-                      setVisiblePanel && setVisiblePanel(VISUALISATION);
-                    }}
+                    onSceneClick={onSceneClick}
                     onInfoClick={scene => {
                       onInfoClick({
                         type: SCENE,
@@ -128,11 +130,7 @@ const Results = ({
       >
         <DialogTitle>Name Search</DialogTitle>
         <DialogContent>
-          <SaveSearchForm
-            query={currentSearchQuery}
-            close={() => setIsSaveDialogVisible(false)}
-            saveSearch={saveSatelliteSearch}
-          />
+          <SaveSearchForm onSubmit={handleSaveSearchSubmit} />
         </DialogContent>
       </Dialog>
     </>

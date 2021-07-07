@@ -1,17 +1,9 @@
 import React from 'react';
 
-import { render, within, fireEvent, getByTitle } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import Results from './results.component';
-
-const mockStore = configureMockStore([thunk]);
-
-const mockeDialogRef = {
-  current: document.body,
-};
 
 const mockScenes = [
   {
@@ -34,102 +26,115 @@ const mockScenes = [
   },
 ];
 
-const renderComponent = (store, args) => {
-  const attributes = {
-    scenes: mockScenes,
-    setVisiblePanel: jest.fn(),
-    selectScene: jest.fn(),
-    setSelectedMoreInfo: jest.fn(),
-    toggleMoreInfoDialog: jest.fn(),
-    pinnedScenes: mockScenes,
-    pinScene: jest.fn(),
-    deletePinnedScene: jest.fn(),
-    saveSatelliteSearch: jest.fn(),
-    currentSearchQuery: false,
-    ...args,
-  };
+const renderComponent = ({
+  scenes = mockScenes,
+  pinnedScenes,
+  defaultCloudCover,
+} = {}) => {
+  const onSceneClick = jest.fn();
+  const onScenePin = jest.fn();
+  const onSceneUnpin = jest.fn();
+  const onInfoClick = jest.fn();
+  const onSaveSearchSubmit = jest.fn();
   const testee = render(
-    <Provider store={store}>
-      <Results
-        scenes={attributes.scenes}
-        setVisiblePanel={attributes.setVisiblePanel}
-        selectScene={attributes.selectScene}
-        setSelectedMoreInfo={attributes.setSelectedMoreInfo}
-        toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
-        pinnedScenes={attributes.pinnedScenes}
-        pinScene={attributes.pinScene}
-        deletePinnedScene={attributes.deletePinnedScene}
-        saveSatelliteSearch={attributes.saveSatelliteSearch}
-        currentSearchQuery={attributes.currentSearchQuery}
-        ref={mockeDialogRef}
-      />
-    </Provider>,
+    <Results
+      scenes={scenes}
+      pinnedScenes={pinnedScenes}
+      defaultCloudCover={defaultCloudCover}
+      onSceneClick={onSceneClick}
+      onScenePin={onScenePin}
+      onSceneUnpin={onSceneUnpin}
+      onInfoClick={onInfoClick}
+      onSaveSearchSubmit={onSaveSearchSubmit}
+    />,
   );
 
-  return { ...attributes, ...testee };
+  return {
+    ...testee,
+    onSceneClick,
+    onInfoClick,
+    onScenePin,
+    onSceneUnpin,
+    onSaveSearchSubmit,
+  };
 };
 
-describe.skip('Satellite Results Component', () => {
-  let store = null;
-
-  beforeEach(() => {
-    store = mockStore({
-      satellites: {
-        visualisationId: 'TCI',
-      },
-    });
+describe.only('Satellite Results Component', () => {
+  it("Shows loading text and skeleton scenes where there's no scenes", () => {
+    const { getByText, getAllByRole } = renderComponent({ scenes: null });
+    expect(getByText('Loading Results...')).toBeInTheDocument();
+    expect(getAllByRole('listitem')).toHaveLength(5);
   });
 
   it('should render a list of Scene results', () => {
-    const { container, getByText, getByRole } = renderComponent(store, {});
-
-    const element = getByRole('slider');
-    expect(getByText('CLOUD COVER %:')).toBeInTheDocument();
-    expect(element).toBeInTheDocument();
-    const defaultValue = '10';
-    expect(within(element).getByText(defaultValue)).toBeInTheDocument();
-
-    expect(getByText('RESULTS')).toBeInTheDocument();
+    const { getAllByRole, getByText } = renderComponent({});
+    expect(getAllByRole('listitem')).toHaveLength(2);
     expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
-
-    const sceneElements = container.querySelectorAll('.scene');
-    expect(sceneElements.length).toEqual(2);
-
-    expect(getByText('Save Search')).toBeInTheDocument();
   });
 
-  it('should pin scene when pin icon clicked', () => {
-    const { pinScene, getByTitle } = renderComponent(store, {
+  it('Shows results filtered by cloud cover', () => {
+    const { getAllByRole, getByText } = renderComponent({
+      defaultCloudCover: 100,
+    });
+    expect(getAllByRole('listitem')).toHaveLength(mockScenes.length);
+    expect(getByText('Showing 3 Results of 3')).toBeInTheDocument();
+  });
+
+  it('Changes the cloud cover filter when the slider is moved', () => {
+    const { getByRole, queryByRole } = renderComponent();
+    fireEvent.mouseDown(getByRole('slider'));
+    expect(queryByRole('listitem')).not.toBeInTheDocument();
+  });
+
+  it('Calls onSceneClick when a scene is clicked', () => {
+    const { getAllByRole, onSceneClick } = renderComponent();
+    userEvent.click(getAllByRole('button')[0]);
+    expect(onSceneClick).toBeCalledWith(mockScenes[0]);
+  });
+
+  it('Calls onInfoClick when an info button is clicked', () => {
+    const { getAllByRole, onInfoClick } = renderComponent();
+    userEvent.click(getAllByRole('button', { name: 'More Info' })[0]);
+    expect(onInfoClick).toBeCalled();
+  });
+
+  it('Calls onScenePin when pin icon clicked', () => {
+    const { onScenePin, getByTitle } = renderComponent({
       pinnedScenes: [],
     });
 
-    fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
-    expect(pinScene).toHaveBeenCalledWith(mockScenes[0]);
+    userEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
+    expect(onScenePin).toHaveBeenCalledWith(mockScenes[0]);
   });
 
-  it('should delete pinned scene when already pinned pin icon clicked', () => {
-    const { deletePinnedScene, getByTitle } = renderComponent(store, {
+  it('should call onSceneUnpin when already pinned pin icon clicked', () => {
+    const { onSceneUnpin, getByTitle } = renderComponent({
       pinnedScenes: [{ ...mockScenes[0] }],
     });
 
-    fireEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
-    expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
+    userEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
+    expect(onSceneUnpin).toHaveBeenCalledWith(mockScenes[0]);
   });
 
   it('should show dialog component when Save Search button clicked', () => {
-    const { queryByText, getByText } = renderComponent(store, {
-      pinnedScenes: [{ ...mockScenes[0] }],
-    });
+    const { getByText, getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Search' }));
+    expect(getByText('Name Search')).toBeVisible();
+  });
 
-    const dialogTitle = 'Name Search';
-    expect(queryByText(dialogTitle)).toEqual(null);
-    fireEvent.click(getByText('Save Search'));
+  it('Closes the dialog when the background is clicked', () => {
+    const { getByText, getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Search' }));
+    expect(getByText('Name Search')).toBeVisible();
+    userEvent.click(getByRole('none'));
+    expect(getByText('Name Search')).not.toBeVisible();
+  });
 
-    expect(getByText(dialogTitle)).toBeInTheDocument();
-    expect(
-      getByText(
-        'Please name your search. Find your saved searches alongside your saved AOIs under "Saved Searches"',
-      ),
-    ).toBeInTheDocument();
+  it('Calls onSaveSearchSubmit when the save search form is submitted', async () => {
+    const { getByRole, onSaveSearchSubmit } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Search' }));
+    userEvent.type(getByRole('textbox'), 'Test Name');
+    userEvent.click(getByRole('button', { name: 'Save Search' }));
+    await waitFor(() => expect(onSaveSearchSubmit).toBeCalledWith('Test Name'));
   });
 });
