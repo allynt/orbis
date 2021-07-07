@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
 import {
-  Button,
-  List,
-  PinIcon,
-  Slider,
-  Typography,
-  Paper,
   Box,
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
+  List,
+  Paper,
+  PinIcon,
+  Slider,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
-import { SCENE, VISUALISATION } from 'satellites/satellites.component';
+import { SCENE } from 'satellites/satellites.component';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
@@ -39,7 +39,7 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  * }} props
  */
 const Results = ({
-  scenes,
+  scenes: allScenes,
   pinnedScenes,
   visualisationId,
   defaultCloudCover = DEFAULT_CLOUD_COVER,
@@ -55,10 +55,12 @@ const Results = ({
 
   const [isSaveDialogVisible, setIsSaveDialogVisible] = useState(false);
 
-  const resultCountText = scenes
-    ? `Showing ${
-        scenes.filter(scene => scene.cloudCover <= cloudCoverPercentage).length
-      } Results of ${scenes.length}`
+  const filteredScenes = allScenes?.filter(
+    scene => scene.cloudCover <= cloudCoverPercentage,
+  );
+
+  const resultCountText = allScenes
+    ? `Showing ${filteredScenes.length} Results of ${allScenes.length}`
     : 'Loading Results...';
 
   /**
@@ -78,7 +80,7 @@ const Results = ({
           max={100}
           value={cloudCoverPercentage}
           onChange={(_event, value) => setCloudCoverPercentage(value)}
-          disabled={!scenes}
+          disabled={!filteredScenes}
           marks
           valueLabelDisplay="auto"
         />
@@ -88,8 +90,8 @@ const Results = ({
         <Typography>{resultCountText}</Typography>
       </Paper>
       <List>
-        {scenes
-          ? scenes
+        {allScenes
+          ? filteredScenes
               .filter(scene => scene.cloudCover <= cloudCoverPercentage)
               .map(scene => {
                 const isPinned = pinnedScenes?.some(pin => scene.id === pin.id);
@@ -121,7 +123,7 @@ const Results = ({
               })
           : Array(5)
               .fill(0)
-              .map((num, i) => <SceneListItemSkeleton key={i} />)}
+              .map((_num, i) => <SceneListItemSkeleton key={i} />)}
       </List>
       <Button onClick={() => setIsSaveDialogVisible(true)}>Save Search</Button>
       <Dialog

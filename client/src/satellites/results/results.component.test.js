@@ -59,7 +59,7 @@ const renderComponent = ({
   };
 };
 
-describe.only('Satellite Results Component', () => {
+describe('Satellite Results Component', () => {
   it("Shows loading text and skeleton scenes where there's no scenes", () => {
     const { getByText, getAllByRole } = renderComponent({ scenes: null });
     expect(getByText('Loading Results...')).toBeInTheDocument();
