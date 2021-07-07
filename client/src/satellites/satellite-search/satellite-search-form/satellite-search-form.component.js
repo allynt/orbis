@@ -63,17 +63,24 @@ const Checkbox = ({ name, control, label, onInfoClick }) => {
   );
 };
 
-const keysForTruthyValues = obj =>
+/**
+ * @param {{[key: string]: any}} obj
+ */
+const keyArrayForTruthyObjectValues = obj =>
   Object.entries(obj).reduce((acc, [key, value]) => {
     if (value) return [...acc, key];
     return acc;
   }, []);
 
-const boolObjectForArray = (array, search, searchKey) =>
+/**
+ * @param {{id: string}[]} array
+ * @param {string[]} searchArray
+ */
+const boolObjectForIdArray = (array, searchArray) =>
   array?.reduce(
     (acc, object) => ({
       ...acc,
-      [object.id]: search?.[searchKey]?.includes(object.id),
+      [object.id]: searchArray?.includes(object.id),
     }),
     {},
   );
@@ -83,8 +90,8 @@ const boolObjectForArray = (array, search, searchKey) =>
  * @param {import('typings/satellites').Satellite[]} satellites
  */
 const transformSearchToFormValues = (search, satellites) => ({
-  satellites: boolObjectForArray(satellites, search, 'satellites'),
-  tiers: boolObjectForArray(TIERS, search, 'tiers'),
+  satellites: boolObjectForIdArray(satellites, search?.satellites),
+  tiers: boolObjectForIdArray(TIERS, search?.tiers),
   start_date: search?.start_date
     ? new Date(search.start_date)
     : subDays(new Date(), DAYS_IN_PAST),
@@ -146,8 +153,8 @@ const SatelliteSearchForm = ({
 
   const onSubmit = values => {
     const query = {
-      satellites: keysForTruthyValues(values.satellites),
-      tiers: keysForTruthyValues(values.tiers),
+      satellites: keyArrayForTruthyObjectValues(values.satellites),
+      tiers: keyArrayForTruthyObjectValues(values.tiers),
       start_date: values.start_date.toISOString(),
       end_date: values.end_date.toISOString(),
     };
