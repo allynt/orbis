@@ -22,7 +22,6 @@ import {
   fetchPinnedScenes,
   fetchSatellites,
   pinScene,
-  removeScenes,
   saveSatelliteSearch,
   selectScene,
   setCurrentVisualisation,
@@ -55,6 +54,9 @@ const Satellites = ({ map }) => {
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
   const currentSearchQuery = useSelector(
     state => state.satellites.currentSearchQuery,
+  );
+  const visualisationId = useSelector(
+    state => state.satellites.visualisationId,
   );
 
   useEffect(() => {
@@ -116,22 +118,21 @@ const Satellites = ({ map }) => {
       )}
       {visiblePanel === RESULTS && (
         <Results
-          setVisiblePanel={setVisiblePanel}
           scenes={scenes}
-          selectScene={scene => dispatch(selectScene(scene))}
-          onInfoClick={handleInfoClick}
           pinnedScenes={pinnedScenes}
+          visualisationId={visualisationId}
+          onSceneClick={scene => dispatch(selectScene(scene))}
           onScenePin={scene => dispatch(pinScene(scene))}
-          deletePinnedScene={id => dispatch(deletePinnedScene(id))}
-          saveSatelliteSearch={query => dispatch(saveSatelliteSearch(query))}
-          currentSearchQuery={currentSearchQuery}
+          onSceneUnpin={scene => dispatch(deletePinnedScene(scene.id))}
+          onInfoClick={handleInfoClick}
+          onSaveSearchSubmit={name =>
+            dispatch(saveSatelliteSearch({ ...currentSearchQuery, name }))
+          }
         />
       )}
       {visiblePanel === VISUALISATION && (
         <Visualisation
           visualisations={visualisations}
-          setVisiblePanel={setVisiblePanel}
-          removeScenes={() => dispatch(removeScenes())}
           onVisualisationClick={visualisation =>
             dispatch(setCurrentVisualisation(visualisation))
           }
