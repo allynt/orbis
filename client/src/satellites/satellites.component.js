@@ -10,8 +10,6 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { isCompareModeSelector, toggleCompareMode } from '../map/map.slice';
-import ComparePins from './compare-pins/compare-pins.component';
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
 import {
@@ -20,16 +18,12 @@ import {
   TierInfoTable,
 } from './satellites-info-tables/satellites-info-tables.component';
 import {
-  clearSelectedPinnedScenes,
   deletePinnedScene,
-  deselectPinnedScene,
   fetchPinnedScenes,
   fetchSatellites,
   pinScene,
   removeScenes,
   saveSatelliteSearch,
-  selectedPinnedScenesSelector,
-  selectPinnedScene,
   selectScene,
   setCurrentVisualisation,
 } from './satellites.slice';
@@ -59,8 +53,6 @@ const Satellites = ({ map }) => {
   const scenes = useSelector(state => state.satellites.scenes);
   const selectedScene = useSelector(state => state.satellites.selectedScene);
   const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  const isCompareMode = useSelector(isCompareModeSelector);
-  const selectedPinnedScenes = useSelector(selectedPinnedScenesSelector);
   const currentSearchQuery = useSelector(
     state => state.satellites.currentSearchQuery,
   );
@@ -111,7 +103,7 @@ const Satellites = ({ map }) => {
         >
           Visualisation
         </Button>
-        <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button>
+        {/* <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button> */}
       </ButtonGroup>
 
       {satellites && visiblePanel === SEARCH && (
@@ -145,7 +137,7 @@ const Satellites = ({ map }) => {
           }
         />
       )}
-      {visiblePanel === PINS && (
+      {/* {visiblePanel === PINS && (
         <ComparePins
           onInfoClick={handleInfoClick}
           selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
@@ -159,7 +151,7 @@ const Satellites = ({ map }) => {
           selectedPinnedScenes={selectedPinnedScenes}
           isCompareMode={isCompareMode}
         />
-      )}
+      )} */}
       <Dialog
         open={isMoreInfoDialogVisible}
         onClose={() => setIsMoreInfoDialogVisible(false)}
