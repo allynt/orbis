@@ -33,6 +33,13 @@ import reducer, {
   clearSelectedPinnedScenes,
   setCurrentSatelliteSearchQuery,
   selectedPinnedScenesSelector,
+  satellitesSelector,
+  scenesSelector,
+  selectedSceneSelector,
+  pinnedScenesSelector,
+  currentSearchQuerySelector,
+  visualisationIdSelector,
+  savedSearchesSelector,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -804,6 +811,33 @@ describe('Satellites Slice', () => {
         };
         const result = selectedPinnedScenesSelector(state);
         expect(result).toEqual(state.satellites.selectedPinnedScenes);
+      });
+    });
+
+    describe.each`
+      selector                      | key
+      ${satellitesSelector}         | ${'satellites'}
+      ${scenesSelector}             | ${'scenes'}
+      ${selectedSceneSelector}      | ${'selectedScene'}
+      ${pinnedScenesSelector}       | ${'pinnedScenes'}
+      ${currentSearchQuerySelector} | ${'currentSearchQuery'}
+      ${visualisationIdSelector}    | ${'visualisationId'}
+      ${savedSearchesSelector}      | ${'satelliteSearches'}
+    `('$selector', ({ selector, key }) => {
+      it.each`
+        key             | state
+        ${'state'}      | ${undefined}
+        ${'satellites'} | ${{}}
+        ${key}          | ${{ satellites: {} }}
+      `('Returns undefined if $key is undefined', ({ state }) => {
+        const result = selector(state);
+        expect(result).toEqual(undefined);
+      });
+
+      it('Returns $key from state', () => {
+        expect(selector({ satellites: { [key]: 'testValue' } })).toBe(
+          'testValue',
+        );
       });
     });
   });

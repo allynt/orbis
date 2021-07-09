@@ -8,17 +8,24 @@ import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
 import {
+  currentSearchQuerySelector,
   deletePinnedScene,
   deleteSavedSatelliteSearch,
   fetchPinnedScenes,
   fetchSatellites,
   fetchSatelliteScenes,
   fetchSavedSatelliteSearches,
+  pinnedScenesSelector,
   pinScene,
+  satellitesSelector,
+  savedSearchesSelector,
   saveSatelliteSearch,
+  scenesSelector,
+  selectedSceneSelector,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
+  visualisationIdSelector,
 } from './satellites.slice';
 import Visualisation from './visualisation/visualisation.component';
 
@@ -38,19 +45,13 @@ const Satellites = () => {
   });
   const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
 
-  const satellites = useSelector(state => state.satellites.satellites);
-  const scenes = useSelector(state => state.satellites.scenes);
-  const selectedScene = useSelector(state => state.satellites.selectedScene);
-  const pinnedScenes = useSelector(state => state.satellites.pinnedScenes);
-  const currentSearchQuery = useSelector(
-    state => state.satellites.currentSearchQuery,
-  );
-  const visualisationId = useSelector(
-    state => state.satellites.visualisationId,
-  );
-  const savedSearches = useSelector(
-    state => state.satellites.satelliteSearches,
-  );
+  const satellites = useSelector(satellitesSelector);
+  const scenes = useSelector(scenesSelector);
+  const selectedScene = useSelector(selectedSceneSelector);
+  const pinnedScenes = useSelector(pinnedScenesSelector);
+  const currentSearchQuery = useSelector(currentSearchQuerySelector);
+  const visualisationId = useSelector(visualisationIdSelector);
+  const savedSearches = useSelector(savedSearchesSelector);
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;

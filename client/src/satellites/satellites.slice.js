@@ -5,6 +5,19 @@ import apiClient from 'api-client';
 
 import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
+/**
+ * @typedef SatellitesState
+ * @property {import('typings/satellites').Satellite[]} [satellites]
+ * @property {import('typings/satellites').Scene[]} [scenes]
+ * @property {import('typings/satellites').Scene} [selectedScene]
+ * @property {any} [error]
+ * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
+ * @property {import('typings/satellites').Scene[]} [pinnedScenes]
+ * @property {import('typings/satellites').Scene[]} [selectedPinnedScenes]
+ * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
+ * @property {'TCI'} visualisationId
+ */
+
 const API = {
   sources: '/api/satellites/',
   scenes: '/api/satellites/run_query/',
@@ -12,6 +25,9 @@ const API = {
   pinScene: '/api/satellites/results/',
 };
 
+/**
+ * @type {SatellitesState}
+ */
 const initialState = {
   satellites: null,
   scenes: null,
@@ -358,10 +374,49 @@ export const deletePinnedScene = id => async (dispatch, getState) => {
   return dispatch(deletePinnedSceneSuccess(id));
 };
 
+/**
+ * @param {import('react-redux').DefaultRootState} state
+ */
 const baseSelector = state => state?.satellites;
+
 export const selectedPinnedScenesSelector = createSelector(
   baseSelector,
   satellites => satellites?.selectedPinnedScenes || [],
+);
+
+export const satellitesSelector = createSelector(
+  baseSelector,
+  state => state?.satellites,
+);
+
+export const scenesSelector = createSelector(
+  baseSelector,
+  state => state?.scenes,
+);
+
+export const selectedSceneSelector = createSelector(
+  baseSelector,
+  state => state?.selectedScene,
+);
+
+export const pinnedScenesSelector = createSelector(
+  baseSelector,
+  state => state?.pinnedScenes,
+);
+
+export const currentSearchQuerySelector = createSelector(
+  baseSelector,
+  state => state?.currentSearchQuery,
+);
+
+export const visualisationIdSelector = createSelector(
+  baseSelector,
+  state => state?.visualisationId,
+);
+
+export const savedSearchesSelector = createSelector(
+  baseSelector,
+  state => state?.satelliteSearches,
 );
 
 export default satellitesSlice.reducer;
