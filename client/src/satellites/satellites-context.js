@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { DrawRectangleMode } from '@nebula.gl/edit-modes';
+import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { featureCollection } from '@turf/turf';
+
+import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 /**
  * @typedef {{
@@ -38,17 +40,23 @@ export const SatellitesProvider = ({
     if (features.length >= 1) setFeatures([]);
     if (editType !== 'addFeature') return;
     setFeatures(updatedData.features);
+    setIsDrawingAoi(false);
   };
 
-  // This needs to be visible when drawing AOI but also after its been drawn but not when there's results
-  // and not when satellites isn't visible. BUT! if it's triggered again it does need to show, even if there is results
+  const getFillColor = [0, 0, 0, 0];
+  const getLineColor = COLOR_PRIMARY_ARRAY;
+
   // @ts-ignore
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
     data: featureCollection(features),
-    mode: DrawRectangleMode,
+    mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
     onEdit,
+    getFillColor,
+    getTentativeFillColor: getFillColor,
+    getLineColor,
+    getTentativeLineColor: getLineColor,
   });
 
   return (
@@ -56,7 +64,7 @@ export const SatellitesProvider = ({
       value={{
         isDrawingAoi,
         setIsDrawingAoi,
-        drawAoiLayer: isDrawingAoi ? drawAoiLayer : undefined,
+        drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
         aoi: features[0]?.geometry.coordinates[0],
       }}
     >
