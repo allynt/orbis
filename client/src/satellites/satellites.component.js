@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Button,
-  ButtonGroup,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from '@astrosat/astrosat-ui';
+import { Button, ButtonGroup } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
-import { InfoType } from './satellite.constants';
-import {
-  SatelliteInfoTable,
-  SceneInfoTable,
-  TierInfoTable,
-} from './satellites-info-tables/satellites-info-tables.component';
 import {
   deletePinnedScene,
   deleteSavedSatelliteSearch,
@@ -174,25 +163,11 @@ const Satellites = () => {
           isCompareMode={isCompareMode}
         />
       )} */}
-      <Dialog
+      <MoreInfoDialog
         open={isMoreInfoDialogVisible}
         onClose={() => setIsMoreInfoDialogVisible(false)}
-      >
-        <DialogTitle>More Information</DialogTitle>
-        <DialogContent>
-          {!selectedMoreInfo && <p>No information currently available</p>}
-
-          {selectedMoreInfo && selectedMoreInfo.type === InfoType.SATELLITE && (
-            <SatelliteInfoTable satellite={selectedMoreInfo.data} />
-          )}
-          {selectedMoreInfo && selectedMoreInfo.type === InfoType.SCENE && (
-            <SceneInfoTable scene={selectedMoreInfo.data} />
-          )}
-          {selectedMoreInfo && selectedMoreInfo.type === InfoType.TIER && (
-            <TierInfoTable tier={selectedMoreInfo.data} />
-          )}
-        </DialogContent>
-      </Dialog>
+        {...selectedMoreInfo}
+      />
     </>
   );
 };
