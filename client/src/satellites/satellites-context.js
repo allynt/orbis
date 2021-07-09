@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 import { GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
@@ -16,6 +16,7 @@ import { scenesSelector } from './satellites.slice';
  *  setIsDrawingAoi: React.Dispatch<React.SetStateAction<boolean>>
  *  drawAoiLayer?: EditableGeoJsonLayer
  *  aoi?: number[][]
+ *  scenesLayer?: GeoJsonLayer
  * }} SatellitesContextType
  */
 
