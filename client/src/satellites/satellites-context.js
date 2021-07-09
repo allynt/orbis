@@ -73,9 +73,7 @@ export const SatellitesProvider = ({
     data:
       scenes &&
       featureCollection(
-        scenes
-          ?.map(scene => scene.footprint)
-          .map(footprint => feature(footprint)),
+        scenes?.map(scene => scene.footprint && feature(scene.footprint)),
       ),
   });
 
