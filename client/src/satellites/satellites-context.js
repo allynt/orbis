@@ -1,10 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { featureCollection } from '@turf/turf';
+import { feature, featureCollection } from '@turf/turf';
+import { useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
+
+import { scenesSelector } from './satellites.slice';
 
 /**
  * @typedef {{
@@ -35,6 +39,7 @@ export const SatellitesProvider = ({
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState([]);
+  const scenes = useSelector(scenesSelector);
 
   const onEdit = ({ editType, updatedData }) => {
     if (features.length >= 1) setFeatures([]);
@@ -59,6 +64,20 @@ export const SatellitesProvider = ({
     getTentativeLineColor: getLineColor,
   });
 
+  const scenesLayer = new GeoJsonLayer({
+    id: 'scenes-layer',
+    pickable: true,
+    autoHighlight: true,
+    getFillColor: [53, 149, 243, 255 * 0.5],
+    data:
+      scenes &&
+      featureCollection(
+        scenes
+          ?.map(scene => scene.footprint)
+          .map(footprint => feature(footprint)),
+      ),
+  });
+
   return (
     <SatellitesContext.Provider
       value={{
@@ -66,6 +85,7 @@ export const SatellitesProvider = ({
         setIsDrawingAoi,
         drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
         aoi: features[0]?.geometry.coordinates[0],
+        scenesLayer,
       }}
     >
       {children}
