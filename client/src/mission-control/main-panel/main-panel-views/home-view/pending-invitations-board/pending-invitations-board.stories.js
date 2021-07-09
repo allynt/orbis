@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { customer, pendingUsers } from '../../test-story-data';
+import { customer, pendingUsers } from 'mission-control/test-story-data';
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-export default { title: 'Admin/Home View/Pending Users Board' };
+export default { title: 'Mission Control/Home View/Pending Users Board' };
 
 export const NoUsers = () => (
   <PendingInvitationsBoard users={null} customer={customer} />

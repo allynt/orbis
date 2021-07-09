@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
-import ContentWrapper from 'admin/content-wrapper.component';
+import ContentWrapper from 'mission-control/content-wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
@@ -41,7 +41,7 @@ const HomeView = ({
   onDeleteUserClick,
 }) => (
   <Box display="flex" flexDirection="column" width="100%">
-    <ContentWrapper title="Users" fullHeight>
+    <ContentWrapper title="Users">
       <ActiveUsersBoard
         currentUser={currentUser}
         activeCustomerUsers={activeUsers}
@@ -54,7 +54,7 @@ const HomeView = ({
         onDeleteUserClick={onDeleteUserClick}
       />
     </ContentWrapper>
-    <ContentWrapper title="Pending Invitations" fullHeight>
+    <ContentWrapper title="Pending Invitations">
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={customer}

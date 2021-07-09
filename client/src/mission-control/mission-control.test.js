@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -47,7 +47,7 @@ describe('MissionControl', () => {
   });
 
   it('Displays the Create User dialog when the Create User Button is clicked', () => {
-    const { getByText, getByRole } = setup({});
+    const { getByText, getByRole } = setup({ isVisible: true });
     userEvent.click(getByText('Create User'));
     const dialog = getByRole('dialog');
     expect(dialog).toBeInTheDocument();
@@ -55,7 +55,9 @@ describe('MissionControl', () => {
   });
 
   it('Closes the Create User Dialog when the close button is clicked', async () => {
-    const { getAllByText, getByRole, getByLabelText, queryByRole } = setup({});
+    const { getAllByText, getByRole, getByLabelText, queryByRole } = setup({
+      isVisible: true,
+    });
     userEvent.click(getAllByText('Create User')[0]);
     expect(getByRole('dialog')).toBeInTheDocument();
     userEvent.click(getByLabelText('Close'));
@@ -64,7 +66,9 @@ describe('MissionControl', () => {
 
   it('Closes the Create User Dialog when the form is successfully submitted', async () => {
     fetch.mockResponse(JSON.stringify({}));
-    const { getByText, getAllByText, queryByRole, getByLabelText } = setup({});
+    const { getByText, getAllByText, queryByRole, getByLabelText } = setup({
+      isVisible: true,
+    });
     userEvent.click(getByText('Create User'));
     userEvent.type(getByLabelText('Email'), 'hello@test.com');
     userEvent.click(getAllByText('Create User')[1]);

@@ -1,30 +1,31 @@
 import React from 'react';
 
-import {
-  Divider as DefaultDivider,
-  makeStyles,
-  styled,
-  Typography,
-} from '@astrosat/astrosat-ui';
+import { makeStyles, styled, Typography, Button } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 
 const Wrapper = styled('div')(({ theme }) => ({
   maxWidth: theme.typography.pxToRem(700),
   width: '70%',
-  display: 'grid',
-  gridTemplateColumns: 'max-content 1fr max-content 1fr max-content',
-  gridTemplateRows: '1fr 1fr',
-  justifyContent: 'center',
+  display: 'flex',
+  justifyContent: 'space-evenly',
   alignItems: 'center',
   padding: theme.spacing(0, 5),
   marginBottom: theme.spacing(5),
+  gap: '2rem',
 }));
 
-const Divider = styled(DefaultDivider)({
-  margin: '0 auto',
-  gridRow: '1 / -1',
-});
+const QuickViewItem = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-evenly',
+  alignItems: 'center',
+  padding: '1.5rem 0',
+  backgroundColor: theme.palette.background.default,
+  borderRadius: '0.25rem',
+  minWidth: '14rem',
+  minHeight: '8rem',
+}));
 
 const useStyles = makeStyles({
   active: {
@@ -82,14 +83,27 @@ const QuickView = ({ data, onCreateUserClick }) => {
   const styles = useStyles();
   return (
     <Wrapper>
-      <Value className={styles.active}>{data?.active ?? '-'}</Value>
-      <Label className={styles.active}>Active Users</Label>
-      <Divider orientation="vertical" />
-      <Value className={styles.pending}>{data?.pending ?? '-'}</Value>
-      <Label className={styles.pending}>Pending Invitations</Label>
-      <Divider orientation="vertical" />
-      <Value className={styles.available}>{data?.available ?? '-'}</Value>
-      <Label className={styles.available}>Licences Available</Label>
+      <QuickViewItem>
+        <Value className={styles.active}>{data?.active ?? '-'}</Value>
+        <Label className={styles.active}>Active Users</Label>
+      </QuickViewItem>
+
+      <QuickViewItem>
+        <Value className={styles.pending}>{data?.pending ?? '-'}</Value>
+        <Label className={styles.pending}>Pending Invitations</Label>
+      </QuickViewItem>
+
+      <QuickViewItem>
+        <Value className={styles.available}>{data?.available ?? '-'}</Value>
+
+        <Label className={styles.available}>Licences Available</Label>
+      </QuickViewItem>
+
+      <QuickViewItem>
+        <Button size="small" onClick={onCreateUserClick}>
+          Create User
+        </Button>
+      </QuickViewItem>
     </Wrapper>
   );
 };

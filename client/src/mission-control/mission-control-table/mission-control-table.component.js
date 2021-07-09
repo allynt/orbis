@@ -3,6 +3,7 @@ import { TableCell, withStyles } from '@astrosat/astrosat-ui';
 export const UsersViewTableCell = withStyles(theme => ({
   root: {
     padding: theme.spacing(5, 3),
+    backgroundColor: theme.palette.background.default,
   },
   head: {
     ...theme.typography.h2,
@@ -10,7 +11,5 @@ export const UsersViewTableCell = withStyles(theme => ({
   body: {
     ...theme.typography.body1,
   },
-  stickyHeader: {
-    backgroundColor: theme.palette.common.white,
-  },
+  stickyHeader: {},
 }))(TableCell);

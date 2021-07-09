@@ -11,10 +11,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableFooter,
   TriangleIcon,
+  styled,
+  TablePagination,
+  IconButton,
 } from '@astrosat/astrosat-ui';
 
-import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+import { UsersViewTableCell } from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
@@ -26,14 +30,22 @@ const USER_LABELS = {
   admin: 'Admin',
 };
 
+const StyledTableRow = styled(TableRow)(() => ({
+  root: {
+    border: '2px solid red',
+    color: 'green',
+    backgroundColor: 'red',
+  },
+}));
+
 const TableHeader = () => (
   <TableHead>
     <TableRow>
-      <AdminTableCell align="left">User</AdminTableCell>
-      <AdminTableCell align="left">Activated Licences</AdminTableCell>
-      <AdminTableCell align="left">Email</AdminTableCell>
-      <AdminTableCell align="left">Type</AdminTableCell>
-      <AdminTableCell align="left" />
+      <UsersViewTableCell align="left">Users</UsersViewTableCell>
+      <UsersViewTableCell align="left">Activated Licences</UsersViewTableCell>
+      <UsersViewTableCell align="left">Email</UsersViewTableCell>
+      <UsersViewTableCell align="left">Type</UsersViewTableCell>
+      <UsersViewTableCell align="left" />
     </TableRow>
   </TableHead>
 );
@@ -99,11 +111,11 @@ const UserRow = ({
   };
 
   return (
-    <TableRow>
-      <AdminTableCell>{customerUser?.user?.name}</AdminTableCell>
-      <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
-      <AdminTableCell>{customerUser?.user?.email}</AdminTableCell>
-      <AdminTableCell>
+    <StyledTableRow>
+      <UsersViewTableCell>{customerUser?.user?.name}</UsersViewTableCell>
+      <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
+      <UsersViewTableCell>{customerUser?.user?.email}</UsersViewTableCell>
+      <UsersViewTableCell>
         <Button
           aria-controls="role-menu"
           color="secondary"
@@ -134,8 +146,8 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-      </AdminTableCell>
-      <AdminTableCell>
+      </UsersViewTableCell>
+      <UsersViewTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -146,14 +158,57 @@ const UserRow = ({
             <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
           )}
         </OptionsMenu>
-      </AdminTableCell>
-    </TableRow>
+      </UsersViewTableCell>
+    </StyledTableRow>
+  );
+};
+
+const TablePaginationActions = props => {
+  const { count, page, rowsPerPage, onChangePage } = props;
+
+  const handleBackButtonClick = event => {
+    onChangePage(event, page - 1);
+  };
+
+  const handleNextButtonClick = event => {
+    onChangePage(event, page + 1);
+  };
+
+  return (
+    <Box direction="row">
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {'<'}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {'>'}
+      </IconButton>
+    </Box>
   );
 };
 
 const useStyles = makeStyles(theme => ({
   box: {
     maxHeight: `calc(100% - ${theme.spacing(10)})`,
+  },
+  pagination: {
+    root: {
+      border: '2px solid red',
+    },
+  },
+}));
+
+const usePaginationStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    border: 'none',
   },
 }));
 
@@ -181,6 +236,9 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   /**
    * @param {import('typings/orbis').CustomerUser} customerUser
    */
@@ -202,7 +260,46 @@ export const ActiveUsersBoard = ({
     onDeleteUserClick(customerUser);
   };
 
-  const styles = useStyles();
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    console.log('HIT');
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
+  const styles = useStyles({});
+  const paginationStyles = usePaginationStyles({});
+
+  const rows =
+    activeCustomerUsers?.length > 0 ? (
+      activeCustomerUsers.map(customerUser => {
+        let licences = null;
+        if (customer && customer.licences) {
+          licences = getUserLicences(customerUser, customer);
+        }
+        return (
+          <UserRow
+            key={customerUser.user.id}
+            customerUser={customerUser}
+            currentUser={currentUser}
+            licences={licences}
+            oneAdminRemaining={oneAdminRemaining}
+            onDeleteUserClick={() => handleDeleteClick(customerUser)}
+            onEditUserClick={() => handleEditClick(customerUser)}
+            onRoleClick={() => handleRoleClick(customerUser)}
+          />
+        );
+      })
+    ) : (
+      <StyledTableRow>
+        <UsersViewTableCell align="center" colSpan={5}>
+          No Active Users
+        </UsersViewTableCell>
+      </StyledTableRow>
+    );
 
   return (
     <Box
@@ -217,33 +314,32 @@ export const ActiveUsersBoard = ({
         <Table stickyHeader>
           <TableHeader />
           <TableBody>
-            {activeCustomerUsers?.length > 0 ? (
-              activeCustomerUsers.map(customerUser => {
-                let licences = null;
-                if (customer && customer.licences) {
-                  licences = getUserLicences(customerUser, customer);
-                }
-                return (
-                  <UserRow
-                    key={customerUser.user.id}
-                    customerUser={customerUser}
-                    currentUser={currentUser}
-                    licences={licences}
-                    oneAdminRemaining={oneAdminRemaining}
-                    onDeleteUserClick={() => handleDeleteClick(customerUser)}
-                    onEditUserClick={() => handleEditClick(customerUser)}
-                    onRoleClick={() => handleRoleClick(customerUser)}
-                  />
-                );
-              })
-            ) : (
-              <TableRow>
-                <AdminTableCell align="center" colSpan={5}>
-                  No Active Users
-                </AdminTableCell>
-              </TableRow>
-            )}
+            {rowsPerPage > 0
+              ? rows.slice(
+                  currentPage * rowsPerPage,
+                  currentPage * rowsPerPage + rowsPerPage,
+                )
+              : rows}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                classes={paginationStyles}
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={3}
+                count={rows ? rows.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={currentPage}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+                SelectProps={{
+                  inputProps: { 'aria-label': 'rows per page' },
+                  native: true,
+                }}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </Box>

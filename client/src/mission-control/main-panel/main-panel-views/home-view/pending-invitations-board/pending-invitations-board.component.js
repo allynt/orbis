@@ -13,7 +13,7 @@ import {
 
 import { format } from 'date-fns';
 
-import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
+import { UsersViewTableCell } from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -23,12 +23,12 @@ const DATE_FORMAT = 'k:mm d MMMM yyyy';
 const TableHeader = () => (
   <TableHead>
     <TableRow>
-      <AdminTableCell align="left">Pending Invitations</AdminTableCell>
-      <AdminTableCell align="left">Email</AdminTableCell>
-      <AdminTableCell align="left">Licence Type</AdminTableCell>
-      <AdminTableCell align="left">Invitation Sent</AdminTableCell>
-      <AdminTableCell align="left">Invited</AdminTableCell>
-      <AdminTableCell align="left" />
+      <UsersViewTableCell align="left">Pending Invitations</UsersViewTableCell>
+      <UsersViewTableCell align="left">Email</UsersViewTableCell>
+      <UsersViewTableCell align="left">Licence Type</UsersViewTableCell>
+      <UsersViewTableCell align="left">Invitation Sent</UsersViewTableCell>
+      <UsersViewTableCell align="left">Invited</UsersViewTableCell>
+      <UsersViewTableCell align="left" />
     </TableRow>
   </TableHead>
 );
@@ -76,16 +76,16 @@ const PendingUserRow = ({
 
   return (
     <TableRow>
-      <AdminTableCell>{customerUser.user.name}</AdminTableCell>
-      <AdminTableCell>{customerUser.user.email}</AdminTableCell>
-      <AdminTableCell>{getLicenceInfo(licences)}</AdminTableCell>
-      <AdminTableCell>{date}</AdminTableCell>
-      <AdminTableCell>
+      <UsersViewTableCell>{customerUser.user.name}</UsersViewTableCell>
+      <UsersViewTableCell>{customerUser.user.email}</UsersViewTableCell>
+      <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
+      <UsersViewTableCell>{date}</UsersViewTableCell>
+      <UsersViewTableCell>
         <Button size="small" onClick={handleResendClick}>
           Resend Invitation
         </Button>
-      </AdminTableCell>
-      <AdminTableCell>
+      </UsersViewTableCell>
+      <UsersViewTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -93,7 +93,7 @@ const PendingUserRow = ({
         >
           <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
         </OptionsMenu>
-      </AdminTableCell>
+      </UsersViewTableCell>
     </TableRow>
   );
 };
@@ -138,9 +138,9 @@ export const PendingInvitationsBoard = ({
             ))
           ) : (
             <TableRow>
-              <AdminTableCell align="center" colSpan={6}>
+              <UsersViewTableCell align="center" colSpan={6}>
                 No Pending Users
-              </AdminTableCell>
+              </UsersViewTableCell>
             </TableRow>
           )}
         </TableBody>

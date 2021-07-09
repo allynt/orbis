@@ -1,10 +1,14 @@
 import React from 'react';
 
-import { customer, activeUsers, pendingUsers } from '../../test-story-data';
+import {
+  customer,
+  activeUsers,
+  pendingUsers,
+} from 'mission-control/test-story-data';
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
-  title: 'Admin/Home View/Active Users Board',
+  title: 'Mission Control/Home View/Active Users Board',
   argTypes: {
     onChangeRoleClick: { action: 'onChangeRoleClick' },
     onEditUserClick: { action: 'onEditUserClick' },

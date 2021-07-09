@@ -78,6 +78,7 @@ describe('Register Form Component', () => {
       registerUser,
       error,
     );
+    getByRole('button', { name: 'some text' });
 
     expect(
       getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
