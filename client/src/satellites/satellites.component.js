@@ -56,7 +56,7 @@ const Satellites = () => {
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
-  const { setIsDrawingAoi } = useSatellites();
+  const { setIsDrawingAoi, aoi } = useSatellites();
 
   useEffect(() => {
     if (!satellites) {
@@ -114,7 +114,7 @@ const Satellites = () => {
           currentSearch={currentSearchQuery}
           onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
           onSearch={search => {
-            const newSearch = { ...search, aoi: [[]] };
+            const newSearch = { ...search, aoi };
             dispatch(setCurrentSatelliteSearchQuery(newSearch));
             dispatch(fetchSatelliteScenes(newSearch));
             setVisiblePanel(Panels.RESULTS);

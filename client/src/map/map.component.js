@@ -167,7 +167,7 @@ const Map = ({
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
   const { selectionLayer } = useSelectionTools();
-  const { drawAoiLayer } = useSatellites();
+  const { drawAoiLayer, isDrawingAoi } = useSatellites();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -228,6 +228,8 @@ const Map = ({
     mapboxApiAccessToken: accessToken,
   };
 
+  const topMapIsController = drawingToolsEnabled || isDrawingAoi;
+
   return (
     <div className={styles.map}>
       <LoadMask
@@ -268,7 +270,7 @@ const Map = ({
 
       <DeckGL
         ref={bottomDeckRef}
-        controller={!drawingToolsEnabled}
+        controller={!topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
         layers={[...(layers ?? []), selectionLayer]}
@@ -295,12 +297,15 @@ const Map = ({
       >
         <DeckGL
           ref={topDeckRef}
-          controller={drawingToolsEnabled}
+          controller={topMapIsController}
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
           layers={[drawAoiLayer, editableLayer]}
-          getCursor={editableLayer?.getCursor.bind(editableLayer)}
-          style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
+          getCursor={
+            drawAoiLayer?.getCursor.bind(drawAoiLayer) ||
+            editableLayer?.getCursor.bind(editableLayer)
+          }
+          style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,
           }}
