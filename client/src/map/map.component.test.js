@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
 import { MapProvider } from 'MapContext';
+import { SatellitesProvider } from 'satellites/satellites-context';
 
 import Map from './map.component';
 
@@ -17,7 +18,9 @@ const setup = initialState => {
   const utils = render(<Map />, {
     wrapper: ({ children }) => (
       <Provider store={store}>
-        <MapProvider>{children}</MapProvider>
+        <SatellitesProvider>
+          <MapProvider>{children}</MapProvider>
+        </SatellitesProvider>
       </Provider>
     ),
   });

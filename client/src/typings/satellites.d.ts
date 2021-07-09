@@ -16,6 +16,11 @@ export type Satellite = {
   visualisations: Visualisation[];
 };
 
+type SceneFootprint = {
+  type: string;
+  coordinates: number[][];
+};
+
 export type Scene = {
   cloudCover: number;
   created: string;
@@ -26,6 +31,8 @@ export type Scene = {
   thumbnail_url: string;
   tier: TierId;
   tile_url: string;
+  owner: number;
+  footprint: SceneFootprint;
 };
 
 export type SavedSearch = {

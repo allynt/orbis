@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
 import SatelliteSearch from './satellite-search/satellite-search.component';
+import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
   deletePinnedScene,
@@ -55,6 +56,7 @@ const Satellites = () => {
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
+  const { setIsDrawingAoi } = useSatellites();
 
   useEffect(() => {
     if (!satellites) {
@@ -110,7 +112,7 @@ const Satellites = () => {
           satellites={satellites}
           savedSearches={savedSearches}
           currentSearch={currentSearchQuery}
-          onDrawAoiClick={() => console.log('Draw AOI Click')}
+          onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
           onSearch={search => {
             const newSearch = { ...search, aoi: [[]] };
             dispatch(setCurrentSatelliteSearchQuery(newSearch));

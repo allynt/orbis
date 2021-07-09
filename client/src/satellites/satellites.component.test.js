@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
@@ -28,7 +29,9 @@ const renderComponent = (state = { satellites, scenes }) => {
   const store = mockStore({ accounts: {}, app: {}, satellites: state });
   const utils = render(
     <Provider store={store}>
-      <Satellites />
+      <SatellitesProvider>
+        <Satellites />
+      </SatellitesProvider>
     </Provider>,
   );
   return { ...utils, store };
