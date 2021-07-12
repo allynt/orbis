@@ -167,7 +167,12 @@ const Map = ({
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
   const { selectionLayer } = useSelectionTools();
-  const { drawAoiLayer, isDrawingAoi, scenesLayer } = useSatellites();
+  const {
+    drawAoiLayer,
+    isDrawingAoi,
+    scenesLayer,
+    selectedSceneLayer,
+  } = useSatellites();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -273,7 +278,12 @@ const Map = ({
         controller={!topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
-        layers={[...(layers ?? []), scenesLayer, selectionLayer]}
+        layers={[
+          ...(layers ?? []),
+          scenesLayer,
+          selectedSceneLayer,
+          selectionLayer,
+        ]}
         effects={[lightingEffect]}
         glOptions={{
           preserveDrawingBuffer: true,

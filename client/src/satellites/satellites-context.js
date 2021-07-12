@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { GeoJsonLayer } from '@deck.gl/layers';
+import { TileLayer } from '@deck.gl/geo-layers';
+import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { feature, featureCollection } from '@turf/turf';
@@ -8,7 +9,11 @@ import { useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
-import { scenesSelector } from './satellites.slice';
+import {
+  scenesSelector,
+  selectedSceneSelector,
+  visualisationIdSelector,
+} from './satellites.slice';
 
 /**
  * @typedef {{
@@ -42,7 +47,27 @@ export const SatellitesProvider = ({
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
+  const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const scenes = useSelector(scenesSelector);
+  const selectedScene = useSelector(selectedSceneSelector);
+  const visualisationId = useSelector(visualisationIdSelector);
+
+  useEffect(() => {
+    const update = async () => {
+      if (selectedScene) {
+        const tileJsonResponse = await fetch(
+          selectedScene?.tile_url.replace(
+            '{VISUALISATION_ID}',
+            visualisationId,
+          ),
+        );
+        console.log('response');
+        const tileJson = await tileJsonResponse.json();
+        setSelectedSceneTiles(tileJson.tiles);
+      }
+    };
+    update();
+  }, [selectedScene, visualisationId]);
 
   const onEdit = ({ editType, updatedData }) => {
     if (features.length >= 1) setFeatures([]);
@@ -79,6 +104,23 @@ export const SatellitesProvider = ({
       ),
   });
 
+  const selectedSceneLayer = new TileLayer({
+    // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
+    // data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+    tileSize: 256,
+    renderSubLayers: props => {
+      const {
+        bbox: { west, south, east, north },
+      } = props.tile;
+      return new BitmapLayer(props, {
+        data: null,
+        image: props.data,
+        bounds: [west, south, east, north],
+      });
+    },
+  });
+
   return (
     <SatellitesContext.Provider
       value={{
@@ -87,6 +129,7 @@ export const SatellitesProvider = ({
         drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
         aoi: features[0]?.geometry.coordinates[0],
         scenesLayer,
+        selectedSceneLayer,
       }}
     >
       {children}
