@@ -26,7 +26,8 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  *  selectedScene?: import('typings/satellites').Scene
  *  pinnedScenes: import('typings/satellites').Scene[],
  *  visualisationId: string
- *  defaultCloudCover?: number
+ *  cloudCoverPercentage?: number
+ *  onCloudCoverSliderChange?: (value: number) => void
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void,
  *  onScenePin: (scene: import('typings/satellites').Scene) => void,
  *  onSceneUnpin: (scene: import('typings/satellites').Scene) => void,
@@ -42,17 +43,14 @@ const Results = ({
   selectedScene,
   pinnedScenes,
   visualisationId,
-  defaultCloudCover = DEFAULT_CLOUD_COVER,
+  cloudCoverPercentage = DEFAULT_CLOUD_COVER,
+  onCloudCoverSliderChange,
   onSceneClick,
   onScenePin,
   onSceneUnpin,
   onInfoClick,
   onSaveSearchSubmit,
 }) => {
-  const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
-    defaultCloudCover,
-  );
-
   const [isSaveDialogVisible, setIsSaveDialogVisible] = useState(false);
 
   const filteredScenes = allScenes?.filter(
@@ -79,7 +77,7 @@ const Results = ({
           min={0}
           max={100}
           value={cloudCoverPercentage}
-          onChange={(_event, value) => setCloudCoverPercentage(value)}
+          onChange={(_event, value) => onCloudCoverSliderChange(value)}
           disabled={!filteredScenes}
           marks
           valueLabelDisplay="auto"

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { DataFilterExtension } from '@deck.gl/extensions';
 import { TileLayer } from '@deck.gl/geo-layers';
 import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
+import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 import {
   scenesSelector,
   selectedSceneSelector,
@@ -50,6 +52,7 @@ export const SatellitesProvider = ({
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
+  const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const selectedScene = useSelector(selectedSceneSelector);
@@ -107,6 +110,9 @@ export const SatellitesProvider = ({
         ),
       ),
     onClick: ({ object: { properties } }) => dispatch(selectScene(properties)),
+    getFilterValue: d => d.properties.cloudCover,
+    filterRange: [0, cloudCoverPercentage],
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
   });
 
   const selectedSceneLayer = new TileLayer({
@@ -133,6 +139,8 @@ export const SatellitesProvider = ({
         aoi: features[0]?.geometry.coordinates[0],
         scenesLayer,
         selectedSceneLayer,
+        cloudCoverPercentage,
+        setCloudCover,
       }}
     >
       {children}

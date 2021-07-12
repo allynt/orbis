@@ -56,7 +56,12 @@ const Satellites = () => {
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
-  const { setIsDrawingAoi, aoi } = useSatellites();
+  const {
+    setIsDrawingAoi,
+    aoi,
+    cloudCoverPercentage,
+    setCloudCover,
+  } = useSatellites();
 
   useEffect(() => {
     if (!satellites) {
@@ -133,6 +138,8 @@ const Satellites = () => {
           selectedScene={selectedScene}
           pinnedScenes={pinnedScenes}
           visualisationId={visualisationId}
+          cloudCoverPercentage={cloudCoverPercentage}
+          onCloudCoverSliderChange={setCloudCover}
           onSceneClick={scene => {
             dispatch(selectScene(scene));
             setVisiblePanel(Panels.VISUALISATION);

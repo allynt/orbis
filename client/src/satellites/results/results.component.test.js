@@ -29,18 +29,20 @@ const mockScenes = [
 const renderComponent = ({
   scenes = mockScenes,
   pinnedScenes,
-  defaultCloudCover,
+  cloudCoverPercentage,
 } = {}) => {
   const onSceneClick = jest.fn();
   const onScenePin = jest.fn();
   const onSceneUnpin = jest.fn();
   const onInfoClick = jest.fn();
   const onSaveSearchSubmit = jest.fn();
+  const onCloudCoverSliderChange = jest.fn();
   const testee = render(
     <Results
       scenes={scenes}
       pinnedScenes={pinnedScenes}
-      defaultCloudCover={defaultCloudCover}
+      cloudCoverPercentage={cloudCoverPercentage}
+      onCloudCoverSliderChange={onCloudCoverSliderChange}
       onSceneClick={onSceneClick}
       onScenePin={onScenePin}
       onSceneUnpin={onSceneUnpin}
@@ -56,6 +58,7 @@ const renderComponent = ({
     onScenePin,
     onSceneUnpin,
     onSaveSearchSubmit,
+    onCloudCoverSliderChange,
   };
 };
 
@@ -74,16 +77,16 @@ describe('Satellite Results Component', () => {
 
   it('Shows results filtered by cloud cover', () => {
     const { getAllByRole, getByText } = renderComponent({
-      defaultCloudCover: 100,
+      cloudCoverPercentage: 100,
     });
     expect(getAllByRole('listitem')).toHaveLength(mockScenes.length);
     expect(getByText('Showing 3 Results of 3')).toBeInTheDocument();
   });
 
-  it('Changes the cloud cover filter when the slider is moved', () => {
-    const { getByRole, queryByRole } = renderComponent();
+  it('Calls onCloudCoverSliderChange when the slider is moved', () => {
+    const { getByRole, onCloudCoverSliderChange } = renderComponent();
     fireEvent.mouseDown(getByRole('slider'));
-    expect(queryByRole('listitem')).not.toBeInTheDocument();
+    expect(onCloudCoverSliderChange).toBeCalled();
   });
 
   it('Calls onSceneClick when a scene is clicked', () => {
