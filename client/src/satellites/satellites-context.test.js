@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
 import { SatellitesProvider, useSatellites } from './satellites-context';
+import { selectScene } from './satellites.slice';
 
 const mockStore = configureMockStore();
 
@@ -15,14 +16,17 @@ const mockStore = configureMockStore();
  *  & { scenes?: import('typings/satellites').Scene[], selectedScene?: import('typings/satellites').Scene}
  * } [props]
  */
-const renderContext = ({ scenes, selectedScene, ...rest } = {}) =>
-  renderHook(() => useSatellites(), {
+const renderContext = ({ scenes, selectedScene, ...rest } = {}) => {
+  const store = mockStore({ satellites: { scenes, selectedScene } });
+  const utils = renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
-      <Provider store={mockStore({ satellites: { scenes, selectedScene } })}>
+      <Provider store={store}>
         <SatellitesProvider {...rest}>{children}</SatellitesProvider>
       </Provider>
     ),
   });
+  return { ...utils, store };
+};
 
 describe('SatellitesContext', () => {
   describe('drawAoiLayer', () => {
@@ -108,13 +112,22 @@ describe('SatellitesContext', () => {
       const expected = {
         features: scenes.map(({ footprint }) => ({
           geometry: footprint,
-          properties: {},
+          properties: expect.anything(),
           type: 'Feature',
         })),
         type: 'FeatureCollection',
       };
       const { result } = renderContext({ scenes });
       expect(result.current.scenesLayer.props.data).toEqual(expected);
+    });
+
+    it('Selects the clicked scene on click', () => {
+      const scene = { id: 1 };
+      const { result, store } = renderContext({ scenes: [scene] });
+      result.current.scenesLayer.props.onClick({
+        object: { properties: scene },
+      });
+      expect(store.getActions()).toContainEqual(selectScene(scene));
     });
   });
 

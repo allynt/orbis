@@ -5,13 +5,14 @@ import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { feature, featureCollection } from '@turf/turf';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import {
   scenesSelector,
   selectedSceneSelector,
+  selectScene,
   visualisationIdSelector,
 } from './satellites.slice';
 
@@ -49,6 +50,7 @@ export const SatellitesProvider = ({
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
+  const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
@@ -100,8 +102,11 @@ export const SatellitesProvider = ({
     data:
       scenes &&
       featureCollection(
-        scenes?.map(scene => scene.footprint && feature(scene.footprint)),
+        scenes?.map(
+          scene => scene.footprint && feature(scene.footprint, scene),
+        ),
       ),
+    onClick: ({ object: { properties } }) => dispatch(selectScene(properties)),
   });
 
   const selectedSceneLayer = new TileLayer({
