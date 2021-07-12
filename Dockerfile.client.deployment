@@ -12,9 +12,13 @@ ARG GITHUB_REGISTRY_TOKEN
 
 WORKDIR $APP_HOME
 
+COPY --chown=app:app client/package.json client/yarn.lock client/.npmrc client/.yarnrc $APP_HOME/client/
+
+RUN cd $APP_HOME/client && yarn install
+
 COPY --chown=app:app client $APP_HOME/client
 
-RUN cd $APP_HOME/client && yarn install && yarn build
+RUN cd $APP_HOME/client && yarn build
 
 COPY --chown=root:root client/env.sh /etc/my_init.d/
 

@@ -1,3 +1,41 @@
+# [2.20.0](https://github.com/astrosat/orbis/compare/v2.19.0...v2.20.0) (2021-06-30)
+
+
+### Bug Fixes
+
+* **frontend:** Add constants, logic and tests ([0678f04](https://github.com/astrosat/orbis/commit/0678f04fdddfeb679f814c592ed5de5fd6915860))
+* **frontend:** Add reducer to rootReducer, add MissionControl to MapLayout ([86d5d3f](https://github.com/astrosat/orbis/commit/86d5d3fa0281beb37878a673e5230005f1e14ea0))
+* **frontend:** Add tests for dialog ([90c1e9f](https://github.com/astrosat/orbis/commit/90c1e9fd99507e393e091c5f2d464990b1ad1973))
+* **frontend:** Add tests for missiion control slice ([8e7f57e](https://github.com/astrosat/orbis/commit/8e7f57e1cb04888e42a534ad1e9abd28430aa844))
+* **frontend:** Adjusted layout and styles ([75cbad2](https://github.com/astrosat/orbis/commit/75cbad224d95df69aee0d05edd882ad7f9016089))
+* **frontend:** Create SVG and add to toolbar config ([b54ad3c](https://github.com/astrosat/orbis/commit/b54ad3cddf93467f86ff0f18a2de4f9d3aa79e3b))
+* **frontend:** Created MissionControl component, Dialog and Slice ([e0435c8](https://github.com/astrosat/orbis/commit/e0435c8e3b03b3de19f1106557518628fe66acb7))
+* **frontend:** Edit SVG, add dynamic color change ([38fc9c1](https://github.com/astrosat/orbis/commit/38fc9c135cae890204f1e376f002828a6448d459))
+* **frontend:** Fix missing closing brackets ([003e745](https://github.com/astrosat/orbis/commit/003e745c3d8be79f15dd9d30766ec160bae83e60))
+* **frontend:** More logic, styling and tests ([d31cbe7](https://github.com/astrosat/orbis/commit/d31cbe7512e9aea51cf7efd7fe6aabaaed6bb657))
+* **frontend:** Renamed a test ([0d7a2b8](https://github.com/astrosat/orbis/commit/0d7a2b8275d3b6aebbe86d0f6401462e4c9f1b81))
+* **frontend:** Revert changes to minerals ([040a1aa](https://github.com/astrosat/orbis/commit/040a1aa1e6348f073c20956b3aef59c4258461f3))
+* **frontend:** Starting point to components ([6a3b2f4](https://github.com/astrosat/orbis/commit/6a3b2f473e4f03b3726ea9324782f37729e34ac7))
+* **frontend:** Tidy up AIS Shipping data related code ([a7e5cd8](https://github.com/astrosat/orbis/commit/a7e5cd8f897ed58eb5f89f305ecd0fca26f3ab51))
+* **frontend:** Update due to review comments ([049f650](https://github.com/astrosat/orbis/commit/049f650fb32916c361958f1ac228b3dfb1fef513))
+
+
+### Features
+
+* **backend:** add support for messages ([9d925c1](https://github.com/astrosat/orbis/commit/9d925c178831349d3f8c9c0cd1142252bfd671d1))
+* **backend:** added authentication for remote proxy APIs ([d7942cd](https://github.com/astrosat/orbis/commit/d7942cd0812ae029d8903e42c0b9beaf147621d9))
+* **backend:** added JWT authentication for proxy-data-view ([00da458](https://github.com/astrosat/orbis/commit/00da458b823f3339e920398b93120e604ad7c0bd))
+* **backend:** added local pagination for proxy-data-view ([33622c8](https://github.com/astrosat/orbis/commit/33622c877bbe3c5347941e0cfba3f5991050046c))
+* **backend:** added proxy adapter for exactEarth ([2371455](https://github.com/astrosat/orbis/commit/237145533cc58c277c433f40bc2df14cbcb14232))
+* **backend:** created customer during user registration ([b046af5](https://github.com/astrosat/orbis/commit/b046af5d0ba776316f0029d5a603522676291d92))
+* **backend:** initial commit for proxy app ([9c26c27](https://github.com/astrosat/orbis/commit/9c26c27929ecaa183842887955f3d2932ed3d6e8))
+* **backend:** made OrbisUserFeedbackRecordNestedSerializer not ([f94c653](https://github.com/astrosat/orbis/commit/f94c65327dfd74e0720ab2d488a0c7e78ecb56a5))
+* **backend:** moved satellites code into its own app ([10bdf52](https://github.com/astrosat/orbis/commit/10bdf523ee3a1d244c93aeaa50c798f9ccf23a08))
+* **backend:** pass context to nested serializers ([904bf9a](https://github.com/astrosat/orbis/commit/904bf9ac01fe9458797e74667e5475588bba64b3))
+* **backend:** separated OrbisUserFeedbackRecordSerializer into two ([10838a5](https://github.com/astrosat/orbis/commit/10838a5667391074a5437f3ad64d66914b86ddd7))
+* **fontend:** added radio button to proxy sidebar component to toggle ([39e6da0](https://github.com/astrosat/orbis/commit/39e6da0aba8ab4fc53164305dfd5a6eef651a43d))
+* **frontend:** temporarily updated frontend components for ([45de376](https://github.com/astrosat/orbis/commit/45de376d6115682691bb707f3ee11cfedb8eb3fb))
+
 # [2.19.0](https://github.com/astrosat/orbis/compare/v2.18.0...v2.19.0) (2021-06-10)
 
 

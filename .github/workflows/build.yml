@@ -23,19 +23,27 @@ jobs:
         with:
           node-version: 12.x
       - name: Cache Node Modules
-        uses: actions/cache@v1
+        id: yarn-cache
+        uses: actions/cache@v2
         with:
-          path: node_modules
-          key: frontend-build-${{ hashFiles('**/yarn.lock') }}
+          path: "client/node_modules"
+          key: ${{ runner.os }}-orbis-frontend-build-${{ hashFiles('client/yarn.lock') }}
           restore-keys: |
-            frontend-build-
-      - name: yarn install, and test
+            ${{ runner.os }}-orbis-frontend-build-
+      - name: Install frontend dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         env:
           CI: "true"
-          GITHUB_REGISTRY_TOKEN: ${{ secrets.GITHUB_REGISTRY_TOKEN }}
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
         working-directory: client
         run: |
           yarn install
+      - name: Test Frontend
+        env:
+          CI: "true"
+          GITHUB_REGISTRY_TOKEN: ${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }}
+        working-directory: client
+        run: |
           yarn test:ci
       - name: Upload Frontend Test Results
         uses: actions/upload-artifact@v1
@@ -86,7 +94,6 @@ jobs:
           path: server/backend-report.html
 
   build-client-docker:
-    needs: [client-tests]
     name: Build, Tag and Push Client Docker Image
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -111,7 +118,6 @@ jobs:
           docker push ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA}
 
   build-server-docker:
-    needs: [server-tests]
     name: Build, Tag and Push Server Docker Image
     runs-on: ubuntu-latest
     timeout-minutes: 40
@@ -136,7 +142,7 @@ jobs:
           docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
-    needs: [build-client-docker, build-server-docker]
+    needs: [client-tests, server-tests, build-client-docker, build-server-docker]
     name: Request a Deployment to Testing
     runs-on: ubuntu-latest
     timeout-minutes: 10

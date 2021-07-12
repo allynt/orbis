@@ -78,17 +78,17 @@ export const getToolbarItems = (dispatch, user) => {
       roles: ['UserRole'],
       order: 2,
     },
-    {
-      label: 'Mission Control',
-      icon: (
-        <SvgIcon>
-          <MissionControlIcon />
-        </SvgIcon>
-      ),
-      footer: true,
-      tooltip: 'Mission Control',
-      action: () => dispatch(toggleMissionControlDialog(true)),
-    },
+    // {
+    //   label: 'Mission Control',
+    //   icon: (
+    //     <SvgIcon>
+    //       <MissionControlIcon />
+    //     </SvgIcon>
+    //   ),
+    //   footer: true,
+    //   tooltip: 'Mission Control',
+    //   action: () => dispatch(toggleMissionControlDialog(true)),
+    // },
     {
       label: PROFILE,
       icon: <ProfileIcon titleAccess="Profile" />,
