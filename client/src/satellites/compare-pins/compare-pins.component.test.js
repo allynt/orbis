@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, cleanup, within, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -33,8 +33,6 @@ const mockScenes = [
 
 const renderComponent = (store, args) => {
   const attributes = {
-    setSelectedMoreInfo: jest.fn(),
-    toggleMoreInfoDialog: jest.fn(),
     selectPinnedScene: jest.fn(),
     deselectPinnedScene: jest.fn(),
     clearSelectedPinnedScenes: jest.fn(),
@@ -49,8 +47,6 @@ const renderComponent = (store, args) => {
   const testee = render(
     <Provider store={store}>
       <ComparePins
-        setSelectedMoreInfo={attributes.setSelectedMoreInfo}
-        toggleMoreInfoDialog={attributes.toggleMoreInfoDialog}
         selectPinnedScene={attributes.selectPinnedScene}
         deselectPinnedScene={attributes.deselectPinnedScene}
         clearSelectedPinnedScenes={attributes.clearSelectedPinnedScenes}
@@ -101,12 +97,9 @@ describe('Compare Pins Component', () => {
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
-    const { toggleCompareMode, getAllByLabelText, getByRole } = renderComponent(
-      store,
-      {
-        selectedPinnedScenes: [{ ...mockScenes[1] }],
-      },
-    );
+    const { toggleCompareMode, getByRole } = renderComponent(store, {
+      selectedPinnedScenes: [{ ...mockScenes[1] }],
+    });
 
     userEvent.click(getByRole('checkbox', { name: 'Compare' }));
     expect(toggleCompareMode).not.toHaveBeenCalled();
@@ -124,42 +117,41 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render Clear Pins button disabled', () => {
-    const { getByText } = renderComponent(store);
+    const { getByRole } = renderComponent(store);
 
-    expect(getByText('Clear Pins')).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Clear Pins' })).toBeDisabled();
   });
 
   it('should render Clear Pins button enabled', () => {
-    const { getByText } = renderComponent(store, {
+    const { getByRole } = renderComponent(store, {
       selectedPinnedScenes: [{ ...mockScenes[2] }],
     });
 
-    expect(getByText('Clear Pins')).not.toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Clear Pins' })).not.toBeDisabled();
   });
 
   it('should Clear selected pinned scenes', () => {
-    const { clearSelectedPinnedScenes, getByText } = renderComponent(store, {
+    const { clearSelectedPinnedScenes, getByRole } = renderComponent(store, {
       selectedPinnedScenes: [{ ...mockScenes[2] }],
     });
 
-    fireEvent.click(getByText('Clear Pins'));
+    userEvent.click(getByRole('button', { name: 'Clear Pins' }));
     expect(clearSelectedPinnedScenes).toHaveBeenCalled();
   });
 
   it("should delete pinned scene, when scene's icon clicked", () => {
-    const { deletePinnedScene, getByTitle } = renderComponent(store);
+    const { deletePinnedScene, getByRole } = renderComponent(store);
 
-    fireEvent.click(getByTitle(`delete-icon-${mockScenes[0].id}`));
+    userEvent.click(
+      getByRole('button', { name: `delete-icon-${mockScenes[0].id}` }),
+    );
     expect(deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
-    const { deselectPinnedScene, getByText, getByRole } = renderComponent(
-      store,
-      {
-        selectedPinnedScenes: [{ ...mockScenes[0] }],
-      },
-    );
+    const { deselectPinnedScene, getByRole } = renderComponent(store, {
+      selectedPinnedScenes: [{ ...mockScenes[0] }],
+    });
 
     userEvent.click(getByRole('checkbox', { name: mockScenes[0].id }));
 
