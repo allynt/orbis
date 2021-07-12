@@ -27,6 +27,7 @@ SatellitesContext.displayName = 'SatellitesContext';
 /**
  * @typedef {{
  *  defaultIsDrawingAoi?: boolean
+ *  defaultFeatures?: import('@turf/turf').Feature[]
  *  children: React.ReactNode
  * }} SatellitesProviderProps
  */
@@ -36,10 +37,11 @@ SatellitesContext.displayName = 'SatellitesContext';
  */
 export const SatellitesProvider = ({
   defaultIsDrawingAoi = false,
+  defaultFeatures = [],
   children,
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
-  const [features, setFeatures] = useState([]);
+  const [features, setFeatures] = useState(defaultFeatures);
   const scenes = useSelector(scenesSelector);
 
   const onEdit = ({ editType, updatedData }) => {
