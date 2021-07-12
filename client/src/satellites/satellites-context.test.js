@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { BitmapLayer } from '@deck.gl/layers';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
@@ -11,13 +12,13 @@ const mockStore = configureMockStore();
 
 /**
  * @param {Omit<import('./satellites-context').SatellitesProviderProps, 'children'>
- *  & {scenes?: import('typings/satellites').Scene[]}
+ *  & { scenes?: import('typings/satellites').Scene[], selectedScene?: import('typings/satellites').Scene}
  * } [props]
  */
-const renderContext = ({ scenes, ...rest } = {}) =>
+const renderContext = ({ scenes, selectedScene, ...rest } = {}) =>
   renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
-      <Provider store={mockStore({ satellites: { scenes } })}>
+      <Provider store={mockStore({ satellites: { scenes, selectedScene } })}>
         <SatellitesProvider {...rest}>{children}</SatellitesProvider>
       </Provider>
     ),
@@ -114,6 +115,28 @@ describe('SatellitesContext', () => {
       };
       const { result } = renderContext({ scenes });
       expect(result.current.scenesLayer.props.data).toEqual(expected);
+    });
+  });
+
+  describe('selectedSceneLayer', () => {
+    it('uses the selected scene tiles as data', async () => {
+      fetch.once(JSON.stringify({ tiles: ['test-url'] }));
+      const { result, waitForNextUpdate } = renderContext({
+        selectedScene: { id: '123', tile_url: '' },
+      });
+      await waitForNextUpdate();
+      expect(result.current.selectedSceneLayer.props.data).toEqual([
+        'test-url',
+      ]);
+    });
+
+    it('Renders a BitmapLayer', async () => {
+      const { result } = renderContext();
+      expect(
+        result.current.selectedSceneLayer.props.renderSubLayers({
+          tile: { bbox: {} },
+        }),
+      ).toBeInstanceOf(BitmapLayer);
     });
   });
 });

@@ -22,6 +22,7 @@ import {
  *  drawAoiLayer?: EditableGeoJsonLayer
  *  aoi?: number[][]
  *  scenesLayer?: GeoJsonLayer
+ *  selectedSceneLayer?: TileLayer
  * }} SatellitesContextType
  */
 
@@ -61,7 +62,6 @@ export const SatellitesProvider = ({
             visualisationId,
           ),
         );
-        console.log('response');
         const tileJson = await tileJsonResponse.json();
         setSelectedSceneTiles(tileJson.tiles);
       }
@@ -105,8 +105,6 @@ export const SatellitesProvider = ({
   });
 
   const selectedSceneLayer = new TileLayer({
-    // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
-    // data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
     data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
     tileSize: 256,
     renderSubLayers: props => {
