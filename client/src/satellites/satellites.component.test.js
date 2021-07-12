@@ -25,11 +25,11 @@ import {
 
 const mockStore = configureMockStore([thunk]);
 
-const renderComponent = (state = { satellites, scenes }) => {
+const renderComponent = (state = { satellites, scenes }, defaultFeatures) => {
   const store = mockStore({ accounts: {}, app: {}, satellites: state });
   const utils = render(
     <Provider store={store}>
-      <SatellitesProvider>
+      <SatellitesProvider defaultFeatures={defaultFeatures}>
         <Satellites />
       </SatellitesProvider>
     </Provider>,
@@ -126,7 +126,9 @@ describe('Satellites', () => {
     ];
 
     it('Performs a search when the search button is clicked', async () => {
-      const { getAllByRole, getByRole, store } = renderComponent();
+      const { getAllByRole, getByRole, store } = renderComponent(undefined, [
+        { geometry: { coordinates: [[123, 123]] } },
+      ]);
       userEvent.click(getAllByRole('button', { name: 'Search' })[1]);
       await waitFor(() =>
         expect(store.getActions()).toEqual(

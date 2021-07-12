@@ -112,6 +112,7 @@ const Satellites = () => {
           satellites={satellites}
           savedSearches={savedSearches}
           currentSearch={currentSearchQuery}
+          aoi={aoi}
           onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
           onSearch={search => {
             const newSearch = { ...search, aoi };

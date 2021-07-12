@@ -41,6 +41,7 @@ describe('<SearchForm />', () => {
       <SatelliteSearchForm
         satellites={satellites}
         currentSearch={{}}
+        aoi={[[]]}
         onSubmit={onSubmit}
       />,
     );
@@ -81,7 +82,7 @@ describe('<SearchForm />', () => {
     expect(getByRole('button', { name: '2000-12-31' })).toBeInTheDocument();
   });
 
-  it('Shows an error if geometry is too large', () => {
+  it('Shows an error and disables the search button if geometry is too large', () => {
     const { getByText, getByRole } = render(
       <SatelliteSearchForm aoiTooLarge />,
     );
@@ -89,6 +90,24 @@ describe('<SearchForm />', () => {
     expect(
       getByText('AOI is too large, redraw or zoom in'),
     ).toBeInTheDocument();
+    expect(getByRole('button', { name: 'Search' })).toBeDisabled();
+  });
+
+  it("Disables the search button if there's no aoi drawn", () => {
+    const { getByRole } = render(<SatelliteSearchForm />);
+    expect(getByRole('button', { name: 'Search' })).toBeDisabled();
+  });
+
+  it('Enables the search button if an aoi has been drawn', () => {
+    const { getByRole } = render(
+      <SatelliteSearchForm
+        aoi={[
+          [123, 123],
+          [345, 345],
+        ]}
+      />,
+    );
+    expect(getByRole('button', { name: 'Search' })).not.toBeDisabled();
   });
 
   it('Calls onInfoClick when an info button is clicked', () => {

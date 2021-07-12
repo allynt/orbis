@@ -10,6 +10,7 @@ import SavedSearchList from './saved-search-list/saved-search-list.component';
  *  satellites: import('typings/satellites').Satellite[]
  *  savedSearches: import('typings/satellites').SavedSearch[]
  *  currentSearch: Partial<import('typings/satellites').SavedSearch>
+ *  aoi?: number[][]
  *  aoiTooLarge?: boolean
  *  onDrawAoiClick: React.MouseEventHandler<HTMLButtonElement>
  *  onSearch: (search: Pick<import('typings/satellites').SavedSearch, "satellites" | "end_date" | "start_date" | "tiers">) => void
@@ -22,6 +23,7 @@ const SatelliteSearch = ({
   satellites,
   savedSearches,
   currentSearch,
+  aoi,
   aoiTooLarge = false,
   onDrawAoiClick,
   onSearch,
@@ -46,6 +48,7 @@ const SatelliteSearch = ({
 
       <SatelliteSearchForm
         satellites={satellites}
+        aoi={aoi}
         aoiTooLarge={aoiTooLarge}
         currentSearch={currentSearch}
         onSubmit={onSearch}
