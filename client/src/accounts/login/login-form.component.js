@@ -105,6 +105,7 @@ const LoginForm = ({
           name={FIELD_NAMES.password}
           error={!!errors[FIELD_NAMES.password]}
           helperText={errors[FIELD_NAMES.password]?.message}
+          visibilityToggleButtonLabel="Password"
           type="password"
           required
         />

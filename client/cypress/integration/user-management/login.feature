@@ -59,8 +59,8 @@ Feature: Login
   Scenario: Show actual password
     When I type "test@test.com" into the "Email" field
     When I type "testpwtest" into the "Password *" password field
-    When I click the "icon-span" button by test id
-    Then I see "testpwtest" in the "Password *" field
+    When I click the "Password" button
+    Then I see "testpwtest" in the "Password" field
 
   Scenario: Submit successful login
     When I type "admin@test.com" into the "Email" field
