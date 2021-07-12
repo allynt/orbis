@@ -26,6 +26,8 @@ import {
  *  aoi?: number[][]
  *  scenesLayer?: GeoJsonLayer
  *  selectedSceneLayer?: TileLayer
+ *  cloudCoverPercentage: number,
+ *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
  * }} SatellitesContextType
  */
 
