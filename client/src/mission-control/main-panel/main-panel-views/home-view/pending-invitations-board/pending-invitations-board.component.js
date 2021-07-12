@@ -8,7 +8,9 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  TableFooter,
   TableRow,
+  TablePagination,
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
@@ -17,6 +19,11 @@ import { UsersViewTableCell } from 'mission-control/mission-control-table/missio
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
+
+import {
+  usePaginationStyles,
+  TablePaginationActions,
+} from '../table-pagination.js';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
@@ -118,32 +125,64 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (e, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
+  };
+
   const styles = useStyles();
+  const paginationStyles = usePaginationStyles({});
+
+  const rows =
+    pendingUsers && pendingUsers.length > 0 ? (
+      pendingUsers.map(user => (
+        <PendingUserRow
+          key={user.id}
+          customerUser={user}
+          customer={customer}
+          onResendInvitationClick={() => onResendInvitationClick(user)}
+          onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
+        />
+      ))
+    ) : (
+      <TableRow>
+        <UsersViewTableCell align="center" colSpan={6}>
+          No Pending Users
+        </UsersViewTableCell>
+      </TableRow>
+    );
+
   return (
     <TableContainer className={styles.container}>
       <Table stickyHeader>
         <TableHeader />
-        <TableBody>
-          {pendingUsers && pendingUsers.length > 0 ? (
-            pendingUsers.map(user => (
-              <PendingUserRow
-                key={user.id}
-                customerUser={user}
-                customer={customer}
-                onResendInvitationClick={() => onResendInvitationClick(user)}
-                onWithdrawInvitationClick={() =>
-                  onWithdrawInvitationClick(user)
-                }
-              />
-            ))
-          ) : (
-            <TableRow>
-              <UsersViewTableCell align="center" colSpan={6}>
-                No Pending Users
-              </UsersViewTableCell>
-            </TableRow>
-          )}
-        </TableBody>
+        <TableBody>{rows}</TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              classes={paginationStyles}
+              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+              colSpan={3}
+              count={rows ? rows.length : 0}
+              rowsPerPage={rowsPerPage}
+              page={currentPage}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              ActionsComponent={TablePaginationActions}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );

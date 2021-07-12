@@ -13,9 +13,7 @@ import {
   TableRow,
   TableFooter,
   TriangleIcon,
-  styled,
   TablePagination,
-  IconButton,
 } from '@astrosat/astrosat-ui';
 
 import { UsersViewTableCell } from 'mission-control/mission-control-table/mission-control-table.component';
@@ -24,19 +22,15 @@ import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 import QuickView from './quick-view/quick-view.component';
+import {
+  usePaginationStyles,
+  TablePaginationActions,
+} from '../table-pagination.js';
 
 const USER_LABELS = {
   standard: 'Standard',
   admin: 'Admin',
 };
-
-const StyledTableRow = styled(TableRow)(() => ({
-  root: {
-    border: '2px solid red',
-    color: 'green',
-    backgroundColor: 'red',
-  },
-}));
 
 const TableHeader = () => (
   <TableHead>
@@ -111,7 +105,7 @@ const UserRow = ({
   };
 
   return (
-    <StyledTableRow>
+    <TableRow>
       <UsersViewTableCell>{customerUser?.user?.name}</UsersViewTableCell>
       <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
       <UsersViewTableCell>{customerUser?.user?.email}</UsersViewTableCell>
@@ -159,38 +153,7 @@ const UserRow = ({
           )}
         </OptionsMenu>
       </UsersViewTableCell>
-    </StyledTableRow>
-  );
-};
-
-const TablePaginationActions = props => {
-  const { count, page, rowsPerPage, onChangePage } = props;
-
-  const handleBackButtonClick = event => {
-    onChangePage(event, page - 1);
-  };
-
-  const handleNextButtonClick = event => {
-    onChangePage(event, page + 1);
-  };
-
-  return (
-    <Box direction="row">
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {'<'}
-      </IconButton>
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {'>'}
-      </IconButton>
-    </Box>
+    </TableRow>
   );
 };
 
@@ -202,13 +165,6 @@ const useStyles = makeStyles(theme => ({
     root: {
       border: '2px solid red',
     },
-  },
-}));
-
-const usePaginationStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    border: 'none',
   },
 }));
 
@@ -260,12 +216,11 @@ export const ActiveUsersBoard = ({
     onDeleteUserClick(customerUser);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (e, newPage) => {
     setCurrentPage(newPage);
   };
 
   const handleChangeRowsPerPage = event => {
-    console.log('HIT');
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
@@ -294,11 +249,11 @@ export const ActiveUsersBoard = ({
         );
       })
     ) : (
-      <StyledTableRow>
+      <TableRow>
         <UsersViewTableCell align="center" colSpan={5}>
           No Active Users
         </UsersViewTableCell>
-      </StyledTableRow>
+      </TableRow>
     );
 
   return (
