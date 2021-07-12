@@ -130,6 +130,7 @@ const Satellites = () => {
       {visiblePanel === Panels.RESULTS && (
         <Results
           scenes={scenes}
+          selectedScene={selectedScene}
           pinnedScenes={pinnedScenes}
           visualisationId={visualisationId}
           onSceneClick={scene => {
@@ -147,6 +148,7 @@ const Satellites = () => {
       {visiblePanel === Panels.VISUALISATION && (
         <Visualisation
           visualisations={visualisations}
+          visualisationId={visualisationId}
           onVisualisationClick={visualisation =>
             dispatch(setCurrentVisualisation(visualisation))
           }

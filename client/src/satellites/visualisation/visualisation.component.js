@@ -12,10 +12,15 @@ import {
 /**
  * @param {{
  *  visualisations: import('typings/satellites').Visualisation[]
+ *  visualisationId?: string
  *  onVisualisationClick: (visualisationId: import('typings/satellites').Visualisation['id']) => void
  * }} props
  */
-const Visualisation = ({ visualisations, onVisualisationClick }) =>
+const Visualisation = ({
+  visualisations,
+  visualisationId,
+  onVisualisationClick,
+}) =>
   visualisations ? (
     <>
       <Typography variant="h1" gutterBottom>
@@ -23,7 +28,12 @@ const Visualisation = ({ visualisations, onVisualisationClick }) =>
       </Typography>
       <List>
         {visualisations.map(({ id, description, label, thumbnail }) => (
-          <ListItem key={id} button onClick={() => onVisualisationClick('TCI')}>
+          <ListItem
+            key={id}
+            button
+            selected={id === visualisationId}
+            onClick={() => onVisualisationClick('TCI')}
+          >
             <ListItemAvatar>
               <Avatar
                 variant="rounded"

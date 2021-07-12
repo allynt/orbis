@@ -23,6 +23,7 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
 /**
  * @param {{
  *  scenes: import('typings/satellites').Scene[]
+ *  selectedScene?: import('typings/satellites').Scene
  *  pinnedScenes: import('typings/satellites').Scene[],
  *  visualisationId: string
  *  defaultCloudCover?: number
@@ -38,6 +39,7 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  */
 const Results = ({
   scenes: allScenes,
+  selectedScene,
   pinnedScenes,
   visualisationId,
   defaultCloudCover = DEFAULT_CLOUD_COVER,
@@ -107,6 +109,7 @@ const Results = ({
                   <SceneListItem
                     key={scene.id}
                     scene={scene}
+                    selected={selectedScene?.id === scene.id}
                     secondaryAction={Icon}
                     visualisationId={visualisationId}
                     onSceneClick={onSceneClick}

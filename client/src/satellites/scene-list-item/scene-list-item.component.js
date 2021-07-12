@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
  *  scene: import('typings/satellites').Scene
  *  secondaryAction?: React.ReactNode
  *  visualisationId: string
+ *  selected?: boolean
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
  *  onInfoClick: (scene: import('typings/satellites').Scene) => void
  * }} props
@@ -44,6 +45,7 @@ const SceneListItem = ({
   scene,
   secondaryAction,
   visualisationId,
+  selected = false,
   onSceneClick,
   onInfoClick,
 }) => {
@@ -67,7 +69,12 @@ const SceneListItem = ({
   };
 
   return (
-    <ListItem aria-label={scene.id} button onClick={handleSceneClick}>
+    <ListItem
+      aria-label={scene.id}
+      button
+      onClick={handleSceneClick}
+      selected={selected}
+    >
       <ListItemAvatar>
         <>
           <Avatar
