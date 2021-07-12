@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -48,7 +48,11 @@ describe('SatellitesContext', () => {
           defaultIsDrawingAoi: true,
           defaultFeatures: [{ geometry: { coordinates: [[123, 123]] } }],
         });
-        result.current.drawAoiLayer.props.onEdit({ editType: 'somethingElse' });
+        act(() =>
+          result.current.drawAoiLayer.props.onEdit({
+            editType: 'somethingElse',
+          }),
+        );
         expect(result.current.aoi).toBeUndefined();
       });
 
@@ -56,12 +60,16 @@ describe('SatellitesContext', () => {
         const { result } = renderContext({
           defaultIsDrawingAoi: true,
         });
-        result.current.drawAoiLayer.props.onEdit({
-          editType: 'addFeature',
-          updatedData: {
-            features: [{ id: '123', geometry: { coordinates: [[123, 123]] } }],
-          },
-        });
+        act(() =>
+          result.current.drawAoiLayer.props.onEdit({
+            editType: 'addFeature',
+            updatedData: {
+              features: [
+                { id: '123', geometry: { coordinates: [[123, 123]] } },
+              ],
+            },
+          }),
+        );
         expect(result.current.aoi).toEqual([123, 123]);
       });
 
@@ -69,12 +77,16 @@ describe('SatellitesContext', () => {
         const { result } = renderContext({
           defaultIsDrawingAoi: true,
         });
-        result.current.drawAoiLayer.props.onEdit({
-          editType: 'addFeature',
-          updatedData: {
-            features: [{ id: '123', geometry: { coordinates: [[123, 123]] } }],
-          },
-        });
+        act(() =>
+          result.current.drawAoiLayer.props.onEdit({
+            editType: 'addFeature',
+            updatedData: {
+              features: [
+                { id: '123', geometry: { coordinates: [[123, 123]] } },
+              ],
+            },
+          }),
+        );
         expect(result.current.isDrawingAoi).toBe(false);
       });
     });

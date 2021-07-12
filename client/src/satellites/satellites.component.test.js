@@ -121,8 +121,8 @@ describe('Satellites', () => {
 
   describe('Search', () => {
     const savedSearches = [
-      { id: 1, tiers: [] },
-      { id: 2, tiers: [] },
+      { id: 1, name: '1', tiers: [] },
+      { id: 2, name: '2', tiers: [] },
     ];
 
     it('Performs a search when the search button is clicked', async () => {

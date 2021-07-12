@@ -14,8 +14,8 @@ describe('<SatelliteSearch />', () => {
     const { getAllByRole } = render(
       <SatelliteSearch
         savedSearches={[
-          { id: 0, tiers: [] },
-          { id: 1, tiers: [] },
+          { id: 0, name: '0', tiers: [] },
+          { id: 1, name: '1', tiers: [] },
         ]}
       />,
     );

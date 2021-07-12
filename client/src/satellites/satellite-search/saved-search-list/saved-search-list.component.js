@@ -43,6 +43,7 @@ const SavedSearchList = ({ savedSearches, onReloadClick, onDeleteClick }) => {
               <ListItemText
                 className={styles.text}
                 primary={search.name}
+                secondaryTypographyProps={{ component: 'div' }}
                 secondary={
                   <>
                     <Divider />
