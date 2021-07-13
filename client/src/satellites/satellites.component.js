@@ -39,7 +39,7 @@ const Panels = {
   VISUALISATION: 'Visualisation',
 };
 
-const useStyles = makeStyles({ firstTab: { minWidth: '72px' } });
+const useStyles = makeStyles({ tab: { minWidth: '72px' } });
 
 const Satellites = () => {
   const styles = useStyles();
@@ -97,19 +97,18 @@ const Satellites = () => {
         onChange={(_event, value) => setVisiblePanel(value)}
       >
         <Tab
-          className={styles.firstTab}
-          fullWidth={false}
+          className={styles.tab}
           icon={<SearchIcon titleAccess="Search" />}
           value={Panels.SEARCH}
         />
         <Tab
-          fullWidth={false}
+          className={styles.tab}
           icon={<ResultsIcon titleAccess="Results" />}
           value={Panels.RESULTS}
           disabled={!scenes}
         />
         <Tab
-          fullWidth={false}
+          className={styles.tab}
           icon={<VisualisationIcon titleAccess="Visualisation" />}
           value={Panels.VISUALISATION}
           disabled={!visualisations}
