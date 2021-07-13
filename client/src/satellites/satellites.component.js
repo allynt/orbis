@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, ButtonGroup } from '@astrosat/astrosat-ui';
+import {
+  ResultsIcon,
+  SearchIcon,
+  Tab,
+  Tabs,
+  VisualisationIcon,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -91,27 +97,22 @@ const Satellites = () => {
 
   return (
     <>
-      <ButtonGroup
-        size="small"
-        orientation="vertical"
-        aria-label="small outlined primary button group"
+      <Tabs
+        value={visiblePanel}
+        onChange={(_event, value) => setVisiblePanel(value)}
       >
-        <Button onClick={() => setVisiblePanel(Panels.SEARCH)}>Search</Button>
-        <Button
+        <Tab icon={<SearchIcon titleAccess="Search" />} value={Panels.SEARCH} />
+        <Tab
+          icon={<ResultsIcon titleAccess="Results" />}
+          value={Panels.RESULTS}
           disabled={!scenes}
-          onClick={() => setVisiblePanel(Panels.RESULTS)}
-        >
-          Results
-        </Button>
-        <Button
+        />
+        <Tab
+          icon={<VisualisationIcon titleAccess="Visualisation" />}
+          value={Panels.VISUALISATION}
           disabled={!visualisations}
-          onClick={() => setVisiblePanel(Panels.VISUALISATION)}
-        >
-          Visualisation
-        </Button>
-        {/* <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button> */}
-      </ButtonGroup>
-
+        />
+      </Tabs>
       {satellites && visiblePanel === Panels.SEARCH && (
         <SatelliteSearch
           satellites={satellites}

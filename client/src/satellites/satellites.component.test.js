@@ -25,6 +25,13 @@ import {
 
 const mockStore = configureMockStore([thunk]);
 
+/** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
+const SEARCH_TAB = ['tab', { name: 'Search' }];
+/** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
+const RESULTS_TAB = ['tab', { name: 'Results' }];
+/** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
+const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
+
 const renderComponent = (state = { satellites, scenes }, defaultFeatures) => {
   const store = mockStore({ accounts: {}, app: {}, satellites: state });
   const utils = render(
@@ -58,12 +65,12 @@ describe('Satellites', () => {
     describe('has results and visualisation disabled when no search has been made', () => {
       it('results', () => {
         const { getByRole } = renderComponent({});
-        expect(getByRole('button', { name: 'Results' })).toBeDisabled();
+        expect(getByRole(...RESULTS_TAB)).toBeDisabled();
       });
 
       it('visualisation', () => {
         const { getByRole } = renderComponent();
-        expect(getByRole('button', { name: 'Visualisation' })).toBeDisabled();
+        expect(getByRole(...VISUALISATION_TAB)).toBeDisabled();
       });
     });
 
@@ -72,8 +79,8 @@ describe('Satellites', () => {
         scenes,
         selectedScene: null,
       });
-      expect(getByRole('button', { name: 'Results' })).not.toBeDisabled();
-      expect(getByRole('button', { name: 'Visualisation' })).toBeDisabled();
+      expect(getByRole(...RESULTS_TAB)).not.toBeDisabled();
+      expect(getByRole(...VISUALISATION_TAB)).toBeDisabled();
     });
 
     it('has free navigation when each step has been completed', () => {
@@ -82,17 +89,17 @@ describe('Satellites', () => {
         scenes,
         selectedScene: scenes[0],
       });
-      expect(getByRole('button', { name: 'Results' })).not.toBeDisabled();
-      expect(getByRole('button', { name: 'Visualisation' })).not.toBeDisabled();
+      expect(getByRole(...RESULTS_TAB)).not.toBeDisabled();
+      expect(getByRole(...VISUALISATION_TAB)).not.toBeDisabled();
     });
 
     it('Shows the search view when the search nav button is clicked', () => {
-      const { getAllByRole, getByRole } = renderComponent({
+      const { getByRole } = renderComponent({
         satellites,
         scenes,
         selectedScene: scenes[0],
       });
-      userEvent.click(getAllByRole('button', { name: 'Search' })[0]);
+      userEvent.click(getByRole(...SEARCH_TAB));
       expect(
         getByRole('button', { name: 'Draw your AOI' }),
       ).toBeInTheDocument();
@@ -104,7 +111,7 @@ describe('Satellites', () => {
         scenes,
         selectedScene: scenes[0],
       });
-      userEvent.click(getByRole('button', { name: 'Results' }));
+      userEvent.click(getByRole(...RESULTS_TAB));
       expect(getByRole('slider')).toBeInTheDocument();
     });
 
@@ -114,7 +121,7 @@ describe('Satellites', () => {
         scenes,
         selectedScene: scenes[0],
       });
-      userEvent.click(getByRole('button', { name: 'Visualisation' }));
+      userEvent.click(getByRole(...VISUALISATION_TAB));
       expect(getByText('VISUALISATION')).toBeInTheDocument();
     });
   });
@@ -126,10 +133,10 @@ describe('Satellites', () => {
     ];
 
     it('Performs a search when the search button is clicked', async () => {
-      const { getAllByRole, getByRole, store } = renderComponent(undefined, [
+      const { getByRole, store } = renderComponent(undefined, [
         { geometry: { coordinates: [[123, 123]] } },
       ]);
-      userEvent.click(getAllByRole('button', { name: 'Search' })[1]);
+      userEvent.click(getByRole('button', { name: 'Search' }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
@@ -177,7 +184,7 @@ describe('Satellites', () => {
   describe('Results', () => {
     it(`dispatches ${selectScene} when a scene is clicked`, () => {
       const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole('button', { name: 'Results' }));
+      userEvent.click(getByRole(...RESULTS_TAB));
       userEvent.click(getByRole('button', { name: scenes[0].id }));
       expect(store.getActions()).toEqual(
         expect.arrayContaining([selectScene(scenes[0])]),
@@ -186,7 +193,7 @@ describe('Satellites', () => {
 
     it(`dispatches pinScene when a scene is pinned`, async () => {
       const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole('button', { name: 'Results' }));
+      userEvent.click(getByRole(...RESULTS_TAB));
       userEvent.click(getByRole('button', { name: 'pin-icon-32UVD' }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
@@ -201,7 +208,7 @@ describe('Satellites', () => {
         scenes,
         pinnedScenes: [{ ...scenes[0] }],
       });
-      userEvent.click(getByRole('button', { name: 'Results' }));
+      userEvent.click(getByRole(...RESULTS_TAB));
       userEvent.click(getByRole('button', { name: 'pin-icon-32UVD' }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
@@ -212,7 +219,7 @@ describe('Satellites', () => {
 
     it(`Dispatches saveSatelliteSearch when the search is saved`, async () => {
       const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole('button', { name: 'Results' }));
+      userEvent.click(getByRole(...RESULTS_TAB));
       userEvent.click(getByRole('button', { name: 'Save Search' }));
       userEvent.type(getByRole('textbox'), 'Test Name');
       userEvent.click(getByRole('button', { name: 'Save Search' }));
@@ -233,7 +240,7 @@ describe('Satellites', () => {
         scenes,
         selectedScene: scenes[0],
       });
-      userEvent.click(getByRole('button', { name: 'Visualisation' }));
+      userEvent.click(getByRole(...VISUALISATION_TAB));
       userEvent.click(
         getByRole('button', {
           name: 'Scene Visualisation Thumbnail True Color Based on bands 4,3,2',
