@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  makeStyles,
   ResultsIcon,
   SearchIcon,
   Tab,
@@ -42,7 +43,10 @@ const Panels = {
   VISUALISATION: 'Visualisation',
 };
 
+const useStyles = makeStyles({ firstTab: { minWidth: '72px' } });
+
 const Satellites = () => {
+  const styles = useStyles();
   const dispatch = useDispatch();
 
   const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
@@ -98,16 +102,25 @@ const Satellites = () => {
   return (
     <>
       <Tabs
+        variant="standard"
+        scrollButtons="on"
         value={visiblePanel}
         onChange={(_event, value) => setVisiblePanel(value)}
       >
-        <Tab icon={<SearchIcon titleAccess="Search" />} value={Panels.SEARCH} />
         <Tab
+          className={styles.firstTab}
+          fullWidth={false}
+          icon={<SearchIcon titleAccess="Search" />}
+          value={Panels.SEARCH}
+        />
+        <Tab
+          fullWidth={false}
           icon={<ResultsIcon titleAccess="Results" />}
           value={Panels.RESULTS}
           disabled={!scenes}
         />
         <Tab
+          fullWidth={false}
           icon={<VisualisationIcon titleAccess="Visualisation" />}
           value={Panels.VISUALISATION}
           disabled={!visualisations}
