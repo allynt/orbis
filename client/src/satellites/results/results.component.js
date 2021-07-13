@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   IconButton,
   List,
   Paper,
@@ -18,7 +14,6 @@ import { DEFAULT_CLOUD_COVER, InfoType } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
-import SaveSearchForm from './save-search-form/save-search-form.component';
 
 /**
  * @param {{
@@ -35,7 +30,6 @@ import SaveSearchForm from './save-search-form/save-search-form.component';
  *    type: string;
  *    data: any;
  *  }) => void,
- *  onSaveSearchSubmit: (name: string) => void
  * }} props
  */
 const Results = ({
@@ -49,10 +43,7 @@ const Results = ({
   onScenePin,
   onSceneUnpin,
   onInfoClick,
-  onSaveSearchSubmit,
 }) => {
-  const [isSaveDialogVisible, setIsSaveDialogVisible] = useState(false);
-
   const filteredScenes = allScenes?.filter(
     scene => scene.cloudCover <= cloudCoverPercentage,
   );
@@ -60,14 +51,6 @@ const Results = ({
   const resultCountText = allScenes
     ? `Showing ${filteredScenes.length} Results of ${allScenes.length}`
     : 'Loading Results...';
-
-  /**
-   * @param {string} name
-   */
-  const handleSaveSearchSubmit = name => {
-    setIsSaveDialogVisible(false);
-    onSaveSearchSubmit(name);
-  };
 
   return (
     <>
@@ -124,16 +107,6 @@ const Results = ({
               .fill(0)
               .map((_num, i) => <SceneListItemSkeleton key={i} />)}
       </List>
-      <Button onClick={() => setIsSaveDialogVisible(true)}>Save Search</Button>
-      <Dialog
-        open={isSaveDialogVisible}
-        onClose={() => setIsSaveDialogVisible(false)}
-      >
-        <DialogTitle>Name Search</DialogTitle>
-        <DialogContent>
-          <SaveSearchForm onSubmit={handleSaveSearchSubmit} />
-        </DialogContent>
-      </Dialog>
     </>
   );
 };

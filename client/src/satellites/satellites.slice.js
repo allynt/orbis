@@ -36,7 +36,6 @@ const initialState = {
   satelliteSearches: null,
   pinnedScenes: null,
   selectedPinnedScenes: [],
-  currentSearchQuery: null,
   visualisationId: 'TCI',
 };
 
@@ -63,29 +62,6 @@ const satellitesSlice = createSlice({
     },
     removeScenes: state => {
       state.selectedScene = null;
-    },
-    fetchSatellitesSearchesSuccess: (state, { payload }) => {
-      state.satelliteSearches = payload;
-      state.error = null;
-    },
-    fetchSatellitesSearchesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
-    saveSatelliteSearchSuccess: (state, { payload }) => {
-      state.satelliteSearches = [...state.satelliteSearches, payload];
-      state.error = null;
-    },
-    saveSatelliteSearchFailure: (state, { payload }) => {
-      state.error = payload;
-    },
-    deleteSatelliteSearchSuccess: (state, { payload }) => {
-      state.satelliteSearches = state.satelliteSearches.filter(
-        search => search.id !== payload,
-      );
-      state.error = null;
-    },
-    deleteSatelliteSearchFailure: (state, { payload }) => {
-      state.error = payload;
     },
     fetchPinnedScenesSuccess: (state, { payload }) => {
       state.pinnedScenes = payload;
@@ -136,12 +112,6 @@ export const {
   fetchSatelliteScenesFailure,
   selectScene,
   removeScenes,
-  fetchSatellitesSearchesSuccess,
-  fetchSatellitesSearchesFailure,
-  saveSatelliteSearchSuccess,
-  saveSatelliteSearchFailure,
-  deleteSatelliteSearchSuccess,
-  deleteSatelliteSearchFailure,
   fetchPinnedScenesSuccess,
   fetchPinnedScenesFailure,
   pinSceneSuccess,
@@ -206,93 +176,6 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   const scenes = await response.json();
 
   return dispatch(fetchSatelliteScenesSuccess(scenes));
-};
-
-export const fetchSavedSatelliteSearches = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  // satellite selection is hard-coded for now
-  const response = await getData(
-    `${apiClient.apiHost}${API.savedSearches}`,
-    headers,
-  );
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(
-      message,
-      `Fetching Satellite Searches Error - ${response.statusText}`,
-      50000,
-      () => {},
-    );
-
-    return dispatch(fetchSatellitesSearchesFailure({ message }));
-  }
-
-  const searches = await response.json();
-
-  return dispatch(fetchSatellitesSearchesSuccess(searches));
-};
-
-export const deleteSavedSatelliteSearch = id => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${apiClient.apiHost}${API.savedSearches}`,
-    id,
-    headers,
-    'DELETE',
-  );
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(
-      message,
-      `Deleting Satellite Search Error - ${response.statusText}`,
-      5000,
-      () => {},
-    );
-
-    return dispatch(deleteSatelliteSearchFailure({ message }));
-  }
-
-  return dispatch(deleteSatelliteSearchSuccess(id));
-};
-
-export const saveSatelliteSearch = form => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${apiClient.apiHost}${API.savedSearches}`,
-    form,
-    headers,
-  );
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(
-      message,
-      `"Saving Satellite Search Error - ${response.statusText}`,
-      50000,
-      () => {},
-    );
-
-    return dispatch(saveSatelliteSearchFailure({ message }));
-  }
-
-  const savedSearch = await response.json();
-
-  NotificationManager.success(
-    'Successfully Saved Satellite Search Query Terms',
-    'Successful Saving',
-    5000,
-    () => {},
-  );
-
-  return dispatch(saveSatelliteSearchSuccess(savedSearch));
 };
 
 export const fetchPinnedScenes = () => async (dispatch, getState) => {

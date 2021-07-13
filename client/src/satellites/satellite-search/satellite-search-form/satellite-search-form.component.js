@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import {
   Button,
@@ -139,16 +139,9 @@ const SatelliteSearchForm = ({
 }) => {
   const styles = useStyles({});
 
-  const { handleSubmit, control, setValue } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: transformSearchToFormValues(currentSearch, satellites),
   });
-
-  useEffect(() => {
-    const formValues = transformSearchToFormValues(currentSearch, satellites);
-    Object.entries(formValues).forEach(([key, value]) => {
-      setValue(key, value);
-    });
-  }, [currentSearch, satellites, setValue]);
 
   const onSubmit = values => {
     const query = {

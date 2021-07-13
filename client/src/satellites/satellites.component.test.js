@@ -11,13 +11,10 @@ import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
   deletePinnedSceneSuccess,
-  deleteSatelliteSearchSuccess,
   fetchPinnedScenesSuccess,
   fetchSatelliteScenesSuccess,
-  fetchSatellitesSearchesSuccess,
   fetchSatellitesSuccess,
   pinSceneSuccess,
-  saveSatelliteSearchSuccess,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
@@ -50,10 +47,9 @@ describe('Satellites', () => {
   });
 
   it.each`
-    thing               | action
-    ${'satellites'}     | ${fetchSatellitesSuccess}
-    ${'pinned scenes'}  | ${fetchPinnedScenesSuccess}
-    ${'saved searches'} | ${fetchSatellitesSearchesSuccess}
+    thing              | action
+    ${'satellites'}    | ${fetchSatellitesSuccess}
+    ${'pinned scenes'} | ${fetchPinnedScenesSuccess}
   `('fetches $thing if there are none', async ({ action }) => {
     const { store } = renderComponent({});
     await waitFor(() =>
@@ -127,11 +123,6 @@ describe('Satellites', () => {
   });
 
   describe('Search', () => {
-    const savedSearches = [
-      { id: 1, name: '1', tiers: [] },
-      { id: 2, name: '2', tiers: [] },
-    ];
-
     it('Performs a search when the search button is clicked', async () => {
       const { getByRole, store } = renderComponent(undefined, [
         { geometry: { coordinates: [[123, 123]] } },
@@ -150,34 +141,6 @@ describe('Satellites', () => {
         ]),
       );
       expect(getByRole('slider')).toBeInTheDocument();
-    });
-
-    it(`Dispatches ${setCurrentSatelliteSearchQuery} action when a search is reloaded`, () => {
-      const { getAllByRole, store } = renderComponent({
-        satellites,
-        satelliteSearches: savedSearches,
-      });
-      userEvent.click(getAllByRole('button', { name: 'Reload' })[0]);
-      expect(store.getActions()).toEqual(
-        expect.arrayContaining([
-          setCurrentSatelliteSearchQuery(savedSearches[0]),
-        ]),
-      );
-    });
-
-    it(`Dispatches deleteSavedSatelliteSearch action when a search is reloaded`, async () => {
-      const { getAllByRole, store } = renderComponent({
-        satellites,
-        satelliteSearches: savedSearches,
-      });
-      userEvent.click(getAllByRole('button', { name: 'Delete' })[1]);
-      await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([
-            deleteSatelliteSearchSuccess(savedSearches[1].id),
-          ]),
-        ),
-      );
     });
   });
 
@@ -213,21 +176,6 @@ describe('Satellites', () => {
       await waitFor(() =>
         expect(store.getActions()).toEqual(
           expect.arrayContaining([deletePinnedSceneSuccess(expect.anything())]),
-        ),
-      );
-    });
-
-    it(`Dispatches saveSatelliteSearch when the search is saved`, async () => {
-      const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole(...RESULTS_TAB));
-      userEvent.click(getByRole('button', { name: 'Save Search' }));
-      userEvent.type(getByRole('textbox'), 'Test Name');
-      userEvent.click(getByRole('button', { name: 'Save Search' }));
-      await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([
-            saveSatelliteSearchSuccess(expect.anything()),
-          ]),
         ),
       );
     });

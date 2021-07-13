@@ -18,16 +18,12 @@ import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
   deletePinnedScene,
-  deleteSavedSatelliteSearch,
   fetchPinnedScenes,
   fetchSatellites,
   fetchSatelliteScenes,
-  fetchSavedSatelliteSearches,
   pinnedScenesSelector,
   pinScene,
   satellitesSelector,
-  savedSearchesSelector,
-  saveSatelliteSearch,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
@@ -62,7 +58,6 @@ const Satellites = () => {
   const pinnedScenes = useSelector(pinnedScenesSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
-  const savedSearches = useSelector(savedSearchesSelector);
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
@@ -84,12 +79,6 @@ const Satellites = () => {
       dispatch(fetchPinnedScenes());
     }
   }, [pinnedScenes, dispatch]);
-
-  useEffect(() => {
-    if (!savedSearches) {
-      dispatch(fetchSavedSatelliteSearches());
-    }
-  }, [savedSearches, dispatch]);
 
   /**
    * @param {{type: string, data: any}} info
@@ -129,9 +118,8 @@ const Satellites = () => {
       {satellites && visiblePanel === Panels.SEARCH && (
         <SatelliteSearch
           satellites={satellites}
-          savedSearches={savedSearches}
-          currentSearch={currentSearchQuery}
           aoi={aoi}
+          currentSearch={currentSearchQuery}
           onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
           onSearch={search => {
             const newSearch = { ...search, aoi };
@@ -139,10 +127,6 @@ const Satellites = () => {
             dispatch(fetchSatelliteScenes(newSearch));
             setVisiblePanel(Panels.RESULTS);
           }}
-          onSearchReload={search =>
-            dispatch(setCurrentSatelliteSearchQuery(search))
-          }
-          onSearchDelete={({ id }) => dispatch(deleteSavedSatelliteSearch(id))}
           onInfoClick={handleInfoClick}
         />
       )}
@@ -161,9 +145,6 @@ const Satellites = () => {
           onScenePin={scene => dispatch(pinScene(scene))}
           onSceneUnpin={scene => dispatch(deletePinnedScene(scene.id))}
           onInfoClick={handleInfoClick}
-          onSaveSearchSubmit={name =>
-            dispatch(saveSatelliteSearch({ ...currentSearchQuery, name }))
-          }
         />
       )}
       {visiblePanel === Panels.VISUALISATION && (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Results from './results.component';
@@ -117,27 +117,5 @@ describe('Satellite Results Component', () => {
 
     userEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
     expect(onSceneUnpin).toHaveBeenCalledWith(mockScenes[0]);
-  });
-
-  it('should show dialog component when Save Search button clicked', () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    expect(getByText('Name Search')).toBeVisible();
-  });
-
-  it('Closes the dialog when the background is clicked', () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    expect(getByText('Name Search')).toBeVisible();
-    userEvent.click(getByRole('none'));
-    expect(getByText('Name Search')).not.toBeVisible();
-  });
-
-  it('Calls onSaveSearchSubmit when the save search form is submitted', async () => {
-    const { getByRole, onSaveSearchSubmit } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    userEvent.type(getByRole('textbox'), 'Test Name');
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    await waitFor(() => expect(onSaveSearchSubmit).toBeCalledWith('Test Name'));
   });
 });
