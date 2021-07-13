@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom';
 import LoginForm from './login-form.component';
 
 const EMAIL_PLACEHOLDER_TEXT = /email/i;
-const PASSWORD_PLACEHOLDER_TEXT = /password/i;
+const PASSWORD_PLACEHOLDER_TEXT = /password \*/i;
 const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
