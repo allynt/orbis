@@ -24,7 +24,7 @@
   dependencies:
     tunnel "0.0.6"
 
-"@astrosat/astrosat-ui@^2.0.0":
+"@astrosat/astrosat-ui@^2.4.1":
   version "2.4.1"
   resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.4.1/78b06db2e389af0a6b17e0c47e90507a6fb502fd0d7acdfac79771327b1fd4c6#ba52ce9b2c80648c3378bbbb3987da50460899b3"
   integrity sha512-RZctlCc1yGRliQZUEtzyLfnb+BDDPq4/HVr/tc7XO/061JewKeAzn+WZiGiuSCuSz4vHCGDzdUfSlDNAoFuz5Q==
