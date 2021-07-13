@@ -4,6 +4,8 @@ import { toPairs } from 'lodash';
 import { ColorScale } from './ColorScale';
 import { isRealValue } from './isRealValue';
 
+export const COLOR_PRIMARY_ARRAY = [246, 190, 0, 255];
+
 /**
  * @param {import("typings/orbis").Property} property
  * @param {import('./ColorScale').ColorFormat} format

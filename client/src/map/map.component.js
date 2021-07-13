@@ -31,6 +31,7 @@ import { DrawingToolsToolbox } from 'drawing-tools';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
+import { useSatellites } from 'satellites/satellites-context';
 
 import { MapControlButton } from '../components';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
@@ -166,6 +167,12 @@ const Map = ({
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
   const { selectionLayer } = useSelectionTools();
+  const {
+    drawAoiLayer,
+    isDrawingAoi,
+    scenesLayer,
+    selectedSceneLayer,
+  } = useSatellites();
 
   useEffect(() => {
     if (selectedBookmark) {
@@ -226,6 +233,8 @@ const Map = ({
     mapboxApiAccessToken: accessToken,
   };
 
+  const topMapIsController = drawingToolsEnabled || isDrawingAoi;
+
   return (
     <div className={styles.map}>
       <LoadMask
@@ -266,10 +275,15 @@ const Map = ({
 
       <DeckGL
         ref={bottomDeckRef}
-        controller={!drawingToolsEnabled}
+        controller={!topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
-        layers={[...(layers ?? []), selectionLayer]}
+        layers={[
+          ...(layers ?? []),
+          scenesLayer,
+          selectedSceneLayer,
+          selectionLayer,
+        ]}
         effects={[lightingEffect]}
         glOptions={{
           preserveDrawingBuffer: true,
@@ -293,12 +307,15 @@ const Map = ({
       >
         <DeckGL
           ref={topDeckRef}
-          controller={drawingToolsEnabled}
+          controller={topMapIsController}
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
-          layers={[editableLayer]}
-          getCursor={editableLayer?.getCursor.bind(editableLayer)}
-          style={{ pointerEvents: drawingToolsEnabled ? 'all' : 'none' }}
+          layers={[drawAoiLayer, editableLayer]}
+          getCursor={
+            drawAoiLayer?.getCursor.bind(drawAoiLayer) ||
+            editableLayer?.getCursor.bind(editableLayer)
+          }
+          style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,
           }}

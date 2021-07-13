@@ -47,6 +47,22 @@ export const getToolbarItems = (dispatch, user) => {
       order: 0,
     },
     {
+      label: SATELLITE_LAYERS,
+      icon: <SatelliteIcon />,
+      action: () => {
+        dispatch(toggleMenu(SATELLITE_LAYERS));
+        dispatch(
+          setMenuHeadings({
+            heading: 'SATELLITE IMAGES',
+            strapline: 'Select Type of imagery For The Layers',
+          }),
+        );
+      },
+      tooltip: SATELLITE_LAYERS,
+      roles: ['UserRole'],
+      order: 1,
+    },
+    {
       label: BOOKMARKS,
       icon: <MapIcon titleAccess="My maps" />,
       action: () => {
@@ -103,25 +119,6 @@ export const getToolbarItems = (dispatch, user) => {
       href: apiClient.documents.userGuideUrl(),
     },
   ];
-
-  if (featureToggles.satellites) {
-    items.push({
-      label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon />,
-      action: () => {
-        dispatch(toggleMenu(SATELLITE_LAYERS));
-        dispatch(
-          setMenuHeadings({
-            heading: 'SATELLITE IMAGES',
-            strapline: 'Select Type of imagery For The Layers',
-          }),
-        );
-      },
-      tooltip: SATELLITE_LAYERS,
-      roles: ['UserRole'],
-      order: 1,
-    });
-  }
 
   if (featureToggles.stories) {
     items.push({
