@@ -116,7 +116,7 @@ describe('Accounts index', () => {
         getByRole('textbox', { name: /organisation\sname/i }),
         'Weyland-Yutani',
       );
-      userEvent.type(getByLabelText(/password(?!\sc)/i), 'pandaconcretespoon');
+      userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.type(
         getByLabelText(/password\sconfirmation/i),
         'pandaconcretespoon',
@@ -181,7 +181,7 @@ describe('Accounts index', () => {
     it(`dispatches ${login.name} action when submitted`, async () => {
       const { getByRole, getByLabelText, store } = renderComponent([LOGIN]);
       userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
-      userEvent.type(getByLabelText(/password/i), 'pandaconcretespoon');
+      userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.click(getByRole('button', { name: /login/i }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
