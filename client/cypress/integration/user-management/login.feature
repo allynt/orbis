@@ -59,7 +59,7 @@ Feature: Login
   Scenario: Show actual password
     When I type "test@test.com" into the "Email" field
     When I type "testpwtest" into the "Password *" password field
-    When I click the "Password" button
+    When I click the "Password Visibility Toggle" button
     Then I see "testpwtest" in the "Password" field
 
   Scenario: Submit successful login
