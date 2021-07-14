@@ -10,11 +10,8 @@ import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
-  deletePinnedSceneSuccess,
-  fetchPinnedScenesSuccess,
   fetchSatelliteScenesSuccess,
   fetchSatellitesSuccess,
-  pinSceneSuccess,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
@@ -47,9 +44,8 @@ describe('Satellites', () => {
   });
 
   it.each`
-    thing              | action
-    ${'satellites'}    | ${fetchSatellitesSuccess}
-    ${'pinned scenes'} | ${fetchPinnedScenesSuccess}
+    thing           | action
+    ${'satellites'} | ${fetchSatellitesSuccess}
   `('fetches $thing if there are none', async ({ action }) => {
     const { store } = renderComponent({});
     await waitFor(() =>
@@ -151,32 +147,6 @@ describe('Satellites', () => {
       userEvent.click(getByRole('button', { name: scenes[0].id }));
       expect(store.getActions()).toEqual(
         expect.arrayContaining([selectScene(scenes[0])]),
-      );
-    });
-
-    it(`dispatches pinScene when a scene is pinned`, async () => {
-      const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole(...RESULTS_TAB));
-      userEvent.click(getByRole('button', { name: 'pin-icon-32UVD' }));
-      await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([pinSceneSuccess(expect.anything())]),
-        ),
-      );
-    });
-
-    it(`dispatches deletePinnedScene when a scene is unpinned`, async () => {
-      const { getByRole, store } = renderComponent({
-        satellites,
-        scenes,
-        pinnedScenes: [{ ...scenes[0] }],
-      });
-      userEvent.click(getByRole(...RESULTS_TAB));
-      userEvent.click(getByRole('button', { name: 'pin-icon-32UVD' }));
-      await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([deletePinnedSceneSuccess(expect.anything())]),
-        ),
       );
     });
   });
