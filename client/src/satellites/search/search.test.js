@@ -2,10 +2,10 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import SatelliteSearch from './search.component';
+import Search from './search.component';
 
-describe('<SatelliteSearch />', () => {
+describe('<Search />', () => {
   it('Renders', () => {
-    render(<SatelliteSearch />);
+    render(<Search />);
   });
 });

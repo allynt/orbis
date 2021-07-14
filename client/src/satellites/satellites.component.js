@@ -26,7 +26,7 @@ import {
   setCurrentVisualisation,
   visualisationIdSelector,
 } from './satellites.slice';
-import SatelliteSearch from './search/search.component';
+import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
 
 const Panels = {
@@ -104,7 +104,7 @@ const Satellites = () => {
         />
       </Tabs>
       {satellites && visiblePanel === Panels.SEARCH && (
-        <SatelliteSearch
+        <Search
           satellites={satellites}
           aoi={aoi}
           currentSearch={currentSearchQuery}

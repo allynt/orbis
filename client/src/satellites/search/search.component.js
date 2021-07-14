@@ -15,7 +15,7 @@ import SatelliteSearchForm from './satellite-search-form/satellite-search-form.c
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */
-const SatelliteSearch = ({
+const Search = ({
   satellites,
   currentSearch,
   aoi,
@@ -42,4 +42,4 @@ const SatelliteSearch = ({
   );
 };
 
-export default SatelliteSearch;
+export default Search;

@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import SatelliteSearch from './search.component';
+import Search from './search.component';
 
 const mockStore = configureMockStore([thunk]);
 
-export default { title: 'Satellites/SatelliteSearch' };
+export default { title: 'Satellites/Search' };
 
 const Template = args => (
   <Provider store={mockStore({ satellites: {}, app: { config: {} } })}>
-    <SatelliteSearch {...args} />
+    <Search {...args} />
   </Provider>
 );
 
