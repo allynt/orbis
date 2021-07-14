@@ -3,7 +3,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SearchForm from './search-form.component';
+import SearchForm, { transform } from './search-form.component';
 
 const satellites = Array(5)
   .fill()
@@ -11,6 +11,43 @@ const satellites = Array(5)
     id: `sat${i}`,
     label: `Satellite ${i}`,
   }));
+
+describe.each`
+  inSearch                              | inForm                                                | searchKey       | formKey
+  ${['one', 'two', 'three']}            | ${{ one: true, two: true, three: true, four: false }} | ${'satellites'} | ${'satellites'}
+  ${new Date(2000, 0, 1).toISOString()} | ${'01/01/2000'}                                       | ${'start_date'} | ${'startDate'}
+  ${new Date(2000, 0, 1).toISOString()} | ${'01/01/2000'}                                       | ${'end_date'}   | ${'endDate'}
+`('transform', ({ inSearch, inForm, searchKey, formKey }) => {
+  describe('toForm', () => {
+    it(`Converts ${searchKey} from search to form`, () => {
+      const search = {
+        [searchKey]: inSearch,
+      };
+      const satellites = [
+        { id: 'one' },
+        { id: 'two' },
+        { id: 'three' },
+        { id: 'four' },
+      ];
+      const expected = expect.objectContaining({
+        [formKey]: inForm,
+      });
+      expect(transform.toForm(search, satellites)).toEqual(expected);
+    });
+  });
+
+  describe('toSearch', () => {
+    it(`Converts ${formKey} from form to search`, () => {
+      const form = {
+        [formKey]: inForm,
+      };
+      const expected = expect.objectContaining({
+        [searchKey]: inSearch,
+      });
+      expect(transform.toSearch(form)).toEqual(expected);
+    });
+  });
+});
 
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
@@ -30,12 +67,7 @@ describe('<SearchForm />', () => {
       end_date: expect.stringContaining(''),
     };
     const { getByRole } = render(
-      <SearchForm
-        satellites={satellites}
-        currentSearch={{}}
-        aoi={[[]]}
-        onSubmit={onSubmit}
-      />,
+      <SearchForm satellites={satellites} aoi={[[]]} onSubmit={onSubmit} />,
     );
     ['Satellite 0', 'Satellite 2'].forEach(name =>
       userEvent.click(getByRole('checkbox', { name })),
@@ -55,8 +87,12 @@ describe('<SearchForm />', () => {
     );
     expect(getByRole('checkbox', { name: 'Satellite 3' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Satellite 4' })).toBeChecked();
-    expect(getByRole('button', { name: '1999-12-31' })).toBeInTheDocument();
-    expect(getByRole('button', { name: '2000-12-31' })).toBeInTheDocument();
+    expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(
+      '31/12/1999',
+    );
+    expect(getByRole('textbox', { name: 'End Date' })).toHaveValue(
+      '31/12/2000',
+    );
   });
 
   it('Shows an error and disables the search button if geometry is too large', () => {

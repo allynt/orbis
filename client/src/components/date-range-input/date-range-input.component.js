@@ -53,61 +53,60 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**
- * @param {{
- *   register: any
- *   onDateRangeClick: React.MouseEventHandler<HTMLButtonElement>
- *   onResetClick: React.MouseEventHandler<HTMLButtonElement>
- * }} props
- */
-export const DateRangeInput = ({
-  register,
-  onDateRangeClick,
-  onResetClick,
-}) => {
-  const styles = useStyles();
+export const DateRangeInput = React.forwardRef(
+  /**
+   * @param {{
+   *   register: any
+   *   onDateRangeClick: React.MouseEventHandler<HTMLButtonElement>
+   *   onResetClick: React.MouseEventHandler<HTMLButtonElement>
+   * }} props
+   */
+  ({ register, onDateRangeClick, onResetClick }, ref) => {
+    const styles = useStyles();
 
-  const inputProps = {
-    ref: register,
-    className: styles.input,
-    placeholder: 'DD/MM/YYYY',
-  };
+    const inputProps = {
+      ref: register,
+      className: styles.input,
+      placeholder: 'DD/MM/YYYY',
+    };
 
-  return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      component={Paper}
-      className={styles.paper}
-    >
-      <Grid item xs>
-        <IconButton color="inherit" size="small" onClick={onDateRangeClick}>
-          <DateRange titleAccess="Show date picker" />
-        </IconButton>
+    return (
+      <Grid
+        ref={ref}
+        container
+        justify="center"
+        alignItems="center"
+        component={Paper}
+        className={styles.paper}
+      >
+        <Grid item xs>
+          <IconButton color="inherit" size="small" onClick={onDateRangeClick}>
+            <DateRange titleAccess="Show date picker" />
+          </IconButton>
+        </Grid>
+        <Grid item xs={4} container justify="center">
+          <input
+            {...inputProps}
+            name={FIELD_NAMES.startDate}
+            aria-label="Start Date"
+          />
+        </Grid>
+        <Grid item xs className={styles.separator}>
+          -
+        </Grid>
+        <Grid item xs={4} container justify="center">
+          <input
+            {...inputProps}
+            name={FIELD_NAMES.endDate}
+            aria-label="End Date"
+          />
+        </Grid>
+        <Grid item xs container justify="flex-end">
+          <IconButton color="inherit" size="small" onClick={onResetClick}>
+            <Replay titleAccess="Reset" />
+          </IconButton>
+        </Grid>
       </Grid>
-      <Grid item xs={4} container justify="center">
-        <input
-          {...inputProps}
-          name={FIELD_NAMES.startDate}
-          aria-label="Start Date"
-        />
-      </Grid>
-      <Grid item xs className={styles.separator}>
-        -
-      </Grid>
-      <Grid item xs={4} container justify="center">
-        <input
-          {...inputProps}
-          name={FIELD_NAMES.endDate}
-          aria-label="End Date"
-        />
-      </Grid>
-      <Grid item xs container justify="flex-end">
-        <IconButton color="inherit" size="small" onClick={onResetClick}>
-          <Replay titleAccess="Reset" />
-        </IconButton>
-      </Grid>
-    </Grid>
-  );
-};
+    );
+  },
+);

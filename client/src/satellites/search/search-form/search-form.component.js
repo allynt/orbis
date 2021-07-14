@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Button,
@@ -9,19 +9,16 @@ import {
   FormGroup,
   FormLabel,
   makeStyles,
+  Tooltip,
   Well,
 } from '@astrosat/astrosat-ui/';
 
 import { subDays } from 'date-fns';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
 
-import { InfoButton } from 'components';
+import { DateRangeInput, DateRangePicker, InfoButton } from 'components';
 import { InfoType } from 'satellites/satellite.constants';
-
-const DATE_FORMAT = 'yyy-MM-dd';
-const DAYS_IN_PAST = 7;
+import { dateStringToDate, formatDate } from 'utils/dates';
 
 const Checkbox = ({ name, control, label, onInfoClick }) => {
   const styles = useStyles();
@@ -66,23 +63,31 @@ const boolObjectForIdArray = (array, searchArray) =>
     {},
   );
 
-/**
- * @param {import('typings/satellites').SavedSearch} search
- * @param {import('typings/satellites').Satellite[]} satellites
- */
-const transformSearchToFormValues = (search, satellites) => ({
-  satellites: boolObjectForIdArray(satellites, search?.satellites),
-  start_date: search?.start_date
-    ? new Date(search.start_date)
-    : subDays(new Date(), DAYS_IN_PAST),
-  end_date: search?.end_date ? new Date(search.end_date) : new Date(),
-});
-
-const CustomDatePicker = React.forwardRef(({ value, onClick }, ref) => (
-  <button type="button" onClick={onClick}>
-    {value}
-  </button>
-));
+export const transform = {
+  /**
+   * @param {Partial<import('typings/satellites').SavedSearch>} search
+   * @param {import('typings/satellites').Satellite[]} satellites
+   */
+  toForm: (search, satellites) => ({
+    satellites: boolObjectForIdArray(satellites, search?.satellites),
+    startDate:
+      search?.start_date && formatDate(dateStringToDate(search?.start_date)),
+    endDate: search?.end_date && formatDate(dateStringToDate(search?.end_date)),
+  }),
+  /**
+   * @param {{
+   *  satellites?: {[key: string]: boolean}
+   *  startDate?: string
+   *  endDate?: string
+   * }} form
+   */
+  toSearch: form => ({
+    satellites: keyArrayForTruthyObjectValues(form?.satellites ?? {}),
+    start_date:
+      form.startDate && dateStringToDate(form.startDate).toISOString(),
+    end_date: form.endDate && dateStringToDate(form.endDate).toISOString(),
+  }),
+};
 
 const useStyles = makeStyles(theme => ({
   checkbox: {
@@ -94,6 +99,14 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     justifyContent: 'space-between',
+  },
+  tooltip: {
+    maxWidth: '900px',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.default,
+  },
+  arrow: {
+    color: theme.palette.background.default,
   },
 }));
 
@@ -114,27 +127,45 @@ const SearchForm = ({
   satellites,
   aoi,
   aoiTooLarge = false,
-  currentSearch = { satellites: ['sentinel-2'] },
+  currentSearch = {
+    satellites: ['sentinel-2'],
+    start_date: subDays(new Date(), 30).toISOString(),
+    end_date: new Date().toISOString(),
+  },
   onSubmit: onSubmitProp,
   onInfoClick,
 }) => {
   const styles = useStyles({});
+  const [pickerOpen, setPickerOpen] = useState(false);
 
-  const { handleSubmit, control } = useForm({
-    defaultValues: transformSearchToFormValues(currentSearch, satellites),
+  const { register, handleSubmit, control, setValue, watch } = useForm({
+    defaultValues: transform.toForm(currentSearch, satellites),
   });
 
   const onSubmit = values => {
-    const query = {
-      satellites: keyArrayForTruthyObjectValues(values.satellites),
-      start_date: values.start_date.toISOString(),
-      end_date: values.end_date.toISOString(),
-    };
-    onSubmitProp(query);
+    onSubmitProp(transform.toSearch(values));
   };
 
   const handleInfoClick = info => () => {
     onInfoClick(info);
+  };
+
+  /** @param {import('typings/orbis').DateRange<Date>} range */
+  const handleDateRangePickerApply = range => {
+    setValue('startDate', range.startDate, {
+      shouldValidate: true,
+    });
+    setValue('endDate', range.endDate, {
+      shouldValidate: true,
+    });
+    setPickerOpen(false);
+  };
+
+  const handleDateRangeClick = () => setPickerOpen(open => !open);
+
+  const handleResetClick = () => {
+    setValue('startDate', undefined);
+    setValue('endDate', undefined);
   };
 
   return (
@@ -157,37 +188,41 @@ const SearchForm = ({
         </FormGroup>
       </FormControl>
       <Divider className={styles.divider} />
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Date</FormLabel>
-        <div className={styles.datePickers}>
-          <Controller
-            name="start_date"
-            control={control}
-            render={props => (
-              <DatePicker
-                dateFormat={DATE_FORMAT}
-                selected={props.value}
-                onChange={props.onChange}
-                customInput={<CustomDatePicker />}
-                selectsStart
-              />
-            )}
+      <Tooltip
+        classes={{
+          tooltip: styles.tooltip,
+          arrow: styles.arrow,
+        }}
+        interactive
+        arrow
+        placement="right"
+        open={pickerOpen}
+        PopperProps={{
+          popperOptions: {
+            modifiers: {
+              offset: {
+                enabled: true,
+                offset: '0px, 8px',
+              },
+            },
+          },
+        }}
+        title={
+          <DateRangePicker
+            initialRange={{
+              startDate: dateStringToDate(watch('startDate')),
+              endDate: dateStringToDate(watch('endDate')),
+            }}
+            onApply={handleDateRangePickerApply}
           />
-          <Controller
-            name="end_date"
-            control={control}
-            render={props => (
-              <DatePicker
-                dateFormat={DATE_FORMAT}
-                selected={props.value}
-                onChange={props.onChange}
-                customInput={<CustomDatePicker />}
-                selectsEnd
-              />
-            )}
-          />
-        </div>
-      </FormControl>
+        }
+      >
+        <DateRangeInput
+          register={register}
+          onDateRangeClick={handleDateRangeClick}
+          onResetClick={handleResetClick}
+        />
+      </Tooltip>
       {aoiTooLarge && (
         <Well severity="error">AOI is too large, redraw or zoom in</Well>
       )}
