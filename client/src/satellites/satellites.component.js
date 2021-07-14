@@ -16,12 +16,8 @@ import Results from './results/results.component';
 import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
-  deletePinnedScene,
-  fetchPinnedScenes,
   fetchSatellites,
   fetchSatelliteScenes,
-  pinnedScenesSelector,
-  pinScene,
   satellitesSelector,
   scenesSelector,
   selectedSceneSelector,
@@ -55,7 +51,6 @@ const Satellites = () => {
   const satellites = useSelector(satellitesSelector);
   const scenes = useSelector(scenesSelector);
   const selectedScene = useSelector(selectedSceneSelector);
-  const pinnedScenes = useSelector(pinnedScenesSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
   const visualisations = satellites?.find(
@@ -73,12 +68,6 @@ const Satellites = () => {
       dispatch(fetchSatellites());
     }
   }, [satellites, dispatch]);
-
-  useEffect(() => {
-    if (!pinnedScenes) {
-      dispatch(fetchPinnedScenes());
-    }
-  }, [pinnedScenes, dispatch]);
 
   /**
    * @param {{type: string, data: any}} info
@@ -133,7 +122,6 @@ const Satellites = () => {
         <Results
           scenes={scenes}
           selectedScene={selectedScene}
-          pinnedScenes={pinnedScenes}
           visualisationId={visualisationId}
           cloudCoverPercentage={cloudCoverPercentage}
           onCloudCoverSliderChange={setCloudCover}
@@ -141,8 +129,6 @@ const Satellites = () => {
             dispatch(selectScene(scene));
             setVisiblePanel(Panels.VISUALISATION);
           }}
-          onScenePin={scene => dispatch(pinScene(scene))}
-          onSceneUnpin={scene => dispatch(deletePinnedScene(scene.id))}
           onInfoClick={handleInfoClick}
         />
       )}
