@@ -26,7 +26,7 @@ import {
   setCurrentVisualisation,
   visualisationIdSelector,
 } from './satellites.slice';
-import SatelliteSearch from './search/satellite-search.component';
+import SatelliteSearch from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
 
 const Panels = {
