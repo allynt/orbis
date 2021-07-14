@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
-import SatelliteSearch from './satellite-search/satellite-search.component';
 import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
@@ -31,6 +30,7 @@ import {
   setCurrentVisualisation,
   visualisationIdSelector,
 } from './satellites.slice';
+import SatelliteSearch from './search/satellite-search.component';
 import Visualisation from './visualisation/visualisation.component';
 
 const Panels = {
