@@ -22,9 +22,14 @@ describe('ActiveUsersBoard', () => {
         customer={customer}
       />,
     );
-    activeUsers.forEach(user =>
-      expect(getByText(user.user[text])).toBeInTheDocument(),
-    );
+    activeUsers.forEach((user, i) => {
+      if (i <= 4) {
+        expect(getByText(user.user[text])).toBeInTheDocument();
+      } else {
+        userEvent.click(getByText('Next'));
+        expect(getByText(user.user[text])).toBeInTheDocument();
+      }
+    });
   });
 
   it('Displays user Orb licence names', () => {
@@ -39,7 +44,7 @@ describe('ActiveUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText, queryByText } = render(
+    const { queryAllByText, queryByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={activeUsers}
         customer={{ name: 'Customer Name' }}
@@ -48,9 +53,9 @@ describe('ActiveUsersBoard', () => {
 
     expect(queryByText('No licences')).not.toBeInTheDocument();
 
-    activeUsers.forEach((_, i) =>
-      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
-    );
+    activeUsers.slice(0, 5).forEach((u, i) => {
+      expect(queryAllByText('Not currently available')[i]).toBeInTheDocument();
+    });
   });
 
   it('Displays a placeholder when user has no licences', () => {
@@ -181,5 +186,29 @@ describe('ActiveUsersBoard', () => {
       );
       expect(getByText('No Active Users')).toBeInTheDocument();
     });
+  });
+
+  it('Does not show pagination if rows <= 5', () => {
+    const { queryByText } = render(
+      <ActiveUsersBoard
+        activeCustomerUsers={[
+          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
+        ]}
+        customer={customer}
+      />,
+    );
+    expect(queryByText('Next')).not.toBeInTheDocument();
+    expect(queryByText('Prev')).not.toBeInTheDocument();
+  });
+
+  it('Shows pagination if rows > 5', () => {
+    const { getByText } = render(
+      <ActiveUsersBoard
+        activeCustomerUsers={activeUsers}
+        customer={customer}
+      />,
+    );
+    expect(getByText('Next')).toBeInTheDocument();
+    expect(getByText('Prev')).toBeInTheDocument();
   });
 });

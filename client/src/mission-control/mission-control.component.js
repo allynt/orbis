@@ -120,7 +120,6 @@ export const MissionControl = () => {
   }, [currentCustomer, customerUsers, dispatch]);
 
   const handleCreateUserFormSubmit = values => {
-    console.log('values: ', values);
     setDialogForm(null);
     dispatch(createCustomerUser(values));
   };

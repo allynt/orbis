@@ -41,7 +41,6 @@
     "@luma.gl/gltools": "^8.3.1",
     "@luma.gl/webgl": "^8.3.1",
     "@mapbox/mapbox-gl-draw": "^1.1.2",
-    "@material-ui/data-grid": "^4.0.0-alpha.32",
     "@material-ui/icons": "^4.11.2",
     "@math.gl/web-mercator": "^3.4.2",
     "@nebula.gl/edit-modes": "^0.22.3",

@@ -6,26 +6,23 @@ import {
   makeStyles,
   Menu,
   MenuItem,
-  Table,
   TableBody,
   TableContainer,
   TableHead,
-  TableRow,
-  TableFooter,
   TriangleIcon,
-  TablePagination,
 } from '@astrosat/astrosat-ui';
 
-import { UsersViewTableCell } from 'mission-control/mission-control-table/mission-control-table.component';
+import {
+  UsersViewTable,
+  UsersViewTableRow,
+  UsersViewTableCell,
+} from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 import QuickView from './quick-view/quick-view.component';
-import {
-  usePaginationStyles,
-  TablePaginationActions,
-} from '../table-pagination.js';
+import { UsersViewTablePagination } from '../table-pagination.component';
 
 const USER_LABELS = {
   standard: 'Standard',
@@ -34,13 +31,13 @@ const USER_LABELS = {
 
 const TableHeader = () => (
   <TableHead>
-    <TableRow>
+    <UsersViewTableRow>
       <UsersViewTableCell align="left">Users</UsersViewTableCell>
       <UsersViewTableCell align="left">Activated Licences</UsersViewTableCell>
       <UsersViewTableCell align="left">Email</UsersViewTableCell>
       <UsersViewTableCell align="left">Type</UsersViewTableCell>
       <UsersViewTableCell align="left" />
-    </TableRow>
+    </UsersViewTableRow>
   </TableHead>
 );
 
@@ -105,7 +102,7 @@ const UserRow = ({
   };
 
   return (
-    <TableRow>
+    <UsersViewTableRow>
       <UsersViewTableCell>{customerUser?.user?.name}</UsersViewTableCell>
       <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
       <UsersViewTableCell>{customerUser?.user?.email}</UsersViewTableCell>
@@ -153,18 +150,13 @@ const UserRow = ({
           )}
         </OptionsMenu>
       </UsersViewTableCell>
-    </TableRow>
+    </UsersViewTableRow>
   );
 };
 
 const useStyles = makeStyles(theme => ({
   box: {
     maxHeight: `calc(100% - ${theme.spacing(10)})`,
-  },
-  pagination: {
-    root: {
-      border: '2px solid red',
-    },
   },
 }));
 
@@ -226,7 +218,6 @@ export const ActiveUsersBoard = ({
   };
 
   const styles = useStyles({});
-  const paginationStyles = usePaginationStyles({});
 
   const rows =
     activeCustomerUsers?.length > 0 ? (
@@ -249,11 +240,11 @@ export const ActiveUsersBoard = ({
         );
       })
     ) : (
-      <TableRow>
+      <UsersViewTableRow>
         <UsersViewTableCell align="center" colSpan={5}>
           No Active Users
         </UsersViewTableCell>
-      </TableRow>
+      </UsersViewTableRow>
     );
 
   return (
@@ -266,36 +257,26 @@ export const ActiveUsersBoard = ({
     >
       <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
       <TableContainer>
-        <Table stickyHeader>
+        <UsersViewTable>
           <TableHeader />
           <TableBody>
-            {rowsPerPage > 0
-              ? rows.slice(
+            {Array.isArray(rows) && rowsPerPage > 0
+              ? rows?.slice(
                   currentPage * rowsPerPage,
                   currentPage * rowsPerPage + rowsPerPage,
                 )
               : rows}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                classes={paginationStyles}
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                colSpan={3}
-                count={rows ? rows.length : 0}
-                rowsPerPage={rowsPerPage}
-                page={currentPage}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-                ActionsComponent={TablePaginationActions}
-                SelectProps={{
-                  inputProps: { 'aria-label': 'rows per page' },
-                  native: true,
-                }}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
+          {Array.isArray(rows) ? (
+            <UsersViewTablePagination
+              count={rows ? rows.length : 0}
+              rowsPerPage={rowsPerPage}
+              page={currentPage}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          ) : null}
+        </UsersViewTable>
       </TableContainer>
     </Box>
   );

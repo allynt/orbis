@@ -75,6 +75,27 @@ export const activeUsers = [
     invitation_date: '2020-01-31T11:46:12.618090Z',
     user: { name: 'Test Three', email: 'test3@test.com' },
   },
+  {
+    id: '4',
+    licences: ['7', '8'],
+    type: 'MANAGER',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test Four', email: 'test4@test.com' },
+  },
+  {
+    id: '5',
+    licences: ['9', '10'],
+    type: 'MEMBER',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test Five', email: 'test5@test.com' },
+  },
+  {
+    id: '6',
+    licences: ['11', '12'],
+    type: 'MEMBER',
+    invitation_date: '2020-01-31T11:46:12.618090Z',
+    user: { name: 'Test Six', email: 'test6@test.com' },
+  },
 ];
 
 export const pendingUsers = [

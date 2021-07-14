@@ -4,39 +4,36 @@ import {
   Button,
   makeStyles,
   MenuItem,
-  Table,
   TableBody,
   TableContainer,
   TableHead,
-  TableFooter,
-  TableRow,
-  TablePagination,
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
-import { UsersViewTableCell } from 'mission-control/mission-control-table/mission-control-table.component';
+import {
+  UsersViewTable,
+  UsersViewTableRow,
+  UsersViewTableCell,
+} from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 
-import {
-  usePaginationStyles,
-  TablePaginationActions,
-} from '../table-pagination.js';
+import { UsersViewTablePagination } from '../table-pagination.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
 const TableHeader = () => (
   <TableHead>
-    <TableRow>
+    <UsersViewTableRow>
       <UsersViewTableCell align="left">Pending Invitations</UsersViewTableCell>
       <UsersViewTableCell align="left">Email</UsersViewTableCell>
       <UsersViewTableCell align="left">Licence Type</UsersViewTableCell>
       <UsersViewTableCell align="left">Invitation Sent</UsersViewTableCell>
       <UsersViewTableCell align="left">Invited</UsersViewTableCell>
       <UsersViewTableCell align="left" />
-    </TableRow>
+    </UsersViewTableRow>
   </TableHead>
 );
 
@@ -46,7 +43,7 @@ const TableHeader = () => (
  *   customer?: import('typings/orbis').Customer
  *   onResendInvitationClick?: () => void
  *   onWithdrawInvitationClick?: () => void
- * }} param0
+ * }} props
  */
 const PendingUserRow = ({
   customerUser,
@@ -82,7 +79,7 @@ const PendingUserRow = ({
   };
 
   return (
-    <TableRow>
+    <UsersViewTableRow>
       <UsersViewTableCell>{customerUser.user.name}</UsersViewTableCell>
       <UsersViewTableCell>{customerUser.user.email}</UsersViewTableCell>
       <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
@@ -101,7 +98,7 @@ const PendingUserRow = ({
           <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
         </OptionsMenu>
       </UsersViewTableCell>
-    </TableRow>
+    </UsersViewTableRow>
   );
 };
 
@@ -138,7 +135,6 @@ export const PendingInvitationsBoard = ({
   };
 
   const styles = useStyles();
-  const paginationStyles = usePaginationStyles({});
 
   const rows =
     pendingUsers && pendingUsers.length > 0 ? (
@@ -152,38 +148,28 @@ export const PendingInvitationsBoard = ({
         />
       ))
     ) : (
-      <TableRow>
+      <UsersViewTableRow>
         <UsersViewTableCell align="center" colSpan={6}>
           No Pending Users
         </UsersViewTableCell>
-      </TableRow>
+      </UsersViewTableRow>
     );
 
   return (
     <TableContainer className={styles.container}>
-      <Table stickyHeader>
+      <UsersViewTable>
         <TableHeader />
         <TableBody>{rows}</TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              classes={paginationStyles}
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows ? rows.length : 0}
-              rowsPerPage={rowsPerPage}
-              page={currentPage}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+        {Array.isArray(rows) ? (
+          <UsersViewTablePagination
+            count={rows ? rows.length : 0}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        ) : null}
+      </UsersViewTable>
     </TableContainer>
   );
 };
