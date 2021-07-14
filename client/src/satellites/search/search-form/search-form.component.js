@@ -152,10 +152,10 @@ const SearchForm = ({
 
   /** @param {import('typings/orbis').DateRange<Date>} range */
   const handleDateRangePickerApply = range => {
-    setValue('startDate', range.startDate, {
+    setValue('startDate', formatDate(range.startDate), {
       shouldValidate: true,
     });
-    setValue('endDate', range.endDate, {
+    setValue('endDate', formatDate(range.endDate), {
       shouldValidate: true,
     });
     setPickerOpen(false);
