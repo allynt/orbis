@@ -129,7 +129,7 @@ const useStyles = makeStyles(theme => ({
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */
-const SatelliteSearchForm = ({
+const SearchForm = ({
   satellites,
   aoi,
   aoiTooLarge = false,
@@ -235,4 +235,4 @@ const SatelliteSearchForm = ({
   );
 };
 
-export default SatelliteSearchForm;
+export default SearchForm;

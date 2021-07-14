@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@astrosat/astrosat-ui';
 
-import SatelliteSearchForm from './search-form/search-form.component';
+import SearchForm from './search-form/search-form.component';
 
 /**
  * @param {{
@@ -30,7 +30,7 @@ const Search = ({
         Draw your AOI
       </Button>
 
-      <SatelliteSearchForm
+      <SearchForm
         satellites={satellites}
         aoi={aoi}
         aoiTooLarge={aoiTooLarge}

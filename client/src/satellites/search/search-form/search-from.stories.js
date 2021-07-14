@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import SatelliteSearchForm from './search-form.component';
+import SearchForm from './search-form.component';
 
 export default {
   title: 'Satellites/Search/SearchForm',
@@ -19,7 +19,7 @@ const mockStore = configureMockStore();
 
 const Template = args => (
   <Provider store={mockStore({ satellites: {}, app: { config: {} } })}>
-    <SatelliteSearchForm {...args} />
+    <SearchForm {...args} />
   </Provider>
 );
 

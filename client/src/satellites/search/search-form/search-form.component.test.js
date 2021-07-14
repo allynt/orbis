@@ -3,7 +3,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SatelliteSearchForm from './search-form.component';
+import SearchForm from './search-form.component';
 
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
@@ -13,9 +13,7 @@ describe('<SearchForm />', () => {
         id: i,
         label: `Satellite ${i}`,
       }));
-    const { getByRole } = render(
-      <SatelliteSearchForm satellites={satellites} />,
-    );
+    const { getByRole } = render(<SearchForm satellites={satellites} />);
     satellites.forEach(satellite =>
       expect(
         getByRole('checkbox', { name: satellite.label }),
@@ -38,7 +36,7 @@ describe('<SearchForm />', () => {
       tiers: ['free', 'high'],
     };
     const { getByRole } = render(
-      <SatelliteSearchForm
+      <SearchForm
         satellites={satellites}
         currentSearch={{}}
         aoi={[[]]}
@@ -69,10 +67,7 @@ describe('<SearchForm />', () => {
       tiers: ['mid', 'high'],
     };
     const { getByRole } = render(
-      <SatelliteSearchForm
-        satellites={satellites}
-        currentSearch={currentSearch}
-      />,
+      <SearchForm satellites={satellites} currentSearch={currentSearch} />,
     );
     expect(getByRole('checkbox', { name: 'Satellite 3' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Satellite 4' })).toBeChecked();
@@ -83,9 +78,7 @@ describe('<SearchForm />', () => {
   });
 
   it('Shows an error and disables the search button if geometry is too large', () => {
-    const { getByText, getByRole } = render(
-      <SatelliteSearchForm aoiTooLarge />,
-    );
+    const { getByText, getByRole } = render(<SearchForm aoiTooLarge />);
     expect(getByRole('alert')).toBeInTheDocument();
     expect(
       getByText('AOI is too large, redraw or zoom in'),
@@ -94,13 +87,13 @@ describe('<SearchForm />', () => {
   });
 
   it("Disables the search button if there's no aoi drawn", () => {
-    const { getByRole } = render(<SatelliteSearchForm />);
+    const { getByRole } = render(<SearchForm />);
     expect(getByRole('button', { name: 'Search' })).toBeDisabled();
   });
 
   it('Enables the search button if an aoi has been drawn', () => {
     const { getByRole } = render(
-      <SatelliteSearchForm
+      <SearchForm
         aoi={[
           [123, 123],
           [345, 345],
@@ -112,9 +105,7 @@ describe('<SearchForm />', () => {
 
   it('Calls onInfoClick when an info button is clicked', () => {
     const onInfoClick = jest.fn();
-    const { getAllByRole } = render(
-      <SatelliteSearchForm onInfoClick={onInfoClick} />,
-    );
+    const { getAllByRole } = render(<SearchForm onInfoClick={onInfoClick} />);
     userEvent.click(getAllByRole('button', { name: 'Info' })[0]);
     expect(onInfoClick).toBeCalled();
   });
