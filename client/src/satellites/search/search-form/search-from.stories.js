@@ -3,10 +3,10 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import SatelliteSearchForm from './satellite-search-form.component';
+import SatelliteSearchForm from './search-form.component';
 
 export default {
-  title: 'Satellites/SatelliteSearch/SatelliteSearchForm',
+  title: 'Satellites/Search/SearchForm',
   argTypes: {
     onSubmit: { action: true },
     setVisiblePanel: { action: true },

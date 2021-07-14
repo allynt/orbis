@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@astrosat/astrosat-ui';
 
-import SatelliteSearchForm from './search-form/satellite-search-form.component';
+import SatelliteSearchForm from './search-form/search-form.component';
 
 /**
  * @param {{

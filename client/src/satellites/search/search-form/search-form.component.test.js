@@ -3,7 +3,7 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SatelliteSearchForm from './satellite-search-form.component';
+import SatelliteSearchForm from './search-form.component';
 
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
