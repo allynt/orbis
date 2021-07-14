@@ -23,24 +23,6 @@ import { InfoType } from 'satellites/satellite.constants';
 const DATE_FORMAT = 'yyy-MM-dd';
 const DAYS_IN_PAST = 7;
 
-const TIERS = [
-  {
-    id: 'free',
-    label: 'Free images',
-    description: 'Some text describing the FREE images',
-  },
-  {
-    id: 'mid',
-    label: 'Mid-resolution',
-    description: 'Some text describing the MID-RES images',
-  },
-  {
-    id: 'high',
-    label: 'High-resolution',
-    description: 'Some text describing the HIGH-RES images',
-  },
-];
-
 const Checkbox = ({ name, control, label, onInfoClick }) => {
   const styles = useStyles();
   return (
@@ -90,7 +72,6 @@ const boolObjectForIdArray = (array, searchArray) =>
  */
 const transformSearchToFormValues = (search, satellites) => ({
   satellites: boolObjectForIdArray(satellites, search?.satellites),
-  tiers: boolObjectForIdArray(TIERS, search?.tiers),
   start_date: search?.start_date
     ? new Date(search.start_date)
     : subDays(new Date(), DAYS_IN_PAST),
@@ -124,7 +105,7 @@ const useStyles = makeStyles(theme => ({
  *  currentSearch?: Partial<import('typings/satellites').SavedSearch>
  *  onSubmit: (search: Pick<
  *                      import('typings/satellites').SavedSearch,
- *                      'satellites' | 'start_date' | 'end_date' | 'tiers'
+ *                      'satellites' | 'start_date' | 'end_date'
  *                    >) => void
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
@@ -133,7 +114,7 @@ const SearchForm = ({
   satellites,
   aoi,
   aoiTooLarge = false,
-  currentSearch = { satellites: ['sentinel-2'], tiers: ['free'] },
+  currentSearch = { satellites: ['sentinel-2'] },
   onSubmit: onSubmitProp,
   onInfoClick,
 }) => {
@@ -146,7 +127,6 @@ const SearchForm = ({
   const onSubmit = values => {
     const query = {
       satellites: keyArrayForTruthyObjectValues(values.satellites),
-      tiers: keyArrayForTruthyObjectValues(values.tiers),
       start_date: values.start_date.toISOString(),
       end_date: values.end_date.toISOString(),
     };
@@ -208,26 +188,9 @@ const SearchForm = ({
           />
         </div>
       </FormControl>
-      <Divider className={styles.divider} />
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Resolution</FormLabel>
-        <FormGroup>
-          {TIERS.map(tier => (
-            <Checkbox
-              key={tier.id}
-              name={`tiers.${tier.id}`}
-              control={control}
-              label={tier.label}
-              onInfoClick={handleInfoClick({ type: InfoType.TIER, data: tier })}
-            />
-          ))}
-        </FormGroup>
-      </FormControl>
-      <>
-        {aoiTooLarge && (
-          <Well severity="error">AOI is too large, redraw or zoom in</Well>
-        )}
-      </>
+      {aoiTooLarge && (
+        <Well severity="error">AOI is too large, redraw or zoom in</Well>
+      )}
       <Button type="submit" disabled={!aoi || aoiTooLarge}>
         Search
       </Button>

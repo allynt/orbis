@@ -8,10 +8,7 @@ export default {
   title: 'Satellites/Results',
   argTypes: {
     onSceneClick: { action: true },
-    onScenePin: { action: true },
-    onSceneUnpin: { action: true },
     onInfoClick: { action: true },
-    onSaveSearchSubmit: { action: true },
   },
 };
 
@@ -27,7 +24,6 @@ WithScenes.args = {
       id: `${i}`,
       created: faker.date.past().toISOString(),
       cloudCover: faker.random.number(15),
-      tier: faker.random.arrayElement(['free', 'mid', 'high']),
       thumbnail_url: faker.image.imageUrl(),
     })),
 };

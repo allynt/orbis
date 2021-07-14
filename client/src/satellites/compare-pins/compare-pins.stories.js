@@ -19,7 +19,6 @@ WithScenes.args = {
       id: i,
       created: faker.date.past().toISOString(),
       cloudCover: faker.random.number(100),
-      tier: faker.random.arrayElement(['free', 'mid', 'high']),
       thumbnail_url: faker.random.image(),
     })),
 };

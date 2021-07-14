@@ -5,14 +5,15 @@ import userEvent from '@testing-library/user-event';
 
 import SearchForm from './search-form.component';
 
+const satellites = Array(5)
+  .fill()
+  .map((_, i) => ({
+    id: `sat${i}`,
+    label: `Satellite ${i}`,
+  }));
+
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
-    const satellites = Array(5)
-      .fill()
-      .map((_, i) => ({
-        id: i,
-        label: `Satellite ${i}`,
-      }));
     const { getByRole } = render(<SearchForm satellites={satellites} />);
     satellites.forEach(satellite =>
       expect(
@@ -23,17 +24,10 @@ describe('<SearchForm />', () => {
 
   it('Calls onSubmit with the new values when submitted', async () => {
     const onSubmit = jest.fn();
-    const satellites = Array(5)
-      .fill()
-      .map((_, i) => ({
-        id: `sat${i}`,
-        label: `Satellite ${i}`,
-      }));
     const expected = {
       satellites: ['sat0', 'sat2'],
       start_date: expect.stringContaining(''),
       end_date: expect.stringContaining(''),
-      tiers: ['free', 'high'],
     };
     const { getByRole } = render(
       <SearchForm
@@ -43,36 +37,24 @@ describe('<SearchForm />', () => {
         onSubmit={onSubmit}
       />,
     );
-    [
-      'Satellite 0',
-      'Satellite 2',
-      'Free images',
-      'High-resolution',
-    ].forEach(name => userEvent.click(getByRole('checkbox', { name })));
+    ['Satellite 0', 'Satellite 2'].forEach(name =>
+      userEvent.click(getByRole('checkbox', { name })),
+    );
     userEvent.click(getByRole('button', { name: 'Search' }));
     await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
   });
 
   it('Uses the existing search if available', () => {
-    const satellites = Array(5)
-      .fill()
-      .map((_, i) => ({
-        id: `sat${i}`,
-        label: `Satellite ${i}`,
-      }));
     const currentSearch = {
       satellites: ['sat3', 'sat4'],
       start_date: new Date(2000, 0, 0).toISOString(),
       end_date: new Date(2001, 0, 0).toISOString(),
-      tiers: ['mid', 'high'],
     };
     const { getByRole } = render(
       <SearchForm satellites={satellites} currentSearch={currentSearch} />,
     );
     expect(getByRole('checkbox', { name: 'Satellite 3' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Satellite 4' })).toBeChecked();
-    expect(getByRole('checkbox', { name: 'Mid-resolution' })).toBeChecked();
-    expect(getByRole('checkbox', { name: 'High-resolution' })).toBeChecked();
     expect(getByRole('button', { name: '1999-12-31' })).toBeInTheDocument();
     expect(getByRole('button', { name: '2000-12-31' })).toBeInTheDocument();
   });
@@ -105,7 +87,9 @@ describe('<SearchForm />', () => {
 
   it('Calls onInfoClick when an info button is clicked', () => {
     const onInfoClick = jest.fn();
-    const { getAllByRole } = render(<SearchForm onInfoClick={onInfoClick} />);
+    const { getAllByRole } = render(
+      <SearchForm satellites={satellites} onInfoClick={onInfoClick} />,
+    );
     userEvent.click(getAllByRole('button', { name: 'Info' })[0]);
     expect(onInfoClick).toBeCalled();
   });

@@ -109,7 +109,6 @@ const SceneListItem = ({
           </>
         }
         primaryTypographyProps={{ id: 'primary-text' }}
-        secondary={scene.tier === 'free' && 'Free Product'}
         secondaryTypographyProps={{ color: 'primary' }}
       />
       {secondaryAction && (

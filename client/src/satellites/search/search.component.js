@@ -11,7 +11,7 @@ import SearchForm from './search-form/search-form.component';
  *  aoi?: number[][]
  *  aoiTooLarge?: boolean
  *  onDrawAoiClick: React.MouseEventHandler<HTMLButtonElement>
- *  onSearch: (search: Pick<import('typings/satellites').SavedSearch, "satellites" | "end_date" | "start_date" | "tiers">) => void
+ *  onSearch: (search: Pick<import('typings/satellites').SavedSearch, "satellites" | "end_date" | "start_date">) => void
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */

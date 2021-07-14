@@ -24,7 +24,6 @@ WithScene.args = {
     id: faker.random.uuid(),
     created: faker.date.past().toISOString(),
     cloudCover: 0,
-    tier: 'free',
     thumbnail_url: faker.image.imageUrl(),
   },
 };

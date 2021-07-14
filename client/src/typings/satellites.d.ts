@@ -1,5 +1,4 @@
 export type SatelliteId = 'sentinel-2' | 'landsat' | 'modis';
-export type TierId = 'free' | 'mid' | 'high';
 
 export type Visualisation = {
   description: string;
@@ -12,7 +11,6 @@ export type Satellite = {
   description: string;
   id: SatelliteId;
   label: string;
-  tiers: { id: TierId; label: string; description: string }[];
   visualisations: Visualisation[];
 };
 
@@ -29,7 +27,6 @@ export type Scene = {
   metadata: { [key: string]: any };
   satellite: SatelliteId;
   thumbnail_url: string;
-  tier: TierId;
   tile_url: string;
   owner: number;
   footprint: SceneFootprint;
@@ -44,5 +41,4 @@ export type SavedSearch = {
   owner: number;
   satellites: SatelliteId[];
   start_date: string;
-  tiers: TierId[];
 };
