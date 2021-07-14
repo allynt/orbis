@@ -1,5 +1,6 @@
 export { ColorAdjustSlider } from './color-adjust-slider/color-adjust-slider.component';
 export { ColormapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
+export { DateRangeInput } from './date-range-input/date-range-input.component';
 export { DateRangePicker } from './date-range-picker/date-range-picker.component';
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { FeatureDialog } from './feature-dialog/feature-dialog.component';

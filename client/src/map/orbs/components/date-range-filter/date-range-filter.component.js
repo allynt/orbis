@@ -14,15 +14,13 @@ import { endOfDay, startOfDay } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { DateRangePicker } from 'components';
+import { DateRangeInput, DateRangePicker } from 'components';
 import {
   dateStringToDate,
   formatDate,
   stringDateRangeToDateRange,
 } from 'utils/dates';
 import { date, FIELD_NAMES } from 'utils/validators';
-
-import { DateRangeInput } from './date-range-input.component';
 
 /**
  * @template T
