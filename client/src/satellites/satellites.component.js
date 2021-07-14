@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, ButtonGroup } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  ResultsIcon,
+  SearchIcon,
+  Tab,
+  Tabs,
+  VisualisationIcon,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,17 +17,9 @@ import SatelliteSearch from './satellite-search/satellite-search.component';
 import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
-  deletePinnedScene,
-  deleteSavedSatelliteSearch,
-  fetchPinnedScenes,
   fetchSatellites,
   fetchSatelliteScenes,
-  fetchSavedSatelliteSearches,
-  pinnedScenesSelector,
-  pinScene,
   satellitesSelector,
-  savedSearchesSelector,
-  saveSatelliteSearch,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
@@ -36,7 +35,10 @@ const Panels = {
   VISUALISATION: 'Visualisation',
 };
 
+const useStyles = makeStyles({ tab: { minWidth: '72px' } });
+
 const Satellites = () => {
+  const styles = useStyles();
   const dispatch = useDispatch();
 
   const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
@@ -49,10 +51,8 @@ const Satellites = () => {
   const satellites = useSelector(satellitesSelector);
   const scenes = useSelector(scenesSelector);
   const selectedScene = useSelector(selectedSceneSelector);
-  const pinnedScenes = useSelector(pinnedScenesSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
-  const savedSearches = useSelector(savedSearchesSelector);
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
@@ -69,18 +69,6 @@ const Satellites = () => {
     }
   }, [satellites, dispatch]);
 
-  useEffect(() => {
-    if (!pinnedScenes) {
-      dispatch(fetchPinnedScenes());
-    }
-  }, [pinnedScenes, dispatch]);
-
-  useEffect(() => {
-    if (!savedSearches) {
-      dispatch(fetchSavedSatelliteSearches());
-    }
-  }, [savedSearches, dispatch]);
-
   /**
    * @param {{type: string, data: any}} info
    */
@@ -91,33 +79,35 @@ const Satellites = () => {
 
   return (
     <>
-      <ButtonGroup
-        size="small"
-        orientation="vertical"
-        aria-label="small outlined primary button group"
+      <Tabs
+        variant="standard"
+        scrollButtons="on"
+        value={visiblePanel}
+        onChange={(_event, value) => setVisiblePanel(value)}
       >
-        <Button onClick={() => setVisiblePanel(Panels.SEARCH)}>Search</Button>
-        <Button
+        <Tab
+          className={styles.tab}
+          icon={<SearchIcon titleAccess="Search" />}
+          value={Panels.SEARCH}
+        />
+        <Tab
+          className={styles.tab}
+          icon={<ResultsIcon titleAccess="Results" />}
+          value={Panels.RESULTS}
           disabled={!scenes}
-          onClick={() => setVisiblePanel(Panels.RESULTS)}
-        >
-          Results
-        </Button>
-        <Button
+        />
+        <Tab
+          className={styles.tab}
+          icon={<VisualisationIcon titleAccess="Visualisation" />}
+          value={Panels.VISUALISATION}
           disabled={!visualisations}
-          onClick={() => setVisiblePanel(Panels.VISUALISATION)}
-        >
-          Visualisation
-        </Button>
-        {/* <Button onClick={() => setVisiblePanel(PINS)}>My Pins</Button> */}
-      </ButtonGroup>
-
+        />
+      </Tabs>
       {satellites && visiblePanel === Panels.SEARCH && (
         <SatelliteSearch
           satellites={satellites}
-          savedSearches={savedSearches}
-          currentSearch={currentSearchQuery}
           aoi={aoi}
+          currentSearch={currentSearchQuery}
           onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
           onSearch={search => {
             const newSearch = { ...search, aoi };
@@ -125,10 +115,6 @@ const Satellites = () => {
             dispatch(fetchSatelliteScenes(newSearch));
             setVisiblePanel(Panels.RESULTS);
           }}
-          onSearchReload={search =>
-            dispatch(setCurrentSatelliteSearchQuery(search))
-          }
-          onSearchDelete={({ id }) => dispatch(deleteSavedSatelliteSearch(id))}
           onInfoClick={handleInfoClick}
         />
       )}
@@ -136,7 +122,6 @@ const Satellites = () => {
         <Results
           scenes={scenes}
           selectedScene={selectedScene}
-          pinnedScenes={pinnedScenes}
           visualisationId={visualisationId}
           cloudCoverPercentage={cloudCoverPercentage}
           onCloudCoverSliderChange={setCloudCover}
@@ -144,12 +129,7 @@ const Satellites = () => {
             dispatch(selectScene(scene));
             setVisiblePanel(Panels.VISUALISATION);
           }}
-          onScenePin={scene => dispatch(pinScene(scene))}
-          onSceneUnpin={scene => dispatch(deletePinnedScene(scene.id))}
           onInfoClick={handleInfoClick}
-          onSaveSearchSubmit={name =>
-            dispatch(saveSatelliteSearch({ ...currentSearchQuery, name }))
-          }
         />
       )}
       {visiblePanel === Panels.VISUALISATION && (

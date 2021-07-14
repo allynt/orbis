@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { SatellitesProvider } from './satellites-context';
 import { satellites } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 
@@ -20,7 +21,9 @@ const Template = args => (
       app: { config: {} },
     })}
   >
-    <Satellites {...args} />
+    <SatellitesProvider>
+      <Satellites {...args} />
+    </SatellitesProvider>
   </Provider>
 );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Results from './results.component';
@@ -28,24 +28,18 @@ const mockScenes = [
 
 const renderComponent = ({
   scenes = mockScenes,
-  pinnedScenes,
   cloudCoverPercentage,
 } = {}) => {
   const onSceneClick = jest.fn();
-  const onScenePin = jest.fn();
-  const onSceneUnpin = jest.fn();
   const onInfoClick = jest.fn();
   const onSaveSearchSubmit = jest.fn();
   const onCloudCoverSliderChange = jest.fn();
   const testee = render(
     <Results
       scenes={scenes}
-      pinnedScenes={pinnedScenes}
       cloudCoverPercentage={cloudCoverPercentage}
       onCloudCoverSliderChange={onCloudCoverSliderChange}
       onSceneClick={onSceneClick}
-      onScenePin={onScenePin}
-      onSceneUnpin={onSceneUnpin}
       onInfoClick={onInfoClick}
       onSaveSearchSubmit={onSaveSearchSubmit}
     />,
@@ -55,8 +49,6 @@ const renderComponent = ({
     ...testee,
     onSceneClick,
     onInfoClick,
-    onScenePin,
-    onSceneUnpin,
     onSaveSearchSubmit,
     onCloudCoverSliderChange,
   };
@@ -70,16 +62,19 @@ describe('Satellite Results Component', () => {
   });
 
   it('should render a list of Scene results', () => {
-    const { getAllByRole, getByText } = renderComponent({});
-    expect(getAllByRole('listitem')).toHaveLength(2);
+    const { getByRole, getByText } = renderComponent();
+    expect(getByRole('button', { name: mockScenes[0].id })).toBeInTheDocument();
+    expect(getByRole('button', { name: mockScenes[1].id })).toBeInTheDocument();
     expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
   });
 
   it('Shows results filtered by cloud cover', () => {
-    const { getAllByRole, getByText } = renderComponent({
+    const { getByRole, getByText } = renderComponent({
       cloudCoverPercentage: 100,
     });
-    expect(getAllByRole('listitem')).toHaveLength(mockScenes.length);
+    mockScenes.forEach(scene =>
+      expect(getByRole('button', { name: scene.id })).toBeInTheDocument(),
+    );
     expect(getByText('Showing 3 Results of 3')).toBeInTheDocument();
   });
 
@@ -99,45 +94,5 @@ describe('Satellite Results Component', () => {
     const { getAllByRole, onInfoClick } = renderComponent();
     userEvent.click(getAllByRole('button', { name: 'More Info' })[0]);
     expect(onInfoClick).toBeCalled();
-  });
-
-  it('Calls onScenePin when pin icon clicked', () => {
-    const { onScenePin, getByTitle } = renderComponent({
-      pinnedScenes: [],
-    });
-
-    userEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
-    expect(onScenePin).toHaveBeenCalledWith(mockScenes[0]);
-  });
-
-  it('should call onSceneUnpin when already pinned pin icon clicked', () => {
-    const { onSceneUnpin, getByTitle } = renderComponent({
-      pinnedScenes: [{ ...mockScenes[0] }],
-    });
-
-    userEvent.click(getByTitle(`pin-icon-${mockScenes[0].id}`));
-    expect(onSceneUnpin).toHaveBeenCalledWith(mockScenes[0]);
-  });
-
-  it('should show dialog component when Save Search button clicked', () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    expect(getByText('Name Search')).toBeVisible();
-  });
-
-  it('Closes the dialog when the background is clicked', () => {
-    const { getByText, getByRole } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    expect(getByText('Name Search')).toBeVisible();
-    userEvent.click(getByRole('none'));
-    expect(getByText('Name Search')).not.toBeVisible();
-  });
-
-  it('Calls onSaveSearchSubmit when the save search form is submitted', async () => {
-    const { getByRole, onSaveSearchSubmit } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    userEvent.type(getByRole('textbox'), 'Test Name');
-    userEvent.click(getByRole('button', { name: 'Save Search' }));
-    await waitFor(() => expect(onSaveSearchSubmit).toBeCalledWith('Test Name'));
   });
 });
