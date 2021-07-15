@@ -10,7 +10,7 @@ import {
   selectPollingPeriod,
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
-import { MissionControl } from 'mission-control/mission-control';
+import { MissionControl } from 'mission-control/mission-control.component';
 import { SatellitesProvider } from 'satellites/satellites-context';
 
 import ControlPanel from '../control-panel/control-panel.component';
