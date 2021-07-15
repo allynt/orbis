@@ -13,7 +13,7 @@ import {
   Well,
 } from '@astrosat/astrosat-ui/';
 
-import { subDays } from 'date-fns';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { Controller, useForm } from 'react-hook-form';
 
 import { DateRangeInput, DateRangePicker, InfoButton } from 'components';
@@ -84,8 +84,10 @@ export const transform = {
   toSearch: form => ({
     satellites: keyArrayForTruthyObjectValues(form?.satellites ?? {}),
     start_date:
-      form.startDate && dateStringToDate(form.startDate).toISOString(),
-    end_date: form.endDate && dateStringToDate(form.endDate).toISOString(),
+      form.startDate &&
+      startOfDay(dateStringToDate(form.startDate)).toISOString(),
+    end_date:
+      form.endDate && endOfDay(dateStringToDate(form.endDate)).toISOString(),
   }),
 };
 
@@ -164,8 +166,8 @@ const SearchForm = ({
   const handleDateRangeClick = () => setPickerOpen(open => !open);
 
   const handleResetClick = () => {
-    setValue('startDate', undefined);
-    setValue('endDate', undefined);
+    setValue('startDate', formatDate(subDays(new Date(), 30)));
+    setValue('endDate', formatDate(new Date()));
   };
 
   return (

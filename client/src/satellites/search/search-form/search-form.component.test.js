@@ -2,6 +2,7 @@ import React from 'react';
 
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 
 import SearchForm, { transform } from './search-form.component';
 
@@ -13,10 +14,10 @@ const satellites = Array(5)
   }));
 
 describe.each`
-  inSearch                              | inForm                                                | searchKey       | formKey
-  ${['one', 'two', 'three']}            | ${{ one: true, two: true, three: true, four: false }} | ${'satellites'} | ${'satellites'}
-  ${new Date(2000, 0, 1).toISOString()} | ${'01/01/2000'}                                       | ${'start_date'} | ${'startDate'}
-  ${new Date(2000, 0, 1).toISOString()} | ${'01/01/2000'}                                       | ${'end_date'}   | ${'endDate'}
+  inSearch                                        | inForm                                                | searchKey       | formKey
+  ${['one', 'two', 'three']}                      | ${{ one: true, two: true, three: true, four: false }} | ${'satellites'} | ${'satellites'}
+  ${new Date(2000, 0, 1).toISOString()}           | ${'01/01/2000'}                                       | ${'start_date'} | ${'startDate'}
+  ${endOfDay(new Date(2000, 0, 1)).toISOString()} | ${'01/01/2000'}                                       | ${'end_date'}   | ${'endDate'}
 `('transform', ({ inSearch, inForm, searchKey, formKey }) => {
   describe('toForm', () => {
     it(`Converts ${searchKey} from search to form`, () => {
@@ -63,8 +64,8 @@ describe('<SearchForm />', () => {
     const onSubmit = jest.fn();
     const expected = {
       satellites: ['sat0', 'sat2'],
-      start_date: expect.stringContaining(''),
-      end_date: expect.stringContaining(''),
+      start_date: new Date(2000, 0, 1).toISOString(),
+      end_date: endOfDay(new Date(2010, 0, 1)).toISOString(),
     };
     const { getByRole } = render(
       <SearchForm satellites={satellites} aoi={[[]]} onSubmit={onSubmit} />,
@@ -72,6 +73,59 @@ describe('<SearchForm />', () => {
     ['Satellite 0', 'Satellite 2'].forEach(name =>
       userEvent.click(getByRole('checkbox', { name })),
     );
+    userEvent.clear(getByRole('textbox', { name: 'Start Date' }));
+    userEvent.type(getByRole('textbox', { name: 'Start Date' }), '01/01/2000');
+    userEvent.clear(getByRole('textbox', { name: 'End Date' }));
+    userEvent.type(getByRole('textbox', { name: 'End Date' }), '01/01/2010');
+    userEvent.click(getByRole('button', { name: 'Search' }));
+    await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
+  });
+
+  it('Allows for changing date using the picker', async () => {
+    const onSubmit = jest.fn();
+    const expected = {
+      satellites: expect.anything(),
+      start_date: new Date(2000, 0, 1).toISOString(),
+      end_date: endOfDay(new Date(2000, 0, 29)).toISOString(),
+    };
+    const { getByRole, getAllByRole } = render(
+      <SearchForm
+        satellites={satellites}
+        currentSearch={{
+          start_date: new Date(2000, 0, 3).toISOString(),
+          end_date: new Date(2000, 0, 4).toISOString(),
+        }}
+        aoi={[[]]}
+        onSubmit={onSubmit}
+      />,
+    );
+    userEvent.click(getByRole('button', { name: 'Show date picker' }));
+    userEvent.click(getAllByRole('button', { name: '1' })[0]);
+    userEvent.click(getAllByRole('button', { name: '29' })[1]);
+    userEvent.click(getByRole('button', { name: 'Apply' }));
+    userEvent.click(getByRole('button', { name: 'Search' }));
+    await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
+  });
+
+  it('Resets dates to the last 30 days on reset click', async () => {
+    const onSubmit = jest.fn();
+    const expected = {
+      satellites: expect.anything(),
+      start_date: startOfDay(subDays(new Date(), 30)).toISOString(),
+      end_date: endOfDay(new Date()).toISOString(),
+    };
+    const { getByRole } = render(
+      <SearchForm
+        satellites={satellites}
+        currentSearch={{
+          start_date: new Date(2000, 0, 3).toISOString(),
+          end_date: new Date(2000, 0, 4).toISOString(),
+        }}
+        aoi={[[]]}
+        onSubmit={onSubmit}
+      />,
+    );
+    userEvent.click(getByRole('button', { name: 'Reset' }));
     userEvent.click(getByRole('button', { name: 'Search' }));
     await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
   });
