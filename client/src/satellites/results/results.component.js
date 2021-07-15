@@ -35,7 +35,7 @@ const Results = ({
   );
 
   const resultCountText = allScenes
-    ? `Showing ${filteredScenes.length} Results of ${allScenes.length}`
+    ? `Showing ${filteredScenes.length} Results`
     : 'Loading Results...';
 
   return (

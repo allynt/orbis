@@ -67,7 +67,7 @@ describe('Satellite Results Component', () => {
     });
     expect(getByRole('button', { name: mockScenes[0].id })).toBeInTheDocument();
     expect(getByRole('button', { name: mockScenes[1].id })).toBeInTheDocument();
-    expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
+    expect(getByText('Showing 2 Results')).toBeInTheDocument();
   });
 
   it('should render a list of Scene results', () => {
@@ -75,7 +75,7 @@ describe('Satellite Results Component', () => {
     mockScenes.forEach(scene =>
       expect(getByRole('button', { name: scene.id })).toBeInTheDocument(),
     );
-    expect(getByText('Showing 3 Results of 3')).toBeInTheDocument();
+    expect(getByText('Showing 3 Results')).toBeInTheDocument();
   });
 
   it('Calls onCloudCoverSliderChange when the slider is moved', () => {
