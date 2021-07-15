@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Button,
   Checkbox as AuiCheckbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -96,14 +95,18 @@ export const transform = {
 };
 
 const useStyles = makeStyles(theme => ({
+  form: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    marginTop: theme.spacing(2),
+  },
+  searchButton: {
+    margin: 'auto auto 0',
+  },
+  satellites: { marginTop: theme.spacing(2) },
   checkbox: {
     display: 'flex',
-    justifyContent: 'space-between',
-  },
-  divider: { margin: theme.spacing(2, 0) },
-  datePickers: {
-    display: 'flex',
-    width: '100%',
     justifyContent: 'space-between',
   },
   tooltip: {
@@ -188,33 +191,7 @@ const SearchForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl component="fieldset" error={!!errors.satellites}>
-        <FormLabel component="legend">Satellite Image Source</FormLabel>
-        <FormGroup>
-          {satellites?.map(satellite => (
-            <Checkbox
-              key={satellite.id}
-              name={`satellites.${satellite.id}`}
-              control={control}
-              label={satellite.label}
-              onInfoClick={handleInfoClick({
-                type: InfoType.SATELLITE,
-                data: satellite,
-              })}
-            />
-          ))}
-        </FormGroup>
-        {!!errors.satellites && (
-          <FormHelperText error>
-            {
-              // @ts-ignore
-              errors.satellites.message
-            }
-          </FormHelperText>
-        )}
-      </FormControl>
-      <Divider className={styles.divider} />
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <Tooltip
         classes={{
           tooltip: styles.tooltip,
@@ -224,16 +201,6 @@ const SearchForm = ({
         arrow
         placement="right"
         open={pickerOpen}
-        PopperProps={{
-          popperOptions: {
-            modifiers: {
-              offset: {
-                enabled: true,
-                offset: '0px, 8px',
-              },
-            },
-          },
-        }}
         title={
           <DateRangePicker
             initialRange={{
@@ -259,12 +226,42 @@ const SearchForm = ({
           {errors.endDate?.message || errors.startDate?.message}
         </FormHelperText>
       )}
+      <FormControl
+        className={styles.satellites}
+        component="fieldset"
+        error={!!errors.satellites}
+      >
+        <FormGroup>
+          {satellites?.map(satellite => (
+            <Checkbox
+              key={satellite.id}
+              name={`satellites.${satellite.id}`}
+              control={control}
+              label={satellite.label}
+              onInfoClick={handleInfoClick({
+                type: InfoType.SATELLITE,
+                data: satellite,
+              })}
+            />
+          ))}
+        </FormGroup>
+        {!!errors.satellites && (
+          <FormHelperText error>
+            {
+              // @ts-ignore
+              errors.satellites.message
+            }
+          </FormHelperText>
+        )}
+      </FormControl>
       {aoiTooLarge && (
         <Well severity="error">AOI is too large, redraw or zoom in</Well>
       )}
-      <Button type="submit" disabled={!aoi || aoiTooLarge}>
-        Search
-      </Button>
+      <div className={styles.searchButton}>
+        <Button type="submit" disabled={!aoi || aoiTooLarge}>
+          Search
+        </Button>
+      </div>
     </form>
   );
 };
