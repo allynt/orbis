@@ -50,9 +50,29 @@ describe.each`
   });
 });
 
+const renderComponent = ({
+  currentSearch = undefined,
+  aoiTooLarge = undefined,
+  aoi = [[]],
+} = {}) => {
+  const onSubmit = jest.fn();
+  const onInfoClick = jest.fn();
+  const utils = render(
+    <SearchForm
+      satellites={satellites}
+      aoi={aoi}
+      currentSearch={currentSearch}
+      aoiTooLarge={aoiTooLarge}
+      onSubmit={onSubmit}
+      onInfoClick={onInfoClick}
+    />,
+  );
+  return { ...utils, onSubmit, onInfoClick };
+};
+
 describe('<SearchForm />', () => {
   it('Shows a checkbox for each available satellite', () => {
-    const { getByRole } = render(<SearchForm satellites={satellites} />);
+    const { getByRole } = renderComponent();
     satellites.forEach(satellite =>
       expect(
         getByRole('checkbox', { name: satellite.label }),
@@ -61,15 +81,12 @@ describe('<SearchForm />', () => {
   });
 
   it('Calls onSubmit with the new values when submitted', async () => {
-    const onSubmit = jest.fn();
     const expected = {
       satellites: ['sat0', 'sat2'],
       start_date: new Date(2000, 0, 1).toISOString(),
       end_date: endOfDay(new Date(2010, 0, 1)).toISOString(),
     };
-    const { getByRole } = render(
-      <SearchForm satellites={satellites} aoi={[[]]} onSubmit={onSubmit} />,
-    );
+    const { getByRole, onSubmit } = renderComponent();
     ['Satellite 0', 'Satellite 2'].forEach(name =>
       userEvent.click(getByRole('checkbox', { name })),
     );
@@ -82,23 +99,17 @@ describe('<SearchForm />', () => {
   });
 
   it('Allows for changing date using the picker', async () => {
-    const onSubmit = jest.fn();
     const expected = {
       satellites: expect.anything(),
       start_date: new Date(2000, 0, 1).toISOString(),
       end_date: endOfDay(new Date(2000, 0, 29)).toISOString(),
     };
-    const { getByRole, getAllByRole } = render(
-      <SearchForm
-        satellites={satellites}
-        currentSearch={{
-          start_date: new Date(2000, 0, 3).toISOString(),
-          end_date: new Date(2000, 0, 4).toISOString(),
-        }}
-        aoi={[[]]}
-        onSubmit={onSubmit}
-      />,
-    );
+    const { getByRole, getAllByRole, onSubmit } = renderComponent({
+      currentSearch: {
+        start_date: new Date(2000, 0, 3).toISOString(),
+        end_date: new Date(2000, 0, 4).toISOString(),
+      },
+    });
     userEvent.click(getByRole('button', { name: 'Show date picker' }));
     userEvent.click(getAllByRole('button', { name: '1' })[0]);
     userEvent.click(getAllByRole('button', { name: '29' })[1]);
@@ -108,23 +119,17 @@ describe('<SearchForm />', () => {
   });
 
   it('Resets dates to the last 30 days on reset click', async () => {
-    const onSubmit = jest.fn();
     const expected = {
       satellites: expect.anything(),
       start_date: startOfDay(subDays(new Date(), 30)).toISOString(),
       end_date: endOfDay(new Date()).toISOString(),
     };
-    const { getByRole } = render(
-      <SearchForm
-        satellites={satellites}
-        currentSearch={{
-          start_date: new Date(2000, 0, 3).toISOString(),
-          end_date: new Date(2000, 0, 4).toISOString(),
-        }}
-        aoi={[[]]}
-        onSubmit={onSubmit}
-      />,
-    );
+    const { getByRole, onSubmit } = renderComponent({
+      currentSearch: {
+        start_date: new Date(2000, 0, 3).toISOString(),
+        end_date: new Date(2000, 0, 4).toISOString(),
+      },
+    });
     userEvent.click(getByRole('button', { name: 'Reset' }));
     userEvent.click(getByRole('button', { name: 'Search' }));
     await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
@@ -136,9 +141,7 @@ describe('<SearchForm />', () => {
       start_date: new Date(2000, 0, 0).toISOString(),
       end_date: new Date(2001, 0, 0).toISOString(),
     };
-    const { getByRole } = render(
-      <SearchForm satellites={satellites} currentSearch={currentSearch} />,
-    );
+    const { getByRole } = renderComponent({ currentSearch });
     expect(getByRole('checkbox', { name: 'Satellite 3' })).toBeChecked();
     expect(getByRole('checkbox', { name: 'Satellite 4' })).toBeChecked();
     expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(
@@ -150,7 +153,7 @@ describe('<SearchForm />', () => {
   });
 
   it('Shows an error and disables the search button if geometry is too large', () => {
-    const { getByText, getByRole } = render(<SearchForm aoiTooLarge />);
+    const { getByText, getByRole } = renderComponent({ aoiTooLarge: true });
     expect(getByRole('alert')).toBeInTheDocument();
     expect(
       getByText('AOI is too large, redraw or zoom in'),
@@ -159,7 +162,7 @@ describe('<SearchForm />', () => {
   });
 
   it("Disables the search button if there's no aoi drawn", () => {
-    const { getByRole } = render(<SearchForm />);
+    const { getByRole } = renderComponent({ aoi: null });
     expect(getByRole('button', { name: 'Search' })).toBeDisabled();
   });
 
@@ -176,10 +179,7 @@ describe('<SearchForm />', () => {
   });
 
   it('Calls onInfoClick when an info button is clicked', () => {
-    const onInfoClick = jest.fn();
-    const { getAllByRole } = render(
-      <SearchForm satellites={satellites} onInfoClick={onInfoClick} />,
-    );
+    const { getAllByRole, onInfoClick } = renderComponent();
     userEvent.click(getAllByRole('button', { name: 'Info' })[0]);
     expect(onInfoClick).toBeCalled();
   });
