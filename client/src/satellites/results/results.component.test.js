@@ -61,17 +61,17 @@ describe('Satellite Results Component', () => {
     expect(getAllByRole('listitem')).toHaveLength(5);
   });
 
-  it('should render a list of Scene results', () => {
-    const { getByRole, getByText } = renderComponent();
+  it('Shows results filtered by cloud cover', () => {
+    const { getByRole, getByText } = renderComponent({
+      cloudCoverPercentage: 10,
+    });
     expect(getByRole('button', { name: mockScenes[0].id })).toBeInTheDocument();
     expect(getByRole('button', { name: mockScenes[1].id })).toBeInTheDocument();
     expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
   });
 
-  it('Shows results filtered by cloud cover', () => {
-    const { getByRole, getByText } = renderComponent({
-      cloudCoverPercentage: 100,
-    });
+  it('should render a list of Scene results', () => {
+    const { getByRole, getByText } = renderComponent();
     mockScenes.forEach(scene =>
       expect(getByRole('button', { name: scene.id })).toBeInTheDocument(),
     );
