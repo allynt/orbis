@@ -106,7 +106,6 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
 
   const headers = getJsonAuthHeaders(getState());
 
-  // satellite selection is hard-coded for now
   const response = await sendData(
     `${apiClient.apiHost}${API.scenes}`,
     { tiers: ['free'], ...query },
