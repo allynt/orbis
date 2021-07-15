@@ -7,6 +7,9 @@ import SearchForm from './search-form.component';
 
 export default {
   title: 'Satellites/Search/SearchForm',
+  args: {
+    aoi: [[]],
+  },
   argTypes: {
     onSubmit: { action: true },
     setVisiblePanel: { action: true },

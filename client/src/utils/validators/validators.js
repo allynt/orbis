@@ -96,36 +96,26 @@ const compareDate = (comparisonFunction, contextKey, message) =>
     return true;
   };
 
-export const date = yup.lazy(v =>
-  !v
-    ? yup.string()
-    : yup
-        .string()
-        .matches(
-          new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`),
-          MESSAGES.date.matches,
-        )
-        .test({
-          name: 'Valid date',
-          message: MESSAGES.date.valid,
-          test: value => {
-            return isValid(...toDMY(value));
-          },
-        })
-        .test({
-          name: 'Min Date',
-          test: compareDate(
-            compareDesc,
-            CONTEXT_KEYS.minDate,
-            MESSAGES.date.min,
-          ),
-        })
-        .test({
-          name: 'Max Date',
-          test: compareDate(
-            compareAsc,
-            CONTEXT_KEYS.maxDate,
-            MESSAGES.date.max,
-          ),
-        }),
-);
+export const baseDate = yup
+  .string()
+  .matches(
+    new RegExp(`^(\\d{1,2}(${DATE_SEPARATOR})){2}(\\d{2}){1,2}$`),
+    MESSAGES.date.matches,
+  )
+  .test({
+    name: 'Valid date',
+    message: MESSAGES.date.valid,
+    test: value => {
+      return isValid(...toDMY(value));
+    },
+  })
+  .test({
+    name: 'Min Date',
+    test: compareDate(compareDesc, CONTEXT_KEYS.minDate, MESSAGES.date.min),
+  })
+  .test({
+    name: 'Max Date',
+    test: compareDate(compareAsc, CONTEXT_KEYS.maxDate, MESSAGES.date.max),
+  });
+
+export const date = yup.lazy(v => (!v ? yup.string() : baseDate));

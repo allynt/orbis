@@ -3,8 +3,12 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
+import { ValidationError } from 'yup';
 
-import SearchForm, { transform } from './search-form.component';
+import SearchForm, {
+  transform,
+  validationSchema,
+} from './search-form.component';
 
 const satellites = Array(5)
   .fill()
@@ -46,6 +50,45 @@ describe.each`
         [searchKey]: inSearch,
       });
       expect(transform.toSearch(form)).toEqual(expected);
+    });
+  });
+});
+
+describe('validationSchema', () => {
+  const passingSchema = {
+    satellites: { test: true },
+    startDate: '01/01/2000',
+    endDate: '01/01/2000',
+  };
+  it('validates satellites', () => {
+    expect(() =>
+      validationSchema.validateSync({
+        ...passingSchema,
+        satellites: { test: false },
+      }),
+    ).toThrowError('Select at least one satellite');
+  });
+
+  describe.each([
+    ['startDate', 'Choose a start date'],
+    ['endDate', 'Choose an end date'],
+  ])('Validates $s', (key, requiredMessage) => {
+    it('is required', () => {
+      expect(() =>
+        validationSchema.validateSync({
+          ...passingSchema,
+          [key]: '',
+        }),
+      ).toThrowError(requiredMessage);
+    });
+
+    it('is a valid date', () => {
+      expect(() =>
+        validationSchema.validateSync({
+          ...passingSchema,
+          [key]: '123456',
+        }),
+      ).toThrowError('Please use the format DD/MM/YYYY');
     });
   });
 });
@@ -106,6 +149,7 @@ describe('<SearchForm />', () => {
     };
     const { getByRole, getAllByRole, onSubmit } = renderComponent({
       currentSearch: {
+        satellites: ['sat0'],
         start_date: new Date(2000, 0, 3).toISOString(),
         end_date: new Date(2000, 0, 4).toISOString(),
       },
@@ -126,6 +170,7 @@ describe('<SearchForm />', () => {
     };
     const { getByRole, onSubmit } = renderComponent({
       currentSearch: {
+        satellites: ['sat0'],
         start_date: new Date(2000, 0, 3).toISOString(),
         end_date: new Date(2000, 0, 4).toISOString(),
       },
@@ -182,5 +227,21 @@ describe('<SearchForm />', () => {
     const { getAllByRole, onInfoClick } = renderComponent();
     userEvent.click(getAllByRole('button', { name: 'Info' })[0]);
     expect(onInfoClick).toBeCalled();
+  });
+
+  it('Shows errors for satellites', async () => {
+    const { getByText, getByRole } = renderComponent({ currentSearch: {} });
+    userEvent.click(getByRole('button', { name: 'Search' }));
+    await waitFor(() =>
+      expect(getByText('Select at least one satellite')).toBeInTheDocument(),
+    );
+  });
+
+  it('Shows errors for dates', async () => {
+    const { getByText, getByRole } = renderComponent({ currentSearch: {} });
+    userEvent.click(getByRole('button', { name: 'Search' }));
+    await waitFor(() =>
+      expect(getByText('Choose an end date')).toBeInTheDocument(),
+    );
   });
 });

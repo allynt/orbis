@@ -7,18 +7,22 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   FormLabel,
   makeStyles,
   Tooltip,
   Well,
 } from '@astrosat/astrosat-ui/';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 import { DateRangeInput, DateRangePicker, InfoButton } from 'components';
 import { InfoType } from 'satellites/satellite.constants';
 import { dateStringToDate, formatDate } from 'utils/dates';
+import { baseDate } from 'utils/validators';
 
 const Checkbox = ({ name, control, label, onInfoClick }) => {
   const styles = useStyles();
@@ -112,6 +116,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+export const validationSchema = yup.object({
+  satellites: yup
+    .object()
+    .test(
+      'some-true',
+      'Select at least one satellite',
+      value => value && Object.values(value).some(v => v),
+    ),
+  startDate: yup.string().required('Choose a start date').concat(baseDate),
+  endDate: baseDate.required('Choose an end date').concat(baseDate),
+});
+
 /**
  * @param {{
  *  satellites: import('typings/satellites').Satellite[],
@@ -140,8 +156,9 @@ const SearchForm = ({
   const styles = useStyles({});
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const { register, handleSubmit, control, setValue, watch } = useForm({
+  const { register, handleSubmit, control, setValue, watch, errors } = useForm({
     defaultValues: transform.toForm(currentSearch, satellites),
+    resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = values => {
@@ -172,7 +189,7 @@ const SearchForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl component="fieldset">
+      <FormControl component="fieldset" error={!!errors.satellites}>
         <FormLabel component="legend">Satellite Image Source</FormLabel>
         <FormGroup>
           {satellites?.map(satellite => (
@@ -188,6 +205,14 @@ const SearchForm = ({
             />
           ))}
         </FormGroup>
+        {!!errors.satellites && (
+          <FormHelperText error>
+            {
+              // @ts-ignore
+              errors.satellites.message
+            }
+          </FormHelperText>
+        )}
       </FormControl>
       <Divider className={styles.divider} />
       <Tooltip
@@ -212,8 +237,12 @@ const SearchForm = ({
         title={
           <DateRangePicker
             initialRange={{
-              startDate: dateStringToDate(watch('startDate')),
-              endDate: dateStringToDate(watch('endDate')),
+              startDate: watch('startDate')
+                ? dateStringToDate(watch('startDate'))
+                : new Date(),
+              endDate: watch('endDate')
+                ? dateStringToDate(watch('endDate'))
+                : new Date(),
             }}
             onApply={handleDateRangePickerApply}
           />
@@ -225,6 +254,11 @@ const SearchForm = ({
           onResetClick={handleResetClick}
         />
       </Tooltip>
+      {(!!errors.startDate || !!errors.endDate) && (
+        <FormHelperText error>
+          {errors.endDate?.message || errors.startDate?.message}
+        </FormHelperText>
+      )}
       {aoiTooLarge && (
         <Well severity="error">AOI is too large, redraw or zoom in</Well>
       )}
