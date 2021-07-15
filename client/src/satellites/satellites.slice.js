@@ -109,7 +109,7 @@ export const fetchSatelliteScenes = query => async (dispatch, getState) => {
   // satellite selection is hard-coded for now
   const response = await sendData(
     `${apiClient.apiHost}${API.scenes}`,
-    query,
+    { tiers: ['free'], ...query },
     headers,
   );
 
