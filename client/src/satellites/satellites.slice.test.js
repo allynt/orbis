@@ -19,6 +19,8 @@ import reducer, {
   currentSearchQuerySelector,
   visualisationIdSelector,
   savedSearchesSelector,
+  setHoveredScene,
+  hoveredSceneSelector,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -135,6 +137,14 @@ describe('Satellites Slice', () => {
       await store.dispatch(fetchSatelliteScenes());
 
       expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    describe('setHoveredScene', () => {
+      it('sets the hovered scene in state', () => {
+        const hoveredScene = { id: 1, label: 'Test' };
+        const result = reducer({}, setHoveredScene(hoveredScene));
+        expect(result).toEqual(expect.objectContaining({ hoveredScene }));
+      });
     });
   });
 
@@ -274,6 +284,7 @@ describe('Satellites Slice', () => {
       ${currentSearchQuerySelector} | ${'currentSearchQuery'}
       ${visualisationIdSelector}    | ${'visualisationId'}
       ${savedSearchesSelector}      | ${'satelliteSearches'}
+      ${hoveredSceneSelector}       | ${'hoveredScene'}
     `('$selector', ({ selector, key }) => {
       it.each`
         key             | state
