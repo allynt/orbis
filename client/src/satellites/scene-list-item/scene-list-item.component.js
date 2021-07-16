@@ -13,19 +13,16 @@ import {
 
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
+import { startCase } from 'lodash';
 
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
 
 const useStyles = makeStyles(theme => ({
+  avatarWrapper: { marginRight: theme.spacing(2) },
   avatar: {
     width: '6rem',
     height: '6rem',
     maxWidth: '6rem',
-    marginBottom: theme.spacing(1),
-  },
-  button: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
   },
 }));
 
@@ -65,7 +62,7 @@ const SceneListItem = ({
       onClick={handleSceneClick}
       selected={selected}
     >
-      <ListItemAvatar>
+      <ListItemAvatar className={styles.avatarWrapper}>
         <Avatar
           className={styles.avatar}
           variant="rounded"
@@ -76,6 +73,7 @@ const SceneListItem = ({
       <ListItemText
         primary={
           <>
+            <Typography>{startCase(scene.satellite)}</Typography>
             <Typography>
               {scene && format(parseISO(scene.created), DATE_FORMAT)}
             </Typography>

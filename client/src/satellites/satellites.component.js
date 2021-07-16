@@ -41,9 +41,10 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    overflowX: 'hidden',
   },
   container: {
-    height: '100%',
+    height: 'calc(100% - 50px)',
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(2, 1, 3),

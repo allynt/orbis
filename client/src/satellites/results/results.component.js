@@ -1,11 +1,26 @@
 import React from 'react';
 
-import { Box, List, Paper, Slider, Typography } from '@astrosat/astrosat-ui';
+import {
+  Box,
+  List,
+  Paper,
+  Slider,
+  Typography,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
+
+const useStyles = makeStyles({
+  list: {
+    maxHeight: '100%',
+    overflowY: 'auto',
+    margin: '0 -0.5rem -1.5rem',
+  },
+});
 
 /**
  * @param {{
@@ -25,6 +40,8 @@ const Results = ({
   onCloudCoverSliderChange,
   onSceneClick,
 }) => {
+  const styles = useStyles();
+
   const filteredScenes = allScenes?.filter(
     scene => scene.cloudCover <= cloudCoverPercentage,
   );
@@ -67,7 +84,7 @@ const Results = ({
       >
         <Typography>{resultCountText}</Typography>
       </Paper>
-      <List>
+      <List className={styles.list}>
         {allScenes
           ? filteredScenes.map(scene => (
               <SceneListItem
