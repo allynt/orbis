@@ -25,19 +25,23 @@ const useStyles = makeStyles({
 /**
  * @param {{
  *  scenes: import('typings/satellites').Scene[]
+ *  hoveredScene?: import('typings/satellites').Scene
  *  selectedScene?: import('typings/satellites').Scene
  *  visualisationId: string
  *  cloudCoverPercentage?: number
  *  onCloudCoverSliderChange?: (value: number) => void
+ *  onSceneHover: (scene?: import('typings/satellites').Scene) => void,
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void,
  * }} props
  */
 const Results = ({
   scenes: allScenes,
+  hoveredScene,
   selectedScene,
   visualisationId,
   cloudCoverPercentage = DEFAULT_CLOUD_COVER,
   onCloudCoverSliderChange,
+  onSceneHover,
   onSceneClick,
 }) => {
   const styles = useStyles();
@@ -90,8 +94,10 @@ const Results = ({
               <SceneListItem
                 key={scene.id}
                 scene={scene}
+                hovered={hoveredScene?.id === scene.id}
                 selected={selectedScene?.id === scene.id}
                 visualisationId={visualisationId}
+                onHover={onSceneHover}
                 onSceneClick={onSceneClick}
               />
             ))
