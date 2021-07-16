@@ -7,7 +7,6 @@ import { InfoType } from 'satellites/satellite.constants';
 import {
   SatelliteInfoTable,
   SceneInfoTable,
-  TierInfoTable,
 } from './satellites-info-tables/satellites-info-tables.component';
 
 /**
@@ -25,7 +24,6 @@ export const MoreInfoDialog = ({ type, data, open, onClose }) => {
       <DialogContent>
         {type === InfoType.SATELLITE && <SatelliteInfoTable satellite={data} />}
         {type === InfoType.SCENE && <SceneInfoTable scene={data} />}
-        {type === InfoType.TIER && <TierInfoTable tier={data} />}
       </DialogContent>
     </Dialog>
   );

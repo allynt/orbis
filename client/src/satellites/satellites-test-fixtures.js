@@ -3,23 +3,6 @@ export const satellites = [
     id: 'sentinel-1',
     label: 'Sentinel-1',
     description: 'Some text describing the Sentinel-1 satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'true-color',
@@ -55,23 +38,6 @@ export const satellites = [
     id: 'sentinel-2',
     label: 'Sentinel-2',
     description: 'Some text describing the Sentinel-2 satellite.',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'true-color',
@@ -107,23 +73,6 @@ export const satellites = [
     id: 'sentinel-3',
     label: 'Sentinel-3',
     description: 'Some text describing the Sentinel-3 satellite.',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'true-color',
@@ -159,23 +108,6 @@ export const satellites = [
     id: 'landsat',
     label: 'Landsat',
     description: 'Some text describing the Landsat satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'ndvi',
@@ -211,23 +143,6 @@ export const satellites = [
     id: 'envisat-meris',
     label: 'Envisat Meris',
     description: 'Some text describing the Envisat Meris satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'ndvi',
@@ -263,23 +178,6 @@ export const satellites = [
     id: 'modis',
     label: 'MODIS',
     description: 'Some text describing the MODIS satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'ndvi',
@@ -294,23 +192,6 @@ export const satellites = [
     id: 'proba-v',
     label: 'Proba-V',
     description: 'Some text describing the Proba-V satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'ndvi',
@@ -346,23 +227,6 @@ export const satellites = [
     id: 'gibs',
     label: 'GIBS',
     description: 'Some text describing the GIBS satellite',
-    tiers: [
-      {
-        id: 'free',
-        label: 'Free Images',
-        description: 'Free scenes.',
-      },
-      {
-        id: 'mid',
-        label: 'Mid Resolution',
-        description: 'Mid resolution scenes.',
-      },
-      {
-        id: 'high',
-        label: 'High Resolution',
-        description: 'High resolution scenes.',
-      },
-    ],
     visualisations: [
       {
         id: 'ndvi',
@@ -403,7 +267,6 @@ export const scenes = [
     cloudCover: '4.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'free',
     metadata: {
       key: 'To be decided',
     },
@@ -419,7 +282,6 @@ export const scenes = [
     cloudCover: '6.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'mid-res',
     swath: 'Geometry object to be added',
     metadata: {
       key: 'To be decided',
@@ -436,7 +298,6 @@ export const scenes = [
     cloudCover: '8.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'high-res',
     swath: 'Geometry object to be added',
     metadata: {
       key: 'To be decided',
@@ -453,7 +314,6 @@ export const scenes = [
     cloudCover: '10.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'free',
     swath: 'Geometry object to be added',
     metadata: {
       key: 'To be decided',
@@ -470,7 +330,6 @@ export const scenes = [
     cloudCover: '15.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'mid-res',
     swath: 'Geometry object to be added',
     metadata: {
       key: 'To be decided',
@@ -487,7 +346,6 @@ export const scenes = [
     cloudCover: '20.23',
     download_url:
       'https://landsat-pds.s3.amazonaws.com/c1/L8/027/033/LC08_L1TP_027033_20200107_20200114_01_T1/LC08_L1TP_027033_20200107_20200114_01_T1_thumb_small.jpg',
-    tier: 'high-res',
     swath: 'Geometry object to be added',
     metadata: {
       key: 'To be decided',

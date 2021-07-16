@@ -16,29 +16,6 @@ const FirstCell = styled(TableCell)(({ theme }) => ({
 
 /**
  * @param {{
- *  tier: {
- *    label: string
- *    description: string
- *  }
- * }} props
- */
-export const TierInfoTable = ({ tier }) => (
-  <Table>
-    <TableBody>
-      <TableRow>
-        <FirstCell>Tier: </FirstCell>
-        <TableCell>{tier.label || 'not currently available'}</TableCell>
-      </TableRow>
-      <TableRow>
-        <FirstCell>Description: </FirstCell>
-        <TableCell>{tier.description || 'not currently available'}</TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
-);
-
-/**
- * @param {{
  *  satellite: import('typings/satellites').Satellite
  * }} props
  */

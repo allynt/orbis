@@ -10,15 +10,9 @@ const freeScene = {
   thumbnail_url: 'thumbnail1',
   created: '2000-01-01T00:00:00Z',
   cloudCover: 5,
-  tier: 'free',
 };
 
 describe('<SceneListItem />', () => {
-  it('Shows free product text when the scene is free', () => {
-    const { getByText } = render(<SceneListItem scene={freeScene} />);
-    expect(getByText('Free Product')).toBeInTheDocument();
-  });
-
   it('Calls onSceneClick when the scene is clicked', () => {
     const onSceneClick = jest.fn();
     const { getByRole } = render(

@@ -3,10 +3,13 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import SatelliteSearchForm from './satellite-search-form.component';
+import SearchForm from './search-form.component';
 
 export default {
-  title: 'Satellites/SatelliteSearch/SatelliteSearchForm',
+  title: 'Satellites/Search/SearchForm',
+  args: {
+    aoi: [[]],
+  },
   argTypes: {
     onSubmit: { action: true },
     setVisiblePanel: { action: true },
@@ -19,7 +22,7 @@ const mockStore = configureMockStore();
 
 const Template = args => (
   <Provider store={mockStore({ satellites: {}, app: { config: {} } })}>
-    <SatelliteSearchForm {...args} />
+    <SearchForm {...args} />
   </Provider>
 );
 

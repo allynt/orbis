@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
-import SatelliteSearch from './satellite-search/satellite-search.component';
 import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
@@ -27,6 +26,7 @@ import {
   setCurrentVisualisation,
   visualisationIdSelector,
 } from './satellites.slice';
+import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
 
 const Panels = {
@@ -35,7 +35,20 @@ const Panels = {
   VISUALISATION: 'Visualisation',
 };
 
-const useStyles = makeStyles({ tab: { minWidth: '72px' } });
+const useStyles = makeStyles(theme => ({
+  tab: { minWidth: '72px' },
+  wrapper: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  container: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing(2, 1, 3),
+  },
+}));
 
 const Satellites = () => {
   const styles = useStyles();
@@ -78,7 +91,7 @@ const Satellites = () => {
   };
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <Tabs
         variant="standard"
         scrollButtons="on"
@@ -103,45 +116,46 @@ const Satellites = () => {
           disabled={!visualisations}
         />
       </Tabs>
-      {satellites && visiblePanel === Panels.SEARCH && (
-        <SatelliteSearch
-          satellites={satellites}
-          aoi={aoi}
-          currentSearch={currentSearchQuery}
-          onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
-          onSearch={search => {
-            const newSearch = { ...search, aoi };
-            dispatch(setCurrentSatelliteSearchQuery(newSearch));
-            dispatch(fetchSatelliteScenes(newSearch));
-            setVisiblePanel(Panels.RESULTS);
-          }}
-          onInfoClick={handleInfoClick}
-        />
-      )}
-      {visiblePanel === Panels.RESULTS && (
-        <Results
-          scenes={scenes}
-          selectedScene={selectedScene}
-          visualisationId={visualisationId}
-          cloudCoverPercentage={cloudCoverPercentage}
-          onCloudCoverSliderChange={setCloudCover}
-          onSceneClick={scene => {
-            dispatch(selectScene(scene));
-            setVisiblePanel(Panels.VISUALISATION);
-          }}
-          onInfoClick={handleInfoClick}
-        />
-      )}
-      {visiblePanel === Panels.VISUALISATION && (
-        <Visualisation
-          visualisations={visualisations}
-          visualisationId={visualisationId}
-          onVisualisationClick={visualisation =>
-            dispatch(setCurrentVisualisation(visualisation))
-          }
-        />
-      )}
-      {/* {visiblePanel === PINS && (
+      <div className={styles.container}>
+        {satellites && visiblePanel === Panels.SEARCH && (
+          <Search
+            satellites={satellites}
+            aoi={aoi}
+            currentSearch={currentSearchQuery}
+            onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
+            onSearch={search => {
+              const newSearch = { ...search, aoi };
+              dispatch(setCurrentSatelliteSearchQuery(newSearch));
+              dispatch(fetchSatelliteScenes(newSearch));
+              setVisiblePanel(Panels.RESULTS);
+            }}
+            onInfoClick={handleInfoClick}
+          />
+        )}
+        {visiblePanel === Panels.RESULTS && (
+          <Results
+            scenes={scenes}
+            selectedScene={selectedScene}
+            visualisationId={visualisationId}
+            cloudCoverPercentage={cloudCoverPercentage}
+            onCloudCoverSliderChange={setCloudCover}
+            onSceneClick={scene => {
+              dispatch(selectScene(scene));
+              setVisiblePanel(Panels.VISUALISATION);
+            }}
+            onInfoClick={handleInfoClick}
+          />
+        )}
+        {visiblePanel === Panels.VISUALISATION && (
+          <Visualisation
+            visualisations={visualisations}
+            visualisationId={visualisationId}
+            onVisualisationClick={visualisation =>
+              dispatch(setCurrentVisualisation(visualisation))
+            }
+          />
+        )}
+        {/* {visiblePanel === PINS && (
         <ComparePins
           onInfoClick={handleInfoClick}
           selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
@@ -156,12 +170,13 @@ const Satellites = () => {
           isCompareMode={isCompareMode}
         />
       )} */}
+      </div>
       <MoreInfoDialog
         open={isMoreInfoDialogVisible}
         onClose={() => setIsMoreInfoDialogVisible(false)}
         {...selectedMoreInfo}
       />
-    </>
+    </div>
   );
 };
 
