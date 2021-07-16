@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import SceneListItem from './scene-list-item.component';
@@ -27,5 +27,23 @@ describe('<SceneListItem />', () => {
       <SceneListItem scene={freeScene} secondaryAction="Hello" />,
     );
     expect(getByText('Hello')).toBeInTheDocument();
+  });
+
+  it('Calls onHover with the scene when hovered', () => {
+    const onHover = jest.fn();
+    const { getByRole } = render(
+      <SceneListItem scene={freeScene} onHover={onHover} />,
+    );
+    fireEvent.mouseEnter(getByRole('button'));
+    expect(onHover).toBeCalledWith(freeScene);
+  });
+
+  it('Calls onHover with nothing when un-hovered', () => {
+    const onHover = jest.fn();
+    const { getByRole } = render(
+      <SceneListItem scene={freeScene} onHover={onHover} />,
+    );
+    fireEvent.mouseLeave(getByRole('button'));
+    expect(onHover).toBeCalledWith(undefined);
   });
 });

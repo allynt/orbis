@@ -43,6 +43,7 @@ const useStyles = makeStyles(theme => ({
  *  selected?: boolean
  *  hovered?: boolean
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
+ *  onHover?: (scene?: import('typings/satellites').Scene) => void
  * }} props
  */
 const SceneListItem = ({
@@ -52,6 +53,7 @@ const SceneListItem = ({
   selected = false,
   hovered = false,
   onSceneClick,
+  onHover,
 }) => {
   const styles = useStyles();
 
@@ -72,6 +74,12 @@ const SceneListItem = ({
       button
       onClick={handleSceneClick}
       selected={selected}
+      {...(onHover
+        ? {
+            onMouseEnter: () => onHover(scene),
+            onMouseLeave: () => onHover(undefined),
+          }
+        : {})}
     >
       <ListItemAvatar className={styles.avatarWrapper}>
         <Avatar
@@ -86,10 +94,10 @@ const SceneListItem = ({
           <>
             <Typography>{startCase(scene.satellite)}</Typography>
             <Typography>
-              {scene && format(parseISO(scene.created), DATE_FORMAT)}
+              {format(parseISO(scene.created), DATE_FORMAT)}
             </Typography>
             <Typography>
-              {scene && format(parseISO(scene.created), TIME_FORMAT)} UTC
+              {format(parseISO(scene.created), TIME_FORMAT)} UTC
             </Typography>
             <Typography>{scene.cloudCover} %</Typography>
             <Typography>{scene.id}</Typography>
