@@ -22,15 +22,6 @@ describe('<SceneListItem />', () => {
     expect(onSceneClick).toBeCalledWith(freeScene);
   });
 
-  it('Calls onInfoClick when the More Info button is clicked', () => {
-    const onInfoClick = jest.fn();
-    const { getByRole } = render(
-      <SceneListItem scene={freeScene} onInfoClick={onInfoClick} />,
-    );
-    userEvent.click(getByRole('button', { name: 'More Info' }));
-    expect(onInfoClick).toBeCalledWith(freeScene);
-  });
-
   it('Shows a secondary action if provided', () => {
     const { getByText } = render(
       <SceneListItem scene={freeScene} secondaryAction="Hello" />,

@@ -89,10 +89,4 @@ describe('Satellite Results Component', () => {
     userEvent.click(getAllByRole('button')[0]);
     expect(onSceneClick).toBeCalledWith(mockScenes[0]);
   });
-
-  it('Calls onInfoClick when an info button is clicked', () => {
-    const { getAllByRole, onInfoClick } = renderComponent();
-    userEvent.click(getAllByRole('button', { name: 'More Info' })[0]);
-    expect(onInfoClick).toBeCalled();
-  });
 });

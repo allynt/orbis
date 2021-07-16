@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, List, Paper, Slider, Typography } from '@astrosat/astrosat-ui';
 
-import { DEFAULT_CLOUD_COVER, InfoType } from '../satellite.constants';
+import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
@@ -15,10 +15,6 @@ import SceneListItem, {
  *  cloudCoverPercentage?: number
  *  onCloudCoverSliderChange?: (value: number) => void
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void,
- *  onInfoClick: (info: {
- *    type: string;
- *    data: any;
- *  }) => void,
  * }} props
  */
 const Results = ({
@@ -28,7 +24,6 @@ const Results = ({
   cloudCoverPercentage = DEFAULT_CLOUD_COVER,
   onCloudCoverSliderChange,
   onSceneClick,
-  onInfoClick,
 }) => {
   const filteredScenes = allScenes?.filter(
     scene => scene.cloudCover <= cloudCoverPercentage,
@@ -81,12 +76,6 @@ const Results = ({
                 selected={selectedScene?.id === scene.id}
                 visualisationId={visualisationId}
                 onSceneClick={onSceneClick}
-                onInfoClick={scene => {
-                  onInfoClick({
-                    type: InfoType.SCENE,
-                    data: scene,
-                  });
-                }}
               />
             ))
           : Array(5)

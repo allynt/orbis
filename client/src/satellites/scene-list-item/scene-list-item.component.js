@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Avatar,
-  Button,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
@@ -12,7 +11,6 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { Info } from '@material-ui/icons';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
@@ -38,7 +36,6 @@ const useStyles = makeStyles(theme => ({
  *  visualisationId: string
  *  selected?: boolean
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
- *  onInfoClick: (scene: import('typings/satellites').Scene) => void
  * }} props
  */
 const SceneListItem = ({
@@ -47,7 +44,6 @@ const SceneListItem = ({
   visualisationId,
   selected = false,
   onSceneClick,
-  onInfoClick,
 }) => {
   const styles = useStyles();
 
@@ -62,12 +58,6 @@ const SceneListItem = ({
     onSceneClick(scene);
   };
 
-  /** @type {React.MouseEventHandler<HTMLButtonElement>} */
-  const handleInfoClick = event => {
-    event.stopPropagation();
-    onInfoClick(scene);
-  };
-
   return (
     <ListItem
       aria-label={scene.id}
@@ -76,24 +66,12 @@ const SceneListItem = ({
       selected={selected}
     >
       <ListItemAvatar>
-        <>
-          <Avatar
-            className={styles.avatar}
-            variant="rounded"
-            src={thumbnailUrl}
-            alt="Thumbnail of a satellite scene"
-          />
-          <Button
-            className={styles.button}
-            variant="text"
-            size="small"
-            color="default"
-            startIcon={<Info />}
-            onClick={handleInfoClick}
-          >
-            More Info
-          </Button>
-        </>
+        <Avatar
+          className={styles.avatar}
+          variant="rounded"
+          src={thumbnailUrl}
+          alt="Thumbnail of a satellite scene"
+        />
       </ListItemAvatar>
       <ListItemText
         primary={
