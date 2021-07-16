@@ -38,4 +38,10 @@ SecondaryAction.args = {
   ),
 };
 
+export const Hovered = Template.bind({});
+Hovered.args = {
+  ...WithScene.args,
+  hovered: true,
+};
+
 export const Skeleton = () => <SceneListItemSkeleton />;

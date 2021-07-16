@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import clsx from 'clsx';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import { startCase } from 'lodash';
@@ -23,7 +24,15 @@ const useStyles = makeStyles(theme => ({
     width: '6rem',
     height: '6rem',
     maxWidth: '6rem',
+    transition: theme.transitions.create('boxShadow', {
+      duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.easeInOut,
+    }),
+    '&$hovered': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
+    },
   },
+  hovered: {},
 }));
 
 /**
@@ -32,6 +41,7 @@ const useStyles = makeStyles(theme => ({
  *  secondaryAction?: React.ReactNode
  *  visualisationId: string
  *  selected?: boolean
+ *  hovered?: boolean
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
  * }} props
  */
@@ -40,6 +50,7 @@ const SceneListItem = ({
   secondaryAction,
   visualisationId,
   selected = false,
+  hovered = false,
   onSceneClick,
 }) => {
   const styles = useStyles();
@@ -64,7 +75,7 @@ const SceneListItem = ({
     >
       <ListItemAvatar className={styles.avatarWrapper}>
         <Avatar
-          className={styles.avatar}
+          className={clsx(styles.avatar, { [styles.hovered]: hovered })}
           variant="rounded"
           src={thumbnailUrl}
           alt="Thumbnail of a satellite scene"
