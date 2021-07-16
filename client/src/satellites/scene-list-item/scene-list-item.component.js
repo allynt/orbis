@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   hovered: {},
+  id: {
+    wordBreak: 'break-word',
+  },
 }));
 
 /**
@@ -99,7 +102,7 @@ const SceneListItem = ({
               {format(parseISO(scene.created), TIME_FORMAT)} UTC
             </Typography>
             <Typography>{scene.cloudCover} %</Typography>
-            <Typography>{scene.id}</Typography>
+            <Typography className={styles.id}>{scene.id}</Typography>
           </>
         }
         primaryTypographyProps={{ id: 'primary-text' }}
