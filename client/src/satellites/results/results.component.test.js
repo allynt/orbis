@@ -22,7 +22,7 @@ const mockScenes = [
     id: '33UVD',
     cloudCover: 10.9,
     thumbnail_url: '/thumbnail.png',
-    created: '2000-01-02T01:00:00Z',
+    created: '2000-01-03T01:00:00Z',
   },
 ];
 
@@ -85,8 +85,8 @@ describe('Satellite Results Component', () => {
   });
 
   it('Calls onSceneClick when a scene is clicked', () => {
-    const { getAllByRole, onSceneClick } = renderComponent();
-    userEvent.click(getAllByRole('button')[0]);
+    const { getByRole, onSceneClick } = renderComponent();
+    userEvent.click(getByRole('button', { name: mockScenes[0].id }));
     expect(onSceneClick).toBeCalledWith(mockScenes[0]);
   });
 });

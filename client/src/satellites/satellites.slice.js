@@ -63,6 +63,7 @@ const satellitesSlice = createSlice({
       state.hoveredScene = payload;
     },
     selectScene: (state, { payload }) => {
+      state.hoveredScene = undefined;
       state.selectedScene = payload;
     },
     removeScenes: state => {

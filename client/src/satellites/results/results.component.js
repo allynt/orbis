@@ -9,6 +9,8 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { compareDesc } from 'date-fns';
+
 import { DEFAULT_CLOUD_COVER } from '../satellite.constants';
 import SceneListItem, {
   SceneListItemSkeleton,
@@ -46,9 +48,11 @@ const Results = ({
 }) => {
   const styles = useStyles();
 
-  const filteredScenes = allScenes?.filter(
-    scene => scene.cloudCover <= cloudCoverPercentage,
-  );
+  const filteredScenes = [...(allScenes ?? [])]
+    .sort((sceneA, sceneB) =>
+      compareDesc(new Date(sceneA.created), new Date(sceneB.created)),
+    )
+    .filter(scene => scene.cloudCover <= cloudCoverPercentage);
 
   const resultCountText = allScenes
     ? `Showing ${filteredScenes.length} Results`
