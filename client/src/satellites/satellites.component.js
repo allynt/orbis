@@ -18,12 +18,14 @@ import {
   currentSearchQuerySelector,
   fetchSatellites,
   fetchSatelliteScenes,
+  hoveredSceneSelector,
   satellitesSelector,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
+  setHoveredScene,
   visualisationIdSelector,
 } from './satellites.slice';
 import Search from './search/search.component';
@@ -64,6 +66,7 @@ const Satellites = () => {
 
   const satellites = useSelector(satellitesSelector);
   const scenes = useSelector(scenesSelector);
+  const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
@@ -136,15 +139,18 @@ const Satellites = () => {
         {visiblePanel === Panels.RESULTS && (
           <Results
             scenes={scenes}
+            hoveredScene={hoveredScene}
             selectedScene={selectedScene}
             visualisationId={visualisationId}
             cloudCoverPercentage={cloudCoverPercentage}
             onCloudCoverSliderChange={setCloudCover}
+            onSceneHover={scene => {
+              dispatch(setHoveredScene(scene));
+            }}
             onSceneClick={scene => {
               dispatch(selectScene(scene));
               setVisiblePanel(Panels.VISUALISATION);
             }}
-            onInfoClick={handleInfoClick}
           />
         )}
         {visiblePanel === Panels.VISUALISATION && (

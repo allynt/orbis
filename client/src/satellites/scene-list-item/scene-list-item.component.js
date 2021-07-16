@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '6rem',
     transition: theme.transitions.create('boxShadow', {
       duration: theme.transitions.duration.shortest,
-      easing: theme.transitions.easing.easeInOut,
     }),
     '&$hovered': {
       boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
