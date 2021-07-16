@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+import { Button, Typography, styled } from '@astrosat/astrosat-ui';
 
 import SearchForm from './search-form/search-form.component';
+
+const CenterButton = styled(Button)({ margin: '0 auto' });
 
 /**
  * @param {{
@@ -26,9 +28,16 @@ const Search = ({
 }) => {
   return (
     <>
-      <Button color="secondary" onClick={onDrawAoiClick}>
+      <Typography variant="h1" gutterBottom>
+        Search
+      </Typography>
+      <Typography paragraph>
+        Please draw the Area Of Interest on the map to search for available
+        images. Set the time frame and Satellite source for your search.
+      </Typography>
+      <CenterButton color="secondary" onClick={onDrawAoiClick}>
         Draw your AOI
-      </Button>
+      </CenterButton>
 
       <SearchForm
         satellites={satellites}
