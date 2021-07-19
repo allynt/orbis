@@ -5,7 +5,6 @@ import reducer, {
   fetchSatellites,
   fetchSatelliteScenes,
   selectScene,
-  setCurrentSatelliteSearchQuery,
   selectedPinnedScenesSelector,
   satellitesSelector,
   scenesSelector,
@@ -215,24 +214,12 @@ describe('Satellites Slice', () => {
     });
 
     it('should update the selected scenes in state, when they are cleared', () => {
-      const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenes.pending.type,
-      });
+      const actualState = reducer(
+        beforeState,
+        fetchSatelliteScenes.pending({}),
+      );
 
       expect(actualState.selectedScene).toEqual(null);
-    });
-
-    it('should update the current satellite search query in state', () => {
-      const query = {
-        id: 1,
-      };
-
-      const actualState = reducer(beforeState, {
-        type: setCurrentSatelliteSearchQuery.type,
-        payload: query,
-      });
-
-      expect(actualState.currentSearchQuery).toEqual(query);
     });
   });
 

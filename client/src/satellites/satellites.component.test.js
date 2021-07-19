@@ -13,7 +13,6 @@ import {
   fetchSatellites,
   fetchSatelliteScenes,
   selectScene,
-  setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
 } from './satellites.slice';
 
@@ -131,16 +130,11 @@ describe('Satellites', () => {
       await waitFor(() =>
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
-            setCurrentSatelliteSearchQuery(expect.anything()),
+            expect.objectContaining({
+              type: fetchSatelliteScenes.fulfilled.type,
+            }),
           ]),
         ),
-      );
-      expect(store.getActions()).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            type: fetchSatelliteScenes.fulfilled.type,
-          }),
-        ]),
       );
       expect(getByRole('slider')).toBeInTheDocument();
     });

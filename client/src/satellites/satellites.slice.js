@@ -45,7 +45,7 @@ export const fetchSatellites = createAsyncThunk(
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings/satellites').Scene[],
- *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
+ *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
  *  {}
  * >}
  */
@@ -89,9 +89,6 @@ const satellitesSlice = createSlice({
     selectScene: (state, { payload }) => {
       state.selectedScene = payload;
     },
-    setCurrentSatelliteSearchQuery: (state, { payload }) => {
-      state.currentSearchQuery = payload;
-    },
     setCurrentVisualisation: (state, { payload }) => {
       state.visualisationId = payload;
     },
@@ -104,7 +101,8 @@ const satellitesSlice = createSlice({
     builder.addCase(fetchSatellites.rejected, (state, { payload }) => {
       state.error = payload;
     });
-    builder.addCase(fetchSatelliteScenes.pending, state => {
+    builder.addCase(fetchSatelliteScenes.pending, (state, { meta }) => {
+      state.currentSearchQuery = meta.arg;
       state.selectedScene = null;
     });
     builder.addCase(fetchSatelliteScenes.fulfilled, (state, { payload }) => {
@@ -117,11 +115,7 @@ const satellitesSlice = createSlice({
   },
 });
 
-export const {
-  selectScene,
-  setCurrentSatelliteSearchQuery,
-  setCurrentVisualisation,
-} = satellitesSlice.actions;
+export const { selectScene, setCurrentVisualisation } = satellitesSlice.actions;
 
 /**
  * @param {import('react-redux').DefaultRootState} state

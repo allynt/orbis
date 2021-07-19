@@ -22,7 +22,6 @@ import {
   scenesSelector,
   selectedSceneSelector,
   selectScene,
-  setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
   visualisationIdSelector,
 } from './satellites.slice';
@@ -124,9 +123,7 @@ const Satellites = () => {
             currentSearch={currentSearchQuery}
             onDrawAoiClick={() => setIsDrawingAoi(c => !c)}
             onSearch={search => {
-              const newSearch = { ...search, aoi };
-              dispatch(setCurrentSatelliteSearchQuery(newSearch));
-              dispatch(fetchSatelliteScenes(newSearch));
+              dispatch(fetchSatelliteScenes({ ...search, aoi }));
               setVisiblePanel(Panels.RESULTS);
             }}
             onInfoClick={handleInfoClick}
