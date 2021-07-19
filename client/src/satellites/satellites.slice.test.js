@@ -2,8 +2,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
-  fetchSatellitesSuccess,
-  fetchSatellitesFailure,
   fetchSatellites,
   fetchSatelliteScenesSuccess,
   fetchSatelliteScenesFailure,
@@ -47,12 +45,12 @@ describe('Satellites Slice', () => {
         },
       );
 
-      const expectedActions = [
-        {
-          type: fetchSatellitesFailure.type,
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchSatellites.rejected.type,
           payload: { message: '401 Test Error' },
-        },
-      ];
+        }),
+      ]);
 
       await store.dispatch(fetchSatellites());
 
@@ -76,9 +74,12 @@ describe('Satellites Slice', () => {
       ];
       fetch.mockResponse(JSON.stringify(satellites));
 
-      const expectedActions = [
-        { type: fetchSatellitesSuccess.type, payload: satellites },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchSatellites.fulfilled.type,
+          payload: satellites,
+        }),
+      ]);
 
       await store.dispatch(fetchSatellites());
 
@@ -162,7 +163,7 @@ describe('Satellites Slice', () => {
       const satellites = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: fetchSatellitesSuccess.type,
+        type: fetchSatellites.fulfilled.type,
         payload: satellites,
       });
 
@@ -173,7 +174,7 @@ describe('Satellites Slice', () => {
       const error = { message: 'Test Satellites Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchSatellitesFailure.type,
+        type: fetchSatellites.rejected.type,
         payload: error,
       });
 

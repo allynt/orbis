@@ -10,8 +10,8 @@ import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
+  fetchSatellites,
   fetchSatelliteScenesSuccess,
-  fetchSatellitesSuccess,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
@@ -45,11 +45,15 @@ describe('Satellites', () => {
 
   it.each`
     thing           | action
-    ${'satellites'} | ${fetchSatellitesSuccess}
+    ${'satellites'} | ${fetchSatellites.fulfilled}
   `('fetches $thing if there are none', async ({ action }) => {
     const { store } = renderComponent({});
     await waitFor(() =>
-      expect(store.getActions()).toContainEqual(action(expect.anything())),
+      expect(store.getActions()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ type: action.type }),
+        ]),
+      ),
     );
   });
 
