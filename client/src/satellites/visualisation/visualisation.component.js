@@ -56,7 +56,7 @@ const Visualisation = ({
             key={id}
             button
             selected={id === visualisationId}
-            onClick={() => onVisualisationClick('TCI')}
+            onClick={() => onVisualisationClick(id)}
           >
             <ListItemAvatar className={styles.avatarWrapper}>
               <Avatar
