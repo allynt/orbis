@@ -109,13 +109,15 @@ describe('Satellites', () => {
     });
 
     it('Shows the Visualisation view when the Visualisation nav button is clicked', () => {
-      const { getByRole, getByText } = renderComponent({
+      const { getByRole } = renderComponent({
         satellites,
         scenes,
         selectedScene: scenes[0],
       });
       userEvent.click(getByRole(...VISUALISATION_TAB));
-      expect(getByText('VISUALISATION')).toBeInTheDocument();
+      expect(
+        getByRole('heading', { name: 'Visualisation' }),
+      ).toBeInTheDocument();
     });
   });
 
