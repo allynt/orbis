@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     width: theme.typography.pxToRem(58),
     height: theme.typography.pxToRem(58),
   },
+  list: {
+    margin: theme.spacing(0, -1),
+  },
 }));
 
 /**
@@ -47,7 +50,7 @@ const Visualisation = ({
       <Typography paragraph>
         View your image using different visualisations
       </Typography>
-      <List>
+      <List className={styles.list}>
         {visualisations.map(({ id, description, label, thumbnail }) => (
           <ListItem
             key={id}
