@@ -3,11 +3,8 @@ import thunk from 'redux-thunk';
 
 import reducer, {
   fetchSatellites,
-  fetchSatelliteScenesSuccess,
-  fetchSatelliteScenesFailure,
   fetchSatelliteScenes,
   selectScene,
-  removeScenes,
   setCurrentSatelliteSearchQuery,
   selectedPinnedScenesSelector,
   satellitesSelector,
@@ -98,13 +95,13 @@ describe('Satellites Slice', () => {
         },
       );
 
-      const expectedActions = [
-        { type: removeScenes.type },
-        {
-          type: fetchSatelliteScenesFailure.type,
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
+        expect.objectContaining({
+          type: fetchSatelliteScenes.rejected.type,
           payload: { message: '401 Test Error' },
-        },
-      ];
+        }),
+      ]);
 
       await store.dispatch(fetchSatelliteScenes());
 
@@ -128,10 +125,13 @@ describe('Satellites Slice', () => {
       ];
       fetch.mockResponse(JSON.stringify(scenes));
 
-      const expectedActions = [
-        { type: removeScenes.type },
-        { type: fetchSatelliteScenesSuccess.type, payload: scenes },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
+        expect.objectContaining({
+          type: fetchSatelliteScenes.fulfilled.type,
+          payload: scenes,
+        }),
+      ]);
 
       await store.dispatch(fetchSatelliteScenes());
 
@@ -185,7 +185,7 @@ describe('Satellites Slice', () => {
       const satellitesScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenesSuccess.type,
+        type: fetchSatelliteScenes.fulfilled.type,
         payload: satellitesScenes,
       });
 
@@ -196,7 +196,7 @@ describe('Satellites Slice', () => {
       const error = { message: 'Test Satellites Scenes Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenesFailure.type,
+        type: fetchSatelliteScenes.rejected.type,
         payload: error,
       });
 
@@ -216,7 +216,7 @@ describe('Satellites Slice', () => {
 
     it('should update the selected scenes in state, when they are cleared', () => {
       const actualState = reducer(beforeState, {
-        type: removeScenes.type,
+        type: fetchSatelliteScenes.pending.type,
       });
 
       expect(actualState.selectedScene).toEqual(null);

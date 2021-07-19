@@ -11,7 +11,7 @@ import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
   fetchSatellites,
-  fetchSatelliteScenesSuccess,
+  fetchSatelliteScenes,
   selectScene,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
@@ -137,7 +137,9 @@ describe('Satellites', () => {
       );
       expect(store.getActions()).toEqual(
         expect.arrayContaining([
-          fetchSatelliteScenesSuccess(expect.anything()),
+          expect.objectContaining({
+            type: fetchSatelliteScenes.fulfilled.type,
+          }),
         ]),
       );
       expect(getByRole('slider')).toBeInTheDocument();

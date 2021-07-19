@@ -43,6 +43,56 @@ export const fetchSatellites = createAsyncThunk(
 );
 
 /**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/satellites').Scene[],
+ *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
+ *  {}
+ * >}
+ */
+export const fetchSatelliteScenes = createAsyncThunk(
+  `${name}/fetchSatelliteScenes`,
+  async (query, { rejectWithValue }) => {
+    // dispatch(removeScenes());
+    try {
+      return await apiClient.satellites.runQuery(query);
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Satellites Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
+    }
+  },
+);
+// export const fetchSatelliteScenes = query => async dispatch => {
+//   dispatch(removeScenes());
+//   try {
+//     const scenes = await apiClient.satellites.runQuery(query);
+//     return dispatch(fetchSatelliteScenesSuccess(scenes));
+//   } catch (error) {
+//     /** @type {import('api-client').ResponseError} */
+//     const { message, status } = error;
+//     NotificationManager.error(
+//       `${status} ${message}`,
+//       `Fetching Satellites Error - ${message}`,
+//       50000,
+//       () => {},
+//     );
+//     return dispatch(
+//       fetchSatelliteScenesFailure({
+//         message: `${status} ${message}`,
+//       }),
+//     );
+//   }
+// };
+
+/**
  * @type {SatellitesState}
  */
 const initialState = {
@@ -58,18 +108,8 @@ const satellitesSlice = createSlice({
   name,
   initialState,
   reducers: {
-    fetchSatelliteScenesSuccess: (state, { payload }) => {
-      state.scenes = payload;
-      state.error = null;
-    },
-    fetchSatelliteScenesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
     selectScene: (state, { payload }) => {
       state.selectedScene = payload;
-    },
-    removeScenes: state => {
-      state.selectedScene = null;
     },
     setCurrentSatelliteSearchQuery: (state, { payload }) => {
       state.currentSearchQuery = payload;
@@ -86,39 +126,24 @@ const satellitesSlice = createSlice({
     builder.addCase(fetchSatellites.rejected, (state, { payload }) => {
       state.error = payload;
     });
+    builder.addCase(fetchSatelliteScenes.pending, state => {
+      state.selectedScene = null;
+    });
+    builder.addCase(fetchSatelliteScenes.fulfilled, (state, { payload }) => {
+      state.scenes = payload;
+      state.error = null;
+    });
+    builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
   },
 });
 
 export const {
-  fetchSatelliteScenesSuccess,
-  fetchSatelliteScenesFailure,
   selectScene,
-  removeScenes,
   setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
 } = satellitesSlice.actions;
-
-export const fetchSatelliteScenes = query => async dispatch => {
-  dispatch(removeScenes());
-  try {
-    const scenes = await apiClient.satellites.runQuery(query);
-    return dispatch(fetchSatelliteScenesSuccess(scenes));
-  } catch (error) {
-    /** @type {import('api-client').ResponseError} */
-    const { message, status } = error;
-    NotificationManager.error(
-      `${status} ${message}`,
-      `Fetching Satellites Error - ${message}`,
-      50000,
-      () => {},
-    );
-    return dispatch(
-      fetchSatelliteScenesFailure({
-        message: `${status} ${message}`,
-      }),
-    );
-  }
-};
 
 /**
  * @param {import('react-redux').DefaultRootState} state
