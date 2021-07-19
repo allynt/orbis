@@ -102,6 +102,12 @@ export const SatellitesProvider = ({
     getTentativeLineColor: getLineColor,
   });
 
+  /**
+   * @type {GeoJsonLayer<import('@turf/turf').Feature<
+   *  import('@turf/turf').Geometry,
+   *  import('typings/satellites').Scene
+   * >>}
+   */
   const scenesLayer = new GeoJsonLayer({
     id: 'scenes-layer',
     pickable: true,
@@ -112,7 +118,7 @@ export const SatellitesProvider = ({
     lineWidthUnits: 'pixels',
     getLineWidth: d => (d.properties.id === hoveredScene?.id ? 3 : 0),
     transitions: {
-      getLineWidth: 75,
+      getLineWidth: { duration: 75 },
     },
     data:
       scenes &&

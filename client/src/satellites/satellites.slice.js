@@ -14,7 +14,7 @@ import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
  * @property {any} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
- * @property {'TCI'} visualisationId
+ * @property {'TCI'} [visualisationId]
  */
 
 const API = {
