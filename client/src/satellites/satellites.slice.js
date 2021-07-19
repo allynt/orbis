@@ -3,8 +3,6 @@ import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
 
-import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
-
 /**
  * @typedef SatellitesState
  * @property {import('typings/satellites').Satellite[]} [satellites]
@@ -15,12 +13,6 @@ import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} visualisationId
  */
-
-const API = {
-  sources: '/api/satellites/',
-  scenes: '/api/satellites/run_query/',
-  savedSearches: '/api/satellites/searches/',
-};
 
 /**
  * @type {SatellitesState}
@@ -78,56 +70,45 @@ export const {
   setCurrentVisualisation,
 } = satellitesSlice.actions;
 
-export const fetchSatellites = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await getData(`${apiClient.apiHost}${API.sources}`, headers);
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
+export const fetchSatellites = () => async dispatch => {
+  try {
+    const satellites = await apiClient.satellites.getSatellites();
+    return dispatch(fetchSatellitesSuccess(satellites));
+  } catch (error) {
+    /** @type {import('api-client').ResponseError} */
+    const { message, status } = error;
     NotificationManager.error(
-      message,
-      `Fetching Satellites Error - ${response.statusText}`,
+      `${status} ${message}`,
+      `Fetching Satellites Error - ${message}`,
       50000,
       () => {},
     );
-
-    return dispatch(fetchSatellitesFailure({ message }));
+    return dispatch(
+      fetchSatellitesFailure({ message: `${status} ${message}` }),
+    );
   }
-
-  const satellites = await response.json();
-
-  return dispatch(fetchSatellitesSuccess(satellites));
 };
 
-export const fetchSatelliteScenes = query => async (dispatch, getState) => {
+export const fetchSatelliteScenes = query => async dispatch => {
   dispatch(removeScenes());
-
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${apiClient.apiHost}${API.scenes}`,
-    { tiers: ['free'], ...query },
-    headers,
-  );
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
+  try {
+    const scenes = await apiClient.satellites.runQuery(query);
+    return dispatch(fetchSatelliteScenesSuccess(scenes));
+  } catch (error) {
+    /** @type {import('api-client').ResponseError} */
+    const { message, status } = error;
     NotificationManager.error(
-      message,
-      `Fetching Satellite Scenes Error - ${response.statusText}`,
+      `${status} ${message}`,
+      `Fetching Satellites Error - ${message}`,
       50000,
       () => {},
     );
-
-    return dispatch(fetchSatelliteScenesFailure({ message }));
+    return dispatch(
+      fetchSatelliteScenesFailure({
+        message: `${status} ${message}`,
+      }),
+    );
   }
-
-  const scenes = await response.json();
-
-  return dispatch(fetchSatelliteScenesSuccess(scenes));
 };
 
 /**
