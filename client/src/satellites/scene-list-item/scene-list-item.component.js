@@ -7,6 +7,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
+  SatelliteIcon,
   Skeleton,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -89,7 +90,9 @@ const SceneListItem = ({
           variant="rounded"
           src={thumbnailUrl}
           alt="Thumbnail of a satellite scene"
-        />
+        >
+          <SatelliteIcon />
+        </Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={

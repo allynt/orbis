@@ -16,13 +16,14 @@ import SceneListItem, {
   SceneListItemSkeleton,
 } from '../scene-list-item/scene-list-item.component';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  resultCount: { margin: theme.spacing(0, -1), padding: theme.spacing(1) },
   list: {
     maxHeight: '100%',
     overflowY: 'auto',
-    margin: '0 -0.5rem -1.5rem',
+    margin: theme.spacing(0, -1, -3),
   },
-});
+}));
 
 /**
  * @param {{
@@ -76,20 +77,17 @@ const Results = ({
           value={cloudCoverPercentage}
           onChange={(_event, value) => onCloudCoverSliderChange(value)}
           disabled={!filteredScenes}
-          marks={new Array(6)
-            .fill()
-            .map((_value, i) => ({ value: i * 20, label: `${i * 20}` }))}
+          marks={new Array(6).fill().map((_value, i) => {
+            const value = i * 20;
+            return { value, label: value.toString() };
+          })}
           valueLabelDisplay="auto"
         />
       </Box>
       <Typography variant="h3" gutterBottom>
         Results
       </Typography>
-      <Paper
-        style={{ margin: '0 -0.5rem', padding: '0.5rem' }}
-        elevation={0}
-        square
-      >
+      <Paper className={styles.resultCount} elevation={0} square>
         <Typography>{resultCountText}</Typography>
       </Paper>
       <List className={styles.list}>
