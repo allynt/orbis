@@ -52,7 +52,6 @@ export const fetchSatellites = createAsyncThunk(
 export const fetchSatelliteScenes = createAsyncThunk(
   `${name}/fetchSatelliteScenes`,
   async (query, { rejectWithValue }) => {
-    // dispatch(removeScenes());
     try {
       return await apiClient.satellites.runQuery(query);
     } catch (error) {
@@ -70,27 +69,6 @@ export const fetchSatelliteScenes = createAsyncThunk(
     }
   },
 );
-// export const fetchSatelliteScenes = query => async dispatch => {
-//   dispatch(removeScenes());
-//   try {
-//     const scenes = await apiClient.satellites.runQuery(query);
-//     return dispatch(fetchSatelliteScenesSuccess(scenes));
-//   } catch (error) {
-//     /** @type {import('api-client').ResponseError} */
-//     const { message, status } = error;
-//     NotificationManager.error(
-//       `${status} ${message}`,
-//       `Fetching Satellites Error - ${message}`,
-//       50000,
-//       () => {},
-//     );
-//     return dispatch(
-//       fetchSatelliteScenesFailure({
-//         message: `${status} ${message}`,
-//       }),
-//     );
-//   }
-// };
 
 /**
  * @type {SatellitesState}
