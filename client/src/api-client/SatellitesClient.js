@@ -11,11 +11,7 @@ export class SatellitesClient extends SubClient {
   }
 
   /**
-   * @param {{
-   *  satellites: import('typings/satellites').Satellite['id'][]
-   *  start_date: string
-   *  end_date: string
-   * }} search
+   * @param {Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi' >} search
    * @returns {Promise<import('typings/satellites').Scene[]>}
    */
   async runQuery(search) {
