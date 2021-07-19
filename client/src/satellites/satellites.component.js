@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
+import { Panels } from './satellite.constants';
 import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
@@ -30,12 +31,6 @@ import {
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
-
-const Panels = {
-  SEARCH: 'Search',
-  RESULTS: 'Results',
-  VISUALISATION: 'Visualisation',
-};
 
 const useStyles = makeStyles(theme => ({
   tab: { minWidth: '72px' },
@@ -56,8 +51,6 @@ const useStyles = makeStyles(theme => ({
 const Satellites = () => {
   const styles = useStyles();
   const dispatch = useDispatch();
-
-  const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
   const [selectedMoreInfo, setSelectedMoreInfo] = useState({
     type: null,
     data: null,
@@ -80,6 +73,8 @@ const Satellites = () => {
     setCloudCover,
     selectedSceneLayerVisible,
     setSelectedSceneLayerVisible,
+    visiblePanel,
+    setVisiblePanel,
   } = useSatellites();
 
   useEffect(() => {

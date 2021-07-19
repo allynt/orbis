@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
-import { DEFAULT_CLOUD_COVER } from './satellite.constants';
+import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
 import {
   hoveredSceneSelector,
   scenesSelector,
@@ -32,6 +32,8 @@ import {
  *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
  *  selectedSceneLayerVisible: boolean
  *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
+ *  visiblePanel: string
+ *  setVisiblePanel: React.Dispatch<React.SetStateAction<string>>
  * }} SatellitesContextType
  */
 
@@ -62,6 +64,7 @@ export const SatellitesProvider = ({
   const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
     true,
   );
+  const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
@@ -172,6 +175,8 @@ export const SatellitesProvider = ({
         setCloudCover,
         selectedSceneLayerVisible,
         setSelectedSceneLayerVisible,
+        visiblePanel,
+        setVisiblePanel,
       }}
     >
       {children}

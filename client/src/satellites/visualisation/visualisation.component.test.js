@@ -52,7 +52,7 @@ describe('Satellite Visualisation Component', () => {
   it('Calls onVisualisationClick when a visualisation is clicked', () => {
     const { getAllByRole, onVisualisationClick } = renderComponent();
     userEvent.click(getAllByRole('button')[0]);
-    expect(onVisualisationClick).toBeCalledWith('TCI');
+    expect(onVisualisationClick).toBeCalledWith(VISUALISATIONS[0].id);
   });
 
   it('Calls onVisibilityChange with the visibility state when clicked', () => {
