@@ -22,13 +22,15 @@ const VISUALISATIONS = [
 
 const renderComponent = (visualisations = VISUALISATIONS) => {
   const onVisualisationClick = jest.fn();
+  const onVisibilityChange = jest.fn();
   const utils = render(
     <Visualisation
       visualisations={visualisations}
       onVisualisationClick={onVisualisationClick}
+      onVisibilityChange={onVisibilityChange}
     />,
   );
-  return { ...utils, onVisualisationClick };
+  return { ...utils, onVisualisationClick, onVisibilityChange };
 };
 
 describe('Satellite Visualisation Component', () => {
@@ -51,5 +53,11 @@ describe('Satellite Visualisation Component', () => {
     const { getAllByRole, onVisualisationClick } = renderComponent();
     userEvent.click(getAllByRole('button')[0]);
     expect(onVisualisationClick).toBeCalledWith('TCI');
+  });
+
+  it('Calls onVisibilityChange with the visibility state when clicked', () => {
+    const { getAllByRole, onVisibilityChange } = renderComponent();
+    userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
+    expect(onVisibilityChange).toBeCalledWith(false);
   });
 });

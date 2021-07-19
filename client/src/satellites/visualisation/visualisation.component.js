@@ -2,12 +2,16 @@ import React from 'react';
 
 import {
   Avatar,
+  Checkbox,
+  EyeIcon,
+  EyeSlashIcon,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemSecondaryAction,
   ListItemText,
-  Typography,
   makeStyles,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
@@ -22,13 +26,17 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  visualisations: import('typings/satellites').Visualisation[]
  *  visualisationId?: string
+ *  visible?: boolean
  *  onVisualisationClick: (visualisationId: import('typings/satellites').Visualisation['id']) => void
+ *  onVisibilityChange: (checked: boolean) => void
  * }} props
  */
 const Visualisation = ({
   visualisations,
   visualisationId,
+  visible = true,
   onVisualisationClick,
+  onVisibilityChange,
 }) => {
   const styles = useStyles();
   return visualisations ? (
@@ -37,7 +45,7 @@ const Visualisation = ({
         Visualisation
       </Typography>
       <Typography paragraph>
-        Search for a Satellite image and visualise the results
+        View your image using different visualisations
       </Typography>
       <List>
         {visualisations.map(({ id, description, label, thumbnail }) => (
@@ -60,6 +68,15 @@ const Visualisation = ({
               primary={label}
               secondary={description}
             />
+            <ListItemSecondaryAction>
+              <Checkbox
+                inputProps={{ 'aria-labelledby': 'icon' }}
+                checked={visible}
+                onChange={(_event, checked) => onVisibilityChange(checked)}
+                icon={<EyeSlashIcon id="icon" titleAccess="Show" />}
+                checkedIcon={<EyeIcon id="icon" titleAccess="Hide" />}
+              />
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
