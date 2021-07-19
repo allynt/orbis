@@ -45,6 +45,7 @@ SatellitesContext.displayName = 'SatellitesContext';
  * @typedef {{
  *  defaultIsDrawingAoi?: boolean
  *  defaultFeatures?: import('@turf/turf').Feature[]
+ *  defaultPanel?: string
  *  children: React.ReactNode
  * }} SatellitesProviderProps
  */
@@ -55,6 +56,7 @@ SatellitesContext.displayName = 'SatellitesContext';
 export const SatellitesProvider = ({
   defaultIsDrawingAoi = false,
   defaultFeatures = [],
+  defaultPanel = Panels.SEARCH,
   children,
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
@@ -64,7 +66,7 @@ export const SatellitesProvider = ({
   const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
     true,
   );
-  const [visiblePanel, setVisiblePanel] = useState(Panels.SEARCH);
+  const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
@@ -101,6 +103,7 @@ export const SatellitesProvider = ({
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
     data: featureCollection(features),
+    visible: visiblePanel !== Panels.VISUALISATION,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
     onEdit,
@@ -118,6 +121,7 @@ export const SatellitesProvider = ({
    */
   const scenesLayer = new GeoJsonLayer({
     id: 'scenes-layer',
+    visible: visiblePanel === Panels.RESULTS,
     pickable: true,
     autoHighlight: false,
     getFillColor: [53, 149, 243, 255 * 0.5],
@@ -148,7 +152,7 @@ export const SatellitesProvider = ({
 
   const selectedSceneLayer = new TileLayer({
     data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
-    visible: selectedSceneLayerVisible,
+    visible: selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
     tileSize: 256,
     renderSubLayers: props => {
       const {
