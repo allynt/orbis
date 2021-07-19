@@ -73,8 +73,12 @@ const Visualisation = ({
                 inputProps={{ 'aria-labelledby': 'icon' }}
                 checked={visible}
                 onChange={(_event, checked) => onVisibilityChange(checked)}
-                icon={<EyeSlashIcon id="icon" titleAccess="Show" />}
-                checkedIcon={<EyeIcon id="icon" titleAccess="Hide" />}
+                icon={
+                  <EyeSlashIcon id="icon" color="action" titleAccess="Show" />
+                }
+                checkedIcon={
+                  <EyeIcon id="icon" color="action" titleAccess="Hide" />
+                }
               />
             </ListItemSecondaryAction>
           </ListItem>

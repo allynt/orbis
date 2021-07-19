@@ -30,6 +30,8 @@ import {
  *  selectedSceneLayer?: TileLayer
  *  cloudCoverPercentage: number,
  *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
+ *  selectedSceneLayerVisible: boolean
+ *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
  * }} SatellitesContextType
  */
 
@@ -57,6 +59,9 @@ export const SatellitesProvider = ({
   const [features, setFeatures] = useState(defaultFeatures);
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
+  const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
+    true,
+  );
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
@@ -140,6 +145,7 @@ export const SatellitesProvider = ({
 
   const selectedSceneLayer = new TileLayer({
     data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+    visible: selectedSceneLayerVisible,
     tileSize: 256,
     renderSubLayers: props => {
       const {
@@ -164,6 +170,8 @@ export const SatellitesProvider = ({
         selectedSceneLayer,
         cloudCoverPercentage,
         setCloudCover,
+        selectedSceneLayerVisible,
+        setSelectedSceneLayerVisible,
       }}
     >
       {children}

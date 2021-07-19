@@ -78,6 +78,8 @@ const Satellites = () => {
     aoi,
     cloudCoverPercentage,
     setCloudCover,
+    selectedSceneLayerVisible,
+    setSelectedSceneLayerVisible,
   } = useSatellites();
 
   useEffect(() => {
@@ -160,6 +162,8 @@ const Satellites = () => {
             onVisualisationClick={visualisation =>
               dispatch(setCurrentVisualisation(visualisation))
             }
+            visible={selectedSceneLayerVisible}
+            onVisibilityChange={setSelectedSceneLayerVisible}
           />
         )}
         {/* {visiblePanel === PINS && (

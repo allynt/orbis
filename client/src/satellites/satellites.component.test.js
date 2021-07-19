@@ -180,5 +180,18 @@ describe('Satellites', () => {
         expect.arrayContaining([setCurrentVisualisation(expect.anything())]),
       );
     });
+
+    it('Hides the selectedSceneLayer when the show hide icon is clicked', () => {
+      const { getByRole, getAllByRole } = renderComponent({
+        satellites,
+        scenes,
+        selectedScene: scenes[0],
+      });
+      userEvent.click(getByRole(...VISUALISATION_TAB));
+      userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
+      expect(
+        getAllByRole('checkbox', { name: 'Show' }).length,
+      ).toBeGreaterThanOrEqual(1);
+    });
   });
 });
