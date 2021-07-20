@@ -1,9 +1,11 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
-
-import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
 
 /**
  * @typedef SatellitesState
@@ -11,17 +13,67 @@ import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
  * @property {import('typings/satellites').Scene[]} [scenes]
  * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
- * @property {any} [error]
+ * @property {{message: string}} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
  */
 
-const API = {
-  sources: '/api/satellites/',
-  scenes: '/api/satellites/run_query/',
-  savedSearches: '/api/satellites/searches/',
-};
+const name = 'satellites';
+
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/satellites').Satellite[],
+ *  undefined,
+ *  {rejectValue: {message: string}}
+ * >}
+ */
+export const fetchSatellites = createAsyncThunk(
+  `${name}/fetchSatellites`,
+  async (_, { rejectWithValue }) => {
+    try {
+      return await apiClient.satellites.getSatellites();
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Satellites Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+);
+
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/satellites').Scene[],
+ *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
+ *  {rejectValue: {message: string}}
+ * >}
+ */
+export const fetchSatelliteScenes = createAsyncThunk(
+  `${name}/fetchSatelliteScenes`,
+  async (query, { rejectWithValue }) => {
+    try {
+      return await apiClient.satellites.runQuery(query);
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Satellites Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({
+        message: `${status} ${message}`,
+      });
+    }
+  },
+);
 
 /**
  * @type {SatellitesState}
@@ -36,23 +88,9 @@ const initialState = {
 };
 
 const satellitesSlice = createSlice({
-  name: 'satellites',
+  name,
   initialState,
   reducers: {
-    fetchSatellitesSuccess: (state, { payload }) => {
-      state.satellites = payload;
-      state.error = null;
-    },
-    fetchSatellitesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
-    fetchSatelliteScenesSuccess: (state, { payload }) => {
-      state.scenes = payload;
-      state.error = null;
-    },
-    fetchSatelliteScenesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  SatellitesState,
@@ -66,81 +104,37 @@ const satellitesSlice = createSlice({
       state.hoveredScene = undefined;
       state.selectedScene = payload;
     },
-    removeScenes: state => {
-      state.selectedScene = null;
-    },
-    setCurrentSatelliteSearchQuery: (state, { payload }) => {
-      state.currentSearchQuery = payload;
-    },
     setCurrentVisualisation: (state, { payload }) => {
       state.visualisationId = payload;
     },
   },
+  extraReducers: builder => {
+    builder.addCase(fetchSatellites.fulfilled, (state, { payload }) => {
+      state.satellites = payload;
+      state.error = null;
+    });
+    builder.addCase(fetchSatellites.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
+    builder.addCase(fetchSatelliteScenes.pending, (state, { meta }) => {
+      state.currentSearchQuery = meta.arg;
+      state.selectedScene = null;
+    });
+    builder.addCase(fetchSatelliteScenes.fulfilled, (state, { payload }) => {
+      state.scenes = payload;
+      state.error = null;
+    });
+    builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
+  },
 });
 
 export const {
-  fetchSatellitesSuccess,
-  fetchSatellitesFailure,
-  fetchSatelliteScenesSuccess,
-  fetchSatelliteScenesFailure,
-  setHoveredScene,
   selectScene,
-  removeScenes,
-  setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
+  setHoveredScene,
 } = satellitesSlice.actions;
-
-export const fetchSatellites = () => async (dispatch, getState) => {
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await getData(`${apiClient.apiHost}${API.sources}`, headers);
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(
-      message,
-      `Fetching Satellites Error - ${response.statusText}`,
-      50000,
-      () => {},
-    );
-
-    return dispatch(fetchSatellitesFailure({ message }));
-  }
-
-  const satellites = await response.json();
-
-  return dispatch(fetchSatellitesSuccess(satellites));
-};
-
-export const fetchSatelliteScenes = query => async (dispatch, getState) => {
-  dispatch(removeScenes());
-
-  const headers = getJsonAuthHeaders(getState());
-
-  const response = await sendData(
-    `${apiClient.apiHost}${API.scenes}`,
-    { tiers: ['free'], ...query },
-    headers,
-  );
-
-  if (!response.ok) {
-    const message = `${response.status} ${response.statusText}`;
-
-    NotificationManager.error(
-      message,
-      `Fetching Satellite Scenes Error - ${response.statusText}`,
-      50000,
-      () => {},
-    );
-
-    return dispatch(fetchSatelliteScenesFailure({ message }));
-  }
-
-  const scenes = await response.json();
-
-  return dispatch(fetchSatelliteScenesSuccess(scenes));
-};
 
 /**
  * @param {import('react-redux').DefaultRootState} state

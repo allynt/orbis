@@ -10,10 +10,9 @@ import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
-  fetchSatelliteScenesSuccess,
-  fetchSatellitesSuccess,
+  fetchSatellites,
+  fetchSatelliteScenes,
   selectScene,
-  setCurrentSatelliteSearchQuery,
   setCurrentVisualisation,
   setHoveredScene,
 } from './satellites.slice';
@@ -46,11 +45,15 @@ describe('Satellites', () => {
 
   it.each`
     thing           | action
-    ${'satellites'} | ${fetchSatellitesSuccess}
+    ${'satellites'} | ${fetchSatellites.fulfilled}
   `('fetches $thing if there are none', async ({ action }) => {
     const { store } = renderComponent({});
     await waitFor(() =>
-      expect(store.getActions()).toContainEqual(action(expect.anything())),
+      expect(store.getActions()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ type: action.type }),
+        ]),
+      ),
     );
   });
 
@@ -130,14 +133,11 @@ describe('Satellites', () => {
       await waitFor(() =>
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
-            setCurrentSatelliteSearchQuery(expect.anything()),
+            expect.objectContaining({
+              type: fetchSatelliteScenes.fulfilled.type,
+            }),
           ]),
         ),
-      );
-      expect(store.getActions()).toEqual(
-        expect.arrayContaining([
-          fetchSatelliteScenesSuccess(expect.anything()),
-        ]),
       );
       expect(getByRole('slider')).toBeInTheDocument();
     });

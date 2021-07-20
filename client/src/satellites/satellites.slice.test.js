@@ -2,15 +2,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import reducer, {
-  fetchSatellitesSuccess,
-  fetchSatellitesFailure,
   fetchSatellites,
-  fetchSatelliteScenesSuccess,
-  fetchSatelliteScenesFailure,
   fetchSatelliteScenes,
   selectScene,
-  removeScenes,
-  setCurrentSatelliteSearchQuery,
   selectedPinnedScenesSelector,
   satellitesSelector,
   scenesSelector,
@@ -49,12 +43,12 @@ describe('Satellites Slice', () => {
         },
       );
 
-      const expectedActions = [
-        {
-          type: fetchSatellitesFailure.type,
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchSatellites.rejected.type,
           payload: { message: '401 Test Error' },
-        },
-      ];
+        }),
+      ]);
 
       await store.dispatch(fetchSatellites());
 
@@ -78,9 +72,12 @@ describe('Satellites Slice', () => {
       ];
       fetch.mockResponse(JSON.stringify(satellites));
 
-      const expectedActions = [
-        { type: fetchSatellitesSuccess.type, payload: satellites },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchSatellites.fulfilled.type,
+          payload: satellites,
+        }),
+      ]);
 
       await store.dispatch(fetchSatellites());
 
@@ -99,13 +96,13 @@ describe('Satellites Slice', () => {
         },
       );
 
-      const expectedActions = [
-        { type: removeScenes.type },
-        {
-          type: fetchSatelliteScenesFailure.type,
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
+        expect.objectContaining({
+          type: fetchSatelliteScenes.rejected.type,
           payload: { message: '401 Test Error' },
-        },
-      ];
+        }),
+      ]);
 
       await store.dispatch(fetchSatelliteScenes());
 
@@ -129,10 +126,13 @@ describe('Satellites Slice', () => {
       ];
       fetch.mockResponse(JSON.stringify(scenes));
 
-      const expectedActions = [
-        { type: removeScenes.type },
-        { type: fetchSatelliteScenesSuccess.type, payload: scenes },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
+        expect.objectContaining({
+          type: fetchSatelliteScenes.fulfilled.type,
+          payload: scenes,
+        }),
+      ]);
 
       await store.dispatch(fetchSatelliteScenes());
 
@@ -172,7 +172,7 @@ describe('Satellites Slice', () => {
       const satellites = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: fetchSatellitesSuccess.type,
+        type: fetchSatellites.fulfilled.type,
         payload: satellites,
       });
 
@@ -183,7 +183,7 @@ describe('Satellites Slice', () => {
       const error = { message: 'Test Satellites Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchSatellitesFailure.type,
+        type: fetchSatellites.rejected.type,
         payload: error,
       });
 
@@ -194,7 +194,7 @@ describe('Satellites Slice', () => {
       const satellitesScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenesSuccess.type,
+        type: fetchSatelliteScenes.fulfilled.type,
         payload: satellitesScenes,
       });
 
@@ -205,7 +205,7 @@ describe('Satellites Slice', () => {
       const error = { message: 'Test Satellites Scenes Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenesFailure.type,
+        type: fetchSatelliteScenes.rejected.type,
         payload: error,
       });
 
@@ -224,24 +224,12 @@ describe('Satellites Slice', () => {
     });
 
     it('should update the selected scenes in state, when they are cleared', () => {
-      const actualState = reducer(beforeState, {
-        type: removeScenes.type,
-      });
+      const actualState = reducer(
+        beforeState,
+        fetchSatelliteScenes.pending({}),
+      );
 
       expect(actualState.selectedScene).toEqual(null);
-    });
-
-    it('should update the current satellite search query in state', () => {
-      const query = {
-        id: 1,
-      };
-
-      const actualState = reducer(beforeState, {
-        type: setCurrentSatelliteSearchQuery.type,
-        payload: query,
-      });
-
-      expect(actualState.currentSearchQuery).toEqual(query);
     });
   });
 
