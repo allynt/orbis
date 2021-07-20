@@ -25,30 +25,28 @@ const Search = ({
   onDrawAoiClick,
   onSearch,
   onInfoClick,
-}) => {
-  return (
-    <>
-      <Typography variant="h1" gutterBottom>
-        Search
-      </Typography>
-      <Typography paragraph>
-        Please draw the Area Of Interest on the map to search for available
-        images. Set the time frame and Satellite source for your search.
-      </Typography>
-      <CenterButton color="secondary" onClick={onDrawAoiClick}>
-        Draw your AOI
-      </CenterButton>
+}) => (
+  <>
+    <Typography variant="h3" component="h1" gutterBottom>
+      Search
+    </Typography>
+    <Typography paragraph>
+      Please draw the Area Of Interest on the map to search for available
+      images. Set the time frame and Satellite source for your search.
+    </Typography>
+    <CenterButton color="secondary" onClick={onDrawAoiClick}>
+      Draw your AOI
+    </CenterButton>
 
-      <SearchForm
-        satellites={satellites}
-        aoi={aoi}
-        aoiTooLarge={aoiTooLarge}
-        currentSearch={currentSearch}
-        onSubmit={onSearch}
-        onInfoClick={onInfoClick}
-      />
-    </>
-  );
-};
+    <SearchForm
+      satellites={satellites}
+      aoi={aoi}
+      aoiTooLarge={aoiTooLarge}
+      currentSearch={currentSearch}
+      onSubmit={onSearch}
+      onInfoClick={onInfoClick}
+    />
+  </>
+);
 
 export default Search;

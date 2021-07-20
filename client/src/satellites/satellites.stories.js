@@ -1,11 +1,12 @@
 import React from 'react';
 
+import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { SatellitesProvider } from './satellites-context';
-import { satellites } from './satellites-test-fixtures';
+import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 
 const mockStore = configureMockStore([thunk]);
@@ -17,6 +18,7 @@ const Template = args => (
     store={mockStore({
       satellites: {
         satellites,
+        scenes,
       },
       app: { config: {} },
     })}

@@ -9,11 +9,12 @@ import { getData, sendData, getJsonAuthHeaders } from '../utils/http';
  * @typedef SatellitesState
  * @property {import('typings/satellites').Satellite[]} [satellites]
  * @property {import('typings/satellites').Scene[]} [scenes]
+ * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
  * @property {any} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
- * @property {'TCI'} visualisationId
+ * @property {'TCI'} [visualisationId]
  */
 
 const API = {
@@ -52,7 +53,17 @@ const satellitesSlice = createSlice({
     fetchSatelliteScenesFailure: (state, { payload }) => {
       state.error = payload;
     },
+    /**
+     * @type {import('@reduxjs/toolkit').CaseReducer<
+     *  SatellitesState,
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings/satellites').Scene>
+     * >}
+     */
+    setHoveredScene: (state, { payload }) => {
+      state.hoveredScene = payload;
+    },
     selectScene: (state, { payload }) => {
+      state.hoveredScene = undefined;
       state.selectedScene = payload;
     },
     removeScenes: state => {
@@ -72,6 +83,7 @@ export const {
   fetchSatellitesFailure,
   fetchSatelliteScenesSuccess,
   fetchSatelliteScenesFailure,
+  setHoveredScene,
   selectScene,
   removeScenes,
   setCurrentSatelliteSearchQuery,
@@ -173,6 +185,11 @@ export const visualisationIdSelector = createSelector(
 export const savedSearchesSelector = createSelector(
   baseSelector,
   state => state?.satelliteSearches,
+);
+
+export const hoveredSceneSelector = createSelector(
+  baseSelector,
+  state => state?.hoveredScene,
 );
 
 export default satellitesSlice.reducer;

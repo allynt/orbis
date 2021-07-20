@@ -12,9 +12,11 @@ import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import { DEFAULT_CLOUD_COVER } from './satellite.constants';
 import {
+  hoveredSceneSelector,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
+  setHoveredScene,
   visualisationIdSelector,
 } from './satellites.slice';
 
@@ -57,6 +59,7 @@ export const SatellitesProvider = ({
   const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
+  const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
 
@@ -99,11 +102,24 @@ export const SatellitesProvider = ({
     getTentativeLineColor: getLineColor,
   });
 
+  /**
+   * @type {GeoJsonLayer<import('@turf/turf').Feature<
+   *  import('@turf/turf').Geometry,
+   *  import('typings/satellites').Scene
+   * >>}
+   */
   const scenesLayer = new GeoJsonLayer({
     id: 'scenes-layer',
     pickable: true,
-    autoHighlight: true,
+    autoHighlight: false,
     getFillColor: [53, 149, 243, 255 * 0.5],
+    stroked: true,
+    getLineColor: COLOR_PRIMARY_ARRAY,
+    lineWidthUnits: 'pixels',
+    getLineWidth: d => (d.properties.id === hoveredScene?.id ? 3 : 0),
+    transitions: {
+      getLineWidth: { duration: 75 },
+    },
     data:
       scenes &&
       featureCollection(
@@ -112,9 +128,14 @@ export const SatellitesProvider = ({
         ),
       ),
     onClick: ({ object: { properties } }) => dispatch(selectScene(properties)),
+    onHover: ({ object }) =>
+      dispatch(setHoveredScene(object ? object.properties : undefined)),
     getFilterValue: d => d.properties.cloudCover,
     filterRange: [0, cloudCoverPercentage],
     extensions: [new DataFilterExtension({ filterSize: 1 })],
+    updateTriggers: {
+      getLineWidth: [hoveredScene],
+    },
   });
 
   const selectedSceneLayer = new TileLayer({
