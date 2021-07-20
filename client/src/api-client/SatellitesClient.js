@@ -15,7 +15,7 @@ export class SatellitesClient extends SubClient {
    * @returns {Promise<import('typings/satellites').Scene[]>}
    */
   async runQuery(search) {
-    return this.makeAuthenticatedPostRequest('/run_query', {
+    return this.makeAuthenticatedPostRequest('/run_query/', {
       tiers: ['free'],
       ...search,
     });
