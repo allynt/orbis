@@ -32,7 +32,7 @@ import {
  * @typedef {{
  *  label: string
  *  icon: JSX.Element
- *  action?: () => void
+ *  action?: (history?: import('history').History) => void
  *  tooltip?: string
  *  roles?: string[]
  *  order?: number
