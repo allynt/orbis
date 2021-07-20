@@ -4,12 +4,12 @@ import { renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 
-import useAuthorization from './useAuthorization';
+import useUserRoleAuthorization from './useAuthorization';
 
 const mockStore = createMockStore();
 
 const renderHook = initialProps => {
-  return tlRenderHook(({ roles }) => useAuthorization(roles), {
+  return tlRenderHook(({ roles }) => useUserRoleAuthorization(roles), {
     wrapper: ({ children, user }) => (
       <Provider store={mockStore({ accounts: { user } })}>{children}</Provider>
     ),
@@ -17,7 +17,7 @@ const renderHook = initialProps => {
   });
 };
 
-describe('useAuthorization', () => {
+describe('useUserRoleAuthorization', () => {
   it("Returns false if there's no user", () => {
     const { result } = renderHook({ user: null, roles: ['testRole'] });
     expect(result.current).toBe(false);
