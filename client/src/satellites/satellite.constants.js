@@ -7,3 +7,9 @@ export const InfoType = {
   SATELLITE: 'Satellite',
   SCENE: 'Scene',
 };
+
+export const Panels = {
+  SEARCH: 'Search',
+  RESULTS: 'Results',
+  VISUALISATION: 'Visualisation',
+};

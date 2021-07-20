@@ -6,6 +6,7 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
+import { Panels } from './satellite.constants';
 import { SatellitesProvider, useSatellites } from './satellites-context';
 import { selectScene, setHoveredScene } from './satellites.slice';
 
@@ -52,6 +53,14 @@ describe('SatellitesContext', () => {
         defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
       });
       expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
+    });
+
+    it('is not visible when the visualisation panel is visible', () => {
+      const { result } = renderContext({
+        defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
+        defaultPanel: Panels.VISUALISATION,
+      });
+      expect(result.current.drawAoiLayer.props.visible).toBe(false);
     });
 
     describe('onEdit', () => {
@@ -127,6 +136,14 @@ describe('SatellitesContext', () => {
       const { result } = renderContext({ scenes });
       expect(result.current.scenesLayer.props.data).toEqual(expected);
     });
+
+    it.each([Panels.SEARCH, Panels.VISUALISATION])(
+      'is not visible if the visible panel is %s',
+      defaultPanel => {
+        const { result } = renderContext({ defaultPanel });
+        expect(result.current.scenesLayer.props.visible).toBe(false);
+      },
+    );
 
     describe('onClick', () => {
       it('Selects the clicked scene on click', () => {
@@ -216,5 +233,13 @@ describe('SatellitesContext', () => {
         }),
       ).toBeInstanceOf(BitmapLayer);
     });
+
+    it.each([Panels.SEARCH, Panels.RESULTS])(
+      'Is hidden if the visible panel is %s',
+      defaultPanel => {
+        const { result } = renderContext({ defaultPanel });
+        expect(result.current.selectedSceneLayer.props.visible).toBe(false);
+      },
+    );
   });
 });

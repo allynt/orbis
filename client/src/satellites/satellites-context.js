@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
-import { DEFAULT_CLOUD_COVER } from './satellite.constants';
+import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
 import {
   hoveredSceneSelector,
   scenesSelector,
@@ -30,6 +30,10 @@ import {
  *  selectedSceneLayer?: TileLayer
  *  cloudCoverPercentage: number,
  *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
+ *  selectedSceneLayerVisible: boolean
+ *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
+ *  visiblePanel: string
+ *  setVisiblePanel: React.Dispatch<React.SetStateAction<string>>
  * }} SatellitesContextType
  */
 
@@ -41,6 +45,7 @@ SatellitesContext.displayName = 'SatellitesContext';
  * @typedef {{
  *  defaultIsDrawingAoi?: boolean
  *  defaultFeatures?: import('@turf/turf').Feature[]
+ *  defaultPanel?: string
  *  children: React.ReactNode
  * }} SatellitesProviderProps
  */
@@ -51,12 +56,17 @@ SatellitesContext.displayName = 'SatellitesContext';
 export const SatellitesProvider = ({
   defaultIsDrawingAoi = false,
   defaultFeatures = [],
+  defaultPanel = Panels.SEARCH,
   children,
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
+  const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
+    true,
+  );
+  const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
@@ -93,6 +103,7 @@ export const SatellitesProvider = ({
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
     data: featureCollection(features),
+    visible: visiblePanel !== Panels.VISUALISATION,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
     onEdit,
@@ -110,6 +121,7 @@ export const SatellitesProvider = ({
    */
   const scenesLayer = new GeoJsonLayer({
     id: 'scenes-layer',
+    visible: visiblePanel === Panels.RESULTS,
     pickable: true,
     autoHighlight: false,
     getFillColor: [53, 149, 243, 255 * 0.5],
@@ -140,6 +152,7 @@ export const SatellitesProvider = ({
 
   const selectedSceneLayer = new TileLayer({
     data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+    visible: selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
     tileSize: 256,
     renderSubLayers: props => {
       const {
@@ -164,6 +177,10 @@ export const SatellitesProvider = ({
         selectedSceneLayer,
         cloudCoverPercentage,
         setCloudCover,
+        selectedSceneLayerVisible,
+        setSelectedSceneLayerVisible,
+        visiblePanel,
+        setVisiblePanel,
       }}
     >
       {children}

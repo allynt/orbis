@@ -109,13 +109,15 @@ describe('Satellites', () => {
     });
 
     it('Shows the Visualisation view when the Visualisation nav button is clicked', () => {
-      const { getByRole, getByText } = renderComponent({
+      const { getByRole } = renderComponent({
         satellites,
         scenes,
         selectedScene: scenes[0],
       });
       userEvent.click(getByRole(...VISUALISATION_TAB));
-      expect(getByText('VISUALISATION')).toBeInTheDocument();
+      expect(
+        getByRole('heading', { name: 'Visualisation' }),
+      ).toBeInTheDocument();
     });
   });
 
@@ -177,6 +179,19 @@ describe('Satellites', () => {
       expect(store.getActions()).toEqual(
         expect.arrayContaining([setCurrentVisualisation(expect.anything())]),
       );
+    });
+
+    it('Hides the selectedSceneLayer when the show hide icon is clicked', () => {
+      const { getByRole, getAllByRole } = renderComponent({
+        satellites,
+        scenes,
+        selectedScene: scenes[0],
+      });
+      userEvent.click(getByRole(...VISUALISATION_TAB));
+      userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
+      expect(
+        getAllByRole('checkbox', { name: 'Show' }).length,
+      ).toBeGreaterThanOrEqual(1);
     });
   });
 });

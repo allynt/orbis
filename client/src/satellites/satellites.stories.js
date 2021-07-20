@@ -19,6 +19,7 @@ const Template = args => (
       satellites: {
         satellites,
         scenes,
+        selectedScene: scenes[0],
       },
       app: { config: {} },
     })}
