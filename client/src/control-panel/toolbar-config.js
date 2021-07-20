@@ -9,6 +9,9 @@ import {
   SvgIcon,
 } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
 
 import {
@@ -42,11 +45,12 @@ import {
  */
 
 /**
- * @param {import('redux').Dispatch} dispatch
- * @param {User} user
  * @returns {ToolbarItem[]}
  */
-export const getToolbarItems = (dispatch, user) => {
+export const useToolbarItems = () => {
+  const user = useSelector(userSelector);
+  const dispatch = useDispatch();
+
   /** @type {ToolbarItem[]} */
   let items = [
     {
