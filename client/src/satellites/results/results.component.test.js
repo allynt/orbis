@@ -22,7 +22,7 @@ const mockScenes = [
     id: '33UVD',
     cloudCover: 10.9,
     thumbnail_url: '/thumbnail.png',
-    created: '2000-01-02T01:00:00Z',
+    created: '2000-01-03T01:00:00Z',
   },
 ];
 
@@ -61,21 +61,21 @@ describe('Satellite Results Component', () => {
     expect(getAllByRole('listitem')).toHaveLength(5);
   });
 
-  it('should render a list of Scene results', () => {
-    const { getByRole, getByText } = renderComponent();
-    expect(getByRole('button', { name: mockScenes[0].id })).toBeInTheDocument();
-    expect(getByRole('button', { name: mockScenes[1].id })).toBeInTheDocument();
-    expect(getByText('Showing 2 Results of 3')).toBeInTheDocument();
-  });
-
   it('Shows results filtered by cloud cover', () => {
     const { getByRole, getByText } = renderComponent({
-      cloudCoverPercentage: 100,
+      cloudCoverPercentage: 10,
     });
+    expect(getByRole('button', { name: mockScenes[0].id })).toBeInTheDocument();
+    expect(getByRole('button', { name: mockScenes[1].id })).toBeInTheDocument();
+    expect(getByText('Showing 2 Results')).toBeInTheDocument();
+  });
+
+  it('should render a list of Scene results', () => {
+    const { getByRole, getByText } = renderComponent();
     mockScenes.forEach(scene =>
       expect(getByRole('button', { name: scene.id })).toBeInTheDocument(),
     );
-    expect(getByText('Showing 3 Results of 3')).toBeInTheDocument();
+    expect(getByText('Showing 3 Results')).toBeInTheDocument();
   });
 
   it('Calls onCloudCoverSliderChange when the slider is moved', () => {
@@ -85,14 +85,8 @@ describe('Satellite Results Component', () => {
   });
 
   it('Calls onSceneClick when a scene is clicked', () => {
-    const { getAllByRole, onSceneClick } = renderComponent();
-    userEvent.click(getAllByRole('button')[0]);
+    const { getByRole, onSceneClick } = renderComponent();
+    userEvent.click(getByRole('button', { name: mockScenes[0].id }));
     expect(onSceneClick).toBeCalledWith(mockScenes[0]);
-  });
-
-  it('Calls onInfoClick when an info button is clicked', () => {
-    const { getAllByRole, onInfoClick } = renderComponent();
-    userEvent.click(getAllByRole('button', { name: 'More Info' })[0]);
-    expect(onInfoClick).toBeCalled();
   });
 });

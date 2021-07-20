@@ -6,18 +6,26 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
+import { Panels } from './satellite.constants';
 import { SatellitesProvider, useSatellites } from './satellites-context';
-import { selectScene } from './satellites.slice';
+import { selectScene, setHoveredScene } from './satellites.slice';
 
 const mockStore = configureMockStore();
 
 /**
  * @param {Omit<import('./satellites-context').SatellitesProviderProps, 'children'>
- *  & { scenes?: import('typings/satellites').Scene[], selectedScene?: import('typings/satellites').Scene}
+ *  & import('./satellites.slice').SatellitesState
  * } [props]
  */
-const renderContext = ({ scenes, selectedScene, ...rest } = {}) => {
-  const store = mockStore({ satellites: { scenes, selectedScene } });
+const renderContext = ({
+  scenes,
+  selectedScene,
+  hoveredScene,
+  ...rest
+} = {}) => {
+  const store = mockStore({
+    satellites: { scenes, selectedScene, hoveredScene },
+  });
   const utils = renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
       <Provider store={store}>
@@ -45,6 +53,14 @@ describe('SatellitesContext', () => {
         defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
       });
       expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
+    });
+
+    it('is not visible when the visualisation panel is visible', () => {
+      const { result } = renderContext({
+        defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
+        defaultPanel: Panels.VISUALISATION,
+      });
+      expect(result.current.drawAoiLayer.props.visible).toBe(false);
     });
 
     describe('onEdit', () => {
@@ -121,13 +137,79 @@ describe('SatellitesContext', () => {
       expect(result.current.scenesLayer.props.data).toEqual(expected);
     });
 
-    it('Selects the clicked scene on click', () => {
-      const scene = { id: 1 };
-      const { result, store } = renderContext({ scenes: [scene] });
-      result.current.scenesLayer.props.onClick({
-        object: { properties: scene },
+    it.each([Panels.SEARCH, Panels.VISUALISATION])(
+      'is not visible if the visible panel is %s',
+      defaultPanel => {
+        const { result } = renderContext({ defaultPanel });
+        expect(result.current.scenesLayer.props.visible).toBe(false);
+      },
+    );
+
+    describe('onClick', () => {
+      it('Selects the clicked scene on click', () => {
+        const scene = { id: 1 };
+        const { result, store } = renderContext({ scenes: [scene] });
+        result.current.scenesLayer.props.onClick({
+          object: { properties: scene },
+        });
+        expect(store.getActions()).toContainEqual(selectScene(scene));
       });
-      expect(store.getActions()).toContainEqual(selectScene(scene));
+    });
+
+    describe('getLineWidth', () => {
+      it('Returns 3 if the scene is hovered', () => {
+        const scene = { id: 1, properties: { id: 1 } };
+        const { result } = renderContext({ hoveredScene: scene });
+        const value = result.current.scenesLayer.props.getLineWidth(scene);
+        expect(value).toBe(3);
+      });
+
+      it('Returns 0 if the scene is not hovered', () => {
+        const { result } = renderContext({
+          hoveredScene: { id: 3 },
+        });
+        const value = result.current.scenesLayer.props.getLineWidth({
+          properties: { id: 1 },
+        });
+        expect(value).toBe(0);
+      });
+
+      it('Returns 0 if hoveredScene is undefined', () => {
+        const { result } = renderContext();
+        const value = result.current.scenesLayer.props.getLineWidth({
+          properties: { id: 1 },
+        });
+        expect(value).toBe(0);
+      });
+    });
+
+    describe('onHover', () => {
+      it('Dispatches the setHoveredScene action with the scene if present', () => {
+        const scene = { id: 1, label: 'Hello' };
+        const { result, store } = renderContext();
+        result.current.scenesLayer.props.onHover({
+          object: { properties: scene },
+        });
+        expect(store.getActions()).toContainEqual(setHoveredScene(scene));
+      });
+
+      it('Dispatches the setHoveredScene action with undefined when no scene is hovered', () => {
+        const { result, store } = renderContext();
+        result.current.scenesLayer.props.onHover({});
+        expect(store.getActions()).toContainEqual(setHoveredScene(undefined));
+      });
+    });
+
+    describe('getFilterValue', () => {
+      it('Returns the cloud cover from the scene', () => {
+        const cloudCover = 12345;
+        const { result } = renderContext();
+        expect(
+          result.current.scenesLayer.props.getFilterValue({
+            properties: { cloudCover },
+          }),
+        ).toBe(cloudCover);
+      });
     });
   });
 
@@ -151,5 +233,13 @@ describe('SatellitesContext', () => {
         }),
       ).toBeInstanceOf(BitmapLayer);
     });
+
+    it.each([Panels.SEARCH, Panels.RESULTS])(
+      'Is hidden if the visible panel is %s',
+      defaultPanel => {
+        const { result } = renderContext({ defaultPanel });
+        expect(result.current.selectedSceneLayer.props.visible).toBe(false);
+      },
+    );
   });
 });

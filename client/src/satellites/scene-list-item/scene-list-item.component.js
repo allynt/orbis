@@ -2,32 +2,39 @@ import React from 'react';
 
 import {
   Avatar,
-  Button,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
+  SatelliteIcon,
   Skeleton,
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { Info } from '@material-ui/icons';
+import clsx from 'clsx';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
+import { startCase } from 'lodash';
 
 import { DATE_FORMAT, TIME_FORMAT } from '../satellite.constants';
 
 const useStyles = makeStyles(theme => ({
+  avatarWrapper: { marginRight: theme.spacing(2) },
   avatar: {
     width: '6rem',
     height: '6rem',
     maxWidth: '6rem',
-    marginBottom: theme.spacing(1),
+    transition: theme.transitions.create('boxShadow', {
+      duration: theme.transitions.duration.shortest,
+    }),
+    '&$hovered': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
+    },
   },
-  button: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+  hovered: {},
+  id: {
+    wordBreak: 'break-word',
   },
 }));
 
@@ -37,8 +44,9 @@ const useStyles = makeStyles(theme => ({
  *  secondaryAction?: React.ReactNode
  *  visualisationId: string
  *  selected?: boolean
+ *  hovered?: boolean
  *  onSceneClick: (scene: import('typings/satellites').Scene) => void
- *  onInfoClick: (scene: import('typings/satellites').Scene) => void
+ *  onHover?: (scene?: import('typings/satellites').Scene) => void
  * }} props
  */
 const SceneListItem = ({
@@ -46,8 +54,9 @@ const SceneListItem = ({
   secondaryAction,
   visualisationId,
   selected = false,
+  hovered = false,
   onSceneClick,
-  onInfoClick,
+  onHover,
 }) => {
   const styles = useStyles();
 
@@ -62,50 +71,41 @@ const SceneListItem = ({
     onSceneClick(scene);
   };
 
-  /** @type {React.MouseEventHandler<HTMLButtonElement>} */
-  const handleInfoClick = event => {
-    event.stopPropagation();
-    onInfoClick(scene);
-  };
-
   return (
     <ListItem
       aria-label={scene.id}
       button
       onClick={handleSceneClick}
       selected={selected}
+      {...(onHover
+        ? {
+            onMouseEnter: () => onHover(scene),
+            onMouseLeave: () => onHover(undefined),
+          }
+        : {})}
     >
-      <ListItemAvatar>
-        <>
-          <Avatar
-            className={styles.avatar}
-            variant="rounded"
-            src={thumbnailUrl}
-            alt="Thumbnail of a satellite scene"
-          />
-          <Button
-            className={styles.button}
-            variant="text"
-            size="small"
-            color="default"
-            startIcon={<Info />}
-            onClick={handleInfoClick}
-          >
-            More Info
-          </Button>
-        </>
+      <ListItemAvatar className={styles.avatarWrapper}>
+        <Avatar
+          className={clsx(styles.avatar, { [styles.hovered]: hovered })}
+          variant="rounded"
+          src={thumbnailUrl}
+          alt="Thumbnail of a satellite scene"
+        >
+          <SatelliteIcon />
+        </Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={
           <>
+            <Typography>{startCase(scene.satellite)}</Typography>
             <Typography>
-              {scene && format(parseISO(scene.created), DATE_FORMAT)}
+              {format(parseISO(scene.created), DATE_FORMAT)}
             </Typography>
             <Typography>
-              {scene && format(parseISO(scene.created), TIME_FORMAT)} UTC
+              {format(parseISO(scene.created), TIME_FORMAT)} UTC
             </Typography>
             <Typography>{scene.cloudCover} %</Typography>
-            <Typography>{scene.id}</Typography>
+            <Typography className={styles.id}>{scene.id}</Typography>
           </>
         }
         primaryTypographyProps={{ id: 'primary-text' }}

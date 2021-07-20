@@ -11,11 +11,12 @@ import apiClient from 'api-client';
  * @typedef SatellitesState
  * @property {import('typings/satellites').Satellite[]} [satellites]
  * @property {import('typings/satellites').Scene[]} [scenes]
+ * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
  * @property {any} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
- * @property {'TCI'} visualisationId
+ * @property {'TCI'} [visualisationId]
  */
 
 const name = 'satellites';
@@ -86,7 +87,17 @@ const satellitesSlice = createSlice({
   name,
   initialState,
   reducers: {
+    /**
+     * @type {import('@reduxjs/toolkit').CaseReducer<
+     *  SatellitesState,
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings/satellites').Scene>
+     * >}
+     */
+    setHoveredScene: (state, { payload }) => {
+      state.hoveredScene = payload;
+    },
     selectScene: (state, { payload }) => {
+      state.hoveredScene = undefined;
       state.selectedScene = payload;
     },
     setCurrentVisualisation: (state, { payload }) => {
@@ -115,7 +126,11 @@ const satellitesSlice = createSlice({
   },
 });
 
-export const { selectScene, setCurrentVisualisation } = satellitesSlice.actions;
+export const {
+  selectScene,
+  setCurrentVisualisation,
+  setHoveredScene,
+} = satellitesSlice.actions;
 
 /**
  * @param {import('react-redux').DefaultRootState} state
@@ -160,6 +175,11 @@ export const visualisationIdSelector = createSelector(
 export const savedSearchesSelector = createSelector(
   baseSelector,
   state => state?.satelliteSearches,
+);
+
+export const hoveredSceneSelector = createSelector(
+  baseSelector,
+  state => state?.hoveredScene,
 );
 
 export default satellitesSlice.reducer;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
@@ -14,6 +14,7 @@ import {
   fetchSatelliteScenes,
   selectScene,
   setCurrentVisualisation,
+  setHoveredScene,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -111,13 +112,15 @@ describe('Satellites', () => {
     });
 
     it('Shows the Visualisation view when the Visualisation nav button is clicked', () => {
-      const { getByRole, getByText } = renderComponent({
+      const { getByRole } = renderComponent({
         satellites,
         scenes,
         selectedScene: scenes[0],
       });
       userEvent.click(getByRole(...VISUALISATION_TAB));
-      expect(getByText('VISUALISATION')).toBeInTheDocument();
+      expect(
+        getByRole('heading', { name: 'Visualisation' }),
+      ).toBeInTheDocument();
     });
   });
 
@@ -141,6 +144,15 @@ describe('Satellites', () => {
   });
 
   describe('Results', () => {
+    it(`dispatches ${setHoveredScene} when a scene is hovered`, () => {
+      const { getByRole, store } = renderComponent();
+      userEvent.click(getByRole(...RESULTS_TAB));
+      fireEvent.mouseEnter(getByRole('button', { name: scenes[0].id }));
+      expect(store.getActions()).toEqual(
+        expect.arrayContaining([setHoveredScene(scenes[0])]),
+      );
+    });
+
     it(`dispatches ${selectScene} when a scene is clicked`, () => {
       const { getByRole, store } = renderComponent();
       userEvent.click(getByRole(...RESULTS_TAB));
@@ -167,6 +179,19 @@ describe('Satellites', () => {
       expect(store.getActions()).toEqual(
         expect.arrayContaining([setCurrentVisualisation(expect.anything())]),
       );
+    });
+
+    it('Hides the selectedSceneLayer when the show hide icon is clicked', () => {
+      const { getByRole, getAllByRole } = renderComponent({
+        satellites,
+        scenes,
+        selectedScene: scenes[0],
+      });
+      userEvent.click(getByRole(...VISUALISATION_TAB));
+      userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
+      expect(
+        getAllByRole('checkbox', { name: 'Show' }).length,
+      ).toBeGreaterThanOrEqual(1);
     });
   });
 });

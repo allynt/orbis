@@ -8,7 +8,10 @@ import SceneListItem, {
   SceneListItemSkeleton,
 } from './scene-list-item.component';
 
-export default { title: 'Satellites/SceneListItem' };
+export default {
+  title: 'Satellites/SceneListItem',
+  argTypes: { onSceneClick: { action: true }, onHover: { action: true } },
+};
 
 const Template = args => (
   <List>
@@ -36,6 +39,12 @@ SecondaryAction.args = {
       <DeleteIcon />
     </IconButton>
   ),
+};
+
+export const Hovered = Template.bind({});
+Hovered.args = {
+  ...WithScene.args,
+  hovered: true,
 };
 
 export const Skeleton = () => <SceneListItemSkeleton />;

@@ -2,7 +2,7 @@
   {
     "model": "satellites.satellitevisualisation",
     "fields": {
-      "visualisation_id": "true-color",
+      "visualisation_id": "TCI",
       "title": "True Color",
       "description": "Based on bands 4,3,2",
       "order": 1,
@@ -83,7 +83,12 @@
       "title": "Sentinel 2",
       "description": "Some text describing the Sentinel-2 satellite.",
       "order": 2,
-      "visualisations": [["true-color"], ["false-color"], ["false-color-urban"], ["ndvi"]]
+      "visualisations": [
+        ["true-color"],
+        ["false-color"],
+        ["false-color-urban"],
+        ["ndvi"]
+      ]
     }
   },
   {
