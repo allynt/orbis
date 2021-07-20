@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-const useAuthorization = (user, roles) => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+import { userSelector } from 'accounts/accounts.selectors';
 
-  useEffect(() => {
-    if (user) {
-      setIsAuthorized(user.roles?.some(role => roles.includes(role)));
-    }
-  }, [user, roles]);
-
-  return isAuthorized;
+/**
+ * @param {string[]} roles
+ */
+const useAuthorization = roles => {
+  const user = useSelector(userSelector);
+  if (!user || !user.roles || user.roles.length === 0) return false;
+  return user.roles.some(role => roles.includes(role));
 };
 
 export default useAuthorization;
