@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import useUserRoleAuthorization from 'hooks/useAuthorization';
+import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
 import store from 'store';
 
 import FiltersTool from './features/filters.component';

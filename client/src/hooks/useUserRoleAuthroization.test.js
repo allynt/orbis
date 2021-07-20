@@ -4,7 +4,7 @@ import { renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 
-import useUserRoleAuthorization from './useAuthorization';
+import useUserRoleAuthorization from './useUserRoleAuthorization';
 
 const mockStore = createMockStore();
 
