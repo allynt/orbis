@@ -28,11 +28,30 @@ import {
   PROFILE,
 } from './toolbar-constants';
 
+/**
+ * @typedef {{
+ *  label: string
+ *  icon: JSX.Element
+ *  action?: () => void
+ *  tooltip?: string
+ *  roles?: string[]
+ *  order?: number
+ *  footer?: boolean
+ *  href?: string
+ * }} ToolbarItem
+ */
+
+/**
+ * @param {import('redux').Dispatch} dispatch
+ * @param {User} user
+ * @returns {ToolbarItem[]}
+ */
 export const getToolbarItems = (dispatch, user) => {
+  /** @type {ToolbarItem[]} */
   let items = [
     {
       label: DATA_LAYERS,
-      icon: <DataIcon title="data" />,
+      icon: <DataIcon titleAccess="data" />,
       action: () => {
         dispatch(toggleMenu(DATA_LAYERS));
         dispatch(

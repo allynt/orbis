@@ -24,16 +24,27 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * @param {{
+ *  items: import('./toolbar-config').ToolbarItem[]
+ * }} props
+ */
 const Toolbar = ({ items }) => {
   const [selected, setSelected] = useState();
   const history = useHistory();
   const styles = useStyles({});
 
+  /**
+   * @param {import('./toolbar-config').ToolbarItem} item
+   */
   const select = item => {
     setSelected(item);
     item.action(history);
   };
 
+  /**
+   * @param {import('./toolbar-config').ToolbarItem} item
+   */
   const makeSidebarItem = item => (
     <SidebarItem
       key={item.label}
