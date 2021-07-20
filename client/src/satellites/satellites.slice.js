@@ -13,7 +13,7 @@ import apiClient from 'api-client';
  * @property {import('typings/satellites').Scene[]} [scenes]
  * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
- * @property {any} [error]
+ * @property {{message: string}} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
@@ -22,7 +22,11 @@ import apiClient from 'api-client';
 const name = 'satellites';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/satellites').Satellite[], undefined, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/satellites').Satellite[],
+ *  undefined,
+ *  {rejectValue: {message: string}}
+ * >}
  */
 export const fetchSatellites = createAsyncThunk(
   `${name}/fetchSatellites`,
@@ -47,7 +51,7 @@ export const fetchSatellites = createAsyncThunk(
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings/satellites').Scene[],
  *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
- *  {}
+ *  {rejectValue: {message: string}}
  * >}
  */
 export const fetchSatelliteScenes = createAsyncThunk(
