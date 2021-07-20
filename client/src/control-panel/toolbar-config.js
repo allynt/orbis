@@ -54,7 +54,7 @@ export const getToolbarItems = (dispatch, user) => {
         dispatch(
           setMenuHeadings({
             heading: 'SATELLITE IMAGES',
-            strapline: 'Select Type of imagery For The Layers',
+            strapline: 'Search and visualise up to date images',
           }),
         );
       },
