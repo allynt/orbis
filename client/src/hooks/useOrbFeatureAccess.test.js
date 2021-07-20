@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 
@@ -16,49 +16,33 @@ const ORBS = [
   { name: 'Orb C' },
 ];
 
-describe.only('useOrbFeatureAccess', () => {
+const renderHook = (arg, defaultOrbs = ORBS) => {
+  const store = mockStore({
+    data: { orbs: defaultOrbs },
+  });
+  return tlRenderHook(() => useOrbFeatureAccess(arg), {
+    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
+  });
+};
+
+describe('useOrbFeatureAccess', () => {
   it("Returns false if there's no orbs", () => {
-    const store = mockStore({
-      data: { orbs: undefined },
-    });
-    const { result } = renderHook(() => useOrbFeatureAccess('feature-a'), {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
-    });
+    const { result } = renderHook('feature-a', null);
     expect(result.current).toBe(false);
   });
 
   it('Returns false if the user does not have the correct orb to grant access', () => {
-    const store = mockStore({
-      data: { orbs: ORBS },
-    });
-    const { result } = renderHook(() => useOrbFeatureAccess('feature-d'), {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
-    });
+    const { result } = renderHook('feature-d');
     expect(result.current).toBe(false);
   });
 
   it('Returns true if the user has the orb for the feature', () => {
-    const store = mockStore({
-      data: { orbs: ORBS },
-    });
-    const { result } = renderHook(() => useOrbFeatureAccess('feature-a'), {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
-    });
+    const { result } = renderHook('feature-a');
     expect(result.current).toBe(true);
   });
 
   it('Returns an object of results if an array of feature ids is passed', () => {
-    const store = mockStore({
-      data: { orbs: ORBS },
-    });
-    const { result } = renderHook(
-      () => useOrbFeatureAccess(['feature-a', 'feature-b', 'feature-d']),
-      {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
-      },
-    );
+    const { result } = renderHook(['feature-a', 'feature-b', 'feature-d']);
     expect(result.current).toEqual({
       'feature-a': true,
       'feature-b': true,
