@@ -6,7 +6,6 @@ from django.forms import Select, ModelForm
 from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
-from satellites.fields import OrderedJSONField, OrderedJSONWidget
 from satellites.models import (
     Satellite,
     SatelliteVisualisation,
