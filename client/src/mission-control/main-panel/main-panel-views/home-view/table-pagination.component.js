@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   TableFooter,
-  TablePagination,
+  Pagination,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
@@ -52,7 +52,15 @@ export const UsersViewTablePagination = props => {
   return (
     <TableFooter>
       <UsersViewTableRow>
-        <TablePagination
+        <Pagination
+          hideNextButton
+          hidePrevButton
+          shape="rounded"
+          color="primary"
+          {...props}
+        />
+
+        {/* <TablePagination
           classes={classes}
           rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
           component="div"
@@ -63,7 +71,7 @@ export const UsersViewTablePagination = props => {
           }}
           ActionsComponent={TablePaginationActions}
           {...props}
-        />
+        /> */}
       </UsersViewTableRow>
     </TableFooter>
   );

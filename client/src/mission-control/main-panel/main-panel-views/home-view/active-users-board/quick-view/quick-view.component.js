@@ -3,13 +3,13 @@ import React from 'react';
 import { makeStyles, styled, Typography, Button } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
+import { ReactComponent as CreateUserIcon } from './create-user.svg';
 
 const Wrapper = styled('div')(({ theme }) => ({
-  maxWidth: theme.typography.pxToRem(700),
   width: '70%',
   display: 'flex',
   justifyContent: 'space-evenly',
-  alignItems: 'center',
+  alignItems: 'stretch',
   padding: theme.spacing(0, 5),
   marginBottom: theme.spacing(5),
   gap: '2rem',
@@ -100,6 +100,16 @@ const QuickView = ({ data, onCreateUserClick }) => {
       </QuickViewItem>
 
       <QuickViewItem>
+        <CreateUserIcon
+          style={{
+            height: '3.5rem',
+            width: '3.5rem',
+            color: '#fff',
+            fill: '#fff',
+          }}
+          color="#0000FF"
+          fill="#0000FF"
+        />
         <Button size="small" onClick={onCreateUserClick}>
           Create User
         </Button>

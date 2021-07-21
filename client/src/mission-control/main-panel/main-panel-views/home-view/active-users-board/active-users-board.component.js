@@ -12,6 +12,8 @@ import {
   TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
+import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
+
 import {
   UsersViewTable,
   UsersViewTableRow,
@@ -156,7 +158,7 @@ const UserRow = ({
 
 const useStyles = makeStyles(theme => ({
   box: {
-    maxHeight: `calc(100% - ${theme.spacing(10)})`,
+    height: `calc(100% - ${theme.spacing(10)})`,
   },
 }));
 
@@ -208,13 +210,21 @@ export const ActiveUsersBoard = ({
     onDeleteUserClick(customerUser);
   };
 
-  const handleChangePage = (e, newPage) => {
+  const handleChangePage = (_, newPage) => {
     setCurrentPage(newPage);
   };
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(0);
+  };
+
+  const handlePrevClick = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextClick = () => {
+    setCurrentPage(currentPage + 1);
   };
 
   const styles = useStyles({});
@@ -247,6 +257,8 @@ export const ActiveUsersBoard = ({
       </UsersViewTableRow>
     );
 
+  const pageCount = Math.ceil(rows?.length / rowsPerPage);
+
   return (
     <Box
       className={styles.box}
@@ -267,16 +279,17 @@ export const ActiveUsersBoard = ({
                 )
               : rows}
           </TableBody>
-          {Array.isArray(rows) ? (
-            <UsersViewTablePagination
-              count={rows ? rows.length : 0}
-              rowsPerPage={rowsPerPage}
-              page={currentPage}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          ) : null}
         </UsersViewTable>
+        {Array.isArray(rows) ? (
+          <TablePaginationFooter
+            currentPage={currentPage + 1}
+            pageCount={pageCount}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            handleChangePage={handleChangePage}
+            handlePrevClick={handlePrevClick}
+            handleNextClick={handleNextClick}
+          />
+        ) : null}
       </TableContainer>
     </Box>
   );

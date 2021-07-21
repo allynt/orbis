@@ -41,7 +41,7 @@ const HomeView = ({
   onDeleteUserClick,
 }) => (
   <Box display="flex" flexDirection="column" width="100%">
-    <ContentWrapper title="Users">
+    <ContentWrapper title="Users" number="1">
       <ActiveUsersBoard
         currentUser={currentUser}
         activeCustomerUsers={activeUsers}
@@ -54,7 +54,7 @@ const HomeView = ({
         onDeleteUserClick={onDeleteUserClick}
       />
     </ContentWrapper>
-    <ContentWrapper title="Pending Invitations">
+    <ContentWrapper title="Pending Invitations" number="2">
       <PendingInvitationsBoard
         pendingUsers={pendingUsers}
         customer={customer}

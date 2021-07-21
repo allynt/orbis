@@ -27,3 +27,5 @@ export const DIALOG_VIEW = {
   editUser: 'Edit User',
   deleteUser: 'Verify Update',
 };
+
+export const ROWS_PER_PAGE_OPTIONS = ['5', '10', '15', '20'];
