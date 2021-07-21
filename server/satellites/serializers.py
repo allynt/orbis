@@ -9,14 +9,17 @@ from rest_framework_gis.serializers import GeometryField
 
 from drf_yasg2 import openapi
 
+from astrosat.serializers import ContextVariableDefault
 from astrosat.views import SwaggerCurrentUserDefault
+
+from astrosat_users.models import CustomerUser
 
 from satellites.models import (
     Satellite,
     SatelliteVisualisation,
-    SatelliteTier,
     SatelliteSearch,
     SatelliteResult,
+    SatelliteDataSource,
 )
 
 # TODO: REFACTOR THIS INTO django-astrosat-core
@@ -94,19 +97,6 @@ class SwaggerGeometryField(GeometryField):
 ##############
 
 
-class SatelliteTierSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SatelliteTier
-        fields = (
-            "id",
-            "label",
-            "description",
-        )
-
-    id = serializers.SlugField(source="name")
-    label = serializers.CharField(source="title")
-
-
 class SatelliteVisualisationSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatelliteVisualisation
@@ -147,12 +137,10 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "satellite",
-            "tier",
             "cloudCover",
             "created",
             "footprint",
-            "metadata",  # "raw_data",  # don't bother serializing raw_data
-            "owner",
+            "metadata",
             "thumbnail_url",
             "tile_url",
         )
@@ -163,35 +151,11 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
         slug_field="satellite_id", queryset=Satellite.objects.all()
     )
 
-    tier = serializers.SlugRelatedField(
-        slug_field="name", queryset=SatelliteTier.objects.all()
-    )
-
     cloudCover = serializers.FloatField(source="cloud_cover")
 
     footprint = SwaggerGeometryField(
         precision=SatelliteResult.PRECISION, remove_duplicates=True
     )
-
-    owner = serializers.PrimaryKeyRelatedField(
-        # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
-        queryset=get_user_model().objects.all(),
-        default=SwaggerCurrentUserDefault(),
-    )
-
-    def validate(self, data):
-        # NOTE THAT THIS CODE IS MOSTLY DUPLICATED IN `SatelliteResult.clean()`
-        # THIS IS BY DESIGN B/C OF https://github.com/encode/django-rest-framework/issues/3144
-
-        # make sure owner is allowed to save this search result
-        user = data["owner"]
-        max_results = user.orbis_profile.max_results
-        if not self.instance and user.satellite_results.count() >= max_results:
-            raise serializers.ValidationError(
-                f"Only {max_results} instances of SatelliteSearches are allowed for '{user}'."
-            )
-
-        return data
 
 
 ######################
@@ -202,59 +166,77 @@ class SatelliteResultSerializer(serializers.ModelSerializer):
 class SatelliteSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = SatelliteSearch
-        # I don't have to do anything clever w/ nested serializers,
-        # b/c satellites & resolutions will already exist in the db
-        fields = (
+        fields = [
             "id",
-            "name",
             "satellites",
-            "tiers",
             "start_date",
             "end_date",
             "aoi",
-            "owner",
             "created",
-        )
+        ]
 
     satellites = serializers.SlugRelatedField(
         slug_field="satellite_id", many=True, queryset=Satellite.objects.all()
     )
-
-    tiers = serializers.SlugRelatedField(
-        slug_field="name", many=True, queryset=SatelliteTier.objects.all()
-    )
-
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
     aoi = SimplifiedGeometryField(
         geometry_class=Polygon, precision=SatelliteSearch.PRECISION
     )
 
-    owner = serializers.PrimaryKeyRelatedField(
-        # (using a wrapper around CurrentUserDefault so that yasg doesn't complain)
-        queryset=get_user_model().objects.all(),
-        default=SwaggerCurrentUserDefault(),
-    )
-
     def validate(self, data):
-        # NOTE THAT THIS CODE IS MOSTLY DUPLICATED IN `SatelliteSearch.clean()`
-        # THIS IS BY DESIGN B/C OF https://github.com/encode/django-rest-framework/issues/3144
 
-        # make sure data (dates & aoi) is valid
         if data["start_date"] > data["end_date"]:
             raise serializers.ValidationError(
                 "end_date must be greater than or equal to start_date."
             )
+
         if data["aoi"].area > settings.MAXIMUM_AOI_AREA:
             raise serializers.ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
             )
 
-        # make sure owner is allowed to save this search
-        user = data["owner"]
-        max_searches = user.orbis_profile.max_searches
-        if not self.instance and user.satellite_searches.count(
-        ) >= max_searches:
-            raise serializers.ValidationError(
-                f"Only {max_searches} instances of SatelliteSearches are allowed for '{user}'."
-            )
-
         return data
+
+
+#########################
+# satellite datasources #
+#########################
+
+
+class SatelliteDataSourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SatelliteDataSource
+        fields = (
+            "source_id",
+            "created",
+            "name",
+            "description",
+            "metadata",
+        )
+
+
+class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
+    class Meta:
+        model = SatelliteDataSource
+        fields = [
+            "source_id",
+            "created",
+            "customer_user",
+            "name",
+            "description",
+            "satellite_id",
+            "scene_id",
+            "visualisation_id",
+            "metadata",
+        ]
+
+    customer_user = serializers.PrimaryKeyRelatedField(
+        default=ContextVariableDefault("customer_user", raise_error=True),
+        queryset=CustomerUser.objects.all(),
+        write_only=True,
+    )
+
+    satellite_id = serializers.SlugField(write_only=True)
+    scene_id = serializers.SlugField(write_only=True)
+    visualisation_id = serializers.SlugField(write_only=True)

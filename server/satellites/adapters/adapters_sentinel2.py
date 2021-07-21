@@ -3,7 +3,6 @@ from django.conf import settings
 from sentinelsat import SentinelAPI
 
 from .adapters_base import BaseSatelliteAdapter
-from satellites.models import SatelliteResult
 """
 Uses the sentinelsat library provided by Copernicus to access sentinel-2 data
 More information available at:
@@ -11,15 +10,21 @@ https://sentinelsat.readthedocs.io/en/stable/api.html
 https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/FullTextSearch?redirectedfrom=SciHubUserGuide.3FullTextSearch
 """
 
+SENTINEL2_PROPERTIES = {
+    # list of the properties to extract to metadata from sentinel-2 products
+    "summary": "Summary",
+    "instrumentname": "Name of the instrument",
+    "sensoroperationalmode": "Operational mode of the sensor",
+    "direction": "Orbit direction",
+    "producttype": "Product type",
+    "cloudcoverpercentage": "Cloud coverage [%]",
+}
+
 
 class Sentinel2Adapter(BaseSatelliteAdapter):
 
-    satellite_id = "sentinel-2"
-    tiers_fns = {
-        # a map of supported tier names to query fns
-        "free": "run_free_satellite_query",
-    }
-    query_params = {}
+    name = "sentinel-2"
+
     api = None
 
     def __init__(self, *args, **kwargs):
@@ -28,64 +33,45 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             settings.COPERNICUS_PASSWORD,
         )
 
-    def run_free_satellite_query(self, tier):
+    def run_query(self, **kwargs):
 
-        assert tier.name == "free"
+        from satellites.models import SatelliteResult
+
+        query_params = kwargs
 
         products = self.api.query(
-            area=self.query_params["aoi"].wkt,
+            area=query_params["aoi"].wkt,
             area_relation="Intersects",
             platformname="Sentinel-2",
             order_by="ingestiondate",
             offset=0,
             date=(
-                self.query_params["start_date"], self.query_params["end_date"]
+                query_params["start_date"],
+                query_params["end_date"],
             ),
         )
 
+        # yapf: disable
         results = [
             SatelliteResult(
-                # set some attrs based on the adapter...
-                satellite=self.query_params["satellite"],
-                owner=self.query_params["owner"],
-                tier=tier,
-                # set some attrs explicitly from the query result...
-                scene_id=product["identifier"],
-                created=product["endposition"],
-                footprint=product["footprint"],
-                cloud_cover=product["cloudcoverpercentage"],
-                # set as much metatdata as I can from the query result...
-                metadata={
-                    "Summary":
-                        product.get("summary"),
-                    "Name of the instrument":
-                        product.get("instrumentname"),
-                    "Operational mode of the sensor":
-                        product.get("sensoroperationalmode"),
-                    "Orbit direction":
-                        product.get("direction"),
-                    "Product type":
-                        product.get("producttype"),
-                    "Cloud coverage [%]":
-                        product.get("cloudcoverpercentage"),
+                # set some attributes based on the adapter...
+                satellite = query_params["satellite"],
+                # set some attributes directly from the product...
+                scene_id = product["identifier"],
+                created = product["endposition"],
+                footprint = product["footprint"],
+                cloud_cover = product["cloudcoverpercentage"],
+                # extract everything I can into metadata...
+                metadata = {
+                    SENTINEL2_PROPERTIES[k]: v
+                    for k, v in product.items()
+                    if k in SENTINEL2_PROPERTIES
                 },
-                # store everything else as the "raw_data" attr...
-                raw_data=product,
-            ) for _,
-            product in products.items()
+                # store everything else as raw_data...
+                raw_data = product,
+            )
+            for product in products.values()
         ]
-
-        return results
-
-    def run_satellite_query(self):
-
-        results = []
-
-        for tier in self.query_params["tiers"]:
-
-            query_fn = self.tiers_fns.get(tier.name, None)
-            if query_fn is not None:
-                results += getattr(self, query_fn)(tier)
 
         return results
 

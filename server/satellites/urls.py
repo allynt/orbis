@@ -4,23 +4,31 @@ from astrosat.routers import SlashlessSimpleRouter
 
 from .views import (
     SatelliteViewSet,
-    SatelliteSearchViewSet,
-    SatelliteResultViewSet,
+    # SatelliteSearchViewSet,
+    # SatelliteResultViewSet,
+    SatelliteDataSourceViewSet,
     run_satellite_query,
-)
-
-# yapf: disable
+) # yapf: disable
 
 ##############
 # api routes #
 ##############
 
 api_router = SlashlessSimpleRouter()
-api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search")
-api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
+# api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search")
+# api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
+api_router.register(
+    r"customers/(?P<customer_id>[^/.]+)/users/(?P<user_id>[^/.]+)/satellites/datasources",
+    SatelliteDataSourceViewSet,
+    basename="satellite-data-source"
+)
 api_urlpatterns = [
-    path("satellites/run_query/", run_satellite_query, name="satellite-run-query"),
+    path(
+        "satellites/run_query/",
+        run_satellite_query,
+        name="satellite-run-query"
+    ),
     path("", include(api_router.urls)),
 ]
 

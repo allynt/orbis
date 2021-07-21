@@ -16,10 +16,10 @@ from orbis.tests.factories import UserFactory
 
 from satellites.models import (
     Satellite,
-    SatelliteTier,
     SatelliteVisualisation,
     SatelliteSearch,
     SatelliteResult,
+    SatelliteDataSource,
 )
 
 json_encoder = JSONEncoder()
@@ -52,19 +52,6 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
         if extracted:
             for visualisation in extracted:
                 self.visualisations.add(visualisation)
-
-
-class SatelliteTierFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = SatelliteTier
-
-    name = factory.LazyAttributeSequence(lambda o, n: f"tier-{n}")
-    title = FactoryFaker("pretty_sentence", nb_words=3)
-    description = optional_declaration(FactoryFaker("text"), chance=50)
-
-    @factory.lazy_attribute
-    def order(self):
-        return SatelliteTier.objects.count() + 1
 
 
 class SatelliteVisualisationFactory(factory.django.DjangoModelFactory):
@@ -105,15 +92,6 @@ class SatelliteSearchFactory(factory.django.DjangoModelFactory):
             for satellite in extracted:
                 self.satellites.add(satellite)
 
-    @factory.post_generation
-    def tiers(self, create, extracted, **kwargs):
-        if not create:
-            return
-
-        if extracted:
-            for tier in extracted:
-                self.tiers.add(tier)
-
 
 class SatelliteResultFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -121,7 +99,6 @@ class SatelliteResultFactory(factory.django.DjangoModelFactory):
 
     scene_id = factory.Sequence(lambda n: f"scene-{n}")
     satellite = factory.SubFactory(SatelliteFactory)
-    tier = factory.SubFactory(SatelliteTierFactory)
     cloud_cover = FactoryFaker("pyfloat", min_value=0, max_value=100)
     footprint = FactoryFaker("polygon")
 
@@ -130,3 +107,17 @@ class SatelliteResultFactory(factory.django.DjangoModelFactory):
         # generates a random dictionary and encodes it as JSON
         properties_dict = fake.pydict()
         return json_encoder.encode(properties_dict)
+
+
+class SatelliteDataSourceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = SatelliteDataSource
+
+    name = factory.Sequence(lambda n: f"data-source-{n}")
+    description = optional_declaration(
+        FactoryFaker("text"), chance=50, default=""
+    )
+
+    satellite_id = factory.Sequence(lambda n: f"satellite-{n}")
+    scene_id = factory.Sequence(lambda n: f"scene-{n}")
+    visualisation_id = factory.Sequence(lambda n: f"visualisation-{n}")
