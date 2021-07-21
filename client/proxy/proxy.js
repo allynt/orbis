@@ -1,5 +1,5 @@
-const express = require('express');
 const bodyParser = require('body-parser');
+const express = require('express');
 
 const routes = require('./api');
 const staticDataRouter = require('./static-data');
@@ -25,6 +25,7 @@ router.use('/app', routes.appRoutes);
 router.use('/authentication', routes.authRoutes);
 router.use('/bookmarks', routes.bookmarksRoutes);
 router.use('/data', routes.dataRoutes);
+router.use('/orbs', routes.orbsRoutes);
 router.use('/satellites', routes.satellitesRoutes);
 router.use('/stories', routes.storiesRoutes);
 router.use('/users', routes.usersRoutes);

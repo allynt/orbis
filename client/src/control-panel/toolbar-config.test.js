@@ -3,6 +3,7 @@ import React from 'react';
 import { renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import featureToggles from 'feature-toggles';
 
@@ -15,7 +16,7 @@ import {
   STORIES,
 } from './toolbar-constants';
 
-const mockStore = createMockStore();
+const mockStore = createMockStore([thunk]);
 
 const renderHook = initialProps => {
   return tlRenderHook(() => useToolbarItems(), {

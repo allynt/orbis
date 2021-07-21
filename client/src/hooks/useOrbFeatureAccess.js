@@ -1,6 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { orbsSelector } from 'data-layers/data-layers.slice';
+import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
 
 /**
  *
@@ -21,7 +21,12 @@ const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
  */
 export const useOrbFeatureAccess = arg => {
   const orbs = useSelector(orbsSelector);
-  if (orbs == null || orbs.length === 0) return false;
+  const dispatch = useDispatch();
+  if (orbs == null) {
+    dispatch(fetchOrbs());
+    return false;
+  }
+  if (orbs.length === 0) return false;
   const orbFeatures = orbs.flatMap(orb => orb.features);
   if (Array.isArray(arg)) {
     return arg.reduce(
