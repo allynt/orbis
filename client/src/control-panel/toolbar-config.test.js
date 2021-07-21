@@ -19,8 +19,10 @@ const mockStore = createMockStore();
 
 const renderHook = initialProps => {
   return tlRenderHook(() => useToolbarItems(), {
-    wrapper: ({ children, user }) => (
-      <Provider store={mockStore({ accounts: { user } })}>{children}</Provider>
+    wrapper: ({ children, user, orbs }) => (
+      <Provider store={mockStore({ accounts: { user }, data: { orbs } })}>
+        {children}
+      </Provider>
     ),
     initialProps,
   });
@@ -34,13 +36,23 @@ describe('useToolbarItems', () => {
     );
   });
 
-  it.each([DATA_LAYERS, SATELLITE_LAYERS, BOOKMARKS, PROFILE])(
+  it.each([DATA_LAYERS, BOOKMARKS, PROFILE])(
     'includes the %s item if the user has UserRole',
     label => {
       const { result } = renderHook({ user: { roles: ['UserRole'] } });
       expect(result.current).toContainEqual(expect.objectContaining({ label }));
     },
   );
+
+  it('Includes the Satellite item if user has UserRole and has an orb with the correct feature', () => {
+    const { result } = renderHook({
+      user: { roles: ['UserRole'] },
+      orbs: [{ features: ['satellites'] }],
+    });
+    expect(result.current).toContainEqual(
+      expect.objectContaining({ label: SATELLITE_LAYERS }),
+    );
+  });
 
   it('Includes the stories item if the feature toggle is enabled', () => {
     featureToggles.stories = true;

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
+import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
 
 import {
@@ -64,6 +65,7 @@ export const useToolbarItems = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const userHasUserRole = useUserRoleAuthorization(['UserRole']);
+  const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
 
   /** @type {ToolbarItem[]} */
   const items = [
@@ -82,21 +84,6 @@ export const useToolbarItems = () => {
         },
         tooltip: DATA_LAYERS,
         order: 0,
-      },
-      {
-        label: SATELLITE_LAYERS,
-        icon: <SatelliteIcon />,
-        action: () => {
-          dispatch(toggleMenu(SATELLITE_LAYERS));
-          dispatch(
-            setMenuHeadings({
-              heading: 'SATELLITE IMAGES',
-              strapline: 'Search and visualise up to date images',
-            }),
-          );
-        },
-        tooltip: SATELLITE_LAYERS,
-        order: 1,
       },
       {
         label: BOOKMARKS,
@@ -130,6 +117,24 @@ export const useToolbarItems = () => {
         order: 5,
       },
     ]),
+    ...conditionallyAddItemOrItems(
+      userHasUserRole && hasSatellitesFeatureAccess,
+      {
+        label: SATELLITE_LAYERS,
+        icon: <SatelliteIcon />,
+        action: () => {
+          dispatch(toggleMenu(SATELLITE_LAYERS));
+          dispatch(
+            setMenuHeadings({
+              heading: 'SATELLITE IMAGES',
+              strapline: 'Search and visualise up to date images',
+            }),
+          );
+        },
+        tooltip: SATELLITE_LAYERS,
+        order: 1,
+      },
+    ),
     ...conditionallyAddItemOrItems(false, {
       label: 'Mission Control',
       icon: (

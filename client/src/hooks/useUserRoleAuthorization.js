@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'accounts/accounts.selectors';
 
 /**
- * @param {string[]} roles
- * @returns {boolean}
+ * Check if the current user has the provided role or roles
+ * @param {string[]} roles The roles to check
+ * @returns {boolean} Returns true if the user has **any** of the provided roles
  */
 const useUserRoleAuthorization = roles => {
   const user = useSelector(userSelector);
