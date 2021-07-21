@@ -4,6 +4,7 @@ import { userSelector } from 'accounts/accounts.selectors';
 
 /**
  * @param {string[]} roles
+ * @returns {boolean}
  */
 const useUserRoleAuthorization = roles => {
   const user = useSelector(userSelector);

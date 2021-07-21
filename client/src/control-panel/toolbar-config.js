@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
+import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
 
 import {
   toggleMenu,
@@ -46,15 +47,22 @@ import {
  */
 
 /**
+ * @param {boolean} condition
+ * @param {ToolbarItem} item
+ */
+const conditionallyAddItem = (condition, item) => (condition ? [item] : []);
+
+/**
  * @returns {ToolbarItem[]}
  */
 export const useToolbarItems = () => {
-  const user = useSelector(userSelector);
   const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+  const userHasUserRole = useUserRoleAuthorization(['UserRole']);
 
   /** @type {ToolbarItem[]} */
-  let items = [
-    {
+  const items = [
+    ...conditionallyAddItem(userHasUserRole, {
       label: DATA_LAYERS,
       icon: <DataIcon titleAccess="data" />,
       action: () => {
@@ -67,10 +75,9 @@ export const useToolbarItems = () => {
         );
       },
       tooltip: DATA_LAYERS,
-      roles: ['UserRole'],
       order: 0,
-    },
-    {
+    }),
+    ...conditionallyAddItem(userHasUserRole, {
       label: SATELLITE_LAYERS,
       icon: <SatelliteIcon />,
       action: () => {
@@ -83,10 +90,9 @@ export const useToolbarItems = () => {
         );
       },
       tooltip: SATELLITE_LAYERS,
-      roles: ['UserRole'],
       order: 1,
-    },
-    {
+    }),
+    ...conditionallyAddItem(userHasUserRole, {
       label: BOOKMARKS,
       icon: <MapIcon titleAccess="My maps" />,
       action: () => {
@@ -99,21 +105,20 @@ export const useToolbarItems = () => {
         );
       },
       tooltip: BOOKMARKS,
-      roles: ['UserRole'],
       order: 2,
-    },
-    // {
-    //   label: 'Mission Control',
-    //   icon: (
-    //     <SvgIcon>
-    //       <MissionControlIcon />
-    //     </SvgIcon>
-    //   ),
-    //   footer: true,
-    //   tooltip: 'Mission Control',
-    //   action: () => dispatch(toggleMissionControlDialog(true)),
-    // },
-    {
+    }),
+    ...conditionallyAddItem(false, {
+      label: 'Mission Control',
+      icon: (
+        <SvgIcon>
+          <MissionControlIcon />
+        </SvgIcon>
+      ),
+      footer: true,
+      tooltip: 'Mission Control',
+      action: () => dispatch(toggleMissionControlDialog(true)),
+    }),
+    ...conditionallyAddItem(userHasUserRole, {
       label: PROFILE,
       icon: <ProfileIcon titleAccess="Profile" />,
       action: () => {
@@ -127,9 +132,8 @@ export const useToolbarItems = () => {
       },
       tooltip: PROFILE,
       footer: true,
-      roles: ['UserRole'],
       order: 5,
-    },
+    }),
     {
       label: 'User Guide',
       icon: (
@@ -142,10 +146,7 @@ export const useToolbarItems = () => {
       order: 3,
       href: apiClient.documents.userGuideUrl(),
     },
-  ];
-
-  if (featureToggles.stories) {
-    items.push({
+    ...conditionallyAddItem(featureToggles.stories && userHasUserRole, {
       label: STORIES,
       icon: <StoryIcon />,
       action: () => {
@@ -158,38 +159,28 @@ export const useToolbarItems = () => {
         );
       },
       tooltip: STORIES,
-      roles: ['UserRole'],
       order: 3,
-    });
-  }
-
-  if (user?.customers?.some(customer => customer.type === 'MANAGER')) {
-    items.push({
-      label: 'Admin',
-      icon: (
-        <SvgIcon>
-          <AdminIcon />
-        </SvgIcon>
-      ),
-      action: () => {
-        dispatch(push('/admin-console'));
+    }),
+    ...conditionallyAddItem(
+      user?.customers?.some(customer => customer.type === 'MANAGER'),
+      {
+        label: 'Admin',
+        icon: (
+          <SvgIcon>
+            <AdminIcon />
+          </SvgIcon>
+        ),
+        action: () => {
+          dispatch(push('/admin-console'));
+        },
+        tooltip: 'Admin',
+        footer: true,
+        order: 4,
       },
-      tooltip: 'Admin',
-      footer: true,
-      roles: [], // not restricted by role
-      order: 4,
-    });
-  }
+    ),
+  ];
 
-  return items
-    .filter(
-      item =>
-        item.roles === undefined ||
-        item.roles === null ||
-        item.roles.length === 0 ||
-        user?.roles?.some(role => item.roles.includes(role)),
-    )
-    .sort((item1, item2) => item1.order - item2.order);
+  return items.sort((item1, item2) => item1.order - item2.order);
 };
 
 /* UNUSED ITEMS */
