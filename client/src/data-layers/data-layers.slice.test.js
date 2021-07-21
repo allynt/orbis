@@ -235,6 +235,28 @@ describe('Data Slice', () => {
           ]),
         );
       });
+
+      describe('fulfilled', () => {
+        it('sets orbs in state', () => {
+          const orbs = [{ id: 1 }, { id: 2 }];
+          const result = reducer(
+            {},
+            { type: fetchOrbs.fulfilled.type, payload: orbs },
+          );
+          expect(result).toEqual({ orbs });
+        });
+      });
+
+      describe('rejected', () => {
+        it('sets the error in state', () => {
+          const payload = { message: 'Failed' };
+          const result = reducer(
+            {},
+            { type: fetchOrbs.rejected.type, payload },
+          );
+          expect(result).toEqual({ error: payload });
+        });
+      });
     });
   });
 

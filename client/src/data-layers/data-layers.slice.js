@@ -18,6 +18,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {string} [token]
  * @property {import('typings/orbis').Source[]} [sources]
  * @property {any} [error]
+ * @property {import('typings/orbis').Orb[]} [orbs]
  */
 
 const name = 'data';
@@ -82,6 +83,14 @@ const dataSlice = createSlice({
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchOrbs.fulfilled, (state, { payload }) => {
+      state.orbs = payload;
+    });
+    builder.addCase(fetchOrbs.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
   },
 });
 
