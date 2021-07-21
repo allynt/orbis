@@ -1,7 +1,10 @@
+import json
+
 from django.contrib import admin
 from django.contrib.gis.admin import GeoModelAdmin
 from django.db.models import JSONField
 from django.forms import Select, ModelForm
+from django.utils.html import mark_safe
 
 from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
 
@@ -9,8 +12,6 @@ from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
 from satellites.models import (
     Satellite,
     SatelliteVisualisation,
-    # SatelliteSearch,  # transitory class; should not be saved in db
-    # SatelliteResult,  # transitory class; should not be saved in db
     SatelliteDataSource,
 )
 
@@ -34,9 +35,15 @@ class SatelliteAdminForm(ModelForm):
 @admin.register(Satellite)
 class SatelliteAdmin(admin.ModelAdmin):
     form = SatelliteAdminForm
-    list_display = ("satellite_id", "order")
+    list_display = (
+        "satellite_id",
+        "order",
+    )
     list_editable = ("order", )
-    search_fields = ("title", )
+    search_fields = (
+        "title",
+        "satellite_id",
+    )
 
 
 @admin.register(SatelliteVisualisation)
@@ -68,7 +75,17 @@ class SatelliteDataSourceAdmin(admin.ModelAdmin):
     list_display = ("name", "customer_user", "source_id")
     list_filter = ("customer_user", )
     readonly_fields = (
+        "created",
+        "get_metadata_for_detail_display",
         "source_id",
-        "metadata",
     )
     search_fields = ("name", "description")
+
+    def get_metadata_for_detail_display(self, obj):
+        # (makes metadata look pretty in an HTML template)
+        metadata = json.dumps(obj.metadata, indent=4)
+        for k, v in [("\n", "<br/>"), (" ", "&nbsp;")]:
+            metadata = metadata.replace(k, v)
+        return mark_safe(metadata)
+
+    get_metadata_for_detail_display.short_description = "metadata"

@@ -203,8 +203,9 @@ class DataSourceView(APIView):
 
         # add "My Data" to the sources...
         # TODO: RESTRICT THIS BY orb.features
-        satellite_data_sources = SatelliteDataSource.objects.active(
-        ).filter_by_user(user)
+        satellite_data_sources = SatelliteDataSource.objects.filter_by_user(
+            user
+        ).active()
         satellite_data_source_serializer = SatelliteDataSourceSerializer(
             satellite_data_sources, many=True
         )

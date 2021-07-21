@@ -4,8 +4,6 @@ from astrosat.routers import SlashlessSimpleRouter
 
 from .views import (
     SatelliteViewSet,
-    # SatelliteSearchViewSet,
-    # SatelliteResultViewSet,
     SatelliteDataSourceViewSet,
     run_satellite_query,
 ) # yapf: disable
@@ -15,8 +13,6 @@ from .views import (
 ##############
 
 api_router = SlashlessSimpleRouter()
-# api_router.register(r"satellites/searches", SatelliteSearchViewSet, basename="satellite-search")
-# api_router.register(r"satellites/results", SatelliteResultViewSet, basename="satellite-result")
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_router.register(
     r"customers/(?P<customer_id>[^/.]+)/users/(?P<user_id>[^/.]+)/satellites/datasources",
