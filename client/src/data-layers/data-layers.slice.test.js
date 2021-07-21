@@ -198,7 +198,7 @@ describe('Data Slice', () => {
     describe('fetchOrbs', () => {
       beforeEach(() => {
         fetch.resetMocks();
-        store = mockStore();
+        store = mockStore({ data: {} });
       });
 
       it(`Dispatches the ${fetchOrbs.rejected.type} action on failed request`, async () => {
@@ -244,7 +244,7 @@ describe('Data Slice', () => {
             {},
             { type: fetchOrbs.fulfilled.type, payload: orbs },
           );
-          expect(result).toEqual({ orbs });
+          expect(result).toEqual(expect.objectContaining({ orbs }));
         });
       });
 
@@ -255,7 +255,7 @@ describe('Data Slice', () => {
             {},
             { type: fetchOrbs.rejected.type, payload },
           );
-          expect(result).toEqual({ error: payload });
+          expect(result).toEqual(expect.objectContaining({ error: payload }));
         });
       });
     });
@@ -277,7 +277,7 @@ describe('Data Slice', () => {
     it('should return the initial state', () => {
       const actualState = reducer(undefined, {});
 
-      expect(actualState).toEqual(beforeState);
+      expect(actualState).toEqual(expect.objectContaining(beforeState));
     });
 
     describe('updateLayers', () => {

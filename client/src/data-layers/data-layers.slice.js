@@ -19,6 +19,8 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {import('typings/orbis').Source[]} [sources]
  * @property {any} [error]
  * @property {import('typings/orbis').Orb[]} [orbs]
+ * @property {boolean} isFetchingOrbs
+ * @property {string} [fetchOrbsRequestId]
  */
 
 const name = 'data';
@@ -30,13 +32,15 @@ const initialState = {
   token: null,
   sources: null,
   error: null,
+  isFetchingOrbs: false,
+  fetchOrbsRequestId: undefined,
 };
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings/orbis').Orb[],
  *  undefined,
- *  {rejectValue: {message: string}}
+ *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
  * >}
  */
 export const fetchOrbs = createAsyncThunk(
@@ -54,6 +58,14 @@ export const fetchOrbs = createAsyncThunk(
       );
       return rejectWithValue({ message: `${status} ${message}` });
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        data: { isFetchingOrbs, fetchOrbsRequestId },
+      } = getState();
+      if (isFetchingOrbs && !!fetchOrbsRequestId) return false;
+    },
   },
 );
 
@@ -85,11 +97,19 @@ const dataSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(fetchOrbs.pending, (state, action) => {
+      state.isFetchingOrbs = true;
+      state.fetchOrbsRequestId = action.meta.requestId;
+    });
     builder.addCase(fetchOrbs.fulfilled, (state, { payload }) => {
       state.orbs = payload;
+      state.isFetchingOrbs = false;
+      state.fetchOrbsRequestId = undefined;
     });
     builder.addCase(fetchOrbs.rejected, (state, { payload }) => {
       state.error = payload;
+      state.isFetchingOrbs = false;
+      state.fetchOrbsRequestId = undefined;
     });
   },
 });
