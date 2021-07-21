@@ -1,4 +1,9 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+import { NotificationManager } from 'react-notifications';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
@@ -15,6 +20,8 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {any} [error]
  */
 
+const name = 'data';
+
 /** @type {DataState} */
 const initialState = {
   layers: [],
@@ -24,8 +31,33 @@ const initialState = {
   error: null,
 };
 
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/orbis').Orb[],
+ *  undefined,
+ *  {rejectValue: {message: string}}
+ * >}
+ */
+export const fetchOrbs = createAsyncThunk(
+  `${name}/fetchOrbs`,
+  async (_, { rejectWithValue }) => {
+    try {
+      return await apiClient.orbs.getOrbs();
+    } catch (error) {
+      const { status, message } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Orbs Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+);
+
 const dataSlice = createSlice({
-  name: 'data',
+  name,
   initialState,
   reducers: {
     updateLayers: (state, { payload }) => {
