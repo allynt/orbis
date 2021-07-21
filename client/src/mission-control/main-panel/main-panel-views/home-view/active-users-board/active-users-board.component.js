@@ -24,7 +24,6 @@ import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 import QuickView from './quick-view/quick-view.component';
-import { UsersViewTablePagination } from '../table-pagination.component';
 
 const USER_LABELS = {
   standard: 'Standard',
@@ -211,11 +210,11 @@ export const ActiveUsersBoard = ({
   };
 
   const handleChangePage = (_, newPage) => {
-    setCurrentPage(newPage);
+    setCurrentPage(newPage - 1);
   };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = value => {
+    setRowsPerPage(parseInt(value, 10));
     setCurrentPage(0);
   };
 
@@ -283,6 +282,7 @@ export const ActiveUsersBoard = ({
         {Array.isArray(rows) ? (
           <TablePaginationFooter
             currentPage={currentPage + 1}
+            rowsPerPage={rowsPerPage}
             pageCount={pageCount}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
             handleChangePage={handleChangePage}

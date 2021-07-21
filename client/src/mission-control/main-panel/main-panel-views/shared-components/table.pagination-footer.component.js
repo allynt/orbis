@@ -1,10 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import {
+  Box,
   Button,
   Typography,
   TableFooter,
   Pagination,
+  Select,
+  MenuItem,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 import { ROWS_PER_PAGE_OPTIONS } from 'mission-control/mission-control.constants';
@@ -21,6 +24,9 @@ const useStyles = makeStyles(theme => ({
   },
   showEntries: {
     width: 'fit-content',
+  },
+  select: {
+    '&::after': '',
   },
   buttons: {
     width: 'fit-content',
@@ -42,16 +48,17 @@ const useStyles = makeStyles(theme => ({
   },
   pagination: {
     flexWrap: 'nowrap',
-    borderRadius: '0',
     height: '2rem',
     backgroundColor: theme.palette.background.default,
     color: '#fff',
     margin: '0',
+    borderRadius: '0',
   },
 }));
 
 export const TablePaginationFooter = ({
   currentPage,
+  rowsPerPage,
   pageCount,
   handleChangeRowsPerPage,
   handleChangePage,
@@ -60,18 +67,22 @@ export const TablePaginationFooter = ({
 }) => {
   const styles = useStyles({});
   return (
-    <div className={clsx(styles.layout, styles.footer)}>
-      <div className={clsx(styles.layout, styles.showEntries)}>
+    <TableFooter className={clsx(styles.layout, styles.footer)}>
+      <Box className={clsx(styles.layout, styles.showEntries)}>
         <Typography variant="h3">Show</Typography>
-        <select onChange={e => handleChangeRowsPerPage(e.target.value)}>
+        <Select
+          className={styles.select}
+          value={rowsPerPage}
+          onChange={e => handleChangeRowsPerPage(e.target.value)}
+        >
           {ROWS_PER_PAGE_OPTIONS.map(entry => (
-            <option>{entry}</option>
+            <MenuItem value={entry}>{entry}</MenuItem>
           ))}
-        </select>
+        </Select>
         <Typography variant="h3">Entries</Typography>
-      </div>
+      </Box>
 
-      <div className={clsx(styles.layout, styles.buttons)}>
+      <Box className={clsx(styles.layout, styles.buttons)}>
         <Button
           className={clsx(styles.button, styles.prevButton)}
           onClick={handlePrevClick}
@@ -95,7 +106,7 @@ export const TablePaginationFooter = ({
         >
           Next
         </Button>
-      </div>
-    </div>
+      </Box>
+    </TableFooter>
   );
 };

@@ -17,10 +17,10 @@ import {
   UsersViewTableCell,
 } from 'mission-control/mission-control-table/mission-control-table.component';
 
+import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
+
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
-
-import { UsersViewTablePagination } from '../table-pagination.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
@@ -125,19 +125,27 @@ export const PendingInvitationsBoard = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleChangePage = (e, newPage) => {
-    setCurrentPage(newPage);
+  const handleChangePage = (_, newPage) => {
+    setCurrentPage(newPage - 1);
   };
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = value => {
+    setRowsPerPage(parseInt(value, 10));
     setCurrentPage(0);
+  };
+
+  const handlePrevClick = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextClick = () => {
+    setCurrentPage(currentPage + 1);
   };
 
   const styles = useStyles();
 
   const rows =
-    pendingUsers && pendingUsers.length > 0 ? (
+    pendingUsers.length > 0 ? (
       pendingUsers.map(user => (
         <PendingUserRow
           key={user.id}
@@ -149,27 +157,31 @@ export const PendingInvitationsBoard = ({
       ))
     ) : (
       <UsersViewTableRow>
-        <UsersViewTableCell align="center" colSpan={6}>
+        <UsersViewTableCell align="center" colSpan={5}>
           No Pending Users
         </UsersViewTableCell>
       </UsersViewTableRow>
     );
+
+  const pageCount = Math.ceil(rows?.length / rowsPerPage);
 
   return (
     <TableContainer className={styles.container}>
       <UsersViewTable>
         <TableHeader />
         <TableBody>{rows}</TableBody>
-        {Array.isArray(rows) ? (
-          <UsersViewTablePagination
-            count={rows ? rows.length : 0}
-            rowsPerPage={rowsPerPage}
-            page={currentPage}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        ) : null}
       </UsersViewTable>
+      {Array.isArray(rows) ? (
+        <TablePaginationFooter
+          currentPage={currentPage + 1}
+          rowsPerPage={rowsPerPage}
+          pageCount={pageCount}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          handleChangePage={handleChangePage}
+          handlePrevClick={handlePrevClick}
+          handleNextClick={handleNextClick}
+        />
+      ) : null}
     </TableContainer>
   );
 };
