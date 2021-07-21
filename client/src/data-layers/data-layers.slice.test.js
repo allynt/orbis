@@ -237,6 +237,19 @@ describe('Data Slice', () => {
         );
       });
 
+      describe('pending', () => {
+        it('Sets is loading status and request id in state', () => {
+          const result = reducer(
+            {},
+            { type: fetchOrbs.pending.type, meta: { requestId: '123-id' } },
+          );
+          expect(result).toEqual({
+            isFetchingOrbs: true,
+            fetchOrbsRequestId: '123-id',
+          });
+        });
+      });
+
       describe('fulfilled', () => {
         it('sets orbs in state', () => {
           const orbs = [{ id: 1 }, { id: 2 }];
