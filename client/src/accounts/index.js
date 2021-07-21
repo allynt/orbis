@@ -55,7 +55,6 @@ export default () => {
   const isLoggedIn = useSelector(isLoggedInSelector);
   const resetStatus = useSelector(passwordResetStatusSelector);
   const changeStatus = useSelector(passwordChangeStatusSelector);
-  /** @type {User} */
   const user = useSelector(userSelector);
   const passwordConfig = useSelector(passwordConfigSelector);
 

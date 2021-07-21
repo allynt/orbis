@@ -9,7 +9,7 @@ import ReactTooltip from 'react-tooltip';
 import apiClient from 'api-client';
 
 import Accounts from './accounts';
-import { userSelector } from './accounts/accounts.selectors';
+import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
 import {
   fetchAppConfig,
@@ -27,7 +27,7 @@ const App = () => {
   const userTrackingInterval = useSelector(userTrackingIntervalSelector);
 
   const user = useSelector(userSelector);
-  const userKey = useSelector(state => state.accounts.userKey);
+  const userKey = useSelector(userKeySelector);
   const notYetImplementedDescription = useSelector(
     state => state.app.notYetImplementedDescription,
   );
