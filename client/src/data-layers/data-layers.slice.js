@@ -6,6 +6,16 @@ import { addLogItem } from 'app.slice';
 
 import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
+/**
+ * @typedef DataState
+ * @property {import('typings/orbis').Source['source_id'][]} layers
+ * @property {number} pollingPeriod
+ * @property {string} [token]
+ * @property {import('typings/orbis').Source[]} [sources]
+ * @property {any} [error]
+ */
+
+/** @type {DataState} */
 const initialState = {
   layers: [],
   pollingPeriod: 30000,
@@ -155,52 +165,38 @@ export const logError = source => async (dispatch, getState) => {
     }),
   );
 };
-const baseSelector = state => state?.data ?? {};
 
 /**
- * @type {import('@reduxjs/toolkit').Selector<any, string>}
+ * @param {import('react-redux').DefaultRootState} state
  */
+const baseSelector = state => state?.data;
+
 export const selectDataToken = createSelector(
   baseSelector,
-  state => state.token ?? '',
+  state => state?.token ?? '',
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
- */
 export const dataSourcesSelector = createSelector(
   baseSelector,
-  state => state.sources ?? [],
+  state => state?.sources ?? [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, number>}
- */
 export const selectPollingPeriod = createSelector(
   baseSelector,
-  state => state.pollingPeriod,
+  state => state?.pollingPeriod,
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source['source_id'][]>}
- */
 export const activeLayersSelector = createSelector(
   baseSelector,
-  data => data.layers ?? [],
+  data => data?.layers ?? [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
- */
 export const activeDataSourcesSelector = createSelector(
   [dataSourcesSelector, activeLayersSelector],
   (sources, layers) =>
     sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, string[]>}
- */
 export const selectDomainList = createSelector(dataSourcesSelector, sources =>
   Array.from(
     new Set(
@@ -219,9 +215,6 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
  * @param {number} [depth]
  */
 export const categorisedOrbsAndSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
-   */
   createSelector(dataSourcesSelector, sources =>
     createOrbsWithCategorisedSources(sources, depth),
   );
@@ -230,9 +223,6 @@ export const categorisedOrbsAndSourcesSelector = depth =>
  * @param {number} [depth]
  */
 export const activeCategorisedOrbsAndSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
-   */
   createSelector(activeDataSourcesSelector, sources =>
     createOrbsWithCategorisedSources(sources, depth),
   );
@@ -241,9 +231,6 @@ export const activeCategorisedOrbsAndSourcesSelector = depth =>
  * @param {number} [depth]
  */
 export const activeCategorisedSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, CategorisedSources>}
-   */
   createSelector(
     activeCategorisedOrbsAndSourcesSelector(depth),
     orbsAndSources =>
