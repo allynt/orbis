@@ -39,7 +39,6 @@ import {
  *  icon: JSX.Element
  *  action?: () => void
  *  tooltip?: string
- *  roles?: string[]
  *  order?: number
  *  footer?: boolean
  *  href?: string
@@ -48,9 +47,15 @@ import {
 
 /**
  * @param {boolean} condition
- * @param {ToolbarItem} item
+ * @param {ToolbarItem | ToolbarItem[]} itemOrItems
  */
-const conditionallyAddItem = (condition, item) => (condition ? [item] : []);
+const conditionallyAddItemOrItems = (condition, itemOrItems) => {
+  if (condition) {
+    if (Array.isArray(itemOrItems)) return itemOrItems;
+    return [itemOrItems];
+  }
+  return [];
+};
 
 /**
  * @returns {ToolbarItem[]}
@@ -62,52 +67,70 @@ export const useToolbarItems = () => {
 
   /** @type {ToolbarItem[]} */
   const items = [
-    ...conditionallyAddItem(userHasUserRole, {
-      label: DATA_LAYERS,
-      icon: <DataIcon titleAccess="data" />,
-      action: () => {
-        dispatch(toggleMenu(DATA_LAYERS));
-        dispatch(
-          setMenuHeadings({
-            heading: 'SELECT ORB',
-            strapline: 'Choose your ORB and then add data layers',
-          }),
-        );
+    ...conditionallyAddItemOrItems(userHasUserRole, [
+      {
+        label: DATA_LAYERS,
+        icon: <DataIcon titleAccess="data" />,
+        action: () => {
+          dispatch(toggleMenu(DATA_LAYERS));
+          dispatch(
+            setMenuHeadings({
+              heading: 'SELECT ORB',
+              strapline: 'Choose your ORB and then add data layers',
+            }),
+          );
+        },
+        tooltip: DATA_LAYERS,
+        order: 0,
       },
-      tooltip: DATA_LAYERS,
-      order: 0,
-    }),
-    ...conditionallyAddItem(userHasUserRole, {
-      label: SATELLITE_LAYERS,
-      icon: <SatelliteIcon />,
-      action: () => {
-        dispatch(toggleMenu(SATELLITE_LAYERS));
-        dispatch(
-          setMenuHeadings({
-            heading: 'SATELLITE IMAGES',
-            strapline: 'Search and visualise up to date images',
-          }),
-        );
+      {
+        label: SATELLITE_LAYERS,
+        icon: <SatelliteIcon />,
+        action: () => {
+          dispatch(toggleMenu(SATELLITE_LAYERS));
+          dispatch(
+            setMenuHeadings({
+              heading: 'SATELLITE IMAGES',
+              strapline: 'Search and visualise up to date images',
+            }),
+          );
+        },
+        tooltip: SATELLITE_LAYERS,
+        order: 1,
       },
-      tooltip: SATELLITE_LAYERS,
-      order: 1,
-    }),
-    ...conditionallyAddItem(userHasUserRole, {
-      label: BOOKMARKS,
-      icon: <MapIcon titleAccess="My maps" />,
-      action: () => {
-        dispatch(toggleMenu(BOOKMARKS));
-        dispatch(
-          setMenuHeadings({
-            heading: 'MY MAPS',
-            strapline: 'Save your map and pick up later',
-          }),
-        );
+      {
+        label: BOOKMARKS,
+        icon: <MapIcon titleAccess="My maps" />,
+        action: () => {
+          dispatch(toggleMenu(BOOKMARKS));
+          dispatch(
+            setMenuHeadings({
+              heading: 'MY MAPS',
+              strapline: 'Save your map and pick up later',
+            }),
+          );
+        },
+        tooltip: BOOKMARKS,
+        order: 2,
       },
-      tooltip: BOOKMARKS,
-      order: 2,
-    }),
-    ...conditionallyAddItem(false, {
+      {
+        label: PROFILE,
+        icon: <ProfileIcon titleAccess="Profile" />,
+        action: () => {
+          dispatch(toggleMenu(PROFILE));
+          dispatch(
+            setMenuHeadings({
+              heading: 'My Account',
+              strapline: 'Edit your details below',
+            }),
+          );
+        },
+        tooltip: PROFILE,
+        footer: true,
+        order: 5,
+      },
+    ]),
+    ...conditionallyAddItemOrItems(false, {
       label: 'Mission Control',
       icon: (
         <SvgIcon>
@@ -117,22 +140,6 @@ export const useToolbarItems = () => {
       footer: true,
       tooltip: 'Mission Control',
       action: () => dispatch(toggleMissionControlDialog(true)),
-    }),
-    ...conditionallyAddItem(userHasUserRole, {
-      label: PROFILE,
-      icon: <ProfileIcon titleAccess="Profile" />,
-      action: () => {
-        dispatch(toggleMenu(PROFILE));
-        dispatch(
-          setMenuHeadings({
-            heading: 'My Account',
-            strapline: 'Edit your details below',
-          }),
-        );
-      },
-      tooltip: PROFILE,
-      footer: true,
-      order: 5,
     }),
     {
       label: 'User Guide',
@@ -146,7 +153,7 @@ export const useToolbarItems = () => {
       order: 3,
       href: apiClient.documents.userGuideUrl(),
     },
-    ...conditionallyAddItem(featureToggles.stories && userHasUserRole, {
+    ...conditionallyAddItemOrItems(featureToggles.stories && userHasUserRole, {
       label: STORIES,
       icon: <StoryIcon />,
       action: () => {
@@ -161,7 +168,7 @@ export const useToolbarItems = () => {
       tooltip: STORIES,
       order: 3,
     }),
-    ...conditionallyAddItem(
+    ...conditionallyAddItemOrItems(
       user?.customers?.some(customer => customer.type === 'MANAGER'),
       {
         label: 'Admin',
