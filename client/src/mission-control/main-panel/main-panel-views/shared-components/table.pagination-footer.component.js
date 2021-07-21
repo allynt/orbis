@@ -25,34 +25,32 @@ const useStyles = makeStyles(theme => ({
   showEntries: {
     width: 'fit-content',
   },
-  select: {
-    '&::after': '',
-  },
   buttons: {
     width: 'fit-content',
   },
   button: {
     padding: '0',
+    boxShadow: 'none',
+    backgroundColor: theme.palette.background.default,
+    color: theme.palette.common.white,
+    height: theme.typography.pxToRem(32),
   },
   prevButton: {
     borderRadius: '5px 0 0 5px',
-    backgroundColor: theme.palette.background.default,
-    color: '#fff',
-    height: '2rem',
   },
   nextButton: {
     borderRadius: '0 5px 5px 0',
-    backgroundColor: theme.palette.background.default,
-    color: '#fff',
-    height: '2rem',
   },
   pagination: {
     flexWrap: 'nowrap',
-    height: '2rem',
+    height: theme.typography.pxToRem(32),
     backgroundColor: theme.palette.background.default,
-    color: '#fff',
-    margin: '0',
-    borderRadius: '0',
+    color: theme.palette.common.white,
+    '& Button': {
+      borderRadius: '0',
+      margin: '0',
+      padding: '0',
+    },
   },
 }));
 
@@ -71,7 +69,6 @@ export const TablePaginationFooter = ({
       <Box className={clsx(styles.layout, styles.showEntries)}>
         <Typography variant="h3">Show</Typography>
         <Select
-          className={styles.select}
           value={rowsPerPage}
           onChange={e => handleChangeRowsPerPage(e.target.value)}
         >
