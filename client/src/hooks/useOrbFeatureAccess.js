@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 
+import { orbsSelector } from 'data-layers/data-layers.slice';
+
 /**
  *
  * @param {import('typings/orbis').FeatureKey[]} featureKeysToSearch
@@ -18,8 +20,7 @@ const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
  * If multiple keys are provided, will return an object with a boolean for each key
  */
 export const useOrbFeatureAccess = arg => {
-  /** @type {import('typings/orbis').Orb[]} */
-  const orbs = useSelector(state => state?.data?.orbs);
+  const orbs = useSelector(orbsSelector);
   if (orbs == null || orbs.length === 0) return false;
   const orbFeatures = orbs.flatMap(orb => orb.features);
   if (Array.isArray(arg)) {

@@ -21,6 +21,7 @@ import reducer, {
   logError,
   updateLayers,
   fetchOrbs,
+  orbsSelector,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -457,6 +458,22 @@ describe('Data Slice', () => {
         const state = { data: {} };
         const result = dataSourcesSelector(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe('orbsSelector', () => {
+      it('Returns undefined if state is undefined', () => {
+        expect(orbsSelector({})).toBeUndefined();
+      });
+
+      it('Returns undefined if orbs is undefined', () => {
+        const state = { data: {} };
+        expect(orbsSelector(state)).toBeUndefined();
+      });
+
+      it('Returns orbs from state', () => {
+        const state = { data: { orbs: 'test-value' } };
+        expect(orbsSelector(state)).toBe('test-value');
       });
     });
 

@@ -222,6 +222,8 @@ export const dataSourcesSelector = createSelector(
   state => state?.sources ?? [],
 );
 
+export const orbsSelector = createSelector(baseSelector, state => state?.orbs);
+
 export const selectPollingPeriod = createSelector(
   baseSelector,
   state => state?.pollingPeriod,
