@@ -244,7 +244,7 @@ describe('Data Slice', () => {
             { type: fetchOrbs.pending.type, meta: { requestId: '123-id' } },
           );
           expect(result).toEqual({
-            isFetchingOrbs: true,
+            fetchOrbsPending: true,
             fetchOrbsRequestId: '123-id',
           });
         });
