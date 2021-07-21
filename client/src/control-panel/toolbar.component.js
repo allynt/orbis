@@ -39,7 +39,7 @@ const Toolbar = ({ items }) => {
    */
   const select = item => {
     setSelected(item);
-    item.action(history);
+    item.action();
   };
 
   /**

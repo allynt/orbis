@@ -9,6 +9,7 @@ import {
   SvgIcon,
 } from '@astrosat/astrosat-ui';
 
+import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
@@ -35,7 +36,7 @@ import {
  * @typedef {{
  *  label: string
  *  icon: JSX.Element
- *  action?: (history?: import('history').History) => void
+ *  action?: () => void
  *  tooltip?: string
  *  roles?: string[]
  *  order?: number
@@ -170,8 +171,8 @@ export const useToolbarItems = () => {
           <AdminIcon />
         </SvgIcon>
       ),
-      action: history => {
-        history.push('/admin-console');
+      action: () => {
+        dispatch(push('/admin-console'));
       },
       tooltip: 'Admin',
       footer: true,
