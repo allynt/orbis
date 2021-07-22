@@ -43,6 +43,7 @@ export const SaveImageForm = ({ onSubmit }) => {
   return (
     <Grid
       component="form"
+      noValidate
       container
       spacing={2}
       direction="column"
@@ -69,7 +70,7 @@ export const SaveImageForm = ({ onSubmit }) => {
           inputRef={register}
         />
       </Grid>
-      <Grid item container justifyContent="center">
+      <Grid item container direction="column" alignItems="center">
         <Button type="submit" color="secondary">
           Save
         </Button>

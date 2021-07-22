@@ -5,6 +5,8 @@ import {
   Button,
   Checkbox,
   Dialog,
+  DialogContent,
+  DialogTitle,
   EyeIcon,
   EyeSlashIcon,
   List,
@@ -110,8 +112,13 @@ const Visualisation = ({
       <Dialog
         open={saveImageFormOpen}
         onClose={() => setSaveImageFormOpen(false)}
+        maxWidth="sm"
+        fullWidth
       >
-        <SaveImageForm onSubmit={handleSaveImageSubmit} />
+        <DialogTitle>Name Your Image</DialogTitle>
+        <DialogContent>
+          <SaveImageForm onSubmit={handleSaveImageSubmit} />
+        </DialogContent>
       </Dialog>
     </>
   ) : null;
