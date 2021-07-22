@@ -7,10 +7,6 @@ const useTableStyles = makeStyles(() => ({
   },
 }));
 
-const useRowStyles = makeStyles(theme => ({
-  root: {},
-}));
-
 const useCellStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -20,10 +16,12 @@ const useCellStyles = makeStyles(theme => ({
     '&:last-of-type': {
       borderRadius: '0 5px 5px 0',
     },
-    paddingLeft: '2rem',
+    padding: `0 ${theme.spacing(4)}`,
   },
   head: {
     ...theme.typography.h2,
+    backgroundColor: 'transparent',
+    border: '0',
   },
   body: {
     ...theme.typography.body1,
@@ -40,14 +38,9 @@ export const UsersViewTableCell = ({ children, ...props }) => {
   );
 };
 
-export const UsersViewTableRow = ({ children, ...props }) => {
-  const styles = useRowStyles({});
-  return (
-    <TableRow {...props} classes={styles}>
-      {children}
-    </TableRow>
-  );
-};
+export const UsersViewTableRow = ({ children, ...props }) => (
+  <TableRow {...props}>{children}</TableRow>
+);
 
 export const UsersViewTable = ({ children }) => {
   const styles = useTableStyles({});

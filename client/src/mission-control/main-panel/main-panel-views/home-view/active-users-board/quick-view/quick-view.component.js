@@ -19,15 +19,15 @@ const QuickViewItem = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-evenly',
+  padding: '1rem',
   alignItems: 'center',
-  padding: '1.5rem 0',
   backgroundColor: theme.palette.background.default,
   borderRadius: '0.25rem',
   minWidth: '14rem',
   minHeight: '8rem',
 }));
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   active: {
     gridColumn: '1',
   },
@@ -40,7 +40,12 @@ const useStyles = makeStyles({
   value: {
     gridRow: '1',
   },
-});
+  createUserIcon: {
+    color: theme.palette.common.white,
+    height: theme.typography.pxToRem(40),
+    width: theme.typography.pxToRem(40),
+  },
+}));
 
 const Value = ({ children, className }) => {
   const styles = useStyles();
@@ -80,7 +85,7 @@ const Label = ({ children, className }) => (
  * }} props
  */
 const QuickView = ({ data, onCreateUserClick }) => {
-  const styles = useStyles();
+  const styles = useStyles({});
   return (
     <Wrapper>
       <QuickViewItem>
@@ -95,21 +100,11 @@ const QuickView = ({ data, onCreateUserClick }) => {
 
       <QuickViewItem>
         <Value className={styles.available}>{data?.available ?? '-'}</Value>
-
         <Label className={styles.available}>Licences Available</Label>
       </QuickViewItem>
 
       <QuickViewItem>
-        <CreateUserIcon
-          style={{
-            height: '3.5rem',
-            width: '3.5rem',
-            color: '#fff',
-            fill: '#fff',
-          }}
-          color="#0000FF"
-          fill="#0000FF"
-        />
+        <CreateUserIcon className={styles.createUserIcon} />
         <Button size="small" onClick={onCreateUserClick}>
           Create User
         </Button>

@@ -156,8 +156,9 @@ const UserRow = ({
 };
 
 const useStyles = makeStyles(theme => ({
-  box: {
+  container: {
     height: `calc(100% - ${theme.spacing(10)})`,
+    padding: `0 ${theme.spacing(6.5)}`,
   },
 }));
 
@@ -260,7 +261,7 @@ export const ActiveUsersBoard = ({
 
   return (
     <Box
-      className={styles.box}
+      className={styles.container}
       display="flex"
       flexDirection="column"
       alignItems="center"
