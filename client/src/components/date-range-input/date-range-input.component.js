@@ -16,25 +16,18 @@ const placeholder = theme => ({
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    position: 'relative',
     color: theme.palette.text.primary,
     background: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.primary.main}`,
     boxShadow: 'none',
-    '&::after': {
-      position: 'absolute',
-      background: theme.palette.primary.main,
-      content: '""',
-      display: 'block',
-      height: '2px',
-      width: '100%',
-      bottom: 0,
-      borderRadius: '100vh',
-    },
+    padding: theme.spacing(0, 1),
   },
   separator: {
     textAlign: 'center',
   },
   input: {
+    textAlign: 'center',
     margin: '0 auto',
     backgroundColor: 'transparent',
     fontSize: theme.typography.fontSize,
@@ -74,7 +67,7 @@ export const DateRangeInput = React.forwardRef(
       <Grid
         ref={ref}
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component={Paper}
         className={styles.paper}
