@@ -10,7 +10,6 @@ from rest_framework_gis.serializers import GeometryField
 from drf_yasg2 import openapi
 
 from astrosat.serializers import ContextVariableDefault
-from astrosat.views import SwaggerCurrentUserDefault
 
 from astrosat_users.models import CustomerUser
 
@@ -219,7 +218,7 @@ class SatelliteDataSourceSerializer(serializers.ModelSerializer):
 class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
     class Meta:
         model = SatelliteDataSource
-        fields = [
+        fields = (
             "source_id",
             "created",
             "customer_user",
@@ -228,8 +227,7 @@ class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
             "satellite_id",
             "scene_id",
             "visualisation_id",
-            "metadata",
-        ]
+        )
 
     customer_user = serializers.PrimaryKeyRelatedField(
         default=ContextVariableDefault("customer_user", raise_error=True),

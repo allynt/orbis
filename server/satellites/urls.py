@@ -15,7 +15,7 @@ from .views import (
 api_router = SlashlessSimpleRouter()
 api_router.register(r"satellites", SatelliteViewSet, basename="satellite")
 api_router.register(
-    r"customers/(?P<customer_id>[^/.]+)/users/(?P<user_id>[^/.]+)/satellites/datasources",
+    r"satellites/datasources/(?P<customer_id>[^/.]+)/(?P<user_id>[^/.]+)",
     SatelliteDataSourceViewSet,
     basename="satellite-data-source"
 )

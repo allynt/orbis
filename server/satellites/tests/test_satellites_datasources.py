@@ -1,18 +1,10 @@
-import datetime
-import json
 import pytest
-import urllib
 
-from django.contrib.gis.geos import GEOSGeometry, Polygon
 from django.urls import resolve, reverse
 
 from rest_framework import status
 
-from astrosat.tests.utils import shuffle_string
-
 from astrosat_users.tests.utils import *
-
-from satellites.serializers import SatelliteDataSourceSerializer, SimplifiedGeometryField
 
 from .factories import *
 

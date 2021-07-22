@@ -341,7 +341,7 @@ class SatelliteResult(gis_models.Model):
 
 class SatelliteDataSource(models.Model):
     class Meta:
-        verbose_name_plural = "Satellite DataSource"
+        verbose_name = "Satellite DataSource"
         verbose_name_plural = "Satellite DataSources"
         ordering = ["created"]
         constraints = [
@@ -372,6 +372,10 @@ class SatelliteDataSource(models.Model):
     satellite_id = models.SlugField(blank=False, null=False)
     scene_id = models.SlugField(blank=False, null=False)
     visualisation_id = models.SlugField(blank=False, null=False)
+
+    @property
+    def categories(self):
+        return {"name": "Satellite Images"}
 
     @property
     def orb_name(self):
@@ -410,6 +414,7 @@ class SatelliteDataSource(models.Model):
                     "layer": self.layer_details,
                     "map_component": self.map_component_details,
                     "sidebar_component": self.sidebar_component_details,
+                    "categories": self.categories,
                     "orbs": [{
                         "name": self.orb_name,
                         "description": self.orb_description,

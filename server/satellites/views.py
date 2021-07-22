@@ -1,5 +1,5 @@
 import functools
-
+from collections import OrderedDict
 from botocore.exceptions import BotoCoreError
 
 from django.contrib.gis.geos import Polygon
@@ -196,6 +196,57 @@ def run_satellite_query(request):
 # Satellite DataSource #
 ########################
 
+_satellite_datasource_response_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="some-random-unique-string")),
+        ("created", openapi.Schema(type=openapi.TYPE_STRING, example="2000-01-01T12:00:00.000Z")),
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="a unique name")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="an optional description")),
+        ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT,
+            properties=OrderedDict(),
+            example={
+                "label": "a unique name",
+                "description": "an optional description",
+                "domain": "My Data",
+                "type": "raster",
+                "url": "https://url/to/tiles/{{z}}/{{x}}/{{y}}",
+                "application": {
+                    "orbis": {
+                        "layer": {},
+                        "map_component": {},
+                        "sidebar_component": {},
+                        "categories": {"name": "Satellite Images"},
+                        "orbs": [{
+                            "name": "My Data",
+                            "description": "Saved data for 'customer-user x'"
+                        }]
+                    }
+                }
+            }
+        ))
+    ))
+)  # yapf: disable
+
+_satellite_datasource_create_request_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("satellite_id", openapi.Schema(type=openapi.TYPE_STRING, example="sentinel-2")),
+        ("scene_id", openapi.Schema(type=openapi.TYPE_STRING, example="S2A_MSIL1C_20161207T105432_N0204_R051_T31UET_20161207T105428")),
+        ("visualisation_id", openapi.Schema(type=openapi.TYPE_STRING, example="TCI")),
+    ))
+)  # yapf: disable
+
+_satellite_datasource_update_request_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+    ))
+)  # yapf: disable
+
 
 class IsAdminOrOwner(BasePermission):
     """
@@ -206,6 +257,33 @@ class IsAdminOrOwner(BasePermission):
         return user.is_superuser or user == view.customer_user.user
 
 
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_create_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="create",
+)
+@method_decorator(
+    swagger_auto_schema(
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="retrieve",
+)
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_update_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="update",
+)
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_update_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="partial_update",
+)
 class SatelliteDataSourceViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
