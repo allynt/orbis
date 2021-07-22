@@ -1,10 +1,22 @@
 import React from 'react';
 
-import { Button, TextField } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  styled,
+} from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+
+const SavedToText = styled(Typography)(({ theme }) => ({
+  ...theme.typography.caption,
+  fontWeight: 600,
+  marginTop: theme.spacing(1),
+}));
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
@@ -29,26 +41,40 @@ export const SaveImageForm = ({ onSubmit }) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(v => onSubmit(v))}>
-      <TextField
-        id="name"
-        name="name"
-        label="Add Name"
-        required
-        inputRef={register}
-        error={!!errors.name}
-        helperText={errors.name?.message}
-      />
-      <TextField
-        id="description"
-        name="description"
-        label="Add Description"
-        multiline
-        inputRef={register}
-      />
-      <Button type="submit" color="secondary">
-        Save
-      </Button>
-    </form>
+    <Grid
+      component="form"
+      container
+      spacing={2}
+      direction="column"
+      onSubmit={handleSubmit(v => onSubmit(v))}
+    >
+      <Grid item>
+        <TextField
+          id="name"
+          name="name"
+          label="Add Name"
+          required
+          inputRef={register}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+      </Grid>
+      <Grid item>
+        <TextField
+          id="description"
+          name="description"
+          label="Add Description"
+          multiline
+          rows={3}
+          inputRef={register}
+        />
+      </Grid>
+      <Grid item container justifyContent="center">
+        <Button type="submit" color="secondary">
+          Save
+        </Button>
+        <SavedToText>Saved To: My Data / Satellite Images</SavedToText>
+      </Grid>
+    </Grid>
   );
 };
