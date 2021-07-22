@@ -95,4 +95,12 @@ describe('Satellite Visualisation Component', () => {
     userEvent.click(getByRole('none'));
     expect(getByRole('dialog')).not.toBeVisible();
   });
+
+  it('Closes the save image form when the close button is clicked', () => {
+    const { getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Image' }));
+    expect(getByRole('dialog')).toBeVisible();
+    userEvent.click(getByRole('button', { name: 'Close' }));
+    expect(getByRole('dialog')).not.toBeVisible();
+  });
 });

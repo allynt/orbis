@@ -4,11 +4,13 @@ import {
   Avatar,
   Button,
   Checkbox,
+  CloseIcon,
   Dialog,
   DialogContent,
   DialogTitle,
   EyeIcon,
   EyeSlashIcon,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -29,6 +31,9 @@ const useStyles = makeStyles(theme => ({
   list: {
     margin: theme.spacing(0, -1),
   },
+  saveButton: { margin: 'auto auto 0' },
+  dialogTitle: { position: 'relative' },
+  closeButton: { position: 'absolute', inset: theme.spacing(3, 3, 3, 'auto') },
 }));
 
 /**
@@ -108,14 +113,28 @@ const Visualisation = ({
           </ListItem>
         ))}
       </List>
-      <Button onClick={() => setSaveImageFormOpen(true)}>Save Image</Button>
+      <Button
+        className={styles.saveButton}
+        onClick={() => setSaveImageFormOpen(true)}
+      >
+        Save Image
+      </Button>
       <Dialog
         open={saveImageFormOpen}
         onClose={() => setSaveImageFormOpen(false)}
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Name Your Image</DialogTitle>
+        <DialogTitle className={styles.dialogTitle}>
+          Name Your Image
+          <IconButton
+            className={styles.closeButton}
+            color="inherit"
+            onClick={() => setSaveImageFormOpen(false)}
+          >
+            <CloseIcon titleAccess="Close" />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <SaveImageForm onSubmit={handleSaveImageSubmit} />
         </DialogContent>

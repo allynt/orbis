@@ -8,6 +8,7 @@ export default {
   title: 'Satellites/Visualisation',
   argTypes: {
     setCurrentVisualisation: { action: true },
+    onSaveImageSubmit: { action: true },
   },
 };
 
