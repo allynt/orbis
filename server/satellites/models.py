@@ -1,3 +1,5 @@
+import uuid
+
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
@@ -8,6 +10,9 @@ from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema, validate_reserved_words
 
+from astrosat_users.models import CustomerUser
+
+from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
 
 ##############
 # validators #
@@ -28,8 +33,12 @@ def validate_satellite_id(value):
     A simple validator that prevents some reserved words from
     messing up the url parsing.
     """
-    invalid_satellite_ids = ["searches", "results", "run_query"]
-    return validate_reserved_words(value, invalid_satellite_ids, case_insensitive=True)
+    invalid_satellite_ids = [
+        "searches", "results", "visualisations", "run_query"
+    ]
+    return validate_reserved_words(
+        value, invalid_satellite_ids, case_insensitive=True
+    )
 
 
 ###########
@@ -55,11 +64,6 @@ class SatelliteManager(models.Manager):
         return self.get(satellite_id=satellite_id)
 
 
-class SatelliteTierManager(models.Manager):
-    def get_by_natural_key(self, name):
-        return self.get(name=name)
-
-
 class SatelliteVisualisationManager(models.Manager):
     def get_by_natural_key(self, visualisation_id):
         return self.get(visualisation_id=visualisation_id)
@@ -74,6 +78,14 @@ class SatelliteVisualisationQuerySet(models.QuerySet):
         [obj.delete() for obj in self]
 
 
+class SatelliteDataSourceQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(is_active=True)
+
+    def filter_by_user(self, user):
+        return self.filter(customer_user__in=user.customer_users.all())
+
+
 ##########
 # models #
 ##########
@@ -83,7 +95,6 @@ class Satellite(models.Model):
     """
     A fixed set of satellites that we can search.
     """
-
     class Meta:
         verbose_name = "Satellite"
         verbose_name_plural = "Satellites"
@@ -97,6 +108,15 @@ class Satellite(models.Model):
         null=False,
         validators=[validate_satellite_id],
         help_text=_("A unique id for the satellite."),
+    )
+
+    adapter_name = models.CharField(
+        max_length=64,
+        blank=False,
+        null=False,
+        help_text=_(
+            "The name of the adapter that contains the specific query fns used by this Satellite"
+        )
     )
 
     title = models.CharField(
@@ -126,14 +146,17 @@ class Satellite(models.Model):
 
     def natural_key(self):
         # see above comment in SatelliteManager
-        return (self.satellite_id,)
+        return (self.satellite_id, )
+
+    @property
+    def adapter(self):
+        return SATELLITE_ADAPTER_REGISTRY[self.adapter_name]
 
 
 class SatelliteVisualisation(models.Model):
     """
     The visualisations that are available for a given satellite.
     """
-
     class Meta:
         verbose_name_plural = "Satellite Visualisation"
         verbose_name_plural = "Satellite Visualisations"
@@ -158,7 +181,9 @@ class SatelliteVisualisation(models.Model):
     )
 
     description = models.TextField(
-        blank=True, null=True, help_text=_("A description of the visualisation.")
+        blank=True,
+        null=True,
+        help_text=_("A description of the visualisation.")
     )
 
     order = models.IntegerField(
@@ -172,15 +197,14 @@ class SatelliteVisualisation(models.Model):
         upload_to=visualisation_thumbnail_path,
         blank=True,
         null=True,
-        help_text=_("A thumbnail image representing this bookmark."),
+        help_text=_("A thumbnail image representing this visualisation."),
     )
 
     def __str__(self):
         return self.visualisation_id
 
     def natural_key(self):
-        # see above comment in SatelliteVisualisationManager
-        return (self.visualisation_id,)
+        return (self.visualisation_id, )
 
     def delete(self, *args, **kwargs):
         """
@@ -196,78 +220,22 @@ class SatelliteVisualisation(models.Model):
         return super().delete(*args, **kwargs)
 
 
-class SatelliteTier(models.Model):
-    """
-    The tiers that are available for satellite searches.
-    """
-
-    class Meta:
-        verbose_name = "Satellite Tier"
-        verbose_name_plural = "Satellite Tiers"
-        ordering = ["order"]
-
-    objects = SatelliteTierManager()
-
-    name = models.SlugField(
-        unique=True,
-        blank=False,
-        null=False,
-        help_text=_("A unique name for the tier."),
-    )
-
-    title = models.CharField(
-        max_length=128,
-        blank=False,
-        null=False,
-        help_text=_("A pretty display name for the tier."),
-    )
-
-    description = models.TextField(
-        blank=True, null=True, help_text=_("A description of the tier.")
-    )
-
-    order = models.IntegerField(
-        blank=False,
-        null=False,
-        default=1,
-        help_text=("The order to render this tier."),
-    )
-
-    def __str__(self):
-        return self.name
-
-    def natural_key(self):
-        # see above comment in SatelliteTierManager
-        return (self.name,)
-
-
 class SatelliteSearch(gis_models.Model):
     """
-    A saved search query.
+    A search query.
     """
-
     class Meta:
-        verbose_name = "Saved Satellite Search"
-        verbose_name_plural = "Saved Satellites Searches"
+        verbose_name = "Satellite Search"
+        verbose_name_plural = "Satellite Searches"
         ordering = ["-created"]
-        constraints = [
-            models.UniqueConstraint(fields=["owner", "name"], name="unique_owner_name")
-        ]
 
     PRECISION = 6
 
-    created = models.DateTimeField(
-        auto_now_add=True, help_text=_("When the search was first created.")
-    )
-
-    name = models.CharField(max_length=128, blank=False, null=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     satellites = models.ManyToManyField(
-        "Satellite", related_name="searches", blank=False,
-    )
-
-    tiers = models.ManyToManyField(
-        "SatelliteTier", related_name="searches", blank=False,
+        "Satellite",
+        blank=False,
     )
 
     start_date = models.DateTimeField()
@@ -275,21 +243,8 @@ class SatelliteSearch(gis_models.Model):
 
     aoi = gis_models.PolygonField(blank=False)
 
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        blank=False,
-        null=False,
-        on_delete=models.CASCADE,
-        related_name="satellite_searches",
-        help_text=_("The owner of this search."),
-    )
-
-    def __str__(self):
-        return self.name
-
     def clean(self):
 
-        # make sure data (dates & aoi) is valid
         if self.start_date > self.end_date:
             raise ValidationError(
                 "end_date must be greater than or equal to start_date"
@@ -298,20 +253,12 @@ class SatelliteSearch(gis_models.Model):
         if self.aoi.area > settings.MAXIMUM_AOI_AREA:
             raise ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
-        )
-
-        # make sure owner is allowed to save this search
-        user = self.owner
-        max_searches = user.orbis_profile.max_searches
-        if not self.id and user.satellite_searches.count() >= max_searches:
-            raise ValidationError(
-                f"Only {max_searches} instances of SatelliteSearches are allowed for '{user}'."
             )
 
 
 class SatelliteResult(gis_models.Model):
     """
-    A saved result.
+    A seach query result.
     There are three types of information associated w/ a result:
     1) top-level information: this is information that all satellites must have
        they are stored as primary fields in this model and are accessed by the
@@ -323,10 +270,9 @@ class SatelliteResult(gis_models.Model):
     3) raw_data: this is the "raw" information returned by the specific satellite adapter
        it is not necessarily passed on to the client
     """
-
     class Meta:
-        verbose_name = "Saved Satellite Result"
-        verbose_name_plural = "Saved Satellite Results"
+        verbose_name = "Satellite Result"
+        verbose_name_plural = "Satellite Results"
         constraints = [
             models.UniqueConstraint(
                 fields=["scene_id", "satellite"], name="unique_satellite_scene"
@@ -336,15 +282,14 @@ class SatelliteResult(gis_models.Model):
     PRECISION = 6
 
     scene_id = models.SlugField(
-        max_length=256, blank=False, null=False, help_text=_("A unique id for the scene.")
+        max_length=256,
+        blank=False,
+        null=False,
+        help_text=_("A unique id for the scene.")
     )
 
     satellite = models.ForeignKey(
         Satellite, related_name="scenes", on_delete=models.CASCADE
-    )
-
-    tier = models.ForeignKey(
-        SatelliteTier, related_name="scenes", on_delete=models.CASCADE,
     )
 
     cloud_cover = models.FloatField(
@@ -371,28 +316,6 @@ class SatelliteResult(gis_models.Model):
         help_text=_("The original 'raw' data returned by the search."),
     )
 
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        blank=False,
-        null=False,
-        on_delete=models.CASCADE,
-        related_name="satellite_results",
-        help_text=_("The owner of this search result."),
-    )
-
-    def __str__(self):
-        return self.scene_id
-
-    def clean(self):
-
-        # make sure owner is allowed to save this search result
-        user = self.owner
-        max_results = user.orbis_profile.max_results
-        if not self.id and user.satellite_results.count() >= max_results:
-            raise ValidationError(
-                f"Only {max_results} instances of SatelliteResult are allowed for '{user}'."
-            )
-
     @property
     def thumbnail_url(self):
         """
@@ -410,9 +333,99 @@ class SatelliteResult(gis_models.Model):
         The URL to retrieve a tile from the OLSP (On-Line Scene Processor);
         templated bits are filled in by the client
         """
-        url_template = (
-        "{0}/{1}/{2}/{{VISUALISATION_ID}}/tilejson"
-        )
+        url_template = ("{0}/{1}/{2}/{{VISUALISATION_ID}}/tilejson")
         return url_template.format(
             settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
         )
+
+
+class SatelliteDataSource(models.Model):
+    class Meta:
+        verbose_name = "Satellite DataSource"
+        verbose_name_plural = "Satellite DataSources"
+        ordering = ["created"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "customer_user"],
+                name="unique_name_per_customer_user",
+            )
+        ]
+
+    objects = SatelliteDataSourceQuerySet.as_manager()
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    created = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    customer_user = models.ForeignKey(
+        CustomerUser,
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        related_name="satelite_data_sources"
+    )
+
+    name = models.CharField(max_length=128, blank=False, null=False)
+    description = models.TextField(blank=True, null=True)
+
+    satellite_id = models.SlugField(blank=False, null=False)
+    scene_id = models.SlugField(blank=False, null=False)
+    visualisation_id = models.SlugField(blank=False, null=False)
+
+    @property
+    def categories(self):
+        return {"name": "Satellite Images"}
+
+    @property
+    def orb_name(self):
+        return "My Data"
+
+    @property
+    def orb_description(self):
+        return f"Saved data for {self.customer_user.user}."
+
+    @property
+    def tile_url(self):
+        return f"{settings.OLSP_URL}/{self.satellite_id}/{self.scene_id}/{self.visualisation_id}/tilejson/{{z}}/{{x}}/{{y}}"
+
+    @property
+    def layer_details(self):
+        return {"name": "BitmapLayer", "props": {"config": "rasterConfig"}}
+
+    @property
+    def map_component_details(self):
+        return {}
+
+    @property
+    def sidebar_component_details(self):
+        return [{"name": "LayerVisibilityButton", "props": {}}]
+
+    @property
+    def metadata(self):
+        metadata = {
+            "label": self.name,
+            "description": self.description,
+            "domain": self.orb_name,
+            "type": "raster",
+            "url": self.tile_url,
+            "application": {
+                "orbis": {
+                    "layer": self.layer_details,
+                    "map_component": self.map_component_details,
+                    "sidebar_component": self.sidebar_component_details,
+                    "categories": self.categories,
+                    "orbs": [{
+                        "name": self.orb_name,
+                        "description": self.orb_description,
+                    }]
+                }
+            }
+        }  # yapf: disable
+        return metadata
+
+    @property
+    def source_id(self):
+        # the frontend just needs a unique string as the "source_id"
+        # (no need to bother w/ "<authority/<namespace>/<name>/<version>")
+        return str(self.id)

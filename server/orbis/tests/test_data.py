@@ -257,6 +257,9 @@ class TestDataSourceView:
             17 + 1
         )  # 17 to get scope details & 1 to get management details; still a lot better than linear (100+)
 
+        # TODO: REMOVE THIS LINE ONCE SatelliteDataSource ACCESS IS RESTRICTED BY Orb.features
+        N_QUERIES += 1  # checking SatelliteDataSources
+
         source_ids = [
             f"authority/namespace/name/version{i}" for i in range(N_SOURCES)
         ]

@@ -1,17 +1,19 @@
-from collections import OrderedDict
 import functools
-
+from collections import OrderedDict
 from botocore.exceptions import BotoCoreError
 
 from django.contrib.gis.geos import Polygon
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.utils.functional import cached_property
+
 from django_filters import rest_framework as filters
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import APIException
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
 from drf_yasg2 import openapi
@@ -19,17 +21,15 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from astrosat.decorators import swagger_fake
 
-from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
-from satellites.models import Satellite, SatelliteSearch, SatelliteResult
+from astrosat_users.models.models_customers import CustomerUser
+
+from satellites.models import Satellite, SatelliteDataSource, SatelliteSearch, SatelliteResult
 from satellites.serializers import (
     SatelliteSerializer,
     SatelliteSearchSerializer,
     SatelliteResultSerializer,
-)
-from satellites.tests.test_satellites import (
-    TEST_AOI_QUERY_PARAM,
-    TEST_START_DATE,
-    TEST_END_DATE,
+    SatelliteDataSourceSerializer,
+    SatelliteDataSourceCreateSerializer,
 )
 
 ##############
@@ -104,10 +104,9 @@ class CharInFilter(filters.BaseInFilter, filters.CharFilter):
 
 class SatelliteResultFilterSet(filters.FilterSet):
     """
-    Allows me to filter results by satellite, tier, cloud_cover, or bounding_box
+    Allows me to filter results by satellite, cloud_cover, or bounding_box
     usage is:
       <domain>/api/satellites/results/?satellites=a,b,c
-      <domain>/api/satellites/results/?tiers=a,b,c
       <domain>/api/satellites/results/?cloudcover=n
       <domain>/api/satellites/results/?cloudcover__gte=n
       <domain>/api/satellites/results/?cloudcover__lte=n
@@ -126,7 +125,6 @@ class SatelliteResultFilterSet(filters.FilterSet):
     satellites = CharInFilter(
         field_name="satellite__satellite_id", distinct=True
     )
-    tiers = CharInFilter(field_name="tier__name", distinct=True)
     footprint__bbox = filters.Filter(method="filter_footprint_bbox")
 
     def filter_footprint_bbox(self, queryset, name, value):
@@ -167,87 +165,154 @@ class SatelliteResultViewSet(
 # satellite queries #
 #####################
 
-_satellite_query_schema = openapi.Schema(
-    type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((
-        # (this re-uses some useful test values)
-        (
-            "satellites",
-            openapi.Schema(
-                type=openapi.TYPE_ARRAY,
-                items=openapi.Schema(
-                    type=openapi.TYPE_STRING, example="sentinel-2"
-                )
-            )
-        ),
-        (
-            "tiers",
-            openapi.Schema(
-                type=openapi.TYPE_ARRAY,
-                items=openapi.Schema(type=openapi.TYPE_STRING, example="free")
-            )
-        ),
-        (
-            "start_date",
-            openapi.Schema(
-                type=openapi.TYPE_STRING,
-                format=openapi.FORMAT_DATETIME,
-                example=TEST_START_DATE.isoformat()
-            )
-        ),
-        (
-            "end_date",
-            openapi.Schema(
-                type=openapi.TYPE_STRING,
-                format=openapi.FORMAT_DATETIME,
-                example=TEST_END_DATE.isoformat()
-            )
-        ),
-        (
-            "aoi",
-            openapi.Schema(
-                type=openapi.TYPE_ARRAY,
-                items=openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=openapi.Schema(type=openapi.TYPE_NUMBER)
-                ),
-                example=TEST_AOI_QUERY_PARAM
-            )
-        ),
-    ))
-)
-
 
 @swagger_auto_schema(
     method="post",
-    request_body=_satellite_query_schema,
+    request_body=SatelliteSearchSerializer,
     responses={status.HTTP_200_OK: SatelliteResultSerializer(many=True)},
 )
 @permission_classes([IsAuthenticated])
 @api_view(["POST"])
 def run_satellite_query(request):
 
-    search_results = []
-
-    # build a search out of the request data object
-    # (and a bit of inference)...
-    search_data = dict(request.data)
-    search_data.update({
-        "name": "current-query",
-        "owner": request.user.pk,
-    })
-    search_serializer = SatelliteSearchSerializer(data=search_data)
+    # build a search out of the request data...
+    search_serializer = SatelliteSearchSerializer(data=request.data)
     if not search_serializer.is_valid():
         raise APIException(search_serializer.errors)
-    # (NOTE: django doesn't let you instanciate an unsaved model w/ m2m fields)
-    # (so rather than try something hacky to use SatelliteSearch, I just carry on using SatelliteSearchSerializer)
 
-    # send that search info to the adapter(s)...
+    # use the adapter(s) to process that search...
+    search_results = []
     for satellite in search_serializer.validated_data["satellites"]:
-        adapter = SATELLITE_ADAPTER_REGISTRY[satellite]
-        adapter.setup(**search_serializer.validated_data, satellite=satellite)
-        search_results += adapter.run_satellite_query()
+        search_results += satellite.adapter.run_query(
+            satellite=satellite, **search_serializer.validated_data
+        )
 
     # return a list of results...
     results_serializer = SatelliteResultSerializer(search_results, many=True)
     return Response(results_serializer.data)
+
+
+########################
+# Satellite DataSource #
+########################
+
+_satellite_datasource_response_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="some-random-unique-string")),
+        ("created", openapi.Schema(type=openapi.TYPE_STRING, example="2000-01-01T12:00:00.000Z")),
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="a unique name")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="an optional description")),
+        ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT,
+            properties=OrderedDict(),
+            example={
+                "label": "a unique name",
+                "description": "an optional description",
+                "domain": "My Data",
+                "type": "raster",
+                "url": "https://url/to/tiles/{{z}}/{{x}}/{{y}}",
+                "application": {
+                    "orbis": {
+                        "layer": {},
+                        "map_component": {},
+                        "sidebar_component": {},
+                        "categories": {"name": "Satellite Images"},
+                        "orbs": [{
+                            "name": "My Data",
+                            "description": "Saved data for 'customer-user x'"
+                        }]
+                    }
+                }
+            }
+        ))
+    ))
+)  # yapf: disable
+
+_satellite_datasource_create_request_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("satellite_id", openapi.Schema(type=openapi.TYPE_STRING, example="sentinel-2")),
+        ("scene_id", openapi.Schema(type=openapi.TYPE_STRING, example="S2A_MSIL1C_20161207T105432_N0204_R051_T31UET_20161207T105428")),
+        ("visualisation_id", openapi.Schema(type=openapi.TYPE_STRING, example="TCI")),
+    ))
+)  # yapf: disable
+
+_satellite_datasource_update_request_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties=OrderedDict((
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+        ("description", openapi.Schema(type=openapi.TYPE_STRING, example="test")),
+    ))
+)  # yapf: disable
+
+
+class IsAdminOrOwner(BasePermission):
+    """
+    Only the admin or the owner of a SatelliteDataSource can access it
+    """
+    def has_permission(self, request, view):
+        user = request.user
+        return user.is_superuser or user == view.customer_user.user
+
+
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_create_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="create",
+)
+@method_decorator(
+    swagger_auto_schema(
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="retrieve",
+)
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_update_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="update",
+)
+@method_decorator(
+    swagger_auto_schema(
+        request_body=_satellite_datasource_update_request_schema,
+        responses={status.HTTP_200_OK: _satellite_datasource_response_schema}
+    ),
+    name="partial_update",
+)
+class SatelliteDataSourceViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+
+    lookup_url_kwarg = "datasource_id"
+    permission_classes = [IsAuthenticated, IsAdminOrOwner]
+
+    @cached_property
+    def customer_user(self):
+        return get_object_or_404(
+            CustomerUser.objects.all(),
+            customer__id=self.kwargs["customer_id"],
+            user__uuid=self.kwargs["user_id"]
+        )
+
+    @swagger_fake(SatelliteDataSource.objects.none())
+    def get_queryset(self):
+        return self.customer_user.satelite_data_sources.all()
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return SatelliteDataSourceCreateSerializer
+        return SatelliteDataSourceSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["customer_user"] = self.customer_user
+        return context
