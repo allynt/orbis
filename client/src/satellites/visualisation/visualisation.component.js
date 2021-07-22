@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Avatar,
+  Button,
   Checkbox,
+  Dialog,
   EyeIcon,
   EyeSlashIcon,
   List,
@@ -13,6 +15,8 @@ import {
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
+
+import { SaveImageForm } from './save-image-form/save-image-form.component';
 
 const useStyles = makeStyles(theme => ({
   avatarWrapper: { marginRight: theme.spacing(2) },
@@ -32,6 +36,7 @@ const useStyles = makeStyles(theme => ({
  *  visible?: boolean
  *  onVisualisationClick: (visualisationId: import('typings/satellites').Visualisation['id']) => void
  *  onVisibilityChange: (checked: boolean) => void
+ *  onSaveImageSubmit: (values: import('./save-image-form/save-image-form.component').FormValues) => void
  * }} props
  */
 const Visualisation = ({
@@ -40,8 +45,19 @@ const Visualisation = ({
   visible = true,
   onVisualisationClick,
   onVisibilityChange,
+  onSaveImageSubmit,
 }) => {
   const styles = useStyles();
+  const [saveImageFormOpen, setSaveImageFormOpen] = useState(false);
+
+  /**
+   * @param {import('./save-image-form/save-image-form.component').FormValues} values
+   */
+  const handleSaveImageSubmit = values => {
+    setSaveImageFormOpen(false);
+    onSaveImageSubmit(values);
+  };
+
   return visualisations ? (
     <>
       <Typography variant="h3" component="h1" gutterBottom>
@@ -67,7 +83,10 @@ const Visualisation = ({
               />
             </ListItemAvatar>
             <ListItemText
-              primaryTypographyProps={{ variant: 'h4', component: 'span' }}
+              primaryTypographyProps={{
+                variant: 'h4',
+                component: 'span',
+              }}
               primary={label}
               secondary={description}
             />
@@ -87,6 +106,13 @@ const Visualisation = ({
           </ListItem>
         ))}
       </List>
+      <Button onClick={() => setSaveImageFormOpen(true)}>Save Image</Button>
+      <Dialog
+        open={saveImageFormOpen}
+        onClose={() => setSaveImageFormOpen(false)}
+      >
+        <SaveImageForm onSubmit={handleSaveImageSubmit} />
+      </Dialog>
     </>
   ) : null;
 };

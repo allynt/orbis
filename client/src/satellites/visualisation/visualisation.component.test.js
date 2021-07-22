@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Visualisation from './visualisation.component';
@@ -23,20 +23,29 @@ const VISUALISATIONS = [
 const renderComponent = (visualisations = VISUALISATIONS) => {
   const onVisualisationClick = jest.fn();
   const onVisibilityChange = jest.fn();
+  const onSaveImageSubmit = jest.fn();
   const utils = render(
     <Visualisation
       visualisations={visualisations}
       onVisualisationClick={onVisualisationClick}
       onVisibilityChange={onVisibilityChange}
+      onSaveImageSubmit={onSaveImageSubmit}
     />,
   );
-  return { ...utils, onVisualisationClick, onVisibilityChange };
+  return {
+    ...utils,
+    onVisualisationClick,
+    onVisibilityChange,
+    onSaveImageSubmit,
+  };
 };
 
 describe('Satellite Visualisation Component', () => {
   it('should render a list of visualisation options', () => {
     const { getByText, getAllByRole } = renderComponent();
-    expect(getAllByRole('button')).toHaveLength(2);
+    expect(
+      getAllByRole('button', { name: /Scene Visualisation Thumbnail/i }),
+    ).toHaveLength(2);
 
     VISUALISATIONS.forEach(visualisation => {
       expect(getByText(visualisation.label)).toBeInTheDocument();
@@ -59,5 +68,31 @@ describe('Satellite Visualisation Component', () => {
     const { getAllByRole, onVisibilityChange } = renderComponent();
     userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
     expect(onVisibilityChange).toBeCalledWith(false);
+  });
+
+  it('Calls onSaveImageSubmit when the save image form is submitted', async () => {
+    const expected = {
+      name: 'Test Name',
+      description: 'Test Description',
+    };
+    const { getByRole, onSaveImageSubmit } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Image' }));
+    expect(getByRole('dialog')).toBeVisible();
+    userEvent.type(getByRole('textbox', { name: 'Add Name' }), expected.name);
+    userEvent.type(
+      getByRole('textbox', { name: 'Add Description' }),
+      expected.description,
+    );
+    userEvent.click(getByRole('button', { name: 'Save' }));
+    await waitFor(() => expect(onSaveImageSubmit).toBeCalledWith(expected));
+    expect(getByRole('dialog')).not.toBeVisible();
+  });
+
+  it('Closes the save image form when clicked off', () => {
+    const { getByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: 'Save Image' }));
+    expect(getByRole('dialog')).toBeVisible();
+    userEvent.click(getByRole('none'));
+    expect(getByRole('dialog')).not.toBeVisible();
   });
 });
