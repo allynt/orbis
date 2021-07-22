@@ -23,6 +23,9 @@ from drf_yasg2.utils import swagger_auto_schema
 from orbis.models import DataScope, Orb
 from orbis.utils import generate_data_token, validate_data_token
 
+from satellites.models import SatelliteDataSource
+from satellites.serializers import SatelliteDataSourceSerializer
+
 
 class IsAuthenticatedOrAdmin(BasePermission):
     """
@@ -174,12 +177,9 @@ class DataSourceView(APIView):
         data_scopes_to_orb_mapping = defaultdict(list)
         for orb in orbs:
             for data_scope in orb.filtered_data_scopes:
-                data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [
-                    {
-                        "name": orb.name,
-                        "description": orb.description
-                    }
-                ]
+                data_scopes_to_orb_mapping[data_scope.source_id_pattern] += [{
+                    "name": orb.name, "description": orb.description
+                }]
 
         for source in sources:
             # find all of the above orbs w/ a data_scope that matches the source_id...
@@ -201,10 +201,18 @@ class DataSourceView(APIView):
                 lambda orb1, orb2: orb1 + orb2, matching_orbs
             )
 
-        return Response(
-            {
-                "token": data_token,
-                "timeout": data_token_timeout,
-                "sources": sources,
-            }
+        # add "My Data" to the sources...
+        # TODO: RESTRICT THIS BY orb.features
+        satellite_data_sources = SatelliteDataSource.objects.filter_by_user(
+            user
+        ).active()
+        satellite_data_source_serializer = SatelliteDataSourceSerializer(
+            satellite_data_sources, many=True
         )
+        sources += satellite_data_source_serializer.data
+
+        return Response({
+            "token": data_token,
+            "timeout": data_token_timeout,
+            "sources": sources,
+        })

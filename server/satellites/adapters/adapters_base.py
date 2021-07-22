@@ -1,6 +1,5 @@
 from django.core.exceptions import ImproperlyConfigured
 
-
 ############
 # registry #
 ############
@@ -48,8 +47,7 @@ class AdapterRegistry(dict):
             )
 
 
-SATELLITE_ADAPTER_REGISTRY = AdapterRegistry(key="satellite_id")
-
+SATELLITE_ADAPTER_REGISTRY = AdapterRegistry(key="name")
 
 ##############
 # base class #
@@ -79,10 +77,8 @@ class BaseSatelliteAdapter(object, metaclass=SatelliteAdapterMetaClass):
 
     query_params = {}
 
-    def setup(self, *args, **kwargs):
-        self.query_params = kwargs
-
-    def run_satellite_query(self, **kwargs):
+    def run_query(self, **kwargs):
+        # takes [data from] a SatelliteSearch and returns [a list of] SatelliteResult
         raise NotImplementedError(
-            f"{self.__class__} must implement the 'run_satellite_query' method."
+            f"{self.__class__} must implement the 'run_query' method."
         )

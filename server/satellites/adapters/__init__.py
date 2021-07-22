@@ -8,9 +8,8 @@ from os.path import basename, dirname, join
 from .adapters_base import SATELLITE_ADAPTER_REGISTRY
 
 [
-    import_module(f".{module[:-3]}", __name__)
-    for module in [
-        basename(module_path) for module_path in glob(join(dirname(__file__), "*.py"))
-    ]
-    if not module.startswith("_")
+    import_module(f".{module[:-3]}", __name__) for module in [
+        basename(module_path)
+        for module_path in glob(join(dirname(__file__), "*.py"))
+    ] if not module.startswith("_")
 ]
