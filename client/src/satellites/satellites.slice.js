@@ -19,6 +19,7 @@ import { addSource } from 'data-layers/data-layers.slice';
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
+ * @property {Record<string,string>} requests
  */
 
 const name = 'satellites';
@@ -106,13 +107,7 @@ export const saveImage = createAsyncThunk(
   },
   {
     condition: (_, { getState }) => {
-      const visualisationId = visualisationIdSelector(getState());
-      const { satellite: satelliteId, id: sceneId } = selectedSceneSelector(
-        getState(),
-      );
-      const requestId = getState().satellites.requests?.[
-        `saveImage/${satelliteId}/${sceneId}/${visualisationId}`
-      ];
+      const requestId = getState().satellites.requests?.[`saveImage`];
       return !requestId;
     },
   },
@@ -128,6 +123,7 @@ const initialState = {
   error: null,
   satelliteSearches: null,
   visualisationId: 'TCI',
+  requests: {},
 };
 
 const satellitesSlice = createSlice({
@@ -169,6 +165,16 @@ const satellitesSlice = createSlice({
     });
     builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
       state.error = payload;
+    });
+    builder.addCase(saveImage.pending, (state, { meta }) => {
+      state.requests.saveImage = meta.requestId;
+    });
+    builder.addCase(saveImage.fulfilled, state => {
+      state.requests.saveImage = undefined;
+    });
+    builder.addCase(saveImage.rejected, (state, { error }) => {
+      state.requests.saveImage = undefined;
+      state.error = { message: error.message };
     });
   },
 });

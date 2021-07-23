@@ -31,71 +31,113 @@ describe('Satellites Slice', () => {
 
   describe('thunks', () => {
     describe('saveImage', () => {
-      it(`dispatches the ${saveImage.fulfilled.type} and adds the source to sources array`, async () => {
-        fetch.once(JSON.stringify({ source_id: 'source-id-123' }));
-        const store = mockStore({
-          accounts: {
-            user: { id: 'user-id-123', customers: [{ id: 'customer-id-123' }] },
-          },
-          satellites: {
-            visualisationId: 'true-color',
-            selectedScene: {
-              satellite: 'satellite-id-123',
-              id: 'scene-id-123',
-            },
-          },
+      describe('pending', () => {
+        it('sets the saveImage request to the request id', () => {
+          const result = reducer(
+            { requests: {} },
+            { type: saveImage.pending.type, meta: { requestId: 'id-123' } },
+          );
+          expect(result).toEqual(
+            expect.objectContaining({ requests: { saveImage: 'id-123' } }),
+          );
         });
-        store.dispatch(
-          saveImage({ name: 'Test name', description: 'Test description' }),
-        );
-        await waitFor(() =>
-          expect(store.getActions()).toContainEqual(
-            addSource({ source_id: 'source-id-123' }),
-          ),
-        );
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              type: saveImage.fulfilled.type,
-            }),
-          ]),
-        );
       });
 
-      it(`dispatches the ${saveImage.rejected.type} action on rejected request`, async () => {
-        fetch.once(
-          JSON.stringify({
-            message: 'Test error message',
-          }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
-        );
-        const store = mockStore({
-          accounts: {
-            user: { id: 'user-id-123', customers: [{ id: 'customer-id-123' }] },
-          },
-          satellites: {
-            visualisationId: 'true-color',
-            selectedScene: {
-              satellite: 'satellite-id-123',
-              id: 'scene-id-123',
+      describe('fulfilled', () => {
+        it(`dispatches the ${saveImage.fulfilled.type} and adds the source to sources array`, async () => {
+          fetch.once(JSON.stringify({ source_id: 'source-id-123' }));
+          const store = mockStore({
+            accounts: {
+              user: {
+                id: 'user-id-123',
+                customers: [{ id: 'customer-id-123' }],
+              },
             },
-          },
+            satellites: {
+              visualisationId: 'true-color',
+              selectedScene: {
+                satellite: 'satellite-id-123',
+                id: 'scene-id-123',
+              },
+            },
+          });
+          store.dispatch(
+            saveImage({ name: 'Test name', description: 'Test description' }),
+          );
+          await waitFor(() =>
+            expect(store.getActions()).toContainEqual(
+              addSource({ source_id: 'source-id-123' }),
+            ),
+          );
+          expect(store.getActions()).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                type: saveImage.fulfilled.type,
+              }),
+            ]),
+          );
         });
-        store.dispatch(
-          saveImage({ name: 'Test name', description: 'Test description' }),
-        );
-        await waitFor(() =>
-          expect(store.getActions()).toContainEqual(
-            expect.objectContaining({
-              type: saveImage.rejected.type,
-              error: expect.anything(),
+
+        it('Clears the saveImage request', () => {
+          const result = reducer(
+            { requests: { saveImage: '123' } },
+            { type: saveImage.fulfilled.type },
+          );
+          expect(result.requests.saveImage).toBeUndefined();
+        });
+      });
+
+      describe('rejected', () => {
+        it(`dispatches the ${saveImage.rejected.type} action on rejected request`, async () => {
+          fetch.once(
+            JSON.stringify({
+              message: 'Test error message',
             }),
-          ),
-        );
+            {
+              ok: false,
+              status: 401,
+              statusText: 'Test Error',
+            },
+          );
+          const store = mockStore({
+            accounts: {
+              user: {
+                id: 'user-id-123',
+                customers: [{ id: 'customer-id-123' }],
+              },
+            },
+            satellites: {
+              visualisationId: 'true-color',
+              selectedScene: {
+                satellite: 'satellite-id-123',
+                id: 'scene-id-123',
+              },
+            },
+          });
+          store.dispatch(
+            saveImage({ name: 'Test name', description: 'Test description' }),
+          );
+          await waitFor(() =>
+            expect(store.getActions()).toContainEqual(
+              expect.objectContaining({
+                type: saveImage.rejected.type,
+                error: expect.anything(),
+              }),
+            ),
+          );
+        });
+
+        it('Clears the saveImage request and sets the error', () => {
+          const result = reducer(
+            { requests: { saveImage: '123' } },
+            {
+              type: saveImage.rejected.type,
+              error: { message: 'Test message' },
+            },
+          );
+          expect(result.requests.saveImage).toBeUndefined();
+          expect(result.error).toEqual({ message: 'Test message' });
+        });
       });
 
       it("Does not request again if there's already a request pending", () => {
@@ -110,7 +152,7 @@ describe('Satellites Slice', () => {
               id: 'scene-id-123',
             },
             requests: {
-              'saveImage/satellite-id-123/scene-id-123/true-color': true,
+              saveImage: true,
             },
           },
         });
@@ -262,12 +304,6 @@ describe('Satellites Slice', () => {
         satelliteSearches: null,
         visualisationId: 'TCI',
       };
-    });
-
-    it('should return the initial state', () => {
-      const actualState = reducer(undefined, {});
-
-      expect(actualState).toEqual(beforeState);
     });
 
     it('should update the satellites in state, when successfully retrieved', () => {
