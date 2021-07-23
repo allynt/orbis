@@ -40,6 +40,9 @@ const dataSlice = createSlice({
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
     },
+    addSource: (state, { payload }) => {
+      state.sources.push(payload);
+    },
   },
 });
 
@@ -47,6 +50,7 @@ export const {
   updateLayers,
   fetchSourcesFailure,
   fetchSourcesSuccess,
+  addSource,
 } = dataSlice.actions;
 
 export const fetchSources = () => async dispatch => {

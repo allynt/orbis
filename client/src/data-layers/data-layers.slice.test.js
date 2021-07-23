@@ -20,6 +20,7 @@ import reducer, {
   logDataset,
   logError,
   updateLayers,
+  addSource,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -303,6 +304,24 @@ describe('Data Slice', () => {
         });
 
         expect(actualState.error).toEqual(error);
+      });
+    });
+
+    describe('addSource', () => {
+      it('adds a source to the sources array', () => {
+        const state = { sources: [{ source_id: 'source-id-123' }] };
+        const result = reducer(
+          state,
+          addSource({ source_id: 'source-id-456' }),
+        );
+        expect(result).toEqual(
+          expect.objectContaining({
+            sources: [
+              { source_id: 'source-id-123' },
+              { source_id: 'source-id-456' },
+            ],
+          }),
+        );
       });
     });
   });
