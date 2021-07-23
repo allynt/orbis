@@ -10,6 +10,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {
+    cursor: 'pointer',
     /** @param {{ isSelected: boolean} } props */
     color: props =>
       props.isSelected

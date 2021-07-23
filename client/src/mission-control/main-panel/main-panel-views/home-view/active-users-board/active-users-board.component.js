@@ -15,9 +15,9 @@ import {
 import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
 
 import {
-  UsersViewTable,
-  UsersViewTableRow,
-  UsersViewTableCell,
+  MissionControlTable,
+  MissionControlTableRow,
+  MissionControlTableCell,
 } from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
@@ -32,13 +32,15 @@ const USER_LABELS = {
 
 const TableHeader = () => (
   <TableHead>
-    <UsersViewTableRow>
-      <UsersViewTableCell align="left">Users</UsersViewTableCell>
-      <UsersViewTableCell align="left">Activated Licences</UsersViewTableCell>
-      <UsersViewTableCell align="left">Email</UsersViewTableCell>
-      <UsersViewTableCell align="left">Type</UsersViewTableCell>
-      <UsersViewTableCell align="left" />
-    </UsersViewTableRow>
+    <MissionControlTableRow>
+      <MissionControlTableCell align="left">Users</MissionControlTableCell>
+      <MissionControlTableCell align="left">
+        Activated Licences
+      </MissionControlTableCell>
+      <MissionControlTableCell align="left">Email</MissionControlTableCell>
+      <MissionControlTableCell align="left">Type</MissionControlTableCell>
+      <MissionControlTableCell align="left" />
+    </MissionControlTableRow>
   </TableHead>
 );
 
@@ -103,11 +105,17 @@ const UserRow = ({
   };
 
   return (
-    <UsersViewTableRow>
-      <UsersViewTableCell>{customerUser?.user?.name}</UsersViewTableCell>
-      <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
-      <UsersViewTableCell>{customerUser?.user?.email}</UsersViewTableCell>
-      <UsersViewTableCell>
+    <MissionControlTableRow>
+      <MissionControlTableCell>
+        {customerUser?.user?.name}
+      </MissionControlTableCell>
+      <MissionControlTableCell>
+        {getLicenceInfo(licences)}
+      </MissionControlTableCell>
+      <MissionControlTableCell>
+        {customerUser?.user?.email}
+      </MissionControlTableCell>
+      <MissionControlTableCell>
         <Button
           aria-controls="role-menu"
           color="secondary"
@@ -138,8 +146,8 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-      </UsersViewTableCell>
-      <UsersViewTableCell>
+      </MissionControlTableCell>
+      <MissionControlTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -150,14 +158,14 @@ const UserRow = ({
             <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
           )}
         </OptionsMenu>
-      </UsersViewTableCell>
-    </UsersViewTableRow>
+      </MissionControlTableCell>
+    </MissionControlTableRow>
   );
 };
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: `calc(100% - ${theme.spacing(10)})`,
+    height: 'calc(100% - 5rem)',
     padding: `0 ${theme.spacing(6.5)}`,
   },
 }));
@@ -186,6 +194,7 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
+  const styles = useStyles({});
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -227,8 +236,6 @@ export const ActiveUsersBoard = ({
     setCurrentPage(currentPage + 1);
   };
 
-  const styles = useStyles({});
-
   const rows =
     activeCustomerUsers?.length > 0 ? (
       activeCustomerUsers.map(customerUser => {
@@ -250,14 +257,12 @@ export const ActiveUsersBoard = ({
         );
       })
     ) : (
-      <UsersViewTableRow>
-        <UsersViewTableCell align="center" colSpan={5}>
+      <MissionControlTableRow>
+        <MissionControlTableCell align="center" colSpan={5}>
           No Active Users
-        </UsersViewTableCell>
-      </UsersViewTableRow>
+        </MissionControlTableCell>
+      </MissionControlTableRow>
     );
-
-  const pageCount = Math.ceil(rows?.length / rowsPerPage);
 
   return (
     <Box
@@ -269,7 +274,7 @@ export const ActiveUsersBoard = ({
     >
       <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
       <TableContainer>
-        <UsersViewTable>
+        <MissionControlTable>
           <TableHeader />
           <TableBody>
             {Array.isArray(rows) && rowsPerPage > 0
@@ -279,12 +284,12 @@ export const ActiveUsersBoard = ({
                 )
               : rows}
           </TableBody>
-        </UsersViewTable>
+        </MissionControlTable>
         {Array.isArray(rows) && rows.length > rowsPerPage ? (
           <TablePaginationFooter
             currentPage={currentPage + 1}
             rowsPerPage={rowsPerPage}
-            pageCount={pageCount}
+            pageCount={Math.ceil(rows?.length / rowsPerPage)}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
             handleChangePage={handleChangePage}
             handlePrevClick={handlePrevClick}

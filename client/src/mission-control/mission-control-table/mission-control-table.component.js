@@ -29,7 +29,7 @@ const useCellStyles = makeStyles(theme => ({
   stickyHeader: {},
 }));
 
-export const UsersViewTableCell = ({ children, ...props }) => {
+export const MissionControlTableCell = ({ children, ...props }) => {
   const styles = useCellStyles({});
   return (
     <TableCell classes={styles} {...props}>
@@ -38,11 +38,11 @@ export const UsersViewTableCell = ({ children, ...props }) => {
   );
 };
 
-export const UsersViewTableRow = ({ children, ...props }) => (
+export const MissionControlTableRow = ({ children, ...props }) => (
   <TableRow {...props}>{children}</TableRow>
 );
 
-export const UsersViewTable = ({ children }) => {
+export const MissionControlTable = ({ children }) => {
   const styles = useTableStyles({});
   return (
     <Table stickyHeader className={styles.table}>

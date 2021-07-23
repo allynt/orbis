@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: 'none',
     backgroundColor: theme.palette.background.default,
     color: theme.palette.common.white,
-    height: theme.typography.pxToRem(32),
+    height: '2rem',
   },
   prevButton: {
     borderRadius: '5px 0 0 5px',
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
   pagination: {
     flexWrap: 'nowrap',
-    height: theme.typography.pxToRem(32),
+    height: '2rem',
     backgroundColor: theme.palette.background.default,
     color: theme.palette.common.white,
     '& Button': {

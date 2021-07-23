@@ -12,9 +12,9 @@ import {
 import { format } from 'date-fns';
 
 import {
-  UsersViewTable,
-  UsersViewTableRow,
-  UsersViewTableCell,
+  MissionControlTable,
+  MissionControlTableRow,
+  MissionControlTableCell,
 } from 'mission-control/mission-control-table/mission-control-table.component';
 
 import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
@@ -26,14 +26,20 @@ const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
 const TableHeader = () => (
   <TableHead>
-    <UsersViewTableRow>
-      <UsersViewTableCell align="left">Pending Invitations</UsersViewTableCell>
-      <UsersViewTableCell align="left">Email</UsersViewTableCell>
-      <UsersViewTableCell align="left">Licence Type</UsersViewTableCell>
-      <UsersViewTableCell align="left">Invitation Sent</UsersViewTableCell>
-      <UsersViewTableCell align="left">Invited</UsersViewTableCell>
-      <UsersViewTableCell align="left" />
-    </UsersViewTableRow>
+    <MissionControlTableRow>
+      <MissionControlTableCell align="left">
+        Pending Invitations
+      </MissionControlTableCell>
+      <MissionControlTableCell align="left">Email</MissionControlTableCell>
+      <MissionControlTableCell align="left">
+        Licence Type
+      </MissionControlTableCell>
+      <MissionControlTableCell align="left">
+        Invitation Sent
+      </MissionControlTableCell>
+      <MissionControlTableCell align="left">Invited</MissionControlTableCell>
+      <MissionControlTableCell align="left" />
+    </MissionControlTableRow>
   </TableHead>
 );
 
@@ -79,17 +85,23 @@ const PendingUserRow = ({
   };
 
   return (
-    <UsersViewTableRow>
-      <UsersViewTableCell>{customerUser.user.name}</UsersViewTableCell>
-      <UsersViewTableCell>{customerUser.user.email}</UsersViewTableCell>
-      <UsersViewTableCell>{getLicenceInfo(licences)}</UsersViewTableCell>
-      <UsersViewTableCell>{date}</UsersViewTableCell>
-      <UsersViewTableCell>
+    <MissionControlTableRow>
+      <MissionControlTableCell>
+        {customerUser.user.name}
+      </MissionControlTableCell>
+      <MissionControlTableCell>
+        {customerUser.user.email}
+      </MissionControlTableCell>
+      <MissionControlTableCell>
+        {getLicenceInfo(licences)}
+      </MissionControlTableCell>
+      <MissionControlTableCell>{date}</MissionControlTableCell>
+      <MissionControlTableCell>
         <Button size="small" onClick={handleResendClick}>
           Resend Invitation
         </Button>
-      </UsersViewTableCell>
-      <UsersViewTableCell>
+      </MissionControlTableCell>
+      <MissionControlTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -97,8 +109,8 @@ const PendingUserRow = ({
         >
           <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
         </OptionsMenu>
-      </UsersViewTableCell>
-    </UsersViewTableRow>
+      </MissionControlTableCell>
+    </MissionControlTableRow>
   );
 };
 
@@ -122,6 +134,7 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
+  const styles = useStyles();
   const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -142,8 +155,6 @@ export const PendingInvitationsBoard = ({
     setCurrentPage(currentPage + 1);
   };
 
-  const styles = useStyles();
-
   const rows =
     pendingUsers?.length > 0 ? (
       pendingUsers.map(user => (
@@ -156,26 +167,24 @@ export const PendingInvitationsBoard = ({
         />
       ))
     ) : (
-      <UsersViewTableRow>
-        <UsersViewTableCell align="center" colSpan={5}>
+      <MissionControlTableRow>
+        <MissionControlTableCell align="center" colSpan={5}>
           No Pending Users
-        </UsersViewTableCell>
-      </UsersViewTableRow>
+        </MissionControlTableCell>
+      </MissionControlTableRow>
     );
-
-  const pageCount = Math.ceil(rows?.length / rowsPerPage);
 
   return (
     <TableContainer className={styles.container}>
-      <UsersViewTable>
+      <MissionControlTable>
         <TableHeader />
         <TableBody>{rows}</TableBody>
-      </UsersViewTable>
+      </MissionControlTable>
       {Array.isArray(rows) && rows.length > rowsPerPage ? (
         <TablePaginationFooter
           currentPage={currentPage + 1}
           rowsPerPage={rowsPerPage}
-          pageCount={pageCount}
+          pageCount={Math.ceil(rows?.length / rowsPerPage)}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
           handleChangePage={handleChangePage}
           handlePrevClick={handlePrevClick}
