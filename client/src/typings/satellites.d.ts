@@ -1,5 +1,3 @@
-export type SatelliteId = 'sentinel-2' | 'landsat' | 'modis';
-
 export type Visualisation = {
   description: string;
   id: string;
@@ -9,7 +7,7 @@ export type Visualisation = {
 
 export type Satellite = {
   description: string;
-  id: SatelliteId;
+  id: string;
   label: string;
   visualisations: Visualisation[];
 };
@@ -25,7 +23,7 @@ export type Scene = {
   download_url: string;
   id: string;
   metadata: { [key: string]: any };
-  satellite: SatelliteId;
+  satellite: Satellite['id'];
   thumbnail_url: string;
   tile_url: string;
   owner: number;
@@ -39,6 +37,6 @@ export type SavedSearch = {
   id: number;
   name: string;
   owner: number;
-  satellites: SatelliteId[];
+  satellites: Satellite['id'][];
   start_date: string;
 };
