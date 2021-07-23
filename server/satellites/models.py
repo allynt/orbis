@@ -369,9 +369,21 @@ class SatelliteDataSource(models.Model):
     name = models.CharField(max_length=128, blank=False, null=False)
     description = models.TextField(blank=True, null=True)
 
-    satellite_id = models.SlugField(blank=False, null=False)
-    scene_id = models.SlugField(blank=False, null=False)
-    visualisation_id = models.SlugField(blank=False, null=False)
+    satellite_id = models.SlugField(
+        blank=False,
+        null=False,
+        max_length=128,
+    )
+    scene_id = models.SlugField(
+        blank=False,
+        null=False,
+        max_length=512,
+    )
+    visualisation_id = models.SlugField(
+        blank=False,
+        null=False,
+        max_length=128,
+    )
 
     @property
     def categories(self):
