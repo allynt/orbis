@@ -6,7 +6,11 @@ type User = {
   accepted_terms: boolean;
   avatar?: string;
   change_password: boolean;
-  customers?: { type: CustomerUserType; status: CustomerUserStatus }[];
+  customers?: {
+    id: Customer['id'];
+    type: CustomerUserType;
+    status: CustomerUserStatus;
+  }[];
   description?: string;
   email: string;
   id: string;
