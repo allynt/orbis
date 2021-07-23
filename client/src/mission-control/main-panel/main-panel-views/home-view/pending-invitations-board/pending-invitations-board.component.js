@@ -145,7 +145,7 @@ export const PendingInvitationsBoard = ({
   const styles = useStyles();
 
   const rows =
-    pendingUsers.length > 0 ? (
+    pendingUsers?.length > 0 ? (
       pendingUsers.map(user => (
         <PendingUserRow
           key={user.id}
@@ -171,7 +171,7 @@ export const PendingInvitationsBoard = ({
         <TableHeader />
         <TableBody>{rows}</TableBody>
       </UsersViewTable>
-      {Array.isArray(rows) ? (
+      {Array.isArray(rows) && rows.length > rowsPerPage ? (
         <TablePaginationFooter
           currentPage={currentPage + 1}
           rowsPerPage={rowsPerPage}

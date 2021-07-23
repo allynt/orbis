@@ -3,23 +3,40 @@ import React from 'react';
 import { customer, pendingUsers } from 'mission-control/test-story-data';
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-export default { title: 'Mission Control/Home View/Pending Users Board' };
+export default {
+  title: 'Mission Control/Home View/Pending Users Board',
+  argTypes: {
+    onResendInvitationClick: { action: 'onResendInvitationClick' },
+    onWithdrawInvitationClick: { action: 'onWithdrawInvitationClick' },
+  },
+};
 
-export const NoUsers = () => (
-  <PendingInvitationsBoard users={null} customer={customer} />
-);
+const Template = args => <PendingInvitationsBoard {...args} />;
 
-export const NoCustomer = () => (
-  <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />
-);
+export const NoUsers = Template.bind({});
+NoUsers.args = {
+  customer,
+};
 
-export const CustomerButNoLicences = () => (
-  <PendingInvitationsBoard
-    pendingUsers={pendingUsers}
-    customer={{ name: 'Company Name' }}
-  />
-);
+export const NoCustomer = Template.bind({});
+NoCustomer.args = {
+  pendingUsers,
+};
 
-export const Default = () => (
-  <PendingInvitationsBoard pendingUsers={pendingUsers} customer={customer} />
-);
+export const CustomerButNoLicences = Template.bind({});
+CustomerButNoLicences.args = {
+  pendingUsers,
+  customer: { name: 'Company Name' },
+};
+
+export const OnlyOneUser = Template.bind({});
+OnlyOneUser.args = {
+  pendingUsers: [pendingUsers[0]],
+  customer,
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  pendingUsers,
+  customer,
+};

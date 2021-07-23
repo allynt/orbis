@@ -130,7 +130,14 @@ describe('PendingUsersBoard', () => {
     const { queryByText } = render(
       <PendingInvitationsBoard
         pendingUsers={[
-          { type: 'MANAGER', user: { id: '456', name: 'John Smith' } },
+          {
+            type: 'MANAGER',
+            invitation_date: '2020-01-31T11:46:12.618090Z',
+            user: {
+              id: '456',
+              name: 'John Smith',
+            },
+          },
         ]}
         customer={customer}
       />,

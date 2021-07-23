@@ -57,6 +57,12 @@ NoLicenceData.args = {
   customer,
 };
 
+export const OnlyOneUser = Template.bind({});
+OnlyOneUser.args = {
+  activeCustomerUsers: [activeUsers[0]],
+  customer,
+};
+
 export const Default = Template.bind({});
 Default.args = {
   activeCustomerUsers: activeUsers,

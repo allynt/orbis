@@ -280,7 +280,7 @@ export const ActiveUsersBoard = ({
               : rows}
           </TableBody>
         </UsersViewTable>
-        {Array.isArray(rows) ? (
+        {Array.isArray(rows) && rows.length > rowsPerPage ? (
           <TablePaginationFooter
             currentPage={currentPage + 1}
             rowsPerPage={rowsPerPage}
