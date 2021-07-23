@@ -87,23 +87,32 @@ export const fetchSatelliteScenes = createAsyncThunk(
  */
 export const saveImage = createAsyncThunk(
   `${name}/saveImage`,
-  async (params, { getState, dispatch }) => {
+  async (params, { getState, dispatch, rejectWithValue }) => {
     const { id: userId, customers } = userSelector(getState());
     const { id: customerId } = customers[0];
     const visualisationId = visualisationIdSelector(getState());
     const { satellite: satelliteId, id: sceneId } = selectedSceneSelector(
       getState(),
     );
-    const imageSource = await apiClient.satellites.saveImage({
-      userId,
-      customerId,
-      satelliteId,
-      sceneId,
-      visualisationId,
-      ...params,
-    });
-    dispatch(addSource(imageSource));
-    return;
+    try {
+      const imageSource = await apiClient.satellites.saveImage({
+        userId,
+        customerId,
+        satelliteId,
+        sceneId,
+        visualisationId,
+        ...params,
+      });
+      dispatch(addSource(imageSource));
+      NotificationManager.success(`Successfully saved image ${params.name}`);
+      return;
+    } catch (responseError) {
+      const { message } = responseError;
+      NotificationManager.error(
+        `Error saving image ${params.name}. Please try again`,
+      );
+      return rejectWithValue({ message });
+    }
   },
   {
     condition: (_, { getState }) => {
