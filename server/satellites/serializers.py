@@ -218,12 +218,8 @@ class SatelliteDataSourceSerializer(serializers.ModelSerializer):
 class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
     class Meta:
         model = SatelliteDataSource
-        fields = (
-            "source_id",
-            "created",
+        fields = SatelliteDataSourceSerializer.Meta.fields + (
             "customer_user",
-            "name",
-            "description",
             "satellite_id",
             "scene_id",
             "visualisation_id",
