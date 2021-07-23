@@ -7,6 +7,7 @@ import { NotificationManager } from 'react-notifications';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
+import { addSource } from 'data-layers/data-layers.slice';
 
 /**
  * @typedef SatellitesState
@@ -78,21 +79,21 @@ export const fetchSatelliteScenes = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/orbis').Source,
+ *  void,
  *  {name: string, description?: string},
  *  {rejectValue: {message: string}, state:import('react-redux').DefaultRootState }
  * >}
  */
 export const saveImage = createAsyncThunk(
   `${name}/saveImage`,
-  async (params, { getState }) => {
+  async (params, { getState, dispatch }) => {
     const { id: userId, customers } = userSelector(getState());
     const { id: customerId } = customers[0];
     const visualisationId = visualisationIdSelector(getState());
     const { satellite: satelliteId, id: sceneId } = selectedSceneSelector(
       getState(),
     );
-    return await apiClient.satellites.saveImage({
+    const imageSource = await apiClient.satellites.saveImage({
       userId,
       customerId,
       satelliteId,
@@ -100,6 +101,20 @@ export const saveImage = createAsyncThunk(
       visualisationId,
       ...params,
     });
+    dispatch(addSource(imageSource));
+    return;
+  },
+  {
+    condition: (_, { getState }) => {
+      const visualisationId = visualisationIdSelector(getState());
+      const { satellite: satelliteId, id: sceneId } = selectedSceneSelector(
+        getState(),
+      );
+      const requestId = getState().satellites.requests?.[
+        `saveImage/${satelliteId}/${sceneId}/${visualisationId}`
+      ];
+      return !requestId;
+    },
   },
 );
 

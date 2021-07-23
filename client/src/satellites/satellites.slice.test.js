@@ -3,6 +3,8 @@ import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { addSource } from 'data-layers/data-layers.slice';
+
 import reducer, {
   fetchSatellites,
   fetchSatelliteScenes,
@@ -29,7 +31,7 @@ describe('Satellites Slice', () => {
 
   describe('thunks', () => {
     describe('saveImage', () => {
-      it(`dispatches the ${saveImage.fulfilled.type} with the resulting source`, async () => {
+      it(`dispatches the ${saveImage.fulfilled.type} and adds the source to sources array`, async () => {
         fetch.once(JSON.stringify({ source_id: 'source-id-123' }));
         const store = mockStore({
           accounts: {
@@ -47,14 +49,76 @@ describe('Satellites Slice', () => {
           saveImage({ name: 'Test name', description: 'Test description' }),
         );
         await waitFor(() =>
-          expect(store.getActions()).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                type: saveImage.fulfilled.type,
-                payload: { source_id: 'source-id-123' },
-              }),
-            ]),
+          expect(store.getActions()).toContainEqual(
+            addSource({ source_id: 'source-id-123' }),
           ),
+        );
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: saveImage.fulfilled.type,
+            }),
+          ]),
+        );
+      });
+
+      it(`dispatches the ${saveImage.rejected.type} action on rejected request`, async () => {
+        fetch.once(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
+        const store = mockStore({
+          accounts: {
+            user: { id: 'user-id-123', customers: [{ id: 'customer-id-123' }] },
+          },
+          satellites: {
+            visualisationId: 'true-color',
+            selectedScene: {
+              satellite: 'satellite-id-123',
+              id: 'scene-id-123',
+            },
+          },
+        });
+        store.dispatch(
+          saveImage({ name: 'Test name', description: 'Test description' }),
+        );
+        await waitFor(() =>
+          expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+              type: saveImage.rejected.type,
+              error: expect.anything(),
+            }),
+          ),
+        );
+      });
+
+      it("Does not request again if there's already a request pending", () => {
+        const store = mockStore({
+          accounts: {
+            user: { id: 'user-id-123', customers: [{ id: 'customer-id-123' }] },
+          },
+          satellites: {
+            visualisationId: 'true-color',
+            selectedScene: {
+              satellite: 'satellite-id-123',
+              id: 'scene-id-123',
+            },
+            requests: {
+              'saveImage/satellite-id-123/scene-id-123/true-color': true,
+            },
+          },
+        });
+        store.dispatch(
+          saveImage({ name: 'Test name', description: 'Test description' }),
+        );
+        expect(store.getActions()).not.toContainEqual(
+          expect.objectContaining({ type: saveImage.pending.type }),
         );
       });
     });
