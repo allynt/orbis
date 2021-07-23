@@ -21,6 +21,7 @@ import {
   fetchSatelliteScenes,
   hoveredSceneSelector,
   satellitesSelector,
+  saveImage,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
@@ -156,6 +157,7 @@ const Satellites = () => {
             }
             visible={selectedSceneLayerVisible}
             onVisibilityChange={setSelectedSceneLayerVisible}
+            onSaveImageSubmit={formValues => dispatch(saveImage(formValues))}
           />
         )}
         {/* {visiblePanel === PINS && (
