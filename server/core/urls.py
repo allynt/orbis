@@ -57,6 +57,8 @@ handler500 = "astrosat.views.handler500"
 astrosat_users_api_urlpatterns = remove_urlpatterns(
     astrosat_users_api_urlpatterns,
     [
+        "users-list",
+        "users-detail",
         "customers-list",
         "customers-detail",
         "customer-users-list",
@@ -74,12 +76,12 @@ api_urlpatterns = [
     path("", include(api_schema_views)),
     path("app/config", app_config_view, name="appconfig"),
 ]
-api_urlpatterns += astrosat_api_urlpatterns
-api_urlpatterns += astrosat_users_api_urlpatterns
-api_urlpatterns += maps_api_urlpatterns
-api_urlpatterns += satellites_api_urlpatterns
-api_urlpatterns += proxy_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
+api_urlpatterns += proxy_api_urlpatterns
+api_urlpatterns += satellites_api_urlpatterns
+api_urlpatterns += maps_api_urlpatterns
+api_urlpatterns += astrosat_users_api_urlpatterns
+api_urlpatterns += astrosat_api_urlpatterns
 
 #################
 # normal routes #

@@ -5,14 +5,12 @@ import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { fetchOrbs } from 'data-layers/data-layers.slice';
-
 import { useOrbFeatureAccess } from './useOrbFeatureAccess';
 
 /** @type {import('redux-mock-store').MockStoreCreator<import('react-redux').DefaultRootState>} */
 const mockStore = createMockStore([thunk]);
 
-/** @type {import('typings/orbis').Orb[]} */
+/** @type {import('typings/accounts').User.orbs[]} */
 const ORBS = [
   { name: 'Orb A', features: ['feature-b', 'feature-c'] },
   { name: 'Orb B', features: ['feature-a'] },
@@ -21,7 +19,7 @@ const ORBS = [
 
 const renderHook = (arg, defaultOrbs = ORBS) => {
   const store = mockStore({
-    data: { orbs: defaultOrbs },
+    accounts: { user: { orbs: defaultOrbs } },
   });
   const utils = tlRenderHook(() => useOrbFeatureAccess(arg), {
     wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
@@ -30,15 +28,6 @@ const renderHook = (arg, defaultOrbs = ORBS) => {
 };
 
 describe('useOrbFeatureAccess', () => {
-  it("Fetches orbs if there aren't any", async () => {
-    const { store } = renderHook('feature-a', null);
-    expect(store.getActions()).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ type: fetchOrbs.pending.type }),
-      ]),
-    );
-  });
-
   it('Returns false if the user does not have the correct orb to grant access', () => {
     const { result } = renderHook('feature-d');
     expect(result.current).toBe(false);

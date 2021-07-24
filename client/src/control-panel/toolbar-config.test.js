@@ -47,8 +47,10 @@ describe('useToolbarItems', () => {
 
   it('Includes the Satellite item if user has UserRole and has an orb with the correct feature', () => {
     const { result } = renderHook({
-      user: { roles: ['UserRole'] },
-      orbs: [{ features: ['satellites'] }],
+      user: {
+        roles: ['UserRole'],
+        orbs: [{ features: ['satellites'] }],
+      },
     });
     expect(result.current).toContainEqual(
       expect.objectContaining({ label: SATELLITE_LAYERS }),

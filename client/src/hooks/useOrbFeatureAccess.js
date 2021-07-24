@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
-
+import { userSelector } from 'accounts/accounts.selectors';
 /**
  *
  * @param {import('typings/orbis').FeatureKey[]} featureKeysToSearch
@@ -20,14 +19,9 @@ const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
  * If multiple keys are provided, will return an object with a boolean for each key
  */
 export const useOrbFeatureAccess = arg => {
-  const orbs = useSelector(orbsSelector);
-  const dispatch = useDispatch();
-  if (orbs == null) {
-    dispatch(fetchOrbs());
-    return false;
-  }
-  if (orbs.length === 0) return false;
-  const orbFeatures = orbs.flatMap(orb => orb.features);
+  const user = useSelector(userSelector);
+  if (!user || !user.orbs || user.orbs.length === 0) return false;
+  const orbFeatures = user.orbs.flatMap(orb => orb.features);
   if (Array.isArray(arg)) {
     return arg.reduce(
       (acc, featureKey) => ({

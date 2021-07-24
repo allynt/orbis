@@ -2,6 +2,8 @@ type CustomerUserType = 'MANAGER' | 'MEMBER';
 
 type CustomerUserStatus = 'ACTIVE' | 'PENDING';
 
+type FeatureKey = 'satellites';
+
 type User = {
   accepted_terms: boolean;
   avatar?: string;
@@ -17,6 +19,14 @@ type User = {
   registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
   roles?: string[];
   username: string;
+  orbs?: {
+    id: number;
+    name: string;
+    description?: string;
+    licence_cost?: number;
+    logo?: string;
+    features?: FeatureKey[];
+  }[];
 };
 
 type PartialUser = Pick<
