@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from drf_yasg2.utils import swagger_serializer_method
+
 from astrosat.serializers import ContextVariableDefault
 
 from astrosat_users.models import User
@@ -73,7 +75,7 @@ class OrbisUserProfileSerializer(serializers.ModelSerializer):
 
 class OrbisUserSerializer(AstrosatUsersUserSerializer):
     """
-    Adds "orbs" to the existing serializer
+    Adds "orbs" to the existing UserSerializer
     """
     class Meta:
         model = User
@@ -81,6 +83,7 @@ class OrbisUserSerializer(AstrosatUsersUserSerializer):
 
     orbs = serializers.SerializerMethodField()
 
+    @swagger_serializer_method(serializer_or_field=OrbSerializer(many=True))
     def get_orbs(self, obj):
         # return all orbs that this user has a licence to...
         orbs = Orb.objects.filter(

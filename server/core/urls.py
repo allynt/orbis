@@ -51,9 +51,8 @@ handler500 = "astrosat.views.handler500"
 # api routes #
 ##############
 
-# orbis replaces the default customer & customer_user views (to include licenses)
-# it also replaces the default login view to support db logging
-# and the default register view to support terms agreement
+# orbis replaces some of the default user & customer & customer_user views (to include licenses & orbs)
+# it also replaces the default login view to support db logging and the default register view to support terms agreement
 astrosat_users_api_urlpatterns = remove_urlpatterns(
     astrosat_users_api_urlpatterns,
     [
@@ -76,12 +75,12 @@ api_urlpatterns = [
     path("", include(api_schema_views)),
     path("app/config", app_config_view, name="appconfig"),
 ]
-api_urlpatterns += orbis_api_urlpatterns
-api_urlpatterns += proxy_api_urlpatterns
-api_urlpatterns += satellites_api_urlpatterns
-api_urlpatterns += maps_api_urlpatterns
-api_urlpatterns += astrosat_users_api_urlpatterns
 api_urlpatterns += astrosat_api_urlpatterns
+api_urlpatterns += astrosat_users_api_urlpatterns
+api_urlpatterns += maps_api_urlpatterns
+api_urlpatterns += satellites_api_urlpatterns
+api_urlpatterns += proxy_api_urlpatterns
+api_urlpatterns += orbis_api_urlpatterns
 
 #################
 # normal routes #
