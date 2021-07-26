@@ -399,7 +399,7 @@ class SatelliteDataSource(models.Model):
 
     @property
     def tile_url(self):
-        return f"{settings.OLSP_URL}/{self.satellite_id}/{self.scene_id}/{self.visualisation_id}/tilejson/{{z}}/{{x}}/{{y}}"
+        return f"{settings.OLSP_URL}/{self.satellite_id}/{self.scene_id}/{self.visualisation_id}/tile/{{z}}/{{x}}/{{y}}"
 
     @property
     def layer_details(self):
