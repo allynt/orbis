@@ -212,6 +212,7 @@ class SatelliteDataSourceSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "metadata",
+            "type",
         )
 
 

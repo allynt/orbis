@@ -403,7 +403,7 @@ class SatelliteDataSource(models.Model):
 
     @property
     def layer_details(self):
-        return {"name": "BitmapLayer", "props": {"config": "rasterConfig"}}
+        return {"name": "TileLayer", "props": {"config": "satelliteImageConfig"}}
 
     @property
     def map_component_details(self):
@@ -419,7 +419,6 @@ class SatelliteDataSource(models.Model):
             "label": self.name,
             "description": self.description,
             "domain": self.orb_name,
-            "type": "raster",
             "url": self.tile_url,
             "application": {
                 "orbis": {
@@ -441,3 +440,7 @@ class SatelliteDataSource(models.Model):
         # the frontend just needs a unique string as the "source_id"
         # (no need to bother w/ "<authority/<namespace>/<name>/<version>")
         return str(self.id)
+
+    @property
+    def type(self):
+        return "raster"
