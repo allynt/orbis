@@ -21,6 +21,7 @@ import {
   fetchSatelliteScenes,
   hoveredSceneSelector,
   satellitesSelector,
+  saveImage,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
@@ -81,6 +82,15 @@ const Satellites = () => {
       dispatch(fetchSatellites());
     }
   }, [satellites, dispatch]);
+
+  useEffect(() => {
+    if (visiblePanel === Panels.VISUALISATION) {
+      setSelectedSceneLayerVisible(true);
+    }
+    return () => {
+      setSelectedSceneLayerVisible(false);
+    };
+  }, [visiblePanel, setSelectedSceneLayerVisible]);
 
   /**
    * @param {{type: string, data: any}} info
@@ -143,6 +153,7 @@ const Satellites = () => {
             }}
             onSceneClick={scene => {
               dispatch(selectScene(scene));
+              setSelectedSceneLayerVisible(true);
               setVisiblePanel(Panels.VISUALISATION);
             }}
           />
@@ -156,6 +167,7 @@ const Satellites = () => {
             }
             visible={selectedSceneLayerVisible}
             onVisibilityChange={setSelectedSceneLayerVisible}
+            onSaveImageSubmit={formValues => dispatch(saveImage(formValues))}
           />
         )}
         {/* {visiblePanel === PINS && (

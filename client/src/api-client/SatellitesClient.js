@@ -1,3 +1,5 @@
+import { snakeCase } from 'lodash';
+
 import { SubClient } from './SubClient';
 
 export class SatellitesClient extends SubClient {
@@ -19,5 +21,27 @@ export class SatellitesClient extends SubClient {
       tiers: ['free'],
       ...search,
     });
+  }
+
+  /**
+   * @param {{
+   *  userId: User['id'],
+   *  customerId: Customer['id'],
+   *  name: string,
+   *  description?: string,
+   *  satelliteId: import('typings/satellites').Satellite['id'],
+   *  sceneId: import('typings/satellites').Scene['id'],
+   *  visualisationId: import('typings/satellites').Visualisation['id'],
+   * }} params
+   * @returns {Promise<import('typings/orbis').Source}
+   */
+  async saveImage({ customerId, userId, ...rest }) {
+    return this.makeAuthenticatedPostRequest(
+      `/datasources/${customerId}/${userId}/`,
+      Object.entries(rest).reduce(
+        (acc, [key, value]) => ({ ...acc, [snakeCase(key)]: value }),
+        {},
+      ),
+    );
   }
 }

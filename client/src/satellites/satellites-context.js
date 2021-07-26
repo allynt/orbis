@@ -2,12 +2,13 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { TileLayer } from '@deck.gl/geo-layers';
-import { BitmapLayer, GeoJsonLayer } from '@deck.gl/layers';
+import { GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { feature, featureCollection } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { baseSatelliteImageConfig } from 'map/orbs/configurations/satelliteImageConfig';
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
@@ -61,10 +62,11 @@ export const SatellitesProvider = ({
 }) => {
   const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
+  /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
   const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
-    true,
+    false,
   );
   const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();
@@ -150,21 +152,16 @@ export const SatellitesProvider = ({
     },
   });
 
-  const selectedSceneLayer = new TileLayer({
-    data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
-    visible: selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
-    tileSize: 256,
-    renderSubLayers: props => {
-      const {
-        bbox: { west, south, east, north },
-      } = props.tile;
-      return new BitmapLayer(props, {
-        data: null,
-        image: props.data,
-        bounds: [west, south, east, north],
-      });
-    },
-  });
+  const selectedSceneLayer = new TileLayer(
+    // @ts-ignore
+    baseSatelliteImageConfig({
+      id: 'selected-scene-layer',
+      // 👇 This should not go into production, Fix it
+      data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+      visible:
+        selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
+    }),
+  );
 
   return (
     <SatellitesContext.Provider

@@ -12,6 +12,7 @@ import Satellites from './satellites.component';
 import {
   fetchSatellites,
   fetchSatelliteScenes,
+  saveImage,
   selectScene,
   setCurrentVisualisation,
   setHoveredScene,
@@ -192,6 +193,23 @@ describe('Satellites', () => {
       expect(
         getAllByRole('checkbox', { name: 'Show' }).length,
       ).toBeGreaterThanOrEqual(1);
+    });
+
+    it('Dispatches saveImage when the save image form is submitted', async () => {
+      const { getByRole, store } = renderComponent({
+        satellites,
+        scenes,
+        selectedScene: scenes[0],
+      });
+      userEvent.click(getByRole(...VISUALISATION_TAB));
+      userEvent.click(getByRole('button', { name: 'Save Image' }));
+      userEvent.type(getByRole('textbox', { name: 'Add Name' }), 'Test Name');
+      userEvent.click(getByRole('button', { name: 'Save' }));
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: saveImage.pending.type }),
+        ),
+      );
     });
   });
 });

@@ -5,7 +5,9 @@ import {
 } from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
+import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
+import { addSource } from 'data-layers/data-layers.slice';
 
 /**
  * @typedef SatellitesState
@@ -17,6 +19,7 @@ import apiClient from 'api-client';
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
+ * @property {Record<string,string>} requests
  */
 
 const name = 'satellites';
@@ -76,6 +79,50 @@ export const fetchSatelliteScenes = createAsyncThunk(
 );
 
 /**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  void,
+ *  {name: string, description?: string},
+ *  {rejectValue: {message: string}, state:import('react-redux').DefaultRootState }
+ * >}
+ */
+export const saveImage = createAsyncThunk(
+  `${name}/saveImage`,
+  async (params, { getState, dispatch, rejectWithValue }) => {
+    const { id: userId, customers } = userSelector(getState());
+    const { id: customerId } = customers[0];
+    const visualisationId = visualisationIdSelector(getState());
+    const { satellite: satelliteId, id: sceneId } = selectedSceneSelector(
+      getState(),
+    );
+    try {
+      const imageSource = await apiClient.satellites.saveImage({
+        userId,
+        customerId,
+        satelliteId,
+        sceneId,
+        visualisationId,
+        ...params,
+      });
+      dispatch(addSource(imageSource));
+      NotificationManager.success(`Successfully saved image ${params.name}`);
+      return;
+    } catch (responseError) {
+      const { message } = responseError;
+      NotificationManager.error(
+        `Error saving image ${params.name}. Please try again`,
+      );
+      return rejectWithValue({ message });
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const requestId = getState().satellites.requests?.[`saveImage`];
+      return !requestId;
+    },
+  },
+);
+
+/**
  * @type {SatellitesState}
  */
 const initialState = {
@@ -85,6 +132,7 @@ const initialState = {
   error: null,
   satelliteSearches: null,
   visualisationId: 'TCI',
+  requests: {},
 };
 
 const satellitesSlice = createSlice({
@@ -126,6 +174,16 @@ const satellitesSlice = createSlice({
     });
     builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
       state.error = payload;
+    });
+    builder.addCase(saveImage.pending, (state, { meta }) => {
+      state.requests.saveImage = meta.requestId;
+    });
+    builder.addCase(saveImage.fulfilled, state => {
+      state.requests.saveImage = undefined;
+    });
+    builder.addCase(saveImage.rejected, (state, { error }) => {
+      state.requests.saveImage = undefined;
+      state.error = { message: error.message };
     });
   },
 });

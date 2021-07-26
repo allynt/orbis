@@ -9,7 +9,9 @@ type LayerName =
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer'
   | 'IconLayer'
-  | 'BitmapLayer';
+  | 'BitmapLayer'
+  | 'TileLayer'
+  | 'HeatmapLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
