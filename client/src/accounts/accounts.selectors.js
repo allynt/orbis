@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+/** @param {import('react-redux').DefaultRootState} state */
 const baseSelector = state => state?.accounts;
 
 export const errorSelector = createSelector(

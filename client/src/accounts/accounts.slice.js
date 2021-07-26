@@ -24,6 +24,17 @@ export const status = {
   COMPLETE: 'Complete',
 };
 
+/**
+ * @typedef AccountsState
+ * @property {string} [userKey]
+ * @property {User} [user]
+ * @property {any} [error]
+ * @property {boolean} isLoading
+ * @property {string} resetStatus
+ * @property {string} changeStatus
+ */
+
+/** @type {AccountsState} */
 const initialState = {
   userKey: null,
   user: null,

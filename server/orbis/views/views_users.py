@@ -5,8 +5,12 @@ from django.utils.functional import cached_property
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
+from astrosat_users.views import (
+    UserViewSet as AstrosatUsersUserViewSet,
+)
+
 from orbis.models import OrbisUserFeedbackRecord
-from orbis.serializers import OrbisUserFeedbackRecordSerializer
+from orbis.serializers import OrbisUserFeedbackRecordSerializer, OrbisUserSerializer
 
 
 class IsAdminOrSelf(BasePermission):
@@ -38,3 +42,12 @@ class OrbisUserFeedbackRecordView(generics.CreateAPIView):
         if getattr(self, "swagger_fake_view", False):
             return OrbisUserFeedbackRecord.objects.none()
         return self.user.orbis_profile.feedback_records.all()
+
+
+class OrbisUserViewSet(AstrosatUsersUserViewSet):
+    """
+    Changes the serializer used by the default UserViewSet
+    to OrbisUserSerializer which includes "orbs"
+    """
+
+    serializer_class = OrbisUserSerializer

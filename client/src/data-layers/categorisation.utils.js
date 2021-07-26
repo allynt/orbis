@@ -3,6 +3,14 @@ import { isEmpty } from 'lodash';
 const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
 
+/** @typedef {import('typings/orbis').Source} Source */
+/** @typedef {import('typings/orbis').CategoryHierarchy} CategoryHierarchy */
+/** @typedef {import('typings/orbis').SourceCategories} SourceCategories */
+/** @typedef {import('typings/orbis').OrbisApplicationMetadata} OrbisApplicationMetadata */
+/** @typedef {import('typings/orbis').CategorisedSources} CategorisedSources */
+/** @typedef {import('typings/orbis').OrbWithCategorisedSources} OrbWithCategorisedSources */
+/** @typedef {import('typings/orbis').Orb} Orb */
+
 /**
  * @param {CategoryHierarchy | Source} a
  * @param {CategoryHierarchy | Source} b
