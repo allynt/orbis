@@ -1,10 +1,14 @@
 const express = require('express');
 
+const { getOrbs } = require('./data');
+
 const orbsRouter = express.Router();
 
-orbsRouter.route('/').get((req, res) => {
+const getOrbsHandler = (req, res) => {
   res.status(200);
-  res.json([{ id: 1, name: 'Exploration', features: ['satellites'] }]);
-});
+  res.json(getOrbs());
+};
+
+orbsRouter.route('/').get(getOrbsHandler);
 
 module.exports = orbsRouter;
