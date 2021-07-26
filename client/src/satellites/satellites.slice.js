@@ -9,16 +9,26 @@ import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
 import { addSource } from 'data-layers/data-layers.slice';
 
+import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
+
 /**
  * @typedef SatellitesState
+ * ==== Fetched or selected ====
  * @property {import('typings/satellites').Satellite[]} [satellites]
  * @property {import('typings/satellites').Scene[]} [scenes]
  * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
- * @property {{message: string}} [error]
  * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
+ * @property {number[][]} [aoi]
+ * @property {number} cloudCoverPercentage
+ * ==== Control ====
+ * @property {string} visiblePanel
+ * @property {boolean} isDrawingAoi
+ * @property {boolean} selectedSceneLayerVisible
+ * ==== Generic ====
+ * @property {{message: string}} [error]
  * @property {Record<string,string>} requests
  */
 
@@ -129,9 +139,12 @@ const initialState = {
   satellites: null,
   scenes: null,
   selectedScene: null,
-  error: null,
-  satelliteSearches: null,
   visualisationId: 'TCI',
+  cloudCoverPercentage: DEFAULT_CLOUD_COVER,
+  isDrawingAoi: false,
+  visiblePanel: Panels.SEARCH,
+  selectedSceneLayerVisible: false,
+  error: null,
   requests: {},
 };
 
