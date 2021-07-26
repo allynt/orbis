@@ -2,11 +2,8 @@ import { BitmapLayer } from '@deck.gl/layers';
 
 import { dataSelector, visibilitySelector } from '../layers.slice';
 
-/** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, orbState }) => {
-  const data = dataSelector(id)(orbState);
-  const visible = visibilitySelector(id)(orbState);
-
+/** @type {import("typings/orbis").LayerConfiguration<{visible?: boolean}>} */
+export const baseSatelliteImageConfig = ({ id, data, visible }) => {
   return {
     id,
     data,
@@ -23,4 +20,12 @@ export default ({ id, orbState }) => {
       });
     },
   };
+};
+
+/** @type {import("typings/orbis").LayerConfiguration} */
+export default ({ id, orbState, ...rest }) => {
+  const data = dataSelector(id)(orbState);
+  const visible = visibilitySelector(id)(orbState);
+
+  return baseSatelliteImageConfig({ id, data, orbState, visible, ...rest });
 };
