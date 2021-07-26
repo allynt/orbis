@@ -1,6 +1,7 @@
-import { Dispatch } from 'redux';
-import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 import { GeometryTypes } from '@turf/helpers';
+import { Dispatch } from 'redux';
+
+import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 
 type LayerName =
   | 'ClusteredIconLayer'
@@ -8,7 +9,9 @@ type LayerName =
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer'
   | 'IconLayer'
-  | 'BitmapLayer';
+  | 'BitmapLayer'
+  | 'TileLayer'
+  | 'HeatmapLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
