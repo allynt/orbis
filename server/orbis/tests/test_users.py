@@ -6,6 +6,7 @@ from django.urls import resolve, reverse
 
 from rest_framework import status
 
+from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
 from .factories import *
@@ -87,3 +88,29 @@ class TestOrbisUserProfile:
         user.refresh_from_db()
         assert user.name == test_user_name
         assert user.orbis_profile.max_searches == test_user_profile_max_searches
+
+
+@pytest.mark.django_db
+class TestOrbisUser:
+    def test_user_includes_licenced_orbs(self, user, api_client, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        (customer_user,
+         _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        orb1 = OrbFactory()
+        orb2 = OrbFactory()
+
+        customer.assign_licences(orb1, [customer_user])
+
+        client = api_client(user)
+        url = reverse("users-detail", kwargs={"id": user.uuid})
+
+        response = client.get(url)
+        content = response.json()
+
+        assert status.is_success(response.status_code)
+
+        licenced_orbs = [x["id"] for x in content["orbs"]]
+        assert orb1.id in licenced_orbs
+        assert orb2.id not in licenced_orbs

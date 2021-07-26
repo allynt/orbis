@@ -9,7 +9,6 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { userSelector } from 'accounts/accounts.selectors';
 import { SidePanel } from 'components/side-panel/side-panel.component';
 
 import Profile from '../accounts/profile/profile.component';
@@ -24,7 +23,7 @@ import {
   selectStrapline,
   selectVisibleMenuItem,
 } from './control-panel.slice';
-import { getToolbarItems } from './toolbar-config';
+import { useToolbarItems } from './toolbar-config';
 import {
   BOOKMARKS,
   DATA_LAYERS,
@@ -62,8 +61,7 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
   const heading = useSelector(selectHeading);
   const strapline = useSelector(selectStrapline);
   const visibleMenuItem = useSelector(selectVisibleMenuItem);
-  const user = useSelector(userSelector);
-  const toolbarItems = getToolbarItems(dispatch, user);
+  const toolbarItems = useToolbarItems();
   const styles = useStyles({});
 
   return (

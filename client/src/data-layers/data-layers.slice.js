@@ -1,4 +1,9 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+} from '@reduxjs/toolkit';
+import { NotificationManager } from 'react-notifications';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
@@ -6,16 +11,66 @@ import { addLogItem } from 'app.slice';
 
 import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
+/**
+ * @typedef DataState
+ * @property {import('typings/orbis').Source['source_id'][]} layers
+ * @property {number} pollingPeriod
+ * @property {string} [token]
+ * @property {import('typings/orbis').Source[]} [sources]
+ * @property {any} [error]
+ * @property {import('typings/orbis').Orb[]} [orbs]
+ * @property {boolean} fetchOrbsPending
+ * @property {string} [fetchOrbsRequestId]
+ */
+
+const name = 'data';
+
+/** @type {DataState} */
 const initialState = {
   layers: [],
   pollingPeriod: 30000,
   token: null,
   sources: null,
   error: null,
+  fetchOrbsPending: false,
+  fetchOrbsRequestId: undefined,
 };
 
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings/orbis').Orb[],
+ *  undefined,
+ *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
+ * >}
+ */
+export const fetchOrbs = createAsyncThunk(
+  `${name}/fetchOrbs`,
+  async (_, { rejectWithValue }) => {
+    try {
+      return await apiClient.orbs.getOrbs();
+    } catch (error) {
+      const { status, message } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Orbs Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        data: { fetchOrbsPending: isFetchingOrbs, fetchOrbsRequestId },
+      } = getState();
+      if (isFetchingOrbs && !!fetchOrbsRequestId) return false;
+    },
+  },
+);
+
 const dataSlice = createSlice({
-  name: 'data',
+  name,
   initialState,
   reducers: {
     updateLayers: (state, { payload }) => {
@@ -43,6 +98,22 @@ const dataSlice = createSlice({
     addSource: (state, { payload }) => {
       state.sources.push(payload);
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchOrbs.pending, (state, action) => {
+      state.fetchOrbsPending = true;
+      state.fetchOrbsRequestId = action.meta.requestId;
+    });
+    builder.addCase(fetchOrbs.fulfilled, (state, { payload }) => {
+      state.orbs = payload;
+      state.fetchOrbsPending = false;
+      state.fetchOrbsRequestId = undefined;
+    });
+    builder.addCase(fetchOrbs.rejected, (state, { payload }) => {
+      state.error = payload;
+      state.fetchOrbsPending = false;
+      state.fetchOrbsRequestId = undefined;
+    });
   },
 });
 
@@ -159,52 +230,40 @@ export const logError = source => async (dispatch, getState) => {
     }),
   );
 };
-const baseSelector = state => state?.data ?? {};
 
 /**
- * @type {import('@reduxjs/toolkit').Selector<any, string>}
+ * @param {import('react-redux').DefaultRootState} state
  */
+const baseSelector = state => state?.data;
+
 export const selectDataToken = createSelector(
   baseSelector,
-  state => state.token ?? '',
+  state => state?.token ?? '',
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
- */
 export const dataSourcesSelector = createSelector(
   baseSelector,
-  state => state.sources ?? [],
+  state => state?.sources ?? [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, number>}
- */
+export const orbsSelector = createSelector(baseSelector, state => state?.orbs);
+
 export const selectPollingPeriod = createSelector(
   baseSelector,
-  state => state.pollingPeriod,
+  state => state?.pollingPeriod,
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source['source_id'][]>}
- */
 export const activeLayersSelector = createSelector(
   baseSelector,
-  data => data.layers ?? [],
+  data => data?.layers ?? [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, Source[]>}
- */
 export const activeDataSourcesSelector = createSelector(
   [dataSourcesSelector, activeLayersSelector],
   (sources, layers) =>
     sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
 
-/**
- * @type {import('@reduxjs/toolkit').Selector<any, string[]>}
- */
 export const selectDomainList = createSelector(dataSourcesSelector, sources =>
   Array.from(
     new Set(
@@ -223,9 +282,6 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
  * @param {number} [depth]
  */
 export const categorisedOrbsAndSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
-   */
   createSelector(dataSourcesSelector, sources =>
     createOrbsWithCategorisedSources(sources, depth),
   );
@@ -234,9 +290,6 @@ export const categorisedOrbsAndSourcesSelector = depth =>
  * @param {number} [depth]
  */
 export const activeCategorisedOrbsAndSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, OrbWithCategorisedSources[]>}
-   */
   createSelector(activeDataSourcesSelector, sources =>
     createOrbsWithCategorisedSources(sources, depth),
   );
@@ -245,9 +298,6 @@ export const activeCategorisedOrbsAndSourcesSelector = depth =>
  * @param {number} [depth]
  */
 export const activeCategorisedSourcesSelector = depth =>
-  /**
-   * @type {import('@reduxjs/toolkit').Selector<any, CategorisedSources>}
-   */
   createSelector(
     activeCategorisedOrbsAndSourcesSelector(depth),
     orbsAndSources =>

@@ -14,7 +14,7 @@ from django.db.models.functions import Concat, Replace
 from django.utils.html import mark_safe
 from django.utils.text import slugify
 
-from astrosat.utils import CONDITIONAL_CASCADE
+from astrosat.utils import CONDITIONAL_CASCADE, validate_schema
 from astrosat_users.models import Customer, CustomerUser
 """
 models_orbs includes all the classes used to define:
@@ -85,6 +85,14 @@ class AccessModel(models.Model):
 def orb_logo_path(instance, filename):
     instance_name = slugify(instance.name)
     return f"orbs/{instance_name}/{filename}"
+
+
+def validate_orb_features(value):
+    """
+    A simple validator that ensures orb.features is a list of strings
+    """
+    features_schema = {"type": "array", "items": {"type": "string"}}
+    return validate_schema(value, features_schema)
 
 
 ########################
@@ -217,6 +225,7 @@ class Orb(models.Model):
     )
     description = models.TextField(blank=True, null=True)
     logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
+
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(
         default=False,
@@ -226,6 +235,15 @@ class Orb(models.Model):
         default=False,
         help_text="Licences to a hidden Orb are not shown to CustomerUsers."
     )
+
+    features = models.JSONField(
+        blank=True,
+        default=list,
+        validators=[validate_orb_features],
+        help_text="List of features that this orb supports."
+    )
+
+
     licence_cost = models.FloatField(
         default=0, help_text="The cost of a single licence to this Orb."
     )

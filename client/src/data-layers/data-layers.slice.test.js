@@ -21,15 +21,16 @@ import reducer, {
   logError,
   updateLayers,
   addSource,
+  fetchOrbs,
+  orbsSelector,
 } from './data-layers.slice';
 
 const mockStore = configureMockStore([thunk]);
 
 describe('Data Slice', () => {
   describe('thunks', () => {
+    let store = null;
     describe('fetchSources', () => {
-      let store = null;
-
       beforeEach(() => {
         fetch.resetMocks();
 
@@ -194,6 +195,84 @@ describe('Data Slice', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
+
+    describe('fetchOrbs', () => {
+      beforeEach(() => {
+        fetch.resetMocks();
+        store = mockStore({ data: {} });
+      });
+
+      it(`Dispatches the ${fetchOrbs.rejected.type} action on failed request`, async () => {
+        fetch.once(
+          JSON.stringify({
+            message: 'Test error message',
+          }),
+          {
+            ok: false,
+            status: 401,
+            statusText: 'Test Error',
+          },
+        );
+        await store.dispatch(fetchOrbs());
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: fetchOrbs.rejected.type,
+              payload: { message: '401 Test Error' },
+            }),
+          ]),
+        );
+      });
+
+      it(`Dispatches the ${fetchOrbs.fulfilled.type} action on a successful request`, async () => {
+        const orbs = [{ id: 1 }, { id: 2 }];
+        fetch.once(JSON.stringify(orbs));
+        await store.dispatch(fetchOrbs());
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: fetchOrbs.fulfilled.type,
+              payload: orbs,
+            }),
+          ]),
+        );
+      });
+
+      describe('pending', () => {
+        it('Sets is loading status and request id in state', () => {
+          const result = reducer(
+            {},
+            { type: fetchOrbs.pending.type, meta: { requestId: '123-id' } },
+          );
+          expect(result).toEqual({
+            fetchOrbsPending: true,
+            fetchOrbsRequestId: '123-id',
+          });
+        });
+      });
+
+      describe('fulfilled', () => {
+        it('sets orbs in state', () => {
+          const orbs = [{ id: 1 }, { id: 2 }];
+          const result = reducer(
+            {},
+            { type: fetchOrbs.fulfilled.type, payload: orbs },
+          );
+          expect(result).toEqual(expect.objectContaining({ orbs }));
+        });
+      });
+
+      describe('rejected', () => {
+        it('sets the error in state', () => {
+          const payload = { message: 'Failed' };
+          const result = reducer(
+            {},
+            { type: fetchOrbs.rejected.type, payload },
+          );
+          expect(result).toEqual(expect.objectContaining({ error: payload }));
+        });
+      });
+    });
   });
 
   describe('reducer', () => {
@@ -212,7 +291,7 @@ describe('Data Slice', () => {
     it('should return the initial state', () => {
       const actualState = reducer(undefined, {});
 
-      expect(actualState).toEqual(beforeState);
+      expect(actualState).toEqual(expect.objectContaining(beforeState));
     });
 
     describe('updateLayers', () => {
@@ -411,6 +490,22 @@ describe('Data Slice', () => {
         const state = { data: {} };
         const result = dataSourcesSelector(state);
         expect(result).toEqual([]);
+      });
+    });
+
+    describe('orbsSelector', () => {
+      it('Returns undefined if state is undefined', () => {
+        expect(orbsSelector({})).toBeUndefined();
+      });
+
+      it('Returns undefined if orbs is undefined', () => {
+        const state = { data: {} };
+        expect(orbsSelector(state)).toBeUndefined();
+      });
+
+      it('Returns orbs from state', () => {
+        const state = { data: { orbs: 'test-value' } };
+        expect(orbsSelector(state)).toBe('test-value');
       });
     });
 

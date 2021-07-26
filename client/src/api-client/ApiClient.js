@@ -4,6 +4,7 @@ import { BookmarksClient } from './BookmarksClient';
 import { CustomersClient } from './CustomersClient';
 import { DataClient } from './DataClient';
 import { DocumentsClient } from './DocumentsClient';
+import { OrbsClient } from './OrbsClient';
 import { SatellitesClient } from './SatellitesClient';
 import { UsersClient } from './UsersClient';
 
@@ -14,6 +15,7 @@ export class ApiClient {
   customers;
   data;
   documents;
+  orbs;
   satellites;
   users;
   /** @private */
@@ -24,6 +26,7 @@ export class ApiClient {
     'customers',
     'data',
     'documents',
+    'orbs',
     'satellites',
     'users',
   ];
@@ -35,6 +38,7 @@ export class ApiClient {
     this.customers = new CustomersClient();
     this.data = new DataClient();
     this.documents = new DocumentsClient();
+    this.orbs = new OrbsClient();
     this.satellites = new SatellitesClient();
     this.users = new UsersClient();
     this.apiHost =

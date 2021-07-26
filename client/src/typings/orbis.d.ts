@@ -65,11 +65,20 @@ type ContinuousColorMaps =
   | 'YlOrBr'
   | 'YlOrRd';
 
+type FeatureKey = 'satellites';
+
 type ColorMap = CategoricalColorMaps | ContinuousColorMaps;
 
 type PropertyType = 'continuous' | 'decile' | 'discrete' | 'percentage';
 
-type Orb = { name: string; description?: string };
+type Orb = {
+  id: number;
+  name: string;
+  description?: string;
+  licence_cost: number;
+  logo: string;
+  features?: FeatureKey[];
+};
 
 type SourceCategories = {
   name: string;
