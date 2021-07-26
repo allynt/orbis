@@ -33,6 +33,7 @@ export class SatellitesClient extends SubClient {
    *  sceneId: import('typings/satellites').Scene['id'],
    *  visualisationId: import('typings/satellites').Visualisation['id'],
    * }} params
+   * @returns {Promise<import('typings/orbis').Source}
    */
   async saveImage({ customerId, userId, ...rest }) {
     return this.makeAuthenticatedPostRequest(

@@ -95,6 +95,12 @@ const dataSlice = createSlice({
     fetchSourcesFailure: (state, { payload }) => {
       state.error = payload;
     },
+    /**
+     * @type {import('@reduxjs/toolkit').CaseReducer<
+     *  DataState,
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').Source>
+     * >}
+     */
     addSource: (state, { payload }) => {
       state.sources.push(payload);
     },
