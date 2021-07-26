@@ -20,7 +20,7 @@ const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
  */
 export const useOrbFeatureAccess = arg => {
   const user = useSelector(userSelector);
-  if (!user || !user.orbs || user.orbs.length === 0) return false;
+  if (!user?.orbs || user.orbs.length === 0) return false;
   const orbFeatures = user.orbs.flatMap(orb => orb.features);
   if (Array.isArray(arg)) {
     return arg.reduce(
