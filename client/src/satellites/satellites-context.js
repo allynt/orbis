@@ -66,7 +66,7 @@ export const SatellitesProvider = ({
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
   const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
-    true,
+    false,
   );
   const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();

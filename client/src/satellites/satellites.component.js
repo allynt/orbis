@@ -83,6 +83,15 @@ const Satellites = () => {
     }
   }, [satellites, dispatch]);
 
+  useEffect(() => {
+    if (visiblePanel === Panels.VISUALISATION) {
+      setSelectedSceneLayerVisible(true);
+    }
+    return () => {
+      setSelectedSceneLayerVisible(false);
+    };
+  }, [visiblePanel, setSelectedSceneLayerVisible]);
+
   /**
    * @param {{type: string, data: any}} info
    */
@@ -144,6 +153,7 @@ const Satellites = () => {
             }}
             onSceneClick={scene => {
               dispatch(selectScene(scene));
+              setSelectedSceneLayerVisible(true);
               setVisiblePanel(Panels.VISUALISATION);
             }}
           />
