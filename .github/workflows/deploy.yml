@@ -121,8 +121,7 @@ jobs:
   deploy-staging:
     name: Deploy Staging
     if: startsWith(github.event.deployment.environment, 'staging')
-    # runs-on: [self-hosted, eu-west-1-staging-deployer]
-    runs-on: [self-hosted, eu-west-1-testing-deployer]
+    runs-on: [self-hosted, eu-west-1-staging-deployer]
     timeout-minutes: 60
     steps:
       - name: Set the Deployment Status to Pending
