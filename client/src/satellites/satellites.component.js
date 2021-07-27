@@ -158,8 +158,6 @@ const Satellites = () => {
             }}
             onSceneClick={scene => {
               dispatch(selectScene(scene));
-              dispatch(setSelectedSceneLayerVisible(true));
-              dispatch(setVisiblePanel(Panels.VISUALISATION));
             }}
           />
         )}

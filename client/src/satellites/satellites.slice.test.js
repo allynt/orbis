@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 
 import { addSource } from 'data-layers/data-layers.slice';
 
+import { Panels } from './satellite.constants';
 import reducer, {
   fetchSatellites,
   fetchSatelliteScenes,
@@ -336,6 +337,38 @@ describe('Satellites Slice', () => {
         expect(result.aoi).toEqual([[123, 123]]);
       });
     });
+
+    describe('selectScene', () => {
+      /** @type {import('./satellites.slice').SatellitesState} */
+      let result;
+
+      beforeAll(() => {
+        result = reducer(
+          {
+            hoveredScene: { id: 'hovered-scene-id-123' },
+            selectedSceneLayerVisible: false,
+            visiblePanel: Panels.RESULTS,
+          },
+          selectScene({ id: 'scene-id-123' }),
+        );
+      });
+
+      it('sets the scene in state', () => {
+        expect(result.selectedScene).toEqual({ id: 'scene-id-123' });
+      });
+
+      it('clears any hovered scene', () => {
+        expect(result.hoveredScene).toBeUndefined();
+      });
+
+      it('makes the selected scene layer visible', () => {
+        expect(result.selectedSceneLayerVisible).toBe(true);
+      });
+
+      it('sets the visible panel to Visualisation', () => {
+        expect(result.visiblePanel).toBe(Panels.VISUALISATION);
+      });
+    });
   });
 
   describe('Satellites Reducer', () => {
@@ -394,17 +427,6 @@ describe('Satellites Slice', () => {
       });
 
       expect(actualState.error).toEqual(error);
-    });
-
-    it('should update the selected scene in state, when one selected', () => {
-      const scene = { id: 1 };
-
-      const actualState = reducer(beforeState, {
-        type: selectScene.type,
-        payload: scene,
-      });
-
-      expect(actualState.selectedScene).toEqual(scene);
     });
 
     it('should update the selected scenes in state, when they are cleared', () => {

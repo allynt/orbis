@@ -159,6 +159,8 @@ const satellitesSlice = createSlice({
     selectScene: (state, { payload }) => {
       state.hoveredScene = undefined;
       state.selectedScene = payload;
+      state.selectedSceneLayerVisible = true;
+      state.visiblePanel = Panels.VISUALISATION;
     },
     setVisualisationId: (state, { payload }) => {
       state.visualisationId = payload;
