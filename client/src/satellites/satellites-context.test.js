@@ -8,7 +8,11 @@ import configureMockStore from 'redux-mock-store';
 
 import { Panels } from './satellite.constants';
 import { SatellitesProvider, useSatellites } from './satellites-context';
-import { selectScene, setHoveredScene } from './satellites.slice';
+import {
+  selectScene,
+  setHoveredScene,
+  setIsDrawingAoi,
+} from './satellites.slice';
 
 const mockStore = configureMockStore();
 
@@ -21,10 +25,11 @@ const renderContext = ({
   scenes,
   selectedScene,
   hoveredScene,
+  isDrawingAoi,
   ...rest
 } = {}) => {
   const store = mockStore({
-    satellites: { scenes, selectedScene, hoveredScene },
+    satellites: { scenes, selectedScene, hoveredScene, isDrawingAoi },
   });
   const utils = renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
@@ -44,7 +49,7 @@ describe('SatellitesContext', () => {
     });
 
     it("is returned when isDrawingAoi is true but there's no feature", () => {
-      const { result } = renderContext({ defaultIsDrawingAoi: true });
+      const { result } = renderContext({ isDrawingAoi: true });
       expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
     });
 
@@ -79,7 +84,7 @@ describe('SatellitesContext', () => {
 
       it('sets the aoi', () => {
         const { result } = renderContext({
-          defaultIsDrawingAoi: true,
+          isDrawingAoi: true,
         });
         act(() =>
           result.current.drawAoiLayer.props.onEdit({
@@ -95,8 +100,8 @@ describe('SatellitesContext', () => {
       });
 
       it('turns off isDrawingAoi', () => {
-        const { result } = renderContext({
-          defaultIsDrawingAoi: true,
+        const { result, store } = renderContext({
+          isDrawingAoi: true,
         });
         act(() =>
           result.current.drawAoiLayer.props.onEdit({
@@ -108,7 +113,7 @@ describe('SatellitesContext', () => {
             },
           }),
         );
-        expect(result.current.isDrawingAoi).toBe(false);
+        expect(store.getActions()).toContainEqual(setIsDrawingAoi(false));
       });
     });
   });

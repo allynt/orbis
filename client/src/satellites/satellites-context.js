@@ -14,23 +14,23 @@ import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
 import {
   hoveredSceneSelector,
+  isDrawingAoiSelector,
   scenesSelector,
   selectedSceneSelector,
   selectScene,
   setHoveredScene,
+  setIsDrawingAoi,
   visualisationIdSelector,
 } from './satellites.slice';
 
 /**
  * @typedef {{
- *  isDrawingAoi: boolean
- *  setIsDrawingAoi: React.Dispatch<React.SetStateAction<boolean>>
  *  drawAoiLayer?: EditableGeoJsonLayer
  *  aoi?: number[][]
  *  scenesLayer?: GeoJsonLayer
  *  selectedSceneLayer?: TileLayer
  *  cloudCoverPercentage: number,
- *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
+ *  setCloudCoverPercentage: React.Dispatch<React.SetStateAction<number>>
  *  selectedSceneLayerVisible: boolean
  *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
  *  visiblePanel: string
@@ -44,7 +44,6 @@ SatellitesContext.displayName = 'SatellitesContext';
 
 /**
  * @typedef {{
- *  defaultIsDrawingAoi?: boolean
  *  defaultFeatures?: import('@turf/turf').Feature[]
  *  defaultPanel?: string
  *  children: React.ReactNode
@@ -55,16 +54,16 @@ SatellitesContext.displayName = 'SatellitesContext';
  * @param {SatellitesProviderProps} props
  */
 export const SatellitesProvider = ({
-  defaultIsDrawingAoi = false,
   defaultFeatures = [],
   defaultPanel = Panels.SEARCH,
   children,
 }) => {
-  const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
   const [features, setFeatures] = useState(defaultFeatures);
   /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
-  const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
+  const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
+    DEFAULT_CLOUD_COVER,
+  );
   const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
     false,
   );
@@ -74,6 +73,7 @@ export const SatellitesProvider = ({
   const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
+  const isDrawingAoi = useSelector(isDrawingAoiSelector);
 
   useEffect(() => {
     const update = async () => {
@@ -95,7 +95,7 @@ export const SatellitesProvider = ({
     if (features.length >= 1) setFeatures([]);
     if (editType !== 'addFeature') return;
     setFeatures(updatedData.features);
-    setIsDrawingAoi(false);
+    dispatch(setIsDrawingAoi(false));
   };
 
   const getFillColor = [0, 0, 0, 0];
@@ -166,14 +166,12 @@ export const SatellitesProvider = ({
   return (
     <SatellitesContext.Provider
       value={{
-        isDrawingAoi,
-        setIsDrawingAoi,
         drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
         aoi: features[0]?.geometry.coordinates[0],
         scenesLayer,
         selectedSceneLayer,
         cloudCoverPercentage,
-        setCloudCover,
+        setCloudCoverPercentage: setCloudCoverPercentage,
         selectedSceneLayerVisible,
         setSelectedSceneLayerVisible,
         visiblePanel,

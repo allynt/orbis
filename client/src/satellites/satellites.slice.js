@@ -18,7 +18,6 @@ import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
  * @property {import('typings/satellites').Scene[]} [scenes]
  * @property {import('typings/satellites').Scene} [hoveredScene]
  * @property {import('typings/satellites').Scene} [selectedScene]
- * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
  * @property {number[][]} [aoi]
@@ -90,7 +89,7 @@ export const fetchSatelliteScenes = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  void,
+ *  any,
  *  {name: string, description?: string},
  *  {rejectValue: {message: string}, state:import('react-redux').DefaultRootState }
  * >}
@@ -136,15 +135,11 @@ export const saveImage = createAsyncThunk(
  * @type {SatellitesState}
  */
 const initialState = {
-  satellites: null,
-  scenes: null,
-  selectedScene: null,
   visualisationId: 'TCI',
   cloudCoverPercentage: DEFAULT_CLOUD_COVER,
   isDrawingAoi: false,
   visiblePanel: Panels.SEARCH,
   selectedSceneLayerVisible: false,
-  error: null,
   requests: {},
 };
 
@@ -165,8 +160,20 @@ const satellitesSlice = createSlice({
       state.hoveredScene = undefined;
       state.selectedScene = payload;
     },
-    setCurrentVisualisation: (state, { payload }) => {
+    setVisualisationId: (state, { payload }) => {
       state.visualisationId = payload;
+    },
+    setIsDrawingAoi: (state, { payload }) => {
+      state.isDrawingAoi = payload;
+    },
+    setCloudCoverPercentage: (state, { payload }) => {
+      state.cloudCoverPercentage = payload;
+    },
+    setSelectedSceneLayerVisible: (state, { payload }) => {
+      state.selectedSceneLayerVisible = payload;
+    },
+    setVisiblePanel: (state, { payload }) => {
+      state.visiblePanel = payload;
     },
   },
   extraReducers: builder => {
@@ -203,19 +210,18 @@ const satellitesSlice = createSlice({
 
 export const {
   selectScene,
-  setCurrentVisualisation,
+  setVisualisationId,
   setHoveredScene,
+  setIsDrawingAoi,
+  setCloudCoverPercentage,
+  setSelectedSceneLayerVisible,
+  setVisiblePanel,
 } = satellitesSlice.actions;
 
 /**
  * @param {import('react-redux').DefaultRootState} state
  */
 const baseSelector = state => state?.satellites;
-
-export const selectedPinnedScenesSelector = createSelector(
-  baseSelector,
-  satellites => satellites?.selectedPinnedScenes || [],
-);
 
 export const satellitesSelector = createSelector(
   baseSelector,
@@ -232,11 +238,6 @@ export const selectedSceneSelector = createSelector(
   state => state?.selectedScene,
 );
 
-export const pinnedScenesSelector = createSelector(
-  baseSelector,
-  state => state?.pinnedScenes,
-);
-
 export const currentSearchQuerySelector = createSelector(
   baseSelector,
   state => state?.currentSearchQuery,
@@ -247,14 +248,31 @@ export const visualisationIdSelector = createSelector(
   state => state?.visualisationId,
 );
 
-export const savedSearchesSelector = createSelector(
-  baseSelector,
-  state => state?.satelliteSearches,
-);
-
 export const hoveredSceneSelector = createSelector(
   baseSelector,
   state => state?.hoveredScene,
+);
+
+export const aoiSelector = createSelector(baseSelector, state => state?.aoi);
+
+export const cloudCoverPercentageSelector = createSelector(
+  baseSelector,
+  state => state?.cloudCoverPercentage,
+);
+
+export const visiblePanelSelector = createSelector(
+  baseSelector,
+  state => state?.visiblePanel,
+);
+
+export const isDrawingAoiSelector = createSelector(
+  baseSelector,
+  state => state?.isDrawingAoi,
+);
+
+export const selectedSceneLayerVisibleSelector = createSelector(
+  baseSelector,
+  state => state?.selectedSceneLayerVisible,
 );
 
 export default satellitesSlice.reducer;

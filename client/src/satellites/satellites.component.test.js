@@ -14,7 +14,7 @@ import {
   fetchSatelliteScenes,
   saveImage,
   selectScene,
-  setCurrentVisualisation,
+  setVisualisationId,
   setHoveredScene,
 } from './satellites.slice';
 
@@ -165,7 +165,7 @@ describe('Satellites', () => {
   });
 
   describe('Visualisation', () => {
-    it(`Dispatches ${setCurrentVisualisation} when a visualisation is clicked`, () => {
+    it(`Dispatches ${setVisualisationId} when a visualisation is clicked`, () => {
       const { getByRole, store } = renderComponent({
         satellites,
         scenes,
@@ -178,7 +178,7 @@ describe('Satellites', () => {
         }),
       );
       expect(store.getActions()).toEqual(
-        expect.arrayContaining([setCurrentVisualisation(expect.anything())]),
+        expect.arrayContaining([setVisualisationId(expect.anything())]),
       );
     });
 

@@ -9,17 +9,24 @@ import reducer, {
   fetchSatellites,
   fetchSatelliteScenes,
   selectScene,
-  selectedPinnedScenesSelector,
   satellitesSelector,
   scenesSelector,
   selectedSceneSelector,
-  pinnedScenesSelector,
   currentSearchQuerySelector,
   visualisationIdSelector,
-  savedSearchesSelector,
   setHoveredScene,
   hoveredSceneSelector,
   saveImage,
+  aoiSelector,
+  cloudCoverPercentageSelector,
+  visiblePanelSelector,
+  isDrawingAoiSelector,
+  selectedSceneLayerVisibleSelector,
+  setIsDrawingAoi,
+  setCloudCoverPercentage,
+  setSelectedSceneLayerVisible,
+  setVisiblePanel,
+  setVisualisationId,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -283,11 +290,18 @@ describe('Satellites Slice', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    describe('setHoveredScene', () => {
+    describe.each`
+      action                          | key                            | payload
+      ${setVisualisationId}           | ${'visualisationId'}           | ${'test-string'}
+      ${setHoveredScene}              | ${'hoveredScene'}              | ${{ id: 1, label: 'Test' }}
+      ${setIsDrawingAoi}              | ${'isDrawingAoi'}              | ${true}
+      ${setCloudCoverPercentage}      | ${'cloudCoverPercentage'}      | ${50}
+      ${setSelectedSceneLayerVisible} | ${'selectedSceneLayerVisible'} | ${true}
+      ${setVisiblePanel}              | ${'visiblePanel'}              | ${'test-panel'}
+    `('$action.type', ({ action, key, payload }) => {
       it('sets the hovered scene in state', () => {
-        const hoveredScene = { id: 1, label: 'Test' };
-        const result = reducer({}, setHoveredScene(hoveredScene));
-        expect(result).toEqual(expect.objectContaining({ hoveredScene }));
+        const result = reducer({}, action(payload));
+        expect(result).toEqual(expect.objectContaining({ [key]: payload }));
       });
     });
   });
@@ -372,45 +386,19 @@ describe('Satellites Slice', () => {
   });
 
   describe('selectors', () => {
-    describe('selectedPinnedScenesSelector', () => {
-      it('returns an empty array if state is undefined', () => {
-        const result = selectedPinnedScenesSelector();
-        expect(result).toEqual([]);
-      });
-
-      it('returns an empty array if satellites is undefined', () => {
-        const state = {};
-        const result = selectedPinnedScenesSelector(state);
-        expect(result).toEqual([]);
-      });
-
-      it('returns an empty array if selectedPinnedScenes is undefined', () => {
-        const state = { satellites: {} };
-        const result = selectedPinnedScenesSelector(state);
-        expect(result).toEqual([]);
-      });
-
-      it('returns selectedPinnedScenes', () => {
-        const state = {
-          satellites: {
-            selectedPinnedScenes: [{ test: 'val1' }, { test: 'val2' }],
-          },
-        };
-        const result = selectedPinnedScenesSelector(state);
-        expect(result).toEqual(state.satellites.selectedPinnedScenes);
-      });
-    });
-
     describe.each`
-      selector                      | key
-      ${satellitesSelector}         | ${'satellites'}
-      ${scenesSelector}             | ${'scenes'}
-      ${selectedSceneSelector}      | ${'selectedScene'}
-      ${pinnedScenesSelector}       | ${'pinnedScenes'}
-      ${currentSearchQuerySelector} | ${'currentSearchQuery'}
-      ${visualisationIdSelector}    | ${'visualisationId'}
-      ${savedSearchesSelector}      | ${'satelliteSearches'}
-      ${hoveredSceneSelector}       | ${'hoveredScene'}
+      selector                             | key
+      ${satellitesSelector}                | ${'satellites'}
+      ${scenesSelector}                    | ${'scenes'}
+      ${hoveredSceneSelector}              | ${'hoveredScene'}
+      ${selectedSceneSelector}             | ${'selectedScene'}
+      ${currentSearchQuerySelector}        | ${'currentSearchQuery'}
+      ${visualisationIdSelector}           | ${'visualisationId'}
+      ${aoiSelector}                       | ${'aoi'}
+      ${cloudCoverPercentageSelector}      | ${'cloudCoverPercentage'}
+      ${visiblePanelSelector}              | ${'visiblePanel'}
+      ${isDrawingAoiSelector}              | ${'isDrawingAoi'}
+      ${selectedSceneLayerVisibleSelector} | ${'selectedSceneLayerVisible'}
     `('$selector', ({ selector, key }) => {
       it.each`
         key             | state
