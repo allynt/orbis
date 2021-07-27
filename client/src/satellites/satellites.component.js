@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   makeStyles,
@@ -56,30 +56,110 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Satellites = () => {
-  const styles = useStyles();
+const SearchView = () => {
   const dispatch = useDispatch();
+  const satellites = useSelector(satellitesSelector);
+  const aoi = useSelector(aoiSelector);
+  const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const [selectedMoreInfo, setSelectedMoreInfo] = useState({
     type: null,
     data: null,
   });
   const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
 
-  const satellites = useSelector(satellitesSelector);
+  /**
+   * @param {{type: string, data: any}} info
+   */
+  const handleInfoClick = info => {
+    setSelectedMoreInfo(info);
+    setIsMoreInfoDialogVisible(c => !c);
+  };
+
+  return satellites ? (
+    <>
+      <Search
+        satellites={satellites}
+        aoi={aoi}
+        currentSearch={currentSearchQuery}
+        onDrawAoiClick={() => dispatch(startDrawingAoi())}
+        onSearch={search => {
+          dispatch(searchSatelliteScenes(search));
+        }}
+        onInfoClick={handleInfoClick}
+      />
+      <MoreInfoDialog
+        open={isMoreInfoDialogVisible}
+        onClose={() => setIsMoreInfoDialogVisible(false)}
+        {...selectedMoreInfo}
+      />
+    </>
+  ) : null;
+};
+
+const ResultsView = () => {
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
-  const selectedScene = useSelector(selectedSceneSelector);
-  const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
+  const selectedScene = useSelector(selectedSceneSelector);
   const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
+  const dispatch = useDispatch();
+
+  return (
+    <Results
+      scenes={scenes}
+      hoveredScene={hoveredScene}
+      selectedScene={selectedScene}
+      visualisationId={visualisationId}
+      cloudCoverPercentage={cloudCoverPercentage}
+      onCloudCoverSliderChange={value =>
+        dispatch(setCloudCoverPercentage(value))
+      }
+      onSceneHover={scene => {
+        dispatch(setHoveredScene(scene));
+      }}
+      onSceneClick={scene => {
+        dispatch(selectScene(scene));
+      }}
+    />
+  );
+};
+
+const VisualisationView = ({ visualisations }) => {
+  const visualisationId = useSelector(visualisationIdSelector);
   const selectedSceneLayerVisible = useSelector(
     selectedSceneLayerVisibleSelector,
   );
+  const dispatch = useDispatch();
+
+  return (
+    <Visualisation
+      visualisations={visualisations}
+      visualisationId={visualisationId}
+      onVisualisationClick={visualisation =>
+        dispatch(setVisualisationId(visualisation))
+      }
+      visible={selectedSceneLayerVisible}
+      onVisibilityChange={checked => {
+        dispatch(setSelectedSceneLayerVisible(checked));
+      }}
+      onSaveImageSubmit={formValues => dispatch(saveImage(formValues))}
+    />
+  );
+};
+
+const Satellites = () => {
+  const styles = useStyles();
+  const dispatch = useDispatch();
+  const satellites = useSelector(satellitesSelector);
+  const scenes = useSelector(scenesSelector);
+  const selectedScene = useSelector(selectedSceneSelector);
   const visiblePanel = useSelector(visiblePanelSelector);
-  const visualisations = satellites?.find(
-    sat => sat.id === selectedScene?.satellite,
-  )?.visualisations;
-  const aoi = useSelector(aoiSelector);
+  const visualisations = useMemo(
+    () =>
+      satellites?.find(sat => sat.id === selectedScene?.satellite)
+        ?.visualisations,
+    [satellites, selectedScene],
+  );
 
   useEffect(() => {
     if (!satellites) {
@@ -93,14 +173,6 @@ const Satellites = () => {
       dispatch(onUnmount());
     };
   }, [dispatch]);
-
-  /**
-   * @param {{type: string, data: any}} info
-   */
-  const handleInfoClick = info => {
-    setSelectedMoreInfo(info);
-    setIsMoreInfoDialogVisible(c => !c);
-  };
 
   return (
     <div className={styles.wrapper}>
@@ -125,75 +197,16 @@ const Satellites = () => {
           className={styles.tab}
           icon={<VisualisationIcon titleAccess="Visualisation" />}
           value={Panels.VISUALISATION}
-          disabled={!visualisations}
+          disabled={!selectedScene}
         />
       </Tabs>
       <div className={styles.container}>
-        {satellites && visiblePanel === Panels.SEARCH && (
-          <Search
-            satellites={satellites}
-            aoi={aoi}
-            currentSearch={currentSearchQuery}
-            onDrawAoiClick={() => dispatch(startDrawingAoi())}
-            onSearch={search => {
-              dispatch(searchSatelliteScenes(search));
-            }}
-            onInfoClick={handleInfoClick}
-          />
-        )}
-        {visiblePanel === Panels.RESULTS && (
-          <Results
-            scenes={scenes}
-            hoveredScene={hoveredScene}
-            selectedScene={selectedScene}
-            visualisationId={visualisationId}
-            cloudCoverPercentage={cloudCoverPercentage}
-            onCloudCoverSliderChange={value =>
-              dispatch(setCloudCoverPercentage(value))
-            }
-            onSceneHover={scene => {
-              dispatch(setHoveredScene(scene));
-            }}
-            onSceneClick={scene => {
-              dispatch(selectScene(scene));
-            }}
-          />
-        )}
+        {visiblePanel === Panels.SEARCH && <SearchView />}
+        {visiblePanel === Panels.RESULTS && <ResultsView />}
         {visiblePanel === Panels.VISUALISATION && (
-          <Visualisation
-            visualisations={visualisations}
-            visualisationId={visualisationId}
-            onVisualisationClick={visualisation =>
-              dispatch(setVisualisationId(visualisation))
-            }
-            visible={selectedSceneLayerVisible}
-            onVisibilityChange={checked => {
-              dispatch(setSelectedSceneLayerVisible(checked));
-            }}
-            onSaveImageSubmit={formValues => dispatch(saveImage(formValues))}
-          />
+          <VisualisationView visualisations={visualisations} />
         )}
-        {/* {visiblePanel === PINS && (
-        <ComparePins
-          onInfoClick={handleInfoClick}
-          selectPinnedScene={scene => dispatch(selectPinnedScene(scene))}
-          deselectPinnedScene={scene => dispatch(deselectPinnedScene(scene))}
-          clearSelectedPinnedScenes={() =>
-            dispatch(clearSelectedPinnedScenes())
-          }
-          deletePinnedScene={id => dispatch(deletePinnedScene(id))}
-          toggleCompareMode={() => dispatch(toggleCompareMode())}
-          pinnedScenes={pinnedScenes}
-          selectedPinnedScenes={selectedPinnedScenes}
-          isCompareMode={isCompareMode}
-        />
-      )} */}
       </div>
-      <MoreInfoDialog
-        open={isMoreInfoDialogVisible}
-        onClose={() => setIsMoreInfoDialogVisible(false)}
-        {...selectedMoreInfo}
-      />
     </div>
   );
 };
