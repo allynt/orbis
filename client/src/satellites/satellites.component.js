@@ -9,7 +9,10 @@ import {
   VisualisationIcon,
 } from '@astrosat/astrosat-ui';
 
+import { area, geometry } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { configSelector } from 'app.slice';
 
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
@@ -58,6 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchView = () => {
   const dispatch = useDispatch();
+  const appConfig = useSelector(configSelector);
   const satellites = useSelector(satellitesSelector);
   const aoi = useSelector(aoiSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
@@ -66,6 +70,10 @@ const SearchView = () => {
     data: null,
   });
   const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
+  const aoiTooLarge = useMemo(
+    () => aoi && area(geometry('Polygon', [aoi])) > appConfig?.maximumAoiArea,
+    [aoi, appConfig],
+  );
 
   /**
    * @param {{type: string, data: any}} info
@@ -80,6 +88,7 @@ const SearchView = () => {
       <Search
         satellites={satellites}
         aoi={aoi}
+        aoiTooLarge={aoiTooLarge}
         currentSearch={currentSearchQuery}
         onDrawAoiClick={() => dispatch(startDrawingAoi())}
         onSearch={search => {

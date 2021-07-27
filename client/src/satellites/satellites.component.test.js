@@ -31,7 +31,11 @@ const RESULTS_TAB = ['tab', { name: 'Results' }];
 const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
 
 const renderComponent = (state = { satellites, scenes }) => {
-  const store = mockStore({ accounts: {}, app: {}, satellites: state });
+  const store = mockStore({
+    accounts: {},
+    app: { config: { maximumAoiArea: 20 } },
+    satellites: state,
+  });
   const utils = render(
     <Provider store={store}>
       <Satellites />
@@ -136,6 +140,23 @@ describe('Satellites', () => {
           ]),
         ),
       );
+    });
+
+    it('Shows an error if the aoi is too large', () => {
+      const { getByText } = renderComponent({
+        visiblePanel: Panels.SEARCH,
+        satellites,
+        aoi: [
+          [0, 0],
+          [55, 0],
+          [55, 55],
+          [0, 55],
+          [0, 0],
+        ],
+      });
+      expect(
+        getByText('AOI is too large, redraw or zoom in'),
+      ).toBeInTheDocument();
     });
   });
 
