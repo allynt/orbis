@@ -21,20 +21,19 @@ const mockStore = configureMockStore();
  *  & import('./satellites.slice').SatellitesState
  * } [props]
  */
-const renderContext = ({
-  scenes,
-  selectedScene,
-  hoveredScene,
-  isDrawingAoi,
-  ...rest
-} = {}) => {
+const renderContext = ({ defaultFeatures, ...rest } = {}) => {
   const store = mockStore({
-    satellites: { scenes, selectedScene, hoveredScene, isDrawingAoi },
+    satellites: {
+      selectedSceneLayerVisible: false,
+      ...rest,
+    },
   });
   const utils = renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
       <Provider store={store}>
-        <SatellitesProvider {...rest}>{children}</SatellitesProvider>
+        <SatellitesProvider defaultFeatures={defaultFeatures}>
+          {children}
+        </SatellitesProvider>
       </Provider>
     ),
   });
@@ -63,7 +62,7 @@ describe('SatellitesContext', () => {
     it('is not visible when the visualisation panel is visible', () => {
       const { result } = renderContext({
         defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
-        defaultPanel: Panels.VISUALISATION,
+        visiblePanel: Panels.VISUALISATION,
       });
       expect(result.current.drawAoiLayer.props.visible).toBe(false);
     });

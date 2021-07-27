@@ -11,15 +11,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { baseSatelliteImageConfig } from 'map/orbs/configurations/satelliteImageConfig';
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
-import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
+import { Panels } from './satellite.constants';
 import {
+  cloudCoverPercentageSelector,
   hoveredSceneSelector,
   isDrawingAoiSelector,
   scenesSelector,
+  selectedSceneLayerVisibleSelector,
   selectedSceneSelector,
   selectScene,
   setHoveredScene,
   setIsDrawingAoi,
+  visiblePanelSelector,
   visualisationIdSelector,
 } from './satellites.slice';
 
@@ -29,12 +32,6 @@ import {
  *  aoi?: number[][]
  *  scenesLayer?: GeoJsonLayer
  *  selectedSceneLayer?: TileLayer
- *  cloudCoverPercentage: number,
- *  setCloudCoverPercentage: React.Dispatch<React.SetStateAction<number>>
- *  selectedSceneLayerVisible: boolean
- *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
- *  visiblePanel: string
- *  setVisiblePanel: React.Dispatch<React.SetStateAction<string>>
  * }} SatellitesContextType
  */
 
@@ -45,7 +42,6 @@ SatellitesContext.displayName = 'SatellitesContext';
 /**
  * @typedef {{
  *  defaultFeatures?: import('@turf/turf').Feature[]
- *  defaultPanel?: string
  *  children: React.ReactNode
  * }} SatellitesProviderProps
  */
@@ -53,27 +49,21 @@ SatellitesContext.displayName = 'SatellitesContext';
 /**
  * @param {SatellitesProviderProps} props
  */
-export const SatellitesProvider = ({
-  defaultFeatures = [],
-  defaultPanel = Panels.SEARCH,
-  children,
-}) => {
+export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
   const [features, setFeatures] = useState(defaultFeatures);
   /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
-  const [cloudCoverPercentage, setCloudCoverPercentage] = useState(
-    DEFAULT_CLOUD_COVER,
-  );
-  const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
-    false,
-  );
-  const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
   const isDrawingAoi = useSelector(isDrawingAoiSelector);
+  const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
+  const selectedSceneLayerVisible = useSelector(
+    selectedSceneLayerVisibleSelector,
+  );
+  const visiblePanel = useSelector(visiblePanelSelector);
 
   useEffect(() => {
     const update = async () => {
@@ -170,12 +160,6 @@ export const SatellitesProvider = ({
         aoi: features[0]?.geometry.coordinates[0],
         scenesLayer,
         selectedSceneLayer,
-        cloudCoverPercentage,
-        setCloudCoverPercentage: setCloudCoverPercentage,
-        selectedSceneLayerVisible,
-        setSelectedSceneLayerVisible,
-        visiblePanel,
-        setVisiblePanel,
       }}
     >
       {children}

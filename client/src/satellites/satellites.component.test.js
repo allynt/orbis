@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { Panels } from './satellite.constants';
 import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
@@ -16,6 +17,8 @@ import {
   selectScene,
   setVisualisationId,
   setHoveredScene,
+  setSelectedSceneLayerVisible,
+  setVisiblePanel,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -90,46 +93,31 @@ describe('Satellites', () => {
       expect(getByRole(...VISUALISATION_TAB)).not.toBeDisabled();
     });
 
-    it('Shows the search view when the search nav button is clicked', () => {
-      const { getByRole } = renderComponent({
-        satellites,
-        scenes,
-        selectedScene: scenes[0],
-      });
-      userEvent.click(getByRole(...SEARCH_TAB));
-      expect(
-        getByRole('button', { name: 'Draw your AOI' }),
-      ).toBeInTheDocument();
-    });
-
-    it('Shows the Results view when the Results nav button is clicked', () => {
-      const { getByRole } = renderComponent({
-        satellites,
-        scenes,
-        selectedScene: scenes[0],
-      });
-      userEvent.click(getByRole(...RESULTS_TAB));
-      expect(getByRole('slider')).toBeInTheDocument();
-    });
-
-    it('Shows the Visualisation view when the Visualisation nav button is clicked', () => {
-      const { getByRole } = renderComponent({
-        satellites,
-        scenes,
-        selectedScene: scenes[0],
-      });
-      userEvent.click(getByRole(...VISUALISATION_TAB));
-      expect(
-        getByRole('heading', { name: 'Visualisation' }),
-      ).toBeInTheDocument();
-    });
+    it.each`
+      panel                   | matcher
+      ${Panels.SEARCH}        | ${SEARCH_TAB}
+      ${Panels.RESULTS}       | ${RESULTS_TAB}
+      ${Panels.VISUALISATION} | ${VISUALISATION_TAB}
+    `(
+      'Dispatches setVisiblePanel when the $panel nav button is clicked',
+      ({ panel, matcher }) => {
+        const { getByRole, store } = renderComponent({
+          satellites,
+          scenes,
+          selectedScene: scenes[0],
+        });
+        userEvent.click(getByRole(...matcher));
+        expect(store.getActions()).toContainEqual(setVisiblePanel(panel));
+      },
+    );
   });
 
   describe('Search', () => {
     it('Performs a search when the search button is clicked', async () => {
-      const { getByRole, store } = renderComponent(undefined, [
-        { geometry: { coordinates: [[123, 123]] } },
-      ]);
+      const { getByRole, store } = renderComponent(
+        { visiblePanel: Panels.SEARCH, satellites },
+        [{ geometry: { coordinates: [[123, 123]] } }],
+      );
       userEvent.click(getByRole('button', { name: 'Search' }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
@@ -140,14 +128,16 @@ describe('Satellites', () => {
           ]),
         ),
       );
-      expect(getByRole('slider')).toBeInTheDocument();
     });
   });
 
   describe('Results', () => {
     it(`dispatches ${setHoveredScene} when a scene is hovered`, () => {
-      const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole(...RESULTS_TAB));
+      const { getByRole, store } = renderComponent({
+        satellites,
+        scenes,
+        visiblePanel: Panels.RESULTS,
+      });
       fireEvent.mouseEnter(getByRole('button', { name: scenes[0].id }));
       expect(store.getActions()).toEqual(
         expect.arrayContaining([setHoveredScene(scenes[0])]),
@@ -155,8 +145,11 @@ describe('Satellites', () => {
     });
 
     it(`dispatches ${selectScene} when a scene is clicked`, () => {
-      const { getByRole, store } = renderComponent();
-      userEvent.click(getByRole(...RESULTS_TAB));
+      const { getByRole, store } = renderComponent({
+        satellites,
+        scenes,
+        visiblePanel: Panels.RESULTS,
+      });
       userEvent.click(getByRole('button', { name: scenes[0].id }));
       expect(store.getActions()).toEqual(
         expect.arrayContaining([selectScene(scenes[0])]),
@@ -170,29 +163,30 @@ describe('Satellites', () => {
         satellites,
         scenes,
         selectedScene: scenes[0],
+        visiblePanel: Panels.VISUALISATION,
       });
-      userEvent.click(getByRole(...VISUALISATION_TAB));
       userEvent.click(
         getByRole('button', {
           name: 'Scene Visualisation Thumbnail True Color Based on bands 4,3,2',
         }),
       );
-      expect(store.getActions()).toEqual(
-        expect.arrayContaining([setVisualisationId(expect.anything())]),
+      expect(store.getActions()).toContainEqual(
+        setVisualisationId(expect.anything()),
       );
     });
 
     it('Hides the selectedSceneLayer when the show hide icon is clicked', () => {
-      const { getByRole, getAllByRole } = renderComponent({
+      const { getAllByRole, store } = renderComponent({
         satellites,
         scenes,
         selectedScene: scenes[0],
+        selectedSceneLayerVisible: true,
+        visiblePanel: Panels.VISUALISATION,
       });
-      userEvent.click(getByRole(...VISUALISATION_TAB));
       userEvent.click(getAllByRole('checkbox', { name: 'Hide' })[0]);
-      expect(
-        getAllByRole('checkbox', { name: 'Show' }).length,
-      ).toBeGreaterThanOrEqual(1);
+      expect(store.getActions()).toContainEqual(
+        setSelectedSceneLayerVisible(false),
+      );
     });
 
     it('Dispatches saveImage when the save image form is submitted', async () => {
@@ -200,8 +194,8 @@ describe('Satellites', () => {
         satellites,
         scenes,
         selectedScene: scenes[0],
+        visiblePanel: Panels.VISUALISATION,
       });
-      userEvent.click(getByRole(...VISUALISATION_TAB));
       userEvent.click(getByRole('button', { name: 'Save Image' }));
       userEvent.type(getByRole('textbox', { name: 'Add Name' }), 'Test Name');
       userEvent.click(getByRole('button', { name: 'Save' }));

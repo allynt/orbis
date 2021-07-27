@@ -29,6 +29,12 @@ import {
   setHoveredScene,
   visualisationIdSelector,
   setIsDrawingAoi,
+  cloudCoverPercentageSelector,
+  setCloudCoverPercentage,
+  selectedSceneLayerVisibleSelector,
+  setSelectedSceneLayerVisible,
+  visiblePanelSelector,
+  setVisiblePanel,
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
@@ -64,18 +70,15 @@ const Satellites = () => {
   const selectedScene = useSelector(selectedSceneSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const visualisationId = useSelector(visualisationIdSelector);
+  const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
+  const selectedSceneLayerVisible = useSelector(
+    selectedSceneLayerVisibleSelector,
+  );
+  const visiblePanel = useSelector(visiblePanelSelector);
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
-  const {
-    aoi,
-    cloudCoverPercentage,
-    setCloudCoverPercentage,
-    selectedSceneLayerVisible,
-    setSelectedSceneLayerVisible,
-    visiblePanel,
-    setVisiblePanel,
-  } = useSatellites();
+  const { aoi } = useSatellites();
 
   useEffect(() => {
     if (!satellites) {
@@ -85,12 +88,12 @@ const Satellites = () => {
 
   useEffect(() => {
     if (visiblePanel === Panels.VISUALISATION) {
-      setSelectedSceneLayerVisible(true);
+      dispatch(setSelectedSceneLayerVisible(true));
     }
     return () => {
-      setSelectedSceneLayerVisible(false);
+      dispatch(setSelectedSceneLayerVisible(false));
     };
-  }, [visiblePanel, setSelectedSceneLayerVisible]);
+  }, [visiblePanel, dispatch]);
 
   /**
    * @param {{type: string, data: any}} info
@@ -106,7 +109,7 @@ const Satellites = () => {
         variant="standard"
         scrollButtons="on"
         value={visiblePanel}
-        onChange={(_event, value) => setVisiblePanel(value)}
+        onChange={(_event, value) => dispatch(setVisiblePanel(value))}
       >
         <Tab
           className={styles.tab}
@@ -135,7 +138,7 @@ const Satellites = () => {
             onDrawAoiClick={() => dispatch(setIsDrawingAoi(c => !c))}
             onSearch={search => {
               dispatch(fetchSatelliteScenes({ ...search, aoi }));
-              setVisiblePanel(Panels.RESULTS);
+              dispatch(setVisiblePanel(Panels.RESULTS));
             }}
             onInfoClick={handleInfoClick}
           />
@@ -147,14 +150,16 @@ const Satellites = () => {
             selectedScene={selectedScene}
             visualisationId={visualisationId}
             cloudCoverPercentage={cloudCoverPercentage}
-            onCloudCoverSliderChange={setCloudCoverPercentage}
+            onCloudCoverSliderChange={value =>
+              dispatch(setCloudCoverPercentage(value))
+            }
             onSceneHover={scene => {
               dispatch(setHoveredScene(scene));
             }}
             onSceneClick={scene => {
               dispatch(selectScene(scene));
-              setSelectedSceneLayerVisible(true);
-              setVisiblePanel(Panels.VISUALISATION);
+              dispatch(setSelectedSceneLayerVisible(true));
+              dispatch(setVisiblePanel(Panels.VISUALISATION));
             }}
           />
         )}
@@ -166,7 +171,9 @@ const Satellites = () => {
               dispatch(setVisualisationId(visualisation))
             }
             visible={selectedSceneLayerVisible}
-            onVisibilityChange={setSelectedSceneLayerVisible}
+            onVisibilityChange={checked => {
+              dispatch(setSelectedSceneLayerVisible(checked));
+            }}
             onSaveImageSubmit={formValues => dispatch(saveImage(formValues))}
           />
         )}
