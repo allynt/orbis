@@ -154,9 +154,7 @@ describe('Satellites', () => {
           [0, 0],
         ],
       });
-      expect(
-        getByText('AOI is too large, redraw or zoom in'),
-      ).toBeInTheDocument();
+      expect(getByText('AOI is too large')).toBeInTheDocument();
     });
   });
 

@@ -9,7 +9,7 @@ import {
   VisualisationIcon,
 } from '@astrosat/astrosat-ui';
 
-import { area, geometry } from '@turf/turf';
+import { area, convertArea, geometry } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { configSelector } from 'app.slice';
@@ -71,7 +71,10 @@ const SearchView = () => {
   });
   const [isMoreInfoDialogVisible, setIsMoreInfoDialogVisible] = useState(false);
   const aoiTooLarge = useMemo(
-    () => aoi && area(geometry('Polygon', [aoi])) > appConfig?.maximumAoiArea,
+    () =>
+      aoi &&
+      convertArea(area(geometry('Polygon', [aoi])), 'meters', 'kilometers') >
+        appConfig?.maximumAoiArea,
     [aoi, appConfig],
   );
 

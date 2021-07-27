@@ -253,9 +253,7 @@ const SearchForm = ({
           </FormHelperText>
         )}
       </FormControl>
-      {aoiTooLarge && (
-        <Well severity="error">AOI is too large, redraw or zoom in</Well>
-      )}
+      {aoiTooLarge && <Well severity="error">AOI is too large</Well>}
       <div className={styles.searchButton}>
         <Button type="submit" disabled={!aoi || aoiTooLarge}>
           Search
