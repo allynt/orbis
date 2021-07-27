@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MoreInfoDialog } from './more-info-dialog/more-info-dialog.component';
 import Results from './results/results.component';
 import { Panels } from './satellite.constants';
-import { useSatellites } from './satellites-context';
 import {
   currentSearchQuerySelector,
   fetchSatellites,
@@ -35,6 +34,7 @@ import {
   setSelectedSceneLayerVisible,
   visiblePanelSelector,
   setVisiblePanel,
+  aoiSelector,
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
@@ -78,7 +78,7 @@ const Satellites = () => {
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
-  const { aoi } = useSatellites();
+  const aoi = useSelector(aoiSelector);
 
   useEffect(() => {
     if (!satellites) {

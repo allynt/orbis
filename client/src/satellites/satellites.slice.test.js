@@ -27,6 +27,7 @@ import reducer, {
   setSelectedSceneLayerVisible,
   setVisiblePanel,
   setVisualisationId,
+  setAoi,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -298,6 +299,10 @@ describe('Satellites Slice', () => {
       ${setCloudCoverPercentage}      | ${'cloudCoverPercentage'}      | ${50}
       ${setSelectedSceneLayerVisible} | ${'selectedSceneLayerVisible'} | ${true}
       ${setVisiblePanel}              | ${'visiblePanel'}              | ${'test-panel'}
+      ${setAoi} | ${'aoi'} | ${[
+  [1, 2],
+  [3, 5],
+]}
     `('$action.type', ({ action, key, payload }) => {
       it('sets the hovered scene in state', () => {
         const result = reducer({}, action(payload));

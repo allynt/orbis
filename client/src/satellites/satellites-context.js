@@ -5,7 +5,7 @@ import { TileLayer } from '@deck.gl/geo-layers';
 import { GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { feature, featureCollection } from '@turf/turf';
+import { feature, featureCollection, geometry } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { baseSatelliteImageConfig } from 'map/orbs/configurations/satelliteImageConfig';
@@ -13,6 +13,7 @@ import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import { Panels } from './satellite.constants';
 import {
+  aoiSelector,
   cloudCoverPercentageSelector,
   hoveredSceneSelector,
   isDrawingAoiSelector,
@@ -20,6 +21,7 @@ import {
   selectedSceneLayerVisibleSelector,
   selectedSceneSelector,
   selectScene,
+  setAoi,
   setHoveredScene,
   setIsDrawingAoi,
   visiblePanelSelector,
@@ -29,7 +31,6 @@ import {
 /**
  * @typedef {{
  *  drawAoiLayer?: EditableGeoJsonLayer
- *  aoi?: number[][]
  *  scenesLayer?: GeoJsonLayer
  *  selectedSceneLayer?: TileLayer
  * }} SatellitesContextType
@@ -41,7 +42,6 @@ SatellitesContext.displayName = 'SatellitesContext';
 
 /**
  * @typedef {{
- *  defaultFeatures?: import('@turf/turf').Feature[]
  *  children: React.ReactNode
  * }} SatellitesProviderProps
  */
@@ -49,8 +49,7 @@ SatellitesContext.displayName = 'SatellitesContext';
 /**
  * @param {SatellitesProviderProps} props
  */
-export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
-  const [features, setFeatures] = useState(defaultFeatures);
+export const SatellitesProvider = ({ children }) => {
   /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const dispatch = useDispatch();
@@ -64,6 +63,7 @@ export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
     selectedSceneLayerVisibleSelector,
   );
   const visiblePanel = useSelector(visiblePanelSelector);
+  const aoi = useSelector(aoiSelector);
 
   useEffect(() => {
     const update = async () => {
@@ -82,9 +82,9 @@ export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
   }, [selectedScene, visualisationId]);
 
   const onEdit = ({ editType, updatedData }) => {
-    if (features.length >= 1) setFeatures([]);
+    if (aoi?.length >= 1) dispatch(setAoi(undefined));
     if (editType !== 'addFeature') return;
-    setFeatures(updatedData.features);
+    dispatch(setAoi(updatedData.features[0].geometry.coordinates[0]));
     dispatch(setIsDrawingAoi(false));
   };
 
@@ -94,7 +94,7 @@ export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
   // @ts-ignore
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
-    data: featureCollection(features),
+    data: featureCollection([feature(geometry('MultiPolygon', aoi ?? []))]),
     visible: visiblePanel !== Panels.VISUALISATION,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
@@ -156,8 +156,7 @@ export const SatellitesProvider = ({ defaultFeatures = [], children }) => {
   return (
     <SatellitesContext.Provider
       value={{
-        drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
-        aoi: features[0]?.geometry.coordinates[0],
+        drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
         scenesLayer,
         selectedSceneLayer,
       }}

@@ -114,10 +114,11 @@ describe('Satellites', () => {
 
   describe('Search', () => {
     it('Performs a search when the search button is clicked', async () => {
-      const { getByRole, store } = renderComponent(
-        { visiblePanel: Panels.SEARCH, satellites },
-        [{ geometry: { coordinates: [[123, 123]] } }],
-      );
+      const { getByRole, store } = renderComponent({
+        visiblePanel: Panels.SEARCH,
+        satellites,
+        aoi: [[123, 123]],
+      });
       userEvent.click(getByRole('button', { name: 'Search' }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(

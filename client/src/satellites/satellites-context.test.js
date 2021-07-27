@@ -10,6 +10,7 @@ import { Panels } from './satellite.constants';
 import { SatellitesProvider, useSatellites } from './satellites-context';
 import {
   selectScene,
+  setAoi,
   setHoveredScene,
   setIsDrawingAoi,
 } from './satellites.slice';
@@ -17,11 +18,10 @@ import {
 const mockStore = configureMockStore();
 
 /**
- * @param {Omit<import('./satellites-context').SatellitesProviderProps, 'children'>
- *  & import('./satellites.slice').SatellitesState
+ * @param {import('./satellites.slice').SatellitesState
  * } [props]
  */
-const renderContext = ({ defaultFeatures, ...rest } = {}) => {
+const renderContext = ({ ...rest } = {}) => {
   const store = mockStore({
     satellites: {
       selectedSceneLayerVisible: false,
@@ -31,9 +31,7 @@ const renderContext = ({ defaultFeatures, ...rest } = {}) => {
   const utils = renderHook(() => useSatellites(), {
     wrapper: ({ children }) => (
       <Provider store={store}>
-        <SatellitesProvider defaultFeatures={defaultFeatures}>
-          {children}
-        </SatellitesProvider>
+        <SatellitesProvider>{children}</SatellitesProvider>
       </Provider>
     ),
   });
@@ -54,14 +52,14 @@ describe('SatellitesContext', () => {
 
     it("is returned when isDrawingAoi is false but there's a feature", () => {
       const { result } = renderContext({
-        defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
+        aoi: [],
       });
       expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
     });
 
     it('is not visible when the visualisation panel is visible', () => {
       const { result } = renderContext({
-        defaultFeatures: [{ id: '123', geometry: { coordinates: [] } }],
+        isDrawingAoi: true,
         visiblePanel: Panels.VISUALISATION,
       });
       expect(result.current.drawAoiLayer.props.visible).toBe(false);
@@ -69,20 +67,19 @@ describe('SatellitesContext', () => {
 
     describe('onEdit', () => {
       it('Returns if editType is not addFeature', () => {
-        const { result } = renderContext({
-          defaultIsDrawingAoi: true,
-          defaultFeatures: [{ geometry: { coordinates: [[123, 123]] } }],
+        const { result, store } = renderContext({
+          isDrawingAoi: true,
         });
         act(() =>
           result.current.drawAoiLayer.props.onEdit({
             editType: 'somethingElse',
           }),
         );
-        expect(result.current.aoi).toBeUndefined();
+        expect(store.getActions()).not.toContainEqual(setAoi([123, 123]));
       });
 
       it('sets the aoi', () => {
-        const { result } = renderContext({
+        const { result, store } = renderContext({
           isDrawingAoi: true,
         });
         act(() =>
@@ -95,7 +92,7 @@ describe('SatellitesContext', () => {
             },
           }),
         );
-        expect(result.current.aoi).toEqual([123, 123]);
+        expect(store.getActions()).toContainEqual(setAoi([123, 123]));
       });
 
       it('turns off isDrawingAoi', () => {
@@ -114,15 +111,6 @@ describe('SatellitesContext', () => {
         );
         expect(store.getActions()).toContainEqual(setIsDrawingAoi(false));
       });
-    });
-  });
-
-  describe('aoi', () => {
-    it("is the first array of the feature's coordinates array", () => {
-      const { result } = renderContext({
-        defaultFeatures: [{ id: '123', geometry: { coordinates: ['345'] } }],
-      });
-      expect(result.current.aoi).toBe('345');
     });
   });
 

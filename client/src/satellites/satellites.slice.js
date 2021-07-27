@@ -175,6 +175,9 @@ const satellitesSlice = createSlice({
     setVisiblePanel: (state, { payload }) => {
       state.visiblePanel = payload;
     },
+    setAoi: (state, { payload }) => {
+      state.aoi = payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchSatellites.fulfilled, (state, { payload }) => {
@@ -216,6 +219,7 @@ export const {
   setCloudCoverPercentage,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
+  setAoi,
 } = satellitesSlice.actions;
 
 /**
