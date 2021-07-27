@@ -126,8 +126,7 @@ export const useSatellitesLayers = () => {
     // @ts-ignore
     baseSatelliteImageConfig({
       id: 'selected-scene-layer',
-      // 👇 This should not go into production, Fix it
-      data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+      data: selectedSceneTiles,
       visible:
         selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
     }),
