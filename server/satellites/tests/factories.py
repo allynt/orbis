@@ -40,6 +40,8 @@ class SatelliteFactory(factory.django.DjangoModelFactory):
     title = FactoryFaker("pretty_sentence", nb_words=3)
     description = optional_declaration(FactoryFaker("text"), chance=50)
 
+    adapter_name = "mock-adapter"
+
     @factory.lazy_attribute
     def order(self):
         return Satellite.objects.count() + 1
@@ -75,13 +77,11 @@ class SatelliteSearchFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SatelliteSearch
 
-    name = factory.LazyAttributeSequence(lambda o, n: f"search-{n}")
     start_date = factory.LazyAttribute(
         lambda o: o.end_date - datetime.timedelta(days=7)
     )
     end_date = datetime.datetime.today()
     aoi = FactoryFaker("polygon")
-    owner = factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def satellites(self, create, extracted, **kwargs):

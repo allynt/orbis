@@ -23,6 +23,8 @@ from astrosat.decorators import swagger_fake
 
 from astrosat_users.models.models_customers import CustomerUser
 
+from orbis.models import Orb
+
 from satellites.models import Satellite, SatelliteDataSource, SatelliteSearch, SatelliteResult
 from satellites.serializers import (
     SatelliteSerializer,
@@ -166,13 +168,37 @@ class SatelliteResultViewSet(
 #####################
 
 
+class CanQuerySatellitesPermission(BasePermission):
+    """
+    only a user w/ a licence to an orb w/ the "satellites" feature can call `run_satellite_query`
+    """
+
+    message = "You do not have a licence to run a Satellite Query."
+
+    def has_permission(self, request, view):
+        user = request.user
+
+        user_orbs = Orb.objects.filter(
+            is_active=True,
+            licences__customer_user__in=user.customer_users.values_list(
+                "pk", flat=True
+            )
+        ).distinct()
+
+        user_satellite_orbs = user_orbs.filter(
+            features__contains=["satellites"]
+        )
+
+        return user_satellite_orbs.exists()
+
+
 @swagger_auto_schema(
     method="post",
     request_body=SatelliteSearchSerializer,
     responses={status.HTTP_200_OK: SatelliteResultSerializer(many=True)},
 )
-@permission_classes([IsAuthenticated])
 @api_view(["POST"])
+@permission_classes([IsAuthenticated, CanQuerySatellitesPermission])
 def run_satellite_query(request):
 
     # build a search out of the request data...
