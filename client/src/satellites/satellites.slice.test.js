@@ -8,7 +8,7 @@ import { addSource } from 'data-layers/data-layers.slice';
 import { Panels } from './satellite.constants';
 import reducer, {
   fetchSatellites,
-  fetchSatelliteScenes,
+  searchSatelliteScenes,
   selectScene,
   satellitesSelector,
   scenesSelector,
@@ -39,6 +39,104 @@ describe('Satellites Slice', () => {
   });
 
   describe('thunks', () => {
+    describe('searchSatelliteScenes', () => {
+      describe('pending', () => {
+        /** @type {import('./satellites.slice').SatellitesState} */
+        let result;
+
+        beforeAll(() => {
+          result = reducer(
+            {
+              requests: {},
+              selectedScene: { id: 'scene-id-123' },
+            },
+            searchSatelliteScenes.pending('request-id-123', {
+              end_date: 'end-date',
+              start_date: 'start-date',
+              satellites: ['sat1', 'sat2'],
+            }),
+          );
+        });
+
+        it('sets the request id', () => {
+          expect(result.requests.searchSatelliteScenes).toBe('request-id-123');
+        });
+
+        it('sets the search query', () => {
+          expect(result.currentSearchQuery).toEqual({
+            end_date: 'end-date',
+            start_date: 'start-date',
+            satellites: ['sat1', 'sat2'],
+          });
+        });
+
+        it('clears any selected scenes', () => {
+          expect(result.selectedScene).toBeUndefined();
+        });
+
+        it('sets the visible panel to Results', () => {
+          expect(result.visiblePanel).toBe(Panels.RESULTS);
+        });
+      });
+
+      describe('fulfilled', () => {
+        /** @type {import('./satellites.slice').SatellitesState} */
+        let result;
+
+        beforeAll(() => {
+          result = reducer(
+            {
+              requests: { searchSatelliteScenes: 'request-id-123' },
+            },
+            {
+              type: searchSatelliteScenes.fulfilled.type,
+              payload: [{ id: 'scene-id-123' }, { id: 'scene-id-456' }],
+            },
+          );
+        });
+
+        it('Sets scenes to the response', () => {
+          expect(result.scenes).toEqual([
+            { id: 'scene-id-123' },
+            { id: 'scene-id-456' },
+          ]);
+        });
+
+        it('Clears the request id', () => {
+          expect(result.requests.searchSatelliteScenes).toBeUndefined();
+        });
+
+        it('Clears any errors', () => {
+          expect(result.error).toBeUndefined();
+        });
+      });
+
+      describe('rejected', () => {
+        /** @type {import('./satellites.slice').SatellitesState} */
+        let result;
+
+        beforeAll(() => {
+          result = reducer(
+            {
+              requests: { searchSatelliteScenes: 'request-id-123' },
+            },
+            {
+              type: searchSatelliteScenes.rejected.type,
+              payload: { message: 'Test Error' },
+            },
+          );
+        });
+
+        it('Sets error to the response', () => {
+          expect(result.error).toEqual({ message: 'Test Error' });
+        });
+
+        it('Clears the request id', () => {
+          expect(result.requests.searchSatelliteScenes).toBeUndefined();
+        });
+      });
+    });
+
     describe('saveImage', () => {
       describe('pending', () => {
         it('sets the saveImage request to the request id', () => {
@@ -237,61 +335,6 @@ describe('Satellites Slice', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('should dispatch fetch satellites scenes failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
-        }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
-      );
-
-      const expectedActions = expect.arrayContaining([
-        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
-        expect.objectContaining({
-          type: fetchSatelliteScenes.rejected.type,
-          payload: { message: '401 Test Error' },
-        }),
-      ]);
-
-      await store.dispatch(fetchSatelliteScenes());
-
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should dispatch fetch satellites scenes success action.', async () => {
-      const scenes = [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-        },
-      ];
-      fetch.mockResponse(JSON.stringify(scenes));
-
-      const expectedActions = expect.arrayContaining([
-        expect.objectContaining({ type: fetchSatelliteScenes.pending.type }),
-        expect.objectContaining({
-          type: fetchSatelliteScenes.fulfilled.type,
-          payload: scenes,
-        }),
-      ]);
-
-      await store.dispatch(fetchSatelliteScenes());
-
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-
     describe.each`
       action                          | key                            | payload
       ${setVisualisationId}           | ${'visualisationId'}           | ${'test-string'}
@@ -411,7 +454,7 @@ describe('Satellites Slice', () => {
       const satellitesScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenes.fulfilled.type,
+        type: searchSatelliteScenes.fulfilled.type,
         payload: satellitesScenes,
       });
 
@@ -422,20 +465,11 @@ describe('Satellites Slice', () => {
       const error = { message: 'Test Satellites Scenes Error' };
 
       const actualState = reducer(beforeState, {
-        type: fetchSatelliteScenes.rejected.type,
+        type: searchSatelliteScenes.rejected.type,
         payload: error,
       });
 
       expect(actualState.error).toEqual(error);
-    });
-
-    it('should update the selected scenes in state, when they are cleared', () => {
-      const actualState = reducer(
-        beforeState,
-        fetchSatelliteScenes.pending({}),
-      );
-
-      expect(actualState.selectedScene).toEqual(null);
     });
   });
 

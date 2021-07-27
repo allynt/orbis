@@ -17,7 +17,7 @@ import { Panels } from './satellite.constants';
 import {
   currentSearchQuerySelector,
   fetchSatellites,
-  fetchSatelliteScenes,
+  searchSatelliteScenes,
   hoveredSceneSelector,
   satellitesSelector,
   saveImage,
@@ -137,8 +137,7 @@ const Satellites = () => {
             currentSearch={currentSearchQuery}
             onDrawAoiClick={() => dispatch(startDrawingAoi())}
             onSearch={search => {
-              dispatch(fetchSatelliteScenes({ ...search, aoi }));
-              dispatch(setVisiblePanel(Panels.RESULTS));
+              dispatch(searchSatelliteScenes(search));
             }}
             onInfoClick={handleInfoClick}
           />

@@ -62,21 +62,22 @@ export const fetchSatellites = createAsyncThunk(
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings/satellites').Scene[],
- *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
- *  {rejectValue: {message: string}}
+ *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
+ *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
  * >}
  */
-export const fetchSatelliteScenes = createAsyncThunk(
-  `${name}/fetchSatelliteScenes`,
-  async (query, { rejectWithValue }) => {
+export const searchSatelliteScenes = createAsyncThunk(
+  `${name}/searchSatelliteScenes`,
+  async (query, { getState, rejectWithValue }) => {
     try {
-      return await apiClient.satellites.runQuery(query);
+      const aoi = aoiSelector(getState());
+      return await apiClient.satellites.runQuery({ ...query, aoi });
     } catch (error) {
       /** @type {import('api-client').ResponseError} */
       const { message, status } = error;
       NotificationManager.error(
         `${status} ${message}`,
-        `Fetching Satellites Error - ${message}`,
+        `Problem performing search - ${message}`,
         50000,
         () => {},
       );
@@ -191,15 +192,22 @@ const satellitesSlice = createSlice({
     builder.addCase(fetchSatellites.rejected, (state, { payload }) => {
       state.error = payload;
     });
-    builder.addCase(fetchSatelliteScenes.pending, (state, { meta }) => {
+    builder.addCase(searchSatelliteScenes.pending, (state, { meta }) => {
+      state.requests = {
+        ...state.requests,
+        searchSatelliteScenes: meta.requestId,
+      };
       state.currentSearchQuery = meta.arg;
-      state.selectedScene = null;
+      state.selectedScene = undefined;
+      state.visiblePanel = Panels.RESULTS;
     });
-    builder.addCase(fetchSatelliteScenes.fulfilled, (state, { payload }) => {
+    builder.addCase(searchSatelliteScenes.fulfilled, (state, { payload }) => {
       state.scenes = payload;
-      state.error = null;
+      state.requests = { ...state.requests, searchSatelliteScenes: undefined };
+      state.error = undefined;
     });
-    builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
+    builder.addCase(searchSatelliteScenes.rejected, (state, { payload }) => {
+      state.requests = { ...state.requests, searchSatelliteScenes: undefined };
       state.error = payload;
     });
     builder.addCase(saveImage.pending, (state, { meta }) => {

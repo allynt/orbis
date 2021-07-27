@@ -11,7 +11,7 @@ import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
   fetchSatellites,
-  fetchSatelliteScenes,
+  searchSatelliteScenes,
   saveImage,
   selectScene,
   setVisualisationId,
@@ -131,7 +131,7 @@ describe('Satellites', () => {
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
-              type: fetchSatelliteScenes.fulfilled.type,
+              type: searchSatelliteScenes.fulfilled.type,
             }),
           ]),
         ),
