@@ -52,7 +52,7 @@ describe('SatellitesContext', () => {
 
     it("is returned when isDrawingAoi is false but there's a feature", () => {
       const { result } = renderContext({
-        aoi: [],
+        aoi: Array(4).fill([0, 0]),
       });
       expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
     });

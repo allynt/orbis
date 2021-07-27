@@ -94,7 +94,7 @@ export const SatellitesProvider = ({ children }) => {
   // @ts-ignore
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
-    data: featureCollection([feature(geometry('MultiPolygon', aoi ?? []))]),
+    data: featureCollection(aoi ? [feature(geometry('Polygon', [aoi]))] : []),
     visible: visiblePanel !== Panels.VISUALISATION,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],

@@ -117,7 +117,7 @@ describe('Satellites', () => {
       const { getByRole, store } = renderComponent({
         visiblePanel: Panels.SEARCH,
         satellites,
-        aoi: [[123, 123]],
+        aoi: Array(4).fill([123, 123]),
       });
       userEvent.click(getByRole('button', { name: 'Search' }));
       await waitFor(() =>
