@@ -1,5 +1,6 @@
 import { waitFor } from '@testing-library/dom';
 import fetch from 'jest-fetch-mock';
+import { stubFalse } from 'lodash';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -29,6 +30,7 @@ import reducer, {
   setVisualisationId,
   startDrawingAoi,
   endDrawingAoi,
+  onUnmount,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -410,6 +412,23 @@ describe('Satellites Slice', () => {
 
       it('sets the visible panel to Visualisation', () => {
         expect(result.visiblePanel).toBe(Panels.VISUALISATION);
+      });
+    });
+
+    describe('onUnmount', () => {
+      let result;
+      beforeAll(() => {
+        result = reducer(
+          { isDrawingAoi: true, visiblePanel: Panels.SEARCH },
+          onUnmount(),
+        );
+      });
+      it('sets isDrawingAoi to false', () => {
+        expect(result.isDrawingAoi).toBe(false);
+      });
+
+      it('sets visiblePanel to None', () => {
+        expect(result.visiblePanel).toBe(Panels.NONE);
       });
     });
   });
