@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
   searchButton: {
     margin: 'auto auto 0',
   },
-  satellites: { marginTop: theme.spacing(2) },
+  satellites: { marginBlock: theme.spacing(2) },
   checkbox: {
     display: 'flex',
     justifyContent: 'space-between',
