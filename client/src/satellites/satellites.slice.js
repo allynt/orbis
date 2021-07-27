@@ -183,6 +183,10 @@ const satellitesSlice = createSlice({
       state.isDrawingAoi = false;
       state.aoi = payload;
     },
+    onUnmount: state => {
+      state.isDrawingAoi = false;
+      state.visiblePanel = Panels.NONE;
+    },
   },
   extraReducers: builder => {
     builder.addCase(fetchSatellites.fulfilled, (state, { payload }) => {
@@ -232,6 +236,7 @@ export const {
   setVisiblePanel,
   startDrawingAoi,
   endDrawingAoi,
+  onUnmount,
 } = satellitesSlice.actions;
 
 /**

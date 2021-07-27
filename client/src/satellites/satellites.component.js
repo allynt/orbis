@@ -35,6 +35,7 @@ import {
   setVisiblePanel,
   aoiSelector,
   startDrawingAoi,
+  onUnmount,
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
@@ -89,7 +90,7 @@ const Satellites = () => {
   useEffect(() => {
     dispatch(setVisiblePanel(Panels.SEARCH));
     return () => {
-      dispatch(setVisiblePanel(Panels.NONE));
+      dispatch(onUnmount());
     };
   }, [dispatch]);
 
