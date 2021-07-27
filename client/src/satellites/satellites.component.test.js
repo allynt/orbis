@@ -18,6 +18,7 @@ import {
   setHoveredScene,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
+  startDrawingAoi,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -110,6 +111,15 @@ describe('Satellites', () => {
   });
 
   describe('Search', () => {
+    it('Dispatches the startDrawingAoi action when the Draw Aoi button is clicked', () => {
+      const { getByRole, store } = renderComponent({
+        visiblePanel: Panels.SEARCH,
+        satellites,
+      });
+      userEvent.click(getByRole('button', { name: /Draw your AOI/i }));
+      expect(store.getActions()).toContainEqual(startDrawingAoi());
+    });
+
     it('Performs a search when the search button is clicked', async () => {
       const { getByRole, store } = renderComponent({
         visiblePanel: Panels.SEARCH,

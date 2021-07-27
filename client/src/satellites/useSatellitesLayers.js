@@ -15,15 +15,14 @@ import { Panels } from './satellite.constants';
 import {
   aoiSelector,
   cloudCoverPercentageSelector,
+  endDrawingAoi,
   hoveredSceneSelector,
   isDrawingAoiSelector,
   scenesSelector,
   selectedSceneLayerVisibleSelector,
   selectedSceneSelector,
   selectScene,
-  setAoi,
   setHoveredScene,
-  setIsDrawingAoi,
   visiblePanelSelector,
   visualisationIdSelector,
 } from './satellites.slice';
@@ -61,10 +60,8 @@ export const useSatellitesLayers = () => {
   }, [selectedScene, visualisationId]);
 
   const onEdit = ({ editType, updatedData }) => {
-    if (aoi?.length >= 1) dispatch(setAoi(undefined));
     if (editType !== 'addFeature') return;
-    dispatch(setAoi(updatedData.features[0].geometry.coordinates[0]));
-    dispatch(setIsDrawingAoi(false));
+    dispatch(endDrawingAoi(updatedData.features[0].geometry.coordinates[0]));
   };
 
   const getFillColor = [0, 0, 0, 0];

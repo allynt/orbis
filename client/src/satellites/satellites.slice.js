@@ -163,9 +163,6 @@ const satellitesSlice = createSlice({
     setVisualisationId: (state, { payload }) => {
       state.visualisationId = payload;
     },
-    setIsDrawingAoi: (state, { payload }) => {
-      state.isDrawingAoi = payload;
-    },
     setCloudCoverPercentage: (state, { payload }) => {
       state.cloudCoverPercentage = payload;
     },
@@ -175,7 +172,12 @@ const satellitesSlice = createSlice({
     setVisiblePanel: (state, { payload }) => {
       state.visiblePanel = payload;
     },
-    setAoi: (state, { payload }) => {
+    startDrawingAoi: state => {
+      state.isDrawingAoi = true;
+      if (state.aoi?.length >= 1) state.aoi = undefined;
+    },
+    endDrawingAoi: (state, { payload }) => {
+      state.isDrawingAoi = false;
       state.aoi = payload;
     },
   },
@@ -215,11 +217,11 @@ export const {
   selectScene,
   setVisualisationId,
   setHoveredScene,
-  setIsDrawingAoi,
   setCloudCoverPercentage,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
-  setAoi,
+  startDrawingAoi,
+  endDrawingAoi,
 } = satellitesSlice.actions;
 
 /**

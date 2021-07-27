@@ -27,7 +27,6 @@ import {
   setVisualisationId,
   setHoveredScene,
   visualisationIdSelector,
-  setIsDrawingAoi,
   cloudCoverPercentageSelector,
   setCloudCoverPercentage,
   selectedSceneLayerVisibleSelector,
@@ -35,7 +34,7 @@ import {
   visiblePanelSelector,
   setVisiblePanel,
   aoiSelector,
-  isDrawingAoiSelector,
+  startDrawingAoi,
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
@@ -76,7 +75,6 @@ const Satellites = () => {
     selectedSceneLayerVisibleSelector,
   );
   const visiblePanel = useSelector(visiblePanelSelector);
-  const isDrawingAoi = useSelector(isDrawingAoiSelector);
   const visualisations = satellites?.find(
     sat => sat.id === selectedScene?.satellite,
   )?.visualisations;
@@ -137,7 +135,7 @@ const Satellites = () => {
             satellites={satellites}
             aoi={aoi}
             currentSearch={currentSearchQuery}
-            onDrawAoiClick={() => dispatch(setIsDrawingAoi(!isDrawingAoi))}
+            onDrawAoiClick={() => dispatch(startDrawingAoi())}
             onSearch={search => {
               dispatch(fetchSatelliteScenes({ ...search, aoi }));
               dispatch(setVisiblePanel(Panels.RESULTS));

@@ -22,12 +22,12 @@ import reducer, {
   visiblePanelSelector,
   isDrawingAoiSelector,
   selectedSceneLayerVisibleSelector,
-  setIsDrawingAoi,
   setCloudCoverPercentage,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
   setVisualisationId,
-  setAoi,
+  startDrawingAoi,
+  endDrawingAoi,
 } from './satellites.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -295,18 +295,45 @@ describe('Satellites Slice', () => {
       action                          | key                            | payload
       ${setVisualisationId}           | ${'visualisationId'}           | ${'test-string'}
       ${setHoveredScene}              | ${'hoveredScene'}              | ${{ id: 1, label: 'Test' }}
-      ${setIsDrawingAoi}              | ${'isDrawingAoi'}              | ${true}
       ${setCloudCoverPercentage}      | ${'cloudCoverPercentage'}      | ${50}
       ${setSelectedSceneLayerVisible} | ${'selectedSceneLayerVisible'} | ${true}
       ${setVisiblePanel}              | ${'visiblePanel'}              | ${'test-panel'}
-      ${setAoi} | ${'aoi'} | ${[
-  [1, 2],
-  [3, 5],
-]}
     `('$action.type', ({ action, key, payload }) => {
       it('sets the hovered scene in state', () => {
         const result = reducer({}, action(payload));
         expect(result).toEqual(expect.objectContaining({ [key]: payload }));
+      });
+    });
+
+    describe('startDrawingAoi', () => {
+      let result;
+
+      beforeEach(() => {
+        result = reducer({ aoi: [[123, 345]] }, startDrawingAoi());
+      });
+
+      it('Sets isDrawingAoi to true', () => {
+        expect(result.isDrawingAoi).toBe(true);
+      });
+
+      it('Clears any existing aoi', () => {
+        expect(result.aoi).toBeUndefined();
+      });
+    });
+
+    describe('endDrawingAoi', () => {
+      let result;
+
+      beforeEach(() => {
+        result = reducer({ isDrawingAoi: true }, endDrawingAoi([[123, 123]]));
+      });
+
+      it('Sets isDrawingAoi to true', () => {
+        expect(result.isDrawingAoi).toBe(false);
+      });
+
+      it('Clears any existing aoi', () => {
+        expect(result.aoi).toEqual([[123, 123]]);
       });
     });
   });

@@ -8,10 +8,9 @@ import configureMockStore from 'redux-mock-store';
 
 import { Panels } from './satellite.constants';
 import {
+  endDrawingAoi,
   selectScene,
-  setAoi,
   setHoveredScene,
-  setIsDrawingAoi,
 } from './satellites.slice';
 import { useSatellitesLayers } from './useSatellitesLayers';
 
@@ -71,41 +70,20 @@ describe('useSatellitesLayers', () => {
             editType: 'somethingElse',
           }),
         );
-        expect(store.getActions()).not.toContainEqual(setAoi([123, 123]));
+        expect(store.getActions()).toEqual([]);
       });
 
       it('sets the aoi', () => {
         const { result, store } = renderHook({
           isDrawingAoi: true,
         });
-        act(() =>
-          result.current.drawAoiLayer.props.onEdit({
-            editType: 'addFeature',
-            updatedData: {
-              features: [
-                { id: '123', geometry: { coordinates: [[123, 123]] } },
-              ],
-            },
-          }),
-        );
-        expect(store.getActions()).toContainEqual(setAoi([123, 123]));
-      });
-
-      it('turns off isDrawingAoi', () => {
-        const { result, store } = renderHook({
-          isDrawingAoi: true,
+        result.current.drawAoiLayer.props.onEdit({
+          editType: 'addFeature',
+          updatedData: {
+            features: [{ id: '123', geometry: { coordinates: [[123, 123]] } }],
+          },
         });
-        act(() =>
-          result.current.drawAoiLayer.props.onEdit({
-            editType: 'addFeature',
-            updatedData: {
-              features: [
-                { id: '123', geometry: { coordinates: [[123, 123]] } },
-              ],
-            },
-          }),
-        );
-        expect(store.getActions()).toContainEqual(setIsDrawingAoi(false));
+        expect(store.getActions()).toContainEqual(endDrawingAoi([123, 123]));
       });
     });
   });
