@@ -40,33 +40,6 @@
     }
   },
   {
-    "model": "satellites.satellitetier",
-    "fields": {
-      "name": "free",
-      "title": "Free Images",
-      "description": "Free scenes.",
-      "order": 1
-    }
-  },
-  {
-    "model": "satellites.satellitetier",
-    "fields": {
-      "name": "mid",
-      "title": "Mid Resolution",
-      "description": "Mid resolution scenes.",
-      "order": 2
-    }
-  },
-  {
-    "model": "satellites.satellitetier",
-    "fields": {
-      "name": "high",
-      "title": "High Resolution",
-      "description": "High resolution scenes.",
-      "order": 3
-    }
-  },
-  {
     "model": "satellites.satellite",
     "fields": {
       "satellite_id": "sentinel-1",
@@ -84,7 +57,7 @@
       "description": "Some text describing the Sentinel-2 satellite.",
       "order": 2,
       "visualisations": [
-        ["true-color"],
+        ["TCI"],
         ["false-color"],
         ["false-color-urban"],
         ["ndvi"]
