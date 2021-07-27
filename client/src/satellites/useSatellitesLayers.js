@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { TileLayer } from '@deck.gl/geo-layers';
@@ -28,28 +28,7 @@ import {
   visualisationIdSelector,
 } from './satellites.slice';
 
-/**
- * @typedef {{
- *  drawAoiLayer?: EditableGeoJsonLayer
- *  scenesLayer?: GeoJsonLayer
- *  selectedSceneLayer?: TileLayer
- * }} SatellitesContextType
- */
-
-/** @type {React.Context<SatellitesContextType>} */
-const SatellitesContext = createContext(undefined);
-SatellitesContext.displayName = 'SatellitesContext';
-
-/**
- * @typedef {{
- *  children: React.ReactNode
- * }} SatellitesProviderProps
- */
-
-/**
- * @param {SatellitesProviderProps} props
- */
-export const SatellitesProvider = ({ children }) => {
+export const useSatellitesLayers = () => {
   /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
   const dispatch = useDispatch();
@@ -136,7 +115,11 @@ export const SatellitesProvider = ({ children }) => {
       dispatch(setHoveredScene(object ? object.properties : undefined)),
     getFilterValue: d => d.properties.cloudCover,
     filterRange: [0, cloudCoverPercentage],
-    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    extensions: [
+      new DataFilterExtension({
+        filterSize: 1,
+      }),
+    ],
     updateTriggers: {
       getLineWidth: [hoveredScene],
     },
@@ -153,17 +136,9 @@ export const SatellitesProvider = ({ children }) => {
     }),
   );
 
-  return (
-    <SatellitesContext.Provider
-      value={{
-        drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
-        scenesLayer,
-        selectedSceneLayer,
-      }}
-    >
-      {children}
-    </SatellitesContext.Provider>
-  );
+  return {
+    drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
+    scenesLayer,
+    selectedSceneLayer,
+  };
 };
-
-export const useSatellites = () => useContext(SatellitesContext);

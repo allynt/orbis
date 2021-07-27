@@ -7,7 +7,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { Panels } from './satellite.constants';
-import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 import {
@@ -30,13 +29,11 @@ const RESULTS_TAB = ['tab', { name: 'Results' }];
 /** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
 const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
 
-const renderComponent = (state = { satellites, scenes }, defaultFeatures) => {
+const renderComponent = (state = { satellites, scenes }) => {
   const store = mockStore({ accounts: {}, app: {}, satellites: state });
   const utils = render(
     <Provider store={store}>
-      <SatellitesProvider defaultFeatures={defaultFeatures}>
-        <Satellites />
-      </SatellitesProvider>
+      <Satellites />
     </Provider>,
   );
   return { ...utils, store };
