@@ -87,13 +87,11 @@ const Satellites = () => {
   }, [satellites, dispatch]);
 
   useEffect(() => {
-    if (visiblePanel === Panels.VISUALISATION) {
-      dispatch(setSelectedSceneLayerVisible(true));
-    }
+    dispatch(setVisiblePanel(Panels.SEARCH));
     return () => {
-      dispatch(setSelectedSceneLayerVisible(false));
+      dispatch(setVisiblePanel(Panels.NONE));
     };
-  }, [visiblePanel, dispatch]);
+  }, [dispatch]);
 
   /**
    * @param {{type: string, data: any}} info

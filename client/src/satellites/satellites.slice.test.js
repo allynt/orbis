@@ -449,28 +449,6 @@ describe('Satellites Slice', () => {
 
       expect(actualState.error).toEqual(error);
     });
-
-    it('should update the satellites scenes in state, when successfully retrieved', () => {
-      const satellitesScenes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
-
-      const actualState = reducer(beforeState, {
-        type: searchSatelliteScenes.fulfilled.type,
-        payload: satellitesScenes,
-      });
-
-      expect(actualState.scenes).toEqual(satellitesScenes);
-    });
-
-    it('should update the error state, when failed to retrieve satellites scenes', () => {
-      const error = { message: 'Test Satellites Scenes Error' };
-
-      const actualState = reducer(beforeState, {
-        type: searchSatelliteScenes.rejected.type,
-        payload: error,
-      });
-
-      expect(actualState.error).toEqual(error);
-    });
   });
 
   describe('selectors', () => {
