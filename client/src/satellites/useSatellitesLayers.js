@@ -71,7 +71,7 @@ export const useSatellitesLayers = () => {
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
     data: featureCollection(aoi ? [feature(geometry('Polygon', [aoi]))] : []),
-    visible: visiblePanel !== Panels.VISUALISATION,
+    visible: visiblePanel === Panels.SEARCH || visiblePanel === Panels.RESULTS,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
     onEdit,
