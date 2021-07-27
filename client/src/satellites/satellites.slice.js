@@ -202,6 +202,7 @@ const satellitesSlice = createSlice({
         searchSatelliteScenes: meta.requestId,
       };
       state.currentSearchQuery = meta.arg;
+      state.scenes = undefined;
       state.selectedScene = undefined;
       state.visiblePanel = Panels.RESULTS;
     });
@@ -294,6 +295,11 @@ export const isDrawingAoiSelector = createSelector(
 export const selectedSceneLayerVisibleSelector = createSelector(
   baseSelector,
   state => state?.selectedSceneLayerVisible,
+);
+
+export const requestsSelector = createSelector(
+  baseSelector,
+  state => state?.requests,
 );
 
 export default satellitesSlice.reducer;

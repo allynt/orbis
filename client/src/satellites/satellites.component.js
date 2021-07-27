@@ -39,6 +39,7 @@ import {
   aoiSelector,
   startDrawingAoi,
   onUnmount,
+  requestsSelector,
 } from './satellites.slice';
 import Search from './search/search.component';
 import Visualisation from './visualisation/visualisation.component';
@@ -114,10 +115,14 @@ const ResultsView = () => {
   const visualisationId = useSelector(visualisationIdSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
+  const requests = useSelector(requestsSelector);
   const dispatch = useDispatch();
 
   return (
     <Results
+      isFetchingResults={
+        !!requests?.[searchSatelliteScenes.typePrefix.split('/')[1]]
+      }
       scenes={scenes}
       hoveredScene={hoveredScene}
       selectedScene={selectedScene}
