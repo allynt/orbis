@@ -10,7 +10,6 @@ export const DEFAULT_MAP_STYLE = 3;
 const initialState = {
   config: {},
   error: null,
-  notYetImplementedDescription: null,
   trackingQueue: [],
 };
 
@@ -24,9 +23,6 @@ const appSlice = createSlice({
     },
     appConfigFailure: (state, { payload }) => {
       state.error = payload;
-    },
-    notYetImplemented: (state, { payload }) => {
-      state.notYetImplementedDescription = payload;
     },
     addLogItem: (state, { payload }) => {
       state.trackingQueue = [...state.trackingQueue, payload];
@@ -42,7 +38,6 @@ const appSlice = createSlice({
 export const {
   appConfigSuccess,
   appConfigFailure,
-  notYetImplemented,
   addLogItem,
   removeLogItems,
 } = appSlice.actions;

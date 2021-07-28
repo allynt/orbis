@@ -5,7 +5,6 @@ import reducer, {
   fetchAppConfig,
   appConfigSuccess,
   appConfigFailure,
-  notYetImplemented,
   mapboxTokenSelector,
   addLogItem,
   removeLogItems,
@@ -105,7 +104,6 @@ describe('App Slice', () => {
       beforeState = {
         config: {},
         error: null,
-        notYetImplementedDescription: null,
         trackingQueue: [],
       };
     });
@@ -136,17 +134,6 @@ describe('App Slice', () => {
       });
 
       expect(actualState.error).toEqual(error);
-    });
-
-    it('should set the `not yet implemented` message in state', () => {
-      const message = 'Test Not Yet Implmented message';
-
-      const actualState = reducer(beforeState, {
-        type: notYetImplemented.type,
-        payload: message,
-      });
-
-      expect(actualState.notYetImplementedDescription).toEqual(message);
     });
 
     it('should add a log item to state', () => {

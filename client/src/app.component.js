@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
@@ -28,19 +28,6 @@ const App = () => {
 
   const user = useSelector(userSelector);
   const userKey = useSelector(userKeySelector);
-  const notYetImplementedDescription = useSelector(
-    state => state.app.notYetImplementedDescription,
-  );
-  const ref = useRef(null);
-  // const [isVisible, toggle] = useModal(
-  //   notYetImplementedDescription !== null ? true : false,
-  // );
-
-  // useEffect(() => {
-  //   if (notYetImplementedDescription !== null) {
-  //     toggle();
-  //   }
-  // }, [notYetImplementedDescription, toggle]);
 
   // Always fetch app config regardless of logged in status
   useEffect(() => {
@@ -67,24 +54,8 @@ const App = () => {
   }, [dispatch, userTrackingInterval]);
 
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      style={{ backgroundColor: '#ffffff' }}
-      ref={ref}
-    >
+    <Box width="100vw" height="100vh" style={{ backgroundColor: '#ffffff' }}>
       <ReactTooltip />
-      {/* <Dialog
-          isVisible={isVisible}
-          title="Sorry, Not Ready Yet!"
-          close={toggle}
-          ref={ref}
-        >
-          <p className={styles.paragraph}>
-            Sorry for the inconvenience, but this feature is not available yet!
-            Do not worry, we will let you know when it will be ready.
-          </p>
-        </Dialog> */}
 
       <Switch>
         <PrivateRoute exact path="/" user={user} component={LandingView} />
