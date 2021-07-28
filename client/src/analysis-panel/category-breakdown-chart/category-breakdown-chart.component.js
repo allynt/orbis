@@ -12,7 +12,7 @@ import { Pie } from './pie.component';
 export const isSelected = (datumA, datumB) =>
   datumA?.category === datumB?.category;
 
-/** @type {import('typings').PickedMapFeature>} */
+/** @type {import('typings').AnalysisPanelComponent<{info?: string}, import('typings').PickedMapFeature>} */
 export const CategoryBreakdownChart = ({
   clickedFeatures,
   info,
