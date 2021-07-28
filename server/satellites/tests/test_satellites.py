@@ -275,13 +275,15 @@ class TestSatellites:
 
 @pytest.mark.django_db
 class TestSatelliteQueries:
-    def test_satellite_query_permission(self, user, api_client, orbis_settings):
+    def test_satellite_query_permission(
+        self, user, api_client, satellite_settings
+    ):
         """
         Tests that only users w/ a licence to an orb w/ the "satellite" feature
         can run access the run_satellite_query view
         """
-        orbis_settings.maximum_aoi_area = 500
-        orbis_settings.save()
+        satellite_settings.maximum_aoi_area = 500
+        satellite_settings.save()
 
         orb = OrbFactory()
         assert orb.features == []
@@ -322,14 +324,14 @@ class TestSatelliteQueries:
         assert status.is_success(response.status_code)
 
     def test_satellite_query_invalid_aoi(
-        self, user, api_client, orbis_settings
+        self, user, api_client, satellite_settings
     ):
         """
         tests that a satellite query will be refused if the AOI is too big
         """
 
-        orbis_settings.maximum_aoi_area = 500
-        orbis_settings.save()
+        satellite_settings.maximum_aoi_area = 500
+        satellite_settings.save()
 
         orb = OrbFactory(features=["satellites"])
         satellite = SatelliteFactory(adapter_name="mock-adapter")

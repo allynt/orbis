@@ -97,6 +97,7 @@ class Satellite(models.Model):
     A fixed set of satellites that we can search.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite"
         verbose_name_plural = "Satellites"
         ordering = ["order"]
@@ -159,6 +160,7 @@ class SatelliteVisualisation(models.Model):
     The visualisations that are available for a given satellite.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name_plural = "Satellite Visualisation"
         verbose_name_plural = "Satellite Visualisations"
         ordering = ["order"]
@@ -226,6 +228,7 @@ class SatelliteSearch(gis_models.Model):
     A search query.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite Search"
         verbose_name_plural = "Satellite Searches"
         ordering = ["-created"]
@@ -273,6 +276,7 @@ class SatelliteResult(gis_models.Model):
        it is not necessarily passed on to the client
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite Result"
         verbose_name_plural = "Satellite Results"
         constraints = [
@@ -343,6 +347,7 @@ class SatelliteResult(gis_models.Model):
 
 class SatelliteDataSource(models.Model):
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite DataSource"
         verbose_name_plural = "Satellite DataSources"
         ordering = ["created"]
