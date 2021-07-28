@@ -77,7 +77,7 @@ export const CrowdlessSidebarComponent = ({
             right of the map in order to get most accurate results. Then click
             the button “Find Supermarkets” below.
           </Grid>
-          <Grid item xs={12} container justify="center">
+          <Grid item xs={12} container justifyContent="center">
             <Button size="small" onClick={() => !isLoading && onFindClick()}>
               {isLoading ? (
                 <CircularProgress
@@ -124,7 +124,7 @@ export const CrowdlessSidebarComponent = ({
                 </List>
               </Grid>
               {pages > 1 ? (
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Pagination
                     hideNextButton
                     hidePrevButton

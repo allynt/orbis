@@ -46,7 +46,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
       spacing={2}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      justify="space-between"
+      justifyContent="space-between"
       direction="column"
     >
       <Grid item container direction="column" spacing={2}>

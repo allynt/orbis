@@ -117,7 +117,7 @@ export const Sliders = ({
           />
         </Fade>
       </Grid>
-      <Grid item container justify="center">
+      <Grid item container justifyContent="center">
         <Button color="secondary" size="small" onClick={handleResetClick}>
           Reset
         </Button>

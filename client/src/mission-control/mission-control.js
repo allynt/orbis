@@ -63,7 +63,7 @@ export const MissionControl = () => {
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <DialogContent>
-        <Grid container direction="row" justify="space-between">
+        <Grid container direction="row" justifyContent="space-between">
           <Grid item>
             <SidePanel
               mainPanelView={mainPanelView}

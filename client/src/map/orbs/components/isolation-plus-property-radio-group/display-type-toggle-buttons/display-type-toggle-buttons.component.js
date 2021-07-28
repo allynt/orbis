@@ -73,7 +73,12 @@ export const DisplayTypeToggleButtons = ({
       <Grid item xs={moreThanTwoProperties ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid item xs={moreThanTwoProperties ? 7 : 12} container justify="center">
+      <Grid
+        item
+        xs={moreThanTwoProperties ? 7 : 12}
+        container
+        justifyContent="center"
+      >
         <ButtonGroup
           className={styles.buttonGroup}
           size="small"

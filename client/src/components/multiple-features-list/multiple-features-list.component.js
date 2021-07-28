@@ -83,7 +83,7 @@ export const MultipleFeaturesList = ({
                 </Typography>
               </Grid>
             ) : null}
-            <Grid item xs container justify="flex-end">
+            <Grid item xs container justifyContent="flex-end">
               <Link
                 className={styles.link}
                 component="button"

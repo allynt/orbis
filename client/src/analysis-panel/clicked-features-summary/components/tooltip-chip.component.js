@@ -59,7 +59,7 @@ export const TooltipChip = ({
   const ChipElement = (
     <Chip
       tabIndex={-1}
-      color={isHovered ? 'primary' : ''}
+      color={isHovered ? 'primary' : 'default'}
       classes={{ label: styles.chip }}
       size="small"
       label={areaIdentifier}
