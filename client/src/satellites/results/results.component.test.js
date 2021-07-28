@@ -26,10 +26,7 @@ const mockScenes = [
   },
 ];
 
-const renderComponent = ({
-  scenes = mockScenes,
-  cloudCoverPercentage,
-} = {}) => {
+const renderComponent = ({ scenes = mockScenes, ...rest } = {}) => {
   const onSceneClick = jest.fn();
   const onInfoClick = jest.fn();
   const onSaveSearchSubmit = jest.fn();
@@ -37,7 +34,7 @@ const renderComponent = ({
   const testee = render(
     <Results
       scenes={scenes}
-      cloudCoverPercentage={cloudCoverPercentage}
+      {...rest}
       onCloudCoverSliderChange={onCloudCoverSliderChange}
       onSceneClick={onSceneClick}
       onInfoClick={onInfoClick}
@@ -56,9 +53,21 @@ const renderComponent = ({
 
 describe('Satellite Results Component', () => {
   it("Shows loading text and skeleton scenes where there's no scenes", () => {
-    const { getByText, getAllByRole } = renderComponent({ scenes: null });
+    const { getByText, getAllByRole } = renderComponent({
+      scenes: null,
+      isFetchingResults: true,
+    });
     expect(getByText('Loading Results...')).toBeInTheDocument();
     expect(getAllByRole('listitem')).toHaveLength(5);
+  });
+
+  it("Shows no results if there's no scenes and not loading", () => {
+    const { getByText, queryByRole } = renderComponent({
+      scenes: null,
+      isFetchingResults: false,
+    });
+    expect(getByText('No Results')).toBeInTheDocument();
+    expect(queryByRole('listitem')).not.toBeInTheDocument();
   });
 
   it('Shows results filtered by cloud cover', () => {

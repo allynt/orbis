@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -26,12 +26,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * @param {TemplateStringsArray} strings
+ * @param {number} resultsLength
+ * @returns {(isFetchingResults: boolean, hasScenes: boolean) => string}
+ */
+const resultsText = (strings, resultsLength) => (
+  isFetchingResults,
+  hasScenes,
+) => {
+  if (isFetchingResults) return 'Loading Results...';
+  if (!isFetchingResults && !hasScenes) return `No Results`;
+  return strings.join(`${resultsLength}`);
+};
+
+/**
  * @param {{
  *  scenes: import('typings').Scene[]
  *  hoveredScene?: import('typings').Scene
  *  selectedScene?: import('typings').Scene
  *  visualisationId: string
  *  cloudCoverPercentage?: number
+ *  isFetchingResults?: boolean
  *  onCloudCoverSliderChange?: (value: number) => void
  *  onSceneHover: (scene?: import('typings').Scene) => void,
  *  onSceneClick: (scene: import('typings').Scene) => void,
@@ -43,21 +58,22 @@ const Results = ({
   selectedScene,
   visualisationId,
   cloudCoverPercentage = DEFAULT_CLOUD_COVER,
+  isFetchingResults = false,
   onCloudCoverSliderChange,
   onSceneHover,
   onSceneClick,
 }) => {
   const styles = useStyles();
 
-  const filteredScenes = [...(allScenes ?? [])]
-    .sort((sceneA, sceneB) =>
-      compareDesc(new Date(sceneA.created), new Date(sceneB.created)),
-    )
-    .filter(scene => scene.cloudCover <= cloudCoverPercentage);
-
-  const resultCountText = allScenes
-    ? `Showing ${filteredScenes.length} Results`
-    : 'Loading Results...';
+  const filteredScenes = useMemo(
+    () =>
+      [...(allScenes ?? [])]
+        .sort((sceneA, sceneB) =>
+          compareDesc(new Date(sceneA.created), new Date(sceneB.created)),
+        )
+        .filter(scene => scene.cloudCover <= cloudCoverPercentage),
+    [allScenes, cloudCoverPercentage],
+  );
 
   return (
     <>
@@ -88,26 +104,33 @@ const Results = ({
         Results
       </Typography>
       <Paper className={styles.resultCount} elevation={0} square>
-        <Typography>{resultCountText}</Typography>
+        <Typography>
+          {resultsText`Showing ${filteredScenes.length} Results`(
+            isFetchingResults,
+            !!allScenes,
+          )}
+        </Typography>
       </Paper>
-      <List className={styles.list}>
-        {allScenes
-          ? filteredScenes.map(scene => (
-              <SceneListItem
-                key={scene.id}
-                scene={scene}
-                hovered={hoveredScene?.id === scene.id}
-                selected={selectedScene?.id === scene.id}
-                visualisationId={visualisationId}
-                onHover={onSceneHover}
-                onSceneClick={onSceneClick}
-              />
-            ))
-          : Array(5)
-              .fill(0)
-              // eslint-disable-next-line react/no-array-index-key
-              .map((_num, i) => <SceneListItemSkeleton key={i} />)}
-      </List>
+      {allScenes || isFetchingResults ? (
+        <List className={styles.list}>
+          {!isFetchingResults
+            ? filteredScenes.map(scene => (
+                <SceneListItem
+                  key={scene.id}
+                  scene={scene}
+                  hovered={hoveredScene?.id === scene.id}
+                  selected={selectedScene?.id === scene.id}
+                  visualisationId={visualisationId}
+                  onHover={onSceneHover}
+                  onSceneClick={onSceneClick}
+                />
+              ))
+            : Array(5)
+                .fill(0)
+                // eslint-disable-next-line react/no-array-index-key
+                .map((_num, i) => <SceneListItemSkeleton key={i} />)}
+        </List>
+      ) : null}
     </>
   );
 };

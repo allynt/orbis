@@ -13,7 +13,7 @@ let users = [
     profiles: {},
     roles: ['UserRole', 'AstrosatRole'],
     customers: [],
-    orbs: [],
+    orbs: [{ features: ['satellites'] }],
   },
   {
     id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',

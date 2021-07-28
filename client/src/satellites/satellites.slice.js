@@ -9,16 +9,25 @@ import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
 import { addSource } from 'data-layers/data-layers.slice';
 
+import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
+
 /**
  * @typedef SatellitesState
+ * ==== Fetched or selected ====
  * @property {import('typings').Satellite[]} [satellites]
  * @property {import('typings').Scene[]} [scenes]
  * @property {import('typings').Scene} [hoveredScene]
  * @property {import('typings').Scene} [selectedScene]
- * @property {{message: string}} [error]
- * @property {import('typings').SavedSearch[]} [satelliteSearches]
  * @property {Partial<import('typings').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
+ * @property {number[][]} [aoi]
+ * @property {number} cloudCoverPercentage
+ * ==== Control ====
+ * @property {string} visiblePanel
+ * @property {boolean} isDrawingAoi
+ * @property {boolean} selectedSceneLayerVisible
+ * ==== Generic ====
+ * @property {{message: string}} [error]
  * @property {Record<string,string>} requests
  */
 
@@ -53,21 +62,22 @@ export const fetchSatellites = createAsyncThunk(
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings').Scene[],
- *  Pick<import('typings').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
- *  {rejectValue: {message: string}}
+ *  Pick<import('typings').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
+ *  {rejectValue: {message: string}, state: import('typings').RootState}
  * >}
  */
-export const fetchSatelliteScenes = createAsyncThunk(
-  `${name}/fetchSatelliteScenes`,
-  async (query, { rejectWithValue }) => {
+export const searchSatelliteScenes = createAsyncThunk(
+  `${name}/searchSatelliteScenes`,
+  async (query, { getState, rejectWithValue }) => {
     try {
-      return await apiClient.satellites.runQuery(query);
+      const aoi = aoiSelector(getState());
+      return await apiClient.satellites.runQuery({ ...query, aoi });
     } catch (error) {
       /** @type {import('api-client').ResponseError} */
       const { message, status } = error;
       NotificationManager.error(
         `${status} ${message}`,
-        `Fetching Satellites Error - ${message}`,
+        `Problem performing search - ${message}`,
         50000,
         () => {},
       );
@@ -80,7 +90,7 @@ export const fetchSatelliteScenes = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  void,
+ *  any,
  *  {name: string, description?: string},
  *  {rejectValue: {message: string}, state:import('typings').RootState }
  * >}
@@ -126,12 +136,11 @@ export const saveImage = createAsyncThunk(
  * @type {SatellitesState}
  */
 const initialState = {
-  satellites: null,
-  scenes: null,
-  selectedScene: null,
-  error: null,
-  satelliteSearches: null,
   visualisationId: 'TCI',
+  cloudCoverPercentage: DEFAULT_CLOUD_COVER,
+  isDrawingAoi: false,
+  visiblePanel: Panels.SEARCH,
+  selectedSceneLayerVisible: false,
   requests: {},
 };
 
@@ -151,9 +160,32 @@ const satellitesSlice = createSlice({
     selectScene: (state, { payload }) => {
       state.hoveredScene = undefined;
       state.selectedScene = payload;
+      state.selectedSceneLayerVisible = true;
+      state.visiblePanel = Panels.VISUALISATION;
     },
-    setCurrentVisualisation: (state, { payload }) => {
+    setVisualisationId: (state, { payload }) => {
       state.visualisationId = payload;
+    },
+    setCloudCoverPercentage: (state, { payload }) => {
+      state.cloudCoverPercentage = payload;
+    },
+    setSelectedSceneLayerVisible: (state, { payload }) => {
+      state.selectedSceneLayerVisible = payload;
+    },
+    setVisiblePanel: (state, { payload }) => {
+      state.visiblePanel = payload;
+    },
+    startDrawingAoi: state => {
+      state.isDrawingAoi = true;
+      if (state.aoi?.length >= 1) state.aoi = undefined;
+    },
+    endDrawingAoi: (state, { payload }) => {
+      state.isDrawingAoi = false;
+      state.aoi = payload;
+    },
+    onUnmount: state => {
+      state.isDrawingAoi = false;
+      state.visiblePanel = Panels.NONE;
     },
   },
   extraReducers: builder => {
@@ -164,15 +196,23 @@ const satellitesSlice = createSlice({
     builder.addCase(fetchSatellites.rejected, (state, { payload }) => {
       state.error = payload;
     });
-    builder.addCase(fetchSatelliteScenes.pending, (state, { meta }) => {
+    builder.addCase(searchSatelliteScenes.pending, (state, { meta }) => {
+      state.requests = {
+        ...state.requests,
+        searchSatelliteScenes: meta.requestId,
+      };
       state.currentSearchQuery = meta.arg;
-      state.selectedScene = null;
+      state.scenes = undefined;
+      state.selectedScene = undefined;
+      state.visiblePanel = Panels.RESULTS;
     });
-    builder.addCase(fetchSatelliteScenes.fulfilled, (state, { payload }) => {
+    builder.addCase(searchSatelliteScenes.fulfilled, (state, { payload }) => {
       state.scenes = payload;
-      state.error = null;
+      state.requests = { ...state.requests, searchSatelliteScenes: undefined };
+      state.error = undefined;
     });
-    builder.addCase(fetchSatelliteScenes.rejected, (state, { payload }) => {
+    builder.addCase(searchSatelliteScenes.rejected, (state, { payload }) => {
+      state.requests = { ...state.requests, searchSatelliteScenes: undefined };
       state.error = payload;
     });
     builder.addCase(saveImage.pending, (state, { meta }) => {
@@ -190,19 +230,20 @@ const satellitesSlice = createSlice({
 
 export const {
   selectScene,
-  setCurrentVisualisation,
+  setVisualisationId,
   setHoveredScene,
+  setCloudCoverPercentage,
+  setSelectedSceneLayerVisible,
+  setVisiblePanel,
+  startDrawingAoi,
+  endDrawingAoi,
+  onUnmount,
 } = satellitesSlice.actions;
 
 /**
  * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.satellites;
-
-export const selectedPinnedScenesSelector = createSelector(
-  baseSelector,
-  satellites => satellites?.selectedPinnedScenes || [],
-);
 
 export const satellitesSelector = createSelector(
   baseSelector,
@@ -219,11 +260,6 @@ export const selectedSceneSelector = createSelector(
   state => state?.selectedScene,
 );
 
-export const pinnedScenesSelector = createSelector(
-  baseSelector,
-  state => state?.pinnedScenes,
-);
-
 export const currentSearchQuerySelector = createSelector(
   baseSelector,
   state => state?.currentSearchQuery,
@@ -234,14 +270,36 @@ export const visualisationIdSelector = createSelector(
   state => state?.visualisationId,
 );
 
-export const savedSearchesSelector = createSelector(
-  baseSelector,
-  state => state?.satelliteSearches,
-);
-
 export const hoveredSceneSelector = createSelector(
   baseSelector,
   state => state?.hoveredScene,
+);
+
+export const aoiSelector = createSelector(baseSelector, state => state?.aoi);
+
+export const cloudCoverPercentageSelector = createSelector(
+  baseSelector,
+  state => state?.cloudCoverPercentage,
+);
+
+export const visiblePanelSelector = createSelector(
+  baseSelector,
+  state => state?.visiblePanel,
+);
+
+export const isDrawingAoiSelector = createSelector(
+  baseSelector,
+  state => state?.isDrawingAoi,
+);
+
+export const selectedSceneLayerVisibleSelector = createSelector(
+  baseSelector,
+  state => state?.selectedSceneLayerVisible,
+);
+
+export const requestsSelector = createSelector(
+  baseSelector,
+  state => state?.requests,
 );
 
 export default satellitesSlice.reducer;

@@ -200,9 +200,7 @@ describe('<SearchForm />', () => {
   it('Shows an error and disables the search button if geometry is too large', () => {
     const { getByText, getByRole } = renderComponent({ aoiTooLarge: true });
     expect(getByRole('alert')).toBeInTheDocument();
-    expect(
-      getByText('AOI is too large, redraw or zoom in'),
-    ).toBeInTheDocument();
+    expect(getByText('AOI is too large')).toBeInTheDocument();
     expect(getByRole('button', { name: 'Search' })).toBeDisabled();
   });
 
