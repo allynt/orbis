@@ -11,6 +11,7 @@ from rest_framework.test import APIClient
 from astrosat_users.serializers import UserSerializer
 from astrosat_users.tests.utils import *
 
+from orbis.models import OrbisSettings
 from orbis.tests.factories import UserFactory, CustomerFactory
 
 
@@ -56,3 +57,9 @@ def customer_user():
         return customer_user
 
     return _customer_user
+
+
+@pytest.fixture
+def orbis_settings():
+    orbis_settings = OrbisSettings.load()
+    return orbis_settings

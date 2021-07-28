@@ -13,6 +13,7 @@ from astrosat.utils import validate_schema, validate_reserved_words
 from astrosat_users.models import CustomerUser
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
+from satellites.utils import project_geometry
 
 ##############
 # validators #
@@ -250,7 +251,8 @@ class SatelliteSearch(gis_models.Model):
                 "end_date must be greater than or equal to start_date"
             )
 
-        if self.aoi.area > settings.MAXIMUM_AOI_AREA:
+        projected_aoi = project_geometry(self.aoi)
+        if (projected_aoi.area * .000001) > settings.MAXIMUM_AOI_AREA:
             raise ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
             )
@@ -403,7 +405,11 @@ class SatelliteDataSource(models.Model):
 
     @property
     def layer_details(self):
-        return {"name": "TileLayer", "props": {"config": "satelliteImageConfig"}}
+        return {
+            "name": "TileLayer", "props": {
+                "config": "satelliteImageConfig"
+            }
+        }
 
     @property
     def map_component_details(self):

@@ -203,8 +203,7 @@ def run_satellite_query(request):
 
     # build a search out of the request data...
     search_serializer = SatelliteSearchSerializer(data=request.data)
-    if not search_serializer.is_valid():
-        raise APIException(search_serializer.errors)
+    search_serializer.is_valid(raise_exception=True)
 
     # use the adapter(s) to process that search...
     search_results = []
