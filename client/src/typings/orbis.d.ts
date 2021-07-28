@@ -286,3 +286,21 @@ type DateRange<T> = {
   startDate: T;
   endDate: T;
 };
+
+type AppConfig = Partial<{
+  trackingId: string;
+  mapbox_token: string;
+  passwordMinLength: number;
+  passwordMaxLength: number;
+  isRegistrationOpen: boolean;
+  isVerificationRequired: boolean;
+  isApprovalRequired: boolean;
+  maximumAoiArea: number;
+  dataIndexUrl: string;
+  commitSha: string;
+  geometrySet: {
+    name: string;
+    order: number;
+  };
+  userTrackingInterval: number;
+}>;

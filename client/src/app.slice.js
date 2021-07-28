@@ -9,23 +9,7 @@ export const DEFAULT_MAP_STYLE = 3;
 
 /**
  * @typedef AppState
- * @property {Partial<{
- *  trackingId: string,
- *  mapbox_token: string,
- *  passwordMinLength: number,
- *  passwordMaxLength: number,
- *  isRegistrationOpen: boolean,
- *  isVerificationRequired: boolean,
- *  isApprovalRequired: boolean,
- *  maximumAoiArea: number,
- *  dataIndexUrl: string,
- *  commitSha: string,
- *  geometrySet: {
- *    name: string,
- *    order: number
- *  },
- *  userTrackingInterval: number
- * }>} config
+ * @property {import('typings').AppConfig} config
  * @property {{message: string}} [error]
  * @property {any[]} trackingQueue
  */

@@ -173,7 +173,7 @@ const bookmarkSlice = createSlice({
 export const { selectBookmark, isLoaded } = bookmarkSlice.actions;
 
 /**
- * @returns {BookmarksState}
+ * @param {import('typings').RootState} state
  */
 export const baseSelector = state => state?.bookmarks;
 
