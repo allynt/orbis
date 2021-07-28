@@ -6,8 +6,8 @@ import { Form } from 'components';
 
 /**
  * @param {{
- *   user?: CustomerUser
- *   withdrawInvitation: (user: CustomerUser) => void
+ *   user?: import('typings').CustomerUser
+ *   withdrawInvitation: (user: import('typings').CustomerUser) => void
  *   onCancelClick: () => void
  * }} props
  */

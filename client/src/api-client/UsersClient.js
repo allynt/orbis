@@ -6,8 +6,8 @@ export class UsersClient extends SubClient {
   }
 
   /**
-   * @param {User['id']} userId
-   * @returns {Promise<User>}
+   * @param {import('typings').User['id']} userId
+   * @returns {Promise<import('typings').User>}
    */
   async getUser(userId) {
     const response = await this.makeAuthenticatedRequest(`/${userId}`);
@@ -19,8 +19,8 @@ export class UsersClient extends SubClient {
   }
 
   /**
-   * @param {User} userWithUpdates
-   * @returns {Promise<User>}
+   * @param {import('typings').User} userWithUpdates
+   * @returns {Promise<import('typings').User>}
    * @throws {import('./ResponseError').ResponseError}
    */
   async updateUser(userWithUpdates) {

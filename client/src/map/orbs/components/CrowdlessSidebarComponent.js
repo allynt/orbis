@@ -33,7 +33,7 @@ const makeUrl = (baseUrl, x, y, r, p = 1) =>
 
 /**
  * @param {{
- *   selectedLayer: Source
+ *   selectedLayer: import('typings').Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */

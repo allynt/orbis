@@ -22,7 +22,7 @@ const useStyles = makeStyles({
 /**
  *
  * @param {{
- *  user?: User
+ *  user?: import('typings').User
  *  updateUser?: (values: {
  *    email: string
  *    name: string

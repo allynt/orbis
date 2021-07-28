@@ -25,15 +25,15 @@ export class SatellitesClient extends SubClient {
 
   /**
    * @param {{
-   *  userId: User['id'],
-   *  customerId: Customer['id'],
+   *  userId: import('typings').User['id'],
+   *  customerId: import('typings').Customer['id'],
    *  name: string,
    *  description?: string,
    *  satelliteId: import('typings').Satellite['id'],
    *  sceneId: import('typings').Scene['id'],
    *  visualisationId: import('typings').Visualisation['id'],
    * }} params
-   * @returns {Promise<import('typings').Source}
+   * @returns {Promise<import('typings').Source>}
    */
   async saveImage({ customerId, userId, ...rest }) {
     return this.makeAuthenticatedPostRequest(

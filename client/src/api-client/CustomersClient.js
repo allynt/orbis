@@ -22,8 +22,8 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']} customerId
-   * @returns {Promise<Customer>}
+   * @param {import('typings').Customer['id']} customerId
+   * @returns {Promise<import('typings').Customer>}
    */
   async getCustomer(customerId) {
     const response = await this.makeAuthenticatedRequest(`/${customerId}`);
@@ -35,14 +35,14 @@ export class CustomersClient extends SubClient {
    *  email: string
    *  customerName: string
    *  customerNameOfficial: string
-   *  customerType: Customer['type']
-   *  registeredNumber: Customer['registered_id']
+   *  customerType: import('typings').Customer['type']
+   *  registeredNumber: import('typings').Customer['registered_id']
    *  licence: 'Orbis Core'
    *  numberOfLicences: number
    *  subscriptionPeriod: string
-   *  type: Customer['type']
+   *  type: import('typings').Customer['type']
    * }} newCustomer
-   * @returns {Promise<Customer>}
+   * @returns {Promise<import('typings').Customer>}
    */
   async createCustomer(newCustomer) {
     const body = this.mapParamsToApi(newCustomer, 'createCustomer');
@@ -50,8 +50,8 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer} updatedCustomer
-   * @returns {Promise<Customer>}
+   * @param {import('typings').Customer} updatedCustomer
+   * @returns {Promise<import('typings').Customer>}
    */
   async updateCustomer(updatedCustomer) {
     return this.makeAuthenticatedPutRequest(
@@ -61,8 +61,8 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']}customerId
-   * @returns {Promise<CustomerUser[]>}
+   * @param {import('typings').Customer['id']}customerId
+   * @returns {Promise<import('typings').CustomerUser[]>}
    */
   async getCustomerUsers(customerId) {
     const response = await this.makeAuthenticatedRequest(
@@ -72,23 +72,23 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']} customerId
+   * @param {import('typings').Customer['id']} customerId
    * @param {{
-   *  type?: CustomerUser['type']
-   *  status?: CustomerUser['status']
-   *  user: Partial<User>
-   *  licences: CustomerUser['licences']
+   *  type?: import('typings').CustomerUser['type']
+   *  status?: import('typings').CustomerUser['status']
+   *  user: Partial<import('typings').User>
+   *  licences: import('typings').CustomerUser['licences']
    * }} params
-   * @returns {Promise<CustomerUser>}
+   * @returns {Promise<import('typings').CustomerUser>}
    */
   async createCustomerUser(customerId, params) {
     return this.makeAuthenticatedPostRequest(`/${customerId}/users/`, params);
   }
 
   /**
-   * @param {Customer['id']} customerId
-   * @param {CustomerUser} userWithUpdates
-   * @returns {Promise<CustomerUser>}
+   * @param {import('typings').Customer['id']} customerId
+   * @param {import('typings').CustomerUser} userWithUpdates
+   * @returns {Promise<import('typings').CustomerUser>}
    */
   async updateCustomerUser(customerId, userWithUpdates) {
     return this.makeAuthenticatedPutRequest(
@@ -98,8 +98,8 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']} customerId
-   * @param {User['id']} userId
+   * @param {import('typings').Customer['id']} customerId
+   * @param {import('typings').User['id']} userId
    */
   async deleteCustomerUser(customerId, userId) {
     await this.makeAuthenticatedRequest(`/${customerId}/users/${userId}/`, {
@@ -108,14 +108,14 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']} customerId
+   * @param {import('typings').Customer['id']} customerId
    * @param {{
-   *  type?: CustomerUser['type']
-   *  status?: CustomerUser['status']
-   *  user: Partial<User>
-   *  licences: CustomerUser['licences']
+   *  type?: import('typings').CustomerUser['type']
+   *  status?: import('typings').CustomerUser['status']
+   *  user: Partial<import('typings').User>
+   *  licences: import('typings').CustomerUser['licences']
    * }} customerUser
-   * @returns {Promise<CustomerUser>}
+   * @returns {Promise<import('typings').CustomerUser>}
    */
   async inviteCustomerUser(customerId, customerUser) {
     return this.makeAuthenticatedPostRequest(
@@ -125,7 +125,7 @@ export class CustomersClient extends SubClient {
   }
 
   /**
-   * @param {Customer['id']} customerId
+   * @param {import('typings').Customer['id']} customerId
    * @param {{
    *  subscription: string;
    *  paymentType: string;
@@ -134,7 +134,7 @@ export class CustomersClient extends SubClient {
    *  period: string;
    *  confirm: boolean;
    *}} order
-   * @returns {Promise<Order>}
+   * @returns {Promise<import('typings').Order>}
    */
   async placeOrder(customerId, order) {
     /** @type {any} */

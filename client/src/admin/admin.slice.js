@@ -160,8 +160,8 @@ export const {
 /**
  * @param {Response} response
  * @param {string} title
- * @param {ActionCreatorWithPayload} action
- * @param {Dispatch} dispatch
+ * @param {import('@reduxjs/toolkit').ActionCreatorWithPayload} action
+ * @param {import('redux').Dispatch} dispatch
  */
 const handleFailure = (response, title, action, dispatch) => {
   const message = `${response.status} ${response.statusText}`;
