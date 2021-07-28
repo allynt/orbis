@@ -20,7 +20,7 @@ import {
   dataSelector,
 } from '../layers.slice';
 
-/** @typedef {import('typings').IsoPlusCommonProperties} AccessorFeature */
+/** @typedef {import('typings').GeoJsonFeature<import('typings').IsoPlusCommonProperties>} AccessorFeature */
 
 export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
