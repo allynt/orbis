@@ -1,3 +1,5 @@
+import { Orb } from './orbis';
+
 type CustomerUserType = 'MANAGER' | 'MEMBER';
 
 type CustomerUserStatus = 'ACTIVE' | 'PENDING';
@@ -23,14 +25,7 @@ type User = {
   registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
   roles?: string[];
   username: string;
-  orbs?: {
-    id: number;
-    name: string;
-    description?: string;
-    licence_cost?: number;
-    logo?: string;
-    features?: FeatureKey[];
-  }[];
+  orbs?: Orb[];
 };
 
 type PartialUser = Pick<
