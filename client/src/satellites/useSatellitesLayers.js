@@ -1,79 +1,47 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { TileLayer } from '@deck.gl/geo-layers';
 import { GeoJsonLayer } from '@deck.gl/layers';
 import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { feature, featureCollection } from '@turf/turf';
+import { feature, featureCollection, geometry } from '@turf/turf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { baseSatelliteImageConfig } from 'map/orbs/configurations/satelliteImageConfig';
 import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
-import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
+import { Panels } from './satellite.constants';
 import {
+  aoiSelector,
+  cloudCoverPercentageSelector,
+  endDrawingAoi,
   hoveredSceneSelector,
+  isDrawingAoiSelector,
   scenesSelector,
+  selectedSceneLayerVisibleSelector,
   selectedSceneSelector,
   selectScene,
   setHoveredScene,
+  visiblePanelSelector,
   visualisationIdSelector,
 } from './satellites.slice';
 
-/**
- * @typedef {{
- *  isDrawingAoi: boolean
- *  setIsDrawingAoi: React.Dispatch<React.SetStateAction<boolean>>
- *  drawAoiLayer?: EditableGeoJsonLayer
- *  aoi?: number[][]
- *  scenesLayer?: GeoJsonLayer
- *  selectedSceneLayer?: TileLayer
- *  cloudCoverPercentage: number,
- *  setCloudCover: React.Dispatch<React.SetStateAction<number>>
- *  selectedSceneLayerVisible: boolean
- *  setSelectedSceneLayerVisible: React.Dispatch<React.SetStateAction<boolean>>
- *  visiblePanel: string
- *  setVisiblePanel: React.Dispatch<React.SetStateAction<string>>
- * }} SatellitesContextType
- */
-
-/** @type {React.Context<SatellitesContextType>} */
-const SatellitesContext = createContext(undefined);
-SatellitesContext.displayName = 'SatellitesContext';
-
-/**
- * @typedef {{
- *  defaultIsDrawingAoi?: boolean
- *  defaultFeatures?: import('@turf/turf').Feature[]
- *  defaultPanel?: string
- *  children: React.ReactNode
- * }} SatellitesProviderProps
- */
-
-/**
- * @param {SatellitesProviderProps} props
- */
-export const SatellitesProvider = ({
-  defaultIsDrawingAoi = false,
-  defaultFeatures = [],
-  defaultPanel = Panels.SEARCH,
-  children,
-}) => {
-  const [isDrawingAoi, setIsDrawingAoi] = useState(defaultIsDrawingAoi);
-  const [features, setFeatures] = useState(defaultFeatures);
+export const useSatellitesLayers = () => {
   /** @type {[undefined | string[], React.Dispatch<undefined | string[]>]} */
   const [selectedSceneTiles, setSelectedSceneTiles] = useState();
-  const [cloudCoverPercentage, setCloudCover] = useState(DEFAULT_CLOUD_COVER);
-  const [selectedSceneLayerVisible, setSelectedSceneLayerVisible] = useState(
-    false,
-  );
-  const [visiblePanel, setVisiblePanel] = useState(defaultPanel);
   const dispatch = useDispatch();
   const scenes = useSelector(scenesSelector);
   const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
+  const isDrawingAoi = useSelector(isDrawingAoiSelector);
+  const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
+  const selectedSceneLayerVisible = useSelector(
+    selectedSceneLayerVisibleSelector,
+  );
+  const visiblePanel = useSelector(visiblePanelSelector);
+  const aoi = useSelector(aoiSelector);
 
   useEffect(() => {
     const update = async () => {
@@ -92,10 +60,8 @@ export const SatellitesProvider = ({
   }, [selectedScene, visualisationId]);
 
   const onEdit = ({ editType, updatedData }) => {
-    if (features.length >= 1) setFeatures([]);
     if (editType !== 'addFeature') return;
-    setFeatures(updatedData.features);
-    setIsDrawingAoi(false);
+    dispatch(endDrawingAoi(updatedData.features[0].geometry.coordinates[0]));
   };
 
   const getFillColor = [0, 0, 0, 0];
@@ -104,8 +70,8 @@ export const SatellitesProvider = ({
   // @ts-ignore
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
-    data: featureCollection(features),
-    visible: visiblePanel !== Panels.VISUALISATION,
+    data: featureCollection(aoi ? [feature(geometry('Polygon', [aoi]))] : []),
+    visible: visiblePanel === Panels.SEARCH || visiblePanel === Panels.RESULTS,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
     selectedFeatureIndexes: [],
     onEdit,
@@ -146,7 +112,11 @@ export const SatellitesProvider = ({
       dispatch(setHoveredScene(object ? object.properties : undefined)),
     getFilterValue: d => d.properties.cloudCover,
     filterRange: [0, cloudCoverPercentage],
-    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    extensions: [
+      new DataFilterExtension({
+        filterSize: 1,
+      }),
+    ],
     updateTriggers: {
       getLineWidth: [hoveredScene],
     },
@@ -156,33 +126,15 @@ export const SatellitesProvider = ({
     // @ts-ignore
     baseSatelliteImageConfig({
       id: 'selected-scene-layer',
-      // 👇 This should not go into production, Fix it
-      data: selectedSceneTiles?.map(tile => tile.replace('testing', 'staging')),
+      data: selectedSceneTiles,
       visible:
         selectedSceneLayerVisible && visiblePanel === Panels.VISUALISATION,
     }),
   );
 
-  return (
-    <SatellitesContext.Provider
-      value={{
-        isDrawingAoi,
-        setIsDrawingAoi,
-        drawAoiLayer: isDrawingAoi || !!features[0] ? drawAoiLayer : undefined,
-        aoi: features[0]?.geometry.coordinates[0],
-        scenesLayer,
-        selectedSceneLayer,
-        cloudCoverPercentage,
-        setCloudCover,
-        selectedSceneLayerVisible,
-        setSelectedSceneLayerVisible,
-        visiblePanel,
-        setVisiblePanel,
-      }}
-    >
-      {children}
-    </SatellitesContext.Provider>
-  );
+  return {
+    drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
+    scenesLayer,
+    selectedSceneLayer,
+  };
 };
-
-export const useSatellites = () => useContext(SatellitesContext);

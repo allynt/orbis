@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
   searchButton: {
     margin: 'auto auto 0',
   },
-  satellites: { marginTop: theme.spacing(2) },
+  satellites: { marginBlock: theme.spacing(2) },
   checkbox: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -253,9 +253,7 @@ const SearchForm = ({
           </FormHelperText>
         )}
       </FormControl>
-      {aoiTooLarge && (
-        <Well severity="error">AOI is too large, redraw or zoom in</Well>
-      )}
+      {aoiTooLarge && <Well severity="error">AOI is too large</Well>}
       <div className={styles.searchButton}>
         <Button type="submit" disabled={!aoi || aoiTooLarge}>
           Search
