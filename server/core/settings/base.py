@@ -102,7 +102,7 @@ LOCAL_APPS = [
     "astrosat",  # (dependencies)
     "astrosat_users",  # (users)
     "core",  # (shared stuff)
-    "proxy", # (proxy data)
+    "proxy",  # (proxy data)
     "satellites",  # (satellite data)
     "maps",  # (mapping tools)
     "tasks",  # (task management)
@@ -155,7 +155,9 @@ DATA_TOKEN_TIMEOUT = DynamicSetting(
 )
 
 # the maximum aoi area that can be passed to a query
-MAXIMUM_AOI_AREA = DynamicSetting("orbis.OrbisSettings.maximum_aoi_area", 500)
+MAXIMUM_AOI_AREA = DynamicSetting(
+    "satellites.SatelliteSettings.maximum_aoi_area", 500
+)
 
 ##############
 # Middleware #
@@ -304,7 +306,6 @@ REST_FRAMEWORK = {
         # "rest_framework.authentication.TokenAuthentication",  # tokens
         # "rest_framework_simplejwt.authentication.JWTTokenUserAuthentication",  # tokens w/out a user
         "knox.auth.TokenAuthentication",  # better tokens
-
     ],
     "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",

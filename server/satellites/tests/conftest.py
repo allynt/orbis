@@ -13,6 +13,8 @@ from astrosat_users.tests.utils import *
 
 from orbis.tests.factories import UserFactory, CustomerFactory
 
+from satellites.models import SatelliteSettings
+
 
 @pytest.fixture
 def admin():
@@ -56,3 +58,9 @@ def customer_user():
         return customer_user
 
     return _customer_user
+
+
+@pytest.fixture
+def satellite_settings():
+    satellite_settings = SatelliteSettings.load()
+    return satellite_settings

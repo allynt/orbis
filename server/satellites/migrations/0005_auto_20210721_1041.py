@@ -17,7 +17,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SatelliteDataSource',
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                (
+                    'id',
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False
+                    )
+                ),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('is_active', models.BooleanField(default=True)),
                 ('name', models.CharField(max_length=128)),
@@ -33,11 +41,18 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='satelliteresult',
-            options={'verbose_name': 'Satellite Result', 'verbose_name_plural': 'Satellite Results'},
+            options={
+                'verbose_name': 'Satellite Result',
+                'verbose_name_plural': 'Satellite Results'
+            },
         ),
         migrations.AlterModelOptions(
             name='satellitesearch',
-            options={'ordering': ['-created'], 'verbose_name': 'Satellite Search', 'verbose_name_plural': 'Satellites Searches'},
+            options={
+                'ordering': ['-created'],
+                'verbose_name': 'Satellite Search',
+                'verbose_name_plural': 'Satellites Searches'
+            },
         ),
         migrations.RemoveConstraint(
             model_name='satellitesearch',
@@ -68,15 +83,28 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='satellitevisualisation',
             name='thumbnail',
-            field=models.FileField(blank=True, help_text='A thumbnail image representing this visualisation.', null=True, upload_to=satellites.models.visualisation_thumbnail_path),
+            field=models.FileField(
+                blank=True,
+                help_text='A thumbnail image representing this visualisation.',
+                null=True,
+                upload_to=satellites.models.models_satellites.
+                visualisation_thumbnail_path
+            ),
         ),
         migrations.AddField(
             model_name='satellitedatasource',
             name='customer_user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='satelite_data_sources', to='astrosat_users.customeruser'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='satelite_data_sources',
+                to='astrosat_users.customeruser'
+            ),
         ),
         migrations.AddConstraint(
             model_name='satellitedatasource',
-            constraint=models.UniqueConstraint(fields=('name', 'customer_user'), name='unique_name_per_customer_user'),
+            constraint=models.UniqueConstraint(
+                fields=('name', 'customer_user'),
+                name='unique_name_per_customer_user'
+            ),
         ),
     ]

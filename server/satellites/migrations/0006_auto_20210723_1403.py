@@ -12,11 +12,19 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='satellitedatasource',
-            options={'ordering': ['created'], 'verbose_name': 'Satellite DataSource', 'verbose_name_plural': 'Satellite DataSources'},
+            options={
+                'ordering': ['created'],
+                'verbose_name': 'Satellite DataSource',
+                'verbose_name_plural': 'Satellite DataSources'
+            },
         ),
         migrations.AlterModelOptions(
             name='satellitesearch',
-            options={'ordering': ['-created'], 'verbose_name': 'Satellite Search', 'verbose_name_plural': 'Satellite Searches'},
+            options={
+                'ordering': ['-created'],
+                'verbose_name': 'Satellite Search',
+                'verbose_name_plural': 'Satellite Searches'
+            },
         ),
         migrations.AlterField(
             model_name='satellitedatasource',

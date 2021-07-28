@@ -13,6 +13,7 @@ from astrosat.utils import validate_schema, validate_reserved_words
 from astrosat_users.models import CustomerUser
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
+from satellites.utils import project_geometry
 
 ##############
 # validators #
@@ -96,6 +97,7 @@ class Satellite(models.Model):
     A fixed set of satellites that we can search.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite"
         verbose_name_plural = "Satellites"
         ordering = ["order"]
@@ -158,6 +160,7 @@ class SatelliteVisualisation(models.Model):
     The visualisations that are available for a given satellite.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name_plural = "Satellite Visualisation"
         verbose_name_plural = "Satellite Visualisations"
         ordering = ["order"]
@@ -225,6 +228,7 @@ class SatelliteSearch(gis_models.Model):
     A search query.
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite Search"
         verbose_name_plural = "Satellite Searches"
         ordering = ["-created"]
@@ -250,7 +254,8 @@ class SatelliteSearch(gis_models.Model):
                 "end_date must be greater than or equal to start_date"
             )
 
-        if self.aoi.area > settings.MAXIMUM_AOI_AREA:
+        projected_aoi = project_geometry(self.aoi)
+        if (projected_aoi.area * .000001) > settings.MAXIMUM_AOI_AREA:
             raise ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
             )
@@ -271,6 +276,7 @@ class SatelliteResult(gis_models.Model):
        it is not necessarily passed on to the client
     """
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite Result"
         verbose_name_plural = "Satellite Results"
         constraints = [
@@ -341,6 +347,7 @@ class SatelliteResult(gis_models.Model):
 
 class SatelliteDataSource(models.Model):
     class Meta:
+        app_label = "satellites"
         verbose_name = "Satellite DataSource"
         verbose_name_plural = "Satellite DataSources"
         ordering = ["created"]
@@ -403,7 +410,11 @@ class SatelliteDataSource(models.Model):
 
     @property
     def layer_details(self):
-        return {"name": "TileLayer", "props": {"config": "satelliteImageConfig"}}
+        return {
+            "name": "TileLayer", "props": {
+                "config": "satelliteImageConfig"
+            }
+        }
 
     @property
     def map_component_details(self):
