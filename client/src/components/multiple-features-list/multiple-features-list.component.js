@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   features: import('typings/orbis').GeoJsonFeature[]
- *   onMoreDetailsClick: (feature: import('typings/orbis').GeoJsonFeature) => void
+ *   features: import('typings').GeoJsonFeature[]
+ *   onMoreDetailsClick: (feature: import('typings').GeoJsonFeature) => void
  * } & MultipleFeaturesListMetadataProps} props
  */
 export const MultipleFeaturesList = ({

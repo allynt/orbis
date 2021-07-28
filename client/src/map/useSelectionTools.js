@@ -12,7 +12,7 @@ import { KEY_CODES } from 'utils/KEY_CODES';
 import { setClickedFeatures } from './orbs/layers.slice';
 
 /**
- * @param {import('typings/orbis').PickedMapFeature[]} pickingInfos
+ * @param {import('typings').PickedMapFeature[]} pickingInfos
  */
 export const filterAndSortPickedInfo = pickingInfos => {
   const uniqueInfos = uniqBy(pickingInfos, 'object.properties.index');

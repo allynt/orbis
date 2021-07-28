@@ -22,13 +22,13 @@ const MAX_SELECTED = 2;
  *    type: string;
  *    data: any;
  *  }) => void,
- *  selectPinnedScene: (scene: import('typings/satellites').Scene) => void,
- *  deselectPinnedScene: (scene: import('typings/satellites').Scene) => void,
+ *  selectPinnedScene: (scene: import('typings').Scene) => void,
+ *  deselectPinnedScene: (scene: import('typings').Scene) => void,
  *  clearSelectedPinnedScenes: (stuff: any[]) => void,
- *  deletePinnedScene: (sceneId: import('typings/satellites').Scene['id']) => void,
+ *  deletePinnedScene: (sceneId: import('typings').Scene['id']) => void,
  *  toggleCompareMode: () => void,
- *  pinnedScenes: import('typings/satellites').Scene[],
- *  selectedPinnedScenes: import('typings/satellites').Scene[],
+ *  pinnedScenes: import('typings').Scene[],
+ *  selectedPinnedScenes: import('typings').Scene[],
  *  isCompareMode: boolean,
  *  visualisationId: string
  * }} props

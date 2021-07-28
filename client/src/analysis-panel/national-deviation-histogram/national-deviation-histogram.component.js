@@ -21,7 +21,7 @@ import { Histogram } from './histogram.component';
  */
 
 /**
- * @type {import('typings/orbis').AnalysisPanelComponent<NationalDeviationHistogramProps>}
+ * @type {import('typings').AnalysisPanelComponent<NationalDeviationHistogramProps>}
  */
 export const NationalDeviationHistogram = ({
   selectedProperty,

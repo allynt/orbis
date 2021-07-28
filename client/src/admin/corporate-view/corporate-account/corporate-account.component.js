@@ -31,8 +31,8 @@ const corporateAccountSchema = yup.object({
 
 /**
  * @param {{
- *   customer?: import('typings/orbis').Customer
- *   updateCustomer?: (customer: import('typings/orbis').Customer) => void
+ *   customer?: import('typings').Customer
+ *   updateCustomer?: (customer: import('typings').Customer) => void
  * }} props
  */
 const CorporateAccount = ({ customer, updateCustomer }) => {

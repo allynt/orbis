@@ -22,7 +22,7 @@ export class ColorScale {
   #domain;
   /** @type {[number, number] | false | undefined} */
   #clip;
-  /** @type {import('typings/orbis').ColorMap | string[]} */
+  /** @type {import('typings').ColorMap | string[]} */
   #color;
   /** @type {boolean} */
   #reversed;
@@ -33,7 +33,7 @@ export class ColorScale {
 
   /**
    * @param {{
-   *   color?: import('typings/orbis').ColorMap | string[]
+   *   color?: import('typings').ColorMap | string[]
    *   domain?: [number, number] | string[]
    *   reversed?: boolean
    *   clip?: [number, number]

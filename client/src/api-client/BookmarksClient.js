@@ -1,6 +1,6 @@
 import { SubClient } from './SubClient';
 
-/** @typedef {import('typings/bookmarks').Bookmark} Bookmark */
+/** @typedef {import('typings').Bookmark} Bookmark */
 
 export class BookmarksClient extends SubClient {
   constructor() {
@@ -17,7 +17,7 @@ export class BookmarksClient extends SubClient {
   }
 
   /**
-   * @param {import('typings/bookmarks').RequestBookmark} bookmark
+   * @param {import('typings').RequestBookmark} bookmark
    * @returns {Promise<Bookmark>}
    * @throws {ResponseError}
    */

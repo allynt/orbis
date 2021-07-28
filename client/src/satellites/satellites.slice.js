@@ -11,13 +11,13 @@ import { addSource } from 'data-layers/data-layers.slice';
 
 /**
  * @typedef SatellitesState
- * @property {import('typings/satellites').Satellite[]} [satellites]
- * @property {import('typings/satellites').Scene[]} [scenes]
- * @property {import('typings/satellites').Scene} [hoveredScene]
- * @property {import('typings/satellites').Scene} [selectedScene]
+ * @property {import('typings').Satellite[]} [satellites]
+ * @property {import('typings').Scene[]} [scenes]
+ * @property {import('typings').Scene} [hoveredScene]
+ * @property {import('typings').Scene} [selectedScene]
  * @property {{message: string}} [error]
- * @property {import('typings/satellites').SavedSearch[]} [satelliteSearches]
- * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
+ * @property {import('typings').SavedSearch[]} [satelliteSearches]
+ * @property {Partial<import('typings').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
  * @property {Record<string,string>} requests
  */
@@ -26,7 +26,7 @@ const name = 'satellites';
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/satellites').Satellite[],
+ *  import('typings').Satellite[],
  *  undefined,
  *  {rejectValue: {message: string}}
  * >}
@@ -52,8 +52,8 @@ export const fetchSatellites = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/satellites').Scene[],
- *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
+ *  import('typings').Scene[],
+ *  Pick<import('typings').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi'>,
  *  {rejectValue: {message: string}}
  * >}
  */
@@ -142,7 +142,7 @@ const satellitesSlice = createSlice({
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  SatellitesState,
-     *  import('@reduxjs/toolkit').PayloadAction<import('typings/satellites').Scene>
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings').Scene>
      * >}
      */
     setHoveredScene: (state, { payload }) => {

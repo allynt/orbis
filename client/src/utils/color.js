@@ -26,7 +26,7 @@ export const getColorScaleForProperty = (property, format) => {
             display: { color, colormap_reversed },
           },
         },
-      } = /** @type {import('typings/orbis').ContinuousProperty} */ (property);
+      } = /** @type {import('typings').ContinuousProperty} */ (property);
 
       return new ColorScale({
         color: color,
@@ -41,7 +41,7 @@ export const getColorScaleForProperty = (property, format) => {
     case 'discrete':
       const {
         categories,
-      } = /** @type {import('typings/orbis').DiscreteProperty} */ (property);
+      } = /** @type {import('typings').DiscreteProperty} */ (property);
       const pairs = toPairs(categories).map(([category, obj]) => [
         category,
         obj.color,

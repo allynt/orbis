@@ -8,12 +8,12 @@ const CenterButton = styled(Button)({ margin: '0 auto' });
 
 /**
  * @param {{
- *  satellites: import('typings/satellites').Satellite[]
- *  currentSearch: Partial<import('typings/satellites').SavedSearch>
+ *  satellites: import('typings').Satellite[]
+ *  currentSearch: Partial<import('typings').SavedSearch>
  *  aoi?: number[][]
  *  aoiTooLarge?: boolean
  *  onDrawAoiClick: React.MouseEventHandler<HTMLButtonElement>
- *  onSearch: (search: Pick<import('typings/satellites').SavedSearch, "satellites" | "end_date" | "start_date">) => void
+ *  onSearch: (search: Pick<import('typings').SavedSearch, "satellites" | "end_date" | "start_date">) => void
  *  onInfoClick: (info: {type: string, data: any}) => void
  * }} props
  */

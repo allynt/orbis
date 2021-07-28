@@ -4,7 +4,7 @@ import { SectionLabel, SectionValue } from './styles';
 
 /**
  * @param {{
- *  source: import('typings/orbis').Property['source']
+ *  source: import('typings').Property['source']
  * }} props
  */
 export const Source = ({ source }) => (

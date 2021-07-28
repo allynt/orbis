@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmark: import('typings/orbis').Bookmark
- *   onClick?: (bookmark: import('typings/orbis').Bookmark) => void
+ *   bookmark: import('typings').Bookmark
+ *   onClick?: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
 export const BookmarksListItem = ({ bookmark, onClick }) => {

@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmarks: import('typings/orbis').Bookmark[]
- *   chooseBookmark?: (bookmark: import('typings/orbis').Bookmark) => void
+ *   bookmarks: import('typings').Bookmark[]
+ *   chooseBookmark?: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
 export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {

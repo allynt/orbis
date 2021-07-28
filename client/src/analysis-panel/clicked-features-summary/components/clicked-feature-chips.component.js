@@ -7,11 +7,11 @@ import { TooltipChip } from './tooltip-chip.component';
 
 /**
  * @param {{
- *   clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
- *   hoveredFeatures: import('typings/orbis').PolygonPickedMapFeature[]
- *   onFeatureDelete: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
- *   onFeatureClick: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
- *   onFeatureHover: (feature?: import('typings/orbis').PolygonPickedMapFeature) => void
+ *   clickedFeatures: import('typings').PolygonPickedMapFeature[]
+ *   hoveredFeatures: import('typings').PolygonPickedMapFeature[]
+ *   onFeatureDelete: (feature: import('typings').PolygonPickedMapFeature) => void
+ *   onFeatureClick: (feature: import('typings').PolygonPickedMapFeature) => void
+ *   onFeatureHover: (feature?: import('typings').PolygonPickedMapFeature) => void
  *   onDeselectAllClick: () => void
  *   fallbackProperty?: string
  * }} props

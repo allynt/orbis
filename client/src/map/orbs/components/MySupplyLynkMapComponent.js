@@ -24,8 +24,8 @@ const MySupplyLynkMapComponent = ({ source, type }) => {
 
   /**
    * @type {[
-   *   import('typings/orbis').GeoJsonFeature | undefined,
-   *   React.Dispatch<import('typings/orbis').GeoJsonFeature | undefined>
+   *   import('typings').GeoJsonFeature | undefined,
+   *   React.Dispatch<import('typings').GeoJsonFeature | undefined>
    * ]}
    */
   const [dialogFeature, setDialogFeature] = React.useState();

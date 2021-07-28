@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
  *   onMouseEnter: () => void
  *   onMouseLeave: () => void
  *   isHovered?: boolean
- *   feature: import('typings/orbis').PolygonPickedMapFeature
+ *   feature: import('typings').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
  * }} props

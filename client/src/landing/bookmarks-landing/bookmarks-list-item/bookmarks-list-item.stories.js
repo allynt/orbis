@@ -18,7 +18,7 @@ const Template = args => <BookmarksListItem {...args} />;
 
 export const NoBookmark = Template.bind({});
 
-/** @type {import('typings/orbis').Bookmark} */
+/** @type {import('typings').Bookmark} */
 const bookmark = {
   id: faker.random.uuid(),
   title: faker.commerce.product(),

@@ -24,7 +24,7 @@ import { isValidDateString } from 'utils/dates';
  *    timestampFormat?: string,
  *    selectedTimestamp?: number
  *  },
- *  import('typings/orbis').PolygonPickedMapFeature
+ *  import('typings').PolygonPickedMapFeature
  * >}
  */
 export const PropertyTimeSeriesChart = ({

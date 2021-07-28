@@ -71,10 +71,10 @@ export const dateStringToDate = dateString => {
  *
  * If either startDate or endDate are not provided it will set it respective to
  * whichever is provided using daysDifference
- * @param {Partial<import('typings/orbis').DateRange<string>>} range
+ * @param {Partial<import('typings').DateRange<string>>} range
  */
 export const stringDateRangeToDateRange = (range, daysDifference = 30) => {
-  /** @type {import('typings/orbis').DateRange<Date>} */
+  /** @type {import('typings').DateRange<Date>} */
   let dateRep = {};
   const { startDate, endDate } = range;
   if (!startDate && !endDate) return undefined;

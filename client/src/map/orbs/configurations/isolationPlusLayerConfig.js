@@ -20,7 +20,7 @@ import {
   dataSelector,
 } from '../layers.slice';
 
-/** @typedef {import('typings/orbis').GeoJsonFeature<import('typings/orbis').IsoPlusCommonProperties>} AccessorFeature */
+/** @typedef {import('typings').IsoPlusCommonProperties>} AccessorFeature */
 
 export const COLOR_PRIMARY = [246, 190, 0, 255],
   COLOR_TRANSPARENT = [0, 0, 0, 0],
@@ -37,8 +37,8 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
   FILTER_SCALING_VALUE = 1000;
 
 /**
- * @param {import('typings/orbis').GeoJsonFeature} feature
- * @param {import('typings/orbis').Property} selectedProperty
+ * @param {import('typings').GeoJsonFeature} feature
+ * @param {import('typings').Property} selectedProperty
  * @param {number} [selectedTimestamp]
  */
 export const getValue = (feature, selectedProperty, selectedTimestamp) =>
@@ -53,7 +53,7 @@ export const getValue = (feature, selectedProperty, selectedTimestamp) =>
  * @param {{
  *   id: string
  *   data: GeoJSON.FeatureCollection
- *   activeSources?: import('typings/orbis').Source[]
+ *   activeSources?: import('typings').Source[]
  *   dispatch: import('redux').Dispatch
  *   orbState: import('../orbReducer').OrbState
  *   authToken?: string
@@ -167,7 +167,7 @@ const configuration = ({
   };
 
   /**
-   * @param {import('typings/orbis').PolygonPickedMapFeature} info
+   * @param {import('typings').PolygonPickedMapFeature} info
    * @param {{srcEvent: PointerEvent}} event
    */
   const onClick = (info, event) => {

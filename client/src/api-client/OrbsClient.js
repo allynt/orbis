@@ -5,7 +5,7 @@ export class OrbsClient extends SubClient {
     super('/orbs');
   }
 
-  /** @returns {Promise<import('typings/orbis').Orb[]>} */
+  /** @returns {Promise<import('typings').Orb[]>} */
   async getOrbs() {
     return (await this.makeAuthenticatedRequest('/')).json();
   }

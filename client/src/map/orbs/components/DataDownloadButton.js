@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 /**
- * @type {import('typings/orbis').SidebarComponent<{
+ * @type {import('typings').SidebarComponent<{
  *  url: string
  *  fileName?: string
  *  fileExtension?: string

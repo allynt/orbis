@@ -4,7 +4,7 @@ import { SectionLabel, SectionValue } from './styles';
 
 /**
  * @param {{
- *   licence: import('typings/orbis').SourceMetadata['licence']
+ *   licence: import('typings').SourceMetadata['licence']
  * }} props
  */
 export const Licence = ({ licence }) => (

@@ -5,8 +5,8 @@ import pinIconConfig from './pinIconConfig';
 
 /**
  * @param {{
- *   id: import('typings/orbis').Source['source_id']
- *   data: {features: import('typings/orbis').GeoJsonFeature[]}
+ *   id: import('typings').Source['source_id']
+ *   data: {features: import('typings').GeoJsonFeature[]}
  *   orbState: import('../orbReducer').OrbState
  *   filterType?: 'blacklist' | 'whitelist'
  *   filterProperty: string
