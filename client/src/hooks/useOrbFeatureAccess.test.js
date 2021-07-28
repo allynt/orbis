@@ -7,7 +7,6 @@ import thunk from 'redux-thunk';
 
 import { useOrbFeatureAccess } from './useOrbFeatureAccess';
 
-/** @type {import('redux-mock-store').MockStoreCreator<import('react-redux').DefaultRootState>} */
 const mockStore = createMockStore([thunk]);
 
 /** @type {import('typings').User["orbs"][]} */

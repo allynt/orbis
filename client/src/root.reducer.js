@@ -15,7 +15,6 @@ import orbs from './map/orbs/orbReducer';
 import missionControl from './mission-control/mission-control-slice';
 import satellites from './satellites/satellites.slice';
 import stories from './stories/stories.slice';
-import theming from './theming/theming.slice';
 
 export const history = createBrowserHistory();
 
@@ -33,10 +32,11 @@ const createRootReducer = history =>
     router: connectRouter(history),
     satellites,
     stories,
-    theming,
     missionControl,
   });
 
 const rootReducer = createRootReducer(history);
+
+/** @typedef {ReturnType<rootReducer>} RootState */
 
 export default rootReducer;

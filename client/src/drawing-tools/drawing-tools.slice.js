@@ -25,7 +25,7 @@ const drawingToolsSlice = createSlice({
 
 export const { removeFeaturesByIndex, setFeatures } = drawingToolsSlice.actions;
 
-/** @param {import('react-redux').DefaultRootState} state */
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state.drawingTools;
 
 export const drawingToolsFeatureCollectionSelector = createSelector(

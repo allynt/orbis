@@ -82,7 +82,7 @@ export const fetchSatelliteScenes = createAsyncThunk(
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  void,
  *  {name: string, description?: string},
- *  {rejectValue: {message: string}, state:import('react-redux').DefaultRootState }
+ *  {rejectValue: {message: string}, state:import('typings').RootState }
  * >}
  */
 export const saveImage = createAsyncThunk(
@@ -195,7 +195,7 @@ export const {
 } = satellitesSlice.actions;
 
 /**
- * @param {import('react-redux').DefaultRootState} state
+ * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.satellites;
 

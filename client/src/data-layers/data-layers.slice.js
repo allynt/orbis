@@ -40,7 +40,7 @@ const initialState = {
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  import('typings').Orb[],
  *  undefined,
- *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
+ *  {rejectValue: {message: string}, state: import('typings').RootState}
  * >}
  */
 export const fetchOrbs = createAsyncThunk(
@@ -238,7 +238,7 @@ export const logError = source => async (dispatch, getState) => {
 };
 
 /**
- * @param {import('react-redux').DefaultRootState} state
+ * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.data;
 
