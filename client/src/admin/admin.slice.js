@@ -5,6 +5,15 @@ import apiClient from 'api-client';
 
 import { USER_STATUS } from './admin.constants';
 
+/**
+ * @typedef AdminState
+ * @property {import('typings').Customer} [currentCustomer]
+ * @property {import('typings').CustomerUser[]} [customerUsers]
+ * @property {boolean} isLoading
+ * @property {{message: string}} [error]
+ */
+
+/** @type {AdminState} */
 const initialState = {
   currentCustomer: null,
   customerUsers: null,
@@ -345,6 +354,7 @@ export const inviteCustomerUser = customerUser => async (
 };
 
 /* === Selectors === */
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state.admin;
 export const selectCurrentCustomer = createSelector(
   baseSelector,
