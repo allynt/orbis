@@ -28,9 +28,9 @@ export const WithImages = args => (
 );
 
 const icons = [
-  <CogIcon color="primary" />,
-  <EyeIcon color="primary" />,
-  <PinIcon color="primary" />,
+  <CogIcon key="cog" color="primary" />,
+  <EyeIcon key="eye" color="primary" />,
+  <PinIcon key="pin" color="primary" />,
 ];
 
 export const WithIcons = args => (

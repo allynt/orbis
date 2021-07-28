@@ -1,4 +1,4 @@
-import { compareAsc, compareDesc, format } from 'date-fns';
+import { compareAsc, compareDesc } from 'date-fns';
 import * as yup from 'yup';
 import zxcvbn from 'zxcvbn';
 

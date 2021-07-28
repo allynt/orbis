@@ -104,6 +104,7 @@ export const CrowdlessSidebarComponent = ({
                     !results &&
                     Array(10)
                       .fill(undefined)
+                      // eslint-disable-next-line react/no-array-index-key
                       .map((_, i) => <ResultsListItem key={i} isLoading />)}
                   {results?.length
                     ? results.map((result, i) => (

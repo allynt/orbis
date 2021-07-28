@@ -70,7 +70,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should render a form', () => {
-    const { getByText, getByLabelText, getByPlaceholderText } = renderComponent(
+    const { getByText, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
@@ -123,7 +123,7 @@ describe('Password Reset Form Component', () => {
     );
   });
 
-  it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', async () => {
+  it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
     const { getByText, getByLabelText } = renderComponent(
       store,
       confirmResetPassword,
@@ -134,7 +134,7 @@ describe('Password Reset Form Component', () => {
 
     userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), 'te');
 
-    waitFor(async () => await userEvent.tab());
+    userEvent.tab();
 
     userEvent.click(getByText(RESET_BUTTON_TEXT));
     expect(confirmResetPassword).not.toHaveBeenCalled();

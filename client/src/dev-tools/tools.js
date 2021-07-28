@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
 import store from 'store';
 
-import FiltersTool from './features/filters.component';
 import StoriesTool from './features/stories.component';
 import styles from './tools.module.css';
 
