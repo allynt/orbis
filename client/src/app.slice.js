@@ -7,6 +7,30 @@ import { getJsonAuthHeaders } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
+/**
+ * @typedef AppState
+ * @property {Partial<{
+ *  trackingId: string,
+ *  mapbox_token: string,
+ *  passwordMinLength: number,
+ *  passwordMaxLength: number,
+ *  isRegistrationOpen: boolean,
+ *  isVerificationRequired: boolean,
+ *  isApprovalRequired: boolean,
+ *  maximumAoiArea: number,
+ *  dataIndexUrl: string,
+ *  commitSha: string,
+ *  geometrySet: {
+ *    name: string,
+ *    order: number
+ *  },
+ *  userTrackingInterval: number
+ * }>} config
+ * @property {{message: string}} [error]
+ * @property {any[]} trackingQueue
+ */
+
+/** @type {AppState} */
 const initialState = {
   config: {},
   error: null,
@@ -81,6 +105,7 @@ export const logUserTracking = () => async (dispatch, getState) => {
   }
 };
 
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state?.app;
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
