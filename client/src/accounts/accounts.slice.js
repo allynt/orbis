@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
@@ -44,21 +44,35 @@ const initialState = {
   changeStatus: status.NONE,
 };
 
+const name = 'accounts';
+
+export const registerUser = createAsyncThunk(
+  `${name}/registerUser`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  import('typings').PartialUser,
+   *  import('./register/customer/user-registration/user-registration.component').FormValues,
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (form, { dispatch, rejectWithValue }) => {
+    try {
+      const user = await apiClient.authentication.registerUser(form);
+      dispatch(push(RESEND));
+      return user;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
-  name: 'accounts',
+  name,
   initialState,
   reducers: {
     fetchRequested: state => {
       state.isLoading = true;
-    },
-    registerUserSuccess: (state, { payload }) => {
-      state.user = payload;
-      state.error = null;
-      state.isLoading = false;
-    },
-    registerUserFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
     },
     registerCustomerSuccess: state => {
       state.error = null;
@@ -158,11 +172,28 @@ const accountsSlice = createSlice({
       state.error = payload;
     },
   },
+  extraReducers: builder => {
+    builder
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
+      });
+    builder.addMatcher(
+      // @ts-ignore
+      action => action.type.endsWith('/pending'),
+      state => {
+        state.isLoading = true;
+      },
+    );
+  },
 });
 
 export const {
-  registerUserSuccess,
-  registerUserFailure,
   registerCustomerSuccess,
   registerCustomerFailure,
   placeOrderSuccess,
@@ -187,22 +218,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * @param {import('./register/customer/user-registration/user-registration.component').FormValues} form
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const registerUser = form => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    const user = await apiClient.authentication.registerUser(form);
-    dispatch(registerUserSuccess(user));
-    return dispatch(push(RESEND));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(registerUserFailure(errors));
-  }
-};
 
 /**
  * This creates a customer but also adds the current user as a CustomerUser

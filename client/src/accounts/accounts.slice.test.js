@@ -40,8 +40,6 @@ import reducer, {
   registerCustomerFailure,
   registerCustomerSuccess,
   registerUser,
-  registerUserFailure,
-  registerUserSuccess,
   resendVerificationEmail,
   resendVerificationEmailFailure,
   resendVerificationEmailSuccess,
@@ -88,18 +86,6 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: registerUserFailure.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
-        },
-      ];
-
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
@@ -108,19 +94,30 @@ describe('Accounts Slice', () => {
       };
       await store.dispatch(registerUser(form));
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: registerUser.rejected.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        }),
+      );
     });
 
     it('should dispatch register success action.', async () => {
       fetch.mockResponse(JSON.stringify({}));
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { payload: {}, type: registerUserSuccess.type },
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          payload: {},
+          type: registerUser.fulfilled.type,
+        }),
         {
           payload: { args: ['/accounts/resend'], method: 'push' },
           type: '@@router/CALL_HISTORY_METHOD',
         },
-      ];
+      ]);
 
       const form = {
         username: 'testusername',
@@ -282,6 +279,13 @@ describe('Accounts Slice', () => {
       });
     });
 
+    describe('pending actions', () => {
+      it('sets isLoading to true', () => {
+        const result = reducer({}, { type: 'someAction/pending' });
+        expect(result.isLoading).toBe(true);
+      });
+    });
+
     const setsIsLoadingToFalse = true,
       setsErrorToNull = true,
       setsUserToPayload = true,
@@ -291,8 +295,8 @@ describe('Accounts Slice', () => {
 
     describe.each`
       action                            | config
-      ${registerUserSuccess}            | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${registerUserFailure}            | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${registerUser.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${registerUser.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${registerCustomerSuccess}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${registerCustomerFailure}        | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${placeOrderSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
@@ -358,7 +362,9 @@ describe('Accounts Slice', () => {
 
         if (setsErrorToPayload) {
           it('sets error to payload', () => {
-            expect(reducer({}, action('123')).error).toBe('123');
+            expect(
+              reducer({}, { type: action.type, payload: '123' }).error,
+            ).toBe('123');
           });
         }
 

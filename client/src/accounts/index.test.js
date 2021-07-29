@@ -30,7 +30,6 @@ import {
   resendVerificationEmail,
   resendVerificationEmailSuccess,
   registerUser,
-  registerUserSuccess,
   resetPassword,
   resetPasswordSuccess,
   placeOrder,
@@ -105,7 +104,7 @@ describe('Accounts index', () => {
       );
     });
 
-    it(`dispatches ${registerUser.name} action when submitted`, async () => {
+    it(`dispatches ${registerUser.typePrefix} action when submitted`, async () => {
       const { getByRole, getByLabelText, store } = renderComponent([
         REGISTER_CUSTOMER_USER,
       ]);
@@ -125,7 +124,9 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('button', { name: /sign\sup/i }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
-          expect.arrayContaining([registerUserSuccess({})]),
+          expect.arrayContaining([
+            expect.objectContaining({ type: registerUser.fulfilled.type }),
+          ]),
         ),
       );
     });
