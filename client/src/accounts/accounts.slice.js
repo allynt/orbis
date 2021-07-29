@@ -171,24 +171,57 @@ export const activateAccount = createAsyncThunk(
   },
 );
 
+export const login = createAsyncThunk(
+  `${name}/login`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  {user: import('typings').User, userKey: string},
+   *  {
+   *    email: string;
+   *    password: string;
+   *    accepted_terms: boolean;
+   *  },
+   *  {rejectValue: {user: import('typings').PartialUser, errors: string[]}}
+   * >}
+   */
+  async (form, { rejectWithValue, dispatch }) => {
+    try {
+      const { token: userKey } = await apiClient.authentication.login(form);
+      apiClient.userKey = userKey;
+      const user = await apiClient.users.getCurrentUser();
+      switch (user.registration_stage) {
+        case 'CUSTOMER':
+        case 'CUSTOMER_USER':
+          dispatch(push(REGISTER_CUSTOMER));
+          break;
+        case 'ORDER':
+          dispatch(push(REGISTER_CUSTOMER_ORDER));
+          break;
+        default:
+          dispatch(push('/'));
+          break;
+      }
+      return { userKey, user };
+    } catch (error) {
+      /** @type {import('api-client').ResponseError<{user?: import('typings').PartialUser}>} */
+      const responseError = error;
+      const responseBody = await responseError.getBody();
+      if (responseBody.user?.is_verified === false) dispatch(push(RESEND));
+      const errors = await responseError.getErrors();
+      return rejectWithValue({
+        user: responseBody.user,
+        errors,
+      });
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
   reducers: {
     fetchRequested: state => {
       state.isLoading = true;
-    },
-    loginUserSuccess: (state, { payload }) => {
-      state.userKey = payload.userKey;
-      state.user = payload.user;
-      state.error = null;
-      state.isLoading = false;
-    },
-    loginUserFailure: (state, { payload }) => {
-      state.user = payload.user;
-      state.userKey = null;
-      state.error = payload.errors;
-      state.isLoading = false;
     },
     resendVerificationEmailSuccess: state => {
       state.error = null;
@@ -257,6 +290,19 @@ const accountsSlice = createSlice({
         state.userKey = null;
         state.isLoading = false;
       });
+    builder
+      .addCase(login.fulfilled, (state, { payload }) => {
+        state.userKey = payload.userKey;
+        state.user = payload.user;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(login.rejected, (state, { payload }) => {
+        state.user = payload.user;
+        state.userKey = null;
+        state.error = payload.errors;
+        state.isLoading = false;
+      });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -291,8 +337,6 @@ const accountsSlice = createSlice({
 });
 
 export const {
-  loginUserSuccess,
-  loginUserFailure,
   resendVerificationEmailSuccess,
   resendVerificationEmailFailure,
   updateUserSuccess,
@@ -307,37 +351,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-export const login = form => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    const { token: userKey } = await apiClient.authentication.login(form);
-    apiClient.userKey = userKey;
-    const user = await apiClient.users.getCurrentUser();
-    dispatch(loginUserSuccess({ userKey, user }));
-    switch (user.registration_stage) {
-      case 'CUSTOMER':
-      case 'CUSTOMER_USER':
-        return dispatch(push(REGISTER_CUSTOMER));
-      case 'ORDER':
-        return dispatch(push(REGISTER_CUSTOMER_ORDER));
-      default:
-        return dispatch(push('/'));
-    }
-  } catch (error) {
-    /** @type {import('api-client').ResponseError<{user?: import('typings').PartialUser}>} */
-    const responseError = error;
-    const responseBody = await responseError.getBody();
-    if (responseBody.user?.is_verified === false) dispatch(push(RESEND));
-    const errors = await responseError.getErrors();
-    return dispatch(
-      loginUserFailure({
-        user: responseBody.user,
-        errors,
-      }),
-    );
-  }
-};
 
 /**
  * @param {import('typings').User['email']} email

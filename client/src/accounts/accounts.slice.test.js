@@ -22,8 +22,6 @@ import reducer, {
   fetchRequested,
   fetchCurrentUser,
   login,
-  loginUserFailure,
-  loginUserSuccess,
   logout,
   logoutUserFailure,
   logoutUserSuccess,
@@ -291,8 +289,8 @@ describe('Accounts Slice', () => {
       ${registerCustomer.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${placeOrder.fulfilled}           | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${placeOrder.rejected}            | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${loginUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
-      ${loginUserFailure}               | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
+      ${login.fulfilled}                | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
+      ${login.rejected}                 | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
       ${resendVerificationEmailSuccess} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${resendVerificationEmailFailure} | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${fetchCurrentUser.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
@@ -324,9 +322,9 @@ describe('Accounts Slice', () => {
       }) => {
         if (setsIsLoadingToFalse) {
           it('sets isLoading to false', () => {
-            expect(reducer({ isLoading: true }, action({}))).toEqual(
-              expect.objectContaining({ isLoading: false }),
-            );
+            expect(
+              reducer({ isLoading: true }, { type: action.type, payload: {} }),
+            ).toEqual(expect.objectContaining({ isLoading: false }));
           });
         }
 
@@ -346,7 +344,9 @@ describe('Accounts Slice', () => {
         if (setsUserToPayloadUser) {
           it('sets user to payload.user', () => {
             const user = { name: 'Test User' };
-            expect(reducer({}, action({ user })).user).toEqual(user);
+            expect(
+              reducer({}, { type: action.type, payload: { user } }).user,
+            ).toEqual(user);
           });
         }
 
@@ -360,26 +360,33 @@ describe('Accounts Slice', () => {
 
         if (setsUserKeyToNull) {
           it('sets userKey to null', () => {
-            expect(reducer({ userKey: '123' }, action({})).userKey).toBeNull();
+            expect(
+              reducer({ userKey: '123' }, { type: action.type, payload: {} })
+                .userKey,
+            ).toBeNull();
           });
         }
       },
     );
 
-    describe(`${loginUserSuccess}`, () => {
+    describe(`${login.fulfilled.type}`, () => {
       it('sets userKey to payload.userKey', () => {
         expect(
-          reducer({}, loginUserSuccess({ userKey: '123' })).userKey,
+          reducer(
+            {},
+            { type: login.fulfilled.type, payload: { userKey: '123' } },
+          ).userKey,
         ).toEqual('123');
       });
     });
 
-    describe(`${loginUserFailure}`, () => {
+    describe(`${login.rejected.type}`, () => {
       it('sets error to payload.errors', () => {
         const error = 'This is an error';
-        expect(reducer({}, loginUserFailure({ errors: error })).error).toEqual(
-          error,
-        );
+        expect(
+          reducer({}, { type: login.rejected.type, payload: { errors: error } })
+            .error,
+        ).toEqual(error);
       });
     });
 
@@ -725,17 +732,8 @@ describe('Accounts Slice', () => {
         errors: { test: ['Foobar'] },
       };
 
-      it('starts the request', async () => {
-        fetch
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('shows the resend email view if the user is not verified', async () => {
         fetch.once(JSON.stringify(loginReponseUserNotVerified), {
-          ok: false,
           status: 418,
           statusText: 'Error',
         });
@@ -745,15 +743,17 @@ describe('Accounts Slice', () => {
 
       it('dispatches the failure action if the login request fails', async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 418,
           statusText: 'Error',
         });
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure({
-            ...errorResponse,
-            errors: errorResponse.errors.test,
+          expect.objectContaining({
+            type: login.rejected.type,
+            payload: {
+              ...errorResponse,
+              errors: errorResponse.errors.test,
+            },
           }),
         );
       });
@@ -764,9 +764,12 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(getUserResponse));
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserSuccess({
-            userKey: loginResponse.token,
-            user: getUserResponse,
+          expect.objectContaining({
+            type: login.fulfilled.type,
+            payload: {
+              userKey: loginResponse.token,
+              user: getUserResponse,
+            },
           }),
         );
       });
@@ -774,12 +777,15 @@ describe('Accounts Slice', () => {
       it('dispatches the failure action if the get user request fails', async () => {
         fetch
           .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(errorResponse), { ok: false, status: 418 });
+          .once(JSON.stringify(errorResponse), { status: 418 });
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure(
-            expect.objectContaining({ errors: errorResponse.errors.test }),
-          ),
+          expect.objectContaining({
+            type: login.rejected.type,
+            payload: expect.objectContaining({
+              errors: errorResponse.errors.test,
+            }),
+          }),
         );
       });
 

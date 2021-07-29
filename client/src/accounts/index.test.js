@@ -177,16 +177,14 @@ describe('Accounts index', () => {
       expect(history.location.pathname).toBe('/');
     });
 
-    it(`dispatches ${login.name} action when submitted`, async () => {
+    it(`dispatches ${login.fulfilled.type} action when submitted`, async () => {
       const { getByRole, getByLabelText, store } = renderComponent([LOGIN]);
       userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
       userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.click(getByRole('button', { name: /login/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([
-            loginUserSuccess(expect.objectContaining({})),
-          ]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: login.fulfilled.type }),
         ),
       );
     });
