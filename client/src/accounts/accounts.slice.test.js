@@ -23,8 +23,6 @@ import reducer, {
   confirmResetPassword,
   fetchRequested,
   fetchCurrentUser,
-  fetchUserFailure,
-  fetchUserSuccess,
   login,
   loginUserFailure,
   loginUserSuccess,
@@ -142,33 +140,31 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: fetchUserFailure.type,
+      await store.dispatch(fetchCurrentUser());
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: fetchCurrentUser.rejected.type,
           payload: [
             'First error relating to failed request.',
             'Second error relating to failed request.',
             'Third error relating to failed request.',
           ],
-        },
-      ];
-
-      await store.dispatch(fetchCurrentUser());
-
-      expect(store.getActions()).toEqual(expectedActions);
+        }),
+      );
     });
 
     it('should dispatch fetch user success action.', async () => {
       const user = { username: 'testusername', email: 'testusername@test.com' };
       fetch.mockResponse(JSON.stringify(user));
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: fetchUserSuccess.type, payload: user },
-      ];
 
       await store.dispatch(fetchCurrentUser());
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: fetchCurrentUser.fulfilled.type,
+          payload: user,
+        }),
+      );
     });
 
     it('should dispatch logout failure action.', async () => {
@@ -305,8 +301,8 @@ describe('Accounts Slice', () => {
       ${loginUserFailure}               | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
       ${resendVerificationEmailSuccess} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${resendVerificationEmailFailure} | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${fetchUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${fetchUserFailure}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${fetchCurrentUser.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${fetchCurrentUser.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${updateUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
       ${updateUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${logoutUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
@@ -540,7 +536,10 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          fetchUserSuccess(fetchUserResponse),
+          expect.objectContaining({
+            type: registerCustomerSuccess.type,
+            payload: fetchUserResponse,
+          }),
         );
       });
 
@@ -550,7 +549,9 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(registerCustomerSuccess());
+        expect(dispatch).toHaveBeenCalledWith(
+          registerCustomerSuccess(expect.anything()),
+        );
       });
 
       it('navigates to order view', async () => {

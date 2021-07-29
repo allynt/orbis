@@ -67,6 +67,26 @@ export const registerUser = createAsyncThunk(
   },
 );
 
+export const fetchCurrentUser = createAsyncThunk(
+  `${name}/fetchCurrentUser`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  import('typings').User,
+   *  undefined,
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await apiClient.users.getCurrentUser();
+      return user;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
@@ -74,9 +94,10 @@ const accountsSlice = createSlice({
     fetchRequested: state => {
       state.isLoading = true;
     },
-    registerCustomerSuccess: state => {
+    registerCustomerSuccess: (state, { payload }) => {
       state.error = null;
       state.isLoading = false;
+      state.user = payload;
     },
     registerCustomerFailure: (state, { payload }) => {
       state.isLoading = false;
@@ -107,15 +128,6 @@ const accountsSlice = createSlice({
       state.isLoading = false;
     },
     resendVerificationEmailFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
-    },
-    fetchUserSuccess: (state, { payload }) => {
-      state.user = payload;
-      state.error = null;
-      state.isLoading = false;
-    },
-    fetchUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -183,6 +195,16 @@ const accountsSlice = createSlice({
         state.error = payload;
         state.isLoading = false;
       });
+    builder
+      .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
+        state.user = payload;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
+      });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -202,8 +224,6 @@ export const {
   loginUserFailure,
   resendVerificationEmailSuccess,
   resendVerificationEmailFailure,
-  fetchUserSuccess,
-  fetchUserFailure,
   updateUserSuccess,
   updateUserFailure,
   logoutUserSuccess,
@@ -246,8 +266,7 @@ export const registerCustomer = form => async dispatch => {
     );
     dispatch(createCustomerUserSuccess({ user: customerUser }));
     const user = await apiClient.users.getCurrentUser();
-    dispatch(fetchUserSuccess(user));
-    dispatch(registerCustomerSuccess());
+    dispatch(registerCustomerSuccess(user));
     return dispatch(push(REGISTER_CUSTOMER_ORDER));
   } catch (responseError) {
     const errors = await responseError.getErrors();
@@ -288,17 +307,6 @@ export const activateAccount = form => async dispatch => {
   } catch (responseError) {
     const errors = await responseError.getErrors();
     return dispatch(activateAccountFailure(errors));
-  }
-};
-
-export const fetchCurrentUser = () => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    const user = await apiClient.users.getCurrentUser();
-    return dispatch(fetchUserSuccess(user));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(fetchUserFailure(errors));
   }
 };
 

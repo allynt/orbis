@@ -89,8 +89,8 @@ describe('Accounts index', () => {
       );
       userEvent.click(getByRole('button', { name: /next/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([registerCustomerSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: registerCustomerSuccess.type }),
         ),
       );
     });
