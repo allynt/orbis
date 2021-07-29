@@ -32,8 +32,6 @@ import reducer, {
   passwordResetRequestedFailure,
   passwordResetRequestedSuccess,
   placeOrder,
-  placeOrderFailure,
-  placeOrderSuccess,
   registerCustomer,
   registerUser,
   resendVerificationEmail,
@@ -293,8 +291,8 @@ describe('Accounts Slice', () => {
       ${registerUser.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${registerCustomer.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${registerCustomer.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${placeOrderSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${placeOrderFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${placeOrder.fulfilled}           | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${placeOrder.rejected}            | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${loginUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
       ${loginUserFailure}               | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
       ${resendVerificationEmailSuccess} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
@@ -617,17 +615,13 @@ describe('Accounts Slice', () => {
         },
       };
 
-      it('starts the request', async () => {
-        fetch.mockResponse(JSON.stringify({}));
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('calls the success action on successful request', async () => {
         fetch.once(JSON.stringify(placeOrderResponseBody));
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(placeOrderSuccess());
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({ type: placeOrder.fulfilled.type }),
+        );
       });
 
       it('navigates to landing on success', async () => {
@@ -645,7 +639,10 @@ describe('Accounts Slice', () => {
         });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure(failureResponseBody.errors.test),
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+            payload: failureResponseBody.errors.test,
+          }),
         );
       });
 
@@ -669,7 +666,10 @@ describe('Accounts Slice', () => {
           });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure(failureResponseBody.errors.test),
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+            payload: failureResponseBody.errors.test,
+          }),
         );
       });
 

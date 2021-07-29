@@ -125,20 +125,38 @@ export const registerCustomer = createAsyncThunk(
   },
 );
 
+export const placeOrder = createAsyncThunk(
+  `${name}/placeOrder`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  void,
+   *  import('./register/customer/order-form/order-form.component').FormValues,
+   *  {rejectValue: string[], state: import('typings').RootState}
+   * >}
+   */
+  async (form, { dispatch, getState, rejectWithValue }) => {
+    const currentCustomerId =
+      selectCurrentCustomer(getState())?.id ||
+      userSelector(getState())?.customers[0]?.id;
+    try {
+      await apiClient.customers.placeOrder(currentCustomerId, form);
+      const customer = await apiClient.customers.getCustomer(currentCustomerId);
+      dispatch(setCurrentCustomer(customer));
+      dispatch(push('/'));
+      return;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
   reducers: {
     fetchRequested: state => {
       state.isLoading = true;
-    },
-    placeOrderSuccess: state => {
-      state.error = null;
-      state.isLoading = false;
-    },
-    placeOrderFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
     },
     loginUserSuccess: (state, { payload }) => {
       state.userKey = payload.userKey;
@@ -214,6 +232,10 @@ const accountsSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    builder.addCase(placeOrder.fulfilled, state => {
+      state.error = null;
+      state.isLoading = false;
+    });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -236,7 +258,7 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser, registerCustomer]
+        [registerUser, fetchCurrentUser, registerCustomer, placeOrder]
           .map(action => action.rejected.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -248,8 +270,6 @@ const accountsSlice = createSlice({
 });
 
 export const {
-  placeOrderSuccess,
-  placeOrderFailure,
   loginUserSuccess,
   loginUserFailure,
   resendVerificationEmailSuccess,
@@ -268,27 +288,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * @param {import('./register/customer/order-form/order-form.component').FormValues} form
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const placeOrder = form => async (dispatch, getState) => {
-  dispatch(fetchRequested());
-  const currentCustomerId =
-    selectCurrentCustomer(getState())?.id ||
-    userSelector(getState())?.customers[0]?.id;
-  try {
-    await apiClient.customers.placeOrder(currentCustomerId, form);
-    const customer = await apiClient.customers.getCustomer(currentCustomerId);
-    dispatch(setCurrentCustomer(customer));
-    dispatch(placeOrderSuccess());
-    dispatch(push('/'));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(placeOrderFailure(errors));
-  }
-};
 
 /**
  * @param {{key: string}} form

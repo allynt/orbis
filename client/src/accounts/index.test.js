@@ -144,8 +144,8 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('checkbox'));
       userEvent.click(getByRole('button'));
       await waitFor(() => {
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([placeOrderSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: placeOrder.fulfilled.type }),
         );
       });
     });
