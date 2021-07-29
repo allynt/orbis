@@ -185,31 +185,34 @@ const accountsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        state.user = payload;
-        state.error = null;
-        state.isLoading = false;
-      })
-      .addCase(registerUser.rejected, (state, { payload }) => {
-        state.error = payload;
-        state.isLoading = false;
-      });
-    builder
-      .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
-        state.user = payload;
-        state.error = null;
-        state.isLoading = false;
-      })
-      .addCase(fetchCurrentUser.rejected, (state, { payload }) => {
-        state.error = payload;
-        state.isLoading = false;
-      });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
       state => {
         state.isLoading = true;
+      },
+    );
+    builder.addMatcher(
+      // @ts-ignore
+      action =>
+        [registerUser, fetchCurrentUser]
+          .map(action => action.fulfilled.type)
+          .includes(action.type),
+      (state, { payload }) => {
+        state.user = payload;
+        state.error = null;
+        state.isLoading = false;
+      },
+    );
+    builder.addMatcher(
+      // @ts-ignore
+      action =>
+        [registerUser, fetchCurrentUser]
+          .map(action => action.rejected.type)
+          .includes(action.type),
+      (state, { payload }) => {
+        state.error = payload;
+        state.isLoading = false;
       },
     );
   },
