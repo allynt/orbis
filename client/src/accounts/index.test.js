@@ -26,7 +26,6 @@ import {
   confirmResetPassword,
   passwordResetRequestedSuccess,
   registerCustomer,
-  registerCustomerSuccess,
   resendVerificationEmail,
   resendVerificationEmailSuccess,
   registerUser,
@@ -90,7 +89,7 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('button', { name: /next/i }));
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
-          expect.objectContaining({ type: registerCustomerSuccess.type }),
+          expect.objectContaining({ type: registerCustomer.fulfilled.type }),
         ),
       );
     });

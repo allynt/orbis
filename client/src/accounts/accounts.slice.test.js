@@ -35,8 +35,6 @@ import reducer, {
   placeOrderFailure,
   placeOrderSuccess,
   registerCustomer,
-  registerCustomerFailure,
-  registerCustomerSuccess,
   registerUser,
   resendVerificationEmail,
   resendVerificationEmailFailure,
@@ -293,8 +291,8 @@ describe('Accounts Slice', () => {
       action                            | config
       ${registerUser.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
       ${registerUser.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${registerCustomerSuccess}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${registerCustomerFailure}        | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${registerCustomer.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${registerCustomer.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${placeOrderSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
       ${placeOrderFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${loginUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
@@ -475,12 +473,6 @@ describe('Accounts Slice', () => {
       };
       const errorResponse = { errors: { test: ['problem'] } };
 
-      it('starts the request', async () => {
-        fetch.mockResponse(JSON.stringify({}));
-        await registerCustomer(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('creates new customer and sets in state', async () => {
         fetch
           .once(JSON.stringify(createCustomerResponse))
@@ -500,7 +492,7 @@ describe('Accounts Slice', () => {
         });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(['problem']),
+          expect.objectContaining({ type: registerCustomer.rejected.type }),
         );
       });
 
@@ -525,7 +517,10 @@ describe('Accounts Slice', () => {
           });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: registerCustomer.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
@@ -537,7 +532,7 @@ describe('Accounts Slice', () => {
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
-            type: registerCustomerSuccess.type,
+            type: registerCustomer.fulfilled.type,
             payload: fetchUserResponse,
           }),
         );
@@ -550,7 +545,9 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerSuccess(expect.anything()),
+          expect.objectContaining({
+            type: registerCustomer.fulfilled.type,
+          }),
         );
       });
 
@@ -574,7 +571,10 @@ describe('Accounts Slice', () => {
           });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: registerCustomer.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
     });

@@ -72,7 +72,7 @@ export const fetchCurrentUser = createAsyncThunk(
   /**
    * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
    *  import('typings').User,
-   *  undefined,
+   *  void,
    *  {rejectValue: string[]}
    * >}
    */
@@ -87,21 +87,50 @@ export const fetchCurrentUser = createAsyncThunk(
   },
 );
 
+export const registerCustomer = createAsyncThunk(
+  `${name}/registerCustomer`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  import('typings').User,
+   *  import('./register/customer/customer-registration/customer-registration.component').FormValues,
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (form, { dispatch, rejectWithValue }) => {
+    try {
+      const customer = await apiClient.customers.createCustomer({
+        ...form,
+        type: 'MULTIPLE',
+      });
+      dispatch(setCurrentCustomer(customer));
+      const customerUser = await apiClient.customers.createCustomerUser(
+        customer.id,
+        {
+          type: 'MANAGER',
+          status: 'ACTIVE',
+          user: {
+            email: form.email,
+          },
+          licences: [],
+        },
+      );
+      dispatch(createCustomerUserSuccess({ user: customerUser }));
+      const user = await apiClient.users.getCurrentUser();
+      dispatch(push(REGISTER_CUSTOMER_ORDER));
+      return user;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
   reducers: {
     fetchRequested: state => {
       state.isLoading = true;
-    },
-    registerCustomerSuccess: (state, { payload }) => {
-      state.error = null;
-      state.isLoading = false;
-      state.user = payload;
-    },
-    registerCustomerFailure: (state, { payload }) => {
-      state.isLoading = false;
-      state.error = payload;
     },
     placeOrderSuccess: state => {
       state.error = null;
@@ -195,7 +224,7 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser]
+        [registerUser, fetchCurrentUser, registerCustomer]
           .map(action => action.fulfilled.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -207,7 +236,7 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser]
+        [registerUser, fetchCurrentUser, registerCustomer]
           .map(action => action.rejected.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -219,8 +248,6 @@ const accountsSlice = createSlice({
 });
 
 export const {
-  registerCustomerSuccess,
-  registerCustomerFailure,
   placeOrderSuccess,
   placeOrderFailure,
   loginUserSuccess,
@@ -241,41 +268,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * This creates a customer but also adds the current user as a CustomerUser
- *
- * @param {import('./register/customer/customer-registration/customer-registration.component').FormValues} form
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const registerCustomer = form => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    const customer = await apiClient.customers.createCustomer({
-      ...form,
-      type: 'MULTIPLE',
-    });
-    dispatch(setCurrentCustomer(customer));
-    const customerUser = await apiClient.customers.createCustomerUser(
-      customer.id,
-      {
-        type: 'MANAGER',
-        status: 'ACTIVE',
-        user: {
-          email: form.email,
-        },
-        licences: [],
-      },
-    );
-    dispatch(createCustomerUserSuccess({ user: customerUser }));
-    const user = await apiClient.users.getCurrentUser();
-    dispatch(registerCustomerSuccess(user));
-    return dispatch(push(REGISTER_CUSTOMER_ORDER));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(registerCustomerFailure(errors));
-  }
-};
 
 /**
  * @param {import('./register/customer/order-form/order-form.component').FormValues} form
