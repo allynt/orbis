@@ -42,86 +42,17 @@
   {
     "model": "satellites.satellite",
     "fields": {
-      "satellite_id": "sentinel-1",
-      "title": "Sentinel-1",
-      "description": "Some text describing the Sentinel-1 satellite.",
-      "order": 1,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
       "satellite_id": "sentinel-2",
+      "adapter_name": "sentinel-2",
       "title": "Sentinel 2",
       "description": "Some text describing the Sentinel-2 satellite.",
-      "order": 2,
+      "order": 1,
       "visualisations": [
         ["TCI"],
         ["false-color"],
         ["false-color-urban"],
         ["ndvi"]
       ]
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "sentinel-3",
-      "title": "Sentinel 3",
-      "description": "Some text describing the Sentinel-3 satellite.",
-      "order": 3,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "landsat",
-      "title": "Landsat",
-      "description": "Some text describing the Landsat satellite.",
-      "order": 4,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "envisat-meris",
-      "title": "Envisat Meris",
-      "description": "Some text describing the Envisat Meris satellite.",
-      "order": 5,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "modis",
-      "title": "MODIS",
-      "description": "Some text describing the MODIS satellite",
-      "order": 6,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "proba-v",
-      "title": "Proba-V",
-      "description": "Some text describing the Proba-V satellite",
-      "order": 7,
-      "visualisations": []
-    }
-  },
-  {
-    "model": "satellites.satellite",
-    "fields": {
-      "satellite_id": "gibs",
-      "title": "GIBS",
-      "description": "Some text describing the GIBS satellite",
-      "order": 8,
-      "visualisations": []
     }
   }
 ]
