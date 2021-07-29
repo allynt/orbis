@@ -15,8 +15,6 @@ import {
 } from './accounts.constants';
 import reducer, {
   activateAccount,
-  activateAccountFailure,
-  activateAccountSuccess,
   changePassword,
   changePasswordFailure,
   changePasswordSuccess,
@@ -303,8 +301,8 @@ describe('Accounts Slice', () => {
       ${updateUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${logoutUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
       ${logoutUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${activateAccountSuccess}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
-      ${activateAccountFailure}         | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
+      ${activateAccount.fulfilled}      | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
+      ${activateAccount.rejected}       | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
       ${changePasswordSuccess}          | ${{ setsErrorToNull }}
       ${changePasswordFailure}          | ${{ setsErrorToPayload }}
       ${resetPasswordSuccess}           | ${{ setsErrorToNull }}
@@ -811,13 +809,7 @@ describe('Accounts Slice', () => {
     });
 
     describe('activateAccount', () => {
-      it('dispatches fetchRequested action', async () => {
-        fetch.once(JSON.stringify({}));
-        await activateAccount({})(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
-      it(`dispatches ${activateAccountFailure} if the response is not ok`, async () => {
+      it(`dispatches ${activateAccount.rejected.type} if the response is not ok`, async () => {
         fetch.once(
           JSON.stringify({
             errors: {
@@ -828,15 +820,23 @@ describe('Accounts Slice', () => {
         );
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          activateAccountFailure(['¿problema?']),
+          expect.objectContaining({
+            type: activateAccount.rejected.type,
+            payload: ['¿problema?'],
+          }),
         );
       });
 
-      it(`dispatches ${activateAccountSuccess} on successful activation`, async () => {
+      it(`dispatches ${activateAccount.fulfilled.type} on successful activation`, async () => {
         const user = { name: 'Test User' };
         fetch.once(JSON.stringify({ user }));
         await activateAccount({})(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(activateAccountSuccess({ user }));
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: activateAccount.fulfilled.type,
+            payload: { user },
+          }),
+        );
       });
     });
 

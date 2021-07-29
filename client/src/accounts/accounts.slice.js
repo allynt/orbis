@@ -151,6 +151,26 @@ export const placeOrder = createAsyncThunk(
   },
 );
 
+export const activateAccount = createAsyncThunk(
+  `${name}/activateAccount`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  {user: import('typings').User},
+   *  {key: string},
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (form, { rejectWithValue }) => {
+    try {
+      const { user } = await apiClient.authentication.verifyEmail(form);
+      return { user };
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
@@ -197,17 +217,6 @@ const accountsSlice = createSlice({
       state.error = payload;
       state.isLoading = false;
     },
-    activateAccountSuccess: (state, { payload }) => {
-      state.user = payload.user;
-      state.userKey = null;
-      state.error = null;
-      state.isLoading = false;
-    },
-    activateAccountFailure: (state, { payload }) => {
-      state.error = payload;
-      state.userKey = null;
-      state.isLoading = false;
-    },
     changePasswordSuccess: state => {
       state.changeStatus = status.PENDING;
       state.error = null;
@@ -236,6 +245,18 @@ const accountsSlice = createSlice({
       state.error = null;
       state.isLoading = false;
     });
+    builder
+      .addCase(activateAccount.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
+        state.userKey = null;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(activateAccount.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.userKey = null;
+        state.isLoading = false;
+      });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -278,8 +299,6 @@ export const {
   updateUserFailure,
   logoutUserSuccess,
   logoutUserFailure,
-  activateAccountSuccess,
-  activateAccountFailure,
   changePasswordSuccess,
   changePasswordFailure,
   resetPasswordSuccess,
@@ -288,21 +307,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * @param {{key: string}} form
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const activateAccount = form => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    const { user } = await apiClient.authentication.verifyEmail(form);
-    return dispatch(activateAccountSuccess({ user }));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(activateAccountFailure(errors));
-  }
-};
 
 export const login = form => async dispatch => {
   dispatch(fetchRequested());

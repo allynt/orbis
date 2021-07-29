@@ -32,7 +32,6 @@ import {
   resetPassword,
   resetPasswordSuccess,
   placeOrder,
-  placeOrderSuccess,
   login,
   loginUserSuccess,
 } from './accounts.slice';
