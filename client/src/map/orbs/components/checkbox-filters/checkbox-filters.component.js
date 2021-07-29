@@ -43,10 +43,10 @@ const isPropertyOff = (filters, property) => {
 };
 
 /**
- * @type {import('typings/orbis').SidebarComponent<{
+ * @type {import('typings').SidebarComponent<{
  *   filters: {value: any, label?: string, icon?: string}[]
  *   color?: string
- *   colorMap?: import('typings/orbis').ColorMap
+ *   colorMap?: import('typings').ColorMap
  *   iconColor?: string
  * }>}
  */

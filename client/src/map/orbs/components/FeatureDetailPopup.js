@@ -14,18 +14,18 @@ import {
 
 /**
  * @param {{
- * source: import('typings/orbis').Source
+ * source: import('typings').Source
  * }} props
  */
 const FeatureDetailPopup = ({ source }) => {
   const dispatch = useDispatch();
 
-  /** @type {import('typings/orbis').GeoJsonFeature[]} */
+  /** @type {import('typings').GeoJsonFeature[]} */
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
 
-  /** @type {import('typings/orbis').GeoJsonFeature[]} */
+  /** @type {import('typings').GeoJsonFeature[]} */
   const hoveredFeatures = useSelector(state =>
     hoveredFeaturesSelector(source?.source_id)(state?.orbs),
   );

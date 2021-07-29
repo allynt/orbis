@@ -84,7 +84,7 @@ export const useSatellitesLayers = () => {
   /**
    * @type {GeoJsonLayer<import('@turf/turf').Feature<
    *  import('@turf/turf').Geometry,
-   *  import('typings/satellites').Scene
+   *  import('typings').Scene
    * >>}
    */
   const scenesLayer = new GeoJsonLayer({

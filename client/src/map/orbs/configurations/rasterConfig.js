@@ -3,7 +3,7 @@ import { find } from 'lodash';
 import { dataSelector, visibilitySelector } from '../layers.slice';
 
 /**
- * @type {import('typings/orbis').LayerConfiguration}
+ * @type {import('typings').LayerConfiguration}
  */
 export default ({ id, activeSources, authToken, orbState }) => {
   const source = find(activeSources, { source_id: id });

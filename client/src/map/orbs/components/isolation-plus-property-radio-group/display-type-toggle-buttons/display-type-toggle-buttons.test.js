@@ -6,8 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { DisplayTypeToggleButtons } from './display-type-toggle-buttons.component';
 
 /**
- * @param {Partial<import('typings/orbis').Property>[]} properties
- * @param {Partial<import('typings/orbis').Property>} selectedProperty
+ * @param {Partial<import('typings').Property>[]} properties
+ * @param {Partial<import('typings').Property>} selectedProperty
  * @returns
  */
 const renderComponent = (properties, selectedProperty = {}) => {

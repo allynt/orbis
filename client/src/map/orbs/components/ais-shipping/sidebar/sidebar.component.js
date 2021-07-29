@@ -50,7 +50,7 @@ export const AisShippingSidebarComponent = ({
       </Grid>
       <Fade in={visible} unmountOnExit>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} container justify="center">
+          <Grid item xs={12} container justifyContent="center">
             <Button size="small" onClick={() => !isLoading && onFindClick()}>
               {isLoading ? (
                 <CircularProgress
@@ -75,6 +75,7 @@ export const AisShippingSidebarComponent = ({
                     !results &&
                     Array(10)
                       .fill(undefined)
+                      // eslint-disable-next-line react/no-array-index-key
                       .map((_, i) => <ResultsListItem key={i} isLoading />)}
                   {results?.length
                     ? results.map((result, i) => (
@@ -93,7 +94,7 @@ export const AisShippingSidebarComponent = ({
                 </List>
               </Grid>
               {pages > 1 ? (
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Pagination
                     hideNextButton
                     hidePrevButton

@@ -67,8 +67,8 @@ const boolObjectForIdArray = (array, searchArray) =>
 
 export const transform = {
   /**
-   * @param {Partial<import('typings/satellites').SavedSearch>} search
-   * @param {import('typings/satellites').Satellite[]} satellites
+   * @param {Partial<import('typings').SavedSearch>} search
+   * @param {import('typings').Satellite[]} satellites
    */
   toForm: (search, satellites) => ({
     satellites: boolObjectForIdArray(satellites, search?.satellites),
@@ -132,12 +132,12 @@ export const validationSchema = yup.object({
 
 /**
  * @param {{
- *  satellites: import('typings/satellites').Satellite[],
+ *  satellites: import('typings').Satellite[],
  *  aoi?: number[][]
  *  aoiTooLarge?: boolean
- *  currentSearch?: Partial<import('typings/satellites').SavedSearch>
+ *  currentSearch?: Partial<import('typings').SavedSearch>
  *  onSubmit: (search: Pick<
- *                      import('typings/satellites').SavedSearch,
+ *                      import('typings').SavedSearch,
  *                      'satellites' | 'start_date' | 'end_date'
  *                    >) => void
  *  onInfoClick: (info: {type: string, data: any}) => void
@@ -171,7 +171,7 @@ const SearchForm = ({
     onInfoClick(info);
   };
 
-  /** @param {import('typings/orbis').DateRange<Date>} range */
+  /** @param {import('typings').DateRange<Date>} range */
   const handleDateRangePickerApply = range => {
     setValue('startDate', formatDate(range.startDate), {
       shouldValidate: true,

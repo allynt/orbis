@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { userSelector } from 'accounts/accounts.selectors';
 /**
  *
- * @param {import('typings/orbis').FeatureKey[]} featureKeysToSearch
- * @param {import('typings/orbis').FeatureKey} featureKeyToFind
+ * @param {import('typings').FeatureKey[]} featureKeysToSearch
+ * @param {import('typings').FeatureKey} featureKeyToFind
  * @returns {boolean}
  */
 const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
@@ -12,9 +12,9 @@ const hasFeatureKey = (featureKeysToSearch, featureKeyToFind) =>
 
 /**
  * Check whether the current user has access to features provided by an Orb
- * @param {import('typings/orbis').FeatureKey | import('typings/orbis').FeatureKey[]} arg
+ * @param {import('typings').FeatureKey[]} arg
  * The key or keys of features to check
- * @returns {boolean | Record<import('typings/orbis').FeatureKey, boolean>}
+ * @returns {boolean | Record<import('typings').FeatureKey, boolean>}
  * If a single key is provided, will return a single boolean if the user has access.
  * If multiple keys are provided, will return an object with a boolean for each key
  */

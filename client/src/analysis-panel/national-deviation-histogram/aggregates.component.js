@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  aggregates: import('typings/orbis').ContinuousProperty['aggregates']
+ *  aggregates: import('typings').ContinuousProperty['aggregates']
  *  aggregationLabel: string
  * }} props
  */

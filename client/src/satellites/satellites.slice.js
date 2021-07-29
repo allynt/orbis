@@ -14,11 +14,11 @@ import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
 /**
  * @typedef SatellitesState
  * ==== Fetched or selected ====
- * @property {import('typings/satellites').Satellite[]} [satellites]
- * @property {import('typings/satellites').Scene[]} [scenes]
- * @property {import('typings/satellites').Scene} [hoveredScene]
- * @property {import('typings/satellites').Scene} [selectedScene]
- * @property {Partial<import('typings/satellites').SavedSearch>} [currentSearchQuery]
+ * @property {import('typings').Satellite[]} [satellites]
+ * @property {import('typings').Scene[]} [scenes]
+ * @property {import('typings').Scene} [hoveredScene]
+ * @property {import('typings').Scene} [selectedScene]
+ * @property {Partial<import('typings').SavedSearch>} [currentSearchQuery]
  * @property {'TCI'} [visualisationId]
  * @property {number[][]} [aoi]
  * @property {number} cloudCoverPercentage
@@ -35,7 +35,7 @@ const name = 'satellites';
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/satellites').Satellite[],
+ *  import('typings').Satellite[],
  *  undefined,
  *  {rejectValue: {message: string}}
  * >}
@@ -61,9 +61,9 @@ export const fetchSatellites = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/satellites').Scene[],
- *  Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
- *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
+ *  import('typings').Scene[],
+ *  Pick<import('typings').SavedSearch, 'satellites' | 'start_date' | 'end_date'>,
+ *  {rejectValue: {message: string}, state: import('typings').RootState}
  * >}
  */
 export const searchSatelliteScenes = createAsyncThunk(
@@ -92,7 +92,7 @@ export const searchSatelliteScenes = createAsyncThunk(
  * @type {import('@reduxjs/toolkit').AsyncThunk<
  *  any,
  *  {name: string, description?: string},
- *  {rejectValue: {message: string}, state:import('react-redux').DefaultRootState }
+ *  {rejectValue: {message: string}, state:import('typings').RootState }
  * >}
  */
 export const saveImage = createAsyncThunk(
@@ -151,7 +151,7 @@ const satellitesSlice = createSlice({
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  SatellitesState,
-     *  import('@reduxjs/toolkit').PayloadAction<import('typings/satellites').Scene>
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings').Scene>
      * >}
      */
     setHoveredScene: (state, { payload }) => {
@@ -241,7 +241,7 @@ export const {
 } = satellitesSlice.actions;
 
 /**
- * @param {import('react-redux').DefaultRootState} state
+ * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.satellites;
 

@@ -108,7 +108,7 @@ describe('<AisShippingSidebarComponent />', () => {
 
   it("shows items as active if there's no active result", () => {
     const { getAllByRole } = renderComponent();
-    const [_, ...items] = getAllByRole('listitem');
+    const [, ...items] = getAllByRole('listitem');
     items.forEach(element => expect(element).toHaveClass('Mui-selected'));
   });
 

@@ -18,8 +18,8 @@ const Content = styled('div')(({ theme }) => ({
 
 /**
  * @param {{
- *  currentSource: import('typings/orbis').Source
- *  selectedProperty: import('typings/orbis').Property
+ *  currentSource: import('typings').Source
+ *  selectedProperty: import('typings').Property
  * }} props
  */
 export const MoreInformation = ({ currentSource, selectedProperty }) => {

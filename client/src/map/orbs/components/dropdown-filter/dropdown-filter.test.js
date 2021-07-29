@@ -57,7 +57,7 @@ describe('Dropdown Filter', () => {
   });
 
   it('calls submit callback when new option is selected', () => {
-    const { getByRole, getAllByRole, onChange } = renderComponent({});
+    const { getByRole, onChange } = renderComponent({});
 
     userEvent.click(getByRole('button', { name: 'All' }));
     userEvent.click(getByRole('option', { name: 'Pending' }));

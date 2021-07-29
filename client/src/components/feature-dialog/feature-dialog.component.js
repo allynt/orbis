@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @template P
  * @param {{
- *   feature: import('typings/orbis').GeoJsonFeature<P>
+ *   feature: import('typings').GeoJsonFeature<P>
  *   open?: boolean
  *   onClose?: () => void
  * } & MetadataFeatureDialogProps} param0

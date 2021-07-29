@@ -41,15 +41,15 @@ const resultsText = (strings, resultsLength) => (
 
 /**
  * @param {{
- *  scenes: import('typings/satellites').Scene[]
- *  hoveredScene?: import('typings/satellites').Scene
- *  selectedScene?: import('typings/satellites').Scene
+ *  scenes: import('typings').Scene[]
+ *  hoveredScene?: import('typings').Scene
+ *  selectedScene?: import('typings').Scene
  *  visualisationId: string
  *  cloudCoverPercentage?: number
  *  isFetchingResults?: boolean
  *  onCloudCoverSliderChange?: (value: number) => void
- *  onSceneHover: (scene?: import('typings/satellites').Scene) => void,
- *  onSceneClick: (scene: import('typings/satellites').Scene) => void,
+ *  onSceneHover: (scene?: import('typings').Scene) => void,
+ *  onSceneClick: (scene: import('typings').Scene) => void,
  * }} props
  */
 const Results = ({

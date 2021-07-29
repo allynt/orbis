@@ -11,7 +11,7 @@ import { StyledDateRangePicker } from './styled-date-range-picker.component';
 
 /**
  * @template T
- * @typedef {import('typings/orbis').DateRange<T>} DateRange
+ * @typedef {import('typings').DateRange<T>} DateRange
  */
 
 const useStyles = makeStyles(theme => ({

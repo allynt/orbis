@@ -62,8 +62,7 @@ export const {
 } = mapSlice.actions;
 
 /**
- * @param {any} state
- * @returns {MapState}
+ * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.map;
 export const isCompareModeSelector = createSelector(

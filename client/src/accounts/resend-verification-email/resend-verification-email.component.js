@@ -36,7 +36,7 @@ const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
       </Typography>
       <Typography paragraph>Please check your spam or bulk folders.</Typography>
     </Grid>
-    <Grid item xs={12} container justify="center">
+    <Grid item xs={12} container justifyContent="center">
       <Button onClick={onResend}>
         {isLoading ? (
           <CircularProgress size={24} color="inherit" />
@@ -45,7 +45,7 @@ const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
         )}
       </Button>
     </Grid>
-    <Grid item xs={12} container justify="center">
+    <Grid item xs={12} container justifyContent="center">
       <Link
         // @ts-ignore
         to={LOGIN}

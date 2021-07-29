@@ -29,11 +29,11 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   sources: import('typings/orbis').Source[]
- *   initialSelectedSources?: import('typings/orbis').Source['source_id'][]
+ *   sources: import('typings').Source[]
+ *   initialSelectedSources?: import('typings').Source['source_id'][]
  *   open?: boolean
  *   close: () => void
- *   onSubmit: (sources: import('typings/orbis').Source['source_id'][]) => void
+ *   onSubmit: (sources: import('typings').Source['source_id'][]) => void
  * }} props
  */
 const DataLayersDialog = ({
@@ -55,7 +55,7 @@ const DataLayersDialog = ({
     setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
   }, [initialSelectedSources, selectedSources]);
 
-  /** @param {{source_ids: import('typings/orbis').Source['source_id'][], selected: boolean}} params */
+  /** @param {{source_ids: import('typings').Source['source_id'][], selected: boolean}} params */
   const handleSourcesChange = ({ source_ids, selected }) => {
     selected
       ? setSelectedSources(current => [...current, ...source_ids])

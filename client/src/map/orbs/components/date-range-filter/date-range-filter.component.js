@@ -24,7 +24,7 @@ import { date, FIELD_NAMES } from 'utils/validators';
 
 /**
  * @template T
- * @typedef {import('typings/orbis').DateRange<T>} DateRange
+ * @typedef {import('typings').DateRange<T>} DateRange
  */
 
 const schema = yup.object({

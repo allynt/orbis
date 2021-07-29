@@ -40,13 +40,13 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  scene: import('typings/satellites').Scene
+ *  scene: import('typings').Scene
  *  secondaryAction?: React.ReactNode
  *  visualisationId: string
  *  selected?: boolean
  *  hovered?: boolean
- *  onSceneClick: (scene: import('typings/satellites').Scene) => void
- *  onHover?: (scene?: import('typings/satellites').Scene) => void
+ *  onSceneClick: (scene: import('typings').Scene) => void
+ *  onHover?: (scene?: import('typings').Scene) => void
  * }} props
  */
 const SceneListItem = ({

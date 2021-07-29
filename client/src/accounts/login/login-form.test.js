@@ -199,7 +199,7 @@ describe('Login Form Component', () => {
   });
 
   describe('Customer Registration Flow', () => {
-    /** @type {Partial<User>} */
+    /** @type {Partial<import('typings').User>} */
     const user = { registration_stage: 'CUSTOMER' };
 
     it('does not show the sign up link', () => {

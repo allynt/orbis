@@ -3,7 +3,6 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
-import { ValidationError } from 'yup';
 
 import SearchForm, {
   transform,

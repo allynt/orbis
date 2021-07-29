@@ -9,17 +9,17 @@ import { PendingInvitationsBoard } from './pending-invitations-board/pending-inv
 
 /**
  * @typedef HomeViewProps
- * @property {import('typings/orbis').User} [currentUser]
- * @property {import('typings/orbis').CustomerUser[]} [activeUsers]
- * @property {import('typings/orbis').CustomerUser[]} [pendingUsers]
+ * @property {import('typings').User} [currentUser]
+ * @property {import('typings').CustomerUser[]} [activeUsers]
+ * @property {import('typings').CustomerUser[]} [pendingUsers]
  * @property {boolean} [oneAdminRemaining]
  * @property {import('./active-users-board/quick-view/quick-view.component').QuickViewData} [quickViewData]
- * @property {import('typings/orbis').Customer} [customer]
- * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onChangeRoleClick]
- * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onEditUserClick]
- * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onResendInvitationClick]
- * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onWithdrawInvitationClick]
- * @property {(customerUser: import('typings/orbis').CustomerUser) => void} [onDeleteUserClick]
+ * @property {import('typings').Customer} [customer]
+ * @property {(customerUser: import('typings').CustomerUser) => void} [onChangeRoleClick]
+ * @property {(customerUser: import('typings').CustomerUser) => void} [onEditUserClick]
+ * @property {(customerUser: import('typings').CustomerUser) => void} [onResendInvitationClick]
+ * @property {(customerUser: import('typings').CustomerUser) => void} [onWithdrawInvitationClick]
+ * @property {(customerUser: import('typings').CustomerUser) => void} [onDeleteUserClick]
  */
 
 /**

@@ -26,11 +26,11 @@ export class AuthenticationClient extends SubClient {
 
   /**
    * @param {{
-   *  email: User['email']
+   *  email: import('typings').User['email']
    *  password: string
-   *  accepted_terms: User['accepted_terms']
+   *  accepted_terms: import('typings').User['accepted_terms']
    * }} loginParams
-   * @returns {Promise<{user: PartialUser, token: string}>}
+   * @returns {Promise<{user: import('typings').PartialUser, token: string}>}
    */
   async login(loginParams) {
     return this.makePostRequest('/login/', loginParams);
@@ -46,9 +46,9 @@ export class AuthenticationClient extends SubClient {
    *   newPassword: string
    *   newPasswordConfirm: string
    *   acceptedTerms: boolean
-   *   registration_stage: User['registration_stage']
+   *   registration_stage: import('typings').User['registration_stage']
    * }} registerUserParams
-   * @returns {Promise<PartialUser>}
+   * @returns {Promise<import('typings').PartialUser>}
    */
   async registerUser(registerUserParams) {
     const body = this.mapParamsToApi(registerUserParams, 'registerUser');
@@ -57,7 +57,7 @@ export class AuthenticationClient extends SubClient {
 
   /**
    * @param {{key: string}} verifyEmailParams
-   * @returns {Promise<{user: PartialUser}>}
+   * @returns {Promise<{user: import('typings').PartialUser}>}
    */
   async verifyEmail(verifyEmailParams) {
     return this.makePostRequest(
@@ -67,8 +67,8 @@ export class AuthenticationClient extends SubClient {
   }
 
   /**
-   * @param {{email: User['email']}} sendVerificationEmailParams
-   * @returns {Promise<{email: User['email']}>}
+   * @param {{email: import('typings').User['email']}} sendVerificationEmailParams
+   * @returns {Promise<{email: import('typings').User['email']}>}
    */
   async sendVerificationEmail(sendVerificationEmailParams) {
     return this.makePostRequest(
@@ -87,8 +87,8 @@ export class AuthenticationClient extends SubClient {
   }
 
   /**
-   * @param {{email: User['email']}} resetPasswordRequestParams
-   * @returns {Promise<{email: User['email']}>}
+   * @param {{email: import('typings').User['email']}} resetPasswordRequestParams
+   * @returns {Promise<{email: import('typings').User['email']}>}
    */
   async resetPasswordRequest(resetPasswordRequestParams) {
     return this.makePostRequest('/password/reset/', resetPasswordRequestParams);
@@ -102,7 +102,7 @@ export class AuthenticationClient extends SubClient {
    *  token: string
    * }} resetPasswordVerifyParams
    * @returns {Promise<{
-   *  user: PartialUser
+   *  user: import('typings').PartialUser
    * }>}
    */
   async resetPasswordVerify(resetPasswordVerifyParams) {

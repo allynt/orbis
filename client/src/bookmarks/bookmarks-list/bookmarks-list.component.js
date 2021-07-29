@@ -6,9 +6,9 @@ import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.com
 
 /**
  * @param {{
- *   bookmarks?: import('typings/orbis').Bookmark[]
- *   onSelectBookmark: (bookmark: import('typings/orbis').Bookmark) => void
- *   onDeleteBookmark: (bookmark: import('typings/orbis').Bookmark) => void
+ *   bookmarks?: import('typings').Bookmark[]
+ *   onSelectBookmark: (bookmark: import('typings').Bookmark) => void
+ *   onDeleteBookmark: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
 const BookmarkList = ({ bookmarks, onSelectBookmark, onDeleteBookmark }) => (

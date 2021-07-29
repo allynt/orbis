@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   data: {x: number, y: number}[]
- *   color?: import('typings/orbis').ColorMap | string[]
+ *   color?: import('typings').ColorMap | string[]
  *   domain: [number, number]
  *   clip?: [number, number]
  *   labelX?: string

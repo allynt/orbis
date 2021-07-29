@@ -13,7 +13,7 @@ const CategoryHeader = styled(Typography)(({ theme }) => ({
 /**
  * @param {{
  *   dispatch: import('redux').Dispatch
- *   selectedLayers: import('typings/orbis').CategorisedSources
+ *   selectedLayers: import('typings').CategorisedSources
  *   sidebarComponents: {[key: string]: React.LazyExoticComponent<React.ComponentType<any>>}
  * }} props
  */

@@ -164,7 +164,7 @@ export const useOrbs = () => {
 
   useEffect(() => {
     /**
-     * @param {import('typings/orbis').Source} source
+     * @param {import('typings').Source} source
      */
     const createLayer = async source => {
       if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;

@@ -34,7 +34,7 @@ const useStyles = makeStyles(
 
 /**
  * @param {{
- *  selectedProperty: import('typings/orbis').ContinuousProperty
+ *  selectedProperty: import('typings').ContinuousProperty
  *  filterRange: [number, number]
  *  onRangeFilterChange: (value: [number, number]) => void
  *  clipRange?: [number, number]
@@ -117,7 +117,7 @@ export const Sliders = ({
           />
         </Fade>
       </Grid>
-      <Grid item container justify="center">
+      <Grid item container justifyContent="center">
         <Button color="secondary" size="small" onClick={handleResetClick}>
           Reset
         </Button>

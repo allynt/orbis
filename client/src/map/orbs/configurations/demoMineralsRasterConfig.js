@@ -7,7 +7,7 @@ import {
 } from '../layers.slice';
 
 /**
- * @type {import('typings/orbis').LayerConfiguration<{
+ * @type {import('typings').LayerConfiguration<{
  *  otherStateKey: string
  *  valueKey: string
  *  defaultValue: string

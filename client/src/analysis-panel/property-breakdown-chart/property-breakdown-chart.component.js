@@ -17,7 +17,7 @@ import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
  * }} PropertyBreakdownChartProps
  */
 
-/** @type {import('typings/orbis').AnalysisPanelComponent<PropertyBreakdownChartProps} */
+/** @type {import('typings').AnalysisPanelComponent<PropertyBreakdownChartProps} */
 export const PropertyBreakdownChart = ({ selectedProperty, info }) => {
   const { colors, ...chartTheme } = useChartTheme();
 

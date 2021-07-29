@@ -13,12 +13,12 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
 
 /**
  * @typedef DataState
- * @property {import('typings/orbis').Source['source_id'][]} layers
+ * @property {import('typings').Source['source_id'][]} layers
  * @property {number} pollingPeriod
  * @property {string} [token]
- * @property {import('typings/orbis').Source[]} [sources]
+ * @property {import('typings').Source[]} [sources]
  * @property {any} [error]
- * @property {import('typings/orbis').Orb[]} [orbs]
+ * @property {import('typings').Orb[]} [orbs]
  * @property {boolean} fetchOrbsPending
  * @property {string} [fetchOrbsRequestId]
  */
@@ -38,9 +38,9 @@ const initialState = {
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/orbis').Orb[],
+ *  import('typings').Orb[],
  *  undefined,
- *  {rejectValue: {message: string}, state: import('react-redux').DefaultRootState}
+ *  {rejectValue: {message: string}, state: import('typings').RootState}
  * >}
  */
 export const fetchOrbs = createAsyncThunk(
@@ -98,7 +98,7 @@ const dataSlice = createSlice({
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
-     *  import('@reduxjs/toolkit').PayloadAction<import('typings/orbis').Source>
+     *  import('@reduxjs/toolkit').PayloadAction<import('typings').Source>
      * >}
      */
     addSource: (state, { payload }) => {
@@ -238,7 +238,7 @@ export const logError = source => async (dispatch, getState) => {
 };
 
 /**
- * @param {import('react-redux').DefaultRootState} state
+ * @param {import('typings').RootState} state
  */
 const baseSelector = state => state?.data;
 

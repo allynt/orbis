@@ -77,7 +77,7 @@ export const DateRangeInput = React.forwardRef(
             <DateRange titleAccess="Show date picker" />
           </IconButton>
         </Grid>
-        <Grid item xs={4} container justify="center">
+        <Grid item xs={4} container justifyContent="center">
           <input
             {...inputProps}
             name={FIELD_NAMES.startDate}
@@ -87,14 +87,14 @@ export const DateRangeInput = React.forwardRef(
         <Grid item xs className={styles.separator}>
           -
         </Grid>
-        <Grid item xs={4} container justify="center">
+        <Grid item xs={4} container justifyContent="center">
           <input
             {...inputProps}
             name={FIELD_NAMES.endDate}
             aria-label="End Date"
           />
         </Grid>
-        <Grid item xs container justify="flex-end">
+        <Grid item xs container justifyContent="flex-end">
           <IconButton color="inherit" size="small" onClick={onResetClick}>
             <Replay titleAccess="Reset" />
           </IconButton>

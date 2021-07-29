@@ -35,8 +35,8 @@ const TableHeader = () => (
 
 /**
  * @param {{
- *   customerUser?: import('typings/orbis').CustomerUser
- *   customer?: import('typings/orbis').Customer
+ *   customerUser?: import('typings').CustomerUser
+ *   customer?: import('typings').Customer
  *   onResendInvitationClick?: () => void
  *   onWithdrawInvitationClick?: () => void
  * }} param0
@@ -106,10 +106,10 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   pendingUsers?: import('typings/orbis').CustomerUser[]
- *   customer?: import('typings/orbis').Customer
- *   onResendInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onWithdrawInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   pendingUsers?: import('typings').CustomerUser[]
+ *   customer?: import('typings').Customer
+ *   onResendInvitationClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onWithdrawInvitationClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
  */
 export const PendingInvitationsBoard = ({

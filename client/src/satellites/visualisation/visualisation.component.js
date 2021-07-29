@@ -38,10 +38,10 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  visualisations: import('typings/satellites').Visualisation[]
+ *  visualisations: import('typings').Visualisation[]
  *  visualisationId?: string
  *  visible?: boolean
- *  onVisualisationClick: (visualisationId: import('typings/satellites').Visualisation['id']) => void
+ *  onVisualisationClick: (visualisationId: import('typings').Visualisation['id']) => void
  *  onVisibilityChange: (checked: boolean) => void
  *  onSaveImageSubmit: (values: import('./save-image-form/save-image-form.component').FormValues) => void
  * }} props

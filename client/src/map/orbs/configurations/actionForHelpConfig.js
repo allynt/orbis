@@ -39,7 +39,7 @@ export const filterFeatures = (oldData, startDate, endDate, status = 'ALL') => {
 };
 
 /**
- * @typedef {import('typings/orbis').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
+ * @typedef {import('typings').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
 
 const configuration = ({
@@ -52,7 +52,7 @@ const configuration = ({
   const filterRange = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
 
-  /** @param {import('typings/orbis').PickedMapFeature} info */
+  /** @param {import('typings').PickedMapFeature} info */
   const handleLayerClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM)

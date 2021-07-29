@@ -6,7 +6,7 @@ export class DataClient extends SubClient {
   }
 
   /**
-   * @returns {Promise<import('typings/orbis').Source[]>}
+   * @returns {Promise<import('typings').Source[]>}
    */
   async getSources() {
     const response = await this.makeAuthenticatedRequest('/sources');

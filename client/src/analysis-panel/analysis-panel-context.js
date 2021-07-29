@@ -19,9 +19,9 @@ AnalysisPanelContext.displayName = 'AnalysisPanelContext';
 
 /**
  * @param {{
- *  clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
- *  currentSource: import('typings/orbis').Source
- *  selectedProperty: import('typings/orbis').Property & {source_id: string}
+ *  clickedFeatures: import('typings').PolygonPickedMapFeature[]
+ *  currentSource: import('typings').Source
+ *  selectedProperty: import('typings').Property & {source_id: string}
  *  selectedTimestamp?: number
  *  children: React.ReactNode
  * }} props

@@ -206,7 +206,7 @@ const PDF = ({
       <Grid
         container
         item
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
         className={styles.buttons}
       >
@@ -236,7 +236,7 @@ const PDF = ({
           container
           direction="column"
           wrap="nowrap"
-          justify="space-between"
+          justifyContent="space-between"
           className={styles.pdfDocument}
         >
           <Grid item container wrap="nowrap" className={styles.detailsGrid}>
@@ -396,7 +396,7 @@ const PDF = ({
             container
             component="footer"
             wrap="nowrap"
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="center"
           >
             <Grid

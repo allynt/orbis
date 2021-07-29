@@ -282,10 +282,6 @@ describe('Admin Slice', () => {
 
     describe('updateCustomerUser', () => {
       it('should dispatch update user failure action.', async () => {
-        const customer = {
-          name: 'test_customer',
-        };
-
         const user = {
           id: '1',
           name: 'Test User',

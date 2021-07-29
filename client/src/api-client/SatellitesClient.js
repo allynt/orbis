@@ -7,14 +7,14 @@ export class SatellitesClient extends SubClient {
     super('/satellites');
   }
 
-  /** @returns {Promise<import('typings/satellites').Satellite[]>} */
+  /** @returns {Promise<import('typings').Satellite[]>} */
   async getSatellites() {
     return (await this.makeAuthenticatedRequest('/')).json();
   }
 
   /**
-   * @param {Pick<import('typings/satellites').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi' >} search
-   * @returns {Promise<import('typings/satellites').Scene[]>}
+   * @param {Pick<import('typings').SavedSearch, 'satellites' | 'start_date' | 'end_date' | 'aoi' >} search
+   * @returns {Promise<import('typings').Scene[]>}
    */
   async runQuery(search) {
     return this.makeAuthenticatedPostRequest('/run_query/', {
@@ -25,15 +25,15 @@ export class SatellitesClient extends SubClient {
 
   /**
    * @param {{
-   *  userId: User['id'],
-   *  customerId: Customer['id'],
+   *  userId: import('typings').User['id'],
+   *  customerId: import('typings').Customer['id'],
    *  name: string,
    *  description?: string,
-   *  satelliteId: import('typings/satellites').Satellite['id'],
-   *  sceneId: import('typings/satellites').Scene['id'],
-   *  visualisationId: import('typings/satellites').Visualisation['id'],
+   *  satelliteId: import('typings').Satellite['id'],
+   *  sceneId: import('typings').Scene['id'],
+   *  visualisationId: import('typings').Visualisation['id'],
    * }} params
-   * @returns {Promise<import('typings/orbis').Source}
+   * @returns {Promise<import('typings').Source>}
    */
   async saveImage({ customerId, userId, ...rest }) {
     return this.makeAuthenticatedPostRequest(

@@ -1,5 +1,7 @@
 import { FeatureCollection } from '@turf/helpers';
+
 import { OrbState } from 'map/orbs/orbReducer'; // eslint-disable-line
+import { User } from './accounts';
 
 type Bookmark = {
   id: number;

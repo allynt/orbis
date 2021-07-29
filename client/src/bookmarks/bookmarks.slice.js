@@ -9,8 +9,8 @@ import apiClient from 'api-client';
 
 /**
  * @typedef BookmarksState
- * @property {import('typings/bookmarks').Bookmark[]} [bookmarks]
- * @property {import('typings/bookmarks').Bookmark} [selectedBookmark]
+ * @property {import('typings').Bookmark[]} [bookmarks]
+ * @property {import('typings').Bookmark} [selectedBookmark]
  * @property {any} [error]
  * @property {boolean} isLoading
  */
@@ -18,7 +18,7 @@ import apiClient from 'api-client';
 const name = 'bookmarks';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings/bookmarks').Bookmark[], undefined, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<import('typings').Bookmark[], undefined, {}>}
  */
 export const fetchBookmarks = createAsyncThunk(
   `${name}/fetchBookmarks`,
@@ -41,8 +41,8 @@ export const fetchBookmarks = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/bookmarks').Bookmark,
- *  import('typings/bookmarks').RequestBookmark,
+ *  import('typings').Bookmark,
+ *  import('typings').RequestBookmark,
  *  {}
  * >}
  */
@@ -76,8 +76,8 @@ export const addBookmark = createAsyncThunk(
 
 /**
  * @type {import('@reduxjs/toolkit').AsyncThunk<
- *  import('typings/bookmarks').Bookmark,
- *  import('typings/bookmarks').Bookmark,
+ *  import('typings').Bookmark,
+ *  import('typings').Bookmark,
  *  {}
  * >}
  */
@@ -173,7 +173,7 @@ const bookmarkSlice = createSlice({
 export const { selectBookmark, isLoaded } = bookmarkSlice.actions;
 
 /**
- * @returns {BookmarksState}
+ * @param {import('typings').RootState} state
  */
 export const baseSelector = state => state?.bookmarks;
 

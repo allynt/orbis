@@ -1,5 +1,14 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+/**
+ * @typedef ControlPanelState
+ * @property {boolean} isMenuVisible
+ * @property {string} visibleMenuItem
+ * @property {string} heading
+ * @property {string} strapline
+ */
+
+/** @type {ControlPanelState} */
 const initialState = {
   isMenuVisible: false,
   visibleMenuItem: '',
@@ -42,6 +51,7 @@ export const {
   closeMenu,
 } = controlPanelSlice.actions;
 
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state.controlPanel || {};
 export const selectIsMenuVisible = createSelector(
   baseSelector,

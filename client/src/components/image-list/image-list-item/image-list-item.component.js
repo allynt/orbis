@@ -5,7 +5,7 @@ import {
   Grid,
   Typography,
   makeStyles,
-  GridListTile,
+  ImageListItem as AuiImageListItem,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -73,16 +73,16 @@ export const ImageListItem = ({
   const handleChange = () => onChange && onChange(value);
 
   return (
-    <GridListTile>
+    <AuiImageListItem>
       <Grid
         component="label"
         container
         spacing={1}
-        justify="center"
+        justifyContent="center"
         className={clsx(styles.container, { [styles.checked]: checked })}
         id={labelId}
       >
-        <Grid item xs={12} container justify="center">
+        <Grid item xs={12} container justifyContent="center">
           {!!src ? (
             <Avatar
               className={styles.avatar}
@@ -106,6 +106,6 @@ export const ImageListItem = ({
           <Typography className={styles.text}>{text}</Typography>
         </Grid>
       </Grid>
-    </GridListTile>
+    </AuiImageListItem>
   );
 };

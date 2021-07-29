@@ -7,10 +7,17 @@ import { getJsonAuthHeaders } from 'utils/http';
 
 export const DEFAULT_MAP_STYLE = 3;
 
+/**
+ * @typedef AppState
+ * @property {import('typings').AppConfig} config
+ * @property {{message: string}} [error]
+ * @property {any[]} trackingQueue
+ */
+
+/** @type {AppState} */
 const initialState = {
   config: {},
   error: null,
-  notYetImplementedDescription: null,
   trackingQueue: [],
 };
 
@@ -24,9 +31,6 @@ const appSlice = createSlice({
     },
     appConfigFailure: (state, { payload }) => {
       state.error = payload;
-    },
-    notYetImplemented: (state, { payload }) => {
-      state.notYetImplementedDescription = payload;
     },
     addLogItem: (state, { payload }) => {
       state.trackingQueue = [...state.trackingQueue, payload];
@@ -42,7 +46,6 @@ const appSlice = createSlice({
 export const {
   appConfigSuccess,
   appConfigFailure,
-  notYetImplemented,
   addLogItem,
   removeLogItems,
 } = appSlice.actions;
@@ -86,6 +89,7 @@ export const logUserTracking = () => async (dispatch, getState) => {
   }
 };
 
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state?.app;
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
