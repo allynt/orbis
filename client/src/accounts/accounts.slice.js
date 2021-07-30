@@ -400,15 +400,18 @@ const accountsSlice = createSlice({
     builder.addCase(changePassword.fulfilled, state => {
       state.changeStatus = status.PENDING;
       state.error = null;
+      state.isLoading = false;
     });
     builder.addCase(resetPasswordRequest.fulfilled, state => {
       state.resetStatus = status.PENDING;
       state.error = null;
+      state.isLoading = false;
     });
     builder.addCase(resetPasswordConfirm.fulfilled, (state, { payload }) => {
       state.resetStatus = status.COMPLETE;
       state.user = payload;
       state.error = null;
+      state.isLoading = false;
     });
     builder.addMatcher(
       // @ts-ignore
