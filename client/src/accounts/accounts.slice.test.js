@@ -17,7 +17,6 @@ import reducer, {
   activateAccount,
   changePassword,
   resetPasswordConfirm,
-  fetchRequested,
   fetchCurrentUser,
   login,
   logout,
@@ -28,8 +27,6 @@ import reducer, {
   resetPasswordRequest,
   status,
   updateUser,
-  updateUserFailure,
-  updateUserSuccess,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -199,18 +196,6 @@ describe('Accounts Slice', () => {
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: updateUserFailure.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
-        },
-      ];
-
       const form = {
         email: 'testusername@test.com',
         password: 'password2',
@@ -218,7 +203,16 @@ describe('Accounts Slice', () => {
 
       await store.dispatch(updateUser(form));
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: updateUser.rejected.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        }),
+      );
     });
 
     it('should dispatch update user success action.', async () => {
@@ -226,11 +220,6 @@ describe('Accounts Slice', () => {
 
       fetch.mockResponse(JSON.stringify(userKey));
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: updateUserSuccess.type, payload: userKey },
-      ];
-
       const form = {
         email: 'testusername@test.com',
         password: 'password2',
@@ -238,18 +227,13 @@ describe('Accounts Slice', () => {
 
       await store.dispatch(updateUser(form));
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({ type: updateUser.fulfilled.type }),
+      );
     });
   });
 
   describe('Accounts Reducer', () => {
-    describe(`${fetchRequested}`, () => {
-      it('sets isLoading to true', () => {
-        const result = reducer({}, fetchRequested());
-        expect(result.isLoading).toBe(true);
-      });
-    });
-
     describe('pending actions', () => {
       it('sets isLoading to true', () => {
         const result = reducer({}, { type: 'someAction/pending' });
@@ -278,8 +262,8 @@ describe('Accounts Slice', () => {
       ${resendVerificationEmail.rejected}  | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${fetchCurrentUser.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
       ${fetchCurrentUser.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${updateUserSuccess}                 | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${updateUserFailure}                 | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${updateUser.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${updateUser.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${logout.fulfilled}                  | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
       ${logout.rejected}                   | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${activateAccount.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}

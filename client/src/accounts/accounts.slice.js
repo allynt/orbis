@@ -317,23 +317,46 @@ export const resetPasswordConfirm = createAsyncThunk(
   },
 );
 
+export const updateUser = createAsyncThunk(
+  `${name}/updateUser`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  import('typings').User,
+   *  Partial<import('typings').User>,
+   *  {rejectValue: string[], state: import('typings').RootState}
+   * >}
+   */
+  async (form, { rejectWithValue, getState }) => {
+    const {
+      accounts: { user },
+    } = getState();
+
+    const userWithUpdates = {
+      ...user,
+      ...form,
+    };
+
+    try {
+      const updatedUser = await apiClient.users.updateUser(userWithUpdates);
+      NotificationManager.success(
+        'Successfully updated user',
+        '',
+        5000,
+        () => {},
+      );
+      return updatedUser;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      NotificationManager.error('Error updating user', '', 5000, () => {});
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    fetchRequested: state => {
-      state.isLoading = true;
-    },
-    updateUserSuccess: (state, { payload }) => {
-      state.user = payload;
-      state.error = null;
-      state.isLoading = false;
-    },
-    updateUserFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(placeOrder.fulfilled, state => {
       state.error = null;
@@ -397,7 +420,7 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser, registerCustomer]
+        [registerUser, fetchCurrentUser, registerCustomer, updateUser]
           .map(action => action.fulfilled.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -419,6 +442,7 @@ const accountsSlice = createSlice({
           changePassword,
           resetPasswordRequest,
           resetPasswordConfirm,
+          updateUser,
         ]
           .map(action => action.rejected.type)
           .includes(action.type),
@@ -429,39 +453,6 @@ const accountsSlice = createSlice({
     );
   },
 });
-
-export const {
-  updateUserSuccess,
-  updateUserFailure,
-  fetchRequested,
-} = accountsSlice.actions;
-
-export const updateUser = form => async (dispatch, getState) => {
-  dispatch(fetchRequested());
-  const {
-    accounts: { user },
-  } = getState();
-
-  const userWithUpdates = {
-    ...user,
-    ...form,
-  };
-
-  try {
-    const updatedUser = await apiClient.users.updateUser(userWithUpdates);
-    NotificationManager.success(
-      'Successfully updated user',
-      '',
-      5000,
-      () => {},
-    );
-    return dispatch(updateUserSuccess(updatedUser));
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    NotificationManager.error('Error updating user', '', 5000, () => {});
-    return dispatch(updateUserFailure(errors));
-  }
-};
 
 const persistConfig = {
   key: 'accounts',
