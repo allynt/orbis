@@ -237,20 +237,32 @@ export const logout = createAsyncThunk(
   },
 );
 
+export const resendVerificationEmail = createAsyncThunk(
+  `${name}/resendVerificationEmail`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  void,
+   *  import('typings').User['email'],
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (email, { rejectWithValue }) => {
+    try {
+      await apiClient.authentication.sendVerificationEmail({ email });
+      return;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
   reducers: {
     fetchRequested: state => {
       state.isLoading = true;
-    },
-    resendVerificationEmailSuccess: state => {
-      state.error = null;
-      state.isLoading = false;
-    },
-    resendVerificationEmailFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
     },
     updateUserSuccess: (state, { payload }) => {
       state.user = payload;
@@ -320,6 +332,10 @@ const accountsSlice = createSlice({
       state.error = null;
       state.isLoading = false;
     });
+    builder.addCase(resendVerificationEmail.fulfilled, state => {
+      state.error = null;
+      state.isLoading = false;
+    });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -342,7 +358,14 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser, registerCustomer, placeOrder, logout]
+        [
+          registerUser,
+          fetchCurrentUser,
+          registerCustomer,
+          placeOrder,
+          logout,
+          resendVerificationEmail,
+        ]
           .map(action => action.rejected.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -354,8 +377,6 @@ const accountsSlice = createSlice({
 });
 
 export const {
-  resendVerificationEmailSuccess,
-  resendVerificationEmailFailure,
   updateUserSuccess,
   updateUserFailure,
   changePasswordSuccess,
@@ -366,21 +387,6 @@ export const {
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * @param {import('typings').User['email']} email
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const resendVerificationEmail = email => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    await apiClient.authentication.sendVerificationEmail({ email });
-    return dispatch(resendVerificationEmailSuccess());
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(resendVerificationEmailFailure(errors));
-  }
-};
 
 /**
  * @param {{newPassword: string, newPasswordConfirm: string}} form

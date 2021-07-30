@@ -29,8 +29,6 @@ import reducer, {
   registerCustomer,
   registerUser,
   resendVerificationEmail,
-  resendVerificationEmailFailure,
-  resendVerificationEmailSuccess,
   resetPassword,
   resetPasswordFailure,
   resetPasswordSuccess,
@@ -273,31 +271,31 @@ describe('Accounts Slice', () => {
       setsUserKeyToNull = true;
 
     describe.each`
-      action                            | config
-      ${registerUser.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${registerUser.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${registerCustomer.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${registerCustomer.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${placeOrder.fulfilled}           | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${placeOrder.rejected}            | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${login.fulfilled}                | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
-      ${login.rejected}                 | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
-      ${resendVerificationEmailSuccess} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${resendVerificationEmailFailure} | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${fetchCurrentUser.fulfilled}     | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${fetchCurrentUser.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${updateUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${updateUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${logout.fulfilled}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
-      ${logout.rejected}                | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${activateAccount.fulfilled}      | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
-      ${activateAccount.rejected}       | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
-      ${changePasswordSuccess}          | ${{ setsErrorToNull }}
-      ${changePasswordFailure}          | ${{ setsErrorToPayload }}
-      ${resetPasswordSuccess}           | ${{ setsErrorToNull }}
-      ${resetPasswordFailure}           | ${{ setsErrorToPayload }}
-      ${passwordResetRequestedSuccess}  | ${{ setsErrorToNull, setsUserToPayload }}
-      ${passwordResetRequestedFailure}  | ${{ setsErrorToPayload }}
+      action                               | config
+      ${registerUser.fulfilled}            | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${registerUser.rejected}             | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${registerCustomer.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${registerCustomer.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${placeOrder.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${placeOrder.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${login.fulfilled}                   | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
+      ${login.rejected}                    | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
+      ${resendVerificationEmail.fulfilled} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${resendVerificationEmail.rejected}  | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${fetchCurrentUser.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${fetchCurrentUser.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${updateUserSuccess}                 | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${updateUserFailure}                 | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${logout.fulfilled}                  | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
+      ${logout.rejected}                   | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${activateAccount.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
+      ${activateAccount.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
+      ${changePasswordSuccess}             | ${{ setsErrorToNull }}
+      ${changePasswordFailure}             | ${{ setsErrorToPayload }}
+      ${resetPasswordSuccess}              | ${{ setsErrorToNull }}
+      ${resetPasswordFailure}              | ${{ setsErrorToPayload }}
+      ${passwordResetRequestedSuccess}     | ${{ setsErrorToNull, setsUserToPayload }}
+      ${passwordResetRequestedFailure}     | ${{ setsErrorToPayload }}
     `(
       '$action.type',
       ({
@@ -483,7 +481,6 @@ describe('Accounts Slice', () => {
 
       it('dispatches failure on create customer error', async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         });
@@ -508,7 +505,6 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(errorResponse), {
-            ok: false,
             status: 401,
             statusText: 'Test Error',
           });
@@ -562,7 +558,6 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(errorResponse), {
-            ok: false,
             status: 401,
             statusText: 'Test Error',
           });
@@ -632,7 +627,6 @@ describe('Accounts Slice', () => {
 
       it('calls the failure action on failed request', async () => {
         fetch.once(JSON.stringify(failureResponseBody), {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         });
@@ -659,7 +653,6 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(placeOrderResponseBody))
           .once(JSON.stringify(failureResponseBody), {
-            ok: false,
             status: 418,
             statusText: 'ERROR',
           });
@@ -816,7 +809,7 @@ describe('Accounts Slice', () => {
               test: ['¿problema?'],
             },
           }),
-          { ok: false, status: 401, statusText: 'Test Error' },
+          { status: 401, statusText: 'Test Error' },
         );
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
@@ -841,35 +834,34 @@ describe('Accounts Slice', () => {
     });
 
     describe('resendVerificationEmail', () => {
-      it(`dispatches ${fetchRequested}`, async () => {
-        fetch.once(JSON.stringify({}));
-        await resendVerificationEmail()(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
-      it(`dispatches ${resendVerificationEmailFailure} on failed request`, async () => {
+      it(`dispatches ${resendVerificationEmail.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
-        await resendVerificationEmail()(dispatch, getState);
+        await resendVerificationEmail('')(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resendVerificationEmailFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: resendVerificationEmail.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${resendVerificationEmailSuccess} on success`, async () => {
+      it(`dispatches ${resendVerificationEmail.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
-        await resendVerificationEmail()(dispatch, getState);
-        expect(dispatch).toBeCalledWith(resendVerificationEmailSuccess());
+        await resendVerificationEmail('')(dispatch, getState);
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({
+            type: resendVerificationEmail.fulfilled.type,
+          }),
+        );
       });
     });
 
     describe('changePassword', () => {
       it(`dispatches ${changePasswordFailure} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });

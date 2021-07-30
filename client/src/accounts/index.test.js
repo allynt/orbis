@@ -27,13 +27,11 @@ import {
   passwordResetRequestedSuccess,
   registerCustomer,
   resendVerificationEmail,
-  resendVerificationEmailSuccess,
   registerUser,
   resetPassword,
   resetPasswordSuccess,
   placeOrder,
   login,
-  loginUserSuccess,
 } from './accounts.slice';
 
 import Accounts from '.';
@@ -265,12 +263,14 @@ describe('Accounts index', () => {
       expect(getByRole('button', { name: 'Resend email' })).toBeInTheDocument();
     });
 
-    it(`dispatches ${resendVerificationEmail.name} action when button is clicked`, async () => {
+    it(`dispatches ${resendVerificationEmail.fulfilled.type} action when button is clicked`, async () => {
       const { getByRole, store } = renderComponent([RESEND]);
       userEvent.click(getByRole('button', { name: 'Resend email' }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([resendVerificationEmailSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resendVerificationEmail.fulfilled.type,
+          }),
         ),
       );
     });
