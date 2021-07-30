@@ -28,7 +28,6 @@ import {
   resendVerificationEmail,
   registerUser,
   resetPasswordRequest,
-  resetPasswordRequestSuccess,
   placeOrder,
   login,
 } from './accounts.slice';
@@ -214,14 +213,16 @@ describe('Accounts index', () => {
       await waitFor(() => expect(getAllByRole('textbox').length).toBe(1));
     });
 
-    it(`dispatches ${resetPasswordRequest.name} action when submitted`, async () => {
+    it(`dispatches ${resetPasswordRequest.fulfilled.type} action when submitted`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, store } = renderComponent([PASSWORD_RESET_REQUEST]);
       userEvent.type(getByRole('textbox'), 'test@test.com');
       userEvent.click(getByRole('button'));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([resetPasswordRequestSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resetPasswordRequest.fulfilled.type,
+          }),
         ),
       );
     });

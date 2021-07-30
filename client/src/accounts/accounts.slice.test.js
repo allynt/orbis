@@ -28,8 +28,6 @@ import reducer, {
   registerUser,
   resendVerificationEmail,
   resetPasswordRequest,
-  resetPasswordRequestFailure,
-  resetPasswordRequestSuccess,
   status,
   updateUser,
   updateUserFailure,
@@ -290,8 +288,8 @@ describe('Accounts Slice', () => {
       ${activateAccount.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
       ${changePassword.fulfilled}          | ${{ setsErrorToNull }}
       ${changePassword.rejected}           | ${{ setsErrorToPayload }}
-      ${resetPasswordRequestSuccess}       | ${{ setsErrorToNull }}
-      ${resetPasswordRequestFailure}       | ${{ setsErrorToPayload }}
+      ${resetPasswordRequest.fulfilled}    | ${{ setsErrorToNull }}
+      ${resetPasswordRequest.rejected}     | ${{ setsErrorToPayload }}
       ${resetPasswordConfirmSuccess}       | ${{ setsErrorToNull, setsUserToPayload }}
       ${resetPasswordConfirmFailure}       | ${{ setsErrorToPayload }}
     `(
@@ -396,11 +394,12 @@ describe('Accounts Slice', () => {
       });
     });
 
-    describe(`${resetPasswordRequestSuccess}`, () => {
+    describe(`${resetPasswordRequest.fulfilled.type}`, () => {
       it(`sets resetStatus to ${status.PENDING}`, () => {
-        expect(reducer({}, resetPasswordRequestSuccess()).resetStatus).toBe(
-          status.PENDING,
-        );
+        expect(
+          reducer({}, { type: resetPasswordRequest.fulfilled.type })
+            .resetStatus,
+        ).toBe(status.PENDING);
       });
     });
 
@@ -904,23 +903,29 @@ describe('Accounts Slice', () => {
       });
     });
 
-    describe('resetPassword', () => {
-      it(`dispatches ${resetPasswordRequestFailure} on failed request`, async () => {
+    describe('resetPasswordRequest', () => {
+      it(`dispatches ${resetPasswordRequest.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
         await resetPasswordRequest({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resetPasswordRequestFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: resetPasswordRequest.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${resetPasswordRequestSuccess} on success`, async () => {
+      it(`dispatches ${resetPasswordRequest.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
         await resetPasswordRequest({})(dispatch, getState);
-        expect(dispatch).toBeCalledWith(resetPasswordRequestSuccess());
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({
+            type: resetPasswordRequest.fulfilled.type,
+          }),
+        );
       });
     });
   });
