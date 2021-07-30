@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { push } from 'connected-react-router';
 import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
@@ -31,6 +32,13 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
+const BASE_STATE = {
+  isLoading: false,
+  changeStatus: '',
+  resetStatus: '',
+  _persist: { rehydrated: true, version: 1 },
+};
+
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
     let store = null;
@@ -57,7 +65,6 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
@@ -66,8 +73,11 @@ describe('Accounts Slice', () => {
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
-        password1: 'password1',
-        password2: 'password2',
+        newPassword: 'password1',
+        newPasswordConfirm: 'password2',
+        name: 'Test Name',
+        organisationName: 'Test Org',
+        acceptedTerms: true,
       };
       await store.dispatch(registerUser(form));
 
@@ -99,8 +109,11 @@ describe('Accounts Slice', () => {
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
-        password1: 'password1',
-        password2: 'password2',
+        newPassword: 'password1',
+        newPasswordConfirm: 'password2',
+        name: 'Test Name',
+        organisationName: 'Test Org',
+        acceptedTerms: true,
       };
 
       await store.dispatch(registerUser(form));
@@ -113,7 +126,6 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
@@ -190,7 +202,6 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
@@ -236,7 +247,7 @@ describe('Accounts Slice', () => {
   describe('Accounts Reducer', () => {
     describe('pending actions', () => {
       it('sets isLoading to true', () => {
-        const result = reducer({}, { type: 'someAction/pending' });
+        const result = reducer(BASE_STATE, { type: 'someAction/pending' });
         expect(result.isLoading).toBe(true);
       });
     });
@@ -290,21 +301,26 @@ describe('Accounts Slice', () => {
         if (setsIsLoadingToFalse) {
           it('sets isLoading to false', () => {
             expect(
-              reducer({ isLoading: true }, { type: action.type, payload: {} }),
+              reducer(
+                { ...BASE_STATE, isLoading: true },
+                { type: action.type, payload: {} },
+              ),
             ).toEqual(expect.objectContaining({ isLoading: false }));
           });
         }
 
         if (setsErrorToNull) {
           it('sets error to null', () => {
-            expect(reducer({ error: '123' }, action({})).error).toBeNull();
+            expect(
+              reducer({ ...BASE_STATE, error: '123' }, action({})).error,
+            ).toBeNull();
           });
         }
 
         if (setsUserToPayload) {
           it('sets user to payload', () => {
             const user = { name: 'Test User' };
-            expect(reducer({}, action(user)).user).toEqual(user);
+            expect(reducer(BASE_STATE, action(user)).user).toEqual(user);
           });
         }
 
@@ -312,7 +328,8 @@ describe('Accounts Slice', () => {
           it('sets user to payload.user', () => {
             const user = { name: 'Test User' };
             expect(
-              reducer({}, { type: action.type, payload: { user } }).user,
+              reducer(BASE_STATE, { type: action.type, payload: { user } })
+                .user,
             ).toEqual(user);
           });
         }
@@ -320,7 +337,7 @@ describe('Accounts Slice', () => {
         if (setsErrorToPayload) {
           it('sets error to payload', () => {
             expect(
-              reducer({}, { type: action.type, payload: '123' }).error,
+              reducer(BASE_STATE, { type: action.type, payload: '123' }).error,
             ).toBe('123');
           });
         }
@@ -328,8 +345,10 @@ describe('Accounts Slice', () => {
         if (setsUserKeyToNull) {
           it('sets userKey to null', () => {
             expect(
-              reducer({ userKey: '123' }, { type: action.type, payload: {} })
-                .userKey,
+              reducer(
+                { ...BASE_STATE, userKey: '123' },
+                { type: action.type, payload: {} },
+              ).userKey,
             ).toBeNull();
           });
         }
@@ -339,10 +358,10 @@ describe('Accounts Slice', () => {
     describe(`${login.fulfilled.type}`, () => {
       it('sets userKey to payload.userKey', () => {
         expect(
-          reducer(
-            {},
-            { type: login.fulfilled.type, payload: { userKey: '123' } },
-          ).userKey,
+          reducer(BASE_STATE, {
+            type: login.fulfilled.type,
+            payload: { userKey: '123' },
+          }).userKey,
         ).toEqual('123');
       });
     });
@@ -351,8 +370,10 @@ describe('Accounts Slice', () => {
       it('sets error to payload.errors', () => {
         const error = 'This is an error';
         expect(
-          reducer({}, { type: login.rejected.type, payload: { errors: error } })
-            .error,
+          reducer(BASE_STATE, {
+            type: login.rejected.type,
+            payload: { errors: error },
+          }).error,
         ).toEqual(error);
       });
     });
@@ -361,7 +382,7 @@ describe('Accounts Slice', () => {
       it('sets user to null', () => {
         expect(
           reducer(
-            { user: { name: 'Test User' } },
+            { ...BASE_STATE, user: { name: 'Test User' } },
             { type: logout.fulfilled.type },
           ).user,
         ).toBeNull();
@@ -371,7 +392,8 @@ describe('Accounts Slice', () => {
     describe(`${changePassword.fulfilled.type}`, () => {
       it(`sets changeStatus to ${status.PENDING}`, () => {
         expect(
-          reducer({}, { type: changePassword.fulfilled.type }).changeStatus,
+          reducer(BASE_STATE, { type: changePassword.fulfilled.type })
+            .changeStatus,
         ).toBe(status.PENDING);
       });
     });
@@ -379,7 +401,7 @@ describe('Accounts Slice', () => {
     describe(`${resetPasswordRequest.fulfilled.type}`, () => {
       it(`sets resetStatus to ${status.PENDING}`, () => {
         expect(
-          reducer({}, { type: resetPasswordRequest.fulfilled.type })
+          reducer(BASE_STATE, { type: resetPasswordRequest.fulfilled.type })
             .resetStatus,
         ).toBe(status.PENDING);
       });
@@ -388,7 +410,7 @@ describe('Accounts Slice', () => {
     describe(`${resetPasswordConfirm.fulfilled.type}`, () => {
       it(`sets resetStatus to ${status.COMPLETE}`, () => {
         expect(
-          reducer({}, { type: resetPasswordConfirm.fulfilled.type })
+          reducer(BASE_STATE, { type: resetPasswordConfirm.fulfilled.type })
             .resetStatus,
         ).toBe(status.COMPLETE);
       });
@@ -650,8 +672,14 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
-          admin: {},
-          accounts: { user: { customers: [{ id: 'testcustomerId' }] } },
+          admin: { isLoading: false },
+          accounts: {
+            user: {
+              customers: [
+                { id: 'testcustomerId', type: 'MANAGER', status: 'ACTIVE' },
+              ],
+            },
+          },
         }));
         expect(fetch).toHaveBeenNthCalledWith(
           1,

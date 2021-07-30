@@ -179,7 +179,7 @@ export const login = createAsyncThunk(
    *  {
    *    email: string;
    *    password: string;
-   *    accepted_terms: boolean;
+   *    accepted_terms?: boolean;
    *  },
    *  {rejectValue: {user: import('typings').PartialUser, errors: string[]}}
    * >}
@@ -302,7 +302,7 @@ export const resetPasswordConfirm = createAsyncThunk(
   /**
    * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
    *  import('typings').PartialUser,
-   *  {newPassword: string, newPasswordConfirm: string,uid: string, token: string},
+   *  {newPassword: string, newPasswordConfirm: string, uid: string, token: string},
    *  {rejectValue: string[]}
    * >}
    */

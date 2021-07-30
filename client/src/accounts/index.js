@@ -155,7 +155,7 @@ export default () => {
           render={props => (
             <PasswordResetForm
               confirmResetPassword={(form, params) =>
-                dispatch(resetPasswordConfirm(form, params))
+                dispatch(resetPasswordConfirm({ ...form, ...params }))
               }
               resetStatus={resetStatus}
               match={props.match}

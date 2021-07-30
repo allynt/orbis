@@ -28,7 +28,7 @@ export class AuthenticationClient extends SubClient {
    * @param {{
    *  email: import('typings').User['email']
    *  password: string
-   *  accepted_terms: import('typings').User['accepted_terms']
+   *  accepted_terms?: import('typings').User['accepted_terms']
    * }} loginParams
    * @returns {Promise<{user: import('typings').PartialUser, token: string}>}
    */
