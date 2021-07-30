@@ -22,14 +22,13 @@ import {
 } from './accounts.constants';
 import {
   changePassword,
-  changePasswordSuccess,
-  confirmResetPassword,
-  passwordResetRequestedSuccess,
+  resetPasswordConfirm,
+  resetPasswordConfirmSuccess,
   registerCustomer,
   resendVerificationEmail,
   registerUser,
-  resetPassword,
-  resetPasswordSuccess,
+  resetPasswordRequest,
+  resetPasswordRequestSuccess,
   placeOrder,
   login,
 } from './accounts.slice';
@@ -215,14 +214,14 @@ describe('Accounts index', () => {
       await waitFor(() => expect(getAllByRole('textbox').length).toBe(1));
     });
 
-    it(`dispatches ${resetPassword.name} action when submitted`, async () => {
+    it(`dispatches ${resetPasswordRequest.name} action when submitted`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, store } = renderComponent([PASSWORD_RESET_REQUEST]);
       userEvent.type(getByRole('textbox'), 'test@test.com');
       userEvent.click(getByRole('button'));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
-          expect.arrayContaining([resetPasswordSuccess()]),
+          expect.arrayContaining([resetPasswordRequestSuccess()]),
         ),
       );
     });
@@ -238,7 +237,7 @@ describe('Accounts index', () => {
       );
     });
 
-    it(`dispatches the ${confirmResetPassword.name} action when filled out correctly`, async () => {
+    it(`dispatches the ${resetPasswordConfirm.name} action when filled out correctly`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, getByLabelText, store } = renderComponent([
         PASSWORD_RESET,
@@ -251,7 +250,7 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('button', { name: /reset\spassword/i }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
-          expect.arrayContaining([passwordResetRequestedSuccess()]),
+          expect.arrayContaining([resetPasswordConfirmSuccess()]),
         ),
       );
     });
