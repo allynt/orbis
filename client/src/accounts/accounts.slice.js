@@ -257,6 +257,26 @@ export const resendVerificationEmail = createAsyncThunk(
   },
 );
 
+export const changePassword = createAsyncThunk(
+  `${name}/changePassword`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  void,
+   *  {newPassword: string, newPasswordConfirm: string},
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (form, { rejectWithValue }) => {
+    try {
+      await apiClient.authentication.changePassword(form);
+      return;
+    } catch (responseError) {
+      const errors = await responseError.getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
@@ -272,13 +292,6 @@ const accountsSlice = createSlice({
     updateUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
-    },
-    changePasswordSuccess: state => {
-      state.changeStatus = status.PENDING;
-      state.error = null;
-    },
-    changePasswordFailure: (state, { payload }) => {
-      state.error = payload;
     },
     resetPasswordSuccess: state => {
       state.resetStatus = status.PENDING;
@@ -336,6 +349,10 @@ const accountsSlice = createSlice({
       state.error = null;
       state.isLoading = false;
     });
+    builder.addCase(changePassword.fulfilled, state => {
+      state.changeStatus = status.PENDING;
+      state.error = null;
+    });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -365,6 +382,7 @@ const accountsSlice = createSlice({
           placeOrder,
           logout,
           resendVerificationEmail,
+          changePassword,
         ]
           .map(action => action.rejected.type)
           .includes(action.type),
@@ -379,28 +397,12 @@ const accountsSlice = createSlice({
 export const {
   updateUserSuccess,
   updateUserFailure,
-  changePasswordSuccess,
-  changePasswordFailure,
   resetPasswordSuccess,
   resetPasswordFailure,
   passwordResetRequestedSuccess,
   passwordResetRequestedFailure,
   fetchRequested,
 } = accountsSlice.actions;
-
-/**
- * @param {{newPassword: string, newPasswordConfirm: string}} form
- * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
- */
-export const changePassword = form => async dispatch => {
-  try {
-    await apiClient.authentication.changePassword(form);
-    return dispatch(changePasswordSuccess());
-  } catch (responseError) {
-    const errors = await responseError.getErrors();
-    return dispatch(changePasswordFailure(errors));
-  }
-};
 
 /**
  * @param {{newPassword: string, newPasswordConfirm: string}} form

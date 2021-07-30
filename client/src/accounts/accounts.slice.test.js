@@ -16,8 +16,6 @@ import {
 import reducer, {
   activateAccount,
   changePassword,
-  changePasswordFailure,
-  changePasswordSuccess,
   confirmResetPassword,
   fetchRequested,
   fetchCurrentUser,
@@ -290,8 +288,8 @@ describe('Accounts Slice', () => {
       ${logout.rejected}                   | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${activateAccount.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
       ${activateAccount.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
-      ${changePasswordSuccess}             | ${{ setsErrorToNull }}
-      ${changePasswordFailure}             | ${{ setsErrorToPayload }}
+      ${changePassword.fulfilled}          | ${{ setsErrorToNull }}
+      ${changePassword.rejected}           | ${{ setsErrorToPayload }}
       ${resetPasswordSuccess}              | ${{ setsErrorToNull }}
       ${resetPasswordFailure}              | ${{ setsErrorToPayload }}
       ${passwordResetRequestedSuccess}     | ${{ setsErrorToNull, setsUserToPayload }}
@@ -390,11 +388,11 @@ describe('Accounts Slice', () => {
       });
     });
 
-    describe(`${changePasswordSuccess}`, () => {
+    describe(`${changePassword.fulfilled.type}`, () => {
       it(`sets changeStatus to ${status.PENDING}`, () => {
-        expect(reducer({}, changePasswordSuccess()).changeStatus).toBe(
-          status.PENDING,
-        );
+        expect(
+          reducer({}, { type: changePassword.fulfilled.type }).changeStatus,
+        ).toBe(status.PENDING);
       });
     });
 
@@ -860,21 +858,26 @@ describe('Accounts Slice', () => {
     });
 
     describe('changePassword', () => {
-      it(`dispatches ${changePasswordFailure} on failed request`, async () => {
+      it(`dispatches ${changePassword.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Wrong',
         });
         await changePassword({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          changePasswordFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: changePassword.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${changePasswordSuccess} on success`, async () => {
+      it(`dispatches ${changePassword.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
         await changePassword({})(dispatch, getState);
-        expect(dispatch).toBeCalledWith(changePasswordSuccess());
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({ type: changePassword.fulfilled.type }),
+        );
       });
     });
 

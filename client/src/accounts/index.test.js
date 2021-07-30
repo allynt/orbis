@@ -189,7 +189,7 @@ describe('Accounts index', () => {
   });
 
   describe(`${PASSWORD_CHANGE}`, () => {
-    it(`dispatches ${changePassword.name} action when submitted`, async () => {
+    it(`dispatches ${changePassword.fulfilled.type} action when submitted`, async () => {
       const { getByLabelText, getByRole, store } = renderComponent([
         PASSWORD_CHANGE,
       ]);
@@ -202,8 +202,8 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('checkbox'));
       userEvent.click(getByRole('button', { name: /change\spassword/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([changePasswordSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: changePassword.fulfilled.type }),
         ),
       );
     });
