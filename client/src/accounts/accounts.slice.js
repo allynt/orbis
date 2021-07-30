@@ -216,6 +216,27 @@ export const login = createAsyncThunk(
   },
 );
 
+export const logout = createAsyncThunk(
+  `${name}/logout`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  void,
+   *  void,
+   *  {rejectValue: string[]}
+   * >}
+   */
+  async (_, { rejectWithValue }) => {
+    try {
+      await apiClient.authentication.logout();
+      apiClient.userKey = '';
+      return;
+    } catch (error) {
+      const errors = await /** @type {import('api-client').ResponseError} */ (error).getErrors();
+      return rejectWithValue(errors);
+    }
+  },
+);
+
 const accountsSlice = createSlice({
   name,
   initialState,
@@ -237,16 +258,6 @@ const accountsSlice = createSlice({
       state.isLoading = false;
     },
     updateUserFailure: (state, { payload }) => {
-      state.error = payload;
-      state.isLoading = false;
-    },
-    logoutUserSuccess: state => {
-      state.userKey = null;
-      state.user = null;
-      state.error = null;
-      state.isLoading = false;
-    },
-    logoutUserFailure: (state, { payload }) => {
       state.error = payload;
       state.isLoading = false;
     },
@@ -303,6 +314,12 @@ const accountsSlice = createSlice({
         state.error = payload.errors;
         state.isLoading = false;
       });
+    builder.addCase(logout.fulfilled, state => {
+      state.userKey = null;
+      state.user = null;
+      state.error = null;
+      state.isLoading = false;
+    });
     builder.addMatcher(
       // @ts-ignore
       action => action.type.endsWith('/pending'),
@@ -325,7 +342,7 @@ const accountsSlice = createSlice({
     builder.addMatcher(
       // @ts-ignore
       action =>
-        [registerUser, fetchCurrentUser, registerCustomer, placeOrder]
+        [registerUser, fetchCurrentUser, registerCustomer, placeOrder, logout]
           .map(action => action.rejected.type)
           .includes(action.type),
       (state, { payload }) => {
@@ -341,8 +358,6 @@ export const {
   resendVerificationEmailFailure,
   updateUserSuccess,
   updateUserFailure,
-  logoutUserSuccess,
-  logoutUserFailure,
   changePasswordSuccess,
   changePasswordFailure,
   resetPasswordSuccess,
@@ -364,18 +379,6 @@ export const resendVerificationEmail = email => async dispatch => {
   } catch (responseError) {
     const errors = await responseError.getErrors();
     return dispatch(resendVerificationEmailFailure(errors));
-  }
-};
-
-export const logout = () => async dispatch => {
-  dispatch(fetchRequested());
-  try {
-    await apiClient.authentication.logout();
-    apiClient.userKey = '';
-    return dispatch(logoutUserSuccess());
-  } catch (error) {
-    const errors = await /** @type {import('api-client').ResponseError} */ (error).getErrors();
-    return dispatch(logoutUserFailure(errors));
   }
 };
 

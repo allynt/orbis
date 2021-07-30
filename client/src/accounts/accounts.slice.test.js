@@ -23,8 +23,6 @@ import reducer, {
   fetchCurrentUser,
   login,
   logout,
-  logoutUserFailure,
-  logoutUserSuccess,
   passwordResetRequestedFailure,
   passwordResetRequestedSuccess,
   placeOrder,
@@ -165,27 +163,23 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: logoutUserFailure.type,
+      await store.dispatch(logout());
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: logout.rejected.type,
           payload: [
             'First error relating to failed request.',
             'Second error relating to failed request.',
             'Third error relating to failed request.',
           ],
-        },
-      ];
-
-      await store.dispatch(logout());
-
-      expect(store.getActions()).toEqual(expectedActions);
+        }),
+      );
     });
 
     it('should dispatch logout success action.', async () => {
@@ -194,14 +188,11 @@ describe('Accounts Slice', () => {
 
       fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: logoutUserSuccess.type },
-      ];
-
       await store.dispatch(logout());
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({ type: logout.fulfilled.type }),
+      );
     });
 
     it('should dispatch update user failure action.', async () => {
@@ -297,8 +288,8 @@ describe('Accounts Slice', () => {
       ${fetchCurrentUser.rejected}      | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${updateUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
       ${updateUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${logoutUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
-      ${logoutUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${logout.fulfilled}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
+      ${logout.rejected}                | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
       ${activateAccount.fulfilled}      | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
       ${activateAccount.rejected}       | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
       ${changePasswordSuccess}          | ${{ setsErrorToNull }}
@@ -390,10 +381,13 @@ describe('Accounts Slice', () => {
       });
     });
 
-    describe(`${logoutUserSuccess}`, () => {
+    describe(`${logout.fulfilled.type}`, () => {
       it('sets user to null', () => {
         expect(
-          reducer({ user: { name: 'Test User' } }, logoutUserSuccess()).user,
+          reducer(
+            { user: { name: 'Test User' } },
+            { type: logout.fulfilled.type },
+          ).user,
         ).toBeNull();
       });
     });
