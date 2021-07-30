@@ -23,7 +23,6 @@ import {
 import {
   changePassword,
   resetPasswordConfirm,
-  resetPasswordConfirmSuccess,
   registerCustomer,
   resendVerificationEmail,
   registerUser,
@@ -238,7 +237,7 @@ describe('Accounts index', () => {
       );
     });
 
-    it(`dispatches the ${resetPasswordConfirm.name} action when filled out correctly`, async () => {
+    it(`dispatches the ${resetPasswordConfirm.fulfilled.type} action when filled out correctly`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, getByLabelText, store } = renderComponent([
         PASSWORD_RESET,
@@ -250,8 +249,10 @@ describe('Accounts index', () => {
       );
       userEvent.click(getByRole('button', { name: /reset\spassword/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([resetPasswordConfirmSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resetPasswordConfirm.fulfilled.type,
+          }),
         ),
       );
     });
