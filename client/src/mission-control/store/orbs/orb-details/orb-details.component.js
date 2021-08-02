@@ -49,7 +49,7 @@ export const OrbDetails = ({ orbs }) => {
   return (
     <Wrapper>
       <Grid container spacing={mdUp ? 6 : 2}>
-        <Grid item sm={6} container direction="column" spacing={smUp ? 6 : 2}>
+        <Grid item sm={6} container direction="column" spacing={smUp ? 8 : 2}>
           <Grid item>
             <RouterLink className={styles.back} to="/orbs">
               <Button
@@ -73,9 +73,14 @@ export const OrbDetails = ({ orbs }) => {
             />
           </Grid>
         </Grid>
-        <Grid item sm={6} container direction="column" spacing={smUp ? 5 : 2}>
+        <Grid item sm={6} container direction="column" spacing={smUp ? 4 : 2}>
           <Grid item>
-            <Typography variant="h1">{orb.name}</Typography>
+            <Typography
+              style={{ fontWeight: 600, fontSize: '50px' }}
+              variant="h1"
+            >
+              {orb.name}
+            </Typography>
           </Grid>
           <Grid item>
             <Typography>{orb.description}</Typography>
