@@ -11,6 +11,9 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
+  card: {
+    backgroundColor: theme.palette.background.default,
+  },
   cardContent: {
     textAlign: 'center',
   },
@@ -30,7 +33,7 @@ export const OrbCard = ({ orb }) => {
   const styles = useStyles();
 
   return (
-    <Card>
+    <Card className={styles.card}>
       <CardContent classes={{ root: styles.cardContent }}>
         <img className={styles.logo} src={orb.logo} alt={`${orb.name} logo`} />
         <Typography variant="h2" gutterBottom>
