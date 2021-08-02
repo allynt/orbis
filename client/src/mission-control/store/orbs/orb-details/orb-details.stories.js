@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '@astrosat/astrosat-ui';
-
 import faker from 'faker/locale/en_GB';
 import { MemoryRouter, Route } from 'react-router-dom';
 
@@ -14,11 +12,7 @@ export default {
 const Template = args => (
   <MemoryRouter initialEntries={['/1']}>
     <Route
-      component={routerProps => (
-        <Box p={1}>
-          <OrbDetails {...routerProps} {...args} />
-        </Box>
-      )}
+      component={routerProps => <OrbDetails {...routerProps} {...args} />}
       path={'/:id'}
     />
   </MemoryRouter>

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  Container,
   ImageList,
   ImageListItem,
   styled,
@@ -10,18 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { OrbCard } from './orb-card.component';
-
-const Wrapper = styled(Container)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius,
-  paddingTop: theme.spacing(2),
-  [theme.breakpoints.up('sm')]: {
-    paddingBottom: theme.spacing(9),
-  },
-  [theme.breakpoints.up('lg')]: {
-    paddingInline: theme.spacing(9),
-  },
-}));
+import { Wrapper } from './wrapper.component';
 
 const Heading = styled('h1')(({ theme }) => ({
   ...theme.typography.h1,
