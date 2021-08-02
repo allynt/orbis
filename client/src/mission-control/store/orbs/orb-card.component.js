@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{orb: import('typings').Orb}} props
+ */
 export const OrbCard = ({ orb }) => {
   const styles = useStyles();
 
