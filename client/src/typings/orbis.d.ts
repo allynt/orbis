@@ -77,6 +77,7 @@ type Orb = {
   description?: string;
   licence_cost: number;
   logo: string;
+  images: string[];
   features?: FeatureKey[];
 };
 

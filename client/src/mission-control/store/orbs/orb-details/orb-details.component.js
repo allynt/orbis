@@ -24,7 +24,7 @@ export const OrbDetails = ({ orbs }) => {
       </RouterLink>
       <Typography variant="h1">{orb.name}</Typography>
       <Typography>{orb.description}</Typography>
-      <img alt={`${orb.name} Example`} />
+      <img src={orb.images[0]} alt={`${orb.name} Example`} />
     </>
   );
 };

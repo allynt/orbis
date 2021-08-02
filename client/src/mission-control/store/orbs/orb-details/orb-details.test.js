@@ -8,12 +8,13 @@ import { Router, Route } from 'react-router-dom';
 import { OrbDetails } from './orb-details.component';
 
 const orbs = [
-  { id: 1, name: 'Orb 1 Name', description: 'Orb 1 Description' },
-  { id: 2, name: 'Orb 2 Name', description: 'Orb 2 Description' },
+  { id: 1, name: 'Orb 1 Name', description: 'Orb 1 Description', images: [''] },
+  { id: 2, name: 'Orb 2 Name', description: 'Orb 2 Description', images: [''] },
 ];
 
 const renderComponent = () => {
   const history = createMemoryHistory({ initialEntries: ['/1'] });
+  // @ts-ignore
   const utils = render(<OrbDetails orbs={orbs} />, {
     wrapper: ({ children }) => (
       <Router history={history}>
