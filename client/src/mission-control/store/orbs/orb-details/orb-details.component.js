@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { ArrowLeft } from '@material-ui/icons';
+import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none',
   },
   button: { padding: '4px 5px' },
+  icon: { transform: 'rotate(180deg)' },
   image: {
     width: '100%',
     maxWidth: theme.typography.pxToRem(640),
@@ -50,8 +51,8 @@ export const OrbDetails = ({ orbs }) => {
             <Button
               // @ts-ignore
               component="span"
-              className={styles.button}
-              startIcon={<ArrowLeft />}
+              classes={{ root: styles.button, startIcon: styles.icon }}
+              startIcon={<PlayArrow />}
               variant="text"
               size="small"
               color="default"
