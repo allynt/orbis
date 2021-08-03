@@ -285,7 +285,7 @@ export const ActiveUsersBoard = ({
               : rows}
           </TableBody>
         </MissionControlTable>
-        {Array.isArray(rows) && rows.length > rowsPerPage ? (
+        {Array.isArray(rows) ? (
           <TablePaginationFooter
             currentPage={currentPage + 1}
             rowsPerPage={rowsPerPage}
