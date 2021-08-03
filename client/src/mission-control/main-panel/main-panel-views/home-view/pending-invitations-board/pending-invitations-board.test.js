@@ -125,35 +125,4 @@ describe('PendingUsersBoard', () => {
       expect(getByText('No Pending Users')).toBeInTheDocument();
     });
   });
-
-  it('Does not show pagination if rows <= 5', () => {
-    const { queryByText } = render(
-      <PendingInvitationsBoard
-        pendingUsers={[
-          {
-            type: 'MANAGER',
-            invitation_date: '2020-01-31T11:46:12.618090Z',
-            user: {
-              id: '456',
-              name: 'John Smith',
-            },
-          },
-        ]}
-        customer={customer}
-      />,
-    );
-    expect(queryByText('Next')).not.toBeInTheDocument();
-    expect(queryByText('Prev')).not.toBeInTheDocument();
-  });
-
-  it('Shows pagination if rows > 5', () => {
-    const { getByText } = render(
-      <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
-      />,
-    );
-    expect(getByText('Next')).toBeInTheDocument();
-    expect(getByText('Prev')).toBeInTheDocument();
-  });
 });
