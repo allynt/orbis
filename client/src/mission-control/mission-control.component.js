@@ -57,6 +57,7 @@ export const MissionControl = () => {
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
+
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles({});
   const contentStyles = useContentStyles({});
