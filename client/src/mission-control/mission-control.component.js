@@ -1,47 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  CloseIcon,
-  IconButton,
-  styled,
-  makeStyles,
-} from '@astrosat/astrosat-ui';
+import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from '../accounts/accounts.selectors';
-import { VIEWS, ADMIN_STATUS, DIALOG_VIEW } from './mission-control.constants';
 import { MainPanel } from './main-panel/main-panel.component';
-import { SidePanel } from './side-panel/side-panel.component';
-
-import {
-  CreateUserForm,
-  DeleteUserForm,
-  EditUserForm,
-  WithdrawUserInvitationForm,
-} from './mission-control-forms';
-
 import {
   toggleMissionControlDialog,
   selectIsMissionControlDialogVisible,
-  createCustomerUser,
-  deleteCustomerUser,
   fetchCustomer,
   fetchCustomerUsers,
-  inviteCustomerUser,
-  selectActiveUsers,
-  selectAvailableLicences,
   selectCurrentCustomer,
   selectCustomerUsers,
-  selectLicenceInformation,
-  selectOneAdminRemaining,
-  selectPendingUsers,
-  updateCustomerUser,
 } from './mission-control-slice.js';
+import { VIEWS } from './mission-control.constants';
+import { SidePanel } from './side-panel/side-panel.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
@@ -77,35 +51,17 @@ const useContentStyles = makeStyles(theme => ({
   },
 }));
 
-const DialogCloseButton = styled(IconButton)({
-  position: 'absolute',
-  right: 0,
-});
-
 export const MissionControl = () => {
   const dispatch = useDispatch();
   const isVisible = useSelector(selectIsMissionControlDialogVisible);
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
-  const licenceInformation = useSelector(selectLicenceInformation);
-  const availableLicences = useSelector(selectAvailableLicences);
-  const activeUsers = useSelector(selectActiveUsers);
-  const pendingUsers = useSelector(selectPendingUsers);
-  const oneAdminRemaining = useSelector(selectOneAdminRemaining);
-  const [dialogForm, setDialogForm] = useState(null);
-
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles({});
   const contentStyles = useContentStyles({});
 
   const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
-
-  const quickViewData = {
-    active: activeUsers?.length,
-    pending: pendingUsers?.length,
-    available: availableLicences?.length,
-  };
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -119,60 +75,8 @@ export const MissionControl = () => {
     }
   }, [currentCustomer, customerUsers, dispatch]);
 
-  const handleCreateUserFormSubmit = values => {
-    setDialogForm(null);
-    dispatch(createCustomerUser(values));
-  };
-
   const handleClose = () => {
     return dispatch(toggleMissionControlDialog(false));
-  };
-
-  const getDialogForm = () => {
-    switch (dialogForm?.type) {
-      case DIALOG_VIEW.createUser:
-        return (
-          <CreateUserForm
-            licenceInformation={licenceInformation}
-            existingEmails={customerUsers?.map(cu => cu.user.email)}
-            onSubmit={handleCreateUserFormSubmit}
-          />
-        );
-      case DIALOG_VIEW.withdrawInvitation:
-        return (
-          <WithdrawUserInvitationForm
-            user={dialogForm.user}
-            withdrawInvitation={user => {
-              dispatch(deleteCustomerUser(user));
-              setDialogForm(null);
-            }}
-            onCancelClick={() => setDialogForm(null)}
-          />
-        );
-      case DIALOG_VIEW.editUser:
-        return (
-          <EditUserForm
-            user={dialogForm.user}
-            customer={currentCustomer}
-            availableLicences={availableLicences}
-            oneAdminRemaining={oneAdminRemaining}
-            editUser={editedUser => {
-              dispatch(updateCustomerUser(editedUser));
-              setDialogForm(null);
-            }}
-          />
-        );
-      case DIALOG_VIEW.deleteUser:
-        return (
-          <DeleteUserForm
-            user={dialogForm.user}
-            deleteUser={user => dispatch(deleteCustomerUser(user))}
-            close={() => setDialogForm(null)}
-          />
-        );
-      default:
-        return null;
-    }
   };
 
   return (
@@ -183,7 +87,6 @@ export const MissionControl = () => {
       onBackdropClick={handleClose}
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
-
       <Grid container direction="row" justify="space-between" wrap="nowrap">
         <Grid item className={contentStyles.sidePanel}>
           <SidePanel
@@ -192,55 +95,9 @@ export const MissionControl = () => {
           />
         </Grid>
         <Grid item className={contentStyles.mainPanel}>
-          <MainPanel
-            user={user}
-            mainPanelView={mainPanelView}
-            activeUsers={activeUsers}
-            pendingUsers={pendingUsers}
-            oneAdminRemaining={oneAdminRemaining}
-            quickViewData={quickViewData}
-            customer={currentCustomer}
-            onChangeRoleClick={user =>
-              dispatch(
-                updateCustomerUser({
-                  ...user,
-                  type:
-                    user.type === ADMIN_STATUS.manager
-                      ? ADMIN_STATUS.member
-                      : ADMIN_STATUS.manager,
-                }),
-              )
-            }
-            onCreateUserClick={() =>
-              setDialogForm({ type: DIALOG_VIEW.createUser })
-            }
-            onEditUserClick={user =>
-              setDialogForm({ type: DIALOG_VIEW.editUser, user })
-            }
-            onDeleteUserClick={user =>
-              setDialogForm({ type: DIALOG_VIEW.deleteUser, user })
-            }
-            onResendInvitationClick={user => dispatch(inviteCustomerUser(user))}
-            onWithdrawInvitationClick={user =>
-              setDialogForm({ type: DIALOG_VIEW.withdrawInvitation, user })
-            }
-          />
+          <MainPanel mainPanelView={mainPanelView} />
         </Grid>
       </Grid>
-      <Dialog
-        open={!!dialogForm}
-        onClose={() => setDialogForm(null)}
-        maxWidth="md"
-      >
-        <DialogCloseButton
-          onClick={() => setDialogForm(null)}
-          aria-label="Close"
-        >
-          <CloseIcon />
-        </DialogCloseButton>
-        <DialogTitle>{dialogForm?.type}</DialogTitle>
-        <DialogContent>{getDialogForm()}</DialogContent>
-      </Dialog>
     </Dialog>
   );
 };
