@@ -1,3 +1,7 @@
+from collections import OrderedDict
+from itertools import filterfalse
+import re
+
 from django.conf import settings
 
 from sentinelsat import SentinelAPI
@@ -20,6 +24,22 @@ SENTINEL2_PROPERTIES = {
     "cloudcoverpercentage": "Cloud coverage [%]",
 }
 
+FILENAME_PARTS = OrderedDict([
+    ("mission", "S2A|S2B"),
+    ("processing_level", "MSI.{3}"),
+    ("timestamp", "\d{8}T\d{6}"),
+    ("processing_baseline_number", "N.{4}"),
+    ("relative_orbit_number", "R.{3}"),
+    ("tile_number", "T.{5}"),
+    ("product_discriminator", ".*"),
+    ("product_format", ".*"),
+])
+
+FILENAME_REGEX = re.compile(
+    r"^(?P<mission>{mission})_(?P<processing_level>{processing_level})_(?P<timestamp>{timestamp})_(?P<processing_baseline_number>{processing_baseline_number})_(?P<relative_orbit_number>{relative_orbit_number})_(?P<tile_number>{tile_number})_(?P<product_discriminator>{product_discriminator})\.(?P<product_format>{product_format})$"
+    .format(**FILENAME_PARTS)
+)
+
 
 class Sentinel2Adapter(BaseSatelliteAdapter):
 
@@ -35,6 +55,8 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
 
     def run_query(self, **kwargs):
 
+        # yapf: disable
+
         from satellites.models import SatelliteResult
 
         query_params = kwargs
@@ -43,6 +65,9 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             area=query_params["aoi"].wkt,
             area_relation="Intersects",
             platformname="Sentinel-2",
+            # L2A was only added 20160612 (so rather than add a filter
+            # to the query here, I manually filter the results below)
+            # producttype="S2MSI2A",
             order_by="ingestiondate",
             offset=0,
             date=(
@@ -51,26 +76,71 @@ class Sentinel2Adapter(BaseSatelliteAdapter):
             ),
         )
 
-        # yapf: disable
+        # add some extra info to the products
+        # (in order to filter via this info below)
+        parsed_products = [
+            dict(
+                parsed_filename=FILENAME_REGEX.match(
+                    product["filename"]
+                ).groupdict(),
+                **product
+            )
+            for product in products.values()
+        ]
+
+        # remove "L1C" products if there is a corresponding "L2A" product
+        filtered_products = filterfalse(
+            lambda x: (
+                x["parsed_filename"]["processing_level"] == "MSIL1C" and
+                # using "next" will break out of the loop as soon as there is a matching element
+                # this makes nested looping a bit more efficient
+                next(
+                    (
+                        product for product in parsed_products if (
+                            product["parsed_filename"]["processing_level"] == "MSIL2A" and
+                            all(
+                                product["parsed_filename"][filename_part] == x["parsed_filename"][filename_part]
+                                for filename_part in [
+                                    "mission",
+                                    # note I don't want "processing_level" to match x,
+                                    # since I explicitly check that it equals "L2A" above
+                                    # "processing_level",
+                                    "timestamp",
+                                    "processing_baseline_number",
+                                    "relative_orbit_number",
+                                    "tile_number",
+                                    # note I don't care about "product_discriminator"
+                                    # "product_discriminator",
+                                    "product_format",
+                                ]
+                            )
+                        )
+                    ),
+                    None
+                )
+            ),
+            parsed_products
+        )
+
         results = [
             SatelliteResult(
                 # set some attributes based on the adapter...
-                satellite = query_params["satellite"],
+                satellite=query_params["satellite"],
                 # set some attributes directly from the product...
-                scene_id = product["identifier"],
-                created = product["endposition"],
-                footprint = product["footprint"],
-                cloud_cover = product["cloudcoverpercentage"],
+                scene_id=product["identifier"],
+                created=product["endposition"],
+                footprint=product["footprint"],
+                cloud_cover=product["cloudcoverpercentage"],
                 # extract everything I can into metadata...
-                metadata = {
+                metadata={
                     SENTINEL2_PROPERTIES[k]: v
                     for k, v in product.items()
                     if k in SENTINEL2_PROPERTIES
                 },
                 # store everything else as raw_data...
-                raw_data = product,
+                raw_data=product,
             )
-            for product in products.values()
+            for product in filtered_products
         ]
 
         return results
