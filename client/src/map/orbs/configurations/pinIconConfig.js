@@ -11,11 +11,11 @@ import {
 } from '../layers.slice';
 
 /**
- * @typedef {import('typings/orbis').PickedMapFeature} PickedMapFeature
+ * @typedef {import('typings').PickedMapFeature} PickedMapFeature
  */
 
 /**
- * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
+ * @typedef {import('typings').GeoJsonFeature} GeoJsonFeature
  */
 
 const configuration = ({

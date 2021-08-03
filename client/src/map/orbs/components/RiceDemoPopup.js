@@ -10,13 +10,13 @@ import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
 
 /**
  * @param {{
- * source: import('typings/orbis').Source
+ * source: import('typings').Source
  * }} props
  */
 const RiceDemoPopup = ({ source }) => {
   const dispatch = useDispatch();
 
-  /** @type {import('typings/orbis').GeoJsonFeature[]} */
+  /** @type {import('typings').GeoJsonFeature[]} */
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );

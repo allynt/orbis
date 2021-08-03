@@ -40,9 +40,9 @@ const TableHeader = () => (
 
 /**
  * @param {{
- *   currentUser: import('typings/orbis').User
- *   customerUser: import('typings/orbis').CustomerUser
- *   licences: import('typings/orbis').Licence[]
+ *   currentUser: import('typings').User
+ *   customerUser: import('typings').CustomerUser
+ *   licences: import('typings').Licence[]
  *   oneAdminRemaining?: boolean
  *   onDeleteUserClick: () => void
  *   onEditUserClick: () => void
@@ -159,14 +159,14 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   activeCustomerUsers: import('typings/orbis').CustomerUser[]
- *   currentUser: import('typings/orbis').User
- *   customer?: import('typings/orbis').Customer
+ *   activeCustomerUsers: import('typings').CustomerUser[]
+ *   currentUser: import('typings').User
+ *   customer?: import('typings').Customer
  *   oneAdminRemaining?: boolean
  *   quickViewData?: import('./quick-view/quick-view.component').QuickViewData
- *   onChangeRoleClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onEditUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onDeleteUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onChangeRoleClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onEditUserClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onDeleteUserClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
  */
 export const ActiveUsersBoard = ({
@@ -180,21 +180,21 @@ export const ActiveUsersBoard = ({
   onDeleteUserClick,
 }) => {
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleRoleClick = customerUser => {
     onChangeRoleClick(customerUser);
   };
 
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleEditClick = customerUser => {
     onEditUserClick(customerUser);
   };
 
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleDeleteClick = customerUser => {
     onDeleteUserClick(customerUser);

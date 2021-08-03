@@ -24,7 +24,7 @@ import {
 } from '../layers.slice';
 
 /**
- * @type {import('typings/orbis').MapComponent<{
+ * @type {import('typings').MapComponent<{
  *   hoverPopupProps?: {
  *     titleProperty?: string
  *     whitelist?: string[]
@@ -49,7 +49,7 @@ const GenericPopupAndDialog = ({
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(source_id)(state?.orbs),
   );
-  /** @type {[import('typings/orbis').GeoJsonFeature | undefined, React.Dispatch<import('typings/orbis').GeoJsonFeature | undefined>]} */
+  /** @type {[import('typings').GeoJsonFeature | undefined>]} */
   const [dialogFeature, setDialogFeature] = useState();
 
   useEffect(() => {

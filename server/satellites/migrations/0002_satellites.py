@@ -21,11 +21,48 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Satellite',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('satellite_id', models.SlugField(help_text='A unique id for the satellite.', unique=True, validators=[satellites.models.validate_satellite_id])),
-                ('title', models.CharField(help_text='A pretty display name for the satellite.', max_length=128)),
-                ('description', models.TextField(blank=True, help_text='A description of the satellite.', null=True)),
-                ('order', models.IntegerField(default=1, help_text='The order to render the satellite.')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'satellite_id',
+                    models.SlugField(
+                        help_text='A unique id for the satellite.',
+                        unique=True,
+                        validators=[
+                            satellites.models.models_satellites.
+                            validate_satellite_id
+                        ]
+                    )
+                ),
+                (
+                    'title',
+                    models.CharField(
+                        help_text='A pretty display name for the satellite.',
+                        max_length=128
+                    )
+                ),
+                (
+                    'description',
+                    models.TextField(
+                        blank=True,
+                        help_text='A description of the satellite.',
+                        null=True
+                    )
+                ),
+                (
+                    'order',
+                    models.IntegerField(
+                        default=1,
+                        help_text='The order to render the satellite.'
+                    )
+                ),
             ],
             options={
                 'verbose_name': 'Satellite',
@@ -36,11 +73,42 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SatelliteTier',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.SlugField(help_text='A unique name for the tier.', unique=True)),
-                ('title', models.CharField(help_text='A pretty display name for the tier.', max_length=128)),
-                ('description', models.TextField(blank=True, help_text='A description of the tier.', null=True)),
-                ('order', models.IntegerField(default=1, help_text='The order to render this tier.')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'name',
+                    models.SlugField(
+                        help_text='A unique name for the tier.', unique=True
+                    )
+                ),
+                (
+                    'title',
+                    models.CharField(
+                        help_text='A pretty display name for the tier.',
+                        max_length=128
+                    )
+                ),
+                (
+                    'description',
+                    models.TextField(
+                        blank=True,
+                        help_text='A description of the tier.',
+                        null=True
+                    )
+                ),
+                (
+                    'order',
+                    models.IntegerField(
+                        default=1, help_text='The order to render this tier.'
+                    )
+                ),
             ],
             options={
                 'verbose_name': 'Satellite Tier',
@@ -51,12 +119,55 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SatelliteVisualisation',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('visualisation_id', models.SlugField(help_text='A unique id for the visualisation.', unique=True)),
-                ('title', models.CharField(help_text='A pretty display name for the visualisation.', max_length=128)),
-                ('description', models.TextField(blank=True, help_text='A description of the visualisation.', null=True)),
-                ('order', models.IntegerField(default=1, help_text='The order to render the visualisation.')),
-                ('thumbnail', models.FileField(blank=True, help_text='A thumbnail image representing this bookmark.', null=True, upload_to=satellites.models.visualisation_thumbnail_path)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'visualisation_id',
+                    models.SlugField(
+                        help_text='A unique id for the visualisation.',
+                        unique=True
+                    )
+                ),
+                (
+                    'title',
+                    models.CharField(
+                        help_text='A pretty display name for the visualisation.',
+                        max_length=128
+                    )
+                ),
+                (
+                    'description',
+                    models.TextField(
+                        blank=True,
+                        help_text='A description of the visualisation.',
+                        null=True
+                    )
+                ),
+                (
+                    'order',
+                    models.IntegerField(
+                        default=1,
+                        help_text='The order to render the visualisation.'
+                    )
+                ),
+                (
+                    'thumbnail',
+                    models.FileField(
+                        blank=True,
+                        help_text=
+                        'A thumbnail image representing this bookmark.',
+                        null=True,
+                        upload_to=satellites.models.models_satellites.
+                        visualisation_thumbnail_path
+                    )
+                ),
             ],
             options={
                 'verbose_name_plural': 'Satellite Visualisations',
@@ -66,15 +177,50 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SatelliteSearch',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True, help_text='When the search was first created.')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'created',
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text='When the search was first created.'
+                    )
+                ),
                 ('name', models.CharField(max_length=128)),
                 ('start_date', models.DateTimeField()),
                 ('end_date', models.DateTimeField()),
-                ('aoi', django.contrib.gis.db.models.fields.PolygonField(srid=4326)),
-                ('owner', models.ForeignKey(help_text='The owner of this search.', on_delete=django.db.models.deletion.CASCADE, related_name='satellite_searches', to=settings.AUTH_USER_MODEL)),
-                ('satellites', models.ManyToManyField(related_name='searches', to='satellites.Satellite')),
-                ('tiers', models.ManyToManyField(related_name='searches', to='satellites.SatelliteTier')),
+                (
+                    'aoi',
+                    django.contrib.gis.db.models.fields.PolygonField(srid=4326)
+                ),
+                (
+                    'owner',
+                    models.ForeignKey(
+                        help_text='The owner of this search.',
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='satellite_searches',
+                        to=settings.AUTH_USER_MODEL
+                    )
+                ),
+                (
+                    'satellites',
+                    models.ManyToManyField(
+                        related_name='searches', to='satellites.Satellite'
+                    )
+                ),
+                (
+                    'tiers',
+                    models.ManyToManyField(
+                        related_name='searches', to='satellites.SatelliteTier'
+                    )
+                ),
             ],
             options={
                 'verbose_name': 'Saved Satellite Search',
@@ -85,16 +231,90 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SatelliteResult',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('scene_id', models.SlugField(help_text='A unique id for the scene.', max_length=256)),
-                ('cloud_cover', models.FloatField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(100.0)])),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID'
+                    )
+                ),
+                (
+                    'scene_id',
+                    models.SlugField(
+                        help_text='A unique id for the scene.', max_length=256
+                    )
+                ),
+                (
+                    'cloud_cover',
+                    models.FloatField(
+                        blank=True,
+                        null=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(100.0)
+                        ]
+                    )
+                ),
                 ('created', models.DateTimeField(blank=True, null=True)),
-                ('footprint', django.contrib.gis.db.models.fields.GeometryField(srid=4326)),
-                ('metadata', models.JSONField(blank=True, help_text='Some more information to associate with the scene.', null=True, validators=[satellites.models.validate_properties])),
-                ('raw_data', models.JSONField(blank=True, help_text="The original 'raw' data returned by the search.", null=True, validators=[satellites.models.validate_properties])),
-                ('owner', models.ForeignKey(help_text='The owner of this search result.', on_delete=django.db.models.deletion.CASCADE, related_name='satellite_results', to=settings.AUTH_USER_MODEL)),
-                ('satellite', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scenes', to='satellites.satellite')),
-                ('tier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scenes', to='satellites.satellitetier')),
+                (
+                    'footprint',
+                    django.contrib.gis.db.models.fields.GeometryField(
+                        srid=4326
+                    )
+                ),
+                (
+                    'metadata',
+                    models.JSONField(
+                        blank=True,
+                        help_text=
+                        'Some more information to associate with the scene.',
+                        null=True,
+                        validators=[
+                            satellites.models.models_satellites.
+                            validate_properties
+                        ]
+                    )
+                ),
+                (
+                    'raw_data',
+                    models.JSONField(
+                        blank=True,
+                        help_text=
+                        "The original 'raw' data returned by the search.",
+                        null=True,
+                        validators=[
+                            satellites.models.models_satellites.
+                            validate_properties
+                        ]
+                    )
+                ),
+                (
+                    'owner',
+                    models.ForeignKey(
+                        help_text='The owner of this search result.',
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='satellite_results',
+                        to=settings.AUTH_USER_MODEL
+                    )
+                ),
+                (
+                    'satellite',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='scenes',
+                        to='satellites.satellite'
+                    )
+                ),
+                (
+                    'tier',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='scenes',
+                        to='satellites.satellitetier'
+                    )
+                ),
             ],
             options={
                 'verbose_name': 'Saved Satellite Result',
@@ -104,14 +324,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='satellite',
             name='visualisations',
-            field=models.ManyToManyField(blank=True, related_name='satellites', to='satellites.SatelliteVisualisation'),
+            field=models.ManyToManyField(
+                blank=True,
+                related_name='satellites',
+                to='satellites.SatelliteVisualisation'
+            ),
         ),
         migrations.AddConstraint(
             model_name='satellitesearch',
-            constraint=models.UniqueConstraint(fields=('owner', 'name'), name='unique_owner_name'),
+            constraint=models.UniqueConstraint(
+                fields=('owner', 'name'), name='unique_owner_name'
+            ),
         ),
         migrations.AddConstraint(
             model_name='satelliteresult',
-            constraint=models.UniqueConstraint(fields=('scene_id', 'satellite'), name='unique_satellite_scene'),
+            constraint=models.UniqueConstraint(
+                fields=('scene_id', 'satellite'), name='unique_satellite_scene'
+            ),
         ),
     ]

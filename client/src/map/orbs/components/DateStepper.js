@@ -6,7 +6,7 @@ import { otherSelector, setOther } from '../layers.slice';
 import { DateStepper } from './date-stepper/date-stepper.component';
 
 /**
- * @type {import('typings/orbis').SidebarComponent<{
+ * @type {import('typings').SidebarComponent<{
  *  dates: string[]
  *  defaultValue?: string
  *  min?: string

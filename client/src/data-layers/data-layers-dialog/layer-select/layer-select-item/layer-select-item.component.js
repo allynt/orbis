@@ -39,8 +39,8 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   selected?: boolean
- *   source: import('typings/orbis').Source
- *   onChange: (params: {source_ids: import('typings/orbis').Source['source_id'][]; selected: boolean}) => void
+ *   source: import('typings').Source
+ *   onChange: (params: {source_ids: import('typings').Source['source_id'][]; selected: boolean}) => void
  * }} props
  */
 const LayerSelectItem = ({ selected, source, onChange }) => {

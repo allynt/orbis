@@ -1,6 +1,7 @@
-import { Dispatch } from 'redux';
-import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 import { GeometryTypes } from '@turf/helpers';
+import { Dispatch } from 'redux';
+
+import { OrbState } from '../map/orbs/orbReducer'; // eslint-disable-line
 
 type LayerName =
   | 'ClusteredIconLayer'
@@ -8,7 +9,9 @@ type LayerName =
   | 'GeoJsonClusteredIconLayer'
   | 'GeoJsonLayer'
   | 'IconLayer'
-  | 'BitmapLayer';
+  | 'BitmapLayer'
+  | 'TileLayer'
+  | 'HeatmapLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
@@ -62,11 +65,20 @@ type ContinuousColorMaps =
   | 'YlOrBr'
   | 'YlOrRd';
 
+type FeatureKey = 'satellites';
+
 type ColorMap = CategoricalColorMaps | ContinuousColorMaps;
 
 type PropertyType = 'continuous' | 'decile' | 'discrete' | 'percentage';
 
-type Orb = { name: string; description?: string };
+type Orb = {
+  id: number;
+  name: string;
+  description?: string;
+  licence_cost: number;
+  logo: string;
+  features?: FeatureKey[];
+};
 
 type SourceCategories = {
   name: string;
@@ -273,4 +285,22 @@ type PolygonPickedMapFeature = PickedMapFeature<IsoPlusCommonProperties>;
 type DateRange<T> = {
   startDate: T;
   endDate: T;
+};
+
+type AppConfig = {
+  trackingId?: string;
+  mapbox_token?: string;
+  passwordMinLength?: number;
+  passwordMaxLength?: number;
+  isRegistrationOpen?: boolean;
+  isVerificationRequired?: boolean;
+  isApprovalRequired?: boolean;
+  maximumAoiArea?: number;
+  dataIndexUrl?: string;
+  commitSha?: string;
+  geometrySet?: {
+    name: string;
+    order: number;
+  };
+  userTrackingInterval?: number;
 };

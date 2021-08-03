@@ -6,7 +6,7 @@ const StyledTypography = styled(Typography)({ gridColumn: '1 / -1' });
 
 /**
  * @param {{
- *   details: import('typings/orbis').Property['details']
+ *   details: import('typings').Property['details']
  * }} props
  */
 export const Details = ({ details }) => {

@@ -12,6 +12,7 @@ from .views import (
     CustomerUserDetailView,
     CustomerUserInviteView,
     CustomerUserOnboardView,
+    OrbisUserViewSet,
     OrbisUserFeedbackRecordView,
     DataSourceView,
     DocumentView,
@@ -29,6 +30,7 @@ api_router.register(
     OrderViewSet,
     basename="orders"
 )
+api_router.register(r"users", OrbisUserViewSet, basename="users")
 api_urlpatterns = [
     # using custom login view to enable db logging...
     path("authentication/login/", LoginView.as_view(), name="rest_login"),

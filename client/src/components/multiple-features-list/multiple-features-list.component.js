@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   features: import('typings/orbis').GeoJsonFeature[]
- *   onMoreDetailsClick: (feature: import('typings/orbis').GeoJsonFeature) => void
+ *   features: import('typings').GeoJsonFeature[]
+ *   onMoreDetailsClick: (feature: import('typings').GeoJsonFeature) => void
  * } & MultipleFeaturesListMetadataProps} props
  */
 export const MultipleFeaturesList = ({
@@ -83,7 +83,7 @@ export const MultipleFeaturesList = ({
                 </Typography>
               </Grid>
             ) : null}
-            <Grid item xs container justify="flex-end">
+            <Grid item xs container justifyContent="flex-end">
               <Link
                 className={styles.link}
                 component="button"

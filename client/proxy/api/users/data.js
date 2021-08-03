@@ -13,6 +13,7 @@ let users = [
     profiles: {},
     roles: ['UserRole', 'AstrosatRole'],
     customers: [],
+    orbs: [{ features: ['satellites'] }],
   },
   {
     id: '6e5ac533-0245-4031-ab65-b1eff4d30a1f',
@@ -46,6 +47,13 @@ let users = [
         status: 'ACTIVE',
       },
     ],
+    orbs: [
+      {
+        id: 1,
+        name: 'Exploration',
+        features: ['satellites'],
+      },
+    ],
   },
   {
     id: 'e3e7cd24-cfc7-49b3-837c-332dde8f1033',
@@ -59,6 +67,7 @@ let users = [
     profiles: {},
     roles: ['UserRole'],
     customers: [],
+    orbs: [],
   },
   {
     id: '14247edb-5e41-4770-aa91-d652466880be',
@@ -72,6 +81,7 @@ let users = [
     profiles: {},
     roles: ['UserRole'],
     customers: [],
+    orbs: [],
   },
 ];
 

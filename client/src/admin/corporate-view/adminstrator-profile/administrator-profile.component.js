@@ -20,8 +20,8 @@ const BigAvatar = styled(Avatar)(({ theme }) => ({
 
 /**
  * @param {{
- *   user?: import('typings/orbis').User
- *   updateAdministrator?: (user: import('typings/orbis').User) => void
+ *   user?: import('typings').User
+ *   updateAdministrator?: (user: import('typings').User) => void
  * }} props
  */
 const AdministratorProfile = ({ user, updateAdministrator }) => {

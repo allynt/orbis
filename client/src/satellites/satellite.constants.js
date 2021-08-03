@@ -9,6 +9,7 @@ export const InfoType = {
 };
 
 export const Panels = {
+  NONE: 'None',
   SEARCH: 'Search',
   RESULTS: 'Results',
   VISUALISATION: 'Visualisation',

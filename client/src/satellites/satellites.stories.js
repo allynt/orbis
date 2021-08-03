@@ -1,11 +1,9 @@
 import React from 'react';
 
-import faker from 'faker/locale/en_GB';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { SatellitesProvider } from './satellites-context';
 import { satellites, scenes } from './satellites-test-fixtures';
 import Satellites from './satellites.component';
 
@@ -24,9 +22,7 @@ const Template = args => (
       app: { config: {} },
     })}
   >
-    <SatellitesProvider>
-      <Satellites {...args} />
-    </SatellitesProvider>
+    <Satellites {...args} />
   </Provider>
 );
 

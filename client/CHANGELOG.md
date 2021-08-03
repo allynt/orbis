@@ -1,3 +1,26 @@
+# [2.21.0](https://github.com/astrosat/orbis/compare/v2.20.0...v2.21.0) (2021-07-29)
+
+
+### Bug Fixes
+
+* **frontend:** Add text and center button on search ([9f1bd87](https://github.com/astrosat/orbis/commit/9f1bd871c875a4e1e09432b2f0973f1810e77a58))
+* **frontend:** Change access to satellites based on an orb having satellites feature ([bf3aeaa](https://github.com/astrosat/orbis/commit/bf3aeaae47a2a8b70e5e7cc3b4e59241df459a32))
+* **frontend:** Remove saving satellites search functionality ([15b165b](https://github.com/astrosat/orbis/commit/15b165b29e2dacb3d5cd4864a5539cceb27597e9))
+
+
+### Features
+
+* **backend:** ability to save satellite visualisations as datasources ([8f76b74](https://github.com/astrosat/orbis/commit/8f76b74c171e83563c63afbbd857bd074186de49))
+* **backend:** added features to orbs ([1ffc409](https://github.com/astrosat/orbis/commit/1ffc4090f06bacfa182609e9b028334b1c663fbb))
+* **backend:** refactored backend checks for the size of the AOI ([92fc599](https://github.com/astrosat/orbis/commit/92fc5998ce935aec4eb80034e086d2f4aecf3f4b))
+* **frontend:** Add ability to save satellite images ([cb8383a](https://github.com/astrosat/orbis/commit/cb8383a7697c2f78c2e871e42104076c5d297bf5))
+* **frontend:** Add click function to scene results layer ([4c23c2b](https://github.com/astrosat/orbis/commit/4c23c2b1bdcabe028aa59de37dc95494234f27fc))
+* **frontend:** Add fetch for orbs ([3f3d847](https://github.com/astrosat/orbis/commit/3f3d8475078ca76c1f0aa53054fe022b607907fe))
+* **frontend:** Add hovering to satellites results ([3cb9b28](https://github.com/astrosat/orbis/commit/3cb9b286c0a0d7d46f63870fc5a5bcce64377454))
+* **frontend:** Add searching for satellite scenes ([8aa6723](https://github.com/astrosat/orbis/commit/8aa672365f8279f523b3bf9c5185dfdfef35f2b7))
+* **frontend:** Add show/hide functionality to visualisation ([a3bdbb6](https://github.com/astrosat/orbis/commit/a3bdbb658bae78f169f2104a8a6e163e8ffba433))
+* **frontend:** Can view searched satellite images on map ([7ce3d52](https://github.com/astrosat/orbis/commit/7ce3d52c69a62631079aa10a1aa4f0228df749a5))
+
 # [2.20.0](https://github.com/astrosat/orbis/compare/v2.19.0...v2.20.0) (2021-06-30)
 
 

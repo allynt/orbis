@@ -553,12 +553,15 @@ describe('createOrbsWithCategorisedSources', () => {
           source_id: 'orb/1/source/1',
           metadata: {
             application: {
-              orbis: { orbs: [{ name: 'Orb 1' }], categories: value },
+              orbis: {
+                orbs: [{ name: 'Orb 1' }],
+                categories: value,
+              },
             },
           },
         },
       ];
-      /** @type {OrbWithCategorisedSources[]} */
+      /** @type {import('typings').OrbWithCategorisedSources[]} */
       const expected = [
         {
           name: 'Orb 1',
@@ -625,7 +628,7 @@ describe('createOrbsWithCategorisedSources', () => {
           },
         },
       ];
-      /** @type {OrbWithCategorisedSources[]} */
+      /** @type {import('typings').OrbWithCategorisedSources[]} */
       const expected = expect.arrayContaining([
         {
           name: 'No Orb',

@@ -31,7 +31,8 @@ import { DrawingToolsToolbox } from 'drawing-tools';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import { useMap } from 'MapContext';
-import { useSatellites } from 'satellites/satellites-context';
+import { isDrawingAoiSelector } from 'satellites/satellites.slice';
+import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
 import { MapControlButton } from '../components';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
@@ -169,10 +170,10 @@ const Map = ({
   const { selectionLayer } = useSelectionTools();
   const {
     drawAoiLayer,
-    isDrawingAoi,
     scenesLayer,
     selectedSceneLayer,
-  } = useSatellites();
+  } = useSatellitesLayers();
+  const isDrawingAoi = useSelector(isDrawingAoiSelector);
 
   useEffect(() => {
     if (selectedBookmark) {

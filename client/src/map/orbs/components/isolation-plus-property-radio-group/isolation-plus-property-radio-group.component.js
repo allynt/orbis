@@ -18,7 +18,7 @@ import PropertyRadio from './property-radio/property-radio.component';
 
 /**
  * @param {{
- *   selectedLayer: import('typings/orbis').Source
+ *   selectedLayer: import('typings').Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */
@@ -28,7 +28,7 @@ export const IsolationPlusPropertyRadioGroup = ({
 }) => {
   const otherStateKey = `${selectedLayer.authority}/${selectedLayer.namespace}`;
   const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
-  /** @type {import('typings/orbis').Property & {source_id: import('typings/orbis').Source['source_id']}} */
+  /** @type {import('typings').Source['source_id']}} */
   const selectedProperty = get(other, 'property');
 
   const propertyStateKey = `${selectedProperty?.source_id}/${selectedProperty?.name}`;
@@ -50,7 +50,7 @@ export const IsolationPlusPropertyRadioGroup = ({
   }).replace('.', ' > ');
 
   /**
-   * @param {import('typings/orbis').Property} property
+   * @param {import('typings').Property} property
    */
   const handlePropertyChange = property => {
     dispatch(

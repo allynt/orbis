@@ -6,7 +6,7 @@ export class AppClient extends SubClient {
   }
 
   /**
-   * @returns {Promise<any>}
+   * @returns {Promise<import('typings').AppConfig>}
    */
   async getConfig() {
     const response = await this.makeRequest('/config');

@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   orbs: import('typings/orbis').Orb[]
- *   selectedOrbName?: import('typings/orbis').Orb['name']
- *   onOrbClick: (orb: import('typings/orbis').Orb['name']) => void
+ *   orbs: import('typings').Orb[]
+ *   selectedOrbName?: import('typings').Orb['name']
+ *   onOrbClick: (orb: import('typings').Orb['name']) => void
  * }} props
  */
 export const OrbSelect = ({ orbs, selectedOrbName, onOrbClick }) => {

@@ -15,7 +15,7 @@ export default {
 
 if (isChromatic()) faker.seed(1);
 
-/** @type {Partial<Bookmark>} */
+/** @type {Partial<import('typings').Bookmark>} */
 const bookmark = {
   id: faker.random.number(),
   owner: faker.random.uuid(),

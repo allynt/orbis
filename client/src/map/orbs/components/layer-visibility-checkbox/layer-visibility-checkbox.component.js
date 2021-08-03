@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- *  @type {import('typings/orbis.js').SidebarComponent<{
+ *  @type {import('typings').SidebarComponent<{
  *   color?: string
  *   icon?: string
  *   info?: string

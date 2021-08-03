@@ -112,7 +112,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status }) => {
       <Grid
         item
         container
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
         wrap="nowrap"
       >
@@ -123,7 +123,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status }) => {
           item
           container
           direction="column"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="flex-start"
           className={styles.noteAndButtons}
         >
@@ -142,7 +142,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status }) => {
           <Grid
             item
             container
-            justify="space-between"
+            justifyContent="space-between"
             className={styles.displays}
           >
             {charLimitExceeded ? (
@@ -156,7 +156,7 @@ const PopupStatusAndNote = ({ id, note, onSave, status }) => {
           </Grid>
           <Grid
             container
-            justify="space-evenly"
+            justifyContent="space-evenly"
             alignItems="center"
             className={styles.buttons}
           >

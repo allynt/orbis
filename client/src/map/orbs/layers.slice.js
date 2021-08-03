@@ -1,5 +1,5 @@
 /**
- * @typedef {import('typings/orbis').GeoJsonFeature} GeoJsonFeature
+ * @typedef {import('typings').GeoJsonFeature} GeoJsonFeature
  */
 
 import { createSelector, createSlice } from '@reduxjs/toolkit';

@@ -62,6 +62,7 @@ class TestSatelliteDataSourceViews:
             "name",
             "description",
             "metadata",
+            "type",
         ]) == set(
             content.keys()
         )  # assert no write-only fields appear in the output

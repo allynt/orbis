@@ -25,7 +25,7 @@ const makeUrl = (baseUrl, p = 1) => baseUrl.replace('{p}', p.toString());
 
 /**
  * @param {{
- *   selectedLayer: Source
+ *   selectedLayer: import('typings').Source
  *   dispatch: import('redux').Dispatch
  * }} props
  */

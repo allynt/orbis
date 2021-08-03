@@ -16,7 +16,7 @@ const Logo = styled(OrbisAdminLogo)(({ theme }) => ({
 
 /**
  * @param {{
- *   user?: import('typings/orbis').User
+ *   user?: import('typings').User
  *   setVisiblePanel?: (panel: string) => void
  *   visiblePanel?: string
  * }} props

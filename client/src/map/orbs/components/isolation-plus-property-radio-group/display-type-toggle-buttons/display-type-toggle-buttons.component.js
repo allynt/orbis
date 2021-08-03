@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {import('typings/orbis').Property} property
+ * @param {import('typings').Property} property
  */
 const getButtonLabelForProperty = property => {
   if (property.application?.orbis?.display?.property_toggle_label)
@@ -47,9 +47,9 @@ const getButtonLabelForProperty = property => {
 
 /**
  * @param {{
- *  properties: import('typings/orbis').Property[]
- *  selectedProperty?: import('typings/orbis').Property
- *  onChange: (property: import('typings/orbis').Property) => void
+ *  properties: import('typings').Property[]
+ *  selectedProperty?: import('typings').Property
+ *  onChange: (property: import('typings').Property) => void
  * }} props
  */
 export const DisplayTypeToggleButtons = ({
@@ -61,7 +61,7 @@ export const DisplayTypeToggleButtons = ({
   const styles = useStyles();
 
   /**
-   * @param {import('typings/orbis').Property} property
+   * @param {import('typings').Property} property
    */
   const handleClick = property => {
     if (property.name === selectedProperty?.name || !onChange) return;
@@ -73,7 +73,12 @@ export const DisplayTypeToggleButtons = ({
       <Grid item xs={moreThanTwoProperties ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid item xs={moreThanTwoProperties ? 7 : 12} container justify="center">
+      <Grid
+        item
+        xs={moreThanTwoProperties ? 7 : 12}
+        container
+        justifyContent="center"
+      >
         <ButtonGroup
           className={styles.buttonGroup}
           size="small"

@@ -1,12 +1,20 @@
+import { Orb } from './orbis';
+
 type CustomerUserType = 'MANAGER' | 'MEMBER';
 
 type CustomerUserStatus = 'ACTIVE' | 'PENDING';
+
+type FeatureKey = 'satellites';
 
 type User = {
   accepted_terms: boolean;
   avatar?: string;
   change_password: boolean;
-  customers?: { type: CustomerUserType; status: CustomerUserStatus }[];
+  customers?: {
+    id: Customer['id'];
+    type: CustomerUserType;
+    status: CustomerUserStatus;
+  }[];
   description?: string;
   email: string;
   id: string;
@@ -17,6 +25,7 @@ type User = {
   registration_stage?: 'USER' | 'CUSTOMER' | 'CUSTOMER_USER' | 'ORDER';
   roles?: string[];
   username: string;
+  orbs?: Orb[];
 };
 
 type PartialUser = Pick<

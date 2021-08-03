@@ -11,7 +11,7 @@ import {
 import { InfoButtonTooltip } from 'components';
 
 /**
- * @param {{property: import('typings/orbis').DiscreteProperty}} props
+ * @param {{property: import('typings').DiscreteProperty}} props
  */
 export const DiscretePropertyLegend = ({ property }) => (
   <List>

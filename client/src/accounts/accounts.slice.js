@@ -24,6 +24,17 @@ export const status = {
   COMPLETE: 'Complete',
 };
 
+/**
+ * @typedef AccountsState
+ * @property {string} [userKey]
+ * @property {import('typings').User} [user]
+ * @property {any} [error]
+ * @property {boolean} isLoading
+ * @property {string} resetStatus
+ * @property {string} changeStatus
+ */
+
+/** @type {AccountsState} */
 const initialState = {
   userKey: null,
   user: null,
@@ -293,7 +304,7 @@ export const login = form => async dispatch => {
         return dispatch(push('/'));
     }
   } catch (error) {
-    /** @type {import('api-client').ResponseError<{user?: PartialUser}>} */
+    /** @type {import('api-client').ResponseError<{user?: import('typings').PartialUser}>} */
     const responseError = error;
     const responseBody = await responseError.getBody();
     if (responseBody.user?.is_verified === false) dispatch(push(RESEND));
@@ -308,7 +319,7 @@ export const login = form => async dispatch => {
 };
 
 /**
- * @param {User['email']} email
+ * @param {import('typings').User['email']} email
  * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
  */
 export const resendVerificationEmail = email => async dispatch => {
@@ -367,7 +378,7 @@ export const confirmResetPassword = (form, params) => async dispatch => {
 };
 
 /**
- * @param {{email: User['email']}} form
+ * @param {{email: import('typings').User['email']}} form
  * @returns {import('redux-thunk').ThunkAction<void, any, any, any>}
  */
 export const resetPassword = form => async dispatch => {

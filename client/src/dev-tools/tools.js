@@ -1,13 +1,11 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 
-import { userSelector } from 'accounts/accounts.selectors';
-import useAuthorization from 'hooks/useAuthorization';
+import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
 import store from 'store';
 
-import FiltersTool from './features/filters.component';
 import StoriesTool from './features/stories.component';
 import styles from './tools.module.css';
 
@@ -27,8 +25,7 @@ const install = () => {
   LocalDevTools = LocalDevTools || (() => null);
 
   const DevTools = () => {
-    const user = useSelector(userSelector);
-    const isAuthorized = useAuthorization(user, ['AstrosatRole']);
+    const isAuthorized = useUserRoleAuthorization(['AstrosatRole']);
 
     return isAuthorized ? (
       <div className={styles.devTools}>

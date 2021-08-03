@@ -95,7 +95,7 @@ const Landing = () => {
   }, [pollingPeriod, dispatch]);
 
   /**
-   * @param {import('typings/orbis').Bookmark} bookmark
+   * @param {import('typings').Bookmark} bookmark
    */
   const chooseBookmark = bookmark => {
     dispatch(selectBookmark(bookmark));

@@ -6,8 +6,8 @@ import userEvent from '@testing-library/user-event';
 import PropertyRadio from './property-radio.component';
 
 /**
- * @param {Partial<import('typings/orbis').Property>[]} properties
- * @param {Partial<import('typings/orbis').Property & {source_id: string}>} [selectedProperty]
+ * @param {Partial<import('typings').Property>[]} properties
+ * @param {Partial<import('typings').Property & {source_id: string}>} [selectedProperty]
  */
 const renderComponent = (properties, selectedProperty) => {
   const onPropertyChange = jest.fn();

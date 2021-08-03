@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
  *   onMouseEnter: () => void
  *   onMouseLeave: () => void
  *   isHovered?: boolean
- *   feature: import('typings/orbis').PolygonPickedMapFeature
+ *   feature: import('typings').PolygonPickedMapFeature
  *   fallbackProperty?: string
  *   isOnlyFeature?: boolean
  * }} props
@@ -59,7 +59,7 @@ export const TooltipChip = ({
   const ChipElement = (
     <Chip
       tabIndex={-1}
-      color={isHovered ? 'primary' : ''}
+      color={isHovered ? 'primary' : 'default'}
       classes={{ label: styles.chip }}
       size="small"
       label={areaIdentifier}

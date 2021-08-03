@@ -20,6 +20,7 @@ from satellites.models import (
     SatelliteResult,
     SatelliteDataSource,
 )
+from satellites.utils import project_geometry
 
 # TODO: REFACTOR THIS INTO django-astrosat-core
 
@@ -190,7 +191,8 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
                 "end_date must be greater than or equal to start_date."
             )
 
-        if data["aoi"].area > settings.MAXIMUM_AOI_AREA:
+        projected_aoi = project_geometry(data["aoi"])
+        if (projected_aoi.area * .000001) > settings.MAXIMUM_AOI_AREA:
             raise serializers.ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
             )
@@ -212,18 +214,15 @@ class SatelliteDataSourceSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "metadata",
+            "type",
         )
 
 
 class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
     class Meta:
         model = SatelliteDataSource
-        fields = (
-            "source_id",
-            "created",
+        fields = SatelliteDataSourceSerializer.Meta.fields + (
             "customer_user",
-            "name",
-            "description",
             "satellite_id",
             "scene_id",
             "visualisation_id",

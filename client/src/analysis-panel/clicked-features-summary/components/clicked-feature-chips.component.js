@@ -7,11 +7,11 @@ import { TooltipChip } from './tooltip-chip.component';
 
 /**
  * @param {{
- *   clickedFeatures: import('typings/orbis').PolygonPickedMapFeature[]
- *   hoveredFeatures: import('typings/orbis').PolygonPickedMapFeature[]
- *   onFeatureDelete: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
- *   onFeatureClick: (feature: import('typings/orbis').PolygonPickedMapFeature) => void
- *   onFeatureHover: (feature?: import('typings/orbis').PolygonPickedMapFeature) => void
+ *   clickedFeatures: import('typings').PolygonPickedMapFeature[]
+ *   hoveredFeatures: import('typings').PolygonPickedMapFeature[]
+ *   onFeatureDelete: (feature: import('typings').PolygonPickedMapFeature) => void
+ *   onFeatureClick: (feature: import('typings').PolygonPickedMapFeature) => void
+ *   onFeatureHover: (feature?: import('typings').PolygonPickedMapFeature) => void
  *   onDeselectAllClick: () => void
  *   fallbackProperty?: string
  * }} props
@@ -31,7 +31,7 @@ export const ClickedFeatureChips = ({
   return (
     <>
       <Grid item xs={12}>
-        <Collapse in={open} collapsedHeight="1.6rem">
+        <Collapse in={open} collapsedSize="1.6rem">
           <Grid container spacing={1}>
             {clickedFeatures?.map(feature => (
               <Fade
@@ -61,7 +61,7 @@ export const ClickedFeatureChips = ({
           </Grid>
         </Collapse>
       </Grid>
-      <Grid item xs container justify="center">
+      <Grid item xs container justifyContent="center">
         <ControlButtons
           open={open}
           onDeselectAllClick={onDeselectAllClick}

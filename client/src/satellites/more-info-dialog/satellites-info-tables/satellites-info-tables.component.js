@@ -16,7 +16,7 @@ const FirstCell = styled(TableCell)(({ theme }) => ({
 
 /**
  * @param {{
- *  satellite: import('typings/satellites').Satellite
+ *  satellite: import('typings').Satellite
  * }} props
  */
 export const SatelliteInfoTable = ({ satellite }) => (
@@ -50,7 +50,7 @@ export const SatelliteInfoTable = ({ satellite }) => (
 
 /**
  * @param {{
- *  scene: import('typings/satellites').Scene}} props
+ *  scene: import('typings').Scene}} props
  */
 export const SceneInfoTable = ({ scene }) => (
   <Table>

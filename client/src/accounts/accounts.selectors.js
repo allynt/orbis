@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
+/** @param {import('typings').RootState} state */
 const baseSelector = state => state?.accounts;
 
 export const errorSelector = createSelector(

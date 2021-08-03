@@ -16,7 +16,7 @@ const Row = ({ centered = false, ...rest }) => (
   <Grid
     item
     xs={12}
-    {...(centered ? { container: true, justify: 'center' } : {})}
+    {...(centered ? { container: true, justifyContent: 'center' } : {})}
     {...rest}
   />
 );

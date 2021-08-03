@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Collapse,
-  GridList,
-  GridListTile,
+  ImageList,
+  ImageListItem,
   Link,
   makeStyles,
   Typography,
@@ -34,8 +34,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmarks: import('typings/orbis').Bookmark[]
- *   chooseBookmark?: (bookmark: import('typings/orbis').Bookmark) => void
+ *   bookmarks: import('typings').Bookmark[]
+ *   chooseBookmark?: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
 export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
@@ -65,22 +65,22 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
       </div>
       <Collapse
         className={styles.collapse}
-        collapsedHeight={258}
+        collapsedSize={258}
         in={viewAllItems}
       >
-        <GridList
+        <ImageList
           ref={gridRef}
           className={styles.bookmarks}
-          cellHeight="auto"
+          rowHeight="auto"
           cols={MAX_VISIBLE_BOOKMARKS}
-          spacing={4}
+          gap={4}
         >
           {bookmarks?.map(bookmark => (
-            <GridListTile key={bookmark.id} className={styles.bookmark}>
+            <ImageListItem key={bookmark.id} className={styles.bookmark}>
               <BookmarksListItem bookmark={bookmark} onClick={chooseBookmark} />
-            </GridListTile>
+            </ImageListItem>
           ))}
-        </GridList>
+        </ImageList>
       </Collapse>
     </>
   );

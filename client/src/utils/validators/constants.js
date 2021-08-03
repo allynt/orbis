@@ -8,7 +8,9 @@ export const MESSAGES = {
   },
   password: {
     required: 'Password is required',
+    // eslint-disable-next-line no-template-curly-in-string
     min: 'Password is too short (minimum ${min} characters)',
+    // eslint-disable-next-line no-template-curly-in-string
     max: 'Password is too long (maximum ${max} characters)',
   },
   oldPassword: {

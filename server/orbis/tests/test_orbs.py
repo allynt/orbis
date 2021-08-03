@@ -173,7 +173,7 @@ class TestLicencesViews:
         assert customer.licences.filter(customer_user__isnull=False
                                        ).count() == 1
 
-    def test_remove_licences_to_customer_user(
+    def test_remove_licences_from_customer_user(
         self, user, api_client, mock_storage
     ):
 

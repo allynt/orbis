@@ -42,7 +42,7 @@ const useStyles = makeStyles(
  *   onChange?: (value: [number, number]) => void
  *   precision?: number
  *   reversed?: boolean
- *   type?: import('typings/orbis').PropertyType
+ *   type?: import('typings').PropertyType
  *   value?: [number, number]
  * } & Omit<import('@material-ui/core').SliderProps, 'onChange' | 'value'>} ColormapRangeSliderProps
  */

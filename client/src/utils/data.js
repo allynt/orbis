@@ -16,7 +16,7 @@ export const getValueForTimestamp = (timeseries, timestamp) => {
 };
 
 /**
- * @param {import('typings/orbis').PickedMapFeature} info
+ * @param {import('typings').PickedMapFeature} info
  */
 export const createReduxSafePickedInfo = info => ({
   index: info?.index,

@@ -9,7 +9,7 @@ import { DEFAULT_DECIMAL_PRECISION } from '../map/map.constants';
  * using the aggregation method as specified by the property
  *
  * @param {any[]} clickedFeatures
- * @param {Partial<import('typings/orbis').ContinuousProperty>} selectedProperty
+ * @param {Partial<import('typings').ContinuousProperty>} selectedProperty
  * @param {number} [selectedTimestamp]
  */
 export const aggregateValues = (

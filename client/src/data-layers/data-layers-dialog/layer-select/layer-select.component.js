@@ -28,13 +28,13 @@ import LayerSelectItem from './layer-select-item/layer-select-item.component';
 
 /**
  * @param {{
- *  sources: import('typings/orbis').CategorisedSources
+ *  sources: import('typings').CategorisedSources
  *  level: number
  *  onSourcesChange: (params: {
- *    source_ids: import('typings/orbis').Source['source_id'][]
+ *    source_ids: import('typings').Source['source_id'][]
  *    selected: boolean
  *  }) => void
- *  selectedSources: import('typings/orbis').Source['source_id'][]
+ *  selectedSources: import('typings').Source['source_id'][]
  * }} params
  */
 const renderCategories = ({
@@ -182,12 +182,12 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   sources: import('typings/orbis').Source[]
- *   selectedSources?: import('typings/orbis').Source['source_id'][]
+ *   sources: import('typings').Source[]
+ *   selectedSources?: import('typings').Source['source_id'][]
  *   selectedOrbName?: string
  *   hasMadeChanges?: boolean
  *   onSourcesChange: (params: {
- *     source_ids: import('typings/orbis').Source['source_id'][]
+ *     source_ids: import('typings').Source['source_id'][]
  *     selected: boolean}) => void
  *   onSubmit: () => void
  * }} props

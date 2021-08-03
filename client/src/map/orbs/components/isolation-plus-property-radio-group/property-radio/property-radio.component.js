@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   layerSourceId: import('typings/orbis').Source['source_id']
- *   properties: import('typings/orbis').Property[]
- *   onPropertyChange: (property?: import('typings/orbis').Property) => void
- *   selectedProperty: import('typings/orbis').Property & {source_id: import('typings/orbis').Source['source_id']}
+ *   layerSourceId: import('typings').Source['source_id']
+ *   properties: import('typings').Property[]
+ *   onPropertyChange: (property?: import('typings').Property) => void
+ *   selectedProperty: import('typings').Source['source_id']}
  *   onDateChange?: (event: React.ChangeEvent<{}>, date: number) => void
  *   selectedTimestamp?: number
  *   filterRange: [number, number]

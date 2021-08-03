@@ -22,7 +22,7 @@ const initialState = { isLoading: false, visible: true };
 const name = 'crowdless';
 
 /**
- * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, {source: Source, url: string}, {}>}
+ * @type {import('@reduxjs/toolkit').AsyncThunk<CrowdlessResponse, {source: import('typings').Source, url: string}, {}>}
  */
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,

@@ -11,7 +11,6 @@ import {
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 import { MissionControl } from 'mission-control/mission-control.component';
-import { SatellitesProvider } from 'satellites/satellites-context';
 
 import ControlPanel from '../control-panel/control-panel.component';
 import Map from './map.component';
@@ -43,17 +42,15 @@ const MapLayout = () => {
       overflow="hidden"
       bgcolor="#242424"
     >
-      <SatellitesProvider>
-        <ControlPanel
-          sidebarComponents={sidebarComponents}
-          drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
-        />
-        <Map
-          layers={layers}
-          mapComponents={mapComponents}
-          {...drawingToolsProps}
-        />
-      </SatellitesProvider>
+      <ControlPanel
+        sidebarComponents={sidebarComponents}
+        drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
+      />
+      <Map
+        layers={layers}
+        mapComponents={mapComponents}
+        {...drawingToolsProps}
+      />
       <MissionControl />
       <AnalysisPanel />
     </Box>

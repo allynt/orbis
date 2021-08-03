@@ -12,13 +12,13 @@ import { Pie } from './pie.component';
 export const isSelected = (datumA, datumB) =>
   datumA?.category === datumB?.category;
 
-/** @type {import('typings/orbis').AnalysisPanelComponent<{info?: string}, import('typings/orbis').PickedMapFeature>} */
+/** @type {import('typings').AnalysisPanelComponent<{info?: string}, import('typings').PickedMapFeature>} */
 export const CategoryBreakdownChart = ({
   clickedFeatures,
   info,
   selectedProperty: selectedPropertyProp,
 }) => {
-  const selectedProperty = /** @type {import('typings/orbis').DiscreteProperty} */ (selectedPropertyProp);
+  const selectedProperty = /** @type {import('typings').DiscreteProperty} */ (selectedPropertyProp);
   /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
   const [selectedDatum, setSelectedDatum] = useState();
 

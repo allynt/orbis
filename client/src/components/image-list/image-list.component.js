@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GridList } from '@astrosat/astrosat-ui';
+import { ImageList as AuiImageList } from '@astrosat/astrosat-ui';
 
 /**
  * @template T
@@ -12,9 +12,9 @@ import { GridList } from '@astrosat/astrosat-ui';
  * }} props
  */
 export const ImageList = ({ children, value, name, onChange }) => (
-  <GridList>
+  <AuiImageList>
     {React.Children.map(children, child =>
       React.cloneElement(child, { name, onChange, selectedValue: value }),
     )}
-  </GridList>
+  </AuiImageList>
 );

@@ -10,7 +10,7 @@ import { Sliders } from './sliders.component';
 
 /**
  * @param {{
- *  selectedProperty: import('typings/orbis').Property
+ *  selectedProperty: import('typings').Property
  *  onDateChange: (event: React.ChangeEvent<{}>, date: number) => void
  *  selectedTimestamp: number
  *  filterRange: [number, number]
@@ -63,7 +63,7 @@ export const SelectedPropertyControls = ({
     {selectedProperty.type === 'discrete' ? (
       <DiscretePropertyLegend
         property={
-          /** @type {import('typings/orbis').DiscreteProperty} */ (selectedProperty)
+          /** @type {import('typings').DiscreteProperty} */ (selectedProperty)
         }
       />
     ) : (
@@ -73,7 +73,7 @@ export const SelectedPropertyControls = ({
         onClipRangeChange={onClipRangeChange}
         onRangeFilterChange={onRangeFilterChange}
         selectedProperty={
-          /** @type {import('typings/orbis').ContinuousProperty} */ (selectedProperty)
+          /** @type {import('typings').ContinuousProperty} */ (selectedProperty)
         }
       />
     )}

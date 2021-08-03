@@ -30,9 +30,9 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmark: import('typings/bookmarks').Bookmark
- *   onSelect: (bookmark: import('typings/bookmarks').Bookmark) => void
- *   onDelete: (bookmark: import('typings/bookmarks').Bookmark) => void
+ *   bookmark: import('typings').Bookmark
+ *   onSelect: (bookmark: import('typings').Bookmark) => void
+ *   onDelete: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
 export const BookmarksListItem = ({ bookmark, onSelect, onDelete }) => {

@@ -1,8 +1,20 @@
 from rest_framework import serializers
 
+from drf_yasg2.utils import swagger_serializer_method
+
 from astrosat.serializers import ContextVariableDefault
 
-from orbis.models import OrbisUserProfile, OrbisUserFeedbackRecord
+from astrosat_users.models import User
+from astrosat_users.serializers import (
+    UserSerializer as AstrosatUsersUserSerializer,
+)
+
+from orbis.models import (
+    Orb,
+    OrbisUserProfile,
+    OrbisUserFeedbackRecord,
+)
+from orbis.serializers import OrbSerializer
 
 
 class OrbisUserFeedbackRecordSerializer(serializers.ModelSerializer):
@@ -59,3 +71,25 @@ class OrbisUserProfileSerializer(serializers.ModelSerializer):
     feedback_records = OrbisUserFeedbackRecordNestedSerializer(
         many=True, read_only=True
     )
+
+
+class OrbisUserSerializer(AstrosatUsersUserSerializer):
+    """
+    Adds "orbs" to the existing UserSerializer
+    """
+    class Meta:
+        model = User
+        fields = AstrosatUsersUserSerializer.Meta.fields + ["orbs"]
+
+    orbs = serializers.SerializerMethodField()
+
+    @swagger_serializer_method(serializer_or_field=OrbSerializer(many=True))
+    def get_orbs(self, obj):
+        # return all orbs that this user has a licence to...
+        orbs = Orb.objects.filter(
+            is_active=True,
+            licences__customer_user__in=obj.customer_users.values_list(
+                "pk", flat=True
+            )
+        ).distinct()
+        return OrbSerializer(orbs, many=True).data

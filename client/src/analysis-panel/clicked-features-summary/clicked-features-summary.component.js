@@ -19,9 +19,9 @@ import { ClickedFeatureChips, DataValue } from './components';
 import { createViewstateForFeature } from './create-viewstate-for-feature/create-viewstate-for-feature';
 
 /**
- * @type {import('typings/orbis').AnalysisPanelComponent<
- *   {fallbackProperty?: string, currentSource?: import('typings/orbis').Source},
- *   import('typings/orbis').PolygonPickedMapFeature
+ * @type {import('typings').AnalysisPanelComponent<
+ *   {fallbackProperty?: string, currentSource?: import('typings').Source},
+ *   import('typings').PolygonPickedMapFeature
  * >}
  * */
 export const ClickedFeaturesSummary = ({

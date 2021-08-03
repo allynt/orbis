@@ -1,9 +1,9 @@
 import datetime
-import json
 import pytest
 import urllib
 
-from django.contrib.gis.geos import GEOSGeometry, Polygon
+from django.conf import settings
+from django.contrib.gis.geos import GEOSGeometry
 from django.urls import resolve, reverse
 
 from rest_framework import status
@@ -11,6 +11,7 @@ from rest_framework import status
 from astrosat.tests.utils import shuffle_string
 
 from astrosat_users.tests.utils import *
+from orbis.tests.factories import OrbFactory, CustomerFactory
 
 from satellites.serializers import SimplifiedGeometryField
 
@@ -271,25 +272,94 @@ class TestSatellites:
 #         assert status.is_success(response.status_code)
 #         assert len(response.json()) == 0
 
-# NOTE: THIS TEST IS COMMENTED OUT SO THAT I DON'T INTERACT W/ ANY REMOTE SATELLITE APIS
-# IN THEORY I SHOULD MOCK THOSE APIS DURING TESTING
-# @pytest.mark.django_db
-# def test_run_query(user, api_client):
 
-#     tiers = [SatelliteTierFactory(name=tier) for tier in ["free"]]
-#     satellites = [SatelliteFactory(satellite_id=satellite) for satellite in ["sentinel-2"]]
+@pytest.mark.django_db
+class TestSatelliteQueries:
+    def test_satellite_query_permission(
+        self, user, api_client, satellite_settings
+    ):
+        """
+        Tests that only users w/ a licence to an orb w/ the "satellite" feature
+        can run access the run_satellite_query view
+        """
+        satellite_settings.maximum_aoi_area = 500
+        satellite_settings.save()
 
-#     search_data = {
-#         "satellites": ["sentinel-2"],
-#         "tiers": ["free"],
-#         "start_date": TEST_START_DATE.isoformat(),
-#         "end_date": TEST_END_DATE.isoformat(),
-#         "aoi": TEST_AOI_QUERY_PARAM,
-#     }
+        orb = OrbFactory()
+        assert orb.features == []
 
-#     client = api_client(user)
+        satellite = SatelliteFactory()
+        assert satellite.adapter_name == "mock-adapter"
 
-#     url = reverse("satellite-run-query")
-#     response = client.post(url, search_data, content_type="application/json")
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user)
+        customer.assign_licences(orb, customer.customer_users.all())
 
-#     assert status.is_success(response.status_code)
+        url = reverse("satellite-run-query")
+        client = api_client(user)
+
+        test_data = {
+            "satellites": [satellite.satellite_id],
+            "start_date": (datetime.datetime.now() - datetime.timedelta(1)).isoformat(),
+            "end_date": (datetime.datetime.now()).isoformat(),
+            "aoi": [
+                # a known small AOI that will pass
+                [-7.618609835906669, 54.24199452154744],
+                [-7.618609835906669, 54.15676172761634],
+                [-7.511959419835612, 54.15676172761634],
+                [-7.511959419835612, 54.24199452154744],
+                [-7.618609835906669, 54.24199452154744],
+            ],
+        }  # yapf: disable
+
+        response = client.post(url, data=test_data, format="json")
+        assert status.is_client_error(response.status_code)
+        assert response.json(
+        )["detail"] == "You do not have a licence to run a Satellite Query."
+
+        orb.features.append("satellites")
+        orb.save()
+
+        response = client.post(url, data=test_data, format="json")
+        assert status.is_success(response.status_code)
+
+    def test_satellite_query_invalid_aoi(
+        self, user, api_client, satellite_settings
+    ):
+        """
+        tests that a satellite query will be refused if the AOI is too big
+        """
+
+        satellite_settings.maximum_aoi_area = 500
+        satellite_settings.save()
+
+        orb = OrbFactory(features=["satellites"])
+        satellite = SatelliteFactory(adapter_name="mock-adapter")
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user)
+        customer.assign_licences(orb, customer.customer_users.all())
+
+        url = reverse("satellite-run-query")
+        client = api_client(user)
+
+        test_data = {
+            "satellites": [satellite.satellite_id],
+            "start_date": (datetime.datetime.now() - datetime.timedelta(1)).isoformat(),
+            "end_date": (datetime.datetime.now()).isoformat(),
+            "aoi": [
+                # a known big AOI that will fail
+                [-9.374606933593734, 55.09846299265664],
+                [-9.374606933593734, 54.57331045628759],
+                [-8.4297827148438,   54.57331045628759],
+                [-8.4297827148438,   55.09846299265664],
+                [-9.374606933593734, 55.09846299265664],
+            ],
+        }  # yapf: disable
+
+        response = client.post(url, data=test_data, format="json")
+        assert status.is_client_error(response.status_code)
+
+        assert response.json()["non_field_errors"] == [
+            f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
+        ]

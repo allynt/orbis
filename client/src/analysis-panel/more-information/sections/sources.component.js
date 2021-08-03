@@ -27,7 +27,7 @@ const ListItem = styled(ListItemBase)({
 
 /**
  * @param {{
- *  sources: import('typings/orbis').SourceMetadata['provenance']['sources']
+ *  sources: import('typings').SourceMetadata['provenance']['sources']
  * }} props
  */
 export const Sources = ({ sources }) => (
