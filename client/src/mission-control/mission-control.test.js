@@ -2,6 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { push } from 'connected-react-router';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
@@ -16,27 +17,27 @@ const setup = (location = '/mission-control') => {
   const history = createMemoryHistory({
     initialEntries: [location],
   });
+  const store = mockStore({
+    accounts: { userKey: '123abc' },
+    missionControl: {
+      currentCustomer: {
+        id: '0',
+        name: 'test-customer',
+        title: 'Test Customer',
+        licences: [{ id: '1', orb: 'Rice' }],
+      },
+      customerUsers: [],
+    },
+  });
 
-  return render(
+  const utils = render(
     <Router history={history}>
-      <Provider
-        store={mockStore({
-          accounts: { userKey: '123abc' },
-          missionControl: {
-            currentCustomer: {
-              id: '0',
-              name: 'test-customer',
-              title: 'Test Customer',
-              licences: [{ id: '1', orb: 'Rice' }],
-            },
-            customerUsers: [],
-          },
-        })}
-      >
+      <Provider store={store}>
         <MissionControl />
       </Provider>
     </Router>,
   );
+  return { ...utils, history, store };
 };
 
 describe('MissionControl', () => {
@@ -61,5 +62,11 @@ describe('MissionControl', () => {
     expect(
       queryByRole('button', { name: 'Create User' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('Navigates to map and closes if the backdrop is clicked', () => {
+    const { getByRole, store } = setup();
+    userEvent.click(getByRole('none'));
+    expect(store.getActions()).toContainEqual(push('/map'));
   });
 });

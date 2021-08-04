@@ -8,6 +8,7 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
@@ -63,7 +64,7 @@ export const MissionControl = () => {
   }, [currentCustomer, customerUsers, dispatch]);
 
   const handleClose = () => {
-    return dispatch(toggleMissionControlDialog(false));
+    return dispatch(push('/map'));
   };
 
   return (
@@ -72,7 +73,7 @@ export const MissionControl = () => {
       classes={dialogStyles}
       maxWidth="xl"
       fullWidth
-      onBackdropClick={handleClose}
+      onClose={handleClose}
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <DialogContent>
