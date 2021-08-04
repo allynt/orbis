@@ -1,5 +1,8 @@
+import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
+
 export const VIEWS = {
+  store: { label: 'Orbis Store', route: '/store', Icon: StoreIcon },
   users: { label: 'Users', route: '/users', Icon: UsersIcon },
   other: { label: 'Other', route: '/other' },
 };

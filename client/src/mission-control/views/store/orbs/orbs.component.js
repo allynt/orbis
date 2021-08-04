@@ -25,7 +25,7 @@ const Heading = styled('h1')(({ theme }) => ({
  *  orbs: import('typings').Orb[]
  * }} props
  */
-export const Orbs = ({ orbs }) => {
+export const Orbs = ({ orbs = [] }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
   const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
