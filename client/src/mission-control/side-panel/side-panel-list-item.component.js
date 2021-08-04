@@ -6,31 +6,25 @@ import {
   ListItemText,
   Typography,
   makeStyles,
+  fade,
 } from '@astrosat/astrosat-ui';
 
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    color: theme.palette.text.primary,
+    '&$selected': {
+      color: theme.palette.background.default,
+      backgroundColor: theme.palette.primary.main,
+      '&:hover': {
+        backgroundColor: fade(theme.palette.grey[400], 0.3),
+      },
+    },
     cursor: 'pointer',
-    /** @param {{ isSelected: boolean} } props */
-    color: props =>
-      props.isSelected
-        ? theme.palette.background.default
-        : theme.palette.common.white,
-    /** @param {{ isSelected: boolean} } props */
-    backgroundColor: props =>
-      props.isSelected
-        ? theme.palette.primary.main
-        : theme.palette.background.default,
   },
-  icon: {
-    /** @param {{ isSelected: boolean} } props */
-    color: props =>
-      props.isSelected
-        ? theme.palette.background.default
-        : theme.palette.common.white,
-  },
+  icon: { color: 'inherit' },
+  selected: {},
 }));
 
 /**
@@ -42,11 +36,18 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const SidePanelListItem = ({ view, Icon, to, selected }) => {
-  const styles = useStyles({ isSelected: selected });
+  const { icon, ...listItemClasses } = useStyles();
   return (
-    <ListItem component={Link} to={to} replace classes={styles}>
-      <ListItemIcon aria-label={`${view} Icon`}>
-        {Icon ? <Icon className={styles.icon} /> : null}
+    <ListItem
+      component={Link}
+      to={to}
+      replace
+      classes={listItemClasses}
+      selected={selected}
+      button
+    >
+      <ListItemIcon classes={{ root: icon }} aria-label={`${view} Icon`}>
+        {Icon ? <Icon /> : null}
       </ListItemIcon>
       <ListItemText primary={<Typography variant="h2">{view}</Typography>} />
     </ListItem>
