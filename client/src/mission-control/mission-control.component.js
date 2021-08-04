@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
+import { Dialog, DialogTitle, Grid, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { userSelector } from '../accounts/accounts.selectors';
-import { VIEWS } from './mission-control.constants';
 import {
-  toggleMissionControlDialog,
   fetchCustomer,
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
+  toggleMissionControlDialog,
 } from './mission-control.slice.js';
 import { SidePanel } from './side-panel/side-panel.component';
 import UsersView from './views/users-view/users-view.component';
