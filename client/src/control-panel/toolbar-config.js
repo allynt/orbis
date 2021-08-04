@@ -134,7 +134,7 @@ export const useToolbarItems = () => {
         order: 1,
       },
     ),
-    ...conditionallyAddItemOrItems(true, {
+    ...conditionallyAddItemOrItems(false, {
       label: 'Mission Control',
       icon: (
         <SvgIcon>
