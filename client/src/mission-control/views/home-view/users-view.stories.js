@@ -6,7 +6,7 @@ import {
   pendingUsers,
 } from 'mission-control/test-story-data';
 
-import HomeView from './home-view.component';
+import HomeView from './users-view.component';
 
 export default {
   title: 'Mission Control/Home View',
@@ -24,7 +24,7 @@ const Template = args => <HomeView {...args} />;
 export const Default = Template.bind({});
 
 export const WithUsers = Template.bind({});
-/** @type {import('./home-view.component').HomeViewProps} */
+/** @type {import('./users-view.component').HomeViewProps} */
 WithUsers.args = {
   activeUsers,
   pendingUsers,
