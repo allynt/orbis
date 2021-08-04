@@ -15,7 +15,7 @@ import {
   selectCustomerUsers,
 } from './mission-control.slice.js';
 import { SidePanel } from './side-panel/side-panel.component';
-import HomeView from './views/home-view/users-view.component';
+import HomeView from './views/users-view/users-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
