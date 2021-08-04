@@ -44,7 +44,7 @@ const SidePanelListItem = ({ view, Icon, to }) => {
   const styles = useStyles({});
 
   return (
-    <Link to={to}>
+    <Link to={`/mission-control${to}`}>
       <ListItem classes={styles}>
         <ListItemIcon aria-label={`${view} Icon`}>
           {Icon ? <Icon className={styles.icon} /> : null}
