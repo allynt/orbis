@@ -1,30 +1,26 @@
 import React from 'react';
 
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@astrosat/astrosat-ui';
+import { List } from '@astrosat/astrosat-ui';
 
-import { VIEWS } from '../constants';
+import { useLocation, useRouteMatch } from 'react-router-dom';
 
-export const SidePanel = ({ mainPanelView, setMainPanelView }) => {
-  const handleClick = view => {
-    if (mainPanelView === view) return;
-    return setMainPanelView(view);
-  };
+import { VIEWS } from '../mission-control.constants';
+import SidePanelListItem from './side-panel-list-item.component';
+
+export const SidePanel = () => {
+  const { pathname } = useLocation();
+  const { path } = useRouteMatch();
 
   return (
-    <List aria-label="mission control sidebar options">
-      {Object.values(VIEWS).map(view => (
-        <ListItem key={view} onClick={() => handleClick(view)}>
-          <ListItemIcon aria-label={`${view} Icon`}></ListItemIcon>
-          <ListItemText
-            primary={<Typography component="h2">{view}</Typography>}
-          />
-        </ListItem>
+    <List component="nav" aria-label="mission control sidebar options">
+      {Object.values(VIEWS).map(({ label, route, Icon }) => (
+        <SidePanelListItem
+          key={label}
+          view={label}
+          Icon={Icon}
+          to={`${path}${route}`}
+          selected={pathname.includes(route)}
+        />
       ))}
     </List>
   );
