@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { Dialog, DialogTitle, Grid, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, useLocation } from 'react-router-dom';
@@ -18,9 +24,6 @@ import UsersView from './views/users-view/users-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
-    width: `calc(100% - ${theme.typography.pxToRem(96)})`,
-    height: `calc(100% - ${theme.typography.pxToRem(96)})`,
-    margin: '0',
     backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
@@ -37,19 +40,6 @@ const useTitleStyles = makeStyles(theme => ({
   },
 }));
 
-const useContentStyles = makeStyles(theme => ({
-  root: {
-    padding: 'none',
-  },
-  mainPanel: {
-    width: '100%',
-    margin: '1.25rem',
-  },
-  sidePanel: {
-    margin: '1.25rem 0 1.25rem 1.25rem',
-  },
-}));
-
 export const MissionControl = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -59,7 +49,6 @@ export const MissionControl = () => {
 
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles({});
-  const contentStyles = useContentStyles({});
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -81,24 +70,27 @@ export const MissionControl = () => {
     <Dialog
       open={location.pathname.includes('/mission-control')}
       classes={dialogStyles}
-      maxWidth={false}
+      maxWidth="xl"
+      fullWidth
       onBackdropClick={handleClose}
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
-      <Grid container direction="row" justify="space-between" wrap="nowrap">
-        <Grid item className={contentStyles.sidePanel}>
-          <SidePanel />
+      <DialogContent>
+        <Grid container spacing={4} wrap="nowrap">
+          <Grid item xs={4} lg={2}>
+            <SidePanel />
+          </Grid>
+          <Grid item>
+            <Switch>
+              <Route path="/mission-control/users" component={UsersView} />
+              <Route
+                path="/mission-control/other"
+                component={() => <h1>Other Route</h1>}
+              />
+            </Switch>
+          </Grid>
         </Grid>
-        <Grid item className={contentStyles.mainPanel}>
-          <Switch>
-            <Route path="/mission-control/users" component={UsersView} />
-            <Route
-              path="/mission-control/other"
-              component={() => <h1>Other Route</h1>}
-            />
-          </Switch>
-        </Grid>
-      </Grid>
+      </DialogContent>
     </Dialog>
   );
 };
