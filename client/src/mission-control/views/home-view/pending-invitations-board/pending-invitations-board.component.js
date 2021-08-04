@@ -15,9 +15,8 @@ import {
   MissionControlTable,
   MissionControlTableRow,
   MissionControlTableCell,
-} from 'mission-control/mission-control-table/mission-control-table.component';
-
-import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
+} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';

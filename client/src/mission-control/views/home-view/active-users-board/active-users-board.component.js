@@ -12,15 +12,14 @@ import {
   TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
-import { TablePaginationFooter } from '../../shared-components/table.pagination-footer.component';
-
+import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import {
   MissionControlTable,
   MissionControlTableRow,
   MissionControlTableCell,
-} from 'mission-control/mission-control-table/mission-control-table.component';
+} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 
-import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 import QuickView from './quick-view/quick-view.component';

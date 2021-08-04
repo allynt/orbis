@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -44,5 +44,18 @@ describe('MissionControl', () => {
     const dialog = queryByRole('dialog');
 
     expect(dialog).not.toBeInTheDocument();
+  });
+
+  it('calls the dispatches', () => {
+
+  });
+
+  it('switches panels', () => {
+    const { getByText, queryByText } = setup({ isVisible: true });
+    expect(getByText('Create User')).toBeInTheDocument();
+
+    userEvent.click(getByText('Other'));
+
+    expect(queryByText('Create User')).not.toBeInTheDocument();
   });
 });

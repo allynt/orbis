@@ -32,13 +32,13 @@ import {
   deleteCustomerUser,
 } from 'mission-control/mission-control-slice.js';
 
+import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import {
   CreateUserForm,
   DeleteUserForm,
   EditUserForm,
   WithdrawUserInvitationForm,
-} from '../../../mission-control-forms';
-import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
+} from './forms';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
 
 const DialogCloseButton = styled(IconButton)({

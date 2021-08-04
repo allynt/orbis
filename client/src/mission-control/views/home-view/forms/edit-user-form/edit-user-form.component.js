@@ -18,13 +18,12 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { Form } from 'components';
-import { FIELD_NAMES, name } from 'utils/validators';
-
-import { ADMIN_STATUS } from '../../mission-control.constants';
+import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import {
   getCheckboxLicences,
   getUpdatedLicenceIds,
-} from '../../main-panel/main-panel-views/licence-utils';
+} from 'mission-control/views/licence-utils';
+import { FIELD_NAMES, name } from 'utils/validators';
 
 const validationSchema = yup.object({
   [FIELD_NAMES.name]: name,

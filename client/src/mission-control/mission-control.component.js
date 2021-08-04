@@ -5,7 +5,6 @@ import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from '../accounts/accounts.selectors';
-import { MainPanel } from './main-panel/main-panel.component';
 import {
   toggleMissionControlDialog,
   selectIsMissionControlDialogVisible,
@@ -16,6 +15,7 @@ import {
 } from './mission-control-slice.js';
 import { VIEWS } from './mission-control.constants';
 import { SidePanel } from './side-panel/side-panel.component';
+import HomeView from './views/home-view/home-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
@@ -96,7 +96,11 @@ export const MissionControl = () => {
           />
         </Grid>
         <Grid item className={contentStyles.mainPanel}>
-          <MainPanel mainPanelView={mainPanelView} />
+          {mainPanelView === VIEWS.users ? (
+            <HomeView />
+          ) : (
+            <h1>I am another view</h1>
+          )}
         </Grid>
       </Grid>
     </Dialog>
