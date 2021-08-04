@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { USER_STATUS } from './mission-control.constants';
 import reducer, {
   toggleMissionControlDialog,
   selectIsMissionControlDialogVisible,
@@ -31,8 +32,7 @@ import reducer, {
   selectCurrentCustomer,
   selectCustomerUsers,
   selectLicenceInformation,
-} from './mission-control-slice';
-import { USER_STATUS } from './mission-control.constants';
+} from './mission-control.slice';
 
 const mockStore = configureMockStore([thunk]);
 

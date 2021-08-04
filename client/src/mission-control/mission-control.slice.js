@@ -1,5 +1,4 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';

@@ -12,7 +12,7 @@ import controlPanel from './control-panel/control-panel.slice';
 import data from './data-layers/data-layers.slice';
 import map from './map/map.slice';
 import orbs from './map/orbs/orbReducer';
-import missionControl from './mission-control/mission-control-slice';
+import missionControl from './mission-control/mission-control.slice';
 import satellites from './satellites/satellites.slice';
 import stories from './stories/stories.slice';
 

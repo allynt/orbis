@@ -30,7 +30,7 @@ import {
   updateCustomerUser,
   createCustomerUser,
   deleteCustomerUser,
-} from 'mission-control/mission-control-slice.js';
+} from 'mission-control/mission-control.slice.js';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import {

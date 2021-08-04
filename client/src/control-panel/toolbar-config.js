@@ -22,7 +22,7 @@ import {
   setMenuHeadings,
 } from '../control-panel/control-panel.slice';
 import featureToggles from '../feature-toggles';
-import { toggleMissionControlDialog } from '../mission-control/mission-control-slice';
+import { toggleMissionControlDialog } from '../mission-control/mission-control.slice';
 import { ReactComponent as AdminIcon } from './admin.svg';
 import { ReactComponent as GuideIcon } from './guide.svg';
 import { ReactComponent as MissionControlIcon } from './mission-control.svg';

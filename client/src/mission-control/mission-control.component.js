@@ -5,6 +5,7 @@ import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from '../accounts/accounts.selectors';
+import { VIEWS } from './mission-control.constants';
 import {
   toggleMissionControlDialog,
   selectIsMissionControlDialogVisible,
@@ -12,8 +13,7 @@ import {
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
-} from './mission-control-slice.js';
-import { VIEWS } from './mission-control.constants';
+} from './mission-control.slice.js';
 import { SidePanel } from './side-panel/side-panel.component';
 import HomeView from './views/home-view/home-view.component';
 
