@@ -2,6 +2,8 @@ import React from 'react';
 
 import { List, makeStyles } from '@astrosat/astrosat-ui';
 
+import { useRouteMatch } from 'react-router-dom';
+
 import { VIEWS } from '../mission-control.constants';
 import SidePanelListItem from './side-panel-list-item.component';
 
@@ -14,11 +16,21 @@ const useStyles = makeStyles(theme => ({
 
 export const SidePanel = () => {
   const styles = useStyles({});
+  const { path } = useRouteMatch();
 
   return (
-    <List aria-label="mission control sidebar options" classes={styles}>
+    <List
+      component="nav"
+      aria-label="mission control sidebar options"
+      classes={styles}
+    >
       {Object.values(VIEWS).map(({ label, route, Icon }) => (
-        <SidePanelListItem key={label} view={label} Icon={Icon} to={route} />
+        <SidePanelListItem
+          key={label}
+          view={label}
+          Icon={Icon}
+          to={`${path}${route}`}
+        />
       ))}
     </List>
   );

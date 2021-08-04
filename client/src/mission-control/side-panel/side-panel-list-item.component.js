@@ -42,16 +42,13 @@ const useStyles = makeStyles(theme => ({
  */
 const SidePanelListItem = ({ view, Icon, to }) => {
   const styles = useStyles({});
-
   return (
-    <Link to={`/mission-control${to}`}>
-      <ListItem classes={styles}>
-        <ListItemIcon aria-label={`${view} Icon`}>
-          {Icon ? <Icon className={styles.icon} /> : null}
-        </ListItemIcon>
-        <ListItemText primary={<Typography variant="h2">{view}</Typography>} />
-      </ListItem>
-    </Link>
+    <ListItem component={Link} to={to} replace classes={styles}>
+      <ListItemIcon aria-label={`${view} Icon`}>
+        {Icon ? <Icon className={styles.icon} /> : null}
+      </ListItemIcon>
+      <ListItemText primary={<Typography variant="h2">{view}</Typography>} />
+    </ListItem>
   );
 };
 
