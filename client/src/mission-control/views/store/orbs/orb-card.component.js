@@ -48,7 +48,7 @@ export const OrbCard = ({ orb }) => {
         <Link
           // @ts-ignore
           component={RouterLink}
-          to={`/orbs/${orb.id}`}
+          to={`/mission-control/store/orbs/${orb.id}`}
         >
           Learn More
         </Link>

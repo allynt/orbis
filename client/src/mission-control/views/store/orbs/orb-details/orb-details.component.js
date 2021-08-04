@@ -51,7 +51,10 @@ export const OrbDetails = ({ orbs }) => {
       <Grid container spacing={mdUp ? 6 : 2}>
         <Grid item sm={6} container direction="column" spacing={smUp ? 8 : 2}>
           <Grid item>
-            <RouterLink className={styles.back} to="/orbs">
+            <RouterLink
+              className={styles.back}
+              to="/mission-control/store/orbs"
+            >
               <Button
                 // @ts-ignore
                 component="span"
@@ -68,7 +71,7 @@ export const OrbDetails = ({ orbs }) => {
           <Grid item container>
             <img
               className={styles.image}
-              src={orb.images[0]}
+              src={orb.images?.[0]}
               alt={`${orb.name} Example`}
             />
           </Grid>
