@@ -60,7 +60,11 @@ const App = () => {
       <Switch>
         <PrivateRoute exact path="/" user={user} component={LandingView} />
         <Route path="/accounts" component={Accounts} />
-        <PrivateRoute path="/map" user={user} component={MapLayout} />
+        <PrivateRoute
+          path={['/map', '/mission-control']}
+          user={user}
+          component={MapLayout}
+        />
         <Suspense fallback={<h3>Loading...</h3>}>
           <PrivateRoute
             exact
