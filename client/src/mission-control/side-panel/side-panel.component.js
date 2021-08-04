@@ -3,7 +3,6 @@ import React from 'react';
 import { List, makeStyles } from '@astrosat/astrosat-ui';
 
 import { VIEWS } from '../mission-control.constants';
-import { ReactComponent as UsersIcon } from './side-panel-icons/users-icon.svg';
 import SidePanelListItem from './side-panel-list-item.component';
 
 const useStyles = makeStyles(theme => ({
@@ -13,36 +12,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**
- * @param {{
- *  mainPanelView: string,
- *  setMainPanelView: (view: string) => void
- * }} props
- */
-export const SidePanel = ({ mainPanelView, setMainPanelView }) => {
+export const SidePanel = () => {
   const styles = useStyles({});
-
-  const handleClick = view => setMainPanelView(view);
-
-  const getIcon = view => {
-    switch (view) {
-      case VIEWS.users:
-        return UsersIcon;
-      default:
-        return undefined;
-    }
-  };
 
   return (
     <List aria-label="mission control sidebar options" classes={styles}>
-      {Object.values(VIEWS).map(view => (
-        <SidePanelListItem
-          key={view}
-          view={view}
-          mainPanelView={mainPanelView}
-          onClick={handleClick}
-          Icon={getIcon(view)}
-        />
+      {Object.values(VIEWS).map(({ label, route, Icon }) => (
+        <SidePanelListItem key={label} view={label} Icon={Icon} to={route} />
       ))}
     </List>
   );

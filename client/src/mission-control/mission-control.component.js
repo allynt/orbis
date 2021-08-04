@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import { VIEWS } from './mission-control.constants';
@@ -62,8 +62,6 @@ export const MissionControl = () => {
   const titleStyles = useTitleStyles({});
   const contentStyles = useContentStyles({});
 
-  const [mainPanelView, setMainPanelView] = useState(VIEWS.users);
-
   useEffect(() => {
     if (!currentCustomer) {
       dispatch(fetchCustomer(user));
@@ -90,17 +88,16 @@ export const MissionControl = () => {
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <Grid container direction="row" justify="space-between" wrap="nowrap">
         <Grid item className={contentStyles.sidePanel}>
-          <SidePanel
-            mainPanelView={mainPanelView}
-            setMainPanelView={setMainPanelView}
-          />
+          <SidePanel />
         </Grid>
         <Grid item className={contentStyles.mainPanel}>
-          {mainPanelView === VIEWS.users ? (
-            <UsersView />
-          ) : (
-            <h1>I am another view</h1>
-          )}
+          <Switch>
+            <Route path="/mission-control/users" component={UsersView} />
+            <Route
+              path="/mission-control/other"
+              component={() => <h1>Other Route</h1>}
+            />
+          </Switch>
         </Grid>
       </Grid>
     </Dialog>

@@ -1,6 +1,7 @@
+import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
 export const VIEWS = {
-  users: 'Users',
-  other: 'Other',
+  users: { label: 'Users', route: '/users', Icon: UsersIcon },
+  other: { label: 'Other', route: '/other' },
 };
 
 export const ADMIN_STATUS = {

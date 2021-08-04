@@ -51,11 +51,15 @@ describe('MissionControl', () => {
   });
 
   it('switches panels', () => {
-    const { getByText, queryByText } = setup();
-    expect(getByText('Create User')).toBeInTheDocument();
+    const { getByRole, queryByRole, getByText } = setup(
+      '/mission-control/users',
+    );
+    expect(getByRole('button', { name: 'Create User' })).toBeInTheDocument();
 
     userEvent.click(getByText('Other'));
 
-    expect(queryByText('Create User')).not.toBeInTheDocument();
+    expect(
+      queryByRole('button', { name: 'Create User' }),
+    ).not.toBeInTheDocument();
   });
 });

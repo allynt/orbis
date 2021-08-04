@@ -8,6 +8,8 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { Link } from 'react-router-dom';
+
 const useStyles = makeStyles(theme => ({
   root: {
     cursor: 'pointer',
@@ -34,27 +36,22 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  view: string,
- *  mainPanelView: string,
- *  onClick: (view: string) => void
  *  Icon: React.ComponentType<any>
+ *  to: string
  * }} props
  */
-const SidePanelListItem = ({ view, mainPanelView, onClick, Icon }) => {
-  const isSelected = mainPanelView === view;
-  const styles = useStyles({ isSelected });
-
-  const handleClick = view => {
-    if (mainPanelView === view) return;
-    return onClick(view);
-  };
+const SidePanelListItem = ({ view, Icon, to }) => {
+  const styles = useStyles({});
 
   return (
-    <ListItem onClick={() => handleClick(view)} classes={styles}>
-      <ListItemIcon aria-label={`${view} Icon`}>
-        {Icon ? <Icon className={styles.icon} /> : null}
-      </ListItemIcon>
-      <ListItemText primary={<Typography variant="h2">{view}</Typography>} />
-    </ListItem>
+    <Link to={to}>
+      <ListItem classes={styles}>
+        <ListItemIcon aria-label={`${view} Icon`}>
+          {Icon ? <Icon className={styles.icon} /> : null}
+        </ListItemIcon>
+        <ListItemText primary={<Typography variant="h2">{view}</Typography>} />
+      </ListItem>
+    </Link>
   );
 };
 
