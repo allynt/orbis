@@ -38,10 +38,11 @@ const useStyles = makeStyles(theme => ({
  *  view: string,
  *  Icon: React.ComponentType<any>
  *  to: string
+ *  selected?: boolean
  * }} props
  */
-const SidePanelListItem = ({ view, Icon, to }) => {
-  const styles = useStyles({});
+const SidePanelListItem = ({ view, Icon, to, selected }) => {
+  const styles = useStyles({ isSelected: selected });
   return (
     <ListItem component={Link} to={to} replace classes={styles}>
       <ListItemIcon aria-label={`${view} Icon`}>
