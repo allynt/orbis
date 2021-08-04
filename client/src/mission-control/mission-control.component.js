@@ -10,7 +10,7 @@ import {
 
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import {
@@ -18,13 +18,13 @@ import {
   fetchCustomerUsers,
   selectCurrentCustomer,
   selectCustomerUsers,
-  toggleMissionControlDialog,
 } from './mission-control.slice.js';
 import { SidePanel } from './side-panel/side-panel.component';
 import UsersView from './views/users-view/users-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
+    height: '100%',
     backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
@@ -88,6 +88,9 @@ export const MissionControl = () => {
                 path="/mission-control/other"
                 component={() => <h1>Other Route</h1>}
               />
+              <Route exact path="/mission-control">
+                <Redirect to="/mission-control/users" />
+              </Route>
             </Switch>
           </Grid>
         </Grid>
