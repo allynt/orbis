@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Dialog, DialogTitle, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import { VIEWS } from './mission-control.constants';
 import {
   toggleMissionControlDialog,
-  selectIsMissionControlDialogVisible,
   fetchCustomer,
   fetchCustomerUsers,
   selectCurrentCustomer,
@@ -52,8 +52,8 @@ const useContentStyles = makeStyles(theme => ({
 }));
 
 export const MissionControl = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
-  const isVisible = useSelector(selectIsMissionControlDialogVisible);
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
@@ -82,7 +82,7 @@ export const MissionControl = () => {
 
   return (
     <Dialog
-      open={isVisible}
+      open={location.pathname.includes('/mission-control')}
       classes={dialogStyles}
       maxWidth={false}
       onBackdropClick={handleClose}

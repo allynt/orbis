@@ -2,7 +2,9 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -10,45 +12,46 @@ import { MissionControl } from './mission-control.component';
 
 const mockStore = configureMockStore([thunk]);
 
-const setup = ({ isVisible = false }) => {
+const setup = (location = '/mission-control') => {
+  const history = createMemoryHistory({
+    initialEntries: [location],
+  });
+
   return render(
-    <Provider
-      store={mockStore({
-        accounts: { userKey: '123abc' },
-        missionControl: {
-          isMissionControlDialogVisible: isVisible,
-          currentCustomer: {
-            id: '0',
-            name: 'test-customer',
-            title: 'Test Customer',
-            licences: [{ id: '1', orb: 'Rice' }],
+    <Router history={history}>
+      <Provider
+        store={mockStore({
+          accounts: { userKey: '123abc' },
+          missionControl: {
+            currentCustomer: {
+              id: '0',
+              name: 'test-customer',
+              title: 'Test Customer',
+              licences: [{ id: '1', orb: 'Rice' }],
+            },
+            customerUsers: [],
           },
-          customerUsers: [],
-        },
-      })}
-    >
-      <MissionControl />
-    </Provider>,
+        })}
+      >
+        <MissionControl />
+      </Provider>
+    </Router>,
   );
 };
 
 describe('MissionControl', () => {
-  it('opens dialog if `isVisible` is true', () => {
-    const { getByRole } = setup({ isVisible: true });
-    const dialog = getByRole('dialog');
-
-    expect(dialog).toBeInTheDocument();
+  it('Is visible if location contains mission-control', () => {
+    const { getByRole } = setup();
+    expect(getByRole('heading', { name: /hello/i })).toBeInTheDocument();
   });
 
-  it('hides dialog if `isVisible` is false', () => {
-    const { queryByRole } = setup({});
-    const dialog = queryByRole('dialog');
-
-    expect(dialog).not.toBeInTheDocument();
+  it('Is not visible if location does not contain mission-control', () => {
+    const { queryByRole } = setup('/totally-not');
+    expect(queryByRole('heading', { name: /hello/i })).not.toBeInTheDocument();
   });
 
   it('switches panels', () => {
-    const { getByText, queryByText } = setup({ isVisible: true });
+    const { getByText, queryByText } = setup();
     expect(getByText('Create User')).toBeInTheDocument();
 
     userEvent.click(getByText('Other'));
