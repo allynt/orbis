@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -44,10 +45,6 @@ describe('MissionControl', () => {
     const dialog = queryByRole('dialog');
 
     expect(dialog).not.toBeInTheDocument();
-  });
-
-  it('calls the dispatches', () => {
-
   });
 
   it('switches panels', () => {
