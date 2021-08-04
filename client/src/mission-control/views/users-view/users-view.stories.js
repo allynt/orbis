@@ -6,25 +6,18 @@ import {
   pendingUsers,
 } from 'mission-control/test-story-data';
 
-import HomeView from './users-view.component';
+import UsersView from './users-view.component';
 
 export default {
-  title: 'Mission Control/Home View',
-  argTypes: {
-    onChangeRoleClick: { action: 'onChangeRoleClick' },
-    onEditUserClick: { action: 'onEditUserClick' },
-    onResendInvitationClick: { action: 'onResendInvitationClick' },
-    onWithdrawInvitationClick: { action: 'onWithdrawInvitationClick' },
-    onDeleteUserClick: { action: 'onDeleteUserClick' },
-  },
+  title: 'Mission Control/Users View',
+  argTypes: {},
 };
 
-const Template = args => <HomeView {...args} />;
+const Template = args => <UsersView {...args} />;
 
 export const Default = Template.bind({});
 
 export const WithUsers = Template.bind({});
-/** @type {import('./users-view.component').HomeViewProps} */
 WithUsers.args = {
   activeUsers,
   pendingUsers,

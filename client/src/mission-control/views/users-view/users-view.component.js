@@ -46,7 +46,7 @@ const DialogCloseButton = styled(IconButton)({
   right: 0,
 });
 
-const HomeView = () => {
+const UsersView = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
@@ -200,4 +200,4 @@ const HomeView = () => {
   );
 };
 
-export default HomeView;
+export default UsersView;

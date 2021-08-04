@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import HomeView from './users-view.component';
+import UsersView from './users-view.component';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -26,13 +26,13 @@ const setup = () => {
         },
       })}
     >
-      <HomeView />
+      <UsersView />
     </Provider>,
   );
   return { ...utils };
 };
 
-describe('Home View', () => {
+describe('Users View', () => {
   beforeEach(() => {
     fetch.resetMocks();
   });
