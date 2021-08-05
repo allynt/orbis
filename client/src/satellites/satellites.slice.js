@@ -114,12 +114,12 @@ export const saveImage = createAsyncThunk(
         ...params,
       });
       dispatch(addSource(imageSource));
-      NotificationManager.success(`Successfully saved image ${params.name}`);
+      NotificationManager.success(`Successfully saved image '${params.name}'`);
       return;
     } catch (responseError) {
-      const { message } = responseError;
+      const message = await responseError.getErrors();
       NotificationManager.error(
-        `Error saving image ${params.name}. Please try again`,
+        `Error saving image: ${message} Please try again`,
       );
       return rejectWithValue({ message });
     }
