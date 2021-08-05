@@ -19,6 +19,12 @@ import { Orbs } from './orbs/orbs.component';
 export const Store = ({ match, location }) => {
   const { path } = match;
   const orbs = useSelector(orbsSelector);
+  const fetchOrbsPending = useSelector(
+    /**
+     * @param {import('root.reducer').RootState} state
+     */
+    state => state?.data?.fetchOrbsPending,
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,7 +36,11 @@ export const Store = ({ match, location }) => {
   return (
     <FadeTransitionGroup key={location.key}>
       <Switch location={location}>
-        <Route exact path={path} render={() => <Orbs orbs={orbs} />} />
+        <Route
+          exact
+          path={path}
+          render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
+        />
         <Route
           exact
           path={`${path}/:orbId`}

@@ -6,6 +6,7 @@ import {
   makeStyles,
   Typography,
   Link,
+  Skeleton,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -13,6 +14,7 @@ import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   card: {
+    maxWidth: theme.typography.pxToRem(425),
     backgroundColor: theme.palette.background.default,
     height: '100%',
     borderRadius: theme.shape.borderRadius * 2,
@@ -78,6 +80,32 @@ export const OrbCard = ({ orb }) => {
         >
           Learn More
         </Link>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const OrbCardSkeleton = () => {
+  const styles = useStyles();
+
+  return (
+    <Card className={styles.card}>
+      <CardContent classes={{ root: styles.cardContent }}>
+        <Skeleton
+          variant="circle"
+          width={90}
+          height={90}
+          className={styles.logo}
+        />
+        <Typography variant="h2" gutterBottom className={styles.name}>
+          <Skeleton width="15ch" />
+        </Typography>
+        <Typography paragraph>
+          <Skeleton width="22ch" />
+        </Typography>
+        <div className={styles.link}>
+          <Skeleton width="10ch" />
+        </div>
       </CardContent>
     </Card>
   );

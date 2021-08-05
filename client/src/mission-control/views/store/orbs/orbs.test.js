@@ -13,10 +13,10 @@ const orbs = [
   { id: 3, shortDescription: 'Orb 3 Short Description' },
 ];
 
-const renderComponent = () => {
+const renderComponent = (isLoading = false) => {
   const history = createMemoryHistory();
   // @ts-ignore
-  const utils = render(<Orbs orbs={orbs} />, {
+  const utils = render(<Orbs orbs={orbs} isLoading={isLoading} />, {
     wrapper: ({ children }) => <Router history={history}>{children}</Router>,
   });
   return { ...utils, history };
@@ -32,5 +32,10 @@ describe('<Orbs />', () => {
     const { getAllByRole, history } = renderComponent();
     userEvent.click(getAllByRole('link', { name: 'Learn More' })[0]);
     expect(history.location.pathname).toContain(orbs[0].id);
+  });
+
+  it('Shows skeletons if loading', () => {
+    const { getAllByRole } = renderComponent(true);
+    expect(getAllByRole('listitem')).toHaveLength(3);
   });
 });

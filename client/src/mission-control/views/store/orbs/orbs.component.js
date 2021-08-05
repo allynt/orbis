@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { OrbCard } from './orb-card.component';
+import { OrbCard, OrbCardSkeleton } from './orb-card.component';
 import { Wrapper } from './wrapper.component';
 
 const Heading = styled('h1')(({ theme }) => ({
@@ -22,10 +22,11 @@ const Heading = styled('h1')(({ theme }) => ({
 
 /**
  * @param {{
- *  orbs: import('typings').Orb[]
+ *  orbs?: import('typings').Orb[]
+ *  isLoading?: boolean
  * }} props
  */
-export const Orbs = ({ orbs = [] }) => {
+export const Orbs = ({ orbs = [], isLoading = false }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
   const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
@@ -38,11 +39,20 @@ export const Orbs = ({ orbs = [] }) => {
     <Wrapper maxWidth={false}>
       <Heading>Orbis Store</Heading>
       <ImageList cols={cols} gap={16} rowHeight="auto">
-        {orbs.map(orb => (
-          <ImageListItem key={orb.id}>
-            <OrbCard orb={orb} />
-          </ImageListItem>
-        ))}
+        {!isLoading
+          ? orbs.map(orb => (
+              <ImageListItem key={orb.id}>
+                <OrbCard orb={orb} />
+              </ImageListItem>
+            ))
+          : Array(3)
+              .fill()
+              .map((_, i) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <ImageListItem key={i}>
+                  <OrbCardSkeleton />
+                </ImageListItem>
+              ))}
       </ImageList>
     </Wrapper>
   );
