@@ -15,10 +15,8 @@ import { find } from 'lodash';
 import { Wrapper } from '../wrapper.component';
 
 const useStyles = makeStyles(theme => ({
-  back: {
-    textDecoration: 'none',
-  },
-  button: { padding: '4px 5px' },
+  name: { fontWeight: 600, fontSize: '50px' },
+  back: { padding: '4px 5px' },
   icon: { transform: 'rotate(180deg)' },
   image: {
     width: '100%',
@@ -46,6 +44,8 @@ export const OrbDetails = ({ orbs, history, match }) => {
 
   if (!orb) return null;
 
+  const { images, name, description } = orb;
+
   return (
     <Wrapper maxWidth={false}>
       <Grid container spacing={mdUp ? 6 : 2}>
@@ -54,7 +54,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
             <Button
               // @ts-ignore
               role="link"
-              classes={{ root: styles.button, startIcon: styles.icon }}
+              classes={{ root: styles.back, startIcon: styles.icon }}
               startIcon={<PlayArrow />}
               variant="text"
               size="small"
@@ -64,25 +64,24 @@ export const OrbDetails = ({ orbs, history, match }) => {
               Back
             </Button>
           </Grid>
-          <Grid item container>
-            <img
-              className={styles.image}
-              src={orb.images?.[0]}
-              alt={`${orb.name} Example`}
-            />
-          </Grid>
+          {images && (
+            <Grid item container>
+              <img
+                className={styles.image}
+                src={images[0]}
+                alt={`${name} Example`}
+              />
+            </Grid>
+          )}
         </Grid>
         <Grid item sm={6} container direction="column" spacing={smUp ? 4 : 2}>
           <Grid item>
-            <Typography
-              style={{ fontWeight: 600, fontSize: '50px' }}
-              variant="h1"
-            >
-              {orb.name}
+            <Typography className={styles.name} variant="h1">
+              {name}
             </Typography>
           </Grid>
           <Grid item>
-            <Typography>{orb.description}</Typography>
+            <Typography>{description}</Typography>
           </Grid>
         </Grid>
       </Grid>
