@@ -7,7 +7,7 @@ import { useLocation, useRouteMatch } from 'react-router-dom';
 import { VIEWS } from '../mission-control.constants';
 import SidePanelListItem from './side-panel-list-item.component';
 
-export const SidePanel = ({ userIsAdmin }) => {
+export const SidePanel = ({ userIsAdmin = false }) => {
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
 
