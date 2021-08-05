@@ -35,7 +35,7 @@ export const Orbs = ({ orbs = [] }) => {
   if (xsDown) cols = 1;
 
   return (
-    <Wrapper>
+    <Wrapper maxWidth={false}>
       <Heading>Orbis Store</Heading>
       <ImageList cols={cols} gap={16} rowHeight="auto">
         {orbs.map(orb => (

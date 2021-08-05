@@ -47,7 +47,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
   if (!orb) return null;
 
   return (
-    <Wrapper>
+    <Wrapper maxWidth={false}>
       <Grid container spacing={mdUp ? 6 : 2}>
         <Grid item sm={6} container direction="column" spacing={smUp ? 8 : 2}>
           <Grid item>

@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     backgroundColor: theme.palette.background.default,
     height: '100%',
+    borderRadius: theme.shape.borderRadius * 2,
   },
   cardContent: {
     height: '100%',
