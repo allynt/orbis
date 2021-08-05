@@ -18,18 +18,18 @@ const orbs = [
   {
     id: 234,
     name: 'Orb 2 Name',
-    shortDescription: 'Orb 2 Short Description',
+    short_description: 'Orb 2 Short Description',
   },
   {
     id: 345,
     name: 'Orb 3 Name',
-    shortDescription: 'Orb 3 Short Description',
+    short_description: 'Orb 3 Short Description',
     logo,
   },
   {
     id: 456,
     name: 'Orb 3 Name',
-    shortDescription: 'Orb 3 Short Description',
+    short_description: 'Orb 3 Short Description',
     logo,
   },
 ];

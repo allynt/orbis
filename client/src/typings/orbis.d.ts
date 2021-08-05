@@ -74,7 +74,7 @@ type PropertyType = 'continuous' | 'decile' | 'discrete' | 'percentage';
 type Orb = {
   id: number;
   name: string;
-  shortDescription?: string;
+  short_description?: string;
   description?: string;
   licence_cost: number;
   logo: string;

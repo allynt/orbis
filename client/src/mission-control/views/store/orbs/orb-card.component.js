@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 export const OrbCard = ({ orb }) => {
   const { url } = useRouteMatch();
   const styles = useStyles();
-  const { id, name, shortDescription, logo } = orb;
+  const { id, name, short_description: shortDescription, logo } = orb;
 
   return (
     <Card className={styles.card}>
