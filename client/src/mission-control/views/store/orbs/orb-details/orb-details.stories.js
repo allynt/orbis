@@ -1,7 +1,6 @@
 import React from 'react';
 
 import faker from 'faker/locale/en_GB';
-import { MemoryRouter, Route } from 'react-router-dom';
 
 import { OrbDetails } from './orb-details.component';
 
@@ -10,12 +9,7 @@ export default {
 };
 
 const Template = args => (
-  <MemoryRouter initialEntries={['/1']}>
-    <Route
-      component={routerProps => <OrbDetails {...routerProps} {...args} />}
-      path={'/:id'}
-    />
-  </MemoryRouter>
+  <OrbDetails match={{ params: { orbId: '1' } }} {...args} />
 );
 
 export const Default = Template.bind({});

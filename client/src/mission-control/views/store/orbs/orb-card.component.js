@@ -13,19 +13,24 @@ import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   card: {
     backgroundColor: theme.palette.background.default,
+    height: '100%',
   },
   cardContent: {
-    textAlign: 'center',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   logo: {
     width: '100%',
     maxWidth: theme.typography.pxToRem(90),
-    aspectRatio: '1/1',
-    marginInline: 'auto',
     marginBlockEnd: theme.spacing(2),
   },
   description: {
     fontStyle: 'italic',
+  },
+  link: {
+    marginTop: 'auto',
   },
 }));
 
@@ -35,21 +40,25 @@ const useStyles = makeStyles(theme => ({
 export const OrbCard = ({ orb }) => {
   const { url } = useRouteMatch();
   const styles = useStyles();
+  const { id, name, shortDescription, logo } = orb;
 
   return (
     <Card className={styles.card}>
       <CardContent classes={{ root: styles.cardContent }}>
-        <img className={styles.logo} src={orb.logo} alt={`${orb.name} logo`} />
+        <img className={styles.logo} src={logo} alt={`${name} logo`} />
         <Typography variant="h2" gutterBottom>
-          {orb.name}
+          {name}
         </Typography>
-        <Typography className={styles.description} paragraph>
-          {orb.shortDescription}
-        </Typography>
+        {shortDescription && (
+          <Typography className={styles.description} paragraph>
+            {shortDescription}
+          </Typography>
+        )}
         <Link
+          className={styles.link}
           // @ts-ignore
           component={RouterLink}
-          to={`${url}/${orb.id}`}
+          to={`${url}/${id}`}
         >
           Learn More
         </Link>

@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   image: {
     width: '100%',
     maxWidth: theme.typography.pxToRem(640),
-    margin: '0 auto',
+    marginBlock: 'auto',
     objectFit: 'cover',
   },
 }));
