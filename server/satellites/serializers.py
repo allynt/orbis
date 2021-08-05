@@ -9,7 +9,7 @@ from rest_framework_gis.serializers import GeometryField
 
 from drf_yasg2 import openapi
 
-from astrosat.serializers import ContextVariableDefault
+from astrosat.serializers import ConsolidatedErrorsSerializerMixin, ContextVariableDefault
 
 from astrosat_users.models import CustomerUser
 
@@ -205,7 +205,9 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
 #########################
 
 
-class SatelliteDataSourceSerializer(serializers.ModelSerializer):
+class SatelliteDataSourceSerializer(
+    ConsolidatedErrorsSerializerMixin, serializers.ModelSerializer
+):
     class Meta:
         model = SatelliteDataSource
         fields = (
@@ -237,3 +239,16 @@ class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
     satellite_id = serializers.SlugField(write_only=True)
     scene_id = serializers.SlugField(write_only=True)
     visualisation_id = serializers.SlugField(write_only=True)
+
+    def validate(self, data):
+
+        name = data.get("name")
+        customer_user = data.get("customer_user")
+        if SatelliteDataSource.objects.filter(
+            name=name, customer_user=customer_user
+        ).exists():
+            raise serializers.ValidationError(
+                f"An image named '{name}' already exists for user '{customer_user.user}'."
+            )
+
+        return data
