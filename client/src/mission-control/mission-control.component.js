@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 
 import { userSelector } from '../accounts/accounts.selectors';
+import { FadeTransitionGroup } from './fade-transition-group.component';
 import {
   fetchCustomer,
   fetchCustomerUsers,
@@ -83,17 +84,19 @@ export const MissionControl = () => {
             <SidePanel />
           </Grid>
           <Grid item xs={8} lg={10}>
-            <Switch>
-              <Route path="/mission-control/store" component={Store} />
-              <Route path="/mission-control/users" component={UsersView} />
-              <Route
-                path="/mission-control/other"
-                component={() => <h1>Other Route</h1>}
-              />
-              <Route exact path="/mission-control">
-                <Redirect to="/mission-control/users" />
-              </Route>
-            </Switch>
+            <FadeTransitionGroup key={location.key}>
+              <Switch location={location}>
+                <Route path="/mission-control/store" component={Store} />
+                <Route path="/mission-control/users" component={UsersView} />
+                <Route
+                  path="/mission-control/other"
+                  component={() => <h1>Other Route</h1>}
+                />
+                <Route exact path="/mission-control">
+                  <Redirect to="/mission-control/users" />
+                </Route>
+              </Switch>
+            </FadeTransitionGroup>
           </Grid>
         </Grid>
       </DialogContent>
