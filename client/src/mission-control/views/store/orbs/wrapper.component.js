@@ -1,6 +1,7 @@
 import { Container, styled } from '@astrosat/astrosat-ui';
 
 export const Wrapper = styled(Container)(({ theme }) => ({
+  position: 'absolute',
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   paddingBlock: theme.spacing(2),

@@ -16,19 +16,26 @@ const mockStore = createMockStore([thunk]);
 
 const renderComponent = ({
   state = { data: { orbs } },
-  initialEntries = ['/store'],
+  pathname = '',
 } = {}) => {
+  const path = '/store';
   const store = mockStore(state);
   // @ts-ignore
-  const utils = render(<Store match={{ path: '/store' }} />, {
-    wrapper: ({ children }) => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={initialEntries}>
-          <Route path="/store">{children}</Route>
-        </MemoryRouter>
-      </Provider>
-    ),
-  });
+  const utils = render(
+    <Store
+      // @ts-ignore
+      match={{ path }}
+      // @ts-ignore
+      location={{ key: '123', pathname: `${path}${pathname}` }}
+    />,
+    {
+      wrapper: ({ children }) => (
+        <Provider store={store}>
+          <MemoryRouter>{children}</MemoryRouter>
+        </Provider>
+      ),
+    },
+  );
   return { ...utils, store };
 };
 
@@ -46,9 +53,7 @@ describe('<Store />', () => {
   });
 
   it('Shows the orb details page for the orb id in location', () => {
-    const { getByRole } = renderComponent({
-      initialEntries: ['/store/1'],
-    });
-    expect(getByRole('heading', { name: orbs[1].name })).toBeInTheDocument();
+    const { getByRole } = renderComponent({ pathname: '/1' });
+    expect(getByRole('heading', { name: orbs[1].name })).toBeVisible();
   });
 });
