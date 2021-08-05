@@ -31,6 +31,6 @@ describe('<Orbs />', () => {
   it('navigates to the individual orb route when a link is clicked', () => {
     const { getAllByRole, history } = renderComponent();
     userEvent.click(getAllByRole('link', { name: 'Learn More' })[0]);
-    expect(history.location.pathname).toContain(`/orbs/${orbs[0].id}`);
+    expect(history.location.pathname).toContain(orbs[0].id);
   });
 });
