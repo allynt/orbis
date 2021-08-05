@@ -10,7 +10,7 @@ import { Orbs } from './orbs.component';
 const orbs = [
   { id: 1, shortDescription: 'Orb 1 Short Description', logo: '' },
   { id: 2, shortDescription: 'Orb 2 Short Description', logo: '' },
-  { id: 3, shortDescription: 'Orb 3 Short Description', logo: '' },
+  { id: 3, shortDescription: 'Orb 3 Short Description' },
 ];
 
 const renderComponent = () => {

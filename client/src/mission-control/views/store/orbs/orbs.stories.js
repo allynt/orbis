@@ -13,14 +13,12 @@ const orbs = [
   {
     id: 1,
     name: 'Orb 1 Name',
-    // shortDescription: 'Orb 1 Short Description',
     logo,
   },
   {
     id: 2,
     name: 'Orb 2 Name',
     shortDescription: 'Orb 2 Short Description',
-    logo,
   },
   {
     id: 3,
