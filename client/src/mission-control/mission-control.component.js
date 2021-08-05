@@ -49,6 +49,9 @@ export const MissionControl = () => {
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
+  const userIsAdmin = user?.customers.some(
+    customer => customer.type === 'MANAGER',
+  );
 
   const dialogStyles = useDialogStyles({});
   const titleStyles = useTitleStyles({});
@@ -81,12 +84,21 @@ export const MissionControl = () => {
       <DialogContent>
         <Grid container spacing={4} wrap="nowrap">
           <Grid item xs={4} lg={2}>
-            <SidePanel />
+            <SidePanel userIsAdmin={userIsAdmin} />
           </Grid>
           <Grid item xs={8} lg={10}>
             <FadeTransitionGroup key={location.key}>
               <Switch location={location}>
-                <Route path="/mission-control/store" component={Store} />
+                <Route
+                  path="/mission-control/store"
+                  render={routeProps =>
+                    userIsAdmin ? (
+                      <Store {...routeProps} />
+                    ) : (
+                      <Redirect to="/mission-control" />
+                    )
+                  }
+                />
                 <Route path="/mission-control/users" component={UsersView} />
                 <Route
                   path="/mission-control/other"

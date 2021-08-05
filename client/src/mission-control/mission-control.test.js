@@ -18,7 +18,7 @@ const setup = (location = '/mission-control') => {
     initialEntries: [location],
   });
   const store = mockStore({
-    accounts: { userKey: '123abc' },
+    accounts: { userKey: '123abc', user: { customers: [{ type: 'MEMBER' }] } },
     missionControl: {
       currentCustomer: {
         id: '0',
@@ -68,5 +68,10 @@ describe('MissionControl', () => {
     const { getByRole, store } = setup();
     userEvent.click(getByRole('none'));
     expect(store.getActions()).toContainEqual(push('/map'));
+  });
+
+  it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
+    const { history } = setup('/mission-control/store');
+    expect(history.location.pathname).toBe('/mission-control/users');
   });
 });
