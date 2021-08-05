@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
-import { FadeTransitionGroup } from 'mission-control/fade-transition-group.component';
+import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
 
 import { OrbDetails } from './orbs/orb-details/orb-details.component';
 import { Orbs } from './orbs/orbs.component';
@@ -26,6 +27,7 @@ export const Store = ({ match, location }) => {
     state => state?.data?.fetchOrbsPending,
   );
   const dispatch = useDispatch();
+  const fadeTransitionProps = useFadeTransitionProps(location.key);
 
   useEffect(() => {
     if (!orbs) {
@@ -34,19 +36,21 @@ export const Store = ({ match, location }) => {
   }, [dispatch, orbs]);
 
   return (
-    <FadeTransitionGroup key={location.key}>
-      <Switch location={location}>
-        <Route
-          exact
-          path={path}
-          render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
-        />
-        <Route
-          exact
-          path={`${path}/:orbId`}
-          render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
-        />
-      </Switch>
-    </FadeTransitionGroup>
+    <TransitionGroup style={{ position: 'relative' }}>
+      <CSSTransition {...fadeTransitionProps}>
+        <Switch location={location}>
+          <Route
+            exact
+            path={path}
+            render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
+          />
+          <Route
+            exact
+            path={`${path}/:orbId`}
+            render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
+          />
+        </Switch>
+      </CSSTransition>
+    </TransitionGroup>
   );
 };

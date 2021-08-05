@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { push } from 'connected-react-router';
 import { createMemoryHistory } from 'history';
@@ -51,7 +51,7 @@ describe('MissionControl', () => {
     expect(queryByRole('heading', { name: /hello/i })).not.toBeInTheDocument();
   });
 
-  it('switches panels', () => {
+  it('switches panels', async () => {
     const { getByRole, queryByRole, getByText } = setup(
       '/mission-control/users',
     );
@@ -59,9 +59,11 @@ describe('MissionControl', () => {
 
     userEvent.click(getByText('Other'));
 
-    expect(
-      queryByRole('button', { name: 'Create User' }),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        queryByRole('button', { name: 'Create User' }),
+      ).not.toBeInTheDocument(),
+    );
   });
 
   it('Navigates to map and closes if the backdrop is clicked', () => {
