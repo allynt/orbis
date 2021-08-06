@@ -157,7 +157,6 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}

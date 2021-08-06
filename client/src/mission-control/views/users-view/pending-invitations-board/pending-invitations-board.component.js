@@ -23,6 +23,16 @@ import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    maxHeight: `calc(100% - ${theme.spacing(10)})`,
+    padding: `0 ${theme.spacing(6.5)}`,
+  },
+  resendButton: {
+    padding: theme.spacing(1, 2),
+  },
+}));
+
 const TableHeader = () => (
   <TableHead>
     <MissionControlTableRow>
@@ -37,7 +47,6 @@ const TableHeader = () => (
         Invitation Sent
       </MissionControlTableCell>
       <MissionControlTableCell align="left">Invited</MissionControlTableCell>
-      <MissionControlTableCell align="left" />
     </MissionControlTableRow>
   </TableHead>
 );
@@ -56,6 +65,7 @@ const PendingUserRow = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
+  const styles = useStyles({});
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
   const date = format(new Date(customerUser.invitation_date), DATE_FORMAT);
   let licences = null;
@@ -96,11 +106,13 @@ const PendingUserRow = ({
       </MissionControlTableCell>
       <MissionControlTableCell>{date}</MissionControlTableCell>
       <MissionControlTableCell>
-        <Button size="small" onClick={handleResendClick}>
+        <Button
+          className={styles.resendButton}
+          size="small"
+          onClick={handleResendClick}
+        >
           Resend Invitation
         </Button>
-      </MissionControlTableCell>
-      <MissionControlTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -112,12 +124,6 @@ const PendingUserRow = ({
     </MissionControlTableRow>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    maxHeight: `calc(100% - ${theme.spacing(10)})`,
-  },
-}));
 
 /**
  * @param {{
