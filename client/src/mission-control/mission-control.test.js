@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { push } from 'connected-react-router';
 import { createMemoryHistory } from 'history';
@@ -18,7 +18,7 @@ const setup = (location = '/mission-control') => {
     initialEntries: [location],
   });
   const store = mockStore({
-    accounts: { userKey: '123abc' },
+    accounts: { userKey: '123abc', user: { customers: [{ type: 'MEMBER' }] } },
     missionControl: {
       currentCustomer: {
         id: '0',
@@ -51,7 +51,7 @@ describe('MissionControl', () => {
     expect(queryByRole('heading', { name: /hello/i })).not.toBeInTheDocument();
   });
 
-  it('switches panels', () => {
+  it('switches panels', async () => {
     const { getByRole, queryByRole, getByText } = setup(
       '/mission-control/users',
     );
@@ -59,14 +59,21 @@ describe('MissionControl', () => {
 
     userEvent.click(getByText('Other'));
 
-    expect(
-      queryByRole('button', { name: 'Create User' }),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        queryByRole('button', { name: 'Create User' }),
+      ).not.toBeInTheDocument(),
+    );
   });
 
   it('Navigates to map and closes if the backdrop is clicked', () => {
     const { getByRole, store } = setup();
     userEvent.click(getByRole('none'));
     expect(store.getActions()).toContainEqual(push('/map'));
+  });
+
+  it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
+    const { history } = setup('/mission-control/store');
+    expect(history.location.pathname).toBe('/mission-control/users');
   });
 });

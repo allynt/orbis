@@ -9,11 +9,14 @@ import { MissionControl } from './mission-control.component';
 
 const mockStore = createMockStore([thunk]);
 
-export default { title: 'Mission Control' };
+export default {
+  title: 'Mission Control',
+  args: { initialEntries: ['/mission-control/users'] },
+};
 
 const Template = args => (
   <Provider store={mockStore()}>
-    <MemoryRouter initialEntries={['/mission-control/users']}>
+    <MemoryRouter initialEntries={args.initialEntries}>
       <MissionControl {...args} />
     </MemoryRouter>
   </Provider>

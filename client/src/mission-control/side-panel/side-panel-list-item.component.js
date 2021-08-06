@@ -39,6 +39,7 @@ const SidePanelListItem = ({ view, Icon, to, selected }) => {
   const { icon, ...listItemClasses } = useStyles();
   return (
     <ListItem
+      role="link"
       component={Link}
       to={to}
       replace

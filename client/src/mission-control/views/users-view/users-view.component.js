@@ -160,7 +160,7 @@ const UsersView = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" width="100%">
+    <Box position="absolute" display="flex" flexDirection="column" width="100%">
       <ContentWrapper title="Users">
         <ActiveUsersBoard
           currentUser={user}

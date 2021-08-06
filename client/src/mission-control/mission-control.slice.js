@@ -181,9 +181,7 @@ const handleFailure = (response, title, action, dispatch) => {
 
 export const fetchCustomer = user => async dispatch => {
   dispatch(fetchCustomerRequested());
-  const customerId = user.customers.find(
-    customer => customer.type === 'MANAGER',
-  ).id;
+  const customerId = user.customers[0].id;
   try {
     const currentCustomer = await apiClient.customers.getCustomer(customerId);
     return dispatch(fetchCustomerSuccess(currentCustomer));

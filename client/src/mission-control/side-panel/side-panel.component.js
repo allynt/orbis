@@ -7,21 +7,23 @@ import { useLocation, useRouteMatch } from 'react-router-dom';
 import { VIEWS } from '../mission-control.constants';
 import SidePanelListItem from './side-panel-list-item.component';
 
-export const SidePanel = () => {
+export const SidePanel = ({ userIsAdmin = false }) => {
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
 
   return (
     <List component="nav" aria-label="mission control sidebar options">
-      {Object.values(VIEWS).map(({ label, route, Icon }) => (
-        <SidePanelListItem
-          key={label}
-          view={label}
-          Icon={Icon}
-          to={`${path}${route}`}
-          selected={pathname.includes(route)}
-        />
-      ))}
+      {Object.values(VIEWS)
+        .filter(view => (userIsAdmin ? true : !view.admin))
+        .map(({ label, route, Icon }) => (
+          <SidePanelListItem
+            key={label}
+            view={label}
+            Icon={Icon}
+            to={`${path}${route}`}
+            selected={pathname.includes(route)}
+          />
+        ))}
     </List>
   );
 };
