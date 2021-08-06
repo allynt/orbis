@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import {
   Button,
-  Grid,
   makeStyles,
   MenuItem,
   Select,
@@ -25,14 +24,44 @@ const selectOptions = new Array(MAX_USERS).fill().map((_, i) => (
 ));
 
 const useStyles = makeStyles(theme => ({
-  name: { fontWeight: 600, fontSize: '50px' },
-  back: { padding: '4px 5px' },
+  wrapper: {
+    display: 'grid',
+    rowGap: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      gridTemplateAreas: `"back name"
+       "image description"
+       "image select"
+       "image link"`,
+      gridTemplateColumns: '1fr clamp(1ch, 50%, 70ch)',
+      columnGap: theme.spacing(3),
+    },
+  },
+  name: {
+    fontWeight: 600,
+    fontSize: '50px',
+    [theme.breakpoints.up('md')]: {
+      gridArea: 'name',
+    },
+  },
+  back: { padding: '4px 5px', width: 'fit-content' },
   icon: { transform: 'rotate(180deg)' },
   image: {
     width: '100%',
     maxWidth: theme.typography.pxToRem(640),
-    marginBlock: 'auto',
     objectFit: 'cover',
+    marginInline: 'auto',
+    [theme.breakpoints.up('md')]: {
+      gridArea: 'image',
+    },
+  },
+  selectWrapper: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+      alignItems: 'center',
+      '& p': {
+        marginRight: theme.spacing(2),
+      },
+    },
   },
   link: {
     color: 'unset',
@@ -52,8 +81,6 @@ export const OrbDetails = ({ orbs, history, match }) => {
   const styles = useStyles();
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
-
   const { orbId } = match.params;
   const orb = find(orbs, { id: +orbId });
 
@@ -62,73 +89,44 @@ export const OrbDetails = ({ orbs, history, match }) => {
   const { images, name, description } = orb;
 
   return (
-    <Wrapper maxWidth={false}>
-      <Grid container spacing={mdUp ? 6 : 2}>
-        <Grid item sm={6} container direction="column" spacing={smUp ? 8 : 2}>
-          <Grid item>
-            <Button
-              // @ts-ignore
-              role="link"
-              classes={{ root: styles.back, startIcon: styles.icon }}
-              startIcon={<PlayArrow />}
-              variant="text"
-              size="small"
-              color="default"
-              onClick={() => history.goBack()}
-            >
-              Back
-            </Button>
-          </Grid>
-          {images && (
-            <Grid item container>
-              <img
-                className={styles.image}
-                src={images[0]}
-                alt={`${name} Example`}
-              />
-            </Grid>
-          )}
-        </Grid>
-        <Grid item sm={6} container direction="column" spacing={smUp ? 4 : 2}>
-          <Grid item>
-            <Typography className={styles.name} variant="h1">
-              {name}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>{description}</Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            spacing={2}
-            alignItems="center"
-            style={{ marginTop: 'auto' }}
-          >
-            <Grid item xs={12} md={6} lg={5}>
-              <Typography>How many Users do you need?</Typography>
-            </Grid>
-            <Grid item>
-              <Select
-                value={numberOfUsers}
-                // @ts-ignore
-                onChange={event => setNumberOfUsers(event.target.value)}
-                inputProps={{ 'aria-label': 'Number of Users' }}
-              >
-                {selectOptions}
-              </Select>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Link
-              className={styles.link}
-              to={`${match.url}/checkout?orbId=${orbId}&users=${numberOfUsers}`}
-            >
-              <Button>Get Access</Button>
-            </Link>
-          </Grid>
-        </Grid>
-      </Grid>
+    <Wrapper className={styles.wrapper} maxWidth={false}>
+      <Button
+        // @ts-ignore
+        role="link"
+        classes={{ root: styles.back, startIcon: styles.icon }}
+        startIcon={<PlayArrow />}
+        variant="text"
+        size="small"
+        color="default"
+        onClick={() => history.goBack()}
+      >
+        Back
+      </Button>
+      {images && (
+        <img className={styles.image} src={images[0]} alt={`${name} Example`} />
+      )}
+      <Typography className={styles.name} variant="h1">
+        {name}
+      </Typography>
+      <Typography>{description}</Typography>
+      <div className={styles.selectWrapper}>
+        <Typography>How many Users do you need?</Typography>
+        <Select
+          fullWidth={!smUp}
+          value={numberOfUsers}
+          // @ts-ignore
+          onChange={event => setNumberOfUsers(event.target.value)}
+          inputProps={{ 'aria-label': 'Number of Users' }}
+        >
+          {selectOptions}
+        </Select>
+      </div>
+      <Link
+        className={styles.link}
+        to={`${match.url}/checkout?orbId=${orbId}&users=${numberOfUsers}`}
+      >
+        <Button>Get Access</Button>
+      </Link>
     </Wrapper>
   );
 };
