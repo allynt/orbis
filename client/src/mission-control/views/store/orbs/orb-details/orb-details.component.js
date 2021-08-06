@@ -34,6 +34,10 @@ const useStyles = makeStyles(theme => ({
     marginBlock: 'auto',
     objectFit: 'cover',
   },
+  link: {
+    color: 'unset',
+    textDecoration: 'none',
+  },
 }));
 
 /**
@@ -94,19 +98,35 @@ export const OrbDetails = ({ orbs, history, match }) => {
           <Grid item>
             <Typography>{description}</Typography>
           </Grid>
-          <Select
-            value={numberOfUsers}
-            // @ts-ignore
-            onChange={event => setNumberOfUsers(event.target.value)}
-            inputProps={{ 'aria-label': 'Number of Users' }}
+          <Grid
+            item
+            container
+            spacing={2}
+            alignItems="center"
+            style={{ marginTop: 'auto' }}
           >
-            {selectOptions}
-          </Select>
-          <Link
-            to={`${match.url}/checkout?orbId=${orbId}&users=${numberOfUsers}`}
-          >
-            Get Access
-          </Link>
+            <Grid item xs={12} md={6} lg={5}>
+              <Typography>How many Users do you need?</Typography>
+            </Grid>
+            <Grid item>
+              <Select
+                value={numberOfUsers}
+                // @ts-ignore
+                onChange={event => setNumberOfUsers(event.target.value)}
+                inputProps={{ 'aria-label': 'Number of Users' }}
+              >
+                {selectOptions}
+              </Select>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Link
+              className={styles.link}
+              to={`${match.url}/checkout?orbId=${orbId}&users=${numberOfUsers}`}
+            >
+              <Button>Get Access</Button>
+            </Link>
+          </Grid>
         </Grid>
       </Grid>
     </Wrapper>
