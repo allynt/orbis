@@ -57,7 +57,7 @@ describe('MissionControl', () => {
     expect(queryByRole('heading', { name: /hello/i })).not.toBeInTheDocument();
   });
 
-  it('switches panels when sidepanel links are clicked', () => {
+  it('switches panels when sidepanel links are clicked', async () => {
     const { getByRole, queryByRole, getByText } = setup({
       location: '/mission-control/users',
     });
@@ -79,9 +79,9 @@ describe('MissionControl', () => {
   });
 
   it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
-    const { history } = setup('/mission-control/store');
+    const { history } = setup({ location: '/mission-control/store' });
     expect(history.location.pathname).toBe('/mission-control/users');
-  }
+  });
 
   it('fetches customer if no customer, when component is loaded', () => {
     const { store } = setup({ currentCustomer: null });
