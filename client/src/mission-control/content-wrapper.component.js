@@ -4,6 +4,8 @@ import { makeStyles, Paper } from '@astrosat/astrosat-ui';
 
 const useTitleStyles = makeStyles(theme => ({
   title: {
+    fontWeight: 'normal',
+    fontSize: '1.75rem',
     margin: 'auto',
     marginBottom: theme.spacing(4),
     width: 'fit-content',

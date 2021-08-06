@@ -1,9 +1,10 @@
 import React from 'react';
+
 import { Table, TableCell, TableRow, makeStyles } from '@astrosat/astrosat-ui';
 
-const useTableStyles = makeStyles(() => ({
+const useTableStyles = makeStyles(theme => ({
   table: {
-    borderSpacing: '0 1rem',
+    borderSpacing: `0 ${theme.spacing(1.25)}`,
   },
 }));
 
@@ -16,10 +17,14 @@ const useCellStyles = makeStyles(theme => ({
     '&:last-of-type': {
       borderRadius: '0 5px 5px 0',
     },
-    padding: `0 ${theme.spacing(4)}`,
+    padding: `0.375rem ${theme.spacing(1.25)}`,
+    border: 'none',
+    maxWidth: '15rem',
   },
   head: {
     ...theme.typography.h2,
+    fontWeight: 'normal',
+    fontSize: '0.875rem',
     backgroundColor: 'transparent',
     border: '0',
   },

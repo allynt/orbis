@@ -3,6 +3,7 @@ import React from 'react';
 import { makeStyles, styled, Typography, Button } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
+
 import { ReactComponent as CreateUserIcon } from './create-user.svg';
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -10,7 +11,6 @@ const Wrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-evenly',
   alignItems: 'stretch',
-  padding: theme.spacing(0, 5),
   marginBottom: theme.spacing(5),
   gap: '2rem',
 }));
@@ -18,8 +18,7 @@ const Wrapper = styled('div')(({ theme }) => ({
 const QuickViewItem = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-evenly',
-  padding: '1rem',
+  justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: theme.palette.background.default,
   borderRadius: '0.25rem',
@@ -30,20 +29,39 @@ const QuickViewItem = styled('div')(({ theme }) => ({
 const useStyles = makeStyles(theme => ({
   active: {
     gridColumn: '1',
+    '&:first-of-type': {
+      fontSize: '2.25rem',
+      marginBottom: theme.spacing(1.5),
+    },
   },
   pending: {
     gridColumn: '3',
+    '&:first-of-type': {
+      fontSize: '2.25rem',
+      marginBottom: theme.spacing(1.5),
+    },
   },
   available: {
     gridColumn: '5',
+    '&:first-of-type': {
+      fontSize: '2.25rem',
+      marginBottom: theme.spacing(1.5),
+    },
   },
   value: {
     gridRow: '1',
+    fontWeight: 'normal',
+    '&:first-of-type': {
+      marginBottom: theme.spacing(1.5),
+    },
   },
   createUserIcon: {
     color: theme.palette.common.white,
     height: theme.typography.pxToRem(40),
     width: theme.typography.pxToRem(40),
+    '&:first-of-type': {
+      marginBottom: theme.spacing(1.5),
+    },
   },
 }));
 
@@ -55,7 +73,6 @@ const Value = ({ children, className }) => {
       children={children}
       align="center"
       component="p"
-      gutterBottom
       variant="h1"
     />
   );

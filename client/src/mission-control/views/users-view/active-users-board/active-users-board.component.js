@@ -38,7 +38,6 @@ const TableHeader = () => (
       </MissionControlTableCell>
       <MissionControlTableCell align="left">Email</MissionControlTableCell>
       <MissionControlTableCell align="left">Type</MissionControlTableCell>
-      <MissionControlTableCell align="left" />
     </MissionControlTableRow>
   </TableHead>
 );
@@ -116,6 +115,9 @@ const UserRow = ({
       </MissionControlTableCell>
       <MissionControlTableCell>
         <Button
+          style={{
+            padding: '0.5rem 2rem',
+          }}
           aria-controls="role-menu"
           color="secondary"
           onClick={handleRoleButtonClick}
@@ -145,8 +147,7 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-      </MissionControlTableCell>
-      <MissionControlTableCell>
+
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}

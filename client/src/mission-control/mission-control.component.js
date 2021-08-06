@@ -32,6 +32,10 @@ const useDialogStyles = makeStyles(theme => ({
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
   },
+  mainPanel: {
+    width: '100%',
+    margin: '1.5rem 0 !important',
+  },
 }));
 
 const useTitleStyles = makeStyles(theme => ({

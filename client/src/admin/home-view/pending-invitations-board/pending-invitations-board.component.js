@@ -28,7 +28,6 @@ const TableHeader = () => (
       <AdminTableCell align="left">Licence Type</AdminTableCell>
       <AdminTableCell align="left">Invitation Sent</AdminTableCell>
       <AdminTableCell align="left">Invited</AdminTableCell>
-      <AdminTableCell align="left" />
     </TableRow>
   </TableHead>
 );
