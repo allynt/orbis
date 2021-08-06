@@ -84,6 +84,7 @@ describe('MissionControl', () => {
   });
 
   it('fetches customer if no customer, when component is loaded', () => {
+    fetch.once(JSON.stringify({}));
     const { store } = setup({ currentCustomer: null });
 
     const expectedActions = [
@@ -94,6 +95,7 @@ describe('MissionControl', () => {
   });
 
   it('fetches customerusers if customer but no customerUsers, when component is loaded', () => {
+    fetch.once(JSON.stringify({}));
     const { store } = setup({ customerUsers: null });
 
     const expectedActions = [

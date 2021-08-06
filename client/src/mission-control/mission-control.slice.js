@@ -168,12 +168,12 @@ export const {
  * @param {ActionCreatorWithPayload} action
  * @param {Dispatch} dispatch
  */
-const handleFailure = (response = {}, title, action, dispatch) => {
-  const { status, statusText } = response;
-  const message = `${status} ${statusText}`;
+const handleFailure = (response, title, action, dispatch) => {
+  const message = `${response.status} ${response.statusText}`;
+
   NotificationManager.error(
     message,
-    `${title} - ${statusText}`,
+    `${title} - ${response.statusText}`,
     5000,
     () => {},
   );
