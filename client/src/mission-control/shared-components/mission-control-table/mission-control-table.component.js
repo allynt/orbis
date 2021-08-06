@@ -19,7 +19,7 @@ const useCellStyles = makeStyles(theme => ({
     },
     padding: `0.375rem ${theme.spacing(1.25)}`,
     border: 'none',
-    maxWidth: '15rem',
+    maxWidth: '8rem',
   },
   head: {
     ...theme.typography.h2,

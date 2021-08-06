@@ -29,6 +29,17 @@ const USER_LABELS = {
   admin: 'Admin',
 };
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    height: 'calc(100% - 5rem)',
+    padding: `0 ${theme.spacing(6.5)}`,
+  },
+  statusButton: {
+    padding: theme.spacing(1, 4),
+    minWidth: '10rem',
+  },
+}));
+
 const TableHeader = () => (
   <TableHead>
     <MissionControlTableRow>
@@ -62,6 +73,7 @@ const UserRow = ({
   onEditUserClick,
   onRoleClick,
 }) => {
+  const styles = useStyles({});
   const [roleAnchorEl, setRoleAnchorEl] = useState(null);
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
 
@@ -115,9 +127,7 @@ const UserRow = ({
       </MissionControlTableCell>
       <MissionControlTableCell>
         <Button
-          style={{
-            padding: '0.5rem 2rem',
-          }}
+          className={styles.statusButton}
           aria-controls="role-menu"
           color="secondary"
           onClick={handleRoleButtonClick}
@@ -162,13 +172,6 @@ const UserRow = ({
     </MissionControlTableRow>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    height: 'calc(100% - 5rem)',
-    padding: `0 ${theme.spacing(6.5)}`,
-  },
-}));
 
 /**
  * @param {{
