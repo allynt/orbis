@@ -94,7 +94,7 @@ describe('MissionControl', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('fetches customerusers if customer but no customerUsers, when component is loaded', () => {
+  it('fetches customerUsers if customer but no customerUsers, when component is loaded', () => {
     fetch.once(JSON.stringify({}));
     const { store } = setup({ customerUsers: null });
 
