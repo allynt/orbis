@@ -36,16 +36,17 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  match: import('react-router-dom').match<{orbId: import('typings').Orb['id'], users: number}>
+ *  location: import('history').Location
  * }} props
  */
-export const Completion = ({ orbs, match }) => {
+export const Completion = ({ orbs, location }) => {
   const styles = useStyles();
-  const { orbId, users } = match.params;
-  const orb = find(orbs, { id: orbId });
+  const searchParams = new URLSearchParams(location.search);
+  const orb = find(orbs, { id: +searchParams.get('orbId') });
+  const users = +searchParams.get('users');
 
   return (
-    <Wrapper>
+    <Wrapper maxWidth={false}>
       <Heading>Your Order</Heading>
       <Paper className={styles.paper}>
         <Grid container justifyContent="center" spacing={2}>

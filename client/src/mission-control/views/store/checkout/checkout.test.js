@@ -11,7 +11,7 @@ const renderComponent = () =>
       // @ts-ignore
       orbs={[{ id: 1, name: 'Test Orb', licence_cost: 0 }]}
       // @ts-ignore
-      match={{ params: { users: 10, orbId: 1 } }}
+      location={{ search: '?users=10&orbId=1' }}
     />,
   );
 

@@ -11,6 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { find } from 'lodash';
+import { Link } from 'react-router-dom';
 
 import { Heading } from '../orbs/heading.component';
 import { Wrapper } from '../orbs/wrapper.component';
@@ -48,14 +49,21 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  match: import('react-router-dom').match<{orbId: number, users: number}>
+ *  location: import('history').Location
  * }} props
  */
-export const Checkout = ({ orbs, match }) => {
+export const Checkout = ({ orbs, location }) => {
   const styles = useStyles();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const { users, orbId } = match.params;
-  const orb = find(orbs, { id: orbId });
+  const searchParams = new URLSearchParams(location.search);
+  const users = searchParams.get('users');
+  const orb = find(orbs, { id: +searchParams.get('orbId') });
+
+  const textFieldProps = {
+    className: styles.textField,
+    InputLabelProps: { className: styles.label },
+    InputProps: { readOnly: true },
+  };
 
   return (
     <Wrapper className={styles.wrapper} maxWidth={false}>
@@ -65,28 +73,22 @@ export const Checkout = ({ orbs, match }) => {
         the terms and confirm your order.
       </Typography>
       <TextField
-        className={styles.textField}
-        InputLabelProps={{ className: styles.label }}
         id="orbName"
         label="Name of the product"
-        InputProps={{ readOnly: true }}
         value={orb.name}
+        {...textFieldProps}
       />
       <TextField
-        className={styles.textField}
-        InputLabelProps={{ className: styles.label }}
         id="licenceCost"
         label="Licence"
-        InputProps={{ readOnly: true }}
         value={orb.licence_cost <= 0 ? 'Free' : orb.licence_cost}
+        {...textFieldProps}
       />
       <TextField
-        className={styles.textField}
-        InputLabelProps={{ className: styles.label }}
         id="numberOfUsers"
         label="The number of users you need"
-        InputProps={{ readOnly: true }}
         value={users}
+        {...textFieldProps}
       />
       <Paper className={styles.orderTerms}>{orderText}</Paper>
       <FormControlLabel
@@ -96,7 +98,11 @@ export const Checkout = ({ orbs, match }) => {
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
       />
-      <Button disabled={!acceptedTerms}>Confirm</Button>
+      <Link
+        to={`/mission-control/store/${orb.id}/completion?orbId=${orb.id}&users=${users}`}
+      >
+        <Button disabled={!acceptedTerms}>Confirm</Button>
+      </Link>
     </Wrapper>
   );
 };

@@ -7,6 +7,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
 import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
 
+import { Checkout } from './checkout/checkout.component';
+import { Completion } from './completion/completion.component';
 import { OrbDetails } from './orbs/orb-details/orb-details.component';
 import { Orbs } from './orbs/orbs.component';
 
@@ -48,6 +50,16 @@ export const Store = ({ match, location }) => {
             exact
             path={`${path}/:orbId`}
             render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
+          />
+          <Route
+            exact
+            path={`${path}/:orbId/checkout`}
+            render={routerProps => <Checkout orbs={orbs} {...routerProps} />}
+          />
+          <Route
+            exact
+            path={`${path}/:orbId/completion`}
+            render={routerProps => <Completion orbs={orbs} {...routerProps} />}
           />
         </Switch>
       </CSSTransition>

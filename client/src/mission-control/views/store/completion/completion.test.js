@@ -18,7 +18,7 @@ const renderComponent = () => {
         { id: 2, name: 'Orb 2' },
       ]}
       // @ts-ignore
-      match={{ params: { orbId: 2, users: 23 } }}
+      location={{ search: '?orbId=2&users=23' }}
     />,
     {
       wrapper: ({ children }) => <Router history={history}>{children}</Router>,
