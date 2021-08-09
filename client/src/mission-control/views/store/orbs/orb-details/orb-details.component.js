@@ -64,7 +64,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   link: {
-    color: 'unset',
     textDecoration: 'none',
   },
 }));
