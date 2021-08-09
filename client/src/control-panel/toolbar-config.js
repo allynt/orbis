@@ -134,17 +134,17 @@ export const useToolbarItems = () => {
         order: 1,
       },
     ),
-    ...conditionallyAddItemOrItems(true, {
-      label: 'Mission Control',
-      icon: (
-        <SvgIcon>
-          <MissionControlIcon />
-        </SvgIcon>
-      ),
-      footer: true,
-      tooltip: 'Mission Control',
-      action: () => dispatch(push('/mission-control')),
-    }),
+    // ...conditionallyAddItemOrItems(true, {
+    //   label: 'Mission Control',
+    //   icon: (
+    //     <SvgIcon>
+    //       <MissionControlIcon />
+    //     </SvgIcon>
+    //   ),
+    //   footer: true,
+    //   tooltip: 'Mission Control',
+    //   action: () => dispatch(push('/mission-control')),
+    // }),
     {
       label: 'User Guide',
       icon: (
