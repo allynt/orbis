@@ -245,7 +245,7 @@ describe('Accounts Slice', () => {
   describe('Accounts Reducer', () => {
     describe('pending actions', () => {
       it('sets isLoading to true', () => {
-        const result = reducer(BASE_STATE, { type: 'someAction/pending' });
+        const result = reducer(BASE_STATE, { type: 'accounts/pending' });
         expect(result.isLoading).toBe(true);
       });
     });
