@@ -5,15 +5,19 @@ import userEvent from '@testing-library/user-event';
 
 import { Checkout } from './checkout.component';
 
-const renderComponent = () =>
-  render(
+const renderComponent = () => {
+  const onConfirmClick = jest.fn();
+  const utils = render(
     <Checkout
       // @ts-ignore
       orbs={[{ id: 1, name: 'Test Orb', licence_cost: 0 }]}
       // @ts-ignore
       location={{ search: '?users=10&orbId=1' }}
+      onConfirmClick={onConfirmClick}
     />,
   );
+  return { ...utils, onConfirmClick };
+};
 
 describe('<Checkout />', () => {
   it('Shows fields populated with the order information', () => {
@@ -32,5 +36,12 @@ describe('<Checkout />', () => {
     expect(getByRole('button', { name: /confirm/i })).toBeDisabled();
     userEvent.click(getByRole('checkbox'));
     expect(getByRole('button', { name: /confirm/i })).not.toBeDisabled();
+  });
+
+  it('Calls onConfirmClick when the confirm button is clicked', () => {
+    const { getByRole, onConfirmClick } = renderComponent();
+    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button'));
+    expect(onConfirmClick).toBeCalledWith({ orbId: 1, users: 10 });
   });
 });

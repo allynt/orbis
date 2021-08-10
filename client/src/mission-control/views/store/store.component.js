@@ -48,7 +48,13 @@ export const Store = ({ match, location }) => {
           />
           <Route
             path={`${path}/checkout`}
-            render={routerProps => <Checkout orbs={orbs} {...routerProps} />}
+            render={routerProps => (
+              <Checkout
+                orbs={orbs}
+                onConfirmClick={stuff => console.log(stuff)}
+                {...routerProps}
+              />
+            )}
           />
           <Route
             path={`${path}/completion`}

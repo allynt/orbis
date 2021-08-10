@@ -11,7 +11,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { find } from 'lodash';
-import { Link } from 'react-router-dom';
 
 import { Heading } from '../orbs/heading.component';
 import { Wrapper } from '../orbs/wrapper.component';
@@ -50,19 +49,25 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  orbs: import('typings').Orb[]
  *  location: import('history').Location
+ *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
  * }} props
  */
-export const Checkout = ({ orbs, location }) => {
+export const Checkout = ({ orbs, location, onConfirmClick }) => {
   const styles = useStyles();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const searchParams = new URLSearchParams(location.search);
-  const users = searchParams.get('users');
-  const orb = find(orbs, { id: +searchParams.get('orbId') });
+  const users = +searchParams.get('users');
+  const orbId = +searchParams.get('orbId');
+  const orb = find(orbs, { id: orbId });
 
   const textFieldProps = {
     className: styles.textField,
     InputLabelProps: { className: styles.label },
     InputProps: { readOnly: true },
+  };
+
+  const handleConfirmClick = () => {
+    onConfirmClick({ orbId, users });
   };
 
   return (
@@ -98,11 +103,9 @@ export const Checkout = ({ orbs, location }) => {
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
       />
-      <Link
-        to={`/mission-control/store/completion/?orbId=${orb.id}&users=${users}`}
-      >
-        <Button disabled={!acceptedTerms}>Confirm</Button>
-      </Link>
+      <Button disabled={!acceptedTerms} onClick={handleConfirmClick}>
+        Confirm
+      </Button>
     </Wrapper>
   );
 };
