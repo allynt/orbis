@@ -11,6 +11,11 @@ import thunk from 'redux-thunk';
 
 import { MissionControl } from './mission-control.component';
 
+import {
+  fetchCustomerRequested,
+  fetchCustomerUsersRequested
+} from './mission-control.slice';
+
 const mockStore = configureMockStore([thunk]);
 
 const testCustomer = {
@@ -88,7 +93,7 @@ describe('MissionControl', () => {
     const { store } = setup({ currentCustomer: null });
 
     const expectedActions = [
-      { type: 'missionControl/fetchCustomerRequested', payload: undefined },
+      { type: fetchCustomerRequested.type, payload: undefined },
     ];
 
     expect(store.getActions()).toEqual(expectedActions);
@@ -100,7 +105,7 @@ describe('MissionControl', () => {
 
     const expectedActions = [
       {
-        type: 'missionControl/fetchCustomerUsersRequested',
+        type: fetchCustomerUsersRequested.type,
         payload: undefined,
       },
     ];
