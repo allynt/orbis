@@ -4,10 +4,8 @@ import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import {
-  createCustomerUserSuccess,
-  setCurrentCustomer,
-} from 'admin/admin.slice';
+import { createCustomerUserSuccess } from 'admin/admin.slice';
+import { setCurrentCustomer } from 'mission-control/mission-control.slice';
 
 import {
   REGISTER_CUSTOMER,
@@ -618,13 +616,6 @@ describe('Accounts Slice', () => {
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({ type: placeOrder.fulfilled.type }),
         );
-      });
-
-      it('navigates to landing on success', async () => {
-        fetch.once(JSON.stringify(placeOrderResponseBody));
-        fetch.once(JSON.stringify(fetchCustomerResponseBody));
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
 
       it('calls the failure action on failed request', async () => {

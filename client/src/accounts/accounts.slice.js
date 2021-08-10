@@ -150,13 +150,6 @@ export const placeOrder = createAsyncThunk(
       await apiClient.customers.placeOrder(currentCustomerId, form);
       const customer = await apiClient.customers.getCustomer(currentCustomerId);
       dispatch(setCurrentCustomer(customer));
-      const orbs = orbsSelector(getState());
-      const orb = find(orbs, { name: form.subscription });
-      dispatch(
-        push(
-          `/mission-control/store/completion/?orbId=${orb.id}&users=${form.licences}`,
-        ),
-      );
       return;
     } catch (responseError) {
       const errors = await responseError.getErrors();

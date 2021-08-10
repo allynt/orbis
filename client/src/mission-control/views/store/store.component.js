@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import { push } from 'connected-react-router';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
@@ -17,12 +18,12 @@ import { Orbs } from './orbs/orbs.component';
 /**
  * @param {{
  *  match: import('react-router-dom').match
- * location: import('history').Location
+ *  location: import('history').Location
  * }} props
  * @returns
  */
 export const Store = ({ match, location }) => {
-  const { path } = match;
+  const { path, url } = match;
   const orbs = useSelector(orbsSelector);
   const fetchOrbsPending = useSelector(
     /**
@@ -45,15 +46,20 @@ export const Store = ({ match, location }) => {
    * users: number;
    *}} param0
    */
-  const handleConfirmClick = ({ orbId, users }) => {
+  const handleConfirmClick = async ({ orbId, users }) => {
     const orb = find(orbs, { id: orbId });
-    dispatch(
-      placeOrder({
-        licences: users,
-        subscription: orb.name,
-        paymentType: 'standard',
-      }),
-    );
+    try {
+      await dispatch(
+        placeOrder({
+          licences: users,
+          subscription: orb.name,
+          paymentType: 'standard',
+        }),
+      );
+      dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
