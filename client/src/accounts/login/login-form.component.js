@@ -35,7 +35,7 @@ const loginSchema = yup.object({
  *   serverErrors?: string[]
  *   user: import('typings').User
  *   activateAccount?: (data: {key: string}) => void
- *   login: (data: { email: string, password: string}) => void
+ *   login: (data: { email: string, password: string, accepted_terms?: boolean}) => void
  * } & Partial<import('react-router-dom').RouteComponentProps>} LoginProps
  */
 

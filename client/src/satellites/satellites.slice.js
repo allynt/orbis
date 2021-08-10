@@ -72,18 +72,11 @@ export const searchSatelliteScenes = createAsyncThunk(
     try {
       const aoi = aoiSelector(getState());
       return await apiClient.satellites.runQuery({ ...query, aoi });
-    } catch (error) {
+    } catch (responseError) {
       /** @type {import('api-client').ResponseError} */
-      const { message, status } = error;
-      NotificationManager.error(
-        `${status} ${message}`,
-        `Problem performing search - ${message}`,
-        50000,
-        () => {},
-      );
-      return rejectWithValue({
-        message: `${status} ${message}`,
-      });
+      const message = await responseError.getErrors();
+      NotificationManager.error(`Problem performing search: ${message}`);
+      return rejectWithValue({ message });
     }
   },
 );

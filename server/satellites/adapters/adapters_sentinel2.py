@@ -27,7 +27,7 @@ SENTINEL2_PROPERTIES = {
 FILENAME_PARTS = OrderedDict([
     ("mission", "S2A|S2B"),
     ("processing_level", "MSI.{3}"),
-    ("timestamp", "\d{8}T\d{6}"),
+    ("timestamp", r"\d{8}T\d{6}"),
     ("processing_baseline_number", "N.{4}"),
     ("relative_orbit_number", "R.{3}"),
     ("tile_number", "T.{5}"),

@@ -1,5 +1,5 @@
 import functools
-from collections import OrderedDict
+from collections import defaultdict, OrderedDict
 from botocore.exceptions import BotoCoreError
 
 from django.contrib.gis.geos import Polygon
@@ -12,7 +12,6 @@ from django_filters import rest_framework as filters
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.response import Response
 
@@ -201,6 +200,8 @@ class CanQuerySatellitesPermission(BasePermission):
 @permission_classes([IsAuthenticated, CanQuerySatellitesPermission])
 def run_satellite_query(request):
 
+    errors = defaultdict(list)
+
     # build a search out of the request data...
     search_serializer = SatelliteSearchSerializer(data=request.data)
     search_serializer.is_valid(raise_exception=True)
@@ -208,11 +209,21 @@ def run_satellite_query(request):
     # use the adapter(s) to process that search...
     search_results = []
     for satellite in search_serializer.validated_data["satellites"]:
-        search_results += satellite.adapter.run_query(
-            satellite=satellite, **search_serializer.validated_data
+        try:
+            search_results += satellite.adapter.run_query(
+                satellite=satellite, **search_serializer.validated_data
+            )
+        except Exception as e:
+            errors[str(satellite)].append(str(e))
+
+    if errors:
+        # fail gracefully...
+        return Response(
+            data={"errors": errors},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
-    # return a list of results...
+    # or return a list of results...
     results_serializer = SatelliteResultSerializer(search_results, many=True)
     return Response(results_serializer.data)
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { push } from 'connected-react-router';
 import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
@@ -15,46 +16,28 @@ import {
 } from './accounts.constants';
 import reducer, {
   activateAccount,
-  activateAccountFailure,
-  activateAccountSuccess,
   changePassword,
-  changePasswordFailure,
-  changePasswordSuccess,
-  confirmResetPassword,
-  fetchRequested,
+  resetPasswordConfirm,
   fetchCurrentUser,
-  fetchUserFailure,
-  fetchUserSuccess,
   login,
-  loginUserFailure,
-  loginUserSuccess,
   logout,
-  logoutUserFailure,
-  logoutUserSuccess,
-  passwordResetRequestedFailure,
-  passwordResetRequestedSuccess,
   placeOrder,
-  placeOrderFailure,
-  placeOrderSuccess,
   registerCustomer,
-  registerCustomerFailure,
-  registerCustomerSuccess,
   registerUser,
-  registerUserFailure,
-  registerUserSuccess,
   resendVerificationEmail,
-  resendVerificationEmailFailure,
-  resendVerificationEmailSuccess,
-  resetPassword,
-  resetPasswordFailure,
-  resetPasswordSuccess,
+  resetPasswordRequest,
   status,
   updateUser,
-  updateUserFailure,
-  updateUserSuccess,
 } from './accounts.slice';
 
 const mockStore = configureMockStore([thunk]);
+
+const BASE_STATE = {
+  isLoading: false,
+  changeStatus: '',
+  resetStatus: '',
+  _persist: { rehydrated: true, version: 1 },
+};
 
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
@@ -82,51 +65,55 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: registerUserFailure.type,
+      const form = {
+        username: 'testusername',
+        email: 'testusername@test.com',
+        newPassword: 'password1',
+        newPasswordConfirm: 'password2',
+        name: 'Test Name',
+        organisationName: 'Test Org',
+        acceptedTerms: true,
+      };
+      await store.dispatch(registerUser(form));
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: registerUser.rejected.type,
           payload: [
             'First error relating to failed request.',
             'Second error relating to failed request.',
             'Third error relating to failed request.',
           ],
-        },
-      ];
-
-      const form = {
-        username: 'testusername',
-        email: 'testusername@test.com',
-        password1: 'password1',
-        password2: 'password2',
-      };
-      await store.dispatch(registerUser(form));
-
-      expect(store.getActions()).toEqual(expectedActions);
+        }),
+      );
     });
 
     it('should dispatch register success action.', async () => {
       fetch.mockResponse(JSON.stringify({}));
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { payload: {}, type: registerUserSuccess.type },
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          payload: {},
+          type: registerUser.fulfilled.type,
+        }),
         {
           payload: { args: ['/accounts/resend'], method: 'push' },
           type: '@@router/CALL_HISTORY_METHOD',
         },
-      ];
+      ]);
 
       const form = {
         username: 'testusername',
         email: 'testusername@test.com',
-        password1: 'password1',
-        password2: 'password2',
+        newPassword: 'password1',
+        newPasswordConfirm: 'password2',
+        name: 'Test Name',
+        organisationName: 'Test Org',
+        acceptedTerms: true,
       };
 
       await store.dispatch(registerUser(form));
@@ -139,39 +126,36 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: fetchUserFailure.type,
+      await store.dispatch(fetchCurrentUser());
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: fetchCurrentUser.rejected.type,
           payload: [
             'First error relating to failed request.',
             'Second error relating to failed request.',
             'Third error relating to failed request.',
           ],
-        },
-      ];
-
-      await store.dispatch(fetchCurrentUser());
-
-      expect(store.getActions()).toEqual(expectedActions);
+        }),
+      );
     });
 
     it('should dispatch fetch user success action.', async () => {
       const user = { username: 'testusername', email: 'testusername@test.com' };
       fetch.mockResponse(JSON.stringify(user));
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: fetchUserSuccess.type, payload: user },
-      ];
 
       await store.dispatch(fetchCurrentUser());
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: fetchCurrentUser.fulfilled.type,
+          payload: user,
+        }),
+      );
     });
 
     it('should dispatch logout failure action.', async () => {
@@ -180,27 +164,23 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
       );
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: logoutUserFailure.type,
+      await store.dispatch(logout());
+
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: logout.rejected.type,
           payload: [
             'First error relating to failed request.',
             'Second error relating to failed request.',
             'Third error relating to failed request.',
           ],
-        },
-      ];
-
-      await store.dispatch(logout());
-
-      expect(store.getActions()).toEqual(expectedActions);
+        }),
+      );
     });
 
     it('should dispatch logout success action.', async () => {
@@ -209,14 +189,11 @@ describe('Accounts Slice', () => {
 
       fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: logoutUserSuccess.type },
-      ];
-
       await store.dispatch(logout());
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({ type: logout.fulfilled.type }),
+      );
     });
 
     it('should dispatch update user failure action.', async () => {
@@ -225,23 +202,10 @@ describe('Accounts Slice', () => {
           errors: errorMessages,
         }),
         {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         },
       );
-
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        {
-          type: updateUserFailure.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
-        },
-      ];
 
       const form = {
         email: 'testusername@test.com',
@@ -250,7 +214,16 @@ describe('Accounts Slice', () => {
 
       await store.dispatch(updateUser(form));
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({
+          type: updateUser.rejected.type,
+          payload: [
+            'First error relating to failed request.',
+            'Second error relating to failed request.',
+            'Third error relating to failed request.',
+          ],
+        }),
+      );
     });
 
     it('should dispatch update user success action.', async () => {
@@ -258,11 +231,6 @@ describe('Accounts Slice', () => {
 
       fetch.mockResponse(JSON.stringify(userKey));
 
-      const expectedActions = [
-        { type: fetchRequested.type, payload: undefined },
-        { type: updateUserSuccess.type, payload: userKey },
-      ];
-
       const form = {
         email: 'testusername@test.com',
         password: 'password2',
@@ -270,14 +238,16 @@ describe('Accounts Slice', () => {
 
       await store.dispatch(updateUser(form));
 
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(store.getActions()).toContainEqual(
+        expect.objectContaining({ type: updateUser.fulfilled.type }),
+      );
     });
   });
 
   describe('Accounts Reducer', () => {
-    describe(`${fetchRequested}`, () => {
+    describe('pending actions', () => {
       it('sets isLoading to true', () => {
-        const result = reducer({}, fetchRequested());
+        const result = reducer(BASE_STATE, { type: 'someAction/pending' });
         expect(result.isLoading).toBe(true);
       });
     });
@@ -290,31 +260,31 @@ describe('Accounts Slice', () => {
       setsUserKeyToNull = true;
 
     describe.each`
-      action                            | config
-      ${registerUserSuccess}            | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${registerUserFailure}            | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${registerCustomerSuccess}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${registerCustomerFailure}        | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${placeOrderSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${placeOrderFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${loginUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
-      ${loginUserFailure}               | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
-      ${resendVerificationEmailSuccess} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${resendVerificationEmailFailure} | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${fetchUserSuccess}               | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${fetchUserFailure}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${updateUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${updateUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${logoutUserSuccess}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
-      ${logoutUserFailure}              | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${activateAccountSuccess}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
-      ${activateAccountFailure}         | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
-      ${changePasswordSuccess}          | ${{ setsErrorToNull }}
-      ${changePasswordFailure}          | ${{ setsErrorToPayload }}
-      ${resetPasswordSuccess}           | ${{ setsErrorToNull }}
-      ${resetPasswordFailure}           | ${{ setsErrorToPayload }}
-      ${passwordResetRequestedSuccess}  | ${{ setsErrorToNull, setsUserToPayload }}
-      ${passwordResetRequestedFailure}  | ${{ setsErrorToPayload }}
+      action                               | config
+      ${registerUser.fulfilled}            | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${registerUser.rejected}             | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${registerCustomer.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${registerCustomer.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${placeOrder.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${placeOrder.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${login.fulfilled}                   | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
+      ${login.rejected}                    | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
+      ${resendVerificationEmail.fulfilled} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
+      ${resendVerificationEmail.rejected}  | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${fetchCurrentUser.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${fetchCurrentUser.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${updateUser.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
+      ${updateUser.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${logout.fulfilled}                  | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
+      ${logout.rejected}                   | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
+      ${activateAccount.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
+      ${activateAccount.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
+      ${changePassword.fulfilled}          | ${{ setsErrorToNull }}
+      ${changePassword.rejected}           | ${{ setsErrorToPayload }}
+      ${resetPasswordRequest.fulfilled}    | ${{ setsErrorToNull }}
+      ${resetPasswordRequest.rejected}     | ${{ setsErrorToPayload }}
+      ${resetPasswordConfirm.fulfilled}    | ${{ setsErrorToNull, setsUserToPayload }}
+      ${resetPasswordConfirm.rejected}     | ${{ setsErrorToPayload }}
     `(
       '$action.type',
       ({
@@ -330,92 +300,119 @@ describe('Accounts Slice', () => {
       }) => {
         if (setsIsLoadingToFalse) {
           it('sets isLoading to false', () => {
-            expect(reducer({ isLoading: true }, action({}))).toEqual(
-              expect.objectContaining({ isLoading: false }),
-            );
+            expect(
+              reducer(
+                { ...BASE_STATE, isLoading: true },
+                { type: action.type, payload: {} },
+              ),
+            ).toEqual(expect.objectContaining({ isLoading: false }));
           });
         }
 
         if (setsErrorToNull) {
           it('sets error to null', () => {
-            expect(reducer({ error: '123' }, action({})).error).toBeNull();
+            expect(
+              reducer({ ...BASE_STATE, error: '123' }, action({})).error,
+            ).toBeNull();
           });
         }
 
         if (setsUserToPayload) {
           it('sets user to payload', () => {
             const user = { name: 'Test User' };
-            expect(reducer({}, action(user)).user).toEqual(user);
+            expect(reducer(BASE_STATE, action(user)).user).toEqual(user);
           });
         }
 
         if (setsUserToPayloadUser) {
           it('sets user to payload.user', () => {
             const user = { name: 'Test User' };
-            expect(reducer({}, action({ user })).user).toEqual(user);
+            expect(
+              reducer(BASE_STATE, { type: action.type, payload: { user } })
+                .user,
+            ).toEqual(user);
           });
         }
 
         if (setsErrorToPayload) {
           it('sets error to payload', () => {
-            expect(reducer({}, action('123')).error).toBe('123');
+            expect(
+              reducer(BASE_STATE, { type: action.type, payload: '123' }).error,
+            ).toBe('123');
           });
         }
 
         if (setsUserKeyToNull) {
           it('sets userKey to null', () => {
-            expect(reducer({ userKey: '123' }, action({})).userKey).toBeNull();
+            expect(
+              reducer(
+                { ...BASE_STATE, userKey: '123' },
+                { type: action.type, payload: {} },
+              ).userKey,
+            ).toBeNull();
           });
         }
       },
     );
 
-    describe(`${loginUserSuccess}`, () => {
+    describe(`${login.fulfilled.type}`, () => {
       it('sets userKey to payload.userKey', () => {
         expect(
-          reducer({}, loginUserSuccess({ userKey: '123' })).userKey,
+          reducer(BASE_STATE, {
+            type: login.fulfilled.type,
+            payload: { userKey: '123' },
+          }).userKey,
         ).toEqual('123');
       });
     });
 
-    describe(`${loginUserFailure}`, () => {
+    describe(`${login.rejected.type}`, () => {
       it('sets error to payload.errors', () => {
         const error = 'This is an error';
-        expect(reducer({}, loginUserFailure({ errors: error })).error).toEqual(
-          error,
-        );
+        expect(
+          reducer(BASE_STATE, {
+            type: login.rejected.type,
+            payload: { errors: error },
+          }).error,
+        ).toEqual(error);
       });
     });
 
-    describe(`${logoutUserSuccess}`, () => {
+    describe(`${logout.fulfilled.type}`, () => {
       it('sets user to null', () => {
         expect(
-          reducer({ user: { name: 'Test User' } }, logoutUserSuccess()).user,
+          reducer(
+            { ...BASE_STATE, user: { name: 'Test User' } },
+            { type: logout.fulfilled.type },
+          ).user,
         ).toBeNull();
       });
     });
 
-    describe(`${changePasswordSuccess}`, () => {
+    describe(`${changePassword.fulfilled.type}`, () => {
       it(`sets changeStatus to ${status.PENDING}`, () => {
-        expect(reducer({}, changePasswordSuccess()).changeStatus).toBe(
-          status.PENDING,
-        );
+        expect(
+          reducer(BASE_STATE, { type: changePassword.fulfilled.type })
+            .changeStatus,
+        ).toBe(status.PENDING);
       });
     });
 
-    describe(`${resetPasswordSuccess}`, () => {
+    describe(`${resetPasswordRequest.fulfilled.type}`, () => {
       it(`sets resetStatus to ${status.PENDING}`, () => {
-        expect(reducer({}, resetPasswordSuccess()).resetStatus).toBe(
-          status.PENDING,
-        );
+        expect(
+          reducer(BASE_STATE, { type: resetPasswordRequest.fulfilled.type })
+            .resetStatus,
+        ).toBe(status.PENDING);
       });
     });
 
-    describe(`${passwordResetRequestedSuccess}`, () => {
+    describe(`${resetPasswordConfirm.fulfilled.type}`, () => {
       it(`sets resetStatus to ${status.COMPLETE}`, () => {
-        expect(reducer({}, passwordResetRequestedSuccess()).resetStatus).toBe(
-          status.COMPLETE,
-        );
+        expect(
+          reducer(BASE_STATE, { type: resetPasswordConfirm.fulfilled.type })
+            .resetStatus,
+        ).toBe(status.COMPLETE);
       });
     });
   });
@@ -473,12 +470,6 @@ describe('Accounts Slice', () => {
       };
       const errorResponse = { errors: { test: ['problem'] } };
 
-      it('starts the request', async () => {
-        fetch.mockResponse(JSON.stringify({}));
-        await registerCustomer(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('creates new customer and sets in state', async () => {
         fetch
           .once(JSON.stringify(createCustomerResponse))
@@ -492,13 +483,12 @@ describe('Accounts Slice', () => {
 
       it('dispatches failure on create customer error', async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(['problem']),
+          expect.objectContaining({ type: registerCustomer.rejected.type }),
         );
       });
 
@@ -517,13 +507,15 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(errorResponse), {
-            ok: false,
             status: 401,
             statusText: 'Test Error',
           });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: registerCustomer.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
@@ -534,7 +526,10 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          fetchUserSuccess(fetchUserResponse),
+          expect.objectContaining({
+            type: registerCustomer.fulfilled.type,
+            payload: fetchUserResponse,
+          }),
         );
       });
 
@@ -544,7 +539,11 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
         await registerCustomer(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(registerCustomerSuccess());
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: registerCustomer.fulfilled.type,
+          }),
+        );
       });
 
       it('navigates to order view', async () => {
@@ -561,13 +560,15 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(errorResponse), {
-            ok: false,
             status: 401,
             statusText: 'Test Error',
           });
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          registerCustomerFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: registerCustomer.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
     });
@@ -610,17 +611,13 @@ describe('Accounts Slice', () => {
         },
       };
 
-      it('starts the request', async () => {
-        fetch.mockResponse(JSON.stringify({}));
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('calls the success action on successful request', async () => {
         fetch.once(JSON.stringify(placeOrderResponseBody));
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(placeOrderSuccess());
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({ type: placeOrder.fulfilled.type }),
+        );
       });
 
       it('navigates to landing on success', async () => {
@@ -632,13 +629,15 @@ describe('Accounts Slice', () => {
 
       it('calls the failure action on failed request', async () => {
         fetch.once(JSON.stringify(failureResponseBody), {
-          ok: false,
           status: 401,
           statusText: 'Test Error',
         });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure(failureResponseBody.errors.test),
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+            payload: failureResponseBody.errors.test,
+          }),
         );
       });
 
@@ -656,13 +655,15 @@ describe('Accounts Slice', () => {
         fetch
           .once(JSON.stringify(placeOrderResponseBody))
           .once(JSON.stringify(failureResponseBody), {
-            ok: false,
             status: 418,
             statusText: 'ERROR',
           });
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
-          placeOrderFailure(failureResponseBody.errors.test),
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+            payload: failureResponseBody.errors.test,
+          }),
         );
       });
 
@@ -671,8 +672,14 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
-          admin: {},
-          accounts: { user: { customers: [{ id: 'testcustomerId' }] } },
+          admin: { isLoading: false },
+          accounts: {
+            user: {
+              customers: [
+                { id: 'testcustomerId', type: 'MANAGER', status: 'ACTIVE' },
+              ],
+            },
+          },
         }));
         expect(fetch).toHaveBeenNthCalledWith(
           1,
@@ -720,17 +727,8 @@ describe('Accounts Slice', () => {
         errors: { test: ['Foobar'] },
       };
 
-      it('starts the request', async () => {
-        fetch
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserResponse));
-        await login(formValues)(dispatch);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
       it('shows the resend email view if the user is not verified', async () => {
         fetch.once(JSON.stringify(loginReponseUserNotVerified), {
-          ok: false,
           status: 418,
           statusText: 'Error',
         });
@@ -740,15 +738,17 @@ describe('Accounts Slice', () => {
 
       it('dispatches the failure action if the login request fails', async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 418,
           statusText: 'Error',
         });
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure({
-            ...errorResponse,
-            errors: errorResponse.errors.test,
+          expect.objectContaining({
+            type: login.rejected.type,
+            payload: {
+              ...errorResponse,
+              errors: errorResponse.errors.test,
+            },
           }),
         );
       });
@@ -759,9 +759,12 @@ describe('Accounts Slice', () => {
           .once(JSON.stringify(getUserResponse));
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserSuccess({
-            userKey: loginResponse.token,
-            user: getUserResponse,
+          expect.objectContaining({
+            type: login.fulfilled.type,
+            payload: {
+              userKey: loginResponse.token,
+              user: getUserResponse,
+            },
           }),
         );
       });
@@ -769,12 +772,15 @@ describe('Accounts Slice', () => {
       it('dispatches the failure action if the get user request fails', async () => {
         fetch
           .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(errorResponse), { ok: false, status: 418 });
+          .once(JSON.stringify(errorResponse), { status: 418 });
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
-          loginUserFailure(
-            expect.objectContaining({ errors: errorResponse.errors.test }),
-          ),
+          expect.objectContaining({
+            type: login.rejected.type,
+            payload: expect.objectContaining({
+              errors: errorResponse.errors.test,
+            }),
+          }),
         );
       });
 
@@ -804,121 +810,138 @@ describe('Accounts Slice', () => {
     });
 
     describe('activateAccount', () => {
-      it('dispatches fetchRequested action', async () => {
-        fetch.once(JSON.stringify({}));
-        await activateAccount({})(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
-      it(`dispatches ${activateAccountFailure} if the response is not ok`, async () => {
+      it(`dispatches ${activateAccount.rejected.type} if the response is not ok`, async () => {
         fetch.once(
           JSON.stringify({
             errors: {
               test: ['¿problema?'],
             },
           }),
-          { ok: false, status: 401, statusText: 'Test Error' },
+          { status: 401, statusText: 'Test Error' },
         );
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          activateAccountFailure(['¿problema?']),
+          expect.objectContaining({
+            type: activateAccount.rejected.type,
+            payload: ['¿problema?'],
+          }),
         );
       });
 
-      it(`dispatches ${activateAccountSuccess} on successful activation`, async () => {
+      it(`dispatches ${activateAccount.fulfilled.type} on successful activation`, async () => {
         const user = { name: 'Test User' };
         fetch.once(JSON.stringify({ user }));
         await activateAccount({})(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(activateAccountSuccess({ user }));
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: activateAccount.fulfilled.type,
+            payload: { user },
+          }),
+        );
       });
     });
 
     describe('resendVerificationEmail', () => {
-      it(`dispatches ${fetchRequested}`, async () => {
-        fetch.once(JSON.stringify({}));
-        await resendVerificationEmail()(dispatch, getState);
-        expect(dispatch).toHaveBeenCalledWith(fetchRequested());
-      });
-
-      it(`dispatches ${resendVerificationEmailFailure} on failed request`, async () => {
+      it(`dispatches ${resendVerificationEmail.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
-        await resendVerificationEmail()(dispatch, getState);
+        await resendVerificationEmail('')(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resendVerificationEmailFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: resendVerificationEmail.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${resendVerificationEmailSuccess} on success`, async () => {
+      it(`dispatches ${resendVerificationEmail.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
-        await resendVerificationEmail()(dispatch, getState);
-        expect(dispatch).toBeCalledWith(resendVerificationEmailSuccess());
+        await resendVerificationEmail('')(dispatch, getState);
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({
+            type: resendVerificationEmail.fulfilled.type,
+          }),
+        );
       });
     });
 
     describe('changePassword', () => {
-      it(`dispatches ${changePasswordFailure} on failed request`, async () => {
+      it(`dispatches ${changePassword.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
         await changePassword({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          changePasswordFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: changePassword.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${changePasswordSuccess} on success`, async () => {
+      it(`dispatches ${changePassword.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
         await changePassword({})(dispatch, getState);
-        expect(dispatch).toBeCalledWith(changePasswordSuccess());
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({ type: changePassword.fulfilled.type }),
+        );
       });
     });
 
-    describe('confirmResetPassword', () => {
-      it(`dispatches ${passwordResetRequestedFailure} on failed request`, async () => {
+    describe('resetPasswordConfirm', () => {
+      it(`dispatches ${resetPasswordConfirm.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
-        await confirmResetPassword({}, {})(dispatch, getState);
+        await resetPasswordConfirm({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          passwordResetRequestedFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: resetPasswordConfirm.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${passwordResetRequestedSuccess} with user on success`, async () => {
+      it(`dispatches ${resetPasswordConfirm.fulfilled.type} with user on success`, async () => {
         const user = { name: 'Test user' };
         fetch.once(JSON.stringify({ user }));
-        await confirmResetPassword({}, {})(dispatch, getState);
+        await resetPasswordConfirm({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          passwordResetRequestedSuccess(user),
+          expect.objectContaining({
+            type: resetPasswordConfirm.fulfilled.type,
+            payload: user,
+          }),
         );
       });
     });
 
-    describe('resetPassword', () => {
-      it(`dispatches ${resetPasswordFailure} on failed request`, async () => {
+    describe('resetPasswordRequest', () => {
+      it(`dispatches ${resetPasswordRequest.rejected.type} on failed request`, async () => {
         fetch.once(JSON.stringify(errorResponse), {
-          ok: false,
           status: 401,
           statusText: 'Wrong',
         });
-        await resetPassword({})(dispatch, getState);
+        await resetPasswordRequest({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
-          resetPasswordFailure(errorResponse.errors.test),
+          expect.objectContaining({
+            type: resetPasswordRequest.rejected.type,
+            payload: errorResponse.errors.test,
+          }),
         );
       });
 
-      it(`dispatches ${resetPasswordSuccess} on success`, async () => {
+      it(`dispatches ${resetPasswordRequest.fulfilled.type} on success`, async () => {
         fetch.once(JSON.stringify({}));
-        await resetPassword({})(dispatch, getState);
-        expect(dispatch).toBeCalledWith(resetPasswordSuccess());
+        await resetPasswordRequest({})(dispatch, getState);
+        expect(dispatch).toBeCalledWith(
+          expect.objectContaining({
+            type: resetPasswordRequest.fulfilled.type,
+          }),
+        );
       });
     });
   });
