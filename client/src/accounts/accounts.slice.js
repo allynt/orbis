@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
-import { find } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import { createCustomerUserSuccess } from 'admin/admin.slice';
 import apiClient from 'api-client';
-import { orbsSelector } from 'data-layers/data-layers.slice';
 import {
   selectCurrentCustomer,
   setCurrentCustomer,
@@ -422,7 +420,8 @@ const accountsSlice = createSlice({
     });
     builder.addMatcher(
       // @ts-ignore
-      action => action.type.endsWith('/pending'),
+      action =>
+        action.type.startsWith(name) && action.type.endsWith('/pending'),
       state => {
         state.isLoading = true;
       },

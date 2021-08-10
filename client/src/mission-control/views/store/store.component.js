@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { isLoadingSelector } from 'accounts/accounts.selectors';
 import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
 import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
@@ -31,6 +32,7 @@ export const Store = ({ match, location }) => {
      */
     state => state?.data?.fetchOrbsPending,
   );
+  const accountsIsLoading = useSelector(isLoadingSelector);
   const dispatch = useDispatch();
   const fadeTransitionProps = useFadeTransitionProps(location.key);
 
@@ -76,6 +78,7 @@ export const Store = ({ match, location }) => {
             render={routerProps => (
               <Checkout
                 orbs={orbs}
+                isLoading={accountsIsLoading}
                 onConfirmClick={handleConfirmClick}
                 {...routerProps}
               />

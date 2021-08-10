@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import {
-  Button,
   Checkbox,
   FormControlLabel,
   makeStyles,
@@ -10,7 +9,13 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { push } from 'connected-react-router';
 import { find } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { isLoadingSelector } from 'accounts/accounts.selectors';
+import { placeOrder } from 'accounts/accounts.slice';
+import { LoadingButton } from 'components';
 
 import { Heading } from '../orbs/heading.component';
 import { Wrapper } from '../orbs/wrapper.component';
@@ -49,10 +54,16 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  orbs: import('typings').Orb[]
  *  location: import('history').Location
+ *  isLoading?: boolean
  *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
  * }} props
  */
-export const Checkout = ({ orbs, location, onConfirmClick }) => {
+export const Checkout = ({
+  orbs,
+  location,
+  isLoading = false,
+  onConfirmClick,
+}) => {
   const styles = useStyles();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const searchParams = new URLSearchParams(location.search);
@@ -103,9 +114,13 @@ export const Checkout = ({ orbs, location, onConfirmClick }) => {
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
       />
-      <Button disabled={!acceptedTerms} onClick={handleConfirmClick}>
+      <LoadingButton
+        disabled={!acceptedTerms}
+        onClick={handleConfirmClick}
+        isLoading={isLoading}
+      >
         Confirm
-      </Button>
+      </LoadingButton>
     </Wrapper>
   );
 };
