@@ -10,9 +10,12 @@ import SidePanelListItem from './side-panel-list-item.component';
 export const SidePanel = ({ userIsAdmin = false }) => {
   const { pathname } = useLocation();
   const { path } = useRouteMatch();
-
   return (
-    <List component="nav" aria-label="mission control sidebar options">
+    <List
+      component="nav"
+      aria-label="mission control sidebar options"
+      disablePadding
+    >
       {Object.values(VIEWS)
         .filter(view => (userIsAdmin ? true : !view.admin))
         .map(({ label, route, Icon }) => (

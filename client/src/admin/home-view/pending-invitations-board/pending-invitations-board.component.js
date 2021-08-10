@@ -38,7 +38,7 @@ const TableHeader = () => (
  *   customer?: import('typings').Customer
  *   onResendInvitationClick?: () => void
  *   onWithdrawInvitationClick?: () => void
- * }} param0
+ * }} params
  */
 const PendingUserRow = ({
   customerUser,

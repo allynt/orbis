@@ -25,7 +25,6 @@ const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    maxHeight: `calc(100% - ${theme.spacing(10)})`,
     padding: `0 ${theme.spacing(6.5)}`,
   },
   resendButton: {

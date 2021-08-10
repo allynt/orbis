@@ -4,10 +4,9 @@ import { makeStyles, Paper } from '@astrosat/astrosat-ui';
 
 const useTitleStyles = makeStyles(theme => ({
   title: {
-    fontWeight: 'normal',
+    fontWeight: 400,
     fontSize: '1.75rem',
-    margin: 'auto',
-    marginBottom: theme.spacing(4),
+    margin: theme.spacing('auto', 'auto', 4),
     width: 'fit-content',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
@@ -18,7 +17,6 @@ const useWrapperStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     borderRadius: '1rem',
     width: '85%',
-    maxHeight: '45rem',
     minHeight: '45rem',
     margin: 'auto',
     overflowY: 'auto',

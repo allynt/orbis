@@ -7,12 +7,12 @@ import clsx from 'clsx';
 import { ReactComponent as CreateUserIcon } from './create-user.svg';
 
 const Wrapper = styled('div')(({ theme }) => ({
-  width: '70%',
+  width: '100%',
   display: 'flex',
-  justifyContent: 'space-evenly',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
   alignItems: 'stretch',
-  marginBottom: theme.spacing(5),
-  gap: '2rem',
+  marginBottom: theme.spacing(3.75),
 }));
 
 const QuickViewItem = styled('div')(({ theme }) => ({
@@ -24,44 +24,29 @@ const QuickViewItem = styled('div')(({ theme }) => ({
   borderRadius: '0.25rem',
   minWidth: '14rem',
   minHeight: '8rem',
+  margin: theme.spacing(0, 1.25, 1.25, 1.25),
 }));
 
 const useStyles = makeStyles(theme => ({
   active: {
     gridColumn: '1',
-    '&:first-of-type': {
-      fontSize: '2.25rem',
-      marginBottom: theme.spacing(1.5),
-    },
   },
   pending: {
     gridColumn: '3',
-    '&:first-of-type': {
-      fontSize: '2.25rem',
-      marginBottom: theme.spacing(1.5),
-    },
   },
   available: {
     gridColumn: '5',
-    '&:first-of-type': {
-      fontSize: '2.25rem',
-      marginBottom: theme.spacing(1.5),
-    },
   },
   value: {
     gridRow: '1',
-    fontWeight: 'normal',
-    '&:first-of-type': {
-      marginBottom: theme.spacing(1.5),
-    },
+    fontWeight: 400,
+    fontSize: '2.25rem',
+    marginBottom: theme.spacing(1.5),
   },
   createUserIcon: {
     color: theme.palette.common.white,
     height: theme.typography.pxToRem(40),
     width: theme.typography.pxToRem(40),
-    '&:first-of-type': {
-      marginBottom: theme.spacing(1.5),
-    },
   },
 }));
 

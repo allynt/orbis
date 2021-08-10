@@ -31,7 +31,6 @@ const USER_LABELS = {
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: 'calc(100% - 5rem)',
     padding: `0 ${theme.spacing(6.5)}`,
   },
   statusButton: {
