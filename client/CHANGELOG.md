@@ -1,3 +1,61 @@
+# [2.22.0](https://github.com/astrosat/orbis/compare/v2.21.0...v2.22.0) (2021-08-10)
+
+
+### Bug Fixes
+
+* **backend:** Fix deprecation warnings ([c67f507](https://github.com/astrosat/orbis/commit/c67f507846a6515f970c466fc0371023d13e07bf))
+* **backend:** Upgrade backend dependencies ([7ac939a](https://github.com/astrosat/orbis/commit/7ac939a35251555121ef93b45e1d2780f5f0da69))
+* **devops:** Upgrade to terraform 0.14 ([6a05be0](https://github.com/astrosat/orbis/commit/6a05be0650a319ba0264846e3308e14b4b91caae))
+* **frontend:** Add and update mission control slice tests ([9872a04](https://github.com/astrosat/orbis/commit/9872a04bdf244c605dc29ddd73dc917259c181b1))
+* **frontend:** Add create user click handler to QuickView ([de89d10](https://github.com/astrosat/orbis/commit/de89d10c7f6193cd5a27c461309373beb360b41f))
+* **frontend:** Add form dialogs, create new directory for organisation ([998d508](https://github.com/astrosat/orbis/commit/998d508b7dfab9a31228402003465d9968acf75c))
+* **frontend:** Add form directories ([3020118](https://github.com/astrosat/orbis/commit/3020118b82809187c26fc0ec0c1802406ec37264))
+* **frontend:** Add more logic, styles and icons ([7800e51](https://github.com/astrosat/orbis/commit/7800e512ae01b90294377b98a7a9350d3340a09a))
+* **frontend:** Add navigating back to map when backdrop is clicked ([23b9f1e](https://github.com/astrosat/orbis/commit/23b9f1efdadcb606798f6a3887cb1a63e58ee89d))
+* **frontend:** Add redirect to show default route for MC ([457f7ec](https://github.com/astrosat/orbis/commit/457f7eccb692f6f3ceda227b18bfc8bbae324d1f))
+* **frontend:** Add styling ([e576b43](https://github.com/astrosat/orbis/commit/e576b43e972cda915915774defb4033d93cdfe44))
+* **frontend:** Add SVGs ([14d3c56](https://github.com/astrosat/orbis/commit/14d3c569880b5cbd6b056cb086fa7eab6a3084f9))
+* **frontend:** Add tests and stories ([8046e98](https://github.com/astrosat/orbis/commit/8046e98682e2516d045914cb3a4b43cf743fe257))
+* **frontend:** Add tests for list item component, update logic ([5a242e6](https://github.com/astrosat/orbis/commit/5a242e65cddcf7237eb082fc753f38fed84f747f))
+* **frontend:** Add tests for QuickView, update ([1ab2d73](https://github.com/astrosat/orbis/commit/1ab2d7350747ac848d87762c622a513f71e73727))
+* **frontend:** Add users view, imported action, selector, constants, component and style data ([ed78c30](https://github.com/astrosat/orbis/commit/ed78c30960a105a5518091a796b08563a101ea22))
+* **frontend:** Build DataGridTable ([1ec653f](https://github.com/astrosat/orbis/commit/1ec653f52ee7a84685655fedd4213812d1de26f7))
+* **frontend:** Clean up logic, extract pagination to shared file ([823a5d4](https://github.com/astrosat/orbis/commit/823a5d45f6ff7d8dec67a4904f54f247f8461c12))
+* **frontend:** Clean up styles, make re-usable ([63e3c6d](https://github.com/astrosat/orbis/commit/63e3c6d4fede1ea7de8ae648370e1405eb56eedc))
+* **frontend:** Create PendingUsersGridTable ([8d3c7db](https://github.com/astrosat/orbis/commit/8d3c7dbdad0c6cac2c909c574faa76abbe5d3b41))
+* **frontend:** Delete SVG and component, rename files, tidy up code and styles ([d9df0ed](https://github.com/astrosat/orbis/commit/d9df0ed46c50e49f169ac6e7fa81129bf5dfa9f0))
+* **frontend:** Extract handlers to global ([921cd33](https://github.com/astrosat/orbis/commit/921cd333857eab66de0b14ae47790a7e3d4ce44c))
+* **frontend:** Extract rows and cells to shared file, remove dependency ([b70d9c0](https://github.com/astrosat/orbis/commit/b70d9c0b47f74c12de13afa1999bb39c213dfc23))
+* **frontend:** Fix import ([c9957c2](https://github.com/astrosat/orbis/commit/c9957c27bd83188774421e89c4d58c392795185f))
+* **frontend:** Fix logic, fix tests, add stories ([02e6877](https://github.com/astrosat/orbis/commit/02e68777b01270dd17374719fb1f785b43a3cfec))
+* **frontend:** Fix up and style content wrapper ([ddedc34](https://github.com/astrosat/orbis/commit/ddedc347c70db481820d14c0468efbb6bb134611))
+* **frontend:** Hide Missin Control from toolbar ([c407f16](https://github.com/astrosat/orbis/commit/c407f16e09707f298a7ca15c57602f45d351a00e))
+* **frontend:** import previous users tables ([0761624](https://github.com/astrosat/orbis/commit/07616240b3dc405bde423c0edcd11bb71a79ad1e))
+* **frontend:** Last of styling (for now) ([f5776e0](https://github.com/astrosat/orbis/commit/f5776e09489e83f07cc070995632627860806532))
+* **frontend:** Move local state to inside row action components ([70373f6](https://github.com/astrosat/orbis/commit/70373f6e9a64486d802cdce26eab14eb4a9e5570))
+* **frontend:** Move tests to match move of logic, add some tests ([a61dd5e](https://github.com/astrosat/orbis/commit/a61dd5e7a711fbcfaf9b8dcbad61084a759f5227))
+* **frontend:** Moved logic down to Home view ([cd2efbf](https://github.com/astrosat/orbis/commit/cd2efbfd1efc01c12ff1f95756c0c56a55fa2f7c))
+* **frontend:** Re-organise structure, add tests ([41d30ce](https://github.com/astrosat/orbis/commit/41d30ce23c3d6a81e059fc3d6283d80ab4226bca))
+* **frontend:** Re-structure new quickview, add styles ([eadfc04](https://github.com/astrosat/orbis/commit/eadfc04766a832430ef6e0b6e4b0359aaa135fe6))
+* **frontend:** Rebase master, fix broken stories ([d2e6cae](https://github.com/astrosat/orbis/commit/d2e6cae9c017d624e00867204bad527b900ac656))
+* **frontend:** Remove data-grid, add previous tables, add pagination ([30f5ac2](https://github.com/astrosat/orbis/commit/30f5ac201ab0fa0c1d790b687f5ad1bd31d1c94d))
+* **frontend:** Remove format on paste from vscode config ([e3eb7d7](https://github.com/astrosat/orbis/commit/e3eb7d766283051d1311ca51e9a65e48f7b8d8cc))
+* **frontend:** Remove redundant imports, style header ([be0a24f](https://github.com/astrosat/orbis/commit/be0a24f5a07d16a81170e6699c48901655dce754))
+* **frontend:** Remove redundant line ([fd66d11](https://github.com/astrosat/orbis/commit/fd66d116bc7a8d1093803789ffa5fc5559e0276e))
+* **frontend:** Remove second conditional from table renders. ([12714e9](https://github.com/astrosat/orbis/commit/12714e9da26498adf1005ff20deb0ed1886e68f3))
+* **frontend:** Separate out shared components, create custom styled components ([de9f778](https://github.com/astrosat/orbis/commit/de9f7789cce94164de557cff46d2dea8188ea06a))
+* **frontend:** Tidy up logic ([6824301](https://github.com/astrosat/orbis/commit/68243013372fd76d0f84334934167cb63577406a))
+* **frontend:** Tighten logic, upgrade pending table ([df8db1c](https://github.com/astrosat/orbis/commit/df8db1c29cd5a1ff4a59fcc62ed8fb1b96d90eb8))
+* **frontend:** Update and fix tests ([b6a180f](https://github.com/astrosat/orbis/commit/b6a180f2320d5b3125a8cc32720f5fcf02c31364))
+* **frontend:** Update test, remove redundant tests ([de64052](https://github.com/astrosat/orbis/commit/de640520e16ac29fb3c976fc3c4f60ed79644485))
+
+
+### Features
+
+* **frontend:** Add store to mission control ([20a07db](https://github.com/astrosat/orbis/commit/20a07db07c2b869106a948c580439015f4e0ed27))
+* **frontend:** added better error-handling for searchSatelliteScenes ([568f131](https://github.com/astrosat/orbis/commit/568f13144d51d4f98d063982f1c8092965757e01))
+* **frontend:** better error-handling for saving satellite image ([5b1ece7](https://github.com/astrosat/orbis/commit/5b1ece70c6c9c529491c80748a1ae4ec449c549a))
+
 # [2.21.0](https://github.com/astrosat/orbis/compare/v2.20.0...v2.21.0) (2021-07-29)
 
 
