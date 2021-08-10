@@ -4,7 +4,7 @@
 
 terraform {
 
-  required_version = "~> 0.13.6"
+  required_version = ">= 0.14"
 
   backend "s3" {
     bucket         = "astrosat-terraform-state"
@@ -35,7 +35,7 @@ terraform {
     }
 
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "3.0.1"
     }
   }
