@@ -14,7 +14,7 @@ import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import { Wrapper } from '../wrapper.component';
+import { Wrapper } from '../orbs/wrapper.component';
 
 const MAX_USERS = 30;
 const selectOptions = new Array(MAX_USERS).fill().map((_, i) => (

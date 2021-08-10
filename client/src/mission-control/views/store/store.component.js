@@ -9,7 +9,7 @@ import { useFadeTransitionProps } from 'mission-control/shared-components/useFad
 
 import { Checkout } from './checkout/checkout.component';
 import { Completion } from './completion/completion.component';
-import { OrbDetails } from './orbs/orb-details/orb-details.component';
+import { OrbDetails } from './orb-details/orb-details.component';
 import { Orbs } from './orbs/orbs.component';
 
 /**
