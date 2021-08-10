@@ -224,6 +224,7 @@ class Orb(models.Model):
         max_length=128, unique=True, blank=False, null=False
     )
     description = models.TextField(blank=True, null=True)
+    short_description = models.CharField(max_length=512, blank=True, null=True)
     logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
 
     is_active = models.BooleanField(default=True)

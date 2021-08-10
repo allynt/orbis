@@ -153,6 +153,7 @@ class OrbFactory(factory.django.DjangoModelFactory):
         model = Orb
 
     description = optional_declaration(FactoryFaker("text"), chance=50)
+    short_description = optional_declaration(FactoryFaker("text"), chance=50)
     is_active = True
     is_default = False
     is_hidden = False
