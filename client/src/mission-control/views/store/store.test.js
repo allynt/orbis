@@ -18,7 +18,7 @@ const renderComponent = ({
   state = { data: { orbs } },
   pathname = '',
 } = {}) => {
-  const path = '/store';
+  const path = '/mission-control/store';
   const store = mockStore(state);
   // @ts-ignore
   const utils = render(
@@ -55,5 +55,20 @@ describe('<Store />', () => {
   it('Shows the orb details page for the orb id in location', () => {
     const { getByRole } = renderComponent({ pathname: '/1' });
     expect(getByRole('heading', { name: orbs[1].name })).toBeVisible();
+  });
+
+  it('Shows the checkout view', () => {
+    const { getByRole } = renderComponent({
+      pathname: '/checkout/?orbId=1&users=10',
+    });
+    expect(getByRole('heading', { name: 'Your Order' })).toBeInTheDocument();
+  });
+
+  it('Shows the completion view', () => {
+    const { getByRole, getByText } = renderComponent({
+      pathname: '/completion/?orbId=1&users=10',
+    });
+    expect(getByRole('heading', { name: 'Your Order' })).toBeInTheDocument();
+    expect(getByText(/godspeed/i)).toBeInTheDocument();
   });
 });

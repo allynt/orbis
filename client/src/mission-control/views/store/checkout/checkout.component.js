@@ -99,7 +99,7 @@ export const Checkout = ({ orbs, location }) => {
         control={<Checkbox />}
       />
       <Link
-        to={`/mission-control/store/${orb.id}/completion?orbId=${orb.id}&users=${users}`}
+        to={`/mission-control/store/completion/?orbId=${orb.id}&users=${users}`}
       >
         <Button disabled={!acceptedTerms}>Confirm</Button>
       </Link>

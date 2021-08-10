@@ -47,19 +47,17 @@ export const Store = ({ match, location }) => {
             render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
           />
           <Route
-            exact
-            path={`${path}/:orbId`}
-            render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
-          />
-          <Route
-            exact
-            path={`${path}/:orbId/checkout`}
+            path={`${path}/checkout`}
             render={routerProps => <Checkout orbs={orbs} {...routerProps} />}
           />
           <Route
-            exact
-            path={`${path}/:orbId/completion`}
+            path={`${path}/completion`}
             render={routerProps => <Completion orbs={orbs} {...routerProps} />}
+          />
+          <Route
+            exact
+            path={`${path}/:orbId`}
+            render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
           />
         </Switch>
       </CSSTransition>

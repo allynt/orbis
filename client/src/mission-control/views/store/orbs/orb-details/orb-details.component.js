@@ -122,7 +122,10 @@ export const OrbDetails = ({ orbs, history, match }) => {
       </div>
       <Link
         className={styles.link}
-        to={`${match.url}/checkout?orbId=${orbId}&users=${numberOfUsers}`}
+        to={`${match.url?.replace(
+          `/${orbId}`,
+          '',
+        )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
       >
         <Button>Get Access</Button>
       </Link>
