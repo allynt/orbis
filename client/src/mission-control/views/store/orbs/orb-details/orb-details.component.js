@@ -43,6 +43,11 @@ const useStyles = makeStyles(theme => ({
       gridArea: 'name',
     },
   },
+  description: {
+    [theme.breakpoints.up('md')]: {
+      gridArea: 'description',
+    },
+  },
   back: { padding: '4px 5px', width: 'fit-content' },
   icon: { transform: 'rotate(180deg)' },
   image: {
@@ -62,9 +67,15 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(2),
       },
     },
+    [theme.breakpoints.up('md')]: {
+      gridArea: 'select',
+    },
   },
   link: {
     textDecoration: 'none',
+    [theme.breakpoints.up('md')]: {
+      gridArea: 'link',
+    },
   },
 }));
 
@@ -107,7 +118,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
       <Typography className={styles.name} variant="h1">
         {name}
       </Typography>
-      <Typography>{description}</Typography>
+      <Typography className={styles.description}>{description}</Typography>
       <div className={styles.selectWrapper}>
         <Typography>How many Users do you need?</Typography>
         <Select
