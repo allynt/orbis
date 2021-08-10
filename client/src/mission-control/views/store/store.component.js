@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 
+import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
 import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
 
@@ -37,6 +39,23 @@ export const Store = ({ match, location }) => {
     }
   }, [dispatch, orbs]);
 
+  /**
+   * @param {{
+   * orbId: number;
+   * users: number;
+   *}} param0
+   */
+  const handleConfirmClick = ({ orbId, users }) => {
+    const orb = find(orbs, { id: orbId });
+    dispatch(
+      placeOrder({
+        licences: users,
+        subscription: orb.name,
+        paymentType: 'standard',
+      }),
+    );
+  };
+
   return (
     <TransitionGroup style={{ position: 'relative' }}>
       <CSSTransition {...fadeTransitionProps}>
@@ -51,7 +70,7 @@ export const Store = ({ match, location }) => {
             render={routerProps => (
               <Checkout
                 orbs={orbs}
-                onConfirmClick={stuff => console.log(stuff)}
+                onConfirmClick={handleConfirmClick}
                 {...routerProps}
               />
             )}
