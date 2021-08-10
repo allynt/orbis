@@ -22,21 +22,13 @@ import {
 } from './accounts.constants';
 import {
   changePassword,
-  changePasswordSuccess,
-  confirmResetPassword,
-  passwordResetRequestedSuccess,
+  resetPasswordConfirm,
   registerCustomer,
-  registerCustomerSuccess,
   resendVerificationEmail,
-  resendVerificationEmailSuccess,
   registerUser,
-  registerUserSuccess,
-  resetPassword,
-  resetPasswordSuccess,
+  resetPasswordRequest,
   placeOrder,
-  placeOrderSuccess,
   login,
-  loginUserSuccess,
 } from './accounts.slice';
 
 import Accounts from '.';
@@ -90,8 +82,8 @@ describe('Accounts index', () => {
       );
       userEvent.click(getByRole('button', { name: /next/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([registerCustomerSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: registerCustomer.fulfilled.type }),
         ),
       );
     });
@@ -105,7 +97,7 @@ describe('Accounts index', () => {
       );
     });
 
-    it(`dispatches ${registerUser.name} action when submitted`, async () => {
+    it(`dispatches ${registerUser.typePrefix} action when submitted`, async () => {
       const { getByRole, getByLabelText, store } = renderComponent([
         REGISTER_CUSTOMER_USER,
       ]);
@@ -125,7 +117,9 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('button', { name: /sign\sup/i }));
       await waitFor(() =>
         expect(store.getActions()).toEqual(
-          expect.arrayContaining([registerUserSuccess({})]),
+          expect.arrayContaining([
+            expect.objectContaining({ type: registerUser.fulfilled.type }),
+          ]),
         ),
       );
     });
@@ -144,8 +138,8 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('checkbox'));
       userEvent.click(getByRole('button'));
       await waitFor(() => {
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([placeOrderSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: placeOrder.fulfilled.type }),
         );
       });
     });
@@ -178,23 +172,21 @@ describe('Accounts index', () => {
       expect(history.location.pathname).toBe('/');
     });
 
-    it(`dispatches ${login.name} action when submitted`, async () => {
+    it(`dispatches ${login.fulfilled.type} action when submitted`, async () => {
       const { getByRole, getByLabelText, store } = renderComponent([LOGIN]);
       userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
       userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.click(getByRole('button', { name: /login/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([
-            loginUserSuccess(expect.objectContaining({})),
-          ]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: login.fulfilled.type }),
         ),
       );
     });
   });
 
   describe(`${PASSWORD_CHANGE}`, () => {
-    it(`dispatches ${changePassword.name} action when submitted`, async () => {
+    it(`dispatches ${changePassword.fulfilled.type} action when submitted`, async () => {
       const { getByLabelText, getByRole, store } = renderComponent([
         PASSWORD_CHANGE,
       ]);
@@ -207,8 +199,8 @@ describe('Accounts index', () => {
       userEvent.click(getByRole('checkbox'));
       userEvent.click(getByRole('button', { name: /change\spassword/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([changePasswordSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({ type: changePassword.fulfilled.type }),
         ),
       );
     });
@@ -220,14 +212,16 @@ describe('Accounts index', () => {
       await waitFor(() => expect(getAllByRole('textbox').length).toBe(1));
     });
 
-    it(`dispatches ${resetPassword.name} action when submitted`, async () => {
+    it(`dispatches ${resetPasswordRequest.fulfilled.type} action when submitted`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, store } = renderComponent([PASSWORD_RESET_REQUEST]);
       userEvent.type(getByRole('textbox'), 'test@test.com');
       userEvent.click(getByRole('button'));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([resetPasswordSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resetPasswordRequest.fulfilled.type,
+          }),
         ),
       );
     });
@@ -243,7 +237,7 @@ describe('Accounts index', () => {
       );
     });
 
-    it(`dispatches the ${confirmResetPassword.name} action when filled out correctly`, async () => {
+    it(`dispatches the ${resetPasswordConfirm.fulfilled.type} action when filled out correctly`, async () => {
       fetch.once(JSON.stringify({}));
       const { getByRole, getByLabelText, store } = renderComponent([
         PASSWORD_RESET,
@@ -255,8 +249,10 @@ describe('Accounts index', () => {
       );
       userEvent.click(getByRole('button', { name: /reset\spassword/i }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([passwordResetRequestedSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resetPasswordConfirm.fulfilled.type,
+          }),
         ),
       );
     });
@@ -268,12 +264,14 @@ describe('Accounts index', () => {
       expect(getByRole('button', { name: 'Resend email' })).toBeInTheDocument();
     });
 
-    it(`dispatches ${resendVerificationEmail.name} action when button is clicked`, async () => {
+    it(`dispatches ${resendVerificationEmail.fulfilled.type} action when button is clicked`, async () => {
       const { getByRole, store } = renderComponent([RESEND]);
       userEvent.click(getByRole('button', { name: 'Resend email' }));
       await waitFor(() =>
-        expect(store.getActions()).toEqual(
-          expect.arrayContaining([resendVerificationEmailSuccess()]),
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: resendVerificationEmail.fulfilled.type,
+          }),
         ),
       );
     });

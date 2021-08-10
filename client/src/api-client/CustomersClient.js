@@ -37,7 +37,7 @@ export class CustomersClient extends SubClient {
    *  customerNameOfficial: string
    *  customerType: import('typings').Customer['type']
    *  registeredNumber: import('typings').Customer['registered_id']
-   *  licence: 'Orbis Core'
+   *  licence: string
    *  numberOfLicences: number
    *  subscriptionPeriod: string
    *  type: import('typings').Customer['type']
