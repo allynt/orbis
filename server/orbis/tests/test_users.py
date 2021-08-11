@@ -14,7 +14,7 @@ from .factories import *
 
 @pytest.mark.django_db
 class TestOrbisUserFeedbackRecord:
-    def test_add_record_feedback(self, user, api_client):
+    def test_add_record_feedback(self, user, api_client, mock_storage):
         """
         tests that adding a feedback record works
         """
@@ -38,7 +38,9 @@ class TestOrbisUserFeedbackRecord:
             "provided_feedback"]
         assert feedback.source_ids == test_feedback_data["source_ids"]
 
-    def test_add_record_feedback_permission(self, user, api_client):
+    def test_add_record_feedback_permission(
+        self, user, api_client, mock_storage
+    ):
         """
         tests that another user cannot add a user's feedback
         """
@@ -59,7 +61,7 @@ class TestOrbisUserFeedbackRecord:
 
 @pytest.mark.django_db
 class TestOrbisUserProfile:
-    def test_put_user(self, api_client):
+    def test_put_user(self, api_client, mock_storage):
         """
         Tests that I can update the user, including the user profile
         """
