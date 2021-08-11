@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
 from orbis.models import Licence
@@ -17,7 +18,7 @@ UserModel = get_user_model()
 
 @pytest.mark.django_db
 class TestOrbisRegistration:
-    def test_registration_adds_default_licences(self, user_data):
+    def test_registration_adds_default_licences(self, user_data, mock_storage):
         """
         Tests that registering a user at the same time as a customer
         creates a customer_user w/ default licences

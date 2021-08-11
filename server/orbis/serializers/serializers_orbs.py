@@ -14,7 +14,9 @@ class OrbSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "description",
+            "short_description",
             "logo",
+            "terms_document",
             "features",
             "licence_cost",
         )

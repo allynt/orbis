@@ -7,11 +7,10 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator
 from django.db import models
 from django.db.models import F, Value, ExpressionWrapper
 from django.db.models.functions import Concat, Replace
-from django.utils.html import mark_safe
 from django.utils.text import slugify
 
 from astrosat.utils import CONDITIONAL_CASCADE, validate_schema
@@ -85,6 +84,11 @@ class AccessModel(models.Model):
 def orb_logo_path(instance, filename):
     instance_name = slugify(instance.name)
     return f"orbs/{instance_name}/{filename}"
+
+
+def orb_terms_document_path(instance, filename):
+    instance_name = slugify(instance.name)
+    return f"orbs/{instance_name}/terms/{filename}"
 
 
 def validate_orb_features(value):
@@ -224,7 +228,14 @@ class Orb(models.Model):
         max_length=128, unique=True, blank=False, null=False
     )
     description = models.TextField(blank=True, null=True)
+    short_description = models.CharField(max_length=512, blank=True, null=True)
     logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
+    terms_document = models.FileField(
+        blank=True,
+        null=True,
+        upload_to=orb_terms_document_path,
+        validators=[FileExtensionValidator(["pdf"])],
+    )
 
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(
