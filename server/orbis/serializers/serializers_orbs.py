@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from drf_yasg2.utils import swagger_serializer_method
+
 from astrosat.serializers import ContextVariableDefault, WritableNestedListSerializer
 
 from astrosat_users.models import Customer
@@ -16,10 +18,29 @@ class OrbSerializer(serializers.ModelSerializer):
             "description",
             "short_description",
             "logo",
+            "images",
             "terms_document",
             "features",
             "licence_cost",
         )
+
+    images = serializers.SerializerMethodField(method_name="get_image_files")
+
+    @swagger_serializer_method(
+        serializer_or_field=serializers.SlugRelatedField(
+            many=True, read_only=True, slug_field="file"
+        )
+    )
+    def get_image_files(self, obj):
+
+        request = self.context.get("request", None)
+        image_files = obj.images.values_list("file", flat=True)
+        if request is not None:
+            return [
+                request.build_absolute_uri(image_file)
+                for image_file in image_files
+            ]
+        return image_files
 
 
 class LicenceSerializer(serializers.ModelSerializer):
