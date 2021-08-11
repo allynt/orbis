@@ -3,12 +3,22 @@ import React from 'react';
 import {
   ImageList,
   ImageListItem,
+  styled,
   useMediaQuery,
   useTheme,
 } from '@astrosat/astrosat-ui';
 
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
-import ContentWrapper from 'mission-control/content-wrapper.component';
+import { Wrapper } from './wrapper.component';
+
+const Heading = styled('h1')(({ theme }) => ({
+  ...theme.typography.h1,
+  fontWeight: 600,
+  fontSize: '2rem',
+  width: 'fit-content',
+  margin: theme.spacing(0, 'auto', 5),
+  borderBottom: `1px solid ${theme.palette.primary.main}`,
+}));
 
 /**
  * @param {{
@@ -26,7 +36,8 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
   if (xsDown) cols = 1;
 
   return (
-    <ContentWrapper title='Orbis Store'>
+    <Wrapper maxWidth={false}>
+      <Heading>Orbis Store</Heading>
       <ImageList cols={cols} gap={16} rowHeight="auto">
         {!isLoading
           ? orbs.map(orb => (
@@ -43,6 +54,6 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
                 </ImageListItem>
               ))}
       </ImageList>
-    </ContentWrapper>
+    </Wrapper>
   );
 };
