@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Checkbox,
   FormControlLabel,
+  Link,
   makeStyles,
   Paper,
   TextField,
@@ -108,7 +109,18 @@ export const Checkout = ({
       <Paper className={styles.orderTerms}>{orderText}</Paper>
       <FormControlLabel
         className={styles.checkbox}
-        label="I agree with the Terms & Conditions"
+        label={
+          <>
+            I agree with the{' '}
+            <Link
+              href={orb.terms_document}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Terms & Conditions
+            </Link>
+          </>
+        }
         value={acceptedTerms}
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}

@@ -21,5 +21,5 @@ Default.args = {
     { id: 2, name: 'Orb 2' },
   ],
   // @ts-ignore
-  match: { params: { orbId: 2, users: 23 } },
+  location: { search: '?orbId=1&users=10' },
 };

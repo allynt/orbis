@@ -8,6 +8,13 @@ const Template = args => <Checkout {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  orbs: [{ id: 1, name: 'Test Orb', licence_cost: 0 }],
-  match: { params: { users: 10, orbId: 1 } },
+  orbs: [
+    {
+      id: 1,
+      name: 'Test Orb',
+      licence_cost: 0,
+      terms_document: 'http://google.com',
+    },
+  ],
+  location: { search: '?orbId=1&users=10' },
 };
