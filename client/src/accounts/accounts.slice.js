@@ -151,7 +151,7 @@ export const placeOrder = createAsyncThunk(
       return;
     } catch (responseError) {
       const errors = await responseError.getErrors();
-      return rejectWithValue(errors);
+      return rejectWithValue(errors || [responseError.message]);
     }
   },
 );
@@ -423,6 +423,7 @@ const accountsSlice = createSlice({
       action =>
         action.type.startsWith(name) && action.type.endsWith('/pending'),
       state => {
+        state.error = null;
         state.isLoading = true;
       },
     );

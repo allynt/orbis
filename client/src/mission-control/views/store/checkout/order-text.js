@@ -10,9 +10,9 @@ const paragraphs = [
   `2. In this Order Form, unless specified otherwise, words and phrases shall have the same meanings as those in the Agreement.`,
 ];
 
-export const orderText = paragraphs.map(paragraph => (
-  // eslint-disable-next-line react/jsx-key
-  <Typography style={{ fontSize: 'inherit' }} paragraph>
+export const orderText = paragraphs.map((paragraph, i) => (
+  // eslint-disable-next-line react/no-array-index-key
+  <Typography key={i} style={{ fontSize: 'inherit' }} paragraph>
     {paragraph}
   </Typography>
 ));

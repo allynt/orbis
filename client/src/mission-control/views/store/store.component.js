@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 
+import { unwrapResult } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { isLoadingSelector } from 'accounts/accounts.selectors';
+import { errorSelector, isLoadingSelector } from 'accounts/accounts.selectors';
 import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
 import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
@@ -33,6 +34,7 @@ export const Store = ({ match, location }) => {
     state => state?.data?.fetchOrbsPending,
   );
   const accountsIsLoading = useSelector(isLoadingSelector);
+  const accountsErrors = useSelector(errorSelector);
   const dispatch = useDispatch();
   const fadeTransitionProps = useFadeTransitionProps(location.key);
 
@@ -51,16 +53,20 @@ export const Store = ({ match, location }) => {
   const handleConfirmClick = async ({ orbId, users }) => {
     const orb = find(orbs, { id: orbId });
     try {
-      await dispatch(
+      let result = await dispatch(
         placeOrder({
           licences: users,
           subscription: orb.name,
           paymentType: 'standard',
         }),
       );
-      dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
+      // @ts-ignore
+      result = unwrapResult(result);
+      // @ts-ignore
+      if (result.message !== 'Rejected')
+        dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -79,6 +85,7 @@ export const Store = ({ match, location }) => {
               <Checkout
                 orbs={orbs}
                 isLoading={accountsIsLoading}
+                errors={accountsErrors}
                 onConfirmClick={handleConfirmClick}
                 {...routerProps}
               />

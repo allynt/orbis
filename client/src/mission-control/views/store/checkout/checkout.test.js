@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 import { Checkout } from './checkout.component';
 
-const renderComponent = () => {
+const renderComponent = errors => {
   const onConfirmClick = jest.fn();
   const utils = render(
     <Checkout
@@ -13,6 +13,7 @@ const renderComponent = () => {
       orbs={[{ id: 1, name: 'Test Orb', licence_cost: 0 }]}
       // @ts-ignore
       location={{ search: '?users=10&orbId=1' }}
+      errors={errors}
       onConfirmClick={onConfirmClick}
     />,
   );
@@ -43,5 +44,11 @@ describe('<Checkout />', () => {
     userEvent.click(getByRole('checkbox'));
     userEvent.click(getByRole('button'));
     expect(onConfirmClick).toBeCalledWith({ orbId: 1, users: 10 });
+  });
+
+  it('Shows errors if there are any', () => {
+    const { getByRole, getByText } = renderComponent(['this is an error']);
+    expect(getByRole('alert')).toBeInTheDocument();
+    expect(getByText('this is an error')).toBeInTheDocument();
   });
 });

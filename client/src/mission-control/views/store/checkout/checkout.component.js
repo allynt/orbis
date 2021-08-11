@@ -7,14 +7,11 @@ import {
   Paper,
   TextField,
   Typography,
+  Well,
 } from '@astrosat/astrosat-ui';
 
-import { push } from 'connected-react-router';
 import { find } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { isLoadingSelector } from 'accounts/accounts.selectors';
-import { placeOrder } from 'accounts/accounts.slice';
 import { LoadingButton } from 'components';
 
 import { Heading } from '../orbs/heading.component';
@@ -54,6 +51,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  orbs: import('typings').Orb[]
  *  location: import('history').Location
+ *  errors: string[]
  *  isLoading?: boolean
  *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
  * }} props
@@ -61,6 +59,7 @@ const useStyles = makeStyles(theme => ({
 export const Checkout = ({
   orbs,
   location,
+  errors,
   isLoading = false,
   onConfirmClick,
 }) => {
@@ -114,6 +113,15 @@ export const Checkout = ({
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
       />
+      {errors && (
+        <Well severity="error" className={styles.checkbox}>
+          <Typography component="p" variant="h3" gutterBottom>
+            There's been a problem
+          </Typography>
+          <Typography paragraph>{errors}</Typography>
+          <Typography>Please try again or contact support</Typography>
+        </Well>
+      )}
       <LoadingButton
         disabled={!acceptedTerms}
         onClick={handleConfirmClick}

@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { push } from 'connected-react-router';
+import fetchMock from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs } from 'data-layers/data-layers.slice';
 
 import { Store } from './store.component';
@@ -39,7 +43,16 @@ const renderComponent = ({
   return { ...utils, store };
 };
 
+jest.mock('@reduxjs/toolkit', () => ({
+  ...jest.requireActual('@reduxjs/toolkit'),
+  unwrapResult: jest.fn().mockReturnValue({ message: 'All good' }),
+}));
+
 describe('<Store />', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
   it("Fetches orbs if there aren't any", () => {
     const { store } = renderComponent({ state: { data: { orbs: undefined } } });
     expect(store.getActions()).toContainEqual(
@@ -70,5 +83,23 @@ describe('<Store />', () => {
     });
     expect(getByRole('heading', { name: 'Your Order' })).toBeInTheDocument();
     expect(getByText(/godspeed/i)).toBeInTheDocument();
+  });
+
+  it('Places an order when the checkout confirm button is clicked and navigates to completion on success', async () => {
+    fetchMock.mockResponse(JSON.stringify({}));
+    const { getByRole, store } = renderComponent({
+      pathname: '/checkout/?orbId=1&users=10',
+    });
+
+    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button'));
+    expect(store.getActions()).toContainEqual(
+      expect.objectContaining({ type: placeOrder.pending.type }),
+    );
+    await waitFor(() =>
+      expect(store.getActions()).toContainEqual(
+        push(expect.stringContaining('completion')),
+      ),
+    );
   });
 });
