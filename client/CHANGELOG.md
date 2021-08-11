@@ -1,3 +1,15 @@
+# [2.23.0](https://github.com/astrosat/orbis/compare/v2.22.1...v2.23.0) (2021-08-11)
+
+
+### Bug Fixes
+
+* **devops:** Upgrade to terraform 1.0 ([5c654ac](https://github.com/astrosat/orbis/commit/5c654acfee2948e531bf471785678240e427536b))
+
+
+### Features
+
+* **backend:** added terms_document field to Orbs ([ad2c02e](https://github.com/astrosat/orbis/commit/ad2c02e39d6bbf3a8a8c8aa7dacf9bbf37b6c85c))
+
 ## [2.22.1](https://github.com/astrosat/orbis/compare/v2.22.0...v2.22.1) (2021-08-11)
 
 
