@@ -52,12 +52,10 @@ describe('MissionControl', () => {
   });
 
   it('switches panels', async () => {
-    const { getByRole, queryByRole, getByText } = setup(
-      '/mission-control/users',
-    );
+    const { getByRole, queryByRole } = setup('/mission-control/users');
     expect(getByRole('button', { name: 'Create User' })).toBeInTheDocument();
 
-    userEvent.click(getByText('Other'));
+    userEvent.click(getByRole('link', { name: /Support/i }));
 
     await waitFor(() =>
       expect(
