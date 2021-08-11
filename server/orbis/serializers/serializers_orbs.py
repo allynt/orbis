@@ -6,7 +6,13 @@ from astrosat.serializers import ContextVariableDefault, WritableNestedListSeria
 
 from astrosat_users.models import Customer
 
-from orbis.models import Orb, Licence
+from orbis.models import Orb, OrbImage, Licence
+
+
+class OrbImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrbImage
+        fields = ("file", )
 
 
 class OrbSerializer(serializers.ModelSerializer):
@@ -27,20 +33,16 @@ class OrbSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(method_name="get_image_files")
 
     @swagger_serializer_method(
-        serializer_or_field=serializers.SlugRelatedField(
-            many=True, read_only=True, slug_field="file"
+        serializer_or_field=serializers.ListField(
+            child=serializers.CharField()
         )
     )
     def get_image_files(self, obj):
-
-        request = self.context.get("request", None)
-        image_files = obj.images.values_list("file", flat=True)
-        if request is not None:
-            return [
-                request.build_absolute_uri(image_file)
-                for image_file in image_files
-            ]
-        return image_files
+        # extract the "file" field from the OrbImageSerializer
+        image_serializer = OrbImageSerializer(
+            obj.images.all(), context=self.context, many=True
+        )
+        return [image_data.get("file") for image_data in image_serializer.data]
 
 
 class LicenceSerializer(serializers.ModelSerializer):
