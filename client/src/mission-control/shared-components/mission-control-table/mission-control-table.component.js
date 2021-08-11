@@ -12,10 +12,12 @@ const useCellStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     '&:first-of-type': {
-      borderRadius: '5px 0 0 5px',
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderBottomLeftRadius: theme.shape.borderRadius,
     },
     '&:last-of-type': {
-      borderRadius: '0 5px 5px 0',
+      borderTopRightRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius,
     },
     padding: theme.spacing(0.75, 1.25),
     border: 'none',
