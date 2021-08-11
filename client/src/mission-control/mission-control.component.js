@@ -13,8 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import { LicenceDashboard } from 'admin/licence-dashboard/licence-dashboard.component';
-
 import { userSelector } from '../accounts/accounts.selectors';
 import {
   fetchCustomer,
@@ -24,6 +22,7 @@ import {
 } from './mission-control.slice.js';
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
+import { LicenceDashboard } from './views/licence-dashboard/licence-dashboard.component';
 import { Store } from './views/store/store.component';
 import UsersView from './views/users-view/users-view.component';
 

@@ -1,22 +1,22 @@
 import React from 'react';
 
 import {
-  makeStyles,
-  Table,
   TableBody,
   TableContainer,
   TableHead,
   TableRow,
 } from '@astrosat/astrosat-ui';
 
-import { AdminTableCell } from 'admin/admin-table/admin-table-cell.component';
-import ContentWrapper from 'admin/content-wrapper.component';
+import { useSelector } from 'react-redux';
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    maxHeight: `calc(100% - ${theme.spacing(10)})`,
-  },
-}));
+import { selectLicenceInformation } from 'mission-control/mission-control.slice';
+import {
+  MissionControlTable,
+  MissionControlTableRow,
+  MissionControlTableCell,
+} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+
+import ContentWrapper from '../../content-wrapper.component';
 
 /**
  * @param {{licenceInformation: {
@@ -28,45 +28,52 @@ const useStyles = makeStyles(theme => ({
  *            }
  *          }}} props
  */
-export const LicenceDashboard = ({ licenceInformation }) => {
-  const styles = useStyles();
+export const LicenceDashboard = () => {
+  const licenceInformation = useSelector(selectLicenceInformation);
+
   return (
-    <ContentWrapper title="Licence Dashboard" fullHeight>
-      <TableContainer className={styles.container}>
-        <Table stickyHeader>
+    <ContentWrapper title="Licence Dashboard">
+      <TableContainer>
+        <MissionControlTable>
           <TableHead>
-            <TableRow>
-              <AdminTableCell />
-              <AdminTableCell align="center">Purchased Licences</AdminTableCell>
-              <AdminTableCell align="center">Active Licences</AdminTableCell>
-              <AdminTableCell align="center">Available Licences</AdminTableCell>
-            </TableRow>
+            <MissionControlTableRow>
+              <MissionControlTableCell />
+              <MissionControlTableCell align="center">
+                Purchased Licences
+              </MissionControlTableCell>
+              <MissionControlTableCell align="center">
+                Active Licences
+              </MissionControlTableCell>
+              <MissionControlTableCell align="center">
+                Available Licences
+              </MissionControlTableCell>
+            </MissionControlTableRow>
           </TableHead>
           <TableBody>
             {licenceInformation && Object.keys(licenceInformation).length ? (
               Object.keys(licenceInformation).map(orb => (
                 <TableRow key={`${orb}-licenses`}>
-                  <AdminTableCell>{orb}</AdminTableCell>
-                  <AdminTableCell align="center">
+                  <MissionControlTableCell>{orb}</MissionControlTableCell>
+                  <MissionControlTableCell align="center">
                     {licenceInformation[orb].purchased}
-                  </AdminTableCell>
-                  <AdminTableCell align="center">
+                  </MissionControlTableCell>
+                  <MissionControlTableCell align="center">
                     {licenceInformation[orb].active}
-                  </AdminTableCell>
-                  <AdminTableCell align="center">
+                  </MissionControlTableCell>
+                  <MissionControlTableCell align="center">
                     {licenceInformation[orb].available}
-                  </AdminTableCell>
+                  </MissionControlTableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <AdminTableCell align="center" colSpan={4}>
+                <MissionControlTableCell align="center" colSpan={4}>
                   No Licences Available
-                </AdminTableCell>
+                </MissionControlTableCell>
               </TableRow>
             )}
           </TableBody>
-        </Table>
+        </MissionControlTable>
       </TableContainer>
     </ContentWrapper>
   );
