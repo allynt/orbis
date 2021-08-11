@@ -177,6 +177,14 @@ class OrbFactory(factory.django.DjangoModelFactory):
             content_type="image/png",
         )
 
+    @factory.lazy_attribute
+    def terms_document(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}_terms.pdf",
+            content=b"I am a fake document",
+            content_type="application/pdf",
+        )
+
 
 class DataScopeFactory(factory.django.DjangoModelFactory):
     class Meta:
