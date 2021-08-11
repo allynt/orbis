@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { unwrapResult } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +52,7 @@ export const Store = ({ match, location }) => {
   const handleConfirmClick = async ({ orbId, users }) => {
     const orb = find(orbs, { id: orbId });
     try {
-      let result = await dispatch(
+      const result = await dispatch(
         placeOrder({
           licences: users,
           subscription: orb.name,
@@ -61,9 +60,7 @@ export const Store = ({ match, location }) => {
         }),
       );
       // @ts-ignore
-      result = unwrapResult(result);
-      // @ts-ignore
-      if (result.message !== 'Rejected')
+      if (result.type === placeOrder.fulfilled.type)
         dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
     } catch (error) {
       console.error(error);

@@ -43,11 +43,6 @@ const renderComponent = ({
   return { ...utils, store };
 };
 
-jest.mock('@reduxjs/toolkit', () => ({
-  ...jest.requireActual('@reduxjs/toolkit'),
-  unwrapResult: jest.fn().mockReturnValue({ message: 'All good' }),
-}));
-
 describe('<Store />', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
