@@ -1,3 +1,10 @@
+## [2.22.1](https://github.com/astrosat/orbis/compare/v2.22.0...v2.22.1) (2021-08-11)
+
+
+### Bug Fixes
+
+* **devops:** Upgrade to terraform 0.15 ([1b24814](https://github.com/astrosat/orbis/commit/1b24814b020e1a0eaddaca113fcbe74412b1b10a))
+
 # [2.22.0](https://github.com/astrosat/orbis/compare/v2.21.0...v2.22.0) (2021-08-10)
 
 
