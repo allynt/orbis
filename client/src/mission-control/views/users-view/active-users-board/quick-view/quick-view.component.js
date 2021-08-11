@@ -2,8 +2,6 @@ import React from 'react';
 
 import { makeStyles, styled, Typography, Button } from '@astrosat/astrosat-ui';
 
-import clsx from 'clsx';
-
 import { ReactComponent as CreateUserIcon } from './create-user.svg';
 
 const Wrapper = styled('div')(({ theme }) => ({
@@ -28,17 +26,7 @@ const QuickViewItem = styled('div')(({ theme }) => ({
 }));
 
 const useStyles = makeStyles(theme => ({
-  active: {
-    gridColumn: '1',
-  },
-  pending: {
-    gridColumn: '3',
-  },
-  available: {
-    gridColumn: '5',
-  },
   value: {
-    gridRow: '1',
     fontWeight: 400,
     fontSize: '2.25rem',
     marginBottom: theme.spacing(1.5),
@@ -47,14 +35,15 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.common.white,
     height: theme.typography.pxToRem(40),
     width: theme.typography.pxToRem(40),
+    marginBottom: theme.spacing(1.5),
   },
 }));
 
-const Value = ({ children, className }) => {
+const Value = ({ children }) => {
   const styles = useStyles();
   return (
     <Typography
-      className={clsx(className, styles.value)}
+      className={styles.value}
       children={children}
       align="center"
       component="p"
@@ -63,10 +52,9 @@ const Value = ({ children, className }) => {
   );
 };
 
-const Label = ({ children, className }) => (
+const Label = ({ children }) => (
   <Typography
     children={children}
-    className={className}
     align="center"
     component="p"
     variant="h2"
@@ -91,18 +79,18 @@ const QuickView = ({ data, onCreateUserClick }) => {
   return (
     <Wrapper>
       <QuickViewItem>
-        <Value className={styles.active}>{data?.active ?? '-'}</Value>
-        <Label className={styles.active}>Active Users</Label>
+        <Value>{data?.active ?? '-'}</Value>
+        <Label>Active Users</Label>
       </QuickViewItem>
 
       <QuickViewItem>
-        <Value className={styles.pending}>{data?.pending ?? '-'}</Value>
-        <Label className={styles.pending}>Pending Invitations</Label>
+        <Value>{data?.pending ?? '-'}</Value>
+        <Label>Pending Invitations</Label>
       </QuickViewItem>
 
       <QuickViewItem>
-        <Value className={styles.available}>{data?.available ?? '-'}</Value>
-        <Label className={styles.available}>Licences Available</Label>
+        <Value>{data?.available ?? '-'}</Value>
+        <Label>Licences Available</Label>
       </QuickViewItem>
 
       <QuickViewItem>

@@ -16,9 +16,8 @@ const useWrapperStyles = makeStyles(theme => ({
   wrapper: {
     padding: theme.spacing(2),
     borderRadius: '1rem',
-    width: '85%',
     minHeight: '45rem',
-    margin: 'auto',
+    margin: theme.spacing(0, 13),
     overflowY: 'auto',
     '& + &': {
       marginTop: theme.spacing(3),
