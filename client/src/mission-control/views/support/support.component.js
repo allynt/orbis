@@ -66,6 +66,7 @@ const Item = ({ title, children, icon }) => {
 
 export const Support = () => {
   const styles = useStyles();
+
   return (
     <ContentWrapper title="Support">
       <div className={styles.wrapper}>

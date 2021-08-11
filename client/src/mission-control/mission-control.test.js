@@ -74,6 +74,6 @@ describe('MissionControl', () => {
 
   it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
     const { history } = setup('/mission-control/store');
-    expect(history.location.pathname).toBe('/mission-control/users');
+    expect(history.location.pathname).toBe('/mission-control/support');
   });
 });
