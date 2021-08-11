@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { LicenceDashboard } from 'admin/licence-dashboard/licence-dashboard.component';
+
 import { userSelector } from '../accounts/accounts.selectors';
 import {
   fetchCustomer,
@@ -103,6 +105,10 @@ export const MissionControl = () => {
                     }
                   />
                   <Route path="/mission-control/users" component={UsersView} />
+                  <Route
+                    path="/mission-control/subscriptions"
+                    component={LicenceDashboard}
+                  />
                   <Route
                     path="/mission-control/other"
                     component={() => <h1>Other Route</h1>}

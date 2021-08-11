@@ -10,6 +10,7 @@ export const VIEWS = {
     admin: true,
   },
   users: { label: 'Users', route: '/users', Icon: UsersIcon },
+  subscriptions: { label: 'Subscriptions', route: '/subscriptions' },
   other: { label: 'Other', route: '/other' },
 };
 
