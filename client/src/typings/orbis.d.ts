@@ -80,6 +80,7 @@ type Orb = {
   logo: string;
   images: string[];
   features?: FeatureKey[];
+  terms_document?: string;
 };
 
 type SourceCategories = {
