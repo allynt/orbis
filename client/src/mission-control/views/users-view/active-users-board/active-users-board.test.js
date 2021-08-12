@@ -173,19 +173,4 @@ describe('ActiveUsersBoard', () => {
     userEvent.click(getByText('Delete User'));
     expect(onDeleteUserClick).toHaveBeenCalledWith(USER);
   });
-
-  describe('Displays a placeholder when there are no active users', () => {
-    const cases = [
-      ['undefined', undefined],
-      ['null', null],
-      ['empty array', []],
-    ];
-
-    it.each(cases)('%s', (_, value) => {
-      const { getByText } = render(
-        <ActiveUsersBoard activeCustomerUsers={value} customer={customer} />,
-      );
-      expect(getByText('No Active Users')).toBeInTheDocument();
-    });
-  });
 });

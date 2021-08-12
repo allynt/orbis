@@ -111,19 +111,4 @@ describe('PendingUsersBoard', () => {
     userEvent.click(optionsDropdownButton);
     expect(onWithdrawInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
   });
-
-  describe('Displays a placeholder when there are no pending users', () => {
-    const cases = [
-      ['undefined', undefined],
-      ['null', null],
-      ['empty array', []],
-    ];
-
-    it.each(cases)('%s', (_, value) => {
-      const { getByText } = render(
-        <PendingInvitationsBoard pendingUsers={value} customer={customer} />,
-      );
-      expect(getByText('No Pending Users')).toBeInTheDocument();
-    });
-  });
 });
