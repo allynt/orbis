@@ -52,12 +52,10 @@ describe('MissionControl', () => {
   });
 
   it('switches panels', async () => {
-    const { getByRole, queryByRole, getByText } = setup(
-      '/mission-control/users',
-    );
+    const { getByRole, queryByRole } = setup('/mission-control/users');
     expect(getByRole('button', { name: 'Create User' })).toBeInTheDocument();
 
-    userEvent.click(getByText('Other'));
+    userEvent.click(getByRole('link', { name: /Support/i }));
 
     await waitFor(() =>
       expect(
@@ -74,6 +72,6 @@ describe('MissionControl', () => {
 
   it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
     const { history } = setup('/mission-control/store');
-    expect(history.location.pathname).toBe('/mission-control/users');
+    expect(history.location.pathname).toBe('/mission-control/support');
   });
 });
