@@ -1,22 +1,13 @@
 import React, { useState } from 'react';
 
-import {
-  Button,
-  makeStyles,
-  MenuItem,
-  TableBody,
-  TableContainer,
-  TableHead,
-} from '@astrosat/astrosat-ui';
+import { Button, makeStyles, MenuItem, TableRow } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
 import {
   MissionControlTable,
-  MissionControlTableRow,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -24,31 +15,10 @@ import { OptionsMenu } from '../options-menu.component';
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    padding: `0 ${theme.spacing(6.5)}`,
-  },
   resendButton: {
     padding: theme.spacing(1, 2),
   },
 }));
-
-const TableHeader = () => (
-  <TableHead>
-    <MissionControlTableRow>
-      <MissionControlTableCell align="left">
-        Pending Invitations
-      </MissionControlTableCell>
-      <MissionControlTableCell align="left">Email</MissionControlTableCell>
-      <MissionControlTableCell align="left">
-        Licence Type
-      </MissionControlTableCell>
-      <MissionControlTableCell align="left">
-        Invitation Sent
-      </MissionControlTableCell>
-      <MissionControlTableCell align="left">Invited</MissionControlTableCell>
-    </MissionControlTableRow>
-  </TableHead>
-);
 
 /**
  * @param {{
@@ -93,7 +63,7 @@ const PendingUserRow = ({
   };
 
   return (
-    <MissionControlTableRow>
+    <TableRow>
       <MissionControlTableCell>
         {customerUser.user.name}
       </MissionControlTableCell>
@@ -120,7 +90,7 @@ const PendingUserRow = ({
           <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
         </OptionsMenu>
       </MissionControlTableCell>
-    </MissionControlTableRow>
+    </TableRow>
   );
 };
 
@@ -138,70 +108,29 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
-  const styles = useStyles();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const columnHeaders = [
+    'Pending Invitations',
+    'Email',
+    'Licence Type',
+    'Invitation Sent',
+    'Invited',
+  ];
 
-  const handleChangePage = (_, newPage) => {
-    setCurrentPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPage = value => {
-    setRowsPerPage(parseInt(value, 10));
-    setCurrentPage(0);
-  };
-
-  const handlePrevClick = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const handleNextClick = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  const rows =
-    pendingUsers?.length > 0 ? (
-      pendingUsers.map(user => (
-        <PendingUserRow
-          key={user.user.id}
-          customerUser={user}
-          customer={customer}
-          onResendInvitationClick={() => onResendInvitationClick(user)}
-          onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-        />
-      ))
-    ) : (
-      <MissionControlTableRow>
-        <MissionControlTableCell align="center" colSpan={5}>
-          No Pending Users
-        </MissionControlTableCell>
-      </MissionControlTableRow>
-    );
+  const rows = pendingUsers?.map(user => (
+    <PendingUserRow
+      key={user.user.id}
+      customerUser={user}
+      customer={customer}
+      onResendInvitationClick={() => onResendInvitationClick(user)}
+      onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
+    />
+  ));
 
   return (
-    <TableContainer className={styles.container}>
-      <MissionControlTable>
-        <TableHeader />
-        <TableBody>
-          {Array.isArray(rows) && rowsPerPage > 0
-            ? rows?.slice(
-                currentPage * rowsPerPage,
-                currentPage * rowsPerPage + rowsPerPage,
-              )
-            : rows}
-        </TableBody>
-      </MissionControlTable>
-      {Array.isArray(rows) ? (
-        <TablePaginationFooter
-          currentPage={currentPage + 1}
-          rowsPerPage={rowsPerPage}
-          pageCount={Math.ceil(rows?.length / rowsPerPage)}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-          handleChangePage={handleChangePage}
-          handlePrevClick={handlePrevClick}
-          handleNextClick={handleNextClick}
-        />
-      ) : null}
-    </TableContainer>
+    <MissionControlTable
+      rows={rows}
+      columnHeaders={columnHeaders}
+      noDataMessage="No Pending Users"
+    />
   );
 };
