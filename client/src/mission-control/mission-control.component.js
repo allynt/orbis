@@ -22,8 +22,8 @@ import {
 } from './mission-control.slice.js';
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
-import { Subscriptions } from './views/licence-dashboard/subscriptions.component';
 import { Store } from './views/store/store.component';
+import { Subscriptions } from './views/subscriptions/subscriptions.component';
 import UsersView from './views/users-view/users-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
