@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { customer, activeUsers } from 'mission-control/test-story-data';
+
 import { ActiveUsersBoard } from './active-users-board.component';
 
 describe('ActiveUsersBoard', () => {
