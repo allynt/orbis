@@ -3,16 +3,16 @@ import React from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import faker from 'faker/locale/en_GB';
 
-import { LicenceDashboard } from './licence-dashboard.component';
+import { Subscriptions } from './licence-dashboard.component';
 
 if (isChromatic()) faker.seed(1);
 
 export default {
-  title: 'Admin/Licence Dashboard',
-  component: LicenceDashboard,
+  title: 'Mission Control/Subscriptions',
+  component: Subscriptions,
 };
 
-const Template = args => <LicenceDashboard {...args} />;
+const Template = args => <Subscriptions {...args} />;
 
 const makeLicence = () => ({
   key: faker.commerce.department(),

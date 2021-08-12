@@ -18,7 +18,7 @@ import {
 
 import ContentWrapper from '../../content-wrapper.component';
 
-export const LicenceDashboard = () => {
+export const Subscriptions = () => {
   /**
    * @type {{
    *  licenceInformation: {

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 
-import { LicenceDashboard } from './licence-dashboard.component';
+import { Subscriptions } from './licence-dashboard.component';
 
 const licenceInformation = {
   Rice: {
@@ -55,13 +55,13 @@ const mockStore = createMockStore();
 
 const renderComponent = (state = {}) => {
   const store = mockStore(state);
-  const utils = render(<LicenceDashboard />, {
+  const utils = render(<Subscriptions />, {
     wrapper: props => <Provider store={store} {...props} />,
   });
   return { ...utils, store };
 };
 
-describe('<LicenceDashboard />', () => {
+describe('<Subscriptions />', () => {
   it('Displays a row for each orb', () => {
     const { getByText } = renderComponent();
     ['Rice', 'Oil', 'Health'].forEach(orb =>

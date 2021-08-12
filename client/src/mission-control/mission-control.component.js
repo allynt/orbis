@@ -22,7 +22,7 @@ import {
 } from './mission-control.slice.js';
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
-import { LicenceDashboard } from './views/licence-dashboard/licence-dashboard.component';
+import { Subscriptions } from './views/licence-dashboard/licence-dashboard.component';
 import { Store } from './views/store/store.component';
 import UsersView from './views/users-view/users-view.component';
 
@@ -106,7 +106,7 @@ export const MissionControl = () => {
                   <Route path="/mission-control/users" component={UsersView} />
                   <Route
                     path="/mission-control/subscriptions"
-                    component={LicenceDashboard}
+                    component={Subscriptions}
                   />
                   <Route
                     path="/mission-control/other"
