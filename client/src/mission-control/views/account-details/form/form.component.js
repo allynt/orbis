@@ -4,22 +4,40 @@ import { Button, MenuItem, TextField } from '@astrosat/astrosat-ui';
 
 import { Controller, useForm } from 'react-hook-form';
 
+import { FIELD_NAMES } from 'utils/validators';
+
+const mapping = new Map([
+  [FIELD_NAMES.customerNameOfficial, 'official_name'],
+  [FIELD_NAMES.customerType, 'company_type'],
+  [FIELD_NAMES.registeredNumber, 'registered_id'],
+  [FIELD_NAMES.vatNumber, 'vat_number'],
+  [FIELD_NAMES.address, 'address'],
+]);
+
+const identifiers = Array.from(mapping.keys()).reduce(
+  (acc, cur) => ({ ...acc, [cur]: { id: cur, name: cur } }),
+  {},
+);
+
 const transform = {
-  /** @param {Partial<import('typings').Customer>} customer */
-  in: customer => ({
-    organisationName: customer.official_name ?? '',
-    organisationType: customer.company_type ?? '',
-    registeredNumber: customer.registered_id ?? '',
-    vatNumber: '',
-    billingAddress: customer.address ?? '',
-  }),
-  out: values => ({
-    official_name: values.organisationName,
-    company_type: values.organisationType,
-    registered_id: values.registeredNumber,
-    vat_number: values.vatNumber,
-    address: values.billingAddress,
-  }),
+  /**
+   * @param {Partial<import('typings').Customer>} customer
+   * @returns {Record<string,any>}
+   */
+  in: customer => {
+    let result = {};
+    mapping.forEach((value, key) => (result[key] = customer[value]));
+    return result;
+  },
+  /**
+   * @param {Record<string, any>} values
+   * @returns {Partial<import('typings').Customer>}
+   */
+  out: values => {
+    let result = {};
+    mapping.forEach((value, key) => (result[value] = values[key]));
+    return result;
+  },
 };
 
 /**
@@ -28,7 +46,8 @@ const transform = {
  *    'address' |
  *    'company_type' |
  *    'official_name' |
- *    'type'> & {vat_number: string}) => void
+ *    'type' |
+ *    'vat_number'>) => void
  *  customer?: Partial<import('typings').Customer>
  * }} props
  */
@@ -40,35 +59,31 @@ export const Form = ({ onSubmit, customer = {} }) => {
   return (
     <form onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}>
       <TextField
-        id="organisationName"
-        name="organisationName"
+        {...identifiers[FIELD_NAMES.customerNameOfficial]}
         label="Organisation Name"
         inputRef={register}
       />
       <Controller
-        name="organisationType"
+        {...identifiers[FIELD_NAMES.customerType]}
         control={control}
         as={
-          <TextField id="organisationType" label="Type of Organisation" select>
+          <TextField label="Type of Organisation" select>
             <MenuItem value="CHARITY">Charity</MenuItem>
           </TextField>
         }
       />
       <TextField
-        id="registeredNumber"
-        name="registeredNumber"
+        {...identifiers[FIELD_NAMES.registeredNumber]}
         label="Registered Number"
         inputRef={register}
       />
       <TextField
-        id="vatNumber"
-        name="vatNumber"
+        {...identifiers[FIELD_NAMES.vatNumber]}
         label="VAT Number"
         inputRef={register}
       />
       <TextField
-        id="billingAddress"
-        name="billingAddress"
+        {...identifiers[FIELD_NAMES.address]}
         label="Billing Address"
         inputRef={register}
       />
