@@ -163,7 +163,7 @@ export const PendingInvitationsBoard = ({
     pendingUsers?.length > 0 ? (
       pendingUsers.map(user => (
         <PendingUserRow
-          key={user.id}
+          key={user.user.id}
           customerUser={user}
           customer={customer}
           onResendInvitationClick={() => onResendInvitationClick(user)}
@@ -182,7 +182,14 @@ export const PendingInvitationsBoard = ({
     <TableContainer className={styles.container}>
       <MissionControlTable>
         <TableHeader />
-        <TableBody>{rows}</TableBody>
+        <TableBody>
+          {Array.isArray(rows) && rowsPerPage > 0
+            ? rows?.slice(
+                currentPage * rowsPerPage,
+                currentPage * rowsPerPage + rowsPerPage,
+              )
+            : rows}
+        </TableBody>
       </MissionControlTable>
       {Array.isArray(rows) ? (
         <TablePaginationFooter

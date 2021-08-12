@@ -53,12 +53,7 @@ const Value = ({ children }) => {
 };
 
 const Label = ({ children }) => (
-  <Typography
-    children={children}
-    align="center"
-    component="p"
-    variant="h2"
-  />
+  <Typography children={children} align="center" component="p" variant="h2" />
 );
 
 /**

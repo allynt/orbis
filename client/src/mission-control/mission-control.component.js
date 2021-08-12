@@ -33,7 +33,8 @@ const useDialogStyles = makeStyles(theme => ({
     borderRadius: theme.typography.pxToRem(16),
   },
   content: {
-    padding: theme.spacing(2.5, 0, 2.5, 2.5),
+    height: '100%',
+    padding: theme.spacing(2.5),
   },
 }));
 
@@ -86,8 +87,13 @@ export const MissionControl = () => {
       onClose={handleClose}
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
-      <DialogContent className={dialogStyles.content}>
-        <Grid container wrap="nowrap">
+      <DialogContent>
+        <Grid
+          container
+          spacing={4}
+          wrap="nowrap"
+          className={dialogStyles.content}
+        >
           <Grid item xs={4} lg={2}>
             <SidePanel userIsAdmin={userIsAdmin} />
           </Grid>
