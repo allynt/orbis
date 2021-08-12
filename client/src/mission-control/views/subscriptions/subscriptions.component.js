@@ -46,20 +46,20 @@ export const Subscriptions = ({ licenceInformation }) => {
           </TableHead>
           <TableBody>
             {licenceInformation && Object.keys(licenceInformation).length ? (
-              Object.keys(licenceInformation).map(orb => (
-                <TableRow key={`${orb}-licenses`}>
-                  <MissionControlTableCell>{orb}</MissionControlTableCell>
-                  <MissionControlTableCell>
-                    {licenceInformation[orb].purchased}
-                  </MissionControlTableCell>
-                  <MissionControlTableCell>
-                    {licenceInformation[orb].active}
-                  </MissionControlTableCell>
-                  <MissionControlTableCell>
-                    {licenceInformation[orb].available}
-                  </MissionControlTableCell>
-                </TableRow>
-              ))
+              Object.entries(licenceInformation).map(
+                ([orb, { active, available, purchased }]) => (
+                  <TableRow key={`${orb}-licenses`}>
+                    <MissionControlTableCell>{orb}</MissionControlTableCell>
+                    <MissionControlTableCell>
+                      {purchased}
+                    </MissionControlTableCell>
+                    <MissionControlTableCell>{active}</MissionControlTableCell>
+                    <MissionControlTableCell>
+                      {available}
+                    </MissionControlTableCell>
+                  </TableRow>
+                ),
+              )
             ) : (
               <TableRow>
                 <MissionControlTableCell align="center" colSpan={4}>
