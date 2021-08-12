@@ -18,17 +18,18 @@ import {
 
 import ContentWrapper from '../../content-wrapper.component';
 
-/**
- * @param {{licenceInformation: {
- *            [key: string]: {
- *              purchased: number,
- *              active: number,
- *              available: number,
- *              pending: number
- *            }
- *          }}} props
- */
 export const LicenceDashboard = () => {
+  /**
+   * @type {{
+   *  licenceInformation: {
+   *    [key: string]: {
+   *      purchased: number,
+   *      active: number,
+   *      available: number,
+   *      pending: number
+   *    }
+   *  }}}
+   */
   const licenceInformation = useSelector(selectLicenceInformation);
 
   return (
