@@ -27,50 +27,32 @@ const licenceInformation = {
   },
 };
 
-jest.mock('mission-control/mission-control.slice', () => ({
-  ...jest.requireActual('mission-control/mission-control.slice'),
-  selectLicenceInformation: jest.fn().mockReturnValue({
-    Rice: {
-      purchased: 4,
-      active: 2,
-      available: 1,
-      pending: 1,
-    },
-    Oil: {
-      purchased: 2,
-      active: 2,
-      available: 0,
-      pending: 0,
-    },
-    Health: {
-      purchased: 3,
-      active: 1,
-      available: 1,
-      pending: 1,
-    },
-  }),
-}));
-
-const mockStore = createMockStore();
-
-const renderComponent = (state = {}) => {
-  const store = mockStore(state);
-  const utils = render(<Subscriptions />, {
-    wrapper: props => <Provider store={store} {...props} />,
-  });
-  return { ...utils, store };
+const renderComponent = licenceInformation => {
+  const utils = render(
+    <Subscriptions licenceInformation={licenceInformation} />,
+  );
+  return { ...utils };
 };
 
 describe('<Subscriptions />', () => {
+  it.each([
+    ['undefined', undefined],
+    ['null', null],
+    ['empty object', {}],
+  ])('Displays text when licences are %s', (_, value) => {
+    const { getByText } = renderComponent(value);
+    expect(getByText('No Licences Available')).toBeInTheDocument();
+  });
+
   it('Displays a row for each orb', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent(licenceInformation);
     ['Rice', 'Oil', 'Health'].forEach(orb =>
       expect(getByText(orb)).toBeInTheDocument(),
     );
   });
 
   it('Displays the total purchased licences for each orb', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent(licenceInformation);
     [
       ['Rice', licenceInformation.Rice.purchased],
       ['Oil', licenceInformation.Oil.purchased],
@@ -81,7 +63,7 @@ describe('<Subscriptions />', () => {
   });
 
   it('Displays the total active licences for each orb', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent(licenceInformation);
     [
       ['Rice', licenceInformation.Rice.active],
       ['Oil', licenceInformation.Oil.active],
@@ -92,7 +74,7 @@ describe('<Subscriptions />', () => {
   });
 
   it('Displays the total available licences for each orb', () => {
-    const { getByText } = renderComponent();
+    const { getByText } = renderComponent(licenceInformation);
     [
       ['Rice', licenceInformation.Rice.available],
       ['Oil', licenceInformation.Oil.available],

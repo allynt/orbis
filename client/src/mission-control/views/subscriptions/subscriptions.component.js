@@ -18,20 +18,20 @@ import {
 
 import ContentWrapper from '../../content-wrapper.component';
 
-export const Subscriptions = () => {
-  /**
-   * @type {{
-   *  licenceInformation: {
-   *    [key: string]: {
-   *      purchased: number,
-   *      active: number,
-   *      available: number,
-   *      pending: number
-   *    }
-   *  }}}
-   */
-  const licenceInformation = useSelector(selectLicenceInformation);
-
+/**
+ *
+ * @param {{
+ *  licenceInformation: {
+ *    [key: string]: {
+ *      purchased: number,
+ *      active: number,
+ *      available: number,
+ *      pending: number
+ *    }
+ *  }
+ * }} props
+ */
+export const Subscriptions = ({ licenceInformation }) => {
   return (
     <ContentWrapper title="Licence Dashboard">
       <TableContainer>
@@ -78,4 +78,9 @@ export const Subscriptions = () => {
       </TableContainer>
     </ContentWrapper>
   );
+};
+
+export default () => {
+  const licenceInformation = useSelector(selectLicenceInformation);
+  return <Subscriptions licenceInformation={licenceInformation} />;
 };
