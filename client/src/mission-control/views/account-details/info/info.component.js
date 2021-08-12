@@ -9,9 +9,14 @@ const Wrapper = styled('div')(({ theme }) => ({
 }));
 
 const Label = styled(Typography)(({ theme }) => ({
-  ...theme.typography.body1,
   fontWeight: theme.typography.fontWeightLight,
   marginBottom: theme.spacing(0.5),
+}));
+
+const Value = styled(Typography)(({ theme }) => ({
+  '&:first-of-type': {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 /**
@@ -33,10 +38,8 @@ export const Info = ({
       {userName}
     </Typography>
     <Label>Organisation Name</Label>
-    <Typography variant="h3" style={{ marginBottom: '0.5rem' }}>
-      {organisationName}
-    </Typography>
+    <Value variant="h3">{organisationName}</Value>
     <Label>ID Number</Label>
-    <Typography variant="h3">{organisationId}</Typography>
+    <Value variant="h3">{organisationId}</Value>
   </Wrapper>
 );
