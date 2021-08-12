@@ -3,7 +3,7 @@ import React from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import faker from 'faker/locale/en_GB';
 
-import { Subscriptions } from './licence-dashboard.component';
+import { Subscriptions } from './subscriptions.component';
 
 if (isChromatic()) faker.seed(1);
 
