@@ -1,10 +1,25 @@
 import React from 'react';
 
-import { Button, MenuItem, TextField } from '@astrosat/astrosat-ui';
+import { Button, makeStyles, MenuItem, TextField } from '@astrosat/astrosat-ui';
 
 import { Controller, useForm } from 'react-hook-form';
 
+import ContentWrapper from 'mission-control/content-wrapper.component';
 import { FIELD_NAMES } from 'utils/validators';
+
+const useStyles = makeStyles(theme => ({
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& .MuiTextField-root': {
+      marginBottom: theme.spacing(1),
+      '&:last-of-type': {
+        marginBottom: theme.spacing(3),
+      },
+    },
+  },
+}));
 
 const mapping = new Map([
   [FIELD_NAMES.customerNameOfficial, 'official_name'],
@@ -15,7 +30,10 @@ const mapping = new Map([
 ]);
 
 const identifiers = Array.from(mapping.keys()).reduce(
-  (acc, cur) => ({ ...acc, [cur]: { id: cur, name: cur } }),
+  (acc, fieldIdentifier) => ({
+    ...acc,
+    [fieldIdentifier]: { id: fieldIdentifier, name: fieldIdentifier },
+  }),
   {},
 );
 
@@ -52,44 +70,50 @@ const transform = {
  * }} props
  */
 export const Form = ({ onSubmit, customer = {} }) => {
+  const styles = useStyles();
   const { register, handleSubmit, control, formState } = useForm({
     defaultValues: transform.in(customer),
   });
 
   return (
-    <form onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}>
-      <TextField
-        {...identifiers[FIELD_NAMES.customerNameOfficial]}
-        label="Organisation Name"
-        inputRef={register}
-      />
-      <Controller
-        {...identifiers[FIELD_NAMES.customerType]}
-        control={control}
-        as={
-          <TextField label="Type of Organisation" select>
-            <MenuItem value="CHARITY">Charity</MenuItem>
-          </TextField>
-        }
-      />
-      <TextField
-        {...identifiers[FIELD_NAMES.registeredNumber]}
-        label="Registered Number"
-        inputRef={register}
-      />
-      <TextField
-        {...identifiers[FIELD_NAMES.vatNumber]}
-        label="VAT Number"
-        inputRef={register}
-      />
-      <TextField
-        {...identifiers[FIELD_NAMES.address]}
-        label="Billing Address"
-        inputRef={register}
-      />
-      <Button type="submit" disabled={!formState.isDirty}>
-        Save
-      </Button>
-    </form>
+    <ContentWrapper title="Account Details">
+      <form
+        className={styles.form}
+        onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}
+      >
+        <TextField
+          {...identifiers[FIELD_NAMES.customerNameOfficial]}
+          label="Organisation Name"
+          inputRef={register}
+        />
+        <Controller
+          {...identifiers[FIELD_NAMES.customerType]}
+          control={control}
+          as={
+            <TextField label="Type of Organisation" select>
+              <MenuItem value="CHARITY">Charity</MenuItem>
+            </TextField>
+          }
+        />
+        <TextField
+          {...identifiers[FIELD_NAMES.registeredNumber]}
+          label="Registered Number"
+          inputRef={register}
+        />
+        <TextField
+          {...identifiers[FIELD_NAMES.vatNumber]}
+          label="VAT Number"
+          inputRef={register}
+        />
+        <TextField
+          {...identifiers[FIELD_NAMES.address]}
+          label="Billing Address"
+          inputRef={register}
+        />
+        <Button type="submit" disabled={!formState.isDirty}>
+          Save
+        </Button>
+      </form>
+    </ContentWrapper>
   );
 };
