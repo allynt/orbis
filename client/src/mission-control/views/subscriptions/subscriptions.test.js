@@ -41,7 +41,7 @@ describe('<Subscriptions />', () => {
     ['empty object', {}],
   ])('Displays text when licences are %s', (_, value) => {
     const { getByText } = renderComponent(value);
-    expect(getByText('No Licences Available')).toBeInTheDocument();
+    expect(getByText('No Subscriptions Available')).toBeInTheDocument();
   });
 
   it('Displays a row for each orb', () => {

@@ -24,18 +24,18 @@ const makeLicence = () => ({
 
 const reducer = (acc, { key, ...rest }) => ({ ...acc, [key]: { ...rest } });
 
-export const NoLicences = Template.bind({});
+export const NoSubscriptions = Template.bind({});
 
-export const Licences = Template.bind({});
-Licences.args = {
+export const SomeSubscriptions = Template.bind({});
+SomeSubscriptions.args = {
   licenceInformation: Array(3)
     .fill(undefined)
     .map(makeLicence)
     .reduce(reducer, {}),
 };
 
-export const LotsOfLicences = Template.bind({});
-LotsOfLicences.args = {
+export const LotsOfSubscriptions = Template.bind({});
+LotsOfSubscriptions.args = {
   licenceInformation: Array(50)
     .fill(undefined)
     .map(makeLicence)

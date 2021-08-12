@@ -33,21 +33,15 @@ import ContentWrapper from '../../content-wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <ContentWrapper title="Licence Dashboard">
+    <ContentWrapper title="Subscriptions">
       <TableContainer>
         <MissionControlTable>
           <TableHead>
             <MissionControlTableRow>
-              <MissionControlTableCell />
-              <MissionControlTableCell align="center">
-                Purchased Licences
-              </MissionControlTableCell>
-              <MissionControlTableCell align="center">
-                Active Licences
-              </MissionControlTableCell>
-              <MissionControlTableCell align="center">
-                Available Licences
-              </MissionControlTableCell>
+              <MissionControlTableCell>Subscription</MissionControlTableCell>
+              <MissionControlTableCell>Purchased</MissionControlTableCell>
+              <MissionControlTableCell>Active</MissionControlTableCell>
+              <MissionControlTableCell>Available</MissionControlTableCell>
             </MissionControlTableRow>
           </TableHead>
           <TableBody>
@@ -55,13 +49,13 @@ export const Subscriptions = ({ licenceInformation }) => {
               Object.keys(licenceInformation).map(orb => (
                 <TableRow key={`${orb}-licenses`}>
                   <MissionControlTableCell>{orb}</MissionControlTableCell>
-                  <MissionControlTableCell align="center">
+                  <MissionControlTableCell>
                     {licenceInformation[orb].purchased}
                   </MissionControlTableCell>
-                  <MissionControlTableCell align="center">
+                  <MissionControlTableCell>
                     {licenceInformation[orb].active}
                   </MissionControlTableCell>
-                  <MissionControlTableCell align="center">
+                  <MissionControlTableCell>
                     {licenceInformation[orb].available}
                   </MissionControlTableCell>
                 </TableRow>
@@ -69,7 +63,7 @@ export const Subscriptions = ({ licenceInformation }) => {
             ) : (
               <TableRow>
                 <MissionControlTableCell align="center" colSpan={4}>
-                  No Licences Available
+                  No Subscriptions Available
                 </MissionControlTableCell>
               </TableRow>
             )}
