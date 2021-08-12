@@ -36,14 +36,7 @@ const useStyles = makeStyles({
  */
 const UpdateUserForm = ({ user, updateUser }) => {
   const styles = useStyles();
-  const {
-    getValues,
-    handleSubmit,
-    register,
-    formState,
-    reset,
-    errors,
-  } = useForm({
+  const { handleSubmit, register, formState, reset, errors } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(updateUserFormSchema),
     defaultValues: { ...user },
@@ -54,10 +47,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
   };
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset(getValues());
-    }
-  }, [formState, getValues, reset]);
+    reset({ ...user });
+  }, [user, reset]);
 
   return (
     <Grid
@@ -99,7 +90,11 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Button
           fullWidth
           type="submit"
-          disabled={!!Object.keys(errors).length || !formState.isDirty}
+          disabled={
+            !formState.isValid ||
+            !formState.isDirty ||
+            !formState.dirtyFields.name
+          }
         >
           Update Account
         </Button>
