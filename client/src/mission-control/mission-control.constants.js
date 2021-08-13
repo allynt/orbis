@@ -11,13 +11,13 @@ export const VIEWS = {
     Icon: StoreIcon,
     admin: true,
   },
-  users: { label: 'Users', route: '/users', Icon: UsersIcon },
-  support: { label: 'Support', route: '/support', Icon: SupportIcon },
   accountDetails: {
     label: 'Account Details',
     route: '/account-details',
     Icon: ProfileIcon,
   },
+  users: { label: 'Users', route: '/users', Icon: UsersIcon },
+  support: { label: 'Support', route: '/support', Icon: SupportIcon },
 };
 
 export const ADMIN_STATUS = {
