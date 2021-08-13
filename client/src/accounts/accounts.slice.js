@@ -4,12 +4,12 @@ import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
+import { createCustomerUserSuccess } from 'admin/admin.slice';
+import apiClient from 'api-client';
 import {
-  createCustomerUserSuccess,
   selectCurrentCustomer,
   setCurrentCustomer,
-} from 'admin/admin.slice';
-import apiClient from 'api-client';
+} from 'mission-control/mission-control.slice';
 
 import {
   REGISTER_CUSTOMER,
@@ -130,7 +130,13 @@ export const placeOrder = createAsyncThunk(
   /**
    * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
    *  void,
-   *  import('./register/customer/order-form/order-form.component').FormValues,
+   *  {
+   *    subscription: string;
+   *    paymentType?: string;
+   *    amount?: number;
+   *    licences: number;
+   *    period?: string;
+   *  },
    *  {rejectValue: string[], state: import('typings').RootState}
    * >}
    */
@@ -142,11 +148,10 @@ export const placeOrder = createAsyncThunk(
       await apiClient.customers.placeOrder(currentCustomerId, form);
       const customer = await apiClient.customers.getCustomer(currentCustomerId);
       dispatch(setCurrentCustomer(customer));
-      dispatch(push('/'));
       return;
     } catch (responseError) {
       const errors = await responseError.getErrors();
-      return rejectWithValue(errors);
+      return rejectWithValue(errors || [responseError.message]);
     }
   },
 );
@@ -415,8 +420,10 @@ const accountsSlice = createSlice({
     });
     builder.addMatcher(
       // @ts-ignore
-      action => action.type.endsWith('/pending'),
+      action =>
+        action.type.startsWith(name) && action.type.endsWith('/pending'),
       state => {
+        state.error = null;
         state.isLoading = true;
       },
     );

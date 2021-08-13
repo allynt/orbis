@@ -128,11 +128,10 @@ export class CustomersClient extends SubClient {
    * @param {import('typings').Customer['id']} customerId
    * @param {{
    *  subscription: string;
-   *  paymentType: string;
-   *  amount: number;
+   *  paymentType?: string;
+   *  amount?: number;
    *  licences: number;
-   *  period: string;
-   *  confirm: boolean;
+   *  period?: string;
    *}} order
    * @returns {Promise<import('typings').Order>}
    */

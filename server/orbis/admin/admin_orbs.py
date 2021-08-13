@@ -9,7 +9,7 @@ from django.utils.html import format_html
 from astrosat.admin import get_clickable_m2m_list_display
 from astrosat_users.models import Customer, User
 
-from orbis.models import Orb, LicencedCustomer, Licence, DataScope, Access
+from orbis.models import Orb, OrbImage, LicencedCustomer, Licence, DataScope, Access
 
 ##############################
 # pretty ui for access flags #
@@ -64,6 +64,11 @@ class DataScopeAdminInline(admin.TabularInline):
     is_active.boolean = True
 
 
+class OrbImageAdminInline(admin.TabularInline):
+    model = OrbImage
+    extra = 0
+
+
 ##########
 # admins #
 ##########
@@ -111,7 +116,10 @@ class DataScopeAdmin(admin.ModelAdmin):
 
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
-    inlines = (DataScopeAdminInline, )
+    inlines = (
+        OrbImageAdminInline,
+        DataScopeAdminInline,
+    )
     list_display = (
         "name",
         "is_active",

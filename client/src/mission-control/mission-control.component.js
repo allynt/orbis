@@ -24,6 +24,7 @@ import { useFadeTransitionProps } from './shared-components/useFadeTransitionPro
 import { SidePanel } from './side-panel/side-panel.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
+import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
 
 const useDialogStyles = makeStyles(theme => ({
@@ -108,12 +109,9 @@ export const MissionControl = () => {
                     path="/mission-control/subscriptions"
                     component={ConnectedSubscriptions}
                   />
-                  <Route
-                    path="/mission-control/other"
-                    component={() => <h1>Other Route</h1>}
-                  />
+                  <Route path="/mission-control/support" component={Support} />
                   <Route exact path="/mission-control">
-                    <Redirect to="/mission-control/users" />
+                    <Redirect to="/mission-control/support" />
                   </Route>
                 </Switch>
               </CSSTransition>

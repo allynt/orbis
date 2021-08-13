@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { routerMiddleware } from 'connected-react-router';
 import { persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
 
 import rootReducer, { history } from './root.reducer';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [thunk, routerMiddleware(history)],
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(routerMiddleware(history)),
 });
 
 if (process.env.NODE_ENV === 'development' && module.hot) {

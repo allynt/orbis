@@ -2,6 +2,8 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 
 import { OrbDetails } from './orb-details.component';
 
@@ -11,7 +13,8 @@ const orbs = [
 ];
 
 const renderComponent = () => {
-  const goBack = jest.fn();
+  const history = createMemoryHistory();
+  history.goBack = jest.fn();
   const utils = render(
     <OrbDetails
       // @ts-ignore
@@ -19,10 +22,13 @@ const renderComponent = () => {
       // @ts-ignore
       match={{ params: { orbId: '1' } }}
       // @ts-ignore
-      history={{ goBack }}
+      history={history}
     />,
+    {
+      wrapper: ({ children }) => <Router history={history}>{children}</Router>,
+    },
   );
-  return { ...utils, goBack };
+  return { ...utils, history };
 };
 
 describe('<OrbDetails />', () => {
@@ -44,8 +50,17 @@ describe('<OrbDetails />', () => {
   });
 
   it('Goes back when the back button is clicked', () => {
-    const { getByRole, goBack } = renderComponent();
+    const { getByRole, history } = renderComponent();
     userEvent.click(getByRole('link', { name: 'Back' }));
-    expect(goBack).toBeCalled();
+    expect(history.goBack).toBeCalled();
+  });
+
+  it('Navigates to the checkout view with the orb and number of seats as params', () => {
+    const { getByRole, history } = renderComponent();
+    userEvent.click(getByRole('button', { name: /Number of Users/i }));
+    userEvent.click(getByRole('option', { name: '5' }));
+    userEvent.click(getByRole('link', { name: /get access/i }));
+    expect(history.location.pathname).toContain('/checkout');
+    expect(history.location.search).toBe('?orbId=1&users=5');
   });
 });
