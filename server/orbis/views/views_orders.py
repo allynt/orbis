@@ -10,7 +10,7 @@ from astrosat.decorators import swagger_fake
 
 from astrosat_users.models import CustomerUser
 from astrosat_users.models.models_users import UserRegistrationStageType
-from astrosat_users.views.views_customers import IsAdminOrManager
+from astrosat_users.views.views_customers import IsManagerPermission
 
 from orbis.models import Order, LicencedCustomer as Customer
 from orbis.serializers import OrderSerializer
@@ -28,7 +28,7 @@ class OrderViewSet(
     """
     lookup_field = "uuid"
     lookup_url_kwarg = "order_id"
-    permission_classes = [IsAuthenticated, IsAdminOrManager]
+    permission_classes = [IsAuthenticated, IsManagerPermission]
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
