@@ -6,7 +6,6 @@ import {
   Link,
   makeStyles,
   Paper,
-  TextField,
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
@@ -14,6 +13,7 @@ import {
 import { find } from 'lodash';
 
 import { LoadingButton } from 'components';
+import { TextField } from 'mission-control/shared-components/text-field.component';
 
 import { Heading } from '../orbs/heading.component';
 import { Wrapper } from '../orbs/wrapper.component';
@@ -23,17 +23,6 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'grid',
     justifyItems: 'center',
-  },
-  textField: {
-    backgroundColor: theme.palette.background.default,
-    borderRadius: theme.shape.borderRadius,
-    marginBottom: theme.spacing(2),
-    '&:last-of-type': {
-      marginBottom: theme.spacing(4),
-    },
-  },
-  label: {
-    padding: theme.spacing(1, 2),
   },
   orderTerms: {
     backgroundColor: theme.palette.background.default,
@@ -71,12 +60,6 @@ export const Checkout = ({
   const orbId = +searchParams.get('orbId');
   const orb = find(orbs, { id: orbId });
 
-  const textFieldProps = {
-    className: styles.textField,
-    InputLabelProps: { className: styles.label },
-    InputProps: { readOnly: true },
-  };
-
   const handleConfirmClick = () => {
     onConfirmClick({ orbId, users });
   };
@@ -92,19 +75,19 @@ export const Checkout = ({
         id="orbName"
         label="Name of the product"
         value={orb.name}
-        {...textFieldProps}
+        InputProps={{ readOnly: true }}
       />
       <TextField
         id="licenceCost"
         label="Licence"
         value={orb.licence_cost <= 0 ? 'Free' : orb.licence_cost}
-        {...textFieldProps}
+        InputProps={{ readOnly: true }}
       />
       <TextField
         id="numberOfUsers"
         label="The number of users you need"
         value={users}
-        {...textFieldProps}
+        InputProps={{ readOnly: true }}
       />
       <Paper className={styles.orderTerms}>{orderText}</Paper>
       <FormControlLabel

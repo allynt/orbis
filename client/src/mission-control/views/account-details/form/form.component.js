@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Button, makeStyles, MenuItem, TextField } from '@astrosat/astrosat-ui';
+import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { Controller, useForm } from 'react-hook-form';
 
 import ContentWrapper from 'mission-control/content-wrapper.component';
+import { TextField } from 'mission-control/shared-components/text-field.component';
 import { FIELD_NAMES } from 'utils/validators';
 
 const useStyles = makeStyles(theme => ({
