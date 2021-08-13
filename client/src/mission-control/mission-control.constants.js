@@ -1,3 +1,4 @@
+import { ReactComponent as ProfileIcon } from './side-panel/side-panel-icons/profile-icon.svg';
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
 import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
@@ -12,6 +13,11 @@ export const VIEWS = {
   },
   users: { label: 'Users', route: '/users', Icon: UsersIcon },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
+  accountDetails: {
+    label: 'Account Details',
+    route: '/account-details',
+    Icon: ProfileIcon,
+  },
 };
 
 export const ADMIN_STATUS = {

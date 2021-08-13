@@ -22,6 +22,7 @@ import {
 } from './mission-control.slice.js';
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
+import { AccountDetails } from './views/account-details/account-details.component';
 import { Store } from './views/store/store.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
@@ -105,6 +106,10 @@ export const MissionControl = () => {
                   />
                   <Route path="/mission-control/users" component={UsersView} />
                   <Route path="/mission-control/support" component={Support} />
+                  <Route
+                    path="/mission-control/account-details"
+                    component={AccountDetails}
+                  />
                   <Route exact path="/mission-control">
                     <Redirect to="/mission-control/support" />
                   </Route>

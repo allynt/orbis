@@ -4,11 +4,13 @@ import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { Controller, useForm } from 'react-hook-form';
 
-import ContentWrapper from 'mission-control/content-wrapper.component';
 import { TextField } from 'mission-control/shared-components/text-field.component';
+import { Heading } from 'mission-control/views/store/orbs/heading.component';
+import { Wrapper } from 'mission-control/views/store/orbs/wrapper.component';
 import { FIELD_NAMES } from 'utils/validators';
 
 const useStyles = makeStyles(theme => ({
+  wrapper: { position: 'relative' },
   form: {
     display: 'flex',
     flexDirection: 'column',
@@ -77,7 +79,8 @@ export const Form = ({ onSubmit, customer = {} }) => {
   });
 
   return (
-    <ContentWrapper title="Account Details">
+    <Wrapper className={styles.wrapper}>
+      <Heading>Account Details</Heading>
       <form
         className={styles.form}
         onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}
@@ -115,6 +118,6 @@ export const Form = ({ onSubmit, customer = {} }) => {
           Save
         </Button>
       </form>
-    </ContentWrapper>
+    </Wrapper>
   );
 };
