@@ -44,7 +44,7 @@ const validationSchema = yupObject({
  * @property {string} email
  * @property {string} customerName
  * @property {string} customerNameOfficial
- * @property {string} customerType
+ * @property {import('typings').CustomerType} customerType
  * @property {string} registeredNumber
  * @property {'ORBIS Core'} licence
  * @property {number} numberOfLicences

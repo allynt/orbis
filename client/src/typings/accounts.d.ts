@@ -57,9 +57,11 @@ type CustomerUser = {
   licences?: Licence['id'][];
 };
 
+type CustomerType = 'MULTIPLE' | 'INDIVIDUAL';
+
 type Customer = {
   id: string;
-  type?: 'MULTIPLE' | 'INDIVIDUAL';
+  type?: CustomerType;
   name: string;
   official_name?: string;
   company_type?: string;

@@ -7,11 +7,10 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator
+from django.core.validators import FileExtensionValidator, MaxValueValidator
 from django.db import models
 from django.db.models import F, Value, ExpressionWrapper
 from django.db.models.functions import Concat, Replace
-from django.utils.html import mark_safe
 from django.utils.text import slugify
 
 from astrosat.utils import CONDITIONAL_CASCADE, validate_schema
@@ -82,9 +81,19 @@ class AccessModel(models.Model):
         return self.access & access_scope
 
 
+def orb_image_file_path(instance, filename):
+    orb_name = slugify(instance.orb.name)
+    return f"orbs/{orb_name}/images/{filename}"
+
+
 def orb_logo_path(instance, filename):
     instance_name = slugify(instance.name)
     return f"orbs/{instance_name}/{filename}"
+
+
+def orb_terms_document_path(instance, filename):
+    instance_name = slugify(instance.name)
+    return f"orbs/{instance_name}/terms/{filename}"
 
 
 def validate_orb_features(value):
@@ -224,7 +233,14 @@ class Orb(models.Model):
         max_length=128, unique=True, blank=False, null=False
     )
     description = models.TextField(blank=True, null=True)
+    short_description = models.CharField(max_length=512, blank=True, null=True)
     logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
+    terms_document = models.FileField(
+        blank=True,
+        null=True,
+        upload_to=orb_terms_document_path,
+        validators=[FileExtensionValidator(["pdf"])],
+    )
 
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(
@@ -254,7 +270,31 @@ class Orb(models.Model):
     def natural_key(self):
         return (self.name, )
 
+class OrbImage(models.Model):
+    """
+    A simple model for associating multiple images w/ Orbs.
+    Had to use a separate model b/c Django does not support ArrayField for FileFields.
+    That's okay b/c this lets me use a straightforward inline in the OrbAdmin.
+    """
+    class Meta:
+        app_label = "orbis"
+        verbose_name = "Orb Image"
+        verbose_name_plural = "Orb Images"
 
+    orb = models.ForeignKey(Orb, blank=False, null=False, on_delete=models.CASCADE, related_name="images")
+    file = models.ImageField(blank=False, null=False, upload_to=orb_image_file_path)
+
+    def delete(self, *args, **kwargs):
+        """
+        When an OrbImage instance is deleted, delete the corresponding file from storage.
+        """
+        if self.file:
+            file_name = self.file.name
+            file_storage = self.file.storage
+            if file_storage.exists(file_name):
+                file_storage.delete(file_name)
+
+        return super().delete(*args, **kwargs)
 class DataScope(models.Model):
     class Meta:
         app_label = "orbis"

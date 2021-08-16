@@ -348,10 +348,10 @@ resource "kubernetes_deployment" "worker" {
           // Healthcheck Probes
           liveness_probe {
             initial_delay_seconds = 30
-            period_seconds        = 10
-            timeout_seconds       = 5
+            period_seconds        = 600
+            timeout_seconds       = 15
             success_threshold     = 1
-            failure_threshold     = 5
+            failure_threshold     = 2
 
             exec {
               command = local.healthcheck_worker_command
@@ -360,10 +360,10 @@ resource "kubernetes_deployment" "worker" {
 
           readiness_probe {
             initial_delay_seconds = 30
-            period_seconds        = 10
-            timeout_seconds       = 5
+            period_seconds        = 30
+            timeout_seconds       = 15
             success_threshold     = 1
-            failure_threshold     = 5
+            failure_threshold     = 4
 
             exec {
               command = local.healthcheck_worker_command

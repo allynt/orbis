@@ -28,6 +28,7 @@ from orbis.models import (
     TermsDocument,
     UserGuideDocument,
     Orb,
+    OrbImage,
     DataScope,
     Licence,
     LicencedCustomer,
@@ -148,11 +149,26 @@ class UserGuideDocumentFactory(DocumentFactory):
 ########
 
 
+class OrbImageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OrbImage
+
+    @factory.lazy_attribute_sequence
+    def file(self, n):
+
+        return SimpleUploadedFile(
+            name=f"orb_image_{n+1}.png",
+            content=b"I am a fake image",
+            content_type="image/png",
+        )
+
+
 class OrbFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Orb
 
     description = optional_declaration(FactoryFaker("text"), chance=50)
+    short_description = optional_declaration(FactoryFaker("text"), chance=50)
     is_active = True
     is_default = False
     is_hidden = False
@@ -168,12 +184,36 @@ class OrbFactory(factory.django.DjangoModelFactory):
             for data_scope in extracted:
                 self.data_scopes.add(data_scope)
 
+    @factory.post_generation
+    def images(self, create, extracted, **kwargs):
+        """
+        when called w/ OrbFactory(images=2), generates an Orb w/ 2 OrbImages
+        """
+        if not create:
+            return
+
+        if extracted:
+            for _ in range(extracted):
+                OrbImageFactory(orb=self)
+        else:
+            # _could_ create some default images here,
+            # but I don't actually care.
+            pass
+
     @factory.lazy_attribute
     def logo(self):
         return SimpleUploadedFile(
             name=f"{self.name}_logo.png",
             content=b"I am a fake image",
             content_type="image/png",
+        )
+
+    @factory.lazy_attribute
+    def terms_document(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}_terms.pdf",
+            content=b"I am a fake document",
+            content_type="application/pdf",
         )
 
 

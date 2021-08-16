@@ -29,13 +29,13 @@ import {
 import {
   activateAccount,
   changePassword,
-  confirmResetPassword,
+  resetPasswordConfirm,
   login,
   placeOrder,
   registerCustomer,
   registerUser,
   resendVerificationEmail,
-  resetPassword,
+  resetPasswordRequest,
 } from './accounts.slice';
 import LoginForm from './login/login-form.component';
 import PasswordChangeForm from './password/change/password-change-form.component';
@@ -144,7 +144,7 @@ export default () => {
           user={user}
           render={() => (
             <PasswordResetRequestForm
-              resetPassword={values => dispatch(resetPassword(values))}
+              resetPassword={values => dispatch(resetPasswordRequest(values))}
               resetStatus={resetStatus}
               error={error}
             />
@@ -155,7 +155,7 @@ export default () => {
           render={props => (
             <PasswordResetForm
               confirmResetPassword={(form, params) =>
-                dispatch(confirmResetPassword(form, params))
+                dispatch(resetPasswordConfirm({ ...form, ...params }))
               }
               resetStatus={resetStatus}
               match={props.match}

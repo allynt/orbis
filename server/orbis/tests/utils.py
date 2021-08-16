@@ -1,4 +1,4 @@
-import collections
+from collections.abc import Iterable
 import pytest
 import requests
 
@@ -36,7 +36,7 @@ def mock_data_sources(monkeypatch):
 
     def _mock_data_sources(source_ids, status=status.HTTP_200_OK):
 
-        assert isinstance(source_ids, collections.Iterable) and not isinstance(source_ids, str,)
+        assert isinstance(source_ids, Iterable) and not isinstance(source_ids, str,)
 
         def _mock_get(url, params=None, **kwargs):
             if url.startswith(settings.DATA_SOURCES_DIRECTORY_URL):

@@ -37,7 +37,7 @@ export class CustomersClient extends SubClient {
    *  customerNameOfficial: string
    *  customerType: import('typings').Customer['type']
    *  registeredNumber: import('typings').Customer['registered_id']
-   *  licence: 'Orbis Core'
+   *  licence: string
    *  numberOfLicences: number
    *  subscriptionPeriod: string
    *  type: import('typings').Customer['type']
@@ -128,11 +128,10 @@ export class CustomersClient extends SubClient {
    * @param {import('typings').Customer['id']} customerId
    * @param {{
    *  subscription: string;
-   *  paymentType: string;
-   *  amount: number;
+   *  paymentType?: string;
+   *  amount?: number;
    *  licences: number;
-   *  period: string;
-   *  confirm: boolean;
+   *  period?: string;
    *}} order
    * @returns {Promise<import('typings').Order>}
    */

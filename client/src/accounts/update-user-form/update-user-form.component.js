@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Button,
@@ -8,11 +8,16 @@ import {
   Grid,
 } from '@astrosat/astrosat-ui';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
-const EMAIL_FIELD_ID = 'email-field';
-const NAME_FIELD_ID = 'name-field';
+import { email, FIELD_NAMES, name } from 'utils/validators';
 
+const updateUserFormSchema = yup.object({
+  [FIELD_NAMES.email]: email,
+  [FIELD_NAMES.name]: name,
+});
 const useStyles = makeStyles({
   form: {
     height: '100%',
@@ -31,13 +36,21 @@ const useStyles = makeStyles({
  */
 const UpdateUserForm = ({ user, updateUser }) => {
   const styles = useStyles();
-  const { handleSubmit, register } = useForm({
+  const { handleSubmit, register, formState, reset, errors } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(updateUserFormSchema),
     defaultValues: { ...user },
   });
 
   const onSubmit = values => {
     updateUser(values);
   };
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ ...user });
+    }
+  }, [formState.isSubmitSuccessful, user, reset]);
 
   return (
     <Grid
@@ -57,8 +70,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
         </Grid>
         <Grid item>
           <TextField
-            id={EMAIL_FIELD_ID}
-            name="email"
+            id={FIELD_NAMES.email}
+            name={FIELD_NAMES.email}
             inputRef={register}
             label="Email"
             InputProps={{ readOnly: true }}
@@ -66,15 +79,21 @@ const UpdateUserForm = ({ user, updateUser }) => {
         </Grid>
         <Grid item>
           <TextField
-            id={NAME_FIELD_ID}
-            name="name"
+            id={FIELD_NAMES.name}
+            name={FIELD_NAMES.name}
             inputRef={register}
+            error={!!errors[FIELD_NAMES.name]}
+            helperText={errors[FIELD_NAMES.name]?.message}
             label="Name"
           />
         </Grid>
       </Grid>
       <Grid item>
-        <Button fullWidth type="submit">
+        <Button
+          fullWidth
+          type="submit"
+          disabled={!formState.isValid || !formState.dirtyFields.name}
+        >
           Update Account
         </Button>
       </Grid>
