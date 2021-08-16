@@ -4,6 +4,7 @@ import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { Controller, useForm } from 'react-hook-form';
 
+import { ORGANISATION_TYPES } from 'mission-control/mission-control.constants';
 import { TextField } from 'mission-control/shared-components/text-field.component';
 import { Heading } from 'mission-control/views/store/orbs/heading.component';
 import { Wrapper } from 'mission-control/views/store/orbs/wrapper.component';
@@ -101,7 +102,11 @@ export const Form = ({ onSubmit, customer = {} }) => {
           control={control}
           as={
             <TextField label="Type of Organisation" select>
-              <MenuItem value="CHARITY">Charity</MenuItem>
+              {ORGANISATION_TYPES.map(({ name, value }) => (
+                <MenuItem key={value} value={value}>
+                  {name}
+                </MenuItem>
+              ))}
             </TextField>
           }
         />

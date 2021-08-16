@@ -22,6 +22,22 @@ export const VIEWS = {
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
 };
 
+export const ORGANISATION_TYPES = [
+  { name: 'None', value: undefined },
+  { name: 'Non-Profit Organisation', value: 'NON_PROFIT' },
+  { name: 'Local Authority', value: 'LOCAL_AUTHORITY' },
+  { name: 'Government & Executive Agencies', value: 'GOV_AND_EXEC_AGENCIES' },
+  { name: 'Non Departmental Public Body', value: 'NON_DEPT_PUBLIC_BODY' },
+  { name: 'Public Corporation', value: 'PUBLIC_CORP' },
+  { name: 'Health & Care', value: 'HEALTH_AND_CARE' },
+  { name: 'Charity', value: 'CHARITY' },
+  {
+    name: 'Academics, School or any kind of Education',
+    value: 'ACADEMICS_OR_EDUCATION',
+  },
+  { name: 'Other', value: 'OTHER' },
+];
+
 export const ADMIN_STATUS = {
   manager: 'MANAGER',
   member: 'MEMBER',
