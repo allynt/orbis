@@ -1,4 +1,5 @@
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
+import { ReactComponent as SubscriptionsIcon } from './side-panel/side-panel-icons/subscriptions-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
 import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
 
@@ -10,8 +11,13 @@ export const VIEWS = {
     Icon: StoreIcon,
     admin: true,
   },
-  users: { label: 'Users', route: '/users', Icon: UsersIcon },
-  subscriptions: { label: 'Subscriptions', route: '/subscriptions' },
+  users: { label: 'Users', route: '/users', Icon: UsersIcon, admin: true },
+  subscriptions: {
+    label: 'Subscriptions',
+    route: '/subscriptions',
+    Icon: SubscriptionsIcon,
+    admin: true,
+  },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
 };
 
