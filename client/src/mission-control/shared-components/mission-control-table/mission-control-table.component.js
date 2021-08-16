@@ -47,7 +47,7 @@ export const MissionControlTableCell = ({ children, ...props }) => {
   );
 };
 
-const useTable2Styles = makeStyles(theme => ({
+const useTableStyles = makeStyles(theme => ({
   container: {
     padding: `0 ${theme.spacing(6.5)}`,
   },
@@ -63,7 +63,7 @@ export const MissionControlTable = ({
   initialRowsPerPage = 5,
   noDataMessage,
 }) => {
-  const styles = useTable2Styles({});
+  const styles = useTableStyles({});
 
   const [currentPage, setCurrentPage] = useState(initialCurrentPage);
   const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
@@ -116,7 +116,6 @@ export const MissionControlTable = ({
             ))}
           </TableRow>
         </TableHead>
-
         <TableBody>{getTableContent(rows)}</TableBody>
       </Table>
       {Array.isArray(rows) && rows.length > 0 ? (

@@ -170,7 +170,6 @@ export const {
  */
 const handleFailure = (response, title, action, dispatch) => {
   const message = `${response.status} ${response.statusText}`;
-
   NotificationManager.error(
     message,
     `${title} - ${response.statusText}`,
