@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { AccountDetailsComponent } from './account-details.component';
+import AccountDetails from './account-details.component';
 
 export default { title: 'Mission Control/Account Details' };
 
@@ -21,7 +21,7 @@ const Template = args => (
       },
     })}
   >
-    <AccountDetailsComponent {...args} />
+    <AccountDetails {...args} />
   </Provider>
 );
 

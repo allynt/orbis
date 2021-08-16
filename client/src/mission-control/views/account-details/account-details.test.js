@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ThemeProvider } from '@astrosat/astrosat-ui';
-
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
@@ -26,11 +24,7 @@ const renderComponent = () => {
     },
   });
   const utils = render(<AccountDetailsComponent />, {
-    wrapper: props => (
-      <ThemeProvider>
-        <Provider store={store} {...props} />
-      </ThemeProvider>
-    ),
+    wrapper: props => <Provider store={store} {...props} />,
   });
   return { ...utils, store };
 };
