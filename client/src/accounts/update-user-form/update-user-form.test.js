@@ -26,8 +26,10 @@ describe('Update User Form Component', () => {
   });
 
   it('calls updateUser with updated values when submitted', async () => {
+    const email = 'john@gmail.com';
     const name = 'John Smith';
-    const { getByRole, updateUser } = renderComponent();
+
+    const { getByRole, updateUser } = renderComponent({ email });
     userEvent.type(getByRole('textbox', { name: /name/i }), name);
     userEvent.click(getByRole('button'));
     await waitFor(() =>
