@@ -33,6 +33,10 @@ const useDialogStyles = makeStyles(theme => ({
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
   },
+  content: {
+    height: '100%',
+    padding: theme.spacing(2.5),
+  },
 }));
 
 const useTitleStyles = makeStyles(theme => ({
@@ -85,7 +89,12 @@ export const MissionControl = () => {
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <DialogContent>
-        <Grid container spacing={4} wrap="nowrap">
+        <Grid
+          container
+          spacing={4}
+          wrap="nowrap"
+          className={dialogStyles.content}
+        >
           <Grid item xs={4} lg={2}>
             <SidePanel userIsAdmin={userIsAdmin} />
           </Grid>

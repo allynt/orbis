@@ -11,10 +11,7 @@ export const OptionsMenu = ({ anchorEl, children, onButtonClick, onClose }) => {
         color={!!anchorEl ? 'primary' : 'default'}
         onClick={onButtonClick}
       >
-        <OptionsIcon
-          style={{ transform: 'rotate(90deg)' }}
-          data-testid="options-icon"
-        />
+        <OptionsIcon data-testid="options-icon" />
       </IconButton>
       <Menu
         id="options-menu"

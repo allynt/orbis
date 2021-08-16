@@ -5,6 +5,7 @@ import {
   activeUsers,
   pendingUsers,
 } from 'mission-control/test-story-data';
+
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
