@@ -34,42 +34,23 @@ import ContentWrapper from '../../content-wrapper.component';
 export const Subscriptions = ({ licenceInformation }) => {
   return (
     <ContentWrapper title="Subscriptions">
-      <TableContainer>
-        <MissionControlTable>
-          <TableHead>
-            <MissionControlTableRow>
-              <MissionControlTableCell>Subscription</MissionControlTableCell>
-              <MissionControlTableCell>Purchased</MissionControlTableCell>
-              <MissionControlTableCell>Active</MissionControlTableCell>
-              <MissionControlTableCell>Available</MissionControlTableCell>
-            </MissionControlTableRow>
-          </TableHead>
-          <TableBody>
-            {licenceInformation && Object.keys(licenceInformation).length ? (
-              Object.entries(licenceInformation).map(
-                ([orb, { active, available, purchased }]) => (
-                  <TableRow key={`${orb}-licenses`}>
-                    <MissionControlTableCell>{orb}</MissionControlTableCell>
-                    <MissionControlTableCell>
-                      {purchased}
-                    </MissionControlTableCell>
-                    <MissionControlTableCell>{active}</MissionControlTableCell>
-                    <MissionControlTableCell>
-                      {available}
-                    </MissionControlTableCell>
-                  </TableRow>
-                ),
-              )
-            ) : (
-              <TableRow>
-                <MissionControlTableCell align="center" colSpan={4}>
-                  No Subscriptions Available
-                </MissionControlTableCell>
+      <MissionControlTable
+        columnHeaders={['Subscription', 'Purchased', 'Active', 'Available']}
+        noDataMessage="No Subscriptions Available"
+        rows={
+          licenceInformation &&
+          Object.entries(licenceInformation).map(
+            ([orb, { active, available, purchased }]) => (
+              <TableRow key={`${orb}-licenses`}>
+                <MissionControlTableCell>{orb}</MissionControlTableCell>
+                <MissionControlTableCell>{purchased}</MissionControlTableCell>
+                <MissionControlTableCell>{active}</MissionControlTableCell>
+                <MissionControlTableCell>{available}</MissionControlTableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </MissionControlTable>
-      </TableContainer>
+            ),
+          )
+        }
+      />
     </ContentWrapper>
   );
 };

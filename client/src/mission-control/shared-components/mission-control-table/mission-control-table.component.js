@@ -72,7 +72,10 @@ export const MissionControlTable = ({
     if (!rows || rows.length === 0) {
       return (
         <TableRow>
-          <MissionControlTableCell align="center" colSpan={5}>
+          <MissionControlTableCell
+            align="center"
+            colSpan={columnHeaders.length}
+          >
             {noDataMessage}
           </MissionControlTableCell>
         </TableRow>
