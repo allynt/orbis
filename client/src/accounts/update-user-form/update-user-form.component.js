@@ -47,8 +47,10 @@ const UpdateUserForm = ({ user, updateUser }) => {
   };
 
   useEffect(() => {
-    reset({ ...user });
-  }, [user, reset]);
+    if (formState.isSubmitSuccessful) {
+      reset({ ...user });
+    }
+  }, [formState.isSubmitSuccessful, user, reset]);
 
   return (
     <Grid
@@ -90,11 +92,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Button
           fullWidth
           type="submit"
-          disabled={
-            !formState.isValid ||
-            !formState.isDirty ||
-            !formState.dirtyFields.name
-          }
+          disabled={!formState.isValid || !formState.dirtyFields.name}
         >
           Update Account
         </Button>
