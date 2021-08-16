@@ -102,27 +102,35 @@ export const MissionControl = () => {
           <Grid item xs={8} lg={10}>
             <TransitionGroup style={{ position: 'relative' }}>
               <CSSTransition {...fadeTransitionProps}>
-                <Switch location={location}>
-                  <Route
-                    path="/mission-control/store"
-                    render={routeProps =>
-                      userIsAdmin ? (
-                        <Store {...routeProps} />
-                      ) : (
-                        <Redirect to="/mission-control" />
-                      )
-                    }
-                  />
-                  <Route path="/mission-control/users" component={UsersView} />
-                  <Route
-                    path="/mission-control/subscriptions"
-                    component={ConnectedSubscriptions}
-                  />
-                  <Route path="/mission-control/support" component={Support} />
-                  <Route exact path="/mission-control">
-                    <Redirect to="/mission-control/support" />
-                  </Route>
-                </Switch>
+                <div style={{ position: 'absolute', width: '100%' }}>
+                  <Switch location={location}>
+                    <Route
+                      path="/mission-control/store"
+                      render={routeProps =>
+                        userIsAdmin ? (
+                          <Store {...routeProps} />
+                        ) : (
+                          <Redirect to="/mission-control" />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/mission-control/users"
+                      component={UsersView}
+                    />
+                    <Route
+                      path="/mission-control/subscriptions"
+                      component={ConnectedSubscriptions}
+                    />
+                    <Route
+                      path="/mission-control/support"
+                      component={Support}
+                    />
+                    <Route exact path="/mission-control">
+                      <Redirect to="/mission-control/support" />
+                    </Route>
+                  </Switch>
+                </div>
               </CSSTransition>
             </TransitionGroup>
           </Grid>
