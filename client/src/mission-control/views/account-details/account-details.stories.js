@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { AccountDetails } from './account-details.component';
+import { AccountDetailsComponent } from './account-details.component';
 
 export default { title: 'Mission Control/Account Details' };
 
-const Template = args => <AccountDetails {...args} />;
+const Template = args => <AccountDetailsComponent {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {};

@@ -37,8 +37,12 @@ export const Info = ({
     <Typography variant="h2" gutterBottom>
       {userName}
     </Typography>
-    <Label>Organisation Name</Label>
-    <Value variant="h3">{organisationName}</Value>
+    {organisationName && (
+      <>
+        <Label>Organisation Name</Label>
+        <Value variant="h3">{organisationName}</Value>
+      </>
+    )}
     <Label>ID Number</Label>
     <Value variant="h3">{organisationId}</Value>
   </Wrapper>

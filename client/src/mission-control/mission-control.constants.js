@@ -15,6 +15,7 @@ export const VIEWS = {
     label: 'Account Details',
     route: '/account-details',
     Icon: ProfileIcon,
+    admin: true,
   },
   users: { label: 'Users', route: '/users', Icon: UsersIcon },
   subscriptions: { label: 'Subscriptions', route: '/subscriptions' },

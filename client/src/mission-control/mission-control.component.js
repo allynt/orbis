@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 import {
   Dialog,
@@ -22,7 +22,7 @@ import {
 } from './mission-control.slice.js';
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
-import { AccountDetails } from './views/account-details/account-details.component';
+import AccountDetails from './views/account-details/account-details.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
@@ -77,6 +77,16 @@ export const MissionControl = () => {
     }
   }, [currentCustomer, customerUsers, dispatch]);
 
+  const renderAdminOnly = useCallback(
+    Component => routeProps =>
+      userIsAdmin ? (
+        <Component {...routeProps} />
+      ) : (
+        <Redirect to="/mission-control" />
+      ),
+    [userIsAdmin],
+  );
+
   const handleClose = () => {
     return dispatch(push('/map'));
   };
@@ -106,13 +116,7 @@ export const MissionControl = () => {
                 <Switch location={location}>
                   <Route
                     path="/mission-control/store"
-                    render={routeProps =>
-                      userIsAdmin ? (
-                        <Store {...routeProps} />
-                      ) : (
-                        <Redirect to="/mission-control" />
-                      )
-                    }
+                    render={renderAdminOnly(Store)}
                   />
                   <Route path="/mission-control/users" component={UsersView} />
                   <Route
@@ -122,7 +126,7 @@ export const MissionControl = () => {
                   <Route path="/mission-control/support" component={Support} />
                   <Route
                     path="/mission-control/account-details"
-                    component={AccountDetails}
+                    render={renderAdminOnly(AccountDetails)}
                   />
                   <Route exact path="/mission-control">
                     <Redirect to="/mission-control/support" />

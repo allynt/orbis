@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
@@ -46,7 +46,7 @@ const transform = {
    * @returns {Record<string,any>}
    */
   in: customer => {
-    let result = {};
+    const result = {};
     mapping.forEach((value, key) => (result[key] = customer[value]));
     return result;
   },
@@ -55,7 +55,7 @@ const transform = {
    * @returns {Partial<import('typings').Customer>}
    */
   out: values => {
-    let result = {};
+    const result = {};
     mapping.forEach((value, key) => (result[value] = values[key]));
     return result;
   },
@@ -74,9 +74,15 @@ const transform = {
  */
 export const Form = ({ onSubmit, customer = {} }) => {
   const styles = useStyles();
-  const { register, handleSubmit, control, formState } = useForm({
+  const { register, handleSubmit, reset, control, formState } = useForm({
     defaultValues: transform.in(customer),
   });
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(transform.in(customer));
+    }
+  }, [formState.isSubmitSuccessful, reset, customer]);
 
   return (
     <Wrapper className={styles.wrapper}>
