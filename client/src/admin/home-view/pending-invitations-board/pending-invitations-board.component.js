@@ -28,7 +28,6 @@ const TableHeader = () => (
       <AdminTableCell align="left">Licence Type</AdminTableCell>
       <AdminTableCell align="left">Invitation Sent</AdminTableCell>
       <AdminTableCell align="left">Invited</AdminTableCell>
-      <AdminTableCell align="left" />
     </TableRow>
   </TableHead>
 );
@@ -39,7 +38,7 @@ const TableHeader = () => (
  *   customer?: import('typings').Customer
  *   onResendInvitationClick?: () => void
  *   onWithdrawInvitationClick?: () => void
- * }} param0
+ * }} params
  */
 const PendingUserRow = ({
   customerUser,

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { customer, pendingUsers } from 'mission-control/test-story-data';
+
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 export default {
