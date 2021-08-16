@@ -1,7 +1,7 @@
 name: BUILD
 
 on:
-  push: {}
+  pull_request:
   workflow_dispatch:
     branches:
       - master
@@ -142,7 +142,8 @@ jobs:
           docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
-    needs: [client-tests, server-tests, build-client-docker, build-server-docker]
+    needs:
+      [client-tests, server-tests, build-client-docker, build-server-docker]
     name: Request a Deployment to Testing
     runs-on: ubuntu-latest
     timeout-minutes: 10
