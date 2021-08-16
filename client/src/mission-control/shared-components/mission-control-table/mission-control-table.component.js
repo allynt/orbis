@@ -38,7 +38,7 @@ const useCellStyles = makeStyles(theme => ({
   stickyHeader: {},
 }));
 
-export const MissionControlTableCell = ({ children, ...props }) => {
+export const MissionControlTableCell = ({ children = null, ...props }) => {
   const styles = useCellStyles({});
   return (
     <TableCell classes={styles} {...props}>
@@ -72,7 +72,10 @@ export const MissionControlTable = ({
     if (!rows || rows.length === 0) {
       return (
         <TableRow>
-          <MissionControlTableCell align="center" colSpan={5}>
+          <MissionControlTableCell
+            align="center"
+            colSpan={columnHeaders.length}
+          >
             {noDataMessage}
           </MissionControlTableCell>
         </TableRow>

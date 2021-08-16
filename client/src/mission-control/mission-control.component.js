@@ -23,6 +23,7 @@ import {
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
 import { Store } from './views/store/store.component';
+import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
 
@@ -113,6 +114,10 @@ export const MissionControl = () => {
                     }
                   />
                   <Route path="/mission-control/users" component={UsersView} />
+                  <Route
+                    path="/mission-control/subscriptions"
+                    component={ConnectedSubscriptions}
+                  />
                   <Route path="/mission-control/support" component={Support} />
                   <Route exact path="/mission-control">
                     <Redirect to="/mission-control/support" />
