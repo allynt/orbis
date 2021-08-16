@@ -1,5 +1,5 @@
 import React from 'react';
-import clsx from 'clsx';
+
 import {
   Box,
   Button,
@@ -10,6 +10,9 @@ import {
   MenuItem,
   makeStyles,
 } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
+
 import { ROWS_PER_PAGE_OPTIONS } from 'mission-control/mission-control.constants';
 
 const useStyles = makeStyles(theme => ({

@@ -15,7 +15,10 @@ const mockStore = configureMockStore([thunk]);
 
 const renderComponent = () => {
   const store = mockStore({
-    accounts: { userKey: '123', user: { name: 'Fred' } },
+    accounts: {
+      userKey: '123',
+      user: { email: 'fred@gmail.com', name: 'Fred' },
+    },
   });
   const utils = render(<Profile />, {
     wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,

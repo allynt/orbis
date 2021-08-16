@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { customer, pendingUsers } from 'mission-control/test-story-data';
+
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 describe('PendingUsersBoard', () => {
@@ -109,20 +110,5 @@ describe('PendingUsersBoard', () => {
     expect(optionsDropdownButton).toBeInTheDocument();
     userEvent.click(optionsDropdownButton);
     expect(onWithdrawInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
-  });
-
-  describe('Displays a placeholder when there are no pending users', () => {
-    const cases = [
-      ['undefined', undefined],
-      ['null', null],
-      ['empty array', []],
-    ];
-
-    it.each(cases)('%s', (_, value) => {
-      const { getByText } = render(
-        <PendingInvitationsBoard pendingUsers={value} customer={customer} />,
-      );
-      expect(getByText('No Pending Users')).toBeInTheDocument();
-    });
   });
 });

@@ -24,6 +24,7 @@ import { useFadeTransitionProps } from './shared-components/useFadeTransitionPro
 import { SidePanel } from './side-panel/side-panel.component';
 import { AccountDetails } from './views/account-details/account-details.component';
 import { Store } from './views/store/store.component';
+import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
 
@@ -33,6 +34,10 @@ const useDialogStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
+  },
+  content: {
+    height: '100%',
+    padding: theme.spacing(2.5),
   },
 }));
 
@@ -86,7 +91,12 @@ export const MissionControl = () => {
     >
       <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
       <DialogContent>
-        <Grid container spacing={4} wrap="nowrap">
+        <Grid
+          container
+          spacing={4}
+          wrap="nowrap"
+          className={dialogStyles.content}
+        >
           <Grid item xs={4} lg={2}>
             <SidePanel userIsAdmin={userIsAdmin} />
           </Grid>
@@ -105,6 +115,10 @@ export const MissionControl = () => {
                     }
                   />
                   <Route path="/mission-control/users" component={UsersView} />
+                  <Route
+                    path="/mission-control/subscriptions"
+                    component={ConnectedSubscriptions}
+                  />
                   <Route path="/mission-control/support" component={Support} />
                   <Route
                     path="/mission-control/account-details"

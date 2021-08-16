@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
 
 import {
-  Box,
   Button,
+  TableRow,
   makeStyles,
   Menu,
   MenuItem,
-  TableBody,
-  TableContainer,
-  TableHead,
   TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import {
   MissionControlTable,
-  MissionControlTableRow,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -29,20 +24,12 @@ const USER_LABELS = {
   admin: 'Admin',
 };
 
-const TableHeader = () => (
-  <TableHead>
-    <MissionControlTableRow>
-      <MissionControlTableCell align="left">Users</MissionControlTableCell>
-      <MissionControlTableCell align="left">
-        Activated Licences
-      </MissionControlTableCell>
-      <MissionControlTableCell align="left">Email</MissionControlTableCell>
-      <MissionControlTableCell align="left">Type</MissionControlTableCell>
-      <MissionControlTableCell align="left" />
-    </MissionControlTableRow>
-  </TableHead>
-);
-
+const useStyles = makeStyles(theme => ({
+  statusButton: {
+    padding: theme.spacing(1, 4),
+    minWidth: '10rem',
+  },
+}));
 /**
  * @param {{
  *   currentUser: import('typings/orbis').User
@@ -54,7 +41,7 @@ const TableHeader = () => (
  *   onRoleClick: () => void
  * }} props
  */
-const UserRow = ({
+const ActiveUserRow = ({
   currentUser,
   customerUser,
   licences,
@@ -63,6 +50,7 @@ const UserRow = ({
   onEditUserClick,
   onRoleClick,
 }) => {
+  const styles = useStyles({});
   const [roleAnchorEl, setRoleAnchorEl] = useState(null);
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
 
@@ -104,7 +92,7 @@ const UserRow = ({
   };
 
   return (
-    <MissionControlTableRow>
+    <TableRow>
       <MissionControlTableCell>
         {customerUser?.user?.name}
       </MissionControlTableCell>
@@ -116,6 +104,7 @@ const UserRow = ({
       </MissionControlTableCell>
       <MissionControlTableCell>
         <Button
+          className={styles.statusButton}
           aria-controls="role-menu"
           color="secondary"
           onClick={handleRoleButtonClick}
@@ -145,8 +134,6 @@ const UserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
-      </MissionControlTableCell>
-      <MissionControlTableCell>
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -158,16 +145,9 @@ const UserRow = ({
           )}
         </OptionsMenu>
       </MissionControlTableCell>
-    </MissionControlTableRow>
+    </TableRow>
   );
 };
-
-const useStyles = makeStyles(theme => ({
-  container: {
-    height: 'calc(100% - 5rem)',
-    padding: `0 ${theme.spacing(6.5)}`,
-  },
-}));
 
 /**
  * @param {{
@@ -193,9 +173,7 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
-  const styles = useStyles({});
-  const [currentPage, setCurrentPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const columnHeaders = ['Users', 'Activated Licences', 'Email', 'Type'];
 
   /**
    * @param {import('typings/orbis').CustomerUser} customerUser
@@ -218,84 +196,33 @@ export const ActiveUsersBoard = ({
     onDeleteUserClick(customerUser);
   };
 
-  const handleChangePage = (_, newPage) => {
-    setCurrentPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPage = value => {
-    setRowsPerPage(parseInt(value, 10));
-    setCurrentPage(0);
-  };
-
-  const handlePrevClick = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const handleNextClick = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
-  const rows =
-    activeCustomerUsers?.length > 0 ? (
-      activeCustomerUsers.map(customerUser => {
-        let licences = null;
-        if (customer && customer.licences) {
-          licences = getUserLicences(customerUser, customer);
-        }
-        return (
-          <UserRow
-            key={customerUser.user.id}
-            customerUser={customerUser}
-            currentUser={currentUser}
-            licences={licences}
-            oneAdminRemaining={oneAdminRemaining}
-            onDeleteUserClick={() => handleDeleteClick(customerUser)}
-            onEditUserClick={() => handleEditClick(customerUser)}
-            onRoleClick={() => handleRoleClick(customerUser)}
-          />
-        );
-      })
-    ) : (
-      <MissionControlTableRow>
-        <MissionControlTableCell align="center" colSpan={5}>
-          No Active Users
-        </MissionControlTableCell>
-      </MissionControlTableRow>
+  const rows = activeCustomerUsers?.map(customerUser => {
+    let licences = null;
+    if (customer && customer.licences) {
+      licences = getUserLicences(customerUser, customer);
+    }
+    return (
+      <ActiveUserRow
+        key={customerUser.user.id}
+        customerUser={customerUser}
+        currentUser={currentUser}
+        licences={licences}
+        oneAdminRemaining={oneAdminRemaining}
+        onDeleteUserClick={() => handleDeleteClick(customerUser)}
+        onEditUserClick={() => handleEditClick(customerUser)}
+        onRoleClick={() => handleRoleClick(customerUser)}
+      />
     );
+  });
 
   return (
-    <Box
-      className={styles.container}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-    >
+    <>
       <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
-      <TableContainer>
-        <MissionControlTable>
-          <TableHeader />
-          <TableBody>
-            {Array.isArray(rows) && rowsPerPage > 0
-              ? rows?.slice(
-                  currentPage * rowsPerPage,
-                  currentPage * rowsPerPage + rowsPerPage,
-                )
-              : rows}
-          </TableBody>
-        </MissionControlTable>
-        {Array.isArray(rows) ? (
-          <TablePaginationFooter
-            currentPage={currentPage + 1}
-            rowsPerPage={rowsPerPage}
-            pageCount={Math.ceil(rows?.length / rowsPerPage)}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-            handleChangePage={handleChangePage}
-            handlePrevClick={handlePrevClick}
-            handleNextClick={handleNextClick}
-          />
-        ) : null}
-      </TableContainer>
-    </Box>
+      <MissionControlTable
+        rows={rows}
+        columnHeaders={columnHeaders}
+        noDataMessage="No Active Users"
+      />
+    </>
   );
 };

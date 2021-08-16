@@ -1,10 +1,18 @@
 from rest_framework import serializers
 
+from drf_yasg2.utils import swagger_serializer_method
+
 from astrosat.serializers import ContextVariableDefault, WritableNestedListSerializer
 
 from astrosat_users.models import Customer
 
-from orbis.models import Orb, Licence
+from orbis.models import Orb, OrbImage, Licence
+
+
+class OrbImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrbImage
+        fields = ("file", )
 
 
 class OrbSerializer(serializers.ModelSerializer):
@@ -16,10 +24,25 @@ class OrbSerializer(serializers.ModelSerializer):
             "description",
             "short_description",
             "logo",
+            "images",
             "terms_document",
             "features",
             "licence_cost",
         )
+
+    images = serializers.SerializerMethodField(method_name="get_image_files")
+
+    @swagger_serializer_method(
+        serializer_or_field=serializers.ListField(
+            child=serializers.CharField()
+        )
+    )
+    def get_image_files(self, obj):
+        # extract the "file" field from the OrbImageSerializer
+        image_serializer = OrbImageSerializer(
+            obj.images.all(), context=self.context, many=True
+        )
+        return [image_data.get("file") for image_data in image_serializer.data]
 
 
 class LicenceSerializer(serializers.ModelSerializer):

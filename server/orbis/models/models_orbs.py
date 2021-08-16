@@ -81,6 +81,11 @@ class AccessModel(models.Model):
         return self.access & access_scope
 
 
+def orb_image_file_path(instance, filename):
+    orb_name = slugify(instance.orb.name)
+    return f"orbs/{orb_name}/images/{filename}"
+
+
 def orb_logo_path(instance, filename):
     instance_name = slugify(instance.name)
     return f"orbs/{instance_name}/{filename}"
@@ -265,7 +270,31 @@ class Orb(models.Model):
     def natural_key(self):
         return (self.name, )
 
+class OrbImage(models.Model):
+    """
+    A simple model for associating multiple images w/ Orbs.
+    Had to use a separate model b/c Django does not support ArrayField for FileFields.
+    That's okay b/c this lets me use a straightforward inline in the OrbAdmin.
+    """
+    class Meta:
+        app_label = "orbis"
+        verbose_name = "Orb Image"
+        verbose_name_plural = "Orb Images"
 
+    orb = models.ForeignKey(Orb, blank=False, null=False, on_delete=models.CASCADE, related_name="images")
+    file = models.ImageField(blank=False, null=False, upload_to=orb_image_file_path)
+
+    def delete(self, *args, **kwargs):
+        """
+        When an OrbImage instance is deleted, delete the corresponding file from storage.
+        """
+        if self.file:
+            file_name = self.file.name
+            file_storage = self.file.storage
+            if file_storage.exists(file_name):
+                file_storage.delete(file_name)
+
+        return super().delete(*args, **kwargs)
 class DataScope(models.Model):
     class Meta:
         app_label = "orbis"

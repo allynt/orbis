@@ -17,6 +17,7 @@ export const VIEWS = {
     Icon: ProfileIcon,
   },
   users: { label: 'Users', route: '/users', Icon: UsersIcon },
+  subscriptions: { label: 'Subscriptions', route: '/subscriptions' },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
 };
 

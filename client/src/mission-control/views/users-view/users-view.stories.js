@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+import { Provider } from 'react-redux';
+import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 import {
   activeUsers,
   customer,
@@ -8,39 +12,37 @@ import {
 
 import UsersView from './users-view.component';
 
+const mockStore = createMockStore([thunk]);
+
 export default {
   title: 'Mission Control/Users View',
-  argTypes: {},
 };
 
-const Template = args => <UsersView {...args} />;
+const Template = ({ users }) => (
+  <Provider
+    store={mockStore({
+      missionControl: {
+        customerUsers: users,
+        currentCustomer: customer,
+      },
+    })}
+  >
+    <UsersView />
+  </Provider>
+);
 
 export const Default = Template.bind({});
-
-export const WithUsers = Template.bind({});
-WithUsers.args = {
-  activeUsers,
-  pendingUsers,
-  customer,
-  quickViewData: {
-    active: activeUsers.length,
-    pending: pendingUsers.length,
-    available: customer.licences.filter(l => !l.customer_user).length,
-  },
-  currentUser: activeUsers[0].user,
+Default.args = {
+  users: [],
 };
 
 export const LotsOfUsers = Template.bind({});
 LotsOfUsers.args = {
-  ...WithUsers.args,
-  activeUsers: [...activeUsers, ...activeUsers, ...activeUsers, ...activeUsers],
-};
-
-export const LotsOfBoth = Template.bind({});
-LotsOfBoth.args = {
-  ...LotsOfUsers.args,
-  pendingUsers: [
-    ...pendingUsers,
+  users: [
+    ...activeUsers,
+    ...activeUsers,
+    ...activeUsers,
+    ...activeUsers,
     ...pendingUsers,
     ...pendingUsers,
     ...pendingUsers,
