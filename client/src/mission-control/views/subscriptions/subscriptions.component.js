@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@astrosat/astrosat-ui';
+import { TableRow } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
 import {
   MissionControlTable,
-  MissionControlTableRow,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 
