@@ -121,7 +121,7 @@ export const MissionControl = () => {
                   <Route path="/mission-control/users" component={UsersView} />
                   <Route
                     path="/mission-control/subscriptions"
-                    component={ConnectedSubscriptions}
+                    render={renderAdminOnly(ConnectedSubscriptions)}
                   />
                   <Route path="/mission-control/support" component={Support} />
                   <Route
