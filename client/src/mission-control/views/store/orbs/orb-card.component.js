@@ -58,10 +58,7 @@ export const OrbCard = ({ orb }) => {
     <Card className={styles.card}>
       <CardContent classes={{ root: styles.cardContent }}>
         {logo && (
-          <div
-            alt={`${name} logo`}
-            dangerouslySetInnerHTML={{ __html: logo }}
-          />
+          <img alt={`${name} logo`} src={`data:image/svg+xml;base64,${logo}`} />
         )}
 
         <Typography
