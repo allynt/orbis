@@ -33,7 +33,6 @@ import {
 } from 'mission-control/mission-control.slice.js';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
-import QuickView from './active-users-board/quick-view/quick-view.component';
 import {
   CreateUserForm,
   DeleteUserForm,
@@ -41,6 +40,7 @@ import {
   WithdrawUserInvitationForm,
 } from './forms';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
+import QuickView from './quick-view/quick-view.component';
 
 const DialogCloseButton = styled(IconButton)({
   position: 'absolute',

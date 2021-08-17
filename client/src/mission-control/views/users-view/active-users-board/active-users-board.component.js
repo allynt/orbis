@@ -17,7 +17,6 @@ import {
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
-import QuickView from './quick-view/quick-view.component';
 
 const USER_LABELS = {
   standard: 'Standard',
