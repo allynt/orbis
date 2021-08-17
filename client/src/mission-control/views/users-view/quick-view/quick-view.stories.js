@@ -3,26 +3,14 @@ import React from 'react';
 import QuickView from './quick-view.component';
 
 export default {
-  title: 'Mission Control/Home View/Active Users Board/QuickView',
+  title: 'Mission Control/Users View/QuickView',
   component: QuickView,
 };
 
-const data = {
-  active: 3,
-  pending: 4,
-  available: 5,
-};
-
-export const NoData = () => <QuickView data={undefined} />;
+export const NoData = () => <QuickView />;
 
 export const SomeDataButNotAll = () => (
-  <QuickView
-    data={{
-      active: null,
-      pending: undefined,
-      available: 5,
-    }}
-  />
+  <QuickView activeUsers={null} pendingUsers={5} />
 );
 
-export const Default = () => <QuickView data={data} />;
+export const Default = () => <QuickView activeUsers={3} pendingUsers={4} />;
