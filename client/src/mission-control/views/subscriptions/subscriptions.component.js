@@ -5,12 +5,12 @@ import { TableRow } from '@astrosat/astrosat-ui';
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
+import { Heading } from 'mission-control/shared-components/heading.component';
 import {
   MissionControlTable,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-
-import ContentWrapper from '../../content-wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
  *
@@ -27,7 +27,8 @@ import ContentWrapper from '../../content-wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <ContentWrapper title="Subscriptions">
+    <Wrapper maxWidth={false}>
+      <Heading>Subscriptions</Heading>
       <MissionControlTable
         columnHeaders={['Subscription', 'Purchased', 'Active', 'Available']}
         noDataMessage="No Subscriptions Available"
@@ -45,7 +46,7 @@ export const Subscriptions = ({ licenceInformation }) => {
           )
         }
       />
-    </ContentWrapper>
+    </Wrapper>
   );
 };
 

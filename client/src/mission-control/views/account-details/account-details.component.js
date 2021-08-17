@@ -22,11 +22,7 @@ export const AccountDetailsComponent = ({ width }) => {
   const dispatch = useDispatch();
 
   return (
-    <Grid
-      container
-      spacing={width === 'lg' || width === 'xl' ? 4 : 2}
-      style={{ position: 'absolute' }}
-    >
+    <Grid container spacing={width === 'lg' || width === 'xl' ? 4 : 2}>
       <Grid item xs={12} sm={12} md={4}>
         <Info
           organisationId={customer.id}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,7 +16,6 @@ import {
   DIALOG_VIEW,
   ADMIN_STATUS,
 } from 'mission-control//mission-control.constants';
-import ContentWrapper from 'mission-control/content-wrapper.component';
 import {
   inviteCustomerUser,
   selectActiveUsers,
@@ -31,6 +29,8 @@ import {
   createCustomerUser,
   deleteCustomerUser,
 } from 'mission-control/mission-control.slice.js';
+import { Heading } from 'mission-control/shared-components/heading.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import {
@@ -160,8 +160,9 @@ const UsersView = () => {
   };
 
   return (
-    <Box position="absolute" display="flex" flexDirection="column" width="100%">
-      <ContentWrapper title="Users">
+    <>
+      <Wrapper maxWidth={false}>
+        <Heading>Users</Heading>
         <ActiveUsersBoard
           currentUser={user}
           activeCustomerUsers={activeUsers}
@@ -173,15 +174,16 @@ const UsersView = () => {
           onEditUserClick={onEditUserClick}
           onDeleteUserClick={onDeleteUserClick}
         />
-      </ContentWrapper>
-      <ContentWrapper title="Pending Invitations">
+      </Wrapper>
+      <Wrapper maxWidth={false}>
+        <Heading>Pending Invitations</Heading>
         <PendingInvitationsBoard
           pendingUsers={pendingUsers}
           customer={currentCustomer}
           onResendInvitationClick={onResendInvitationClick}
           onWithdrawInvitationClick={onWithdrawInvitationClick}
         />
-      </ContentWrapper>
+      </Wrapper>
       <Dialog
         open={!!dialogForm}
         onClose={() => setDialogForm(null)}
@@ -196,7 +198,7 @@ const UsersView = () => {
         <DialogTitle>{dialogForm?.type}</DialogTitle>
         <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
-    </Box>
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   DialogTitle,
   Grid,
   makeStyles,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { push } from 'connected-react-router';
@@ -35,19 +36,12 @@ const useDialogStyles = makeStyles(theme => ({
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
   },
-  content: {
-    height: '100%',
-    padding: theme.spacing(2.5),
-  },
 }));
 
 const useTitleStyles = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
     borderBottom: `2px solid ${theme.palette.primary.main}`,
-    '& > *': {
-      color: theme.palette.common.white,
-    },
   },
 }));
 
@@ -99,41 +93,34 @@ export const MissionControl = () => {
       fullWidth
       onClose={handleClose}
     >
-      <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
+      <DialogTitle classes={titleStyles} disableTypography>
+        <Typography variant="h1">{`Hello ${user?.name}`}</Typography>
+      </DialogTitle>
       <DialogContent>
-        <Grid
-          container
-          spacing={4}
-          wrap="nowrap"
-          className={dialogStyles.content}
-        >
+        <Grid container spacing={4}>
           <Grid item xs={4} lg={2}>
             <SidePanel userIsAdmin={userIsAdmin} />
           </Grid>
           <Grid item xs={8} lg={10}>
-            <TransitionGroup style={{ position: 'relative' }}>
-              <CSSTransition {...fadeTransitionProps}>
-                <Switch location={location}>
-                  <Route
-                    path="/mission-control/store"
-                    render={renderAdminOnly(Store)}
-                  />
-                  <Route path="/mission-control/users" component={UsersView} />
-                  <Route
-                    path="/mission-control/subscriptions"
-                    component={ConnectedSubscriptions}
-                  />
-                  <Route path="/mission-control/support" component={Support} />
-                  <Route
-                    path="/mission-control/account-details"
-                    render={renderAdminOnly(AccountDetails)}
-                  />
-                  <Route exact path="/mission-control">
-                    <Redirect to="/mission-control/support" />
-                  </Route>
-                </Switch>
-              </CSSTransition>
-            </TransitionGroup>
+            <Switch location={location}>
+              <Route
+                path="/mission-control/store"
+                render={renderAdminOnly(Store)}
+              />
+              <Route path="/mission-control/users" component={UsersView} />
+              <Route
+                path="/mission-control/subscriptions"
+                component={ConnectedSubscriptions}
+              />
+              <Route path="/mission-control/support" component={Support} />
+              <Route
+                path="/mission-control/account-details"
+                render={renderAdminOnly(AccountDetails)}
+              />
+              <Route exact path="/mission-control">
+                <Redirect to="/mission-control/support" />
+              </Route>
+            </Switch>
           </Grid>
         </Grid>
       </DialogContent>

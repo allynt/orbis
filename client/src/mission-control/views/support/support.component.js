@@ -9,7 +9,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import apiClient from 'api-client';
-import ContentWrapper from 'mission-control/content-wrapper.component';
+import { Heading } from 'mission-control/shared-components/heading.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as AssistanceIcon } from './assistance.svg';
 import { ReactComponent as PdfIcon } from './pdf.svg';
@@ -68,7 +69,8 @@ export const Support = () => {
   const styles = useStyles();
 
   return (
-    <ContentWrapper title="Support">
+    <Wrapper maxWidth={false}>
+      <Heading>Support</Heading>
       <div className={styles.wrapper}>
         <Item title="Need Assistance?" icon={<AssistanceIcon />}>
           If you have any questions you can submit a ticket{' '}
@@ -94,6 +96,6 @@ export const Support = () => {
           data.
         </Item>
       </div>
-    </ContentWrapper>
+    </Wrapper>
   );
 };
