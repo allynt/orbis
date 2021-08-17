@@ -57,7 +57,7 @@ describe('<Store />', () => {
 
   it('Shows the Orbs view by default', () => {
     const { getByRole } = renderComponent();
-    expect(getByRole('heading', { name: 'Orbis Store' })).toBeInTheDocument();
+    expect(getByRole('heading', { name: 'Orbs' })).toBeInTheDocument();
   });
 
   it('Shows the orb details page for the orb id in location', () => {
