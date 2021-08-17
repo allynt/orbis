@@ -1,6 +1,7 @@
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
 import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
+import { ReactComponent as SavedDocumentsIcon } from './side-panel/side-panel-icons/saved-documents.svg';
 
 /** @type {Record<string, {label: string, route: string, Icon?: any, admin?: boolean}>} */
 export const VIEWS = {
@@ -10,8 +11,13 @@ export const VIEWS = {
     Icon: StoreIcon,
     admin: true,
   },
-  users: { label: 'Users', route: '/users', Icon: UsersIcon },
+  savedDocuments: {
+    label: 'Saved Documents',
+    route: '/saved-documents',
+    Icon: SavedDocumentsIcon,
+  },
   subscriptions: { label: 'Subscriptions', route: '/subscriptions' },
+  users: { label: 'Users', route: '/users', Icon: UsersIcon },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
 };
 
