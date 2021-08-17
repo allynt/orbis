@@ -15,8 +15,8 @@ import { find } from 'lodash';
 import { LoadingButton } from 'components';
 import { TextField } from 'mission-control/shared-components/text-field.component';
 
-import { Heading } from '../orbs/heading.component';
-import { Wrapper } from '../orbs/wrapper.component';
+import { Heading } from '../../../shared-components/heading.component';
+import { Wrapper } from '../../../shared-components/wrapper.component';
 import { orderText } from './order-text';
 
 const useStyles = makeStyles(theme => ({

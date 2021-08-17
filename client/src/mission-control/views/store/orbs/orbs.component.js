@@ -7,9 +7,9 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { Heading } from './heading.component';
+import { Heading } from '../../../shared-components/heading.component';
+import { Wrapper } from '../../../shared-components/wrapper.component';
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
-import { Wrapper } from './wrapper.component';
 
 /**
  * @param {{

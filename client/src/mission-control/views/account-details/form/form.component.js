@@ -5,9 +5,9 @@ import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 import { Controller, useForm } from 'react-hook-form';
 
 import { ORGANISATION_TYPES } from 'mission-control/mission-control.constants';
+import { Heading } from 'mission-control/shared-components/heading.component';
 import { TextField } from 'mission-control/shared-components/text-field.component';
-import { Heading } from 'mission-control/views/store/orbs/heading.component';
-import { Wrapper } from 'mission-control/views/store/orbs/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 import { FIELD_NAMES } from 'utils/validators';
 
 const useStyles = makeStyles(theme => ({

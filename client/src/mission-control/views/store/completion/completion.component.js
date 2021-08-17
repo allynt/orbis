@@ -12,8 +12,8 @@ import {
 import { find } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import { Heading } from '../orbs/heading.component';
-import { Wrapper } from '../orbs/wrapper.component';
+import { Heading } from '../../../shared-components/heading.component';
+import { Wrapper } from '../../../shared-components/wrapper.component';
 
 const useStyles = makeStyles(theme => ({
   paper: {
