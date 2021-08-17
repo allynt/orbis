@@ -34,8 +34,6 @@ const UserDocumentRow = ({
 }
 
 const SavedDocuments = () => {
-
-  // USER DOCUMENT SELECTOR INSTEAD OF HARDCODED
   const userDocuments = [
     {
       title: 'Test-title-1',
