@@ -58,8 +58,12 @@ export const OrbCard = ({ orb }) => {
     <Card className={styles.card}>
       <CardContent classes={{ root: styles.cardContent }}>
         {logo && (
-          <img className={styles.logo} src={logo} alt={`${name} logo`} />
+          <div
+            alt={`${name} logo`}
+            dangerouslySetInnerHTML={{ __html: logo }}
+          />
         )}
+
         <Typography
           className={clsx(styles.name, { [styles.noLogo]: !logo })}
           variant="h2"

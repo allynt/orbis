@@ -30,14 +30,19 @@ class OrbSerializer(serializers.ModelSerializer):
             "licence_cost",
         )
 
-    images = serializers.SerializerMethodField(method_name="get_image_files")
+    logo = serializers.SerializerMethodField(method_name="get_logo_contents")
+    images = serializers.SerializerMethodField(method_name="get_images_files")
+
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
+    def get_logo_contents(self, obj):
+        return obj.logo.read()
 
     @swagger_serializer_method(
         serializer_or_field=serializers.ListField(
             child=serializers.CharField()
         )
     )
-    def get_image_files(self, obj):
+    def get_images_files(self, obj):
         # extract the "file" field from the OrbImageSerializer
         image_serializer = OrbImageSerializer(
             obj.images.all(), context=self.context, many=True
