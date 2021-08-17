@@ -59,12 +59,6 @@ const UsersView = () => {
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [dialogForm, setDialogForm] = useState(null);
 
-  const quickViewData = {
-    active: activeUsers?.length,
-    pending: pendingUsers?.length,
-    available: availableLicences?.length,
-  };
-
   /** @param { import('typings').CustomerUser } user */
   const onChangeRoleClick = user =>
     dispatch(
@@ -163,7 +157,11 @@ const UsersView = () => {
   return (
     <Box position="absolute" display="flex" flexDirection="column" width="100%">
       <ContentWrapper title="Users">
-        <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
+        <QuickView
+          activeUsers={activeUsers?.length}
+          pendingUsers={pendingUsers?.length}
+          onCreateUserClick={onCreateUserClick}
+        />
         <ActiveUsersBoard
           currentUser={user}
           activeCustomerUsers={activeUsers}

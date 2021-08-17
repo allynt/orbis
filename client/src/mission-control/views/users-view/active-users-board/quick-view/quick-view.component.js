@@ -65,21 +65,22 @@ const Label = ({ children }) => (
 
 /**
  * @param {{
- *  data?: QuickViewData
+ *  activeUsers?: number
+ *  pendingUsers?: number
  *  onCreateUserClick?: () => void
  * }} props
  */
-const QuickView = ({ data, onCreateUserClick }) => {
+const QuickView = ({ activeUsers, pendingUsers, onCreateUserClick }) => {
   const styles = useStyles({});
   return (
     <Wrapper>
       <QuickViewItem>
-        <Value>{data?.active ?? '-'}</Value>
+        <Value>{activeUsers ?? '-'}</Value>
         <Label>Active Users</Label>
       </QuickViewItem>
 
       <QuickViewItem>
-        <Value>{data?.pending ?? '-'}</Value>
+        <Value>{pendingUsers ?? '-'}</Value>
         <Label>Pending Invitations</Label>
       </QuickViewItem>
 
