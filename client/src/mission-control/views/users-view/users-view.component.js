@@ -33,6 +33,7 @@ import {
 } from 'mission-control/mission-control.slice.js';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
+import QuickView from './active-users-board/quick-view/quick-view.component';
 import {
   CreateUserForm,
   DeleteUserForm,
@@ -162,14 +163,13 @@ const UsersView = () => {
   return (
     <Box position="absolute" display="flex" flexDirection="column" width="100%">
       <ContentWrapper title="Users">
+        <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
         <ActiveUsersBoard
           currentUser={user}
           activeCustomerUsers={activeUsers}
           oneAdminRemaining={oneAdminRemaining}
           customer={currentCustomer}
-          quickViewData={quickViewData}
           onChangeRoleClick={onChangeRoleClick}
-          onCreateUserClick={onCreateUserClick}
           onEditUserClick={onEditUserClick}
           onDeleteUserClick={onDeleteUserClick}
         />

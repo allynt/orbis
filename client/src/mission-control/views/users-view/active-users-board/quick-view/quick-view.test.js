@@ -7,7 +7,6 @@ import QuickView from './quick-view.component';
 const data = {
   active: 1,
   pending: 2,
-  available: 3,
 };
 
 describe('QuickView', () => {
@@ -18,8 +17,6 @@ describe('QuickView', () => {
     expect(getByText(`${data.active}`)).toBeInTheDocument();
     expect(getByText('Pending Invitations')).toBeInTheDocument();
     expect(getByText(`${data.pending}`)).toBeInTheDocument();
-    expect(getByText('Licences Available')).toBeInTheDocument();
-    expect(getByText(`${data.available}`)).toBeInTheDocument();
   });
 
   it('should show defaults if no data is present', () => {
@@ -27,7 +24,6 @@ describe('QuickView', () => {
 
     expect(getAllByText('-')[0]).toBeInTheDocument();
     expect(getAllByText('-')[1]).toBeInTheDocument();
-    expect(getAllByText('-')[2]).toBeInTheDocument();
   });
 
   it('should show defaults if only some data is present', () => {
@@ -43,6 +39,5 @@ describe('QuickView', () => {
 
     expect(getByText('1')).toBeInTheDocument();
     expect(getAllByText('-')[0]).toBeInTheDocument();
-    expect(getAllByText('-')[1]).toBeInTheDocument();
   });
 });

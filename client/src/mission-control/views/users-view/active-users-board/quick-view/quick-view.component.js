@@ -66,7 +66,7 @@ const Label = ({ children }) => (
 /**
  * @param {{
  *  data?: QuickViewData
- *  onCreateUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *  onCreateUserClick?: () => void
  * }} props
  */
 const QuickView = ({ data, onCreateUserClick }) => {
@@ -81,11 +81,6 @@ const QuickView = ({ data, onCreateUserClick }) => {
       <QuickViewItem>
         <Value>{data?.pending ?? '-'}</Value>
         <Label>Pending Invitations</Label>
-      </QuickViewItem>
-
-      <QuickViewItem>
-        <Value>{data?.available ?? '-'}</Value>
-        <Label>Licences Available</Label>
       </QuickViewItem>
 
       <QuickViewItem>
