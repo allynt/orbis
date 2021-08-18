@@ -65,7 +65,7 @@ export const Checkout = ({
   };
 
   return (
-    <Wrapper className={styles.wrapper} maxWidth={false}>
+    <Wrapper className={styles.wrapper}>
       <Heading>Your Order</Heading>
       <Typography variant="h3" component="p" paragraph>
         Please read the Terms & Conditions and if everything checks out accept

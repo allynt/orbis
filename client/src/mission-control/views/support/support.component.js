@@ -69,7 +69,7 @@ export const Support = () => {
   const styles = useStyles();
 
   return (
-    <Wrapper maxWidth={false}>
+    <Wrapper>
       <Heading>Support</Heading>
       <div className={styles.wrapper}>
         <Item title="Need Assistance?" icon={<AssistanceIcon />}>

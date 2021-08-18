@@ -27,7 +27,7 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
   if (xsDown) cols = 1;
 
   return (
-    <Wrapper maxWidth={false}>
+    <Wrapper>
       <Heading>Orbis Store</Heading>
       <ImageList cols={cols} gap={16} rowHeight="auto">
         {!isLoading

@@ -99,7 +99,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
   const { images, name, description } = orb;
 
   return (
-    <Wrapper className={styles.wrapper} maxWidth={false}>
+    <Wrapper className={styles.wrapper}>
       <Button
         // @ts-ignore
         role="link"

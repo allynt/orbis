@@ -161,7 +161,7 @@ const UsersView = () => {
 
   return (
     <>
-      <Wrapper maxWidth={false}>
+      <Wrapper>
         <Heading>Users</Heading>
         <ActiveUsersBoard
           currentUser={user}
@@ -175,7 +175,7 @@ const UsersView = () => {
           onDeleteUserClick={onDeleteUserClick}
         />
       </Wrapper>
-      <Wrapper maxWidth={false}>
+      <Wrapper>
         <Heading>Pending Invitations</Heading>
         <PendingInvitationsBoard
           pendingUsers={pendingUsers}

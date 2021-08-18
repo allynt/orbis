@@ -46,7 +46,7 @@ export const Completion = ({ orbs, location }) => {
   const users = +searchParams.get('users');
 
   return (
-    <Wrapper maxWidth={false}>
+    <Wrapper>
       <Heading>Your Order</Heading>
       <Paper className={styles.paper}>
         <Grid container justifyContent="center" spacing={2}>

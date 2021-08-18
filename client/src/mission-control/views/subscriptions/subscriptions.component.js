@@ -27,7 +27,7 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <Wrapper maxWidth={false}>
+    <Wrapper>
       <Heading>Subscriptions</Heading>
       <MissionControlTable
         columnHeaders={[
