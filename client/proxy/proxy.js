@@ -30,6 +30,7 @@ router.use('/satellites', routes.satellitesRoutes);
 router.use('/stories', routes.storiesRoutes);
 router.use('/users', routes.usersRoutes);
 router.use('/customers', routes.customersRoutes);
+router.use('/mission-control', routes.missionControlRoutes);
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);

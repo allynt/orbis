@@ -54,18 +54,6 @@ describe('Saved Documents', () => {
     });
   });
 
-  it('shows admin documents if user is admin', () => {
-    const { getByText } = renderComponent({});
-  });
-
-  it('does not show admin documents if user is not admin', () => {
-    const { getByText } = renderComponent({});
-  });
-
-  it('shows only documents pertaining to user`s licenced orbs', () => {
-    const { getByText } = renderComponent({});
-  });
-
   it('sorts alphabetically when icon is clicked', () => {
     const { getByText } = renderComponent({});
   });
