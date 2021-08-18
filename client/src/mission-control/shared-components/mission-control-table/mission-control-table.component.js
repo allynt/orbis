@@ -29,26 +29,22 @@ const useCellStyles = makeStyles(theme => ({
     fontSize: '0.875rem',
     backgroundColor: 'transparent',
     border: '0',
+    padding: theme.spacing(0, 2),
   },
   body: {
     ...theme.typography.body1,
   },
-  stickyHeader: {},
 }));
 
-export const MissionControlTableCell = ({ children = null, ...props }) => {
+export const MissionControlTableCell = props => {
   const styles = useCellStyles({});
-  return (
-    <TableCell classes={styles} {...props}>
-      {children}
-    </TableCell>
-  );
+  return <TableCell classes={styles} {...props} />;
 };
 
 const useTableStyles = makeStyles(theme => ({
-  container: {},
   table: {
-    borderSpacing: `0 ${theme.spacing(1.25)}`,
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
   },
 }));
 
@@ -96,8 +92,8 @@ export const MissionControlTable = ({
   };
 
   return (
-    <TableContainer className={styles.container}>
-      <Table stickyHeader className={styles.table}>
+    <TableContainer>
+      <Table className={styles.table}>
         <TableHead>
           <TableRow>
             {columnHeaders?.map(column => (
