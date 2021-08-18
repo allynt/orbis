@@ -234,7 +234,12 @@ class Orb(models.Model):
     )
     description = models.TextField(blank=True, null=True)
     short_description = models.CharField(max_length=512, blank=True, null=True)
-    logo = models.ImageField(upload_to=orb_logo_path, blank=True, null=True)
+    logo = models.FileField(
+        blank=True,
+        null=True,
+        upload_to=orb_logo_path,
+        validators=[FileExtensionValidator(["svg"])],
+    )
     terms_document = models.FileField(
         blank=True,
         null=True,
