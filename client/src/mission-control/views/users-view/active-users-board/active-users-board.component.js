@@ -121,9 +121,9 @@ const ActiveUserRow = ({
         <Menu
           id="role-menu"
           anchorEl={roleAnchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+          transformOrigin={{
+            vertical: -35,
+            horizontal: 'left',
           }}
           open={!!roleAnchorEl}
           onClose={handleRoleMenuClose}
