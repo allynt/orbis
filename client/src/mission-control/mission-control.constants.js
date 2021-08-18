@@ -1,8 +1,8 @@
 import { ReactComponent as ProfileIcon } from './side-panel/side-panel-icons/profile-icon.svg';
+import { ReactComponent as SavedDocumentsIcon } from './side-panel/side-panel-icons/saved-documents.svg';
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
 import { ReactComponent as UsersIcon } from './side-panel/side-panel-icons/users-icon.svg';
-import { ReactComponent as SavedDocumentsIcon } from './side-panel/side-panel-icons/saved-documents.svg';
 
 /** @type {Record<string, {label: string, route: string, Icon?: any, admin?: boolean}>} */
 export const VIEWS = {

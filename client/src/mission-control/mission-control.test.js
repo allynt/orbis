@@ -10,10 +10,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { MissionControl } from './mission-control.component';
-
 import {
   fetchCustomerRequested,
-  fetchCustomerUsersRequested
+  fetchCustomerUsersRequested,
 } from './mission-control.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -63,7 +62,7 @@ describe('MissionControl', () => {
   });
 
   it('switches panels when sidepanel links are clicked', async () => {
-    const { getByRole, queryByRole, getByText } = setup({
+    const { getByRole, queryByRole } = setup({
       location: '/mission-control/users',
     });
     expect(getByRole('button', { name: 'Create User' })).toBeInTheDocument();

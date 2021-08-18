@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { TableRow, SvgIcon } from '@astrosat/astrosat-ui';
+
 import ContentWrapper from 'mission-control/content-wrapper.component';
 import {
   MissionControlTable,
@@ -11,27 +12,20 @@ import { ReactComponent as PdfIcon } from '../support/pdf.svg';
 
 const getUserDocuments = () => console.log('GET USER DOCUMENTS!');
 
-const UserDocumentRow = ({
-  title = 'Document',
-  date = '12-05-2020',
-}) => {
-  const handleIconClick = title => console.log(`${title} Document Clicked!`)
+const UserDocumentRow = ({ title = 'Document', date = '12-05-2020' }) => {
+  const handleIconClick = title => console.log(`${title} Document Clicked!`);
   return (
     <TableRow>
+      <MissionControlTableCell>{title}</MissionControlTableCell>
+      <MissionControlTableCell>{date}</MissionControlTableCell>
       <MissionControlTableCell>
-        {title}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {date}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-      <SvgIcon>
-        <PdfIcon onClick={() => handleIconClick(title)} />
-      </SvgIcon>
+        <SvgIcon>
+          <PdfIcon onClick={() => handleIconClick(title)} />
+        </SvgIcon>
       </MissionControlTableCell>
     </TableRow>
-  )
-}
+  );
+};
 
 const SavedDocuments = () => {
   const userDocuments = [
@@ -55,26 +49,21 @@ const SavedDocuments = () => {
     }
   });
 
-  const columnHeaders = [
-    'Name',
-    'Date'
-  ];
+  const columnHeaders = ['Name', 'Date'];
 
-  const rows = userDocuments?.map(({title, date}) => {
-    return (
-      <UserDocumentRow title={title} date={date} />
-    )
+  const rows = userDocuments?.map(({ title, date }) => {
+    return <UserDocumentRow title={title} date={date} />;
   });
 
   return (
-    <ContentWrapper title='Saved Documents'>
+    <ContentWrapper title="Saved Documents">
       <MissionControlTable
         rows={rows}
         columnHeaders={columnHeaders}
         noDataMessage="No Documents"
       />
     </ContentWrapper>
-  )
-}
+  );
+};
 
 export default SavedDocuments;

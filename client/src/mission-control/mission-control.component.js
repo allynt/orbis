@@ -23,11 +23,11 @@ import {
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
 import AccountDetails from './views/account-details/account-details.component';
+import savedDocumentsView from './views/saved-documents/saved-documents.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
-import savedDocumentsView from './views/saved-documents/saved-documents.component';
 
 const useDialogStyles = makeStyles(theme => ({
   paper: {
@@ -119,7 +119,10 @@ export const MissionControl = () => {
                     path="/mission-control/store"
                     render={renderAdminOnly(Store)}
                   />
-                  <Route path='/mission-control/saved-documents' component={savedDocumentsView} />
+                  <Route
+                    path="/mission-control/saved-documents"
+                    component={savedDocumentsView}
+                  />
                   <Route path="/mission-control/users" component={UsersView} />
                   <Route
                     path="/mission-control/subscriptions"
