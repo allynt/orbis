@@ -170,11 +170,16 @@ jobs:
 
   deploy-to-testing:
     needs:
-      [client-tests, server-tests, build-client-docker, build-server-docker]
+      [
+        client-tests,
+        server-tests,
+        build-client-docker,
+        build-server-docker,
+        check-trigger-type,
+      ]
     name: Request a Deployment to Testing
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: check-trigger-type
     steps:
       - name: Checkout
         uses: actions/checkout@v2
