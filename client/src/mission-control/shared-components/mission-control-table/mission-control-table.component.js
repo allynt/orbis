@@ -48,9 +48,7 @@ export const MissionControlTableCell = ({ children = null, ...props }) => {
 };
 
 const useTableStyles = makeStyles(theme => ({
-  container: {
-    padding: `0 ${theme.spacing(6.5)}`,
-  },
+  container: {},
   table: {
     borderSpacing: `0 ${theme.spacing(1.25)}`,
   },
