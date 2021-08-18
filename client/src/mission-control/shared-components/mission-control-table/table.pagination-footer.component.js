@@ -18,12 +18,20 @@ import { ROWS_PER_PAGE_OPTIONS } from 'mission-control/mission-control.constants
 const useStyles = makeStyles(theme => ({
   footer: {
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column-reverse',
     alignItems: 'center',
+    '& $pagination': {
+      marginBottom: theme.spacing(1),
+    },
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      '& $pagination': {
+        marginBottom: 0,
+        marginLeft: 'auto',
+      },
+    },
   },
-  pagination: {
-    marginLeft: 'auto',
-  },
+  pagination: {},
   button: {
     fontWeight: theme.typography.fontWeightRegular,
     fontSize: theme.typography.pxToRem(14),
@@ -56,6 +64,11 @@ const useStyles = makeStyles(theme => ({
     borderLeft: `1px solid ${theme.palette.grey[700]}`,
   },
   selected: {},
+  select: {
+    backgroundColor: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1, 2),
+  },
 }));
 
 export const TablePaginationFooter = ({
@@ -68,9 +81,12 @@ export const TablePaginationFooter = ({
   const styles = useStyles({});
   return (
     <TableFooter className={styles.footer}>
-      <Typography variant="h3">
+      <Typography variant="h3" component="div">
         Show{' '}
         <Select
+          inputProps={{ 'aria-label': 'Change number of entries' }}
+          classes={{ root: styles.select }}
+          disableUnderline
           fullWidth={false}
           value={rowsPerPage}
           onChange={e => handleChangeRowsPerPage(e.target.value)}
