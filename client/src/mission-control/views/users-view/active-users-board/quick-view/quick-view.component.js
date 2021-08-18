@@ -28,13 +28,13 @@ const useStyles = makeStyles(theme => ({
   value: {
     fontWeight: 400,
     fontSize: '2.25rem',
-    marginBottom: theme.spacing(1.5),
+    marginBottom: theme.spacing(1),
   },
   createUserIcon: {
     color: theme.palette.common.white,
     height: theme.typography.pxToRem(40),
     width: theme.typography.pxToRem(40),
-    marginBottom: theme.spacing(1.5),
+    marginBottom: theme.spacing(1),
   },
 }));
 

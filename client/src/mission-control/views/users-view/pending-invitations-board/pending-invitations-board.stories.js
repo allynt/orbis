@@ -5,7 +5,7 @@ import { customer, pendingUsers } from 'mission-control/test-story-data';
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 export default {
-  title: 'Mission Control/Home View/Pending Users Board',
+  title: 'Mission Control/Users/Pending Users Board',
   argTypes: {
     onResendInvitationClick: { action: 'onResendInvitationClick' },
     onWithdrawInvitationClick: { action: 'onWithdrawInvitationClick' },
