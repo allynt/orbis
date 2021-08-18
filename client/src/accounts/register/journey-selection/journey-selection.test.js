@@ -13,9 +13,6 @@ const TEAM_REGEX = /team/i;
 const INDIVIDUAL_REGEX = /individual/i;
 const CONTINUE_REGEX = /continue/i;
 
-const TERMS_URL = 'www.terms.com';
-const PRIVACY_URL = 'www.privacy.com';
-
 const renderComponent = ({
   individualRegistrationIsOpen = true,
   customerRegistrationIsOpen = true,
@@ -23,8 +20,6 @@ const renderComponent = ({
   const history = createMemoryHistory();
   const utils = render(
     <JourneySelection
-      termsUrl={TERMS_URL}
-      privacyUrl={PRIVACY_URL}
       individualRegistrationIsOpen={individualRegistrationIsOpen}
       customerRegistrationIsOpen={customerRegistrationIsOpen}
     />,
@@ -105,5 +100,13 @@ describe('<JourneySelection />', () => {
       'href',
       expect.stringContaining('/privacy'),
     );
+  });
+
+  it('Shows an error if neither registration is open', () => {
+    const { getByRole } = renderComponent({
+      customerRegistrationIsOpen: false,
+      individualRegistrationIsOpen: false,
+    });
+    expect(getByRole('alert')).toBeInTheDocument();
   });
 });

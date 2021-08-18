@@ -70,34 +70,40 @@ export const Store = ({ match, location }) => {
   return (
     <TransitionGroup style={{ position: 'relative' }}>
       <CSSTransition {...fadeTransitionProps}>
-        <Switch location={location}>
-          <Route
-            exact
-            path={path}
-            render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
-          />
-          <Route
-            path={`${path}/checkout`}
-            render={routerProps => (
-              <Checkout
-                orbs={orbs}
-                isLoading={accountsIsLoading}
-                errors={accountsErrors}
-                onConfirmClick={handleConfirmClick}
-                {...routerProps}
-              />
-            )}
-          />
-          <Route
-            path={`${path}/completion`}
-            render={routerProps => <Completion orbs={orbs} {...routerProps} />}
-          />
-          <Route
-            exact
-            path={`${path}/:orbId`}
-            render={routerProps => <OrbDetails orbs={orbs} {...routerProps} />}
-          />
-        </Switch>
+        <div style={{ position: 'absolute', width: '100%' }}>
+          <Switch location={location}>
+            <Route
+              exact
+              path={path}
+              render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
+            />
+            <Route
+              path={`${path}/checkout`}
+              render={routerProps => (
+                <Checkout
+                  orbs={orbs}
+                  isLoading={accountsIsLoading}
+                  errors={accountsErrors}
+                  onConfirmClick={handleConfirmClick}
+                  {...routerProps}
+                />
+              )}
+            />
+            <Route
+              path={`${path}/completion`}
+              render={routerProps => (
+                <Completion orbs={orbs} {...routerProps} />
+              )}
+            />
+            <Route
+              exact
+              path={`${path}/:orbId`}
+              render={routerProps => (
+                <OrbDetails orbs={orbs} {...routerProps} />
+              )}
+            />
+          </Switch>
+        </div>
       </CSSTransition>
     </TransitionGroup>
   );

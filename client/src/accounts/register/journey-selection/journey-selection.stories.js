@@ -6,18 +6,17 @@ import JourneySelection from './journey-selection.component';
 
 export default { title: 'Accounts/Journey Selection' };
 
-export const BothRegistrationsOpen = () => <JourneySelection />;
+const Template = args => <JourneySelection {...args} />;
 
-export const IndividualRegistrationClosed = () => (
-  <JourneySelection individualRegistrationIsOpen={false} />
-);
+export const Default = Template.bind({});
+Default.args = {
+  individualRegistrationIsOpen: true,
+  customerRegistrationIsOpen: true,
+};
 
-export const CustomerRegistrationClosed = () => (
-  <JourneySelection customerRegistrationIsOpen={false} />
-);
-
-export const InWrapper = () => (
+export const InWrapper = args => (
   <Wrapper>
-    <JourneySelection />
+    <Default {...args} />
   </Wrapper>
 );
+InWrapper.args = Default.args;

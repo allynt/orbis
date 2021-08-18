@@ -30,7 +30,12 @@ export const Subscriptions = ({ licenceInformation }) => {
     <Wrapper maxWidth={false}>
       <Heading>Subscriptions</Heading>
       <MissionControlTable
-        columnHeaders={['Subscription', 'Purchased', 'Active', 'Available']}
+        columnHeaders={[
+          'Orb',
+          'Purchased Licences',
+          'Assigned to Users',
+          'Available to Assign',
+        ]}
         noDataMessage="No Subscriptions Available"
         rows={
           licenceInformation &&

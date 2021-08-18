@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   Dialog,
@@ -12,7 +12,6 @@ import {
 import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import {
@@ -107,10 +106,13 @@ export const MissionControl = () => {
                 path="/mission-control/store"
                 render={renderAdminOnly(Store)}
               />
-              <Route path="/mission-control/users" component={UsersView} />
+              <Route
+                path="/mission-control/users"
+                render={renderAdminOnly(UsersView)}
+              />
               <Route
                 path="/mission-control/subscriptions"
-                component={ConnectedSubscriptions}
+                render={renderAdminOnly(ConnectedSubscriptions)}
               />
               <Route path="/mission-control/support" component={Support} />
               <Route

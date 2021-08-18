@@ -10,10 +10,9 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { MissionControl } from './mission-control.component';
-
 import {
   fetchCustomerRequested,
-  fetchCustomerUsersRequested
+  fetchCustomerUsersRequested,
 } from './mission-control.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -29,12 +28,16 @@ const setup = ({
   location = '/mission-control',
   currentCustomer = testCustomer,
   customerUsers = [],
+  userIsAdmin = true,
 }) => {
   const history = createMemoryHistory({
     initialEntries: [location],
   });
   const store = mockStore({
-    accounts: { userKey: '123abc', user: { customers: [{ type: 'MEMBER' }] } },
+    accounts: {
+      userKey: '123abc',
+      user: { customers: [{ type: userIsAdmin ? 'MANAGER' : 'MEMBER' }] },
+    },
     missionControl: {
       currentCustomer,
       customerUsers,
@@ -63,7 +66,7 @@ describe('MissionControl', () => {
   });
 
   it('switches panels when sidepanel links are clicked', async () => {
-    const { getByRole, queryByRole, getByText } = setup({
+    const { getByRole, queryByRole } = setup({
       location: '/mission-control/users',
     });
     expect(getByRole('button', { name: 'Create User' })).toBeInTheDocument();
@@ -84,7 +87,10 @@ describe('MissionControl', () => {
   });
 
   it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
-    const { history } = setup({ location: '/mission-control/store' });
+    const { history } = setup({
+      location: '/mission-control/store',
+      userIsAdmin: false,
+    });
     expect(history.location.pathname).toBe('/mission-control/support');
   });
 

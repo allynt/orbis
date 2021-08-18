@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { passwordConfigSelector } from 'app.slice';
+import { configSelector, passwordConfigSelector } from 'app.slice';
 import PrivateRoute from 'utils/private-route.component';
 
 import {
@@ -57,6 +57,7 @@ export default () => {
   const changeStatus = useSelector(passwordChangeStatusSelector);
   const user = useSelector(userSelector);
   const passwordConfig = useSelector(passwordConfigSelector);
+  const appConfig = useSelector(configSelector);
 
   return (
     <Wrapper>
@@ -66,7 +67,7 @@ export default () => {
           path={REGISTER}
           render={() => (
             <JourneySelection
-              customerRegistrationIsOpen
+              customerRegistrationIsOpen={appConfig.isRegistrationOpen}
               individualRegistrationIsOpen={false}
             />
           )}
