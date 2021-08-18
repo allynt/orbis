@@ -17,12 +17,28 @@ env:
   AWS_CLIENT_REPOSITORY: company/orbis/client
 
 jobs:
+  check-trigger-type:
+    name: Check Trigger Type
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.check.outputs.ref }}
+    steps:
+      - id: check
+        run: |
+          if ${{ github.event_name == 'pull_request' }}
+            echo "::set-output name=ref::${{ github.event.pull_request.head.sha }}"
+          else
+            echo "::set-output name=ref::$GITHUB_REF"
+          fi
   client-tests:
     name: Client-side Tests
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    needs: check-trigger-type
     steps:
       - uses: actions/checkout@v1
+        with:
+          ref: ${{needs.check-trigger-type.outputs.ref}}
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
@@ -101,10 +117,13 @@ jobs:
   build-client-docker:
     name: Build, Tag and Push Client Docker Image
     runs-on: ubuntu-latest
+    needs: check-trigger-type
     timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          ref: ${{needs.check-trigger-type.outputs.ref}}
 
       - name: Setup dependencies
         run: ./scripts/ci-setup-deps.sh
@@ -126,9 +145,12 @@ jobs:
     name: Build, Tag and Push Server Docker Image
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    needs: check-trigger-type
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          ref: ${{needs.check-trigger-type.outputs.ref}}
 
       - name: Setup dependencies
         run: ./scripts/ci-setup-deps.sh
@@ -152,9 +174,12 @@ jobs:
     name: Request a Deployment to Testing
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: check-trigger-type
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: ${{needs.check-trigger-type.outputs.ref}}
 
       - name: Create Deployment
         run: |
