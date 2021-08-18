@@ -97,10 +97,10 @@ const ActiveUserRow = ({
         {customerUser?.user?.name}
       </MissionControlTableCell>
       <MissionControlTableCell>
-        {getLicenceInfo(licences)}
+        {customerUser?.user?.email}
       </MissionControlTableCell>
       <MissionControlTableCell>
-        {customerUser?.user?.email}
+        {getLicenceInfo(licences)}
       </MissionControlTableCell>
       <MissionControlTableCell>
         <Button
@@ -134,6 +134,8 @@ const ActiveUserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
+      </MissionControlTableCell>
+      <MissionControlTableCell padding="checkbox">
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -173,7 +175,7 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
-  const columnHeaders = ['Users', 'Activated Licences', 'Email', 'Type'];
+  const columnHeaders = ['Users', 'Email', 'Activated Licences', 'Type'];
 
   /**
    * @param {import('typings/orbis').CustomerUser} customerUser

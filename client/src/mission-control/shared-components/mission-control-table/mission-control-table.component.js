@@ -23,9 +23,7 @@ const useCellStyles = makeStyles(theme => ({
       borderTopRightRadius: theme.shape.borderRadius,
       borderBottomRightRadius: theme.shape.borderRadius,
     },
-    padding: theme.spacing(0.75, 1.25),
     border: 'none',
-    maxWidth: '8rem',
   },
   head: {
     fontSize: '0.875rem',
