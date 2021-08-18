@@ -28,12 +28,16 @@ const setup = ({
   location = '/mission-control',
   currentCustomer = testCustomer,
   customerUsers = [],
+  userIsAdmin = true,
 }) => {
   const history = createMemoryHistory({
     initialEntries: [location],
   });
   const store = mockStore({
-    accounts: { userKey: '123abc', user: { customers: [{ type: 'MEMBER' }] } },
+    accounts: {
+      userKey: '123abc',
+      user: { customers: [{ type: userIsAdmin ? 'MANAGER' : 'MEMBER' }] },
+    },
     missionControl: {
       currentCustomer,
       customerUsers,
@@ -83,7 +87,10 @@ describe('MissionControl', () => {
   });
 
   it('Redirects to the default route if the user tries to navigate to an admin only route', () => {
-    const { history } = setup({ location: '/mission-control/store' });
+    const { history } = setup({
+      location: '/mission-control/store',
+      userIsAdmin: false,
+    });
     expect(history.location.pathname).toBe('/mission-control/support');
   });
 

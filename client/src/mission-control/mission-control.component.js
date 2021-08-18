@@ -123,10 +123,13 @@ export const MissionControl = () => {
                     path="/mission-control/saved-documents"
                     component={savedDocumentsView}
                   />
-                  <Route path="/mission-control/users" component={UsersView} />
+                  <Route
+                    path="/mission-control/users"
+                    render={renderAdminOnly(UsersView)}
+                  />
                   <Route
                     path="/mission-control/subscriptions"
-                    component={ConnectedSubscriptions}
+                    render={renderAdminOnly(ConnectedSubscriptions)}
                   />
                   <Route path="/mission-control/support" component={Support} />
                   <Route

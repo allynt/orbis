@@ -10,6 +10,7 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  Well,
 } from '@astrosat/astrosat-ui';
 
 import { useHistory } from 'react-router-dom';
@@ -103,6 +104,13 @@ const JourneySelection = ({
           Welcome to Orbis
         </Typography>
       </Form.Row>
+      {!individualRegistrationIsOpen && !customerRegistrationIsOpen && (
+        <Form.Row>
+          <Well severity="error">
+            Sorry but registration isn't open at the moment
+          </Well>
+        </Form.Row>
+      )}
       <Form.Row>
         <FormControl component="fieldset">
           <FormLabel className={styles.legend} component="legend">
