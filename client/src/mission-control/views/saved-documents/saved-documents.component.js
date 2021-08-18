@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 
 const UserDocumentRow = ({ title = 'Document', date = '12-05-2020' }) => {
   const styles = useStyles({});
-  const handleIconClick = title => console.log(`${title} Document Clicked!`);
+  const handleIconClick = title => console.log(`${title} clicked.`);
   return (
     <TableRow>
       <MissionControlTableCell>{title}</MissionControlTableCell>
@@ -81,9 +81,9 @@ const SavedDocuments = () => {
   ]);
 
   useEffect(() => {
-    if (!!documents) return;
+    if (!!documents || !user) return;
 
-    const url = `http://www.localhost:8000/api/mission-control/saved-documents/${user?.id}`;
+    const url = `http://www.localhost:8000/api/mission-control/saved-documents/${user.id}`;
 
     (() => {
       fetch(url, {
