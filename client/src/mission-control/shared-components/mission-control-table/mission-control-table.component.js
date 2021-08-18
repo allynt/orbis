@@ -95,14 +95,6 @@ export const MissionControlTable = ({
     setCurrentPage(0);
   };
 
-  const handlePrevClick = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const handleNextClick = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
   return (
     <TableContainer className={styles.container}>
       <Table stickyHeader className={styles.table}>
@@ -124,8 +116,6 @@ export const MissionControlTable = ({
           pageCount={Math.ceil(rows?.length / rowsPerPage)}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
           handleChangePage={handleChangePage}
-          handlePrevClick={handlePrevClick}
-          handleNextClick={handleNextClick}
         />
       ) : null}
     </TableContainer>
