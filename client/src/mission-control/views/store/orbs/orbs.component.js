@@ -7,7 +7,6 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { Heading } from '../../../shared-components/heading.component';
 import { Wrapper } from '../../../shared-components/wrapper.component';
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
 
@@ -27,8 +26,7 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
   if (xsDown) cols = 1;
 
   return (
-    <Wrapper>
-      <Heading>Orbis Store</Heading>
+    <Wrapper title="Orbis Store">
       <ImageList cols={cols} gap={16} rowHeight="auto">
         {!isLoading
           ? orbs.map(orb => (

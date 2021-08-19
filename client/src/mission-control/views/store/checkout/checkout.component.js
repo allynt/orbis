@@ -15,7 +15,6 @@ import { find } from 'lodash';
 import { LoadingButton } from 'components';
 import { TextField } from 'mission-control/shared-components/text-field.component';
 
-import { Heading } from '../../../shared-components/heading.component';
 import { Wrapper } from '../../../shared-components/wrapper.component';
 import { orderText } from './order-text';
 
@@ -65,8 +64,7 @@ export const Checkout = ({
   };
 
   return (
-    <Wrapper className={styles.wrapper}>
-      <Heading>Your Order</Heading>
+    <Wrapper title="Your Order" className={styles.wrapper}>
       <Typography variant="h3" component="p" paragraph>
         Please read the Terms & Conditions and if everything checks out accept
         the terms and confirm your order.

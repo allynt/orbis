@@ -5,7 +5,6 @@ import { TableRow } from '@astrosat/astrosat-ui';
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
-import { Heading } from 'mission-control/shared-components/heading.component';
 import {
   MissionControlTable,
   MissionControlTableCell,
@@ -27,8 +26,7 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <Wrapper>
-      <Heading>Subscriptions</Heading>
+    <Wrapper title="Subscriptions">
       <MissionControlTable
         columnHeaders={[
           'Orb',

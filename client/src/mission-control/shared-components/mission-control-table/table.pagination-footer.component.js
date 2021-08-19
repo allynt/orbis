@@ -80,7 +80,7 @@ export const TablePaginationFooter = ({
   const styles = useStyles({});
   return (
     <TableFooter className={styles.footer}>
-      <Typography variant="h3" component="div">
+      <Typography component="div">
         Show{' '}
         <Select
           inputProps={{ 'aria-label': 'Change number of entries' }}

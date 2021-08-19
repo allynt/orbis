@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
   CloseIcon,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   styled,
 } from '@astrosat/astrosat-ui';
@@ -13,10 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import {
-  DIALOG_VIEW,
   ADMIN_STATUS,
+  DIALOG_VIEW,
 } from 'mission-control//mission-control.constants';
 import {
+  createCustomerUser,
+  deleteCustomerUser,
   inviteCustomerUser,
   selectActiveUsers,
   selectAvailableLicences,
@@ -26,10 +28,7 @@ import {
   selectOneAdminRemaining,
   selectPendingUsers,
   updateCustomerUser,
-  createCustomerUser,
-  deleteCustomerUser,
 } from 'mission-control/mission-control.slice.js';
-import { Heading } from 'mission-control/shared-components/heading.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
@@ -161,8 +160,7 @@ const UsersView = () => {
 
   return (
     <>
-      <Wrapper>
-        <Heading>Users</Heading>
+      <Wrapper title="Users">
         <ActiveUsersBoard
           currentUser={user}
           activeCustomerUsers={activeUsers}
@@ -175,8 +173,7 @@ const UsersView = () => {
           onDeleteUserClick={onDeleteUserClick}
         />
       </Wrapper>
-      <Wrapper>
-        <Heading>Pending Invitations</Heading>
+      <Wrapper title="Pending Invitations">
         <PendingInvitationsBoard
           pendingUsers={pendingUsers}
           customer={currentCustomer}

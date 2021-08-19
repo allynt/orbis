@@ -12,7 +12,6 @@ import {
 import { find } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import { Heading } from '../../../shared-components/heading.component';
 import { Wrapper } from '../../../shared-components/wrapper.component';
 
 const useStyles = makeStyles(theme => ({
@@ -46,8 +45,7 @@ export const Completion = ({ orbs, location }) => {
   const users = +searchParams.get('users');
 
   return (
-    <Wrapper>
-      <Heading>Your Order</Heading>
+    <Wrapper title="Your Order">
       <Paper className={styles.paper}>
         <Grid container justifyContent="center" spacing={2}>
           <Grid item sm={4} className={styles.iconGrid}>

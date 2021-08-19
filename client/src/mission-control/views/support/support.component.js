@@ -9,7 +9,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import apiClient from 'api-client';
-import { Heading } from 'mission-control/shared-components/heading.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as AssistanceIcon } from './assistance.svg';
@@ -69,8 +68,7 @@ export const Support = () => {
   const styles = useStyles();
 
   return (
-    <Wrapper>
-      <Heading>Support</Heading>
+    <Wrapper title="Support">
       <div className={styles.wrapper}>
         <Item title="Need Assistance?" icon={<AssistanceIcon />}>
           If you have any questions you can submit a ticket{' '}
