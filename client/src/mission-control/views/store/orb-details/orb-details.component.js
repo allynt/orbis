@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   back: { padding: '4px 5px', width: 'fit-content' },
   icon: { transform: 'rotate(180deg)' },
   image: {
+    aspectRatio: '16/9',
     width: '100%',
     maxWidth: theme.typography.pxToRem(640),
     objectFit: 'cover',
