@@ -208,7 +208,8 @@ jobs:
               --repo-owner "$REPO_OWNER" \
               --repo-name "$REPO_NAME" \
               deploy-primary \
-              --commit "$GITHUB_SHA"
+              --commit "$(git rev-parse HEAD)"
+
 
           else
             node createDeployment.js \
@@ -216,5 +217,6 @@ jobs:
               --repo-owner "$REPO_OWNER" \
               --repo-name "$REPO_NAME" \
               deploy-associated-prs \
-              --commit "$GITHUB_SHA"
+              --commit "$(git rev-parse HEAD)"
+
           fi
