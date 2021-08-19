@@ -29,12 +29,16 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 4),
     minWidth: '10rem',
   },
+  menu: {
+    minWidth: `calc(10rem - ${theme.spacing(2)})`,
+    margin: theme.spacing(0, 1),
+  },
 }));
 /**
  * @param {{
- *   currentUser: import('typings/orbis').User
- *   customerUser: import('typings/orbis').CustomerUser
- *   licences: import('typings/orbis').Licence[]
+ *   currentUser: import('typings').User
+ *   customerUser: import('typings').CustomerUser
+ *   licences: import('typings').Licence[]
  *   oneAdminRemaining?: boolean
  *   onDeleteUserClick: () => void
  *   onEditUserClick: () => void
@@ -119,10 +123,11 @@ const ActiveUserRow = ({
             : USER_LABELS.standard}
         </Button>
         <Menu
+          classes={{ list: styles.menu }}
           id="role-menu"
           anchorEl={roleAnchorEl}
           transformOrigin={{
-            vertical: -35,
+            vertical: -40,
             horizontal: 'left',
           }}
           open={!!roleAnchorEl}
@@ -153,15 +158,15 @@ const ActiveUserRow = ({
 
 /**
  * @param {{
- *   activeCustomerUsers: import('typings/orbis').CustomerUser[]
- *   currentUser: import('typings/orbis').User
- *   customer?: import('typings/orbis').Customer
+ *   activeCustomerUsers: import('typings').CustomerUser[]
+ *   currentUser: import('typings').User
+ *   customer?: import('typings').Customer
  *   oneAdminRemaining?: boolean
  *   quickViewData?: import('./quick-view/quick-view.component').QuickViewData
- *   onChangeRoleClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onCreateUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onEditUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onDeleteUserClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   onChangeRoleClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onCreateUserClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onEditUserClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onDeleteUserClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
  */
 export const ActiveUsersBoard = ({
@@ -178,21 +183,21 @@ export const ActiveUsersBoard = ({
   const columnHeaders = ['Users', 'Email', 'Activated Licences', 'Type'];
 
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleRoleClick = customerUser => {
     onChangeRoleClick(customerUser);
   };
 
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleEditClick = customerUser => {
     onEditUserClick(customerUser);
   };
 
   /**
-   * @param {import('typings/orbis').CustomerUser} customerUser
+   * @param {import('typings').CustomerUser} customerUser
    */
   const handleDeleteClick = customerUser => {
     onDeleteUserClick(customerUser);
