@@ -11,6 +11,47 @@ import { Wrapper } from '../../../shared-components/wrapper.component';
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
 
 /**
+ * @param {number} index
+ * @param {number} total
+ * @param {number} columns
+ * @param {{x: number, y: number}} max
+ */
+const getBorderRadiuses = (index, total, columns, max) => {
+  const radiuses = {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
+  };
+  const coords = { x: index % columns, y: Math.floor(index / columns) };
+  //=== Top Left ====
+  if (index === 0) {
+    radiuses.borderTopLeftRadius = 10;
+  }
+  //=== Top Right ====
+  if (
+    coords.y === 0 &&
+    (max.y === 0 ? coords.x === max.x : index + 1 === columns)
+  ) {
+    radiuses.borderTopRightRadius = 10;
+  }
+  //=== Bottom Right ====
+  if (
+    (coords.x === max.x && coords.y === max.y) ||
+    (total % columns !== 0 &&
+      coords.y === max.y - 1 &&
+      coords.x + 1 === columns)
+  ) {
+    radiuses.borderBottomRightRadius = 10;
+  }
+  //=== Bottom Left ====
+  if (coords.x === 0 && coords.y === max.y) {
+    radiuses.borderBottomLeftRadius = 10;
+  }
+  return radiuses;
+};
+
+/**
  * @param {{
  *  orbs?: import('typings').Orb[]
  *  isLoading?: boolean
@@ -34,54 +75,14 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
     <Wrapper title="Orbis Store">
       <ImageList cols={cols} gap={8} rowHeight="auto">
         {!isLoading
-          ? orbs.map((orb, index) => {
-              const coords = { x: index % cols, y: Math.floor(index / cols) };
-              return (
-                <ImageListItem key={orb.id}>
-                  {/* <pre>{JSON.stringify(coords, null, 2)}</pre>
-                  <pre>
-                    {JSON.stringify(
-                      Object.entries({
-                        '↖️': index === 0,
-                        '↗️':
-                          coords.y === 0 &&
-                          (max.y === 0
-                            ? coords.x === max.x
-                            : index + 1 === cols),
-                        '↘️':
-                          (coords.x === max.x && coords.y === max.y) ||
-                          (orbs.length % cols !== 0 &&
-                            coords.y === max.y - 1 &&
-                            coords.x + 1 === cols),
-                        '↙️': coords.x === 0 && coords.y === max.y,
-                      })
-                        .map(([key, value]) => (value ? key : false))
-                        .filter(value => !!value),
-                    )}
-                  </pre> */}
-                  <OrbCard
-                    orb={orb}
-                    style={{
-                      borderTopLeftRadius: index === 0 ? 10 : 0,
-                      borderTopRightRadius:
-                        coords.y === 0 &&
-                        (max.y === 0 ? coords.x === max.x : index + 1 === cols)
-                          ? 10
-                          : 0,
-                      borderBottomRightRadius:
-                        (coords.x === max.x && coords.y === max.y) ||
-                        (orbs.length % cols !== 0 &&
-                          coords.y === max.y - 1 &&
-                          coords.x + 1 === cols)
-                          ? 10
-                          : 0,
-                      borderBottomLeftRadius:
-                        coords.x === 0 && coords.y === max.y ? 10 : 0,
-                    }}
-                  />
-                </ImageListItem>
-              );
-            })
+          ? orbs.map((orb, index) => (
+              <ImageListItem key={orb.id}>
+                <OrbCard
+                  orb={orb}
+                  style={getBorderRadiuses(index, orbs.length, cols, max)}
+                />
+              </ImageListItem>
+            ))
           : Array(3)
               .fill()
               .map((_, i) => (
