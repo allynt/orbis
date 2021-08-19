@@ -40,8 +40,9 @@ class OrbSerializer(serializers.ModelSerializer):
         """
         takes a logo SVG file and returns a base64 encoding of the data
         """
-        logo_data = obj.logo.read()
-        return base64.b64encode(logo_data)
+        if obj.logo:
+            logo_data = obj.logo.read()
+            return base64.b64encode(logo_data)
 
     @swagger_serializer_method(
         serializer_or_field=serializers.ListField(
@@ -49,7 +50,9 @@ class OrbSerializer(serializers.ModelSerializer):
         )
     )
     def get_images_files(self, obj):
-        # extract the "file" field from the OrbImageSerializer
+        """
+        extracts just the "file" field from the OrbImageSerializer
+        """
         image_serializer = OrbImageSerializer(
             obj.images.all(), context=self.context, many=True
         )
