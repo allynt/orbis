@@ -16,7 +16,13 @@ import { OrbCard, OrbCardSkeleton } from './orb-card.component';
  * @param {number} columns
  * @param {{x: number, y: number}} max
  */
-const getBorderRadiuses = (index, total, columns, max) => {
+export const getBorderRadiuses = (
+  index,
+  total,
+  columns,
+  max,
+  borderRadius = 10,
+) => {
   const radiuses = {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
@@ -26,14 +32,14 @@ const getBorderRadiuses = (index, total, columns, max) => {
   const coords = { x: index % columns, y: Math.floor(index / columns) };
   //=== Top Left ====
   if (index === 0) {
-    radiuses.borderTopLeftRadius = 10;
+    radiuses.borderTopLeftRadius = borderRadius;
   }
   //=== Top Right ====
   if (
     coords.y === 0 &&
     (max.y === 0 ? coords.x === max.x : index + 1 === columns)
   ) {
-    radiuses.borderTopRightRadius = 10;
+    radiuses.borderTopRightRadius = borderRadius;
   }
   //=== Bottom Right ====
   if (
@@ -42,11 +48,11 @@ const getBorderRadiuses = (index, total, columns, max) => {
       coords.y === max.y - 1 &&
       coords.x + 1 === columns)
   ) {
-    radiuses.borderBottomRightRadius = 10;
+    radiuses.borderBottomRightRadius = borderRadius;
   }
   //=== Bottom Left ====
   if (coords.x === 0 && coords.y === max.y) {
-    radiuses.borderBottomLeftRadius = 10;
+    radiuses.borderBottomLeftRadius = borderRadius;
   }
   return radiuses;
 };
