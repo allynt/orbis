@@ -83,7 +83,7 @@ export const OrbCard = ({ orb, style }) => {
           component={RouterLink}
           to={`${url}/${id}`}
         >
-          Learn More
+          Learn more about this Orb
         </Link>
       </CardContent>
     </Card>
