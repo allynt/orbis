@@ -4,7 +4,7 @@ import { styled, Typography } from '@astrosat/astrosat-ui';
 
 const Wrapper = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius * 2,
+  borderRadius: '1rem',
   padding: theme.spacing(3, 5, 2),
 }));
 

@@ -9,7 +9,7 @@ import {
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
-  title: 'Mission Control/Home View/Active Users Board',
+  title: 'Mission Control/Users/Active Users Board',
   argTypes: {
     onChangeRoleClick: { action: 'onChangeRoleClick' },
     onEditUserClick: { action: 'onEditUserClick' },

@@ -47,15 +47,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {{orb: import('typings').Orb}} props
+ * @param {{orb: import('typings').Orb, style?: React.CSSProperties}} props
  */
-export const OrbCard = ({ orb }) => {
+export const OrbCard = ({ orb, style }) => {
   const { url } = useRouteMatch();
   const styles = useStyles();
   const { id, name, short_description: shortDescription, logo } = orb;
 
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} style={style}>
       <CardContent classes={{ root: styles.cardContent }}>
         {logo && (
           <img

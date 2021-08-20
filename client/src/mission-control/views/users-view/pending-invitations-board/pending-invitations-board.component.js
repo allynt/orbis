@@ -82,6 +82,8 @@ const PendingUserRow = ({
         >
           Resend Invitation
         </Button>
+      </MissionControlTableCell>
+      <MissionControlTableCell padding="checkbox">
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
