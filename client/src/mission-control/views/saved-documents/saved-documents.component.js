@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import { TableRow, SvgIcon, makeStyles, Link } from '@astrosat/astrosat-ui';
+import {
+  TableRow,
+  SvgIcon,
+  makeStyles,
+  Link,
+  TableSortLabel,
+} from '@astrosat/astrosat-ui';
 
+import { ArrowDropDown } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
@@ -13,7 +20,6 @@ import {
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
-import { TEST_DOCUMENTS } from './saved-documents.test';
 
 const useStyles = makeStyles(() => ({
   icon: {
@@ -38,35 +44,93 @@ const UserDocumentRow = ({ title, date, url }) => {
   );
 };
 
-const SavedDocuments = () => {
+export const TEST_DOCUMENTS = [
+  {
+    title: 'Test-title-1',
+    date: '02-05-2020',
+  },
+  {
+    title: 'Test-title-2',
+    date: '01-05-2020',
+  },
+  {
+    title: 'Test-title-3',
+    date: '03-05-2020',
+  },
+  {
+    title: 'Test-title-4',
+    date: '04-05-2020',
+  },
+  {
+    title: 'Test-title-10',
+    date: '05-05-2020',
+  },
+  {
+    title: 'Test-title-5',
+    date: '06-05-2020',
+  },
+  {
+    title: 'Test-title-6',
+    date: '07-05-2020',
+  },
+  {
+    title: 'Test-title-7',
+    date: '08-05-2020',
+  },
+  {
+    title: 'Test-title-8',
+    date: '09-05-2020',
+  },
+  {
+    title: 'Test-title-9',
+    date: '10-05-2020',
+  },
+];
+
+const SavedDocuments = ({ documents = TEST_DOCUMENTS }) => {
   const user = useSelector(userSelector);
-  const [documents, setDocuments] = useState(TEST_DOCUMENTS);
+  const [sortProperty, setSetProperty] = useState('date');
 
   const columnHeaders = ['Name', 'Date'].map(column => (
-    <MissionControlTableCell key={column} align="left">
-      {column}
+    <MissionControlTableCell sortDirection="desc" key={column} align="left">
+      <TableSortLabel
+        active={sortProperty === column.toLowerCase()}
+        direction="desc"
+        onClick={() => setSetProperty(column.toLowerCase())}
+        IconComponent={ArrowDropDown}
+      >
+        {column}
+      </TableSortLabel>
     </MissionControlTableCell>
   ));
 
   const url = apiClient.documents.userGuideUrl();
 
-  useEffect(() => {
-    if (!!documents || !user) return;
+  // useEffect(() => {
+  //   if (!!documents || !user) return;
 
-    const url = `http://www.localhost:8000/api/mission-control/saved-documents/${user.id}`;
+  //   const url = `http://www.localhost:8000/api/mission-control/saved-documents/${user.id}`;
 
-    (() => {
-      fetch(url, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(data => data.json())
-        .then(docs => setDocuments(docs));
-    })();
-  }, [documents, user]);
+  //   (() => {
+  //     fetch(url, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     })
+  //       .then(data => data.json())
+  //       .then(docs => setDocuments(docs));
+  //   })();
+  // }, [documents, user]);
 
-  const rows = documents?.map(({ title, date }) => {
+  const sortHandler = (a, b) => {
+    return a[sortProperty] > b[sortProperty]
+      ? 1
+      : a[sortProperty] < b[sortProperty]
+      ? -1
+      : 0;
+  };
+
+  const rows = [...documents]?.sort(sortHandler).map(({ title, date }) => {
     return <UserDocumentRow title={title} date={date} url={url} />;
   });
 
