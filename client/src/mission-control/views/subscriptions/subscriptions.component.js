@@ -9,8 +9,7 @@ import {
   MissionControlTable,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-
-import ContentWrapper from '../../content-wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
  *
@@ -27,7 +26,7 @@ import ContentWrapper from '../../content-wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <ContentWrapper title="Subscriptions">
+    <Wrapper title="Subscriptions">
       <MissionControlTable
         columnHeaders={[
           'Orb',
@@ -50,7 +49,7 @@ export const Subscriptions = ({ licenceInformation }) => {
           )
         }
       />
-    </ContentWrapper>
+    </Wrapper>
   );
 };
 

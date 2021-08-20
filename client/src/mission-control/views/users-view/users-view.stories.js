@@ -15,7 +15,7 @@ import UsersView from './users-view.component';
 const mockStore = createMockStore([thunk]);
 
 export default {
-  title: 'Mission Control/Users View',
+  title: 'Mission Control/Users',
 };
 
 const Template = ({ users }) => (

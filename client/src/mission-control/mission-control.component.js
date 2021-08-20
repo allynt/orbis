@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Grid,
   makeStyles,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { push } from 'connected-react-router';
@@ -28,27 +28,34 @@ import ConnectedSubscriptions from './views/subscriptions/subscriptions.componen
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
 
-const useDialogStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     height: '100%',
     backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
   },
-  content: {
-    height: '100%',
-    padding: theme.spacing(2.5),
-  },
-}));
-
-const useTitleStyles = makeStyles(theme => ({
-  root: {
+  title: {
     backgroundColor: theme.palette.background.default,
     borderBottom: `2px solid ${theme.palette.primary.main}`,
-    '& > *': {
-      color: theme.palette.common.white,
+  },
+  content: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 4fr',
+    padding: 0,
+  },
+  sidePanel: { padding: theme.spacing(2, 4) },
+  main: {
+    '&$outer': { position: 'relative', width: '100%', height: '100%' },
+    '&$inner': {
+      position: 'absolute',
+      inset: 0,
+      overflowY: 'auto',
+      padding: theme.spacing(2, 4),
     },
   },
+  outer: {},
+  inner: {},
 }));
 
 export const MissionControl = () => {
@@ -62,8 +69,7 @@ export const MissionControl = () => {
     customer => customer.type === 'MANAGER',
   );
 
-  const dialogStyles = useDialogStyles({});
-  const titleStyles = useTitleStyles({});
+  const styles = useStyles({});
 
   useEffect(() => {
     if (!currentCustomer) {
@@ -94,51 +100,44 @@ export const MissionControl = () => {
   return (
     <Dialog
       open={location.pathname.includes('/mission-control')}
-      classes={dialogStyles}
+      classes={styles}
       maxWidth="xl"
       fullWidth
       onClose={handleClose}
     >
-      <DialogTitle classes={titleStyles}>{`Hello ${user?.name}`}</DialogTitle>
-      <DialogContent>
-        <Grid
-          container
-          spacing={4}
-          wrap="nowrap"
-          className={dialogStyles.content}
-        >
-          <Grid item xs={4} lg={2}>
-            <SidePanel userIsAdmin={userIsAdmin} />
-          </Grid>
-          <Grid item xs={8} lg={10}>
-            <TransitionGroup style={{ position: 'relative' }}>
-              <CSSTransition {...fadeTransitionProps}>
-                <Switch location={location}>
-                  <Route
-                    path="/mission-control/store"
-                    render={renderAdminOnly(Store)}
-                  />
-                  <Route
-                    path="/mission-control/users"
-                    render={renderAdminOnly(UsersView)}
-                  />
-                  <Route
-                    path="/mission-control/subscriptions"
-                    render={renderAdminOnly(ConnectedSubscriptions)}
-                  />
-                  <Route path="/mission-control/support" component={Support} />
-                  <Route
-                    path="/mission-control/account-details"
-                    render={renderAdminOnly(AccountDetails)}
-                  />
-                  <Route exact path="/mission-control">
-                    <Redirect to="/mission-control/support" />
-                  </Route>
-                </Switch>
-              </CSSTransition>
-            </TransitionGroup>
-          </Grid>
-        </Grid>
+      <DialogTitle classes={{ root: styles.title }} disableTypography>
+        <Typography variant="h1">{`Hello ${user?.name}`}</Typography>
+      </DialogTitle>
+      <DialogContent className={styles.content}>
+        <SidePanel className={styles.sidePanel} userIsAdmin={userIsAdmin} />
+        <TransitionGroup className={`${styles.main} ${styles.outer}`}>
+          <CSSTransition {...fadeTransitionProps}>
+            <div className={`${styles.main} ${styles.inner}`}>
+              <Switch location={location}>
+                <Route
+                  path="/mission-control/store"
+                  render={renderAdminOnly(Store)}
+                />
+                <Route
+                  path="/mission-control/users"
+                  render={renderAdminOnly(UsersView)}
+                />
+                <Route
+                  path="/mission-control/subscriptions"
+                  render={renderAdminOnly(ConnectedSubscriptions)}
+                />
+                <Route path="/mission-control/support" component={Support} />
+                <Route
+                  path="/mission-control/account-details"
+                  render={renderAdminOnly(AccountDetails)}
+                />
+                <Route exact path="/mission-control">
+                  <Redirect to="/mission-control/support" />
+                </Route>
+              </Switch>
+            </div>
+          </CSSTransition>
+        </TransitionGroup>
       </DialogContent>
     </Dialog>
   );

@@ -6,8 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { ORGANISATION_TYPES } from 'mission-control/mission-control.constants';
 import { TextField } from 'mission-control/shared-components/text-field.component';
-import { Heading } from 'mission-control/views/store/orbs/heading.component';
-import { Wrapper } from 'mission-control/views/store/orbs/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 import { FIELD_NAMES } from 'utils/validators';
 
 const useStyles = makeStyles(theme => ({
@@ -86,8 +85,7 @@ export const Form = ({ onSubmit, customer = {} }) => {
   }, [formState.isSubmitSuccessful, reset, customer]);
 
   return (
-    <Wrapper className={styles.wrapper}>
-      <Heading>Account Details</Heading>
+    <Wrapper className={styles.wrapper} title="Account Details">
       <form
         className={styles.form}
         onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}

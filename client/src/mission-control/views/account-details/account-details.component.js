@@ -22,27 +22,25 @@ export const AccountDetailsComponent = ({ width }) => {
   const dispatch = useDispatch();
 
   return (
-    <Grid
-      container
-      spacing={width === 'lg' || width === 'xl' ? 4 : 2}
-      style={{ position: 'absolute' }}
-    >
-      <Grid item xs={12} sm={12} md={4}>
-        <Info
-          organisationId={customer.id}
-          organisationName={customer.official_name}
-          userName={user.name}
-        />
+    <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <Grid container spacing={width === 'lg' || width === 'xl' ? 4 : 2}>
+        <Grid item xs={12} sm={12} md={4}>
+          <Info
+            organisationId={customer.id}
+            organisationName={customer.official_name}
+            userName={user.name}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={8}>
+          <Form
+            customer={customer}
+            onSubmit={values =>
+              dispatch(updateCustomer({ ...customer, ...values }))
+            }
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={12} md={8}>
-        <Form
-          customer={customer}
-          onSubmit={values =>
-            dispatch(updateCustomer({ ...customer, ...values }))
-          }
-        />
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

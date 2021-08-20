@@ -23,36 +23,28 @@ const useCellStyles = makeStyles(theme => ({
       borderTopRightRadius: theme.shape.borderRadius,
       borderBottomRightRadius: theme.shape.borderRadius,
     },
-    padding: theme.spacing(0.75, 1.25),
     border: 'none',
-    maxWidth: '8rem',
   },
   head: {
     fontSize: '0.875rem',
     backgroundColor: 'transparent',
     border: '0',
+    padding: theme.spacing(0, 2),
   },
   body: {
     ...theme.typography.body1,
   },
-  stickyHeader: {},
 }));
 
-export const MissionControlTableCell = ({ children = null, ...props }) => {
+export const MissionControlTableCell = props => {
   const styles = useCellStyles({});
-  return (
-    <TableCell classes={styles} {...props}>
-      {children}
-    </TableCell>
-  );
+  return <TableCell classes={styles} {...props} />;
 };
 
 const useTableStyles = makeStyles(theme => ({
-  container: {
-    padding: `0 ${theme.spacing(6.5)}`,
-  },
   table: {
-    borderSpacing: `0 ${theme.spacing(1.25)}`,
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
   },
 }));
 
@@ -99,17 +91,9 @@ export const MissionControlTable = ({
     setCurrentPage(0);
   };
 
-  const handlePrevClick = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const handleNextClick = () => {
-    setCurrentPage(currentPage + 1);
-  };
-
   return (
-    <TableContainer className={styles.container}>
-      <Table stickyHeader className={styles.table}>
+    <TableContainer>
+      <Table className={styles.table}>
         <TableHead>
           <TableRow>
             {columnHeaders?.map(column => (
@@ -128,8 +112,6 @@ export const MissionControlTable = ({
           pageCount={Math.ceil(rows?.length / rowsPerPage)}
           handleChangeRowsPerPage={handleChangeRowsPerPage}
           handleChangePage={handleChangePage}
-          handlePrevClick={handlePrevClick}
-          handleNextClick={handleNextClick}
         />
       ) : null}
     </TableContainer>

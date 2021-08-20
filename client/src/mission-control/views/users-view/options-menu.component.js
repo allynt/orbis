@@ -18,6 +18,10 @@ export const OptionsMenu = ({ anchorEl, children, onButtonClick, onClose }) => {
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={onClose}
+        transformOrigin={{
+          vertical: -35,
+          horizontal: 'right',
+        }}
       >
         {children}
       </Menu>
