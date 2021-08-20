@@ -201,6 +201,7 @@ jobs:
 
           REPO_OWNER="$(dirname "$GITHUB_REPOSITORY")"
           REPO_NAME="$(basename "$GITHUB_REPOSITORY")"
+          HEAD_SHA="$(git rev-parse HEAD)"
 
           if [[ "$GITHUB_REF" == "refs/heads/master" ]]; then
             node createDeployment.js \
@@ -208,7 +209,7 @@ jobs:
               --repo-owner "$REPO_OWNER" \
               --repo-name "$REPO_NAME" \
               deploy-primary \
-              --commit "$(git rev-parse HEAD)"
+              --commit "$HEAD_SHA"
 
 
           else
@@ -217,6 +218,6 @@ jobs:
               --repo-owner "$REPO_OWNER" \
               --repo-name "$REPO_NAME" \
               deploy-associated-prs \
-              --commit "$(git rev-parse HEAD)"
+              --commit "$HEAD_SHA"
 
           fi
