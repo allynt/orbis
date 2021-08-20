@@ -4,7 +4,7 @@ import {
   TableRow,
   SvgIcon,
   makeStyles,
-  Link,
+  IconButton,
   TableSortLabel,
 } from '@astrosat/astrosat-ui';
 
@@ -33,12 +33,17 @@ const UserDocumentRow = ({ title, date, url }) => {
     <TableRow>
       <MissionControlTableCell>{title}</MissionControlTableCell>
       <MissionControlTableCell>{date}</MissionControlTableCell>
-      <MissionControlTableCell>
-        <Link href={url} rel="noopener noreferrer" target="_blank">
+      <MissionControlTableCell padding="checkbox">
+        <IconButton
+          component="a"
+          href={url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <SvgIcon className={styles.icon}>
             <PdfIcon />
           </SvgIcon>
-        </Link>
+        </IconButton>
       </MissionControlTableCell>
     </TableRow>
   );
@@ -46,7 +51,7 @@ const UserDocumentRow = ({ title, date, url }) => {
 
 export const TEST_DOCUMENTS = [
   {
-    title: 'Test-title-1',
+    title: 'Test-title-3',
     date: '02-05-2020',
   },
   {
@@ -54,36 +59,8 @@ export const TEST_DOCUMENTS = [
     date: '01-05-2020',
   },
   {
-    title: 'Test-title-3',
+    title: 'Test-title-1',
     date: '03-05-2020',
-  },
-  {
-    title: 'Test-title-4',
-    date: '04-05-2020',
-  },
-  {
-    title: 'Test-title-10',
-    date: '05-05-2020',
-  },
-  {
-    title: 'Test-title-5',
-    date: '06-05-2020',
-  },
-  {
-    title: 'Test-title-6',
-    date: '07-05-2020',
-  },
-  {
-    title: 'Test-title-7',
-    date: '08-05-2020',
-  },
-  {
-    title: 'Test-title-8',
-    date: '09-05-2020',
-  },
-  {
-    title: 'Test-title-9',
-    date: '10-05-2020',
   },
 ];
 
