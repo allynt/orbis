@@ -15,7 +15,9 @@ const Template = args => {
   return (
     <Provider
       store={mockStore({
-        missionControl: {},
+        accounts: {
+          user: { id: 1 },
+        },
       })}
     >
       <MemoryRouter initialEntries={[args.initialEntries]}>

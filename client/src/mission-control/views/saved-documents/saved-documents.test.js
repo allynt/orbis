@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
@@ -12,18 +13,46 @@ const mockStore = createMockStore([thunk]);
 
 const DEFAULT_ROUTE = 'mission-control/saved-documents';
 
-const TEST_DOCUMENTS = [
+export const TEST_DOCUMENTS = [
   {
     title: 'Test-title-1',
-    date: '12-05-2020',
+    date: '01-05-2020',
   },
   {
     title: 'Test-title-2',
-    date: '12-06-2020',
+    date: '02-05-2020',
   },
   {
     title: 'Test-title-3',
-    date: '12-07-2020',
+    date: '03-05-2020',
+  },
+  {
+    title: 'Test-title-4',
+    date: '04-05-2020',
+  },
+  {
+    title: 'Test-title-10',
+    date: '05-05-2020',
+  },
+  {
+    title: 'Test-title-5',
+    date: '06-05-2020',
+  },
+  {
+    title: 'Test-title-6',
+    date: '07-05-2020',
+  },
+  {
+    title: 'Test-title-7',
+    date: '08-05-2020',
+  },
+  {
+    title: 'Test-title-8',
+    date: '09-05-2020',
+  },
+  {
+    title: 'Test-title-9',
+    date: '10-05-2020',
   },
 ];
 
@@ -31,8 +60,8 @@ const renderComponent = ({ initialEntries = [DEFAULT_ROUTE] }) => {
   const utils = render(
     <Provider
       store={mockStore({
-        missionControl: {
-          savedDocuments: TEST_DOCUMENTS,
+        accounts: {
+          user: { id: 1 },
         },
       })}
     >
@@ -44,9 +73,12 @@ const renderComponent = ({ initialEntries = [DEFAULT_ROUTE] }) => {
   return { ...utils };
 };
 
-describe('Saved Documents', () => {
-  it('renders asaved documents table', () => {
+describe('<Saved Documents />', () => {
+  it('renders a saved documents table', () => {
     const { getByText } = renderComponent({});
+
+    userEvent.click(getByText('5'));
+    userEvent.click(getByText('10'));
 
     TEST_DOCUMENTS.forEach(doc => {
       expect(getByText(doc.title)).toBeInTheDocument();
