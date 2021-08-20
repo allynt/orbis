@@ -86,4 +86,5 @@ export const FIELD_NAMES = {
   registeredNumber: 'registeredNumber',
   startDate: 'startDate',
   endDate: 'endDate',
+  vatNumber: 'vatNumber',
 };

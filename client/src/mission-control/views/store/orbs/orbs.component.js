@@ -7,9 +7,55 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { Heading } from './heading.component';
+import { Wrapper } from '../../../shared-components/wrapper.component';
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
-import { Wrapper } from './wrapper.component';
+
+/**
+ * @param {number} index
+ * @param {number} total
+ * @param {number} columns
+ * @param {{x: number, y: number}} max
+ */
+export const getBorderRadiuses = (
+  index,
+  total,
+  columns,
+  max,
+  borderRadius = 10,
+) => {
+  const radiuses = {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
+  };
+  const coords = { x: index % columns, y: Math.floor(index / columns) };
+  //=== Top Left ====
+  if (index === 0) {
+    radiuses.borderTopLeftRadius = borderRadius;
+  }
+  //=== Top Right ====
+  if (
+    coords.y === 0 &&
+    (max.y === 0 ? coords.x === max.x : index + 1 === columns)
+  ) {
+    radiuses.borderTopRightRadius = borderRadius;
+  }
+  //=== Bottom Right ====
+  if (
+    (coords.x === max.x && coords.y === max.y) ||
+    (total % columns !== 0 &&
+      coords.y === max.y - 1 &&
+      coords.x + 1 === columns)
+  ) {
+    radiuses.borderBottomRightRadius = borderRadius;
+  }
+  //=== Bottom Left ====
+  if (coords.x === 0 && coords.y === max.y) {
+    radiuses.borderBottomLeftRadius = borderRadius;
+  }
+  return radiuses;
+};
 
 /**
  * @param {{
@@ -26,14 +72,21 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
   if (smDown) cols = 2;
   if (xsDown) cols = 1;
 
+  const max = {
+    x: (orbs.length - 1) % cols,
+    y: Math.floor((orbs.length - 1) / cols),
+  };
+
   return (
-    <Wrapper maxWidth={false}>
-      <Heading>Orbs</Heading>
-      <ImageList cols={cols} gap={16} rowHeight="auto">
+    <Wrapper title="Orbs">
+      <ImageList cols={cols} gap={8} rowHeight="auto">
         {!isLoading
-          ? orbs.map(orb => (
+          ? orbs.map((orb, index) => (
               <ImageListItem key={orb.id}>
-                <OrbCard orb={orb} />
+                <OrbCard
+                  orb={orb}
+                  style={getBorderRadiuses(index, orbs.length, cols, max)}
+                />
               </ImageListItem>
             ))
           : Array(3)

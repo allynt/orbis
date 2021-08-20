@@ -14,7 +14,7 @@ import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
 import { Link } from 'react-router-dom';
 
-import { Wrapper } from '../orbs/wrapper.component';
+import { Wrapper } from '../../../shared-components/wrapper.component';
 
 const MAX_USERS = 30;
 const selectOptions = new Array(MAX_USERS).fill().map((_, i) => (
@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   back: { padding: '4px 5px', width: 'fit-content' },
   icon: { transform: 'rotate(180deg)' },
   image: {
+    aspectRatio: '16/9',
     width: '100%',
     maxWidth: theme.typography.pxToRem(640),
     objectFit: 'cover',
@@ -99,7 +100,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
   const { images, name, description } = orb;
 
   return (
-    <Wrapper className={styles.wrapper} maxWidth={false}>
+    <Wrapper className={styles.wrapper}>
       <Button
         // @ts-ignore
         role="link"

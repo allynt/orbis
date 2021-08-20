@@ -1,3 +1,5 @@
+import base64
+
 from rest_framework import serializers
 
 from drf_yasg2.utils import swagger_serializer_method
@@ -30,15 +32,27 @@ class OrbSerializer(serializers.ModelSerializer):
             "licence_cost",
         )
 
-    images = serializers.SerializerMethodField(method_name="get_image_files")
+    logo = serializers.SerializerMethodField(method_name="get_logo_b64")
+    images = serializers.SerializerMethodField(method_name="get_images_files")
+
+    @swagger_serializer_method(serializer_or_field=serializers.CharField())
+    def get_logo_b64(self, obj):
+        """
+        takes a logo SVG file and returns a base64 encoding of the data
+        """
+        if obj.logo:
+            logo_data = obj.logo.read()
+            return base64.b64encode(logo_data)
 
     @swagger_serializer_method(
         serializer_or_field=serializers.ListField(
             child=serializers.CharField()
         )
     )
-    def get_image_files(self, obj):
-        # extract the "file" field from the OrbImageSerializer
+    def get_images_files(self, obj):
+        """
+        extracts just the "file" field from the OrbImageSerializer
+        """
         image_serializer = OrbImageSerializer(
             obj.images.all(), context=self.context, many=True
         )

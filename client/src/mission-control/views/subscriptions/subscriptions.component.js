@@ -1,22 +1,15 @@
 import React from 'react';
 
-import {
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@astrosat/astrosat-ui';
+import { TableRow } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
 import {
   MissionControlTable,
-  MissionControlTableRow,
   MissionControlTableCell,
 } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-
-import ContentWrapper from '../../content-wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
  *
@@ -33,9 +26,14 @@ import ContentWrapper from '../../content-wrapper.component';
  */
 export const Subscriptions = ({ licenceInformation }) => {
   return (
-    <ContentWrapper title="Subscriptions">
+    <Wrapper title="Subscriptions">
       <MissionControlTable
-        columnHeaders={['Subscription', 'Purchased', 'Active', 'Available']}
+        columnHeaders={[
+          'Orb',
+          'Purchased Licences',
+          'Assigned to Users',
+          'Available to Assign',
+        ]}
         noDataMessage="No Subscriptions Available"
         rows={
           licenceInformation &&
@@ -51,7 +49,7 @@ export const Subscriptions = ({ licenceInformation }) => {
           )
         }
       />
-    </ContentWrapper>
+    </Wrapper>
   );
 };
 

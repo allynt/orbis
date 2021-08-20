@@ -72,6 +72,7 @@ type Customer = {
   country?: string;
   address?: string;
   postcode?: string;
+  vat_number?: string;
   licences?: Licence[];
 };
 

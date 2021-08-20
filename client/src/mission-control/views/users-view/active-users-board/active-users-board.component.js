@@ -28,6 +28,10 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1, 4),
     minWidth: '10rem',
   },
+  menu: {
+    minWidth: `calc(10rem - ${theme.spacing(2)})`,
+    margin: theme.spacing(0, 1),
+  },
 }));
 /**
  * @param {{
@@ -96,10 +100,10 @@ const ActiveUserRow = ({
         {customerUser?.user?.name}
       </MissionControlTableCell>
       <MissionControlTableCell>
-        {getLicenceInfo(licences)}
+        {customerUser?.user?.email}
       </MissionControlTableCell>
       <MissionControlTableCell>
-        {customerUser?.user?.email}
+        {getLicenceInfo(licences)}
       </MissionControlTableCell>
       <MissionControlTableCell>
         <Button
@@ -118,11 +122,12 @@ const ActiveUserRow = ({
             : USER_LABELS.standard}
         </Button>
         <Menu
+          classes={{ list: styles.menu }}
           id="role-menu"
           anchorEl={roleAnchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+          transformOrigin={{
+            vertical: -40,
+            horizontal: 'left',
           }}
           open={!!roleAnchorEl}
           onClose={handleRoleMenuClose}
@@ -133,6 +138,8 @@ const ActiveUserRow = ({
               : USER_LABELS.admin}
           </MenuItem>
         </Menu>
+      </MissionControlTableCell>
+      <MissionControlTableCell padding="checkbox">
         <OptionsMenu
           anchorEl={optionsAnchorEl}
           onButtonClick={handleOptionsButtonClick}
@@ -168,7 +175,7 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
-  const columnHeaders = ['Users', 'Orb Access', 'Email', 'Type'];
+  const columnHeaders = ['Users', 'Email', 'Orb Access', 'Type'];
 
   /**
    * @param {import('typings').CustomerUser} customerUser

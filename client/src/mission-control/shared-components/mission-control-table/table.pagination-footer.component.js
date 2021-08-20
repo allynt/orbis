@@ -1,14 +1,13 @@
 import React from 'react';
 
 import {
-  Box,
   Button,
-  Typography,
-  TableFooter,
+  makeStyles,
+  MenuItem,
   Pagination,
   Select,
-  MenuItem,
-  makeStyles,
+  TableFooter,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -16,44 +15,58 @@ import clsx from 'clsx';
 import { ROWS_PER_PAGE_OPTIONS } from 'mission-control/mission-control.constants';
 
 const useStyles = makeStyles(theme => ({
-  layout: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   footer: {
-    width: '100%',
-  },
-  showEntries: {
-    width: 'fit-content',
-  },
-  buttons: {
-    width: 'fit-content',
-  },
-  button: {
-    padding: '0',
-    boxShadow: 'none',
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.common.white,
-    height: '2rem',
-  },
-  prevButton: {
-    borderRadius: '5px 0 0 5px',
-  },
-  nextButton: {
-    borderRadius: '0 5px 5px 0',
-  },
-  pagination: {
-    flexWrap: 'nowrap',
-    height: '2rem',
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.common.white,
-    '& Button': {
-      borderRadius: '0',
-      margin: '0',
-      padding: '0',
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    alignItems: 'center',
+    '& $pagination': {
+      marginBottom: theme.spacing(1),
     },
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      '& $pagination': {
+        marginBottom: 0,
+        marginLeft: 'auto',
+      },
+    },
+  },
+  pagination: {},
+  button: {
+    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: theme.typography.pxToRem(14),
+    minWidth: 0,
+    padding: theme.spacing(1, 1.5),
+    borderRadius: 0,
+    backgroundColor: theme.palette.background.default,
+    transition: theme.transitions.create(
+      ['background-color', 'box-shadow', 'border', 'color'],
+      {
+        duration: theme.transitions.duration.short,
+      },
+    ),
+    '&$selected': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
+    },
+  },
+  page: {
+    color: theme.palette.grey[500],
+  },
+  previous: {
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderBottomLeftRadius: theme.shape.borderRadius,
+    borderRight: `1px solid ${theme.palette.grey[700]}`,
+  },
+  next: {
+    borderTopRightRadius: theme.shape.borderRadius,
+    borderBottomRightRadius: theme.shape.borderRadius,
+    borderLeft: `1px solid ${theme.palette.grey[700]}`,
+  },
+  selected: {},
+  select: {
+    backgroundColor: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(1, 2),
   },
 }));
 
@@ -63,50 +76,46 @@ export const TablePaginationFooter = ({
   pageCount,
   handleChangeRowsPerPage,
   handleChangePage,
-  handlePrevClick,
-  handleNextClick,
 }) => {
   const styles = useStyles({});
   return (
-    <TableFooter className={clsx(styles.layout, styles.footer)}>
-      <Box className={clsx(styles.layout, styles.showEntries)}>
-        <Typography variant="h3">Show</Typography>
+    <TableFooter className={styles.footer}>
+      <Typography component="div">
+        Show{' '}
         <Select
+          inputProps={{ 'aria-label': 'Change number of entries' }}
+          classes={{ root: styles.select }}
+          disableUnderline
+          fullWidth={false}
           value={rowsPerPage}
           onChange={e => handleChangeRowsPerPage(e.target.value)}
         >
           {ROWS_PER_PAGE_OPTIONS.map(entry => (
-            <MenuItem value={entry}>{entry}</MenuItem>
+            <MenuItem key={entry} value={entry}>
+              {entry}
+            </MenuItem>
           ))}
-        </Select>
-        <Typography variant="h3">Entries</Typography>
-      </Box>
+        </Select>{' '}
+        Entries
+      </Typography>
 
-      <Box className={clsx(styles.layout, styles.buttons)}>
-        <Button
-          className={clsx(styles.button, styles.prevButton)}
-          onClick={handlePrevClick}
-          disabled={currentPage === 1}
-        >
-          Prev
-        </Button>
-        <Pagination
-          className={clsx(styles.layout, styles.pagination)}
-          hideNextButton
-          hidePrevButton
-          color="primary"
-          page={currentPage}
-          count={pageCount}
-          onChange={handleChangePage}
-        />
-        <Button
-          className={clsx(styles.button, styles.nextButton)}
-          onClick={handleNextClick}
-          disabled={currentPage === pageCount}
-        >
-          Next
-        </Button>
-      </Box>
+      <Pagination
+        className={styles.pagination}
+        page={currentPage}
+        count={pageCount}
+        onChange={handleChangePage}
+        renderItem={({ type, selected, page, ...rest }) => (
+          // @ts-ignore
+          <Button
+            className={clsx(styles.button, styles[type], {
+              [styles.selected]: selected,
+            })}
+            {...rest}
+          >
+            {type === 'page' ? page : type === 'previous' ? 'Prev' : 'Next'}
+          </Button>
+        )}
+      />
     </TableFooter>
   );
 };

@@ -13,7 +13,7 @@ from astrosat_users.models.models_users import UserRegistrationStageType
 from astrosat_users.tests.utils import *
 
 from orbis.models import OrderType, OrderItem, Order, Licence
-from orbis.views.views_orders import IsAdminOrManager
+from orbis.views.views_orders import IsManagerPermission
 
 from .factories import *
 
@@ -26,15 +26,14 @@ def create_order():
     def _create_order(data):
 
         order_attr_keys = ["user", "customer", "order_type", "cost"]
-        order_attrs = {
-            key: data[key] for key in order_attr_keys if key in data
-        }
+        order_attrs = {key: data[key] for key in order_attr_keys if key in data}
         order = OrderFactory(**order_attrs)
 
         item_attr_keys = ["orb", "n_licences", "cost", "subscription_period"]
         for item_data in data["items"]:
             item_attrs = {
-                key: item_data[key] for key in item_attr_keys if key in item_data
+                key: item_data[key]
+                for key in item_attr_keys if key in item_data
             }
             if "subscription_period" not in item_attrs:
                 item_attrs["subscription_period"] = timedelta(days=365)
@@ -54,10 +53,8 @@ def create_order():
     return _create_order
 
 
-
 @pytest.mark.django_db
 class TestOrders:
-
     def test_create_order(self, user, create_order, mock_storage):
 
         N_LICENCES = 10
@@ -74,13 +71,10 @@ class TestOrders:
             "user": user,
             "customer": customer,
             "order_type": order_type,
-            "items": [
-                {
-                    "orb": orb,
-                    "n_licences": N_LICENCES,
-                }
-            ]
-
+            "items": [{
+                "orb": orb,
+                "n_licences": N_LICENCES,
+            }]
         }
         order = create_order(order_data)
         order_item = order.items.first()
@@ -105,13 +99,10 @@ class TestOrders:
             "user": user,
             "customer": customer,
             "order_type": order_type,
-            "items": [
-                {
-                    "orb": orb,
-                    "n_licences": 10,
-                }
-            ]
-
+            "items": [{
+                "orb": orb,
+                "n_licences": 10,
+            }]
         }
         order = create_order(order_data)
         order_item = order.items.first()
@@ -140,8 +131,9 @@ class TestOrders:
     def test_expiration(self, mock_storage):
 
         order_items = [
-            OrderItemFactory(n_licences=10, subscription_period=timedelta(days=365))
-            for _ in range(10)
+            OrderItemFactory(
+                n_licences=10, subscription_period=timedelta(days=365)
+            ) for _ in range(10)
         ]
 
         assert OrderItem.objects.count() == 10
@@ -165,7 +157,6 @@ class TestOrders:
 
 @pytest.mark.django_db
 class TestOrderViews:
-
     def test_create_order(self, user, api_client, mock_storage):
 
         N_LICENCES = 10
@@ -177,12 +168,10 @@ class TestOrderViews:
         order_type = OrderTypeFactory(cost_modifier=1.0)
         order_data = {
             "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": N_LICENCES,
-                }
-            ]
+            "items": [{
+                "orb": orb.name,
+                "n_licences": N_LICENCES,
+            }]
         }
 
         client = api_client(user)
@@ -199,7 +188,9 @@ class TestOrderViews:
         assert content["user"] == user.email
         assert content["cost"] == 10.0
         assert content["items"][0]["cost"] == 10.0
-        assert content["items"][0]["subscription_period"] == duration_string(timedelta(days=365))
+        assert content["items"][0]["subscription_period"] == duration_string(
+            timedelta(days=365)
+        )
 
     def test_create_order_custom_cost(self, user, api_client, mock_storage):
 
@@ -214,12 +205,10 @@ class TestOrderViews:
         order_data = {
             "order_type": order_type.name,
             "cost": CUSTOM_COST,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                }
-            ]
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+            }]
         }
 
         client = api_client(user)
@@ -231,7 +220,9 @@ class TestOrderViews:
         order = Order.objects.get(uuid=content["id"])
         assert order.cost == content["cost"] == CUSTOM_COST
 
-    def test_create_order_cannot_specify_expiration_and_subscription_duration(self, user, api_client, mock_storage):
+    def test_create_order_cannot_specify_expiration_and_subscription_duration(
+        self, user, api_client, mock_storage
+    ):
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
@@ -240,15 +231,14 @@ class TestOrderViews:
 
         order_type = OrderTypeFactory()
         order_data = {
-            "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                    "subscription_period": timedelta(days=365),
-                    "expiration": timezone.now(),
-                }
-            ]
+            "order_type":
+                order_type.name,
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+                "subscription_period": timedelta(days=365),
+                "expiration": timezone.now(),
+            }]
         }
 
         client = api_client(user)
@@ -257,10 +247,14 @@ class TestOrderViews:
         assert status.is_client_error(response.status_code)
 
         assert response.json()["items"] == [{
-            drf_settings.NON_FIELD_ERRORS_KEY: ["'expiration' or 'subscription_period' can be provided, but not both."]
+            drf_settings.NON_FIELD_ERRORS_KEY: [
+                "'expiration' or 'subscription_period' can be provided, but not both."
+            ]
         }]
 
-    def test_create_order_custom_expiration(self, user, api_client, mock_storage):
+    def test_create_order_custom_expiration(
+        self, user, api_client, mock_storage
+    ):
 
         CUSTOM_EXPIRATION = timezone.now() + timedelta(days=1)
 
@@ -271,14 +265,13 @@ class TestOrderViews:
 
         order_type = OrderTypeFactory()
         order_data = {
-            "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                    "expiration": CUSTOM_EXPIRATION
-                }
-            ]
+            "order_type":
+                order_type.name,
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+                "expiration": CUSTOM_EXPIRATION
+            }]
         }
 
         client = api_client(user)
@@ -305,21 +298,21 @@ class TestOrderViews:
         order_type = OrderTypeFactory()
         order_data = {
             "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                }
-            ]
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+            }]
         }
 
         client = api_client(user)
         url = reverse("orders-list", args=[customer.id])
         response = client.post(url, order_data, format="json")
         assert status.is_client_error(response.status_code)
-        assert response.json()["detail"] == IsAdminOrManager.message
+        assert response.json()["detail"] == IsManagerPermission.message
 
-    def test_create_order_resets_registration_stage(self, user, api_client, mock_storage):
+    def test_create_order_resets_registration_stage(
+        self, user, api_client, mock_storage
+    ):
 
         customer = CustomerFactory(logo=None)
         customer.add_user(user, type="MANAGER", status="ACTIVE")
@@ -329,12 +322,10 @@ class TestOrderViews:
         order_type = OrderTypeFactory(cost_modifier=1.0)
         order_data = {
             "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                }
-            ]
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+            }]
         }
 
         user.registration_stage = UserRegistrationStageType.ORDER
@@ -351,19 +342,17 @@ class TestOrderViews:
     def test_create_order_assigns_licence(self, user, api_client, mock_storage):
 
         customer = CustomerFactory(logo=None)
-        (customer_user, _) = customer.add_user(user, type="MANAGER", status="ACTIVE")
+        customer_user, _ = customer.add_user(user, type="MANAGER", status="ACTIVE")
 
         orb = OrbFactory()
 
         order_type = OrderTypeFactory()
         order_data = {
             "order_type": order_type.name,
-            "items": [
-                {
-                    "orb": orb.name,
-                    "n_licences": 10,
-                }
-            ]
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+            }]
         }
 
         client = api_client(user)
@@ -371,5 +360,11 @@ class TestOrderViews:
         response = client.post(url, order_data, format="json")
         assert status.is_success(response.status_code)
 
-        assert Licence.objects.filter(orb=orb, customer_user__isnull=True).count() == 9
-        assert Licence.objects.filter(orb=orb, customer_user=customer_user).count() == 1
+        assert Licence.objects.filter(
+            orb=orb,
+            customer_user__isnull=True,
+        ).count() == 9
+        assert Licence.objects.filter(
+            orb=orb,
+            customer_user=customer_user,
+        ).count() == 1

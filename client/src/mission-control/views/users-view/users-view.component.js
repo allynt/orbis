@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
 import {
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
   CloseIcon,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   styled,
 } from '@astrosat/astrosat-ui';
@@ -14,11 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import {
-  DIALOG_VIEW,
   ADMIN_STATUS,
+  DIALOG_VIEW,
 } from 'mission-control//mission-control.constants';
-import ContentWrapper from 'mission-control/content-wrapper.component';
 import {
+  createCustomerUser,
+  deleteCustomerUser,
   inviteCustomerUser,
   selectActiveUsers,
   selectAvailableLicences,
@@ -28,9 +28,8 @@ import {
   selectOneAdminRemaining,
   selectPendingUsers,
   updateCustomerUser,
-  createCustomerUser,
-  deleteCustomerUser,
 } from 'mission-control/mission-control.slice.js';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board/active-users-board.component';
 import {
@@ -155,8 +154,8 @@ const UsersView = () => {
   };
 
   return (
-    <Box position="absolute" display="flex" flexDirection="column" width="100%">
-      <ContentWrapper title="Users">
+    <>
+      <Wrapper title="Users">
         <QuickView
           activeUsers={activeUsers?.length}
           pendingUsers={pendingUsers?.length}
@@ -171,15 +170,15 @@ const UsersView = () => {
           onEditUserClick={onEditUserClick}
           onDeleteUserClick={onDeleteUserClick}
         />
-      </ContentWrapper>
-      <ContentWrapper title="Pending Invitations">
+      </Wrapper>
+      <Wrapper title="Pending Invitations">
         <PendingInvitationsBoard
           pendingUsers={pendingUsers}
           customer={currentCustomer}
           onResendInvitationClick={onResendInvitationClick}
           onWithdrawInvitationClick={onWithdrawInvitationClick}
         />
-      </ContentWrapper>
+      </Wrapper>
       <Dialog
         open={!!dialogForm}
         onClose={() => setDialogForm(null)}
@@ -194,7 +193,7 @@ const UsersView = () => {
         <DialogTitle>{dialogForm?.type}</DialogTitle>
         <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
-    </Box>
+    </>
   );
 };
 
