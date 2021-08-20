@@ -95,13 +95,7 @@ export const MissionControlTable = ({
     <TableContainer>
       <Table className={styles.table}>
         <TableHead>
-          <TableRow>
-            {columnHeaders?.map(column => (
-              <MissionControlTableCell align="left">
-                {column}
-              </MissionControlTableCell>
-            ))}
-          </TableRow>
+          <TableRow>{columnHeaders}</TableRow>
         </TableHead>
         <TableBody>{getTableContent(rows)}</TableBody>
       </Table>

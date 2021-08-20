@@ -180,7 +180,13 @@ export const ActiveUsersBoard = ({
   onEditUserClick,
   onDeleteUserClick,
 }) => {
-  const columnHeaders = ['Users', 'Email', 'Activated Licences', 'Type'];
+  const columnHeaders = ['Users', 'Email', 'Activated Licences', 'Type'].map(
+    column => (
+      <MissionControlTableCell key={column} align="left">
+        {column}
+      </MissionControlTableCell>
+    ),
+  );
 
   /**
    * @param {import('typings').CustomerUser} customerUser
