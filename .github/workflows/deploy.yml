@@ -29,8 +29,8 @@ jobs:
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Set the Deployment Status on Success
         if: success()
@@ -84,8 +84,8 @@ jobs:
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Set the Deployment Status on Success
         if: success()
@@ -139,8 +139,8 @@ jobs:
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Set the Deployment Status on Success
         if: success()
@@ -194,8 +194,8 @@ jobs:
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Set the Deployment Status on Success
         if: success()

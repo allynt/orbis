@@ -39,6 +39,7 @@ import {
   WithdrawUserInvitationForm,
 } from './forms';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
+import QuickView from './quick-view/quick-view.component';
 
 const DialogCloseButton = styled(IconButton)({
   position: 'absolute',
@@ -56,12 +57,6 @@ const UsersView = () => {
   const pendingUsers = useSelector(selectPendingUsers);
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [dialogForm, setDialogForm] = useState(null);
-
-  const quickViewData = {
-    active: activeUsers?.length,
-    pending: pendingUsers?.length,
-    available: availableLicences?.length,
-  };
 
   /** @param { import('typings').CustomerUser } user */
   const onChangeRoleClick = user =>
@@ -161,14 +156,17 @@ const UsersView = () => {
   return (
     <>
       <Wrapper title="Users">
+        <QuickView
+          activeUsers={activeUsers?.length}
+          pendingUsers={pendingUsers?.length}
+          onCreateUserClick={onCreateUserClick}
+        />
         <ActiveUsersBoard
           currentUser={user}
           activeCustomerUsers={activeUsers}
           oneAdminRemaining={oneAdminRemaining}
           customer={currentCustomer}
-          quickViewData={quickViewData}
           onChangeRoleClick={onChangeRoleClick}
-          onCreateUserClick={onCreateUserClick}
           onEditUserClick={onEditUserClick}
           onDeleteUserClick={onDeleteUserClick}
         />

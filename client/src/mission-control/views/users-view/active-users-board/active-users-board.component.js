@@ -17,7 +17,6 @@ import {
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
-import QuickView from './quick-view/quick-view.component';
 
 const USER_LABELS = {
   standard: 'Standard',
@@ -162,9 +161,7 @@ const ActiveUserRow = ({
  *   currentUser: import('typings').User
  *   customer?: import('typings').Customer
  *   oneAdminRemaining?: boolean
- *   quickViewData?: import('./quick-view/quick-view.component').QuickViewData
  *   onChangeRoleClick?: (customerUser: import('typings').CustomerUser) => void
- *   onCreateUserClick?: (customerUser: import('typings').CustomerUser) => void
  *   onEditUserClick?: (customerUser: import('typings').CustomerUser) => void
  *   onDeleteUserClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
@@ -174,9 +171,7 @@ export const ActiveUsersBoard = ({
   currentUser,
   customer,
   oneAdminRemaining,
-  quickViewData,
   onChangeRoleClick,
-  onCreateUserClick,
   onEditUserClick,
   onDeleteUserClick,
 }) => {
@@ -229,13 +224,10 @@ export const ActiveUsersBoard = ({
   });
 
   return (
-    <>
-      <QuickView data={quickViewData} onCreateUserClick={onCreateUserClick} />
-      <MissionControlTable
-        rows={rows}
-        columnHeaders={columnHeaders}
-        noDataMessage="No Active Users"
-      />
-    </>
+    <MissionControlTable
+      rows={rows}
+      columnHeaders={columnHeaders}
+      noDataMessage="No Active Users"
+    />
   );
 };

@@ -104,13 +104,13 @@ jobs:
       - name: Setup dependencies
         run: ./scripts/ci-setup-deps.sh
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Build Docker Image
         run: |
           export GIT_SHA=${GITHUB_SHA:0:7}
-          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg GITHUB_REGISTRY_TOKEN=${{ secrets.GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
+          DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg GITHUB_REGISTRY_TOKEN=${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
@@ -128,8 +128,8 @@ jobs:
       - name: Setup dependencies
         run: ./scripts/ci-setup-deps.sh
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
 
       - name: Build Docker Image
         run: |

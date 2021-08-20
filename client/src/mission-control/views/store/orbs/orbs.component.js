@@ -78,7 +78,7 @@ export const Orbs = ({ orbs = [], isLoading = false }) => {
   };
 
   return (
-    <Wrapper title="Orbis Store">
+    <Wrapper title="Orbs">
       <ImageList cols={cols} gap={8} rowHeight="auto">
         {!isLoading
           ? orbs.map((orb, index) => (
