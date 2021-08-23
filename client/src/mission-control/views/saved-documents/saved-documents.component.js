@@ -103,6 +103,7 @@ const SavedDocuments = ({ documents }) => {
     {
       initialState: { pageSize: 5, sortBy: [{ id: 'date', desc: true }] },
       disableSortRemove: true,
+      autoResetPage: false,
       data,
       columns,
     },
