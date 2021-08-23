@@ -1,53 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
-  TableRow,
-  SvgIcon,
-  makeStyles,
   IconButton,
-  TableSortLabel,
+  makeStyles,
+  SvgIcon,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
 } from '@astrosat/astrosat-ui';
 
-import { ArrowDropDown } from '@material-ui/icons';
-import { useSelector } from 'react-redux';
-
-import { userSelector } from 'accounts/accounts.selectors';
-import apiClient from 'api-client';
-import {
-  MissionControlTable,
-  MissionControlTableCell,
-} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
+  table: {
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
+  },
   icon: {
     cursor: 'pointer',
   },
 }));
-
-const UserDocumentRow = ({ title, date, url }) => {
-  const styles = useStyles({});
-  return (
-    <TableRow>
-      <MissionControlTableCell>{title}</MissionControlTableCell>
-      <MissionControlTableCell>{date}</MissionControlTableCell>
-      <MissionControlTableCell padding="checkbox">
-        <IconButton
-          component="a"
-          href={url}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <SvgIcon className={styles.icon}>
-            <PdfIcon />
-          </SvgIcon>
-        </IconButton>
-      </MissionControlTableCell>
-    </TableRow>
-  );
-};
 
 export const TEST_DOCUMENTS = [
   {
@@ -65,59 +41,31 @@ export const TEST_DOCUMENTS = [
 ];
 
 const SavedDocuments = ({ documents = TEST_DOCUMENTS }) => {
-  const user = useSelector(userSelector);
-  const [sortProperty, setSetProperty] = useState('date');
-
-  const columnHeaders = ['Name', 'Date'].map(column => (
-    <MissionControlTableCell sortDirection="desc" key={column} align="left">
-      <TableSortLabel
-        active={sortProperty === column.toLowerCase()}
-        direction="desc"
-        onClick={() => setSetProperty(column.toLowerCase())}
-        IconComponent={ArrowDropDown}
-      >
-        {column}
-      </TableSortLabel>
-    </MissionControlTableCell>
-  ));
-
-  const url = apiClient.documents.userGuideUrl();
-
-  // useEffect(() => {
-  //   if (!!documents || !user) return;
-
-  //   const url = `http://www.localhost:8000/api/mission-control/saved-documents/${user.id}`;
-
-  //   (() => {
-  //     fetch(url, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
-  //       .then(data => data.json())
-  //       .then(docs => setDocuments(docs));
-  //   })();
-  // }, [documents, user]);
-
-  const sortHandler = (a, b) => {
-    return a[sortProperty] > b[sortProperty]
-      ? 1
-      : a[sortProperty] < b[sortProperty]
-      ? -1
-      : 0;
-  };
-
-  const rows = [...documents]?.sort(sortHandler).map(({ title, date }) => {
-    return <UserDocumentRow title={title} date={date} url={url} />;
-  });
-
+  const styles = useStyles({});
   return (
     <Wrapper title="Saved Documents">
-      <MissionControlTable
-        rows={rows}
-        columnHeaders={columnHeaders}
-        noDataMessage="No Documents"
-      />
+      <Table className={styles.table}>
+        <TableHead>
+          <MissionControlTableCell>Name</MissionControlTableCell>
+          <MissionControlTableCell>Data</MissionControlTableCell>
+          <MissionControlTableCell />
+        </TableHead>
+        <TableBody>
+          {documents.map(({ title, date }) => (
+            <TableRow key={`${title}-${date}`}>
+              <MissionControlTableCell>{title}</MissionControlTableCell>
+              <MissionControlTableCell>{date}</MissionControlTableCell>
+              <MissionControlTableCell padding="checkbox">
+                <IconButton>
+                  <SvgIcon className={styles.icon}>
+                    <PdfIcon />
+                  </SvgIcon>
+                </IconButton>
+              </MissionControlTableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Wrapper>
   );
 };

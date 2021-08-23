@@ -34,9 +34,6 @@ describe('<Saved Documents />', () => {
   it('renders a saved documents table', () => {
     const { getByText } = renderComponent({});
 
-    userEvent.click(getByText('5'));
-    userEvent.click(getByText('10'));
-
     TEST_DOCUMENTS.forEach(doc => {
       expect(getByText(doc.title)).toBeInTheDocument();
       expect(getByText(doc.date)).toBeInTheDocument();
@@ -44,11 +41,31 @@ describe('<Saved Documents />', () => {
   });
 
   it('sorts alphabetically when icon is clicked', () => {
-    const { getByText } = renderComponent({});
+    const { getByRole, getAllByRole } = renderComponent({});
+
+    userEvent.click(getByRole('button', { name: 'Name' }));
+
+    const [, ...rows] = getAllByRole('row');
+
+    const sortedRowNames = ['Test-title-1', 'Test-title-2', 'Test-title-3'];
+
+    rows.forEach((row, i) => {
+      expect(row.firstChild).toHaveTextContent(sortedRowNames[i]);
+    });
   });
 
   it('sorts by date when icon is clicked', () => {
-    const { getByText } = renderComponent({});
+    const { getByRole, getAllByRole } = renderComponent({});
+
+    userEvent.click(getByRole('button', { name: 'Date' }));
+
+    const [, ...rows] = getAllByRole('row');
+
+    const sortedRowNames = ['01-05-2020', '02-05-2020', '03-05-2020'];
+
+    rows.forEach((row, i) => {
+      expect(row.secondChild).toHaveTextContent(sortedRowNames[i]);
+    });
   });
 
   it('opens document in new tab when PDF icon is clicked', () => {
