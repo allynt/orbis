@@ -11,9 +11,10 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import { useTable } from 'react-table';
+import { usePagination, useTable } from 'react-table';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
@@ -72,12 +73,20 @@ const SavedDocuments = ({ documents }) => {
     getTableProps,
     getTableBodyProps,
     headers,
-    rows,
     prepareRow,
-  } = useTable({
-    data,
-    columns,
-  });
+    page,
+    pageCount,
+    setPageSize,
+    gotoPage,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      initialState: { pageSize: 5 },
+      data,
+      columns,
+    },
+    usePagination,
+  );
 
   return (
     <Wrapper title="Saved Documents">
@@ -93,7 +102,7 @@ const SavedDocuments = ({ documents }) => {
           </TableRow>
         </TableHead>
         <TableBody {...getTableBodyProps()}>
-          {rows.map(row => {
+          {page.map(row => {
             prepareRow(row);
             return (
               // eslint-disable-next-line react/jsx-key
@@ -114,6 +123,13 @@ const SavedDocuments = ({ documents }) => {
           })}
         </TableBody>
       </Table>
+      <TablePaginationFooter
+        currentPage={pageIndex + 1}
+        rowsPerPage={pageSize}
+        pageCount={pageCount}
+        handleChangeRowsPerPage={setPageSize}
+        handleChangePage={(_, page) => gotoPage(page - 1)}
+      />
     </Wrapper>
   );
 };
