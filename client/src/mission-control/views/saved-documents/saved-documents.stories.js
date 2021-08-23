@@ -1,33 +1,21 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import faker from 'faker/locale/en_GB';
 
 import SavedDocuments from './saved-documents.component';
 
-const mockStore = createMockStore([thunk]);
+const TEST_DOCUMENTS = new Array(20).fill().map(() => ({
+  id: faker.random.uuid(),
+  title: faker.name.jobTitle(),
+  date: faker.date.past().toISOString(),
+  url: faker.image.imageUrl(),
+}));
 
 export default { title: 'Mission Control/Saved Documents' };
 
-const Template = args => {
-  return (
-    <Provider
-      store={mockStore({
-        accounts: {
-          user: { id: 1 },
-        },
-      })}
-    >
-      <MemoryRouter initialEntries={[args.initialEntries]}>
-        <SavedDocuments {...args} />
-      </MemoryRouter>
-    </Provider>
-  );
-};
+const Template = args => <SavedDocuments {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  initialEntries: '/mission-control/saved-documents',
+  documents: TEST_DOCUMENTS,
 };

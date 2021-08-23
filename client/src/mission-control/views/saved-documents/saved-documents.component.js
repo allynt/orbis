@@ -25,22 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const TEST_DOCUMENTS = [
-  {
-    title: 'Test-title-3',
-    date: '02-05-2020',
-  },
-  {
-    title: 'Test-title-2',
-    date: '01-05-2020',
-  },
-  {
-    title: 'Test-title-1',
-    date: '03-05-2020',
-  },
-];
-
-const SavedDocuments = ({ documents = TEST_DOCUMENTS }) => {
+const SavedDocuments = ({ documents }) => {
   const styles = useStyles({});
   return (
     <Wrapper title="Saved Documents">
@@ -51,7 +36,7 @@ const SavedDocuments = ({ documents = TEST_DOCUMENTS }) => {
           <MissionControlTableCell />
         </TableHead>
         <TableBody>
-          {documents.map(({ title, date }) => (
+          {documents?.map(({ title, date }) => (
             <TableRow key={`${title}-${date}`}>
               <MissionControlTableCell>{title}</MissionControlTableCell>
               <MissionControlTableCell>{date}</MissionControlTableCell>
