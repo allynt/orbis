@@ -28,6 +28,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const SortableHeader = ({ children, column }) => (
+  // eslint-disable-next-line react/jsx-key
+  <MissionControlTableCell {...column.getHeaderProps()}>
+    <TableSortLabel
+      {...column.getSortByToggleProps()}
+      IconComponent={ArrowDropDown}
+      active={column.isSorted}
+      direction={column.isSortedDesc ? 'desc' : 'asc'}
+    >
+      {children}
+    </TableSortLabel>
+  </MissionControlTableCell>
+);
+
 /**
  *
  * @param {{
@@ -44,9 +58,12 @@ const SavedDocuments = ({ documents }) => {
 
   const columns = useMemo(
     () => [
-      { Header: 'Title', accessor: 'title' },
       {
-        Header: 'Date',
+        Header: props => <SortableHeader {...props}>Title</SortableHeader>,
+        accessor: 'title',
+      },
+      {
+        Header: props => <SortableHeader {...props}>Date</SortableHeader>,
         accessor: 'date',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
@@ -97,21 +114,7 @@ const SavedDocuments = ({ documents }) => {
     <Wrapper title="Saved Documents">
       <Table className={styles.table} {...getTableProps()}>
         <TableHead>
-          <TableRow>
-            {headers.map(column => (
-              // eslint-disable-next-line react/jsx-key
-              <MissionControlTableCell {...column.getHeaderProps()}>
-                <TableSortLabel
-                  {...column.getSortByToggleProps()}
-                  IconComponent={ArrowDropDown}
-                  active={column.isSorted}
-                  direction={column.isSortedDesc ? 'desc' : 'asc'}
-                >
-                  {column.render('Header')}
-                </TableSortLabel>
-              </MissionControlTableCell>
-            ))}
-          </TableRow>
+          <TableRow>{headers.map(column => column.render('Header'))}</TableRow>
         </TableHead>
         <TableBody {...getTableBodyProps()}>
           {page.map(row => {
