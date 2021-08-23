@@ -1,5 +1,4 @@
 import { ReactComponent as ProfileIcon } from './side-panel/side-panel-icons/profile-icon.svg';
-import { ReactComponent as SavedDocumentsIcon } from './side-panel/side-panel-icons/saved-documents.svg';
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as SubscriptionsIcon } from './side-panel/side-panel-icons/subscriptions-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
@@ -12,11 +11,6 @@ export const VIEWS = {
     route: '/store',
     Icon: StoreIcon,
     admin: true,
-  },
-  savedDocuments: {
-    label: 'Saved Documents',
-    route: '/saved-documents',
-    Icon: SavedDocumentsIcon,
   },
   accountDetails: {
     label: 'Account Details',
