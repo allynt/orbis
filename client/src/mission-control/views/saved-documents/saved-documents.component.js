@@ -8,8 +8,10 @@ import {
   TableBody,
   TableHead,
   TableRow,
+  TableSortLabel,
 } from '@astrosat/astrosat-ui';
 
+import { ArrowDropDown } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { usePagination, useSortBy, useTable } from 'react-table';
 
@@ -83,6 +85,7 @@ const SavedDocuments = ({ documents }) => {
   } = useTable(
     {
       initialState: { pageSize: 5, sortBy: [{ id: 'date', desc: true }] },
+      disableSortRemove: true,
       data,
       columns,
     },
@@ -98,7 +101,14 @@ const SavedDocuments = ({ documents }) => {
             {headers.map(column => (
               // eslint-disable-next-line react/jsx-key
               <MissionControlTableCell {...column.getHeaderProps()}>
-                {column.render('Header')}
+                <TableSortLabel
+                  {...column.getSortByToggleProps()}
+                  IconComponent={ArrowDropDown}
+                  active={column.isSorted}
+                  direction={column.isSortedDesc ? 'desc' : 'asc'}
+                >
+                  {column.render('Header')}
+                </TableSortLabel>
               </MissionControlTableCell>
             ))}
           </TableRow>
