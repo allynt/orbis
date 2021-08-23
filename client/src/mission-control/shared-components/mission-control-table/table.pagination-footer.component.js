@@ -79,7 +79,7 @@ export const TablePaginationFooter = ({
 }) => {
   const styles = useStyles({});
   return (
-    <TableFooter className={styles.footer}>
+    <TableFooter component="div" className={styles.footer}>
       <Typography component="div">
         Show{' '}
         <Select
