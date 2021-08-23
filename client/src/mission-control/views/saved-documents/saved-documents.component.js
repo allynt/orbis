@@ -28,38 +28,6 @@ const useStyles = makeStyles(theme => ({
 /**
  *
  * @param {{
- *  cell: import('react-table').Cell<{
- *    id: string,
- *    title: string,
- *    date: string,
- *    url: string
- *  }>}} props
- */
-const Cell = ({ cell }) => {
-  if (cell.column.id === 'date') {
-    return format(new Date(cell.value), 'dd-MM-yyyy');
-  }
-
-  if (cell.column.id === 'url') {
-    return (
-      <IconButton
-        component="a"
-        href={cell.value}
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        <SvgIcon>
-          <PdfIcon />
-        </SvgIcon>
-      </IconButton>
-    );
-  }
-  return cell.render('Cell');
-};
-
-/**
- *
- * @param {{
  *  documents: {
  *    id: string,
  *    title: string,
@@ -74,8 +42,26 @@ const SavedDocuments = ({ documents }) => {
   const columns = useMemo(
     () => [
       { Header: 'Title', accessor: 'title' },
-      { Header: 'Date', accessor: 'date' },
-      { accessor: 'url' },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
+      },
+      {
+        accessor: 'url',
+        Cell: ({ value }) => (
+          <IconButton
+            component="a"
+            href={value}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <SvgIcon>
+              <PdfIcon />
+            </SvgIcon>
+          </IconButton>
+        ),
+      },
     ],
     [],
   );
@@ -114,8 +100,13 @@ const SavedDocuments = ({ documents }) => {
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => (
                   // eslint-disable-next-line react/jsx-key
-                  <MissionControlTableCell {...cell.getCellProps()}>
-                    {cell.render(Cell)}
+                  <MissionControlTableCell
+                    {...cell.getCellProps({
+                      // @ts-ignore
+                      padding: cell.column.id === 'url' ? 'checkbox' : null,
+                    })}
+                  >
+                    {cell.render('Cell')}
                   </MissionControlTableCell>
                 ))}
               </TableRow>
