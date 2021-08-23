@@ -25,6 +25,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ *
+ * @param {{
+ *  documents: {
+ *    id: string,
+ *    title: string,
+ *    date: string,
+ *    url: string
+ *  }[]
+ * }} props
+ */
 const SavedDocuments = ({ documents }) => {
   const styles = useStyles({});
   return (
@@ -36,8 +47,8 @@ const SavedDocuments = ({ documents }) => {
           <MissionControlTableCell />
         </TableHead>
         <TableBody>
-          {documents?.map(({ title, date }) => (
-            <TableRow key={`${title}-${date}`}>
+          {documents?.map(({ id, title, date }) => (
+            <TableRow key={id}>
               <MissionControlTableCell>{title}</MissionControlTableCell>
               <MissionControlTableCell>{date}</MissionControlTableCell>
               <MissionControlTableCell padding="checkbox">
