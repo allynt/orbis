@@ -11,7 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import { usePagination, useTable } from 'react-table';
+import { usePagination, useSortBy, useTable } from 'react-table';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
@@ -50,6 +50,7 @@ const SavedDocuments = ({ documents }) => {
       },
       {
         accessor: 'url',
+        disableSortBy: true,
         Cell: ({ value }) => (
           <IconButton
             component="a"
@@ -81,10 +82,11 @@ const SavedDocuments = ({ documents }) => {
     state: { pageIndex, pageSize },
   } = useTable(
     {
-      initialState: { pageSize: 5 },
+      initialState: { pageSize: 5, sortBy: [{ id: 'date', desc: true }] },
       data,
       columns,
     },
+    useSortBy,
     usePagination,
   );
 
