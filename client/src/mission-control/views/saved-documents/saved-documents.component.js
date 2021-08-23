@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   IconButton,
@@ -9,6 +9,8 @@ import {
   TableHead,
   TableRow,
 } from '@astrosat/astrosat-ui';
+
+import { useTable } from 'react-table';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
@@ -38,28 +40,58 @@ const useStyles = makeStyles(theme => ({
  */
 const SavedDocuments = ({ documents }) => {
   const styles = useStyles({});
+
+  const columns = useMemo(
+    () => [
+      { Header: 'Title', accessor: 'title' },
+      { Header: 'Date', accessor: 'date' },
+      { accessor: 'url' },
+    ],
+    [],
+  );
+
+  const data = useMemo(() => documents, [documents]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headers,
+    rows,
+    prepareRow,
+  } = useTable({
+    data,
+    columns,
+  });
+
   return (
     <Wrapper title="Saved Documents">
-      <Table className={styles.table}>
+      <Table className={styles.table} {...getTableProps()}>
         <TableHead>
-          <MissionControlTableCell>Name</MissionControlTableCell>
-          <MissionControlTableCell>Data</MissionControlTableCell>
-          <MissionControlTableCell />
-        </TableHead>
-        <TableBody>
-          {documents?.map(({ id, title, date }) => (
-            <TableRow key={id}>
-              <MissionControlTableCell>{title}</MissionControlTableCell>
-              <MissionControlTableCell>{date}</MissionControlTableCell>
-              <MissionControlTableCell padding="checkbox">
-                <IconButton>
-                  <SvgIcon className={styles.icon}>
-                    <PdfIcon />
-                  </SvgIcon>
-                </IconButton>
+          <TableRow>
+            {headers.map(column => (
+              // eslint-disable-next-line react/jsx-key
+              <MissionControlTableCell {...column.getHeaderProps()}>
+                {column.render('Header')}
               </MissionControlTableCell>
-            </TableRow>
-          ))}
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody {...getTableBodyProps()}>
+          {rows.map(row => {
+            prepareRow(row);
+            return (
+              // eslint-disable-next-line react/jsx-key
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map(cell => (
+                  // eslint-disable-next-line react/jsx-key
+                  <MissionControlTableCell {...cell.getCellProps()}>
+                    {cell.render('Cell')}
+                  </MissionControlTableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+          =
         </TableBody>
       </Table>
     </Wrapper>
