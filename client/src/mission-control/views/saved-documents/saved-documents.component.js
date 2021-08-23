@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@astrosat/astrosat-ui';
 
+import { format } from 'date-fns';
 import { useTable } from 'react-table';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
@@ -22,10 +23,39 @@ const useStyles = makeStyles(theme => ({
     borderCollapse: 'separate',
     borderSpacing: theme.spacing(0, 2),
   },
-  icon: {
-    cursor: 'pointer',
-  },
 }));
+
+/**
+ *
+ * @param {{
+ *  cell: import('react-table').Cell<{
+ *    id: string,
+ *    title: string,
+ *    date: string,
+ *    url: string
+ *  }>}} props
+ */
+const Cell = ({ cell }) => {
+  if (cell.column.id === 'date') {
+    return format(new Date(cell.value), 'dd-MM-yyyy');
+  }
+
+  if (cell.column.id === 'url') {
+    return (
+      <IconButton
+        component="a"
+        href={cell.value}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        <SvgIcon>
+          <PdfIcon />
+        </SvgIcon>
+      </IconButton>
+    );
+  }
+  return cell.render('Cell');
+};
 
 /**
  *
@@ -85,13 +115,12 @@ const SavedDocuments = ({ documents }) => {
                 {row.cells.map(cell => (
                   // eslint-disable-next-line react/jsx-key
                   <MissionControlTableCell {...cell.getCellProps()}>
-                    {cell.render('Cell')}
+                    {cell.render(Cell)}
                   </MissionControlTableCell>
                 ))}
               </TableRow>
             );
           })}
-          =
         </TableBody>
       </Table>
     </Wrapper>
