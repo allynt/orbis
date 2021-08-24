@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   CloseIcon,
@@ -85,14 +85,20 @@ const UsersView = () => {
     });
 
   /** @param { import('typings').CustomerUser } user */
-  const onResendInvitationClick = user => dispatch(inviteCustomerUser(user));
+  const onResendInvitationClick = useCallback(
+    user => dispatch(inviteCustomerUser(user)),
+    [dispatch],
+  );
 
   /** @param { import('typings').CustomerUser } user */
-  const onWithdrawInvitationClick = user =>
-    setDialogForm({
-      type: DIALOG_VIEW.withdrawInvitation,
-      user,
-    });
+  const onWithdrawInvitationClick = useCallback(
+    user =>
+      setDialogForm({
+        type: DIALOG_VIEW.withdrawInvitation,
+        user,
+      }),
+    [],
+  );
 
   /**
    * @param {{
