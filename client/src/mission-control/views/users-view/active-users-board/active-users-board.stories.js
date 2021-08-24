@@ -1,61 +1,73 @@
 import React from 'react';
 
-import {
-  customer,
-  activeUsers,
-  pendingUsers,
-} from 'mission-control/test-story-data';
+import faker from 'faker/locale/en_GB';
+
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
   title: 'Mission Control/Users/Active Users Board',
   argTypes: {
-    onChangeRoleClick: { action: 'onChangeRoleClick' },
-    onEditUserClick: { action: 'onEditUserClick' },
-    onDeleteUserClick: { action: 'onDeleteUserClick' },
+    onChangeRoleClick: { action: true },
+    onEditUserClick: { action: true },
+    onDeleteUserClick: { action: true },
   },
 };
 
-const Template = args => <ActiveUsersBoard {...args} />;
+const activeUsers = Array(20)
+  .fill()
+  .map(() => {
+    const firstName = faker.name.firstName(),
+      lastName = faker.name.lastName();
+    return {
+      id: faker.random.uuid(),
+      status: 'ACTIVE',
+      type: faker.random.arrayElement(['MEMBER', 'MANAGER']),
+      licences: Array(1 + faker.random.number(5))
+        .fill()
+        .map(() => faker.random.uuid()),
+      invitation_date: faker.date.past().toISOString(),
+      user: {
+        name: `${firstName} ${lastName}`,
+        email: faker.internet.email(firstName, lastName),
+      },
+    };
+  });
 
-const availableLicences = customer?.licences.filter(
-  licence => !licence.customer_user,
-);
+const licenceIds = activeUsers.flatMap(({ licences }) => licences);
+const orbs = Array(20)
+  .fill()
+  .map(() => faker.company.bsNoun());
 
-const quickViewData = {
-  active: activeUsers?.length,
-  pending: pendingUsers?.length,
-  available: availableLicences?.length,
+const customer = {
+  licences: licenceIds.map(id => ({
+    id,
+    orb: faker.random.arrayElement(orbs),
+    customer_user: activeUsers.find(user => user.licences.includes(id)).id,
+  })),
 };
+
+const Template = args => (
+  <Wrapper title="Active Users">
+    <ActiveUsersBoard {...args} />
+  </Wrapper>
+);
 
 export const NoUsers = Template.bind({});
 NoUsers.args = {
   customer,
-  quickViewData,
 };
 
 export const NoCustomer = Template.bind({});
 NoCustomer.args = {
   activeCustomerUsers: activeUsers,
-  quickViewData,
 };
 
 export const CustomerButNoLicences = Template.bind({});
 CustomerButNoLicences.args = {
   activeCustomerUsers: activeUsers,
   customer: { name: 'Company Name' },
-  quickViewData: {
-    active: activeUsers?.length,
-    pending: pendingUsers?.length,
-    available: null,
-  },
-};
-
-export const NoLicenceData = Template.bind({});
-NoLicenceData.args = {
-  activeCustomerUsers: activeUsers,
-  customer,
 };
 
 export const OnlyOneUser = Template.bind({});
@@ -68,5 +80,4 @@ export const Default = Template.bind({});
 Default.args = {
   activeCustomerUsers: activeUsers,
   customer,
-  quickViewData,
 };
