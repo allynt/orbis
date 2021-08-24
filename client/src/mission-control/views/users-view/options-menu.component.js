@@ -2,7 +2,27 @@ import * as React from 'react';
 
 import { IconButton, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
 
-export const OptionsMenu = ({ children, closeOnClick = true }) => {
+const DefaultButton = ({ active, ...rest }) => (
+  <IconButton
+    aria-label="Options"
+    color={active ? 'primary' : 'default'}
+    {...rest}
+  >
+    <OptionsIcon data-testid="options-icon" />
+  </IconButton>
+);
+
+export const OptionsMenu = ({
+  children,
+  closeOnClick = true,
+  Button = DefaultButton,
+  id = 'options-menu',
+  transformOrigin = {
+    vertical: -35,
+    horizontal: 'right',
+  },
+  ...rest
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   /**
@@ -14,23 +34,19 @@ export const OptionsMenu = ({ children, closeOnClick = true }) => {
 
   return (
     <>
-      <IconButton
-        aria-label="Options"
-        aria-controls="options-menu"
-        color={!!anchorEl ? 'primary' : 'default'}
+      <Button
+        aria-controls={id}
+        active={!!anchorEl}
         onClick={handleButtonClick}
-      >
-        <OptionsIcon data-testid="options-icon" />
-      </IconButton>
+      />
       <Menu
-        id="options-menu"
+        id={id}
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={handleClose}
-        transformOrigin={{
-          vertical: -35,
-          horizontal: 'right',
-        }}
+        // @ts-ignore
+        transformOrigin={transformOrigin}
+        {...rest}
       >
         {React.Children.map(children, child => {
           return child

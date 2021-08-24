@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Button,
   TableRow,
   makeStyles,
-  Menu,
   MenuItem,
   TriangleIcon,
   Table,
@@ -26,61 +25,6 @@ import { OptionsMenu } from '../options-menu.component';
 const USER_LABELS = {
   standard: 'Standard',
   admin: 'Admin',
-};
-
-const RoleCell = ({ customerUser, oneAdminRemaining, onRoleClick }) => {
-  const styles = useStyles();
-  const [roleAnchorEl, setRoleAnchorEl] = useState(null);
-
-  const handleRoleButtonClick = e => {
-    setRoleAnchorEl(e.currentTarget);
-  };
-
-  const handleRoleMenuClose = () => {
-    setRoleAnchorEl(null);
-  };
-
-  const handleRoleClick = () => {
-    onRoleClick();
-    setRoleAnchorEl(null);
-  };
-
-  return (
-    <>
-      <Button
-        className={styles.statusButton}
-        aria-controls="role-menu"
-        color="secondary"
-        onClick={handleRoleButtonClick}
-        disabled={
-          customerUser.type === ADMIN_STATUS.manager && oneAdminRemaining
-        }
-        size="small"
-        endIcon={<TriangleIcon style={{ transform: 'rotate(180deg)' }} />}
-      >
-        {customerUser.type === ADMIN_STATUS.manager
-          ? USER_LABELS.admin
-          : USER_LABELS.standard}
-      </Button>
-      <Menu
-        classes={{ list: styles.menu }}
-        id="role-menu"
-        anchorEl={roleAnchorEl}
-        transformOrigin={{
-          vertical: -40,
-          horizontal: 'left',
-        }}
-        open={!!roleAnchorEl}
-        onClose={handleRoleMenuClose}
-      >
-        <MenuItem onClick={handleRoleClick}>
-          {customerUser.type === ADMIN_STATUS.manager
-            ? USER_LABELS.standard
-            : USER_LABELS.admin}
-        </MenuItem>
-      </Menu>
-    </>
-  );
 };
 
 const useStyles = makeStyles(theme => ({
@@ -139,11 +83,44 @@ export const ActiveUsersBoard = ({
         id: 'role',
         accessor: v => v,
         Cell: ({ value: customerUser }) => (
-          <RoleCell
-            customerUser={customerUser}
-            onRoleClick={() => onChangeRoleClick(customerUser)}
-            oneAdminRemaining={oneAdminRemaining}
-          />
+          <OptionsMenu
+            classes={{ list: styles.menu }}
+            id="role-menu"
+            transformOrigin={{
+              vertical: -40,
+              horizontal: 'left',
+            }}
+            Button={props => (
+              <Button
+                className={styles.statusButton}
+                aria-controls="role-menu"
+                color="secondary"
+                disabled={
+                  customerUser.type === ADMIN_STATUS.manager &&
+                  oneAdminRemaining
+                }
+                size="small"
+                endIcon={
+                  <TriangleIcon style={{ transform: 'rotate(180deg)' }} />
+                }
+                {...props}
+              >
+                {customerUser.type === ADMIN_STATUS.manager
+                  ? USER_LABELS.admin
+                  : USER_LABELS.standard}
+              </Button>
+            )}
+          >
+            <MenuItem
+              onClick={() => {
+                onChangeRoleClick(customerUser);
+              }}
+            >
+              {customerUser.type === ADMIN_STATUS.manager
+                ? USER_LABELS.standard
+                : USER_LABELS.admin}
+            </MenuItem>
+          </OptionsMenu>
         ),
       },
       {
@@ -178,6 +155,8 @@ export const ActiveUsersBoard = ({
       onDeleteUserClick,
       onEditUserClick,
       oneAdminRemaining,
+      styles.menu,
+      styles.statusButton,
     ],
   );
   const data = useMemo(() => activeCustomerUsers ?? [], [activeCustomerUsers]);
