@@ -50,16 +50,10 @@ export const PendingInvitationsBoard = ({
       {
         Header: 'Pending Invitations',
         accessor: 'user.name',
-        Cell: ({ value }) => (
-          <MissionControlTableCell>{value}</MissionControlTableCell>
-        ),
       },
       {
         Header: 'Email',
         accessor: 'user.email',
-        Cell: ({ value }) => {
-          return <MissionControlTableCell>{value}</MissionControlTableCell>;
-        },
       },
       {
         Header: 'Licence Type',
@@ -72,38 +66,26 @@ export const PendingInvitationsBoard = ({
           if (customer && customer.licences) {
             licences = getUserLicences(customerUser, customer);
           }
-          return (
-            <MissionControlTableCell>
-              {getLicenceInfo(licences)}
-            </MissionControlTableCell>
-          );
+          return getLicenceInfo(licences);
         },
       },
       {
         Header: 'Invitation Sent',
         accessor: 'invitation_date',
-        Cell: ({ value }) => {
-          return (
-            <MissionControlTableCell>
-              {format(new Date(value), DATE_FORMAT)}
-            </MissionControlTableCell>
-          );
-        },
+        Cell: ({ value }) => format(new Date(value), DATE_FORMAT),
       },
       {
         Header: 'Invited',
         id: 'resend',
         accessor: v => v,
         Cell: ({ value: customerUser }) => (
-          <MissionControlTableCell>
-            <Button
-              className={styles.resendButton}
-              size="small"
-              onClick={() => onResendInvitationClick(customerUser)}
-            >
-              Resend Invitation
-            </Button>
-          </MissionControlTableCell>
+          <Button
+            className={styles.resendButton}
+            size="small"
+            onClick={() => onResendInvitationClick(customerUser)}
+          >
+            Resend Invitation
+          </Button>
         ),
       },
       {
@@ -129,15 +111,13 @@ export const PendingInvitationsBoard = ({
           };
 
           return (
-            <MissionControlTableCell padding="checkbox">
-              <OptionsMenu
-                anchorEl={optionsAnchorEl}
-                onButtonClick={handleOptionsButtonClick}
-                onClose={handleOptionsMenuClose}
-              >
-                <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-              </OptionsMenu>
-            </MissionControlTableCell>
+            <OptionsMenu
+              anchorEl={optionsAnchorEl}
+              onButtonClick={handleOptionsButtonClick}
+              onClose={handleOptionsMenuClose}
+            >
+              <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
+            </OptionsMenu>
           );
         },
       },
@@ -180,7 +160,17 @@ export const PendingInvitationsBoard = ({
           return (
             // eslint-disable-next-line react/jsx-key
             <TableRow {...row.getRowProps()}>
-              {row.cells.map(cell => cell.render('Cell'))}
+              {row.cells.map(cell => (
+                // eslint-disable-next-line react/jsx-key
+                <MissionControlTableCell
+                  {...cell.getCellProps({
+                    align:
+                      cell.column.id === 'options' ? 'checkbox' : 'inherit',
+                  })}
+                >
+                  {cell.render('Cell')}
+                </MissionControlTableCell>
+              ))}
             </TableRow>
           );
         })}
