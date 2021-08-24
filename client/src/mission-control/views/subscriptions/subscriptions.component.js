@@ -1,15 +1,25 @@
 import React from 'react';
 
-import { TableRow } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+} from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
-import {
-  MissionControlTable,
-  MissionControlTableCell,
-} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
+
+const useStyles = makeStyles(theme => ({
+  table: {
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
+  },
+}));
 
 /**
  *
@@ -25,38 +35,51 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
  * }} props
  */
 export const Subscriptions = ({ licenceInformation }) => {
-  const columnHeaders = [
-    'Orb',
-    'Purchased Licences',
-    'Assigned to Users',
-    'Available to Assign',
-  ].map(
-    column => (
-      <MissionControlTableCell key={column} align="left">
-        {column}
-      </MissionControlTableCell>
-    ),
-  )
-
+  const styles = useStyles();
   return (
     <Wrapper title="Subscriptions">
-      <MissionControlTable
-        columnHeaders={columnHeaders}
-        noDataMessage="No Subscriptions Available"
-        rows={
-          licenceInformation &&
-          Object.entries(licenceInformation).map(
-            ([orb, { active, available, purchased }]) => (
-              <TableRow key={`${orb}-licenses`}>
-                <MissionControlTableCell>{orb}</MissionControlTableCell>
-                <MissionControlTableCell>{purchased}</MissionControlTableCell>
-                <MissionControlTableCell>{active}</MissionControlTableCell>
-                <MissionControlTableCell>{available}</MissionControlTableCell>
-              </TableRow>
-            ),
-          )
-        }
-      />
+      <Table className={styles.table}>
+        <TableHead>
+          <TableRow>
+            <MissionControlTableCell>Orb</MissionControlTableCell>
+            <MissionControlTableCell align="right">
+              Purchased Licences
+            </MissionControlTableCell>
+            <MissionControlTableCell align="right">
+              Assigned to Users
+            </MissionControlTableCell>
+            <MissionControlTableCell align="right">
+              Available to Assign
+            </MissionControlTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {licenceInformation && Object.keys(licenceInformation).length > 0 ? (
+            Object.entries(licenceInformation).map(
+              ([orb, { active, available, purchased }]) => (
+                <TableRow key={`${orb}-licenses`}>
+                  <MissionControlTableCell>{orb}</MissionControlTableCell>
+                  <MissionControlTableCell align="right">
+                    {purchased}
+                  </MissionControlTableCell>
+                  <MissionControlTableCell align="right">
+                    {active}
+                  </MissionControlTableCell>
+                  <MissionControlTableCell align="right">
+                    {available}
+                  </MissionControlTableCell>
+                </TableRow>
+              ),
+            )
+          ) : (
+            <TableRow>
+              <MissionControlTableCell colspan={4} align="center">
+                No Subscriptions Available
+              </MissionControlTableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </Wrapper>
   );
 };
