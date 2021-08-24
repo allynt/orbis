@@ -116,7 +116,11 @@ export const PendingInvitationsBoard = ({
     'Licence Type',
     'Invitation Sent',
     'Invited',
-  ];
+  ].map(column => (
+    <MissionControlTableCell key={column} align="left">
+      {column}
+    </MissionControlTableCell>
+  ));
 
   const rows = pendingUsers?.map(user => (
     <PendingUserRow

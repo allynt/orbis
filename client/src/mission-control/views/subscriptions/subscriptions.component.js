@@ -25,15 +25,23 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
  * }} props
  */
 export const Subscriptions = ({ licenceInformation }) => {
+  const columnHeaders = [
+    'Orb',
+    'Purchased Licences',
+    'Assigned to Users',
+    'Available to Assign',
+  ].map(
+    column => (
+      <MissionControlTableCell key={column} align="left">
+        {column}
+      </MissionControlTableCell>
+    ),
+  )
+
   return (
     <Wrapper title="Subscriptions">
       <MissionControlTable
-        columnHeaders={[
-          'Orb',
-          'Purchased Licences',
-          'Assigned to Users',
-          'Available to Assign',
-        ]}
+        columnHeaders={columnHeaders}
         noDataMessage="No Subscriptions Available"
         rows={
           licenceInformation &&
