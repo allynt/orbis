@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   Button,
@@ -12,6 +12,9 @@ import {
   TableBody,
 } from '@astrosat/astrosat-ui';
 
+// @ts-ignore
+import { useTable } from 'react-table';
+
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 
@@ -21,26 +24,6 @@ import { OptionsMenu } from '../options-menu.component';
 const USER_LABELS = {
   standard: 'Standard',
   admin: 'Admin',
-};
-
-const NameCell = ({ name }) => (
-  <MissionControlTableCell>{name}</MissionControlTableCell>
-);
-
-const EmailCell = ({ email }) => (
-  <MissionControlTableCell>{email}</MissionControlTableCell>
-);
-
-const LicencesCell = ({ customerUser, customer }) => {
-  let licences = null;
-  if (customer && customer.licences) {
-    licences = getUserLicences(customerUser, customer);
-  }
-  return (
-    <MissionControlTableCell>
-      {getLicenceInfo(licences)}
-    </MissionControlTableCell>
-  );
 };
 
 const RoleCell = ({ customerUser, oneAdminRemaining, onRoleClick }) => {
@@ -61,7 +44,7 @@ const RoleCell = ({ customerUser, oneAdminRemaining, onRoleClick }) => {
   };
 
   return (
-    <MissionControlTableCell>
+    <>
       <Button
         className={styles.statusButton}
         aria-controls="role-menu"
@@ -94,7 +77,7 @@ const RoleCell = ({ customerUser, oneAdminRemaining, onRoleClick }) => {
             : USER_LABELS.admin}
         </MenuItem>
       </Menu>
-    </MissionControlTableCell>
+    </>
   );
 };
 
@@ -127,18 +110,16 @@ const OptionsCell = ({
     setOptionsAnchorEl(null);
   };
   return (
-    <MissionControlTableCell padding="checkbox">
-      <OptionsMenu
-        anchorEl={optionsAnchorEl}
-        onButtonClick={handleOptionsButtonClick}
-        onClose={handleOptionsMenuClose}
-      >
-        <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-        {customerUser?.user?.id !== currentUser?.id && (
-          <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
-        )}
-      </OptionsMenu>
-    </MissionControlTableCell>
+    <OptionsMenu
+      anchorEl={optionsAnchorEl}
+      onButtonClick={handleOptionsButtonClick}
+      onClose={handleOptionsMenuClose}
+    >
+      <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+      {customerUser?.user?.id !== currentUser?.id && (
+        <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
+      )}
+    </OptionsMenu>
   );
 };
 
@@ -178,55 +159,104 @@ export const ActiveUsersBoard = ({
   onDeleteUserClick,
 }) => {
   const styles = useStyles();
-  /**
-   * @param {import('typings').CustomerUser} customerUser
-   */
-  const handleRoleClick = customerUser => {
-    onChangeRoleClick(customerUser);
-  };
-
-  /**
-   * @param {import('typings').CustomerUser} customerUser
-   */
-  const handleEditClick = customerUser => {
-    onEditUserClick(customerUser);
-  };
-
-  /**
-   * @param {import('typings').CustomerUser} customerUser
-   */
-  const handleDeleteClick = customerUser => {
-    onDeleteUserClick(customerUser);
-  };
+  const columns = useMemo(
+    () => [
+      { Header: 'Users', accessor: 'user.name' },
+      { Header: 'Email', accessor: 'user.email' },
+      {
+        Header: 'Activated Licences',
+        id: 'licences',
+        accessor: customerUser => {
+          let licences = null;
+          if (customer && customer.licences) {
+            licences = getUserLicences(customerUser, customer);
+          }
+          return getLicenceInfo(licences);
+        },
+      },
+      {
+        Header: 'Type',
+        id: 'role',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => (
+          <RoleCell
+            customerUser={customerUser}
+            onRoleClick={() => onChangeRoleClick(customerUser)}
+            oneAdminRemaining={oneAdminRemaining}
+          />
+        ),
+      },
+      {
+        id: 'options',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => (
+          <OptionsCell
+            customerUser={customerUser}
+            currentUser={currentUser}
+            onDeleteUserClick={() => onDeleteUserClick(customerUser)}
+            onEditUserClick={() => onEditUserClick(customerUser)}
+          />
+        ),
+      },
+    ],
+    [
+      currentUser,
+      customer,
+      onChangeRoleClick,
+      onDeleteUserClick,
+      onEditUserClick,
+      oneAdminRemaining,
+    ],
+  );
+  const data = useMemo(() => activeCustomerUsers ?? [], [activeCustomerUsers]);
+  const {
+    headers,
+    rows,
+    prepareRow,
+    getTableProps,
+    getTableBodyProps,
+  } = useTable({ columns, data });
 
   return (
-    <Table className={styles.table}>
+    <Table {...getTableProps({ className: styles.table })}>
       <TableHead>
-        {['Users', 'Email', 'Activated Licences', 'Type'].map(column => (
-          <MissionControlTableCell key={column} align="left">
-            {column}
-          </MissionControlTableCell>
-        ))}
+        <TableRow>
+          {headers.map(column => (
+            // eslint-disable-next-line react/jsx-key
+            <MissionControlTableCell {...column.getHeaderProps()}>
+              {column.render('Header')}
+            </MissionControlTableCell>
+          ))}
+        </TableRow>
       </TableHead>
-      <TableBody>
-        {activeCustomerUsers?.map(customerUser => (
-          <TableRow key={customerUser.id}>
-            <NameCell name={customerUser?.user?.name} />
-            <EmailCell email={customerUser?.user?.email} />
-            <LicencesCell customer={customer} customerUser={customerUser} />
-            <RoleCell
-              customerUser={customerUser}
-              onRoleClick={() => handleRoleClick(customerUser)}
-              oneAdminRemaining={oneAdminRemaining}
-            />
-            <OptionsCell
-              customerUser={customerUser}
-              currentUser={currentUser}
-              onDeleteUserClick={() => handleDeleteClick(customerUser)}
-              onEditUserClick={() => handleEditClick(customerUser)}
-            />
+      <TableBody {...getTableBodyProps()}>
+        {rows.length ? (
+          rows.map(row => {
+            prepareRow(row);
+            return (
+              // eslint-disable-next-line react/jsx-key
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map(cell => (
+                  // eslint-disable-next-line react/jsx-key
+                  <MissionControlTableCell
+                    {...cell.getCellProps({
+                      padding:
+                        cell.column.id === 'options' ? 'checkbox' : 'inherit',
+                    })}
+                  >
+                    {cell.render('Cell')}
+                  </MissionControlTableCell>
+                ))}
+              </TableRow>
+            );
+          })
+        ) : (
+          <TableRow>
+            <MissionControlTableCell colspan={columns.length}>
+              No Active Users
+            </MissionControlTableCell>
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   );
