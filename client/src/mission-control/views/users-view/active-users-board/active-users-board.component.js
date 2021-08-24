@@ -14,9 +14,11 @@ import {
 
 // @ts-ignore
 import { useTable } from 'react-table';
+import { usePagination } from 'react-table/dist/react-table.development';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -211,53 +213,66 @@ export const ActiveUsersBoard = ({
   const data = useMemo(() => activeCustomerUsers ?? [], [activeCustomerUsers]);
   const {
     headers,
-    rows,
     prepareRow,
     getTableProps,
     getTableBodyProps,
-  } = useTable({ columns, data });
+    page,
+    pageCount,
+    setPageSize,
+    gotoPage,
+    state: { pageIndex, pageSize },
+  } = useTable({ columns, data, initialState: { pageSize: 5 } }, usePagination);
 
   return (
-    <Table {...getTableProps({ className: styles.table })}>
-      <TableHead>
-        <TableRow>
-          {headers.map(column => (
-            // eslint-disable-next-line react/jsx-key
-            <MissionControlTableCell {...column.getHeaderProps()}>
-              {column.render('Header')}
-            </MissionControlTableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-      <TableBody {...getTableBodyProps()}>
-        {rows.length ? (
-          rows.map(row => {
-            prepareRow(row);
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  // eslint-disable-next-line react/jsx-key
-                  <MissionControlTableCell
-                    {...cell.getCellProps({
-                      padding:
-                        cell.column.id === 'options' ? 'checkbox' : 'inherit',
-                    })}
-                  >
-                    {cell.render('Cell')}
-                  </MissionControlTableCell>
-                ))}
-              </TableRow>
-            );
-          })
-        ) : (
+    <>
+      <Table {...getTableProps({ className: styles.table })}>
+        <TableHead>
           <TableRow>
-            <MissionControlTableCell colspan={columns.length}>
-              No Active Users
-            </MissionControlTableCell>
+            {headers.map(column => (
+              // eslint-disable-next-line react/jsx-key
+              <MissionControlTableCell {...column.getHeaderProps()}>
+                {column.render('Header')}
+              </MissionControlTableCell>
+            ))}
           </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        </TableHead>
+        <TableBody {...getTableBodyProps()}>
+          {page.length ? (
+            page.map(row => {
+              prepareRow(row);
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map(cell => (
+                    // eslint-disable-next-line react/jsx-key
+                    <MissionControlTableCell
+                      {...cell.getCellProps({
+                        padding:
+                          cell.column.id === 'options' ? 'checkbox' : 'inherit',
+                      })}
+                    >
+                      {cell.render('Cell')}
+                    </MissionControlTableCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <MissionControlTableCell colspan={columns.length} align="center">
+                No Active Users
+              </MissionControlTableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <TablePaginationFooter
+        currentPage={pageIndex + 1}
+        rowsPerPage={pageSize}
+        pageCount={pageCount}
+        handleChangeRowsPerPage={setPageSize}
+        handleChangePage={(_, page) => gotoPage(page - 1)}
+      />
+    </>
   );
 };
