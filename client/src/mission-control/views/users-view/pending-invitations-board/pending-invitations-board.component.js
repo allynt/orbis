@@ -130,7 +130,7 @@ export const PendingInvitationsBoard = ({
       styles.resendButton,
     ],
   );
-  const data = useMemo(() => pendingUsers, [pendingUsers]);
+  const data = useMemo(() => pendingUsers ?? [], [pendingUsers]);
 
   const {
     headers,
@@ -165,25 +165,33 @@ export const PendingInvitationsBoard = ({
           </TableRow>
         </TableHead>
         <TableBody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  // eslint-disable-next-line react/jsx-key
-                  <MissionControlTableCell
-                    {...cell.getCellProps({
-                      padding:
-                        cell.column.id === 'options' ? 'checkbox' : 'inherit',
-                    })}
-                  >
-                    {cell.render('Cell')}
-                  </MissionControlTableCell>
-                ))}
-              </TableRow>
-            );
-          })}
+          {page.length ? (
+            page.map(row => {
+              prepareRow(row);
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map(cell => (
+                    // eslint-disable-next-line react/jsx-key
+                    <MissionControlTableCell
+                      {...cell.getCellProps({
+                        padding:
+                          cell.column.id === 'options' ? 'checkbox' : 'inherit',
+                      })}
+                    >
+                      {cell.render('Cell')}
+                    </MissionControlTableCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <MissionControlTableCell colspan={columns.length} align="center">
+                No Pending Users
+              </MissionControlTableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       <TablePaginationFooter
