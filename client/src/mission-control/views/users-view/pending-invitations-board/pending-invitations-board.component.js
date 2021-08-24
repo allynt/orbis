@@ -92,35 +92,17 @@ export const PendingInvitationsBoard = ({
       {
         id: 'options',
         accessor: v => v,
-        Cell: ({ value: customerUser }) => {
-          const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-
-          /**
-           * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-           */
-          const handleOptionsButtonClick = e => {
-            setOptionsAnchorEl(e.currentTarget);
-          };
-
-          const handleOptionsMenuClose = () => {
-            setOptionsAnchorEl(null);
-          };
-
-          const handleWithdrawClick = () => {
-            onWithdrawInvitationClick(customerUser);
-            setOptionsAnchorEl(null);
-          };
-
-          return (
-            <OptionsMenu
-              anchorEl={optionsAnchorEl}
-              onButtonClick={handleOptionsButtonClick}
-              onClose={handleOptionsMenuClose}
+        Cell: ({ value: customerUser }) => (
+          <OptionsMenu>
+            <MenuItem
+              onClick={() => {
+                onWithdrawInvitationClick(customerUser);
+              }}
             >
-              <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-            </OptionsMenu>
-          );
-        },
+              Withdraw
+            </MenuItem>
+          </OptionsMenu>
+        ),
       },
     ],
     [

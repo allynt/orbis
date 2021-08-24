@@ -83,48 +83,6 @@ const RoleCell = ({ customerUser, oneAdminRemaining, onRoleClick }) => {
   );
 };
 
-const OptionsCell = ({
-  customerUser,
-  onEditUserClick,
-  onDeleteUserClick,
-  currentUser,
-}) => {
-  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-
-  /**
-   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-   */
-  const handleOptionsButtonClick = e => {
-    setOptionsAnchorEl(e.currentTarget);
-  };
-
-  const handleOptionsMenuClose = () => {
-    setOptionsAnchorEl(null);
-  };
-
-  const handleEditClick = () => {
-    onEditUserClick();
-    setOptionsAnchorEl(null);
-  };
-
-  const handleDeleteClick = () => {
-    onDeleteUserClick();
-    setOptionsAnchorEl(null);
-  };
-  return (
-    <OptionsMenu
-      anchorEl={optionsAnchorEl}
-      onButtonClick={handleOptionsButtonClick}
-      onClose={handleOptionsMenuClose}
-    >
-      <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-      {customerUser?.user?.id !== currentUser?.id && (
-        <MenuItem onClick={handleDeleteClick}>Delete User</MenuItem>
-      )}
-    </OptionsMenu>
-  );
-};
-
 const useStyles = makeStyles(theme => ({
   table: {
     borderCollapse: 'separate',
@@ -192,12 +150,24 @@ export const ActiveUsersBoard = ({
         id: 'options',
         accessor: v => v,
         Cell: ({ value: customerUser }) => (
-          <OptionsCell
-            customerUser={customerUser}
-            currentUser={currentUser}
-            onDeleteUserClick={() => onDeleteUserClick(customerUser)}
-            onEditUserClick={() => onEditUserClick(customerUser)}
-          />
+          <OptionsMenu>
+            <MenuItem
+              onClick={() => {
+                onEditUserClick(customerUser);
+              }}
+            >
+              Edit
+            </MenuItem>
+            {customerUser?.user?.id !== currentUser?.id && (
+              <MenuItem
+                onClick={() => {
+                  onDeleteUserClick(customerUser);
+                }}
+              >
+                Delete User
+              </MenuItem>
+            )}
+          </OptionsMenu>
         ),
       },
     ],
