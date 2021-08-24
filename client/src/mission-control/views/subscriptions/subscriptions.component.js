@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   makeStyles,
@@ -9,9 +9,12 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
+// @ts-ignore
+import { usePagination, useTable } from 'react-table';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 const useStyles = makeStyles(theme => ({
@@ -35,42 +38,86 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 export const Subscriptions = ({ licenceInformation }) => {
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Orb',
+        accessor: 'orb',
+      },
+      { Header: 'Purchased Licences', accessor: 'purchased' },
+      { Header: 'Assigned to Users', accessor: 'active' },
+      { Header: 'Available to Assign', accessor: 'pending' },
+    ],
+    [],
+  );
+  const data = useMemo(
+    () =>
+      licenceInformation && Object.keys(licenceInformation).length > 0
+        ? Object.entries(licenceInformation).map(([orb, values]) => ({
+            orb,
+            ...values,
+          }))
+        : [],
+    [licenceInformation],
+  );
+
+  const {
+    headers,
+    prepareRow,
+    getTableProps,
+    getTableBodyProps,
+    page,
+    pageCount,
+    setPageSize,
+    gotoPage,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      data,
+      columns,
+      initialState: { pageSize: 5 },
+    },
+    usePagination,
+  );
+
   const styles = useStyles();
   return (
     <Wrapper title="Subscriptions">
-      <Table className={styles.table}>
+      <Table {...getTableProps({ className: styles.table })}>
         <TableHead>
           <TableRow>
-            <MissionControlTableCell>Orb</MissionControlTableCell>
-            <MissionControlTableCell align="right">
-              Purchased Licences
-            </MissionControlTableCell>
-            <MissionControlTableCell align="right">
-              Assigned to Users
-            </MissionControlTableCell>
-            <MissionControlTableCell align="right">
-              Available to Assign
-            </MissionControlTableCell>
+            {headers.map(column => (
+              // eslint-disable-next-line react/jsx-key
+              <MissionControlTableCell
+                {...column.getHeaderProps({
+                  align: column.id !== 'orb' ? 'right' : 'left',
+                })}
+              >
+                {column.render('Header')}
+              </MissionControlTableCell>
+            ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {licenceInformation && Object.keys(licenceInformation).length > 0 ? (
-            Object.entries(licenceInformation).map(
-              ([orb, { active, available, purchased }]) => (
-                <TableRow key={`${orb}-licenses`}>
-                  <MissionControlTableCell>{orb}</MissionControlTableCell>
-                  <MissionControlTableCell align="right">
-                    {purchased}
-                  </MissionControlTableCell>
-                  <MissionControlTableCell align="right">
-                    {active}
-                  </MissionControlTableCell>
-                  <MissionControlTableCell align="right">
-                    {available}
-                  </MissionControlTableCell>
+        <TableBody {...getTableBodyProps()}>
+          {page.length ? (
+            page.map(row => {
+              prepareRow(row);
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map(cell => (
+                    // eslint-disable-next-line react/jsx-key
+                    <MissionControlTableCell
+                      {...cell.getCellProps({
+                        align: cell.column.id !== 'orb' ? 'right' : 'left',
+                      })}
+                    >
+                      {cell.render('Cell')}
+                    </MissionControlTableCell>
+                  ))}
                 </TableRow>
-              ),
-            )
+              );
+            })
           ) : (
             <TableRow>
               <MissionControlTableCell colspan={4} align="center">
@@ -80,6 +127,13 @@ export const Subscriptions = ({ licenceInformation }) => {
           )}
         </TableBody>
       </Table>
+      <TablePaginationFooter
+        currentPage={pageIndex + 1}
+        rowsPerPage={pageSize}
+        pageCount={pageCount}
+        handleChangeRowsPerPage={setPageSize}
+        handleChangePage={(_, page) => gotoPage(page - 1)}
+      />
     </Wrapper>
   );
 };
