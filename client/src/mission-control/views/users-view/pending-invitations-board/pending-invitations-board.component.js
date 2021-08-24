@@ -59,9 +59,6 @@ export const PendingInvitationsBoard = ({
         Header: 'Licence Type',
         id: 'licences',
         accessor: customerUser => {
-          return { customerUser, customer };
-        },
-        Cell: ({ value: { customer, customerUser } }) => {
           let licences = null;
           if (customer && customer.licences) {
             licences = getUserLicences(customerUser, customer);
