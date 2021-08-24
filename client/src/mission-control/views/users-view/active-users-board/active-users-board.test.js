@@ -16,7 +16,7 @@ describe('ActiveUsersBoard', () => {
   const onEditUserClick = jest.fn();
   const onDeleteUserClick = jest.fn();
 
-  it.each(cases)("Displays all active user's %s", (_, text) => {
+  it.skip.each(cases)("Displays all active user's %s", (_, text) => {
     const { getByText } = render(
       <ActiveUsersBoard
         activeCustomerUsers={activeUsers}
