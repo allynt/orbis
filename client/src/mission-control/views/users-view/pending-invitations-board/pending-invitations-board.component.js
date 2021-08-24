@@ -22,8 +22,8 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   customerUser?: import('typings/orbis').CustomerUser
- *   customer?: import('typings/orbis').Customer
+ *   customerUser?: import('typings').CustomerUser
+ *   customer?: import('typings').Customer
  *   onResendInvitationClick?: () => void
  *   onWithdrawInvitationClick?: () => void
  * }} props
@@ -98,10 +98,10 @@ const PendingUserRow = ({
 
 /**
  * @param {{
- *   pendingUsers?: import('typings/orbis').CustomerUser[]
- *   customer?: import('typings/orbis').Customer
- *   onResendInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onWithdrawInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   pendingUsers?: import('typings').CustomerUser[]
+ *   customer?: import('typings').Customer
+ *   onResendInvitationClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onWithdrawInvitationClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
  */
 export const PendingInvitationsBoard = ({
