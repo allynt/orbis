@@ -30,7 +30,7 @@ const renderComponent = ({ initialEntries = [DEFAULT_ROUTE] }) => {
   return { ...utils };
 };
 
-describe('<Saved Documents />', () => {
+describe.skip('<Saved Documents />', () => {
   it('renders a saved documents table', () => {
     const { getByText } = renderComponent({});
 

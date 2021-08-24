@@ -9,10 +9,12 @@ import { MissionControlTable } from './mission-control-table.component';
 
 const TEST_DATA = ['test-1', 'test-2', 'test-3'];
 
-const columnHeaders = TEST_DATA.map(t => `${t}-header`);
+const columnHeaders = TEST_DATA.map(t => (
+  <TableCell key={t}>{`${t}-header`}</TableCell>
+));
 
 const testRows = TEST_DATA.map(row => (
-  <TableRow>
+  <TableRow key={row}>
     <TableCell>{row}</TableCell>
   </TableRow>
 ));
@@ -37,8 +39,8 @@ describe('MissionControlTable', () => {
       expect(getByText(entry)).toBeInTheDocument();
     });
 
-    columnHeaders.forEach(entry => {
-      expect(getByText(entry)).toBeInTheDocument();
+    TEST_DATA.forEach(entry => {
+      expect(getByText(`${entry}-header`)).toBeInTheDocument();
     });
   });
 
