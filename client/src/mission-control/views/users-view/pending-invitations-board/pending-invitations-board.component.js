@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   Button,
@@ -11,6 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import { useTable } from 'react-table/dist/react-table.development';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 
@@ -19,81 +20,10 @@ import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
-const NameCell = ({ name }) => (
-  <MissionControlTableCell>{name}</MissionControlTableCell>
-);
-
-const EmailCell = ({ email }) => (
-  <MissionControlTableCell>{email}</MissionControlTableCell>
-);
-
-const LicencesCell = ({ customer, customerUser }) => {
-  let licences = null;
-  if (customer && customer.licences) {
-    licences = getUserLicences(customerUser, customer);
-  }
-  return (
-    <MissionControlTableCell>
-      {getLicenceInfo(licences)}
-    </MissionControlTableCell>
-  );
-};
-
-const DateCell = ({ invitationDate }) => (
-  <MissionControlTableCell>
-    {format(new Date(invitationDate), DATE_FORMAT)}
-  </MissionControlTableCell>
-);
-
-const useStyles = makeStyles(theme => ({
+const useTableStyles = makeStyles(theme => ({
   resendButton: {
     padding: theme.spacing(1, 2),
   },
-}));
-const ResendCell = ({ onClick }) => {
-  const styles = useStyles();
-  return (
-    <MissionControlTableCell>
-      <Button className={styles.resendButton} size="small" onClick={onClick}>
-        Resend Invitation
-      </Button>
-    </MissionControlTableCell>
-  );
-};
-
-const OptionsCell = ({ onWithdrawInvitationClick }) => {
-  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-
-  /**
-   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-   */
-  const handleOptionsButtonClick = e => {
-    setOptionsAnchorEl(e.currentTarget);
-  };
-
-  const handleOptionsMenuClose = () => {
-    setOptionsAnchorEl(null);
-  };
-
-  const handleWithdrawClick = () => {
-    onWithdrawInvitationClick();
-    setOptionsAnchorEl(null);
-  };
-
-  return (
-    <MissionControlTableCell padding="checkbox">
-      <OptionsMenu
-        anchorEl={optionsAnchorEl}
-        onButtonClick={handleOptionsButtonClick}
-        onClose={handleOptionsMenuClose}
-      >
-        <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-      </OptionsMenu>
-    </MissionControlTableCell>
-  );
-};
-
-const useTableStyles = makeStyles(theme => ({
   table: {
     borderCollapse: 'separate',
     borderSpacing: theme.spacing(0, 2),
@@ -115,34 +45,145 @@ export const PendingInvitationsBoard = ({
   onWithdrawInvitationClick,
 }) => {
   const styles = useTableStyles();
-  return (
-    <Table className={styles.table}>
-      <TableHead>
-        {[
-          'Pending Invitations',
-          'Email',
-          'Licence Type',
-          'Invitation Sent',
-          'Invited',
-        ].map(column => (
-          <MissionControlTableCell key={column}>
-            {column}
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Pending Invitations',
+        accessor: 'user.name',
+        Cell: ({ value }) => (
+          <MissionControlTableCell>{value}</MissionControlTableCell>
+        ),
+      },
+      {
+        Header: 'Email',
+        accessor: 'user.email',
+        Cell: ({ value }) => {
+          return <MissionControlTableCell>{value}</MissionControlTableCell>;
+        },
+      },
+      {
+        Header: 'Licence Type',
+        id: 'licences',
+        accessor: customerUser => {
+          return { customerUser, customer };
+        },
+        Cell: ({ value: { customer, customerUser } }) => {
+          let licences = null;
+          if (customer && customer.licences) {
+            licences = getUserLicences(customerUser, customer);
+          }
+          return (
+            <MissionControlTableCell>
+              {getLicenceInfo(licences)}
+            </MissionControlTableCell>
+          );
+        },
+      },
+      {
+        Header: 'Invitation Sent',
+        accessor: 'invitation_date',
+        Cell: ({ value }) => {
+          return (
+            <MissionControlTableCell>
+              {format(new Date(value), DATE_FORMAT)}
+            </MissionControlTableCell>
+          );
+        },
+      },
+      {
+        Header: 'Invited',
+        id: 'resend',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => (
+          <MissionControlTableCell>
+            <Button
+              className={styles.resendButton}
+              size="small"
+              onClick={() => onResendInvitationClick(customerUser)}
+            >
+              Resend Invitation
+            </Button>
           </MissionControlTableCell>
-        ))}
+        ),
+      },
+      {
+        id: 'options',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => {
+          const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
+
+          /**
+           * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+           */
+          const handleOptionsButtonClick = e => {
+            setOptionsAnchorEl(e.currentTarget);
+          };
+
+          const handleOptionsMenuClose = () => {
+            setOptionsAnchorEl(null);
+          };
+
+          const handleWithdrawClick = () => {
+            onWithdrawInvitationClick(customerUser);
+            setOptionsAnchorEl(null);
+          };
+
+          return (
+            <MissionControlTableCell padding="checkbox">
+              <OptionsMenu
+                anchorEl={optionsAnchorEl}
+                onButtonClick={handleOptionsButtonClick}
+                onClose={handleOptionsMenuClose}
+              >
+                <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
+              </OptionsMenu>
+            </MissionControlTableCell>
+          );
+        },
+      },
+    ],
+    [
+      customer,
+      onResendInvitationClick,
+      onWithdrawInvitationClick,
+      styles.resendButton,
+    ],
+  );
+  const data = useMemo(() => pendingUsers, [pendingUsers]);
+
+  const {
+    headers,
+    rows,
+    prepareRow,
+    getTableProps,
+    getTableBodyProps,
+  } = useTable({
+    columns,
+    data,
+  });
+
+  return (
+    <Table {...getTableProps({ className: styles.table })}>
+      <TableHead>
+        <TableRow>
+          {headers.map(column => (
+            // eslint-disable-next-line react/jsx-key
+            <MissionControlTableCell {...column.getHeaderProps()}>
+              {column.render('Header')}
+            </MissionControlTableCell>
+          ))}
+        </TableRow>
       </TableHead>
-      <TableBody>
-        {pendingUsers?.map(user => (
-          <TableRow key={user.id}>
-            <NameCell name={user.user.name} />
-            <EmailCell email={user.user.email} />
-            <LicencesCell customer={customer} customerUser={user} />
-            <DateCell invitationDate={user.invitation_date} />
-            <ResendCell onClick={() => onResendInvitationClick(user)} />
-            <OptionsCell
-              onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-            />
-          </TableRow>
-        ))}
+      <TableBody {...getTableBodyProps()}>
+        {rows.map(row => {
+          prepareRow(row);
+          return (
+            // eslint-disable-next-line react/jsx-key
+            <TableRow {...row.getRowProps()}>
+              {row.cells.map(cell => cell.render('Cell'))}
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );
