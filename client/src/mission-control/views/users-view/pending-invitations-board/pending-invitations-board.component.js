@@ -1,50 +1,68 @@
 import React, { useState } from 'react';
 
-import { Button, makeStyles, MenuItem, TableRow } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  makeStyles,
+  MenuItem,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+} from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
-import {
-  MissionControlTable,
-  MissionControlTableCell,
-} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
+const NameCell = ({ name }) => (
+  <MissionControlTableCell>{name}</MissionControlTableCell>
+);
+
+const EmailCell = ({ email }) => (
+  <MissionControlTableCell>{email}</MissionControlTableCell>
+);
+
+const LicencesCell = ({ customer, customerUser }) => {
+  let licences = null;
+  if (customer && customer.licences) {
+    licences = getUserLicences(customerUser, customer);
+  }
+  return (
+    <MissionControlTableCell>
+      {getLicenceInfo(licences)}
+    </MissionControlTableCell>
+  );
+};
+
+const DateCell = ({ invitationDate }) => (
+  <MissionControlTableCell>
+    {format(new Date(invitationDate), DATE_FORMAT)}
+  </MissionControlTableCell>
+);
+
 const useStyles = makeStyles(theme => ({
   resendButton: {
     padding: theme.spacing(1, 2),
   },
 }));
+const ResendCell = ({ onClick }) => {
+  const styles = useStyles();
+  return (
+    <MissionControlTableCell>
+      <Button className={styles.resendButton} size="small" onClick={onClick}>
+        Resend Invitation
+      </Button>
+    </MissionControlTableCell>
+  );
+};
 
-/**
- * @param {{
- *   customerUser?: import('typings').CustomerUser
- *   customer?: import('typings').Customer
- *   onResendInvitationClick?: () => void
- *   onWithdrawInvitationClick?: () => void
- * }} props
- */
-const PendingUserRow = ({
-  customerUser,
-  customer,
-  onResendInvitationClick,
-  onWithdrawInvitationClick,
-}) => {
-  const styles = useStyles({});
+const OptionsCell = ({ onWithdrawInvitationClick }) => {
   const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-  const date = format(new Date(customerUser.invitation_date), DATE_FORMAT);
-  let licences = null;
-  if (customer && customer.licences) {
-    licences = getUserLicences(customerUser, customer);
-  }
-
-  const handleResendClick = () => {
-    onResendInvitationClick();
-  };
 
   /**
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
@@ -63,38 +81,24 @@ const PendingUserRow = ({
   };
 
   return (
-    <TableRow>
-      <MissionControlTableCell>
-        {customerUser.user.name}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {customerUser.user.email}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {getLicenceInfo(licences)}
-      </MissionControlTableCell>
-      <MissionControlTableCell>{date}</MissionControlTableCell>
-      <MissionControlTableCell>
-        <Button
-          className={styles.resendButton}
-          size="small"
-          onClick={handleResendClick}
-        >
-          Resend Invitation
-        </Button>
-      </MissionControlTableCell>
-      <MissionControlTableCell padding="checkbox">
-        <OptionsMenu
-          anchorEl={optionsAnchorEl}
-          onButtonClick={handleOptionsButtonClick}
-          onClose={handleOptionsMenuClose}
-        >
-          <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-        </OptionsMenu>
-      </MissionControlTableCell>
-    </TableRow>
+    <MissionControlTableCell padding="checkbox">
+      <OptionsMenu
+        anchorEl={optionsAnchorEl}
+        onButtonClick={handleOptionsButtonClick}
+        onClose={handleOptionsMenuClose}
+      >
+        <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
+      </OptionsMenu>
+    </MissionControlTableCell>
   );
 };
+
+const useTableStyles = makeStyles(theme => ({
+  table: {
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
+  },
+}));
 
 /**
  * @param {{
@@ -110,33 +114,36 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
-  const columnHeaders = [
-    'Pending Invitations',
-    'Email',
-    'Licence Type',
-    'Invitation Sent',
-    'Invited',
-  ].map(column => (
-    <MissionControlTableCell key={column} align="left">
-      {column}
-    </MissionControlTableCell>
-  ));
-
-  const rows = pendingUsers?.map(user => (
-    <PendingUserRow
-      key={user.user.id}
-      customerUser={user}
-      customer={customer}
-      onResendInvitationClick={() => onResendInvitationClick(user)}
-      onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-    />
-  ));
-
+  const styles = useTableStyles();
   return (
-    <MissionControlTable
-      rows={rows}
-      columnHeaders={columnHeaders}
-      noDataMessage="No Pending Users"
-    />
+    <Table className={styles.table}>
+      <TableHead>
+        {[
+          'Pending Invitations',
+          'Email',
+          'Licence Type',
+          'Invitation Sent',
+          'Invited',
+        ].map(column => (
+          <MissionControlTableCell key={column}>
+            {column}
+          </MissionControlTableCell>
+        ))}
+      </TableHead>
+      <TableBody>
+        {pendingUsers?.map(user => (
+          <TableRow key={user.id}>
+            <NameCell name={user.user.name} />
+            <EmailCell email={user.user.email} />
+            <LicencesCell customer={customer} customerUser={user} />
+            <DateCell invitationDate={user.invitation_date} />
+            <ResendCell onClick={() => onResendInvitationClick(user)} />
+            <OptionsCell
+              onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
+            />
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
