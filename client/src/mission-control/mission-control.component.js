@@ -23,6 +23,7 @@ import {
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
 import AccountDetails from './views/account-details/account-details.component';
+import Storage from './views/storage/storage.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
@@ -138,6 +139,10 @@ export const MissionControl = () => {
                 <Route exact path="/mission-control">
                   <Redirect to="/mission-control/support" />
                 </Route>
+                <Route
+                  path="/mission-control/storage"
+                  render={renderAdminOnly(Storage)}
+                />
               </Switch>
             </div>
           </CSSTransition>
