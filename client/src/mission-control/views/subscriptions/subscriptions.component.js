@@ -13,8 +13,10 @@ import { useSelector } from 'react-redux';
 import { usePagination, useTable } from 'react-table';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
-import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
+import {
+  MissionControlTableCell,
+  TablePaginationFooter,
+} from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 const useStyles = makeStyles(theme => ({
@@ -120,7 +122,7 @@ export const Subscriptions = ({ licenceInformation }) => {
             })
           ) : (
             <TableRow>
-              <MissionControlTableCell colspan={4} align="center">
+              <MissionControlTableCell colSpan={4} align="center">
                 No Subscriptions Available
               </MissionControlTableCell>
             </TableRow>

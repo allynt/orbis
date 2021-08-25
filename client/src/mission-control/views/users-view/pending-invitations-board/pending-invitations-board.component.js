@@ -16,8 +16,10 @@ import {
   useTable,
 } from 'react-table/dist/react-table.development';
 
-import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
+import {
+  MissionControlTableCell,
+  TablePaginationFooter,
+} from 'mission-control/shared-components/mission-control-table';
 
 import { getUserLicences, getLicenceInfo } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -169,7 +171,7 @@ export const PendingInvitationsBoard = ({
             })
           ) : (
             <TableRow>
-              <MissionControlTableCell colspan={columns.length} align="center">
+              <MissionControlTableCell colSpan={columns.length} align="center">
                 No Pending Users
               </MissionControlTableCell>
             </TableRow>

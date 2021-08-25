@@ -16,8 +16,10 @@ import { format } from 'date-fns';
 // @ts-ignore
 import { usePagination, useSortBy, useTable } from 'react-table';
 
-import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
+import {
+  MissionControlTableCell,
+  TablePaginationFooter,
+} from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';

@@ -16,8 +16,10 @@ import { useTable } from 'react-table';
 import { usePagination } from 'react-table/dist/react-table.development';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
-import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
+import {
+  MissionControlTableCell,
+  TablePaginationFooter,
+} from 'mission-control/shared-components/mission-control-table';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -208,7 +210,7 @@ export const ActiveUsersBoard = ({
             })
           ) : (
             <TableRow>
-              <MissionControlTableCell colspan={columns.length} align="center">
+              <MissionControlTableCell colSpan={columns.length} align="center">
                 No Active Users
               </MissionControlTableCell>
             </TableRow>
