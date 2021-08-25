@@ -3,7 +3,8 @@ import React, { useMemo, useCallback, useState } from 'react';
 import {
   MenuItem,
   Dialog,
-  DialogCloseButton,
+  styled,
+  IconButton,
   DialogTitle,
   DialogContent,
   CloseIcon,
@@ -19,23 +20,28 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 import { OptionsMenu } from '../users-view/options-menu.component';
 import { DeleteFileForm } from './forms/delete-file-form';
 
+const DialogCloseButton = styled(IconButton)({
+  position: 'absolute',
+  right: 0,
+});
+
 const Storage = ({ files }) => {
   const [dialogForm, setDialogForm] = useState(null);
 
-  const onDeleteFileClick = () => {
-    return console.log('Delete clicked');
-  };
+  const onDeleteFileClick = useCallback(() => {
+    console.log('File: ', dialogForm.file);
+    return setDialogForm(null);
+  }, []);
 
-  const onCancelClick = () => {
-    return console.log('Cancel clicked');
-  };
+  const onCancelClick = useCallback(() => {
+    return setDialogForm(null);
+  }, []);
 
-  /** @param { import('typings').CustomerUser } user */
   const onDeleteFileButtonClick = useCallback(
-    user =>
+    file =>
       setDialogForm({
         type: DIALOG_VIEW.deleteFile,
-        user,
+        file,
       }),
     [],
   );
