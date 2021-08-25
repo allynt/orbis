@@ -1,9 +1,8 @@
 import React from 'react';
 
-import faker from 'faker/locale/en_GB';
-
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
+import { makeCustomer, makeUsers } from '../test-story-data';
 import { ActiveUsersBoard } from './active-users-board.component';
 
 export default {
@@ -15,41 +14,11 @@ export default {
   },
 };
 
-const activeUsers = Array(20)
-  .fill()
-  .map(() => {
-    const firstName = faker.name.firstName(),
-      lastName = faker.name.lastName();
-    return {
-      id: faker.random.uuid(),
-      status: 'ACTIVE',
-      type: faker.random.arrayElement(['MEMBER', 'MANAGER']),
-      licences: Array(1 + faker.random.number(5))
-        .fill()
-        .map(() => faker.random.uuid()),
-      invitation_date: faker.date.past().toISOString(),
-      user: {
-        name: `${firstName} ${lastName}`,
-        email: faker.internet.email(firstName, lastName),
-      },
-    };
-  });
-
-const licenceIds = activeUsers.flatMap(({ licences }) => licences);
-const orbs = Array(20)
-  .fill()
-  .map(() => faker.company.bsNoun());
-
-const customer = {
-  licences: licenceIds.map(id => ({
-    id,
-    orb: faker.random.arrayElement(orbs),
-    customer_user: activeUsers.find(user => user.licences.includes(id)).id,
-  })),
-};
+const activeUsers = makeUsers();
+const customer = makeCustomer(activeUsers);
 
 const Template = args => (
-  <Wrapper title="Active Users">
+  <Wrapper title="Users">
     <ActiveUsersBoard {...args} />
   </Wrapper>
 );
