@@ -145,6 +145,7 @@ const UsersView = () => {
         return (
           <EditUserForm
             user={dialogForm.user}
+            currentUser={user}
             customer={currentCustomer}
             availableLicences={availableLicences}
             oneAdminRemaining={oneAdminRemaining}
