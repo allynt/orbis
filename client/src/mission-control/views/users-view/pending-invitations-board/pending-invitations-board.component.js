@@ -1,38 +1,19 @@
 import React, { useMemo } from 'react';
 
-import {
-  Button,
-  makeStyles,
-  MenuItem,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-} from '@astrosat/astrosat-ui';
+import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import {
-  usePagination,
-  useTable,
-} from 'react-table/dist/react-table.development';
 
-import {
-  MissionControlTableCell,
-  TablePaginationFooter,
-} from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 
-import { getUserLicences, getLicenceInfo } from '../../licence-utils';
+import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 
-const useTableStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   resendButton: {
     padding: theme.spacing(1, 2),
-  },
-  table: {
-    borderCollapse: 'separate',
-    borderSpacing: theme.spacing(0, 2),
   },
 }));
 
@@ -50,7 +31,7 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
-  const styles = useTableStyles();
+  const styles = useStyles();
   const columns = useMemo(
     () => [
       {
@@ -116,75 +97,14 @@ export const PendingInvitationsBoard = ({
   );
   const data = useMemo(() => pendingUsers ?? [], [pendingUsers]);
 
-  const {
-    headers,
-    prepareRow,
-    getTableProps,
-    getTableBodyProps,
-    page,
-    pageCount,
-    setPageSize,
-    gotoPage,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageSize: 5 },
-    },
-    usePagination,
-  );
-
   return (
-    <>
-      <Table {...getTableProps({ className: styles.table })}>
-        <TableHead>
-          <TableRow>
-            {headers.map(column => (
-              // eslint-disable-next-line react/jsx-key
-              <MissionControlTableCell {...column.getHeaderProps()}>
-                {column.render('Header')}
-              </MissionControlTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.length ? (
-            page.map(row => {
-              prepareRow(row);
-              return (
-                // eslint-disable-next-line react/jsx-key
-                <TableRow {...row.getRowProps()}>
-                  {row.cells.map(cell => (
-                    // eslint-disable-next-line react/jsx-key
-                    <MissionControlTableCell
-                      {...cell.getCellProps({
-                        padding:
-                          cell.column.id === 'options' ? 'checkbox' : 'inherit',
-                      })}
-                    >
-                      {cell.render('Cell')}
-                    </MissionControlTableCell>
-                  ))}
-                </TableRow>
-              );
-            })
-          ) : (
-            <TableRow>
-              <MissionControlTableCell colSpan={columns.length} align="center">
-                No Pending Users
-              </MissionControlTableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <TablePaginationFooter
-        currentPage={pageIndex + 1}
-        rowsPerPage={pageSize}
-        pageCount={pageCount}
-        handleChangeRowsPerPage={setPageSize}
-        handleChangePage={(_, page) => gotoPage(page - 1)}
-      />
-    </>
+    <Table
+      columns={columns}
+      data={data}
+      noDataMessage="No Pending Users"
+      getCellProps={cell => ({
+        padding: cell.column.id === 'options' ? 'checkbox' : 'inherit',
+      })}
+    />
   );
 };

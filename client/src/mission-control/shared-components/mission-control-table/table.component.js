@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  makeStyles,
   Table as AuiTable,
   TableBody,
   TableHead,
@@ -12,6 +13,13 @@ import { usePagination, useTable } from 'react-table';
 
 import { MissionControlTableCell } from './table-cell.component';
 import { TablePaginationFooter } from './table.pagination-footer.component';
+
+const useStyles = makeStyles(theme => ({
+  table: {
+    borderCollapse: 'separate',
+    borderSpacing: theme.spacing(0, 2),
+  },
+}));
 
 const defaultAccessor = () => ({});
 
@@ -32,6 +40,7 @@ export const Table = ({
   getHeaderProps = defaultAccessor,
   getCellProps = defaultAccessor,
 }) => {
+  const styles = useStyles();
   const {
     headers,
     prepareRow,
@@ -52,7 +61,7 @@ export const Table = ({
   );
   return (
     <>
-      <AuiTable {...getTableProps()}>
+      <AuiTable {...getTableProps({ className: styles.table })}>
         <TableHead>
           <TableRow>
             {headers.map(column => (

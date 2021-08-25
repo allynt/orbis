@@ -2,24 +2,13 @@ import React, { useMemo } from 'react';
 
 import {
   Button,
-  TableRow,
   makeStyles,
   MenuItem,
   TriangleIcon,
-  Table,
-  TableHead,
-  TableBody,
 } from '@astrosat/astrosat-ui';
 
-// @ts-ignore
-import { useTable } from 'react-table';
-import { usePagination } from 'react-table/dist/react-table.development';
-
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
-import {
-  MissionControlTableCell,
-  TablePaginationFooter,
-} from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
@@ -30,10 +19,6 @@ const USER_LABELS = {
 };
 
 const useStyles = makeStyles(theme => ({
-  table: {
-    borderCollapse: 'separate',
-    borderSpacing: theme.spacing(0, 2),
-  },
   statusButton: {
     padding: theme.spacing(1, 4),
     minWidth: '10rem',
@@ -162,68 +147,15 @@ export const ActiveUsersBoard = ({
     ],
   );
   const data = useMemo(() => activeCustomerUsers ?? [], [activeCustomerUsers]);
-  const {
-    headers,
-    prepareRow,
-    getTableProps,
-    getTableBodyProps,
-    page,
-    pageCount,
-    setPageSize,
-    gotoPage,
-    state: { pageIndex, pageSize },
-  } = useTable({ columns, data, initialState: { pageSize: 5 } }, usePagination);
 
   return (
-    <>
-      <Table {...getTableProps({ className: styles.table })}>
-        <TableHead>
-          <TableRow>
-            {headers.map(column => (
-              // eslint-disable-next-line react/jsx-key
-              <MissionControlTableCell {...column.getHeaderProps()}>
-                {column.render('Header')}
-              </MissionControlTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.length ? (
-            page.map(row => {
-              prepareRow(row);
-              return (
-                // eslint-disable-next-line react/jsx-key
-                <TableRow {...row.getRowProps()}>
-                  {row.cells.map(cell => (
-                    // eslint-disable-next-line react/jsx-key
-                    <MissionControlTableCell
-                      {...cell.getCellProps({
-                        padding:
-                          cell.column.id === 'options' ? 'checkbox' : 'inherit',
-                      })}
-                    >
-                      {cell.render('Cell')}
-                    </MissionControlTableCell>
-                  ))}
-                </TableRow>
-              );
-            })
-          ) : (
-            <TableRow>
-              <MissionControlTableCell colSpan={columns.length} align="center">
-                No Active Users
-              </MissionControlTableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <TablePaginationFooter
-        currentPage={pageIndex + 1}
-        rowsPerPage={pageSize}
-        pageCount={pageCount}
-        handleChangeRowsPerPage={setPageSize}
-        handleChangePage={(_, page) => gotoPage(page - 1)}
-      />
-    </>
+    <Table
+      columns={columns}
+      data={data}
+      noDataMessage="No Active Users"
+      getCellProps={cell => ({
+        padding: cell.column.id === 'options' ? 'checkbox' : 'inherit',
+      })}
+    />
   );
 };
