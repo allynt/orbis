@@ -45,7 +45,7 @@ const renderComponent = (initialEntries = ['']) => {
       },
     },
     accounts: { user: { email: 'test@test.com', customers: [] } },
-    admin: {},
+    missionControl: {},
   });
   const utils = render(<Accounts />, {
     wrapper: ({ children }) => (

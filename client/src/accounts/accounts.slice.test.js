@@ -4,8 +4,10 @@ import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { createCustomerUserSuccess } from 'admin/admin.slice';
-import { setCurrentCustomer } from 'mission-control/mission-control.slice';
+import {
+  setCurrentCustomer,
+  createCustomerUserSuccess,
+} from 'mission-control/mission-control.slice';
 
 import {
   REGISTER_CUSTOMER,
@@ -429,7 +431,7 @@ describe('Accounts Slice', () => {
       dispatch = jest.fn();
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
-        admin: { currentCustomer: { id: '123' } },
+        missionControl: { currentCustomer: { id: '123' } },
       }));
     });
 
@@ -663,7 +665,7 @@ describe('Accounts Slice', () => {
         fetch.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
-          admin: { isLoading: false },
+          missionControl: { isLoading: false },
           accounts: {
             user: {
               customers: [

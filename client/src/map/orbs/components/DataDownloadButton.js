@@ -8,8 +8,8 @@ import { saveAs } from 'file-saver';
 import { useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
-import { ADMIN_STATUS } from 'admin/admin.constants';
 import { selectDataToken } from 'data-layers/data-layers.slice';
+import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { getData } from 'utils/http';
 
 const FILENAME_REGEX = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
