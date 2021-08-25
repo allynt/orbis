@@ -1,35 +1,17 @@
 import React, { useMemo } from 'react';
 
-import {
-  IconButton,
-  makeStyles,
-  SvgIcon,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from '@astrosat/astrosat-ui';
+import { IconButton, SvgIcon, TableSortLabel } from '@astrosat/astrosat-ui';
 
 import { ArrowDropDown } from '@material-ui/icons';
 import { format } from 'date-fns';
 // @ts-ignore
-import { usePagination, useSortBy, useTable } from 'react-table';
+import { useSortBy } from 'react-table';
 
-import {
-  MissionControlTableCell,
-  TablePaginationFooter,
-} from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
+// @ts-ignore
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
-
-const useStyles = makeStyles(theme => ({
-  table: {
-    borderCollapse: 'separate',
-    borderSpacing: theme.spacing(0, 2),
-  },
-}));
 
 const SortableHeader = ({ children, column }) => (
   <TableSortLabel
@@ -55,8 +37,6 @@ const SortableHeader = ({ children, column }) => (
  * }} props
  */
 const SavedDocuments = ({ documents }) => {
-  const styles = useStyles({});
-
   const columns = useMemo(
     () => [
       {
@@ -90,69 +70,21 @@ const SavedDocuments = ({ documents }) => {
 
   const data = useMemo(() => documents, [documents]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headers,
-    prepareRow,
-    page,
-    pageCount,
-    setPageSize,
-    gotoPage,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      initialState: { pageSize: 5, sortBy: [{ id: 'date', desc: true }] },
-      disableSortRemove: true,
-      autoResetPage: false,
-      data,
-      columns,
-    },
-    useSortBy,
-    usePagination,
-  );
-
   return (
     <Wrapper title="Saved Documents">
-      <Table className={styles.table} {...getTableProps()}>
-        <TableHead>
-          <TableRow>
-            {headers.map(column => (
-              // eslint-disable-next-line react/jsx-key
-              <MissionControlTableCell {...column.getHeaderProps()}>
-                {column.render('Header')}
-              </MissionControlTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  // eslint-disable-next-line react/jsx-key
-                  <MissionControlTableCell
-                    {...cell.getCellProps({
-                      // @ts-ignore
-                      padding: cell.column.id === 'url' ? 'checkbox' : null,
-                    })}
-                  >
-                    {cell.render('Cell')}
-                  </MissionControlTableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <TablePaginationFooter
-        currentPage={pageIndex + 1}
-        rowsPerPage={pageSize}
-        pageCount={pageCount}
-        handleChangeRowsPerPage={setPageSize}
-        handleChangePage={(_, page) => gotoPage(page - 1)}
+      <Table
+        columns={columns}
+        data={data}
+        noDataMessage="No Saved Documents"
+        getCellProps={cell => ({
+          padding: cell.column.id === 'url' ? 'checkbox' : null,
+        })}
+        pluginHooks={[useSortBy]}
+        tableOptions={{
+          initialState: { sortBy: [{ id: 'date', desc: true }] },
+          disableSortRemove: true,
+          autoResetPage: false,
+        }}
       />
     </Wrapper>
   );

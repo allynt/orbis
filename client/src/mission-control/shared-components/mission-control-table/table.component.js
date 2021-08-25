@@ -9,6 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 // @ts-ignore
+import deepmerge from 'deepmerge';
 import { usePagination, useTable } from 'react-table';
 
 import { MissionControlTableCell } from './table-cell.component';
@@ -25,11 +26,13 @@ const defaultAccessor = () => ({});
 
 /**
  * @param {{
- *  columns: any[],
- *  data: any[],
+ *  columns: any[]
+ *  data: any[]
  *  noDataMessage?: string
  *  getHeaderProps?: (column: any) => any
  *  getCellProps?: (cell: any) => any
+ *  pluginHooks: any[]
+ *  tableOptions: any
  * }} props
  * @returns
  */
@@ -39,8 +42,11 @@ export const Table = ({
   noDataMessage = 'No Data',
   getHeaderProps = defaultAccessor,
   getCellProps = defaultAccessor,
+  pluginHooks = [],
+  tableOptions = {},
 }) => {
   const styles = useStyles();
+  const { initialState, ...otherOptions } = tableOptions;
   const {
     headers,
     prepareRow,
@@ -55,8 +61,10 @@ export const Table = ({
     {
       data,
       columns,
-      initialState: { pageSize: 5 },
+      initialState: { pageSize: 5, ...initialState },
+      ...otherOptions,
     },
+    ...pluginHooks,
     usePagination,
   );
   return (
