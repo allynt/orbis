@@ -32,8 +32,8 @@ const defaultAccessor = () => ({});
  *  noDataMessage?: string
  *  getHeaderProps?: (column: any) => any
  *  getCellProps?: (cell: any) => any
- *  pluginHooks: any[]
- *  tableOptions: any
+ *  pluginHooks?: any[]
+ *  tableOptions?: any
  * }} props
  * @returns
  */
@@ -122,13 +122,15 @@ export const Table = ({
           )}
         </TableBody>
       </AuiTable>
-      <TablePaginationFooter
-        currentPage={pageIndex + 1}
-        rowsPerPage={pageSize}
-        pageCount={pageCount}
-        handleChangeRowsPerPage={setPageSize}
-        handleChangePage={(_, page) => gotoPage(page - 1)}
-      />
+      {data.length > 4 && (
+        <TablePaginationFooter
+          currentPage={pageIndex + 1}
+          rowsPerPage={pageSize}
+          pageCount={pageCount}
+          handleChangeRowsPerPage={setPageSize}
+          handleChangePage={(_, page) => gotoPage(page - 1)}
+        />
+      )}
     </>
   );
 };
