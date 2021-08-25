@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 
-import { Button, makeStyles, MenuItem, TableRow } from '@astrosat/astrosat-ui';
+import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
-import {
-  MissionControlTable,
-  MissionControlTableCell,
-} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 
-import { getUserLicences, getLicenceInfo } from '../../licence-utils';
+import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
@@ -22,86 +19,10 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   customerUser?: import('typings/orbis').CustomerUser
- *   customer?: import('typings/orbis').Customer
- *   onResendInvitationClick?: () => void
- *   onWithdrawInvitationClick?: () => void
- * }} props
- */
-const PendingUserRow = ({
-  customerUser,
-  customer,
-  onResendInvitationClick,
-  onWithdrawInvitationClick,
-}) => {
-  const styles = useStyles({});
-  const [optionsAnchorEl, setOptionsAnchorEl] = useState(null);
-  const date = format(new Date(customerUser.invitation_date), DATE_FORMAT);
-  let licences = null;
-  if (customer && customer.licences) {
-    licences = getUserLicences(customerUser, customer);
-  }
-
-  const handleResendClick = () => {
-    onResendInvitationClick();
-  };
-
-  /**
-   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
-   */
-  const handleOptionsButtonClick = e => {
-    setOptionsAnchorEl(e.currentTarget);
-  };
-
-  const handleOptionsMenuClose = () => {
-    setOptionsAnchorEl(null);
-  };
-
-  const handleWithdrawClick = () => {
-    onWithdrawInvitationClick();
-    setOptionsAnchorEl(null);
-  };
-
-  return (
-    <TableRow>
-      <MissionControlTableCell>
-        {customerUser.user.name}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {customerUser.user.email}
-      </MissionControlTableCell>
-      <MissionControlTableCell>
-        {getLicenceInfo(licences)}
-      </MissionControlTableCell>
-      <MissionControlTableCell>{date}</MissionControlTableCell>
-      <MissionControlTableCell>
-        <Button
-          className={styles.resendButton}
-          size="small"
-          onClick={handleResendClick}
-        >
-          Resend Invitation
-        </Button>
-      </MissionControlTableCell>
-      <MissionControlTableCell padding="checkbox">
-        <OptionsMenu
-          anchorEl={optionsAnchorEl}
-          onButtonClick={handleOptionsButtonClick}
-          onClose={handleOptionsMenuClose}
-        >
-          <MenuItem onClick={handleWithdrawClick}>Withdraw</MenuItem>
-        </OptionsMenu>
-      </MissionControlTableCell>
-    </TableRow>
-  );
-};
-
-/**
- * @param {{
- *   pendingUsers?: import('typings/orbis').CustomerUser[]
- *   customer?: import('typings/orbis').Customer
- *   onResendInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
- *   onWithdrawInvitationClick?: (customerUser: import('typings/orbis').CustomerUser) => void
+ *   pendingUsers?: import('typings').CustomerUser[]
+ *   customer?: import('typings').Customer
+ *   onResendInvitationClick?: (customerUser: import('typings').CustomerUser) => void
+ *   onWithdrawInvitationClick?: (customerUser: import('typings').CustomerUser) => void
  * }} props
  */
 export const PendingInvitationsBoard = ({
@@ -110,33 +31,80 @@ export const PendingInvitationsBoard = ({
   onResendInvitationClick,
   onWithdrawInvitationClick,
 }) => {
-  const columnHeaders = [
-    'Pending Invitations',
-    'Email',
-    'Licence Type',
-    'Invitation Sent',
-    'Invited',
-  ].map(column => (
-    <MissionControlTableCell key={column} align="left">
-      {column}
-    </MissionControlTableCell>
-  ));
-
-  const rows = pendingUsers?.map(user => (
-    <PendingUserRow
-      key={user.user.id}
-      customerUser={user}
-      customer={customer}
-      onResendInvitationClick={() => onResendInvitationClick(user)}
-      onWithdrawInvitationClick={() => onWithdrawInvitationClick(user)}
-    />
-  ));
+  const styles = useStyles();
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Pending Invitations',
+        accessor: 'user.name',
+      },
+      {
+        Header: 'Email',
+        accessor: 'user.email',
+      },
+      {
+        Header: 'Licence Type',
+        id: 'licences',
+        accessor: customerUser => {
+          let licences = null;
+          if (customer && customer.licences) {
+            licences = getUserLicences(customerUser, customer);
+          }
+          return getLicenceInfo(licences);
+        },
+      },
+      {
+        Header: 'Invitation Sent',
+        accessor: 'invitation_date',
+        Cell: ({ value }) => format(new Date(value), DATE_FORMAT),
+      },
+      {
+        Header: 'Invited',
+        id: 'resend',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => (
+          <Button
+            className={styles.resendButton}
+            size="small"
+            onClick={() => onResendInvitationClick(customerUser)}
+          >
+            Resend Invitation
+          </Button>
+        ),
+      },
+      {
+        id: 'options',
+        accessor: v => v,
+        Cell: ({ value: customerUser }) => (
+          <OptionsMenu>
+            <MenuItem
+              onClick={() => {
+                onWithdrawInvitationClick(customerUser);
+              }}
+            >
+              Withdraw
+            </MenuItem>
+          </OptionsMenu>
+        ),
+      },
+    ],
+    [
+      customer,
+      onResendInvitationClick,
+      onWithdrawInvitationClick,
+      styles.resendButton,
+    ],
+  );
+  const data = useMemo(() => pendingUsers ?? [], [pendingUsers]);
 
   return (
-    <MissionControlTable
-      rows={rows}
-      columnHeaders={columnHeaders}
+    <Table
+      columns={columns}
+      data={data}
       noDataMessage="No Pending Users"
+      getCellProps={cell => ({
+        padding: cell.column.id === 'options' ? 'checkbox' : 'inherit',
+      })}
     />
   );
 };

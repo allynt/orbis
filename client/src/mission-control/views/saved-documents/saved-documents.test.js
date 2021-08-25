@@ -20,7 +20,7 @@ const renderComponent = () => {
 
 describe('<Saved Documents />', () => {
   it('renders a saved documents table', () => {
-    const { getByText } = renderComponent({});
+    const { getByText } = renderComponent();
 
     userEvent.click(getByText('5'));
     userEvent.click(getByText('20'));

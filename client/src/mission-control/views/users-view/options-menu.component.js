@@ -2,28 +2,62 @@ import * as React from 'react';
 
 import { IconButton, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
 
-export const OptionsMenu = ({ anchorEl, children, onButtonClick, onClose }) => {
+const DefaultButton = ({ active, ...rest }) => (
+  <IconButton
+    aria-label="Options"
+    color={active ? 'primary' : 'default'}
+    {...rest}
+  >
+    <OptionsIcon data-testid="options-icon" />
+  </IconButton>
+);
+
+export const OptionsMenu = ({
+  children,
+  closeOnClick = true,
+  Button = DefaultButton,
+  id = 'options-menu',
+  transformOrigin = {
+    vertical: -35,
+    horizontal: 'right',
+  },
+  ...rest
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  /**
+   * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
+   */
+  const handleButtonClick = e => setAnchorEl(e.currentTarget);
+
+  const handleClose = () => setAnchorEl(null);
+
   return (
     <>
-      <IconButton
-        aria-label="Options"
-        aria-controls="options-menu"
-        color={!!anchorEl ? 'primary' : 'default'}
-        onClick={onButtonClick}
-      >
-        <OptionsIcon data-testid="options-icon" />
-      </IconButton>
+      <Button
+        aria-controls={id}
+        active={!!anchorEl}
+        onClick={handleButtonClick}
+      />
       <Menu
-        id="options-menu"
+        id={id}
         anchorEl={anchorEl}
         open={!!anchorEl}
-        onClose={onClose}
-        transformOrigin={{
-          vertical: -35,
-          horizontal: 'right',
-        }}
+        onClose={handleClose}
+        // @ts-ignore
+        transformOrigin={transformOrigin}
+        {...rest}
       >
-        {children}
+        {React.Children.map(children, child => {
+          return child
+            ? React.cloneElement(child, {
+                onClick: (...args) => {
+                  if (closeOnClick) handleClose();
+                  child.props.onClick && child.props.onClick(...args);
+                },
+              })
+            : child;
+        })}
       </Menu>
     </>
   );

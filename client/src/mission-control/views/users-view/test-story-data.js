@@ -1,3 +1,40 @@
+import faker from 'faker/locale/en_GB';
+
+export const makeUsers = (type = 'ACTIVE', n = 20) =>
+  Array(n)
+    .fill()
+    .map(() => {
+      const firstName = faker.name.firstName(),
+        lastName = faker.name.lastName();
+      return {
+        id: faker.random.uuid(),
+        status: type,
+        type: faker.random.arrayElement(['MEMBER', 'MANAGER']),
+        licences: Array(1 + faker.random.number(5))
+          .fill()
+          .map(() => faker.random.uuid()),
+        invitation_date: faker.date.past().toISOString(),
+        user: {
+          name: `${firstName} ${lastName}`,
+          email: faker.internet.email(firstName, lastName),
+        },
+      };
+    });
+
+export const makeCustomer = users => ({
+  licences: users
+    .flatMap(({ licences }) => licences)
+    .map(id => ({
+      id,
+      orb: faker.random.arrayElement(
+        Array(20)
+          .fill()
+          .map(() => faker.company.bsNoun()),
+      ),
+      customer_user: users.find(user => user.licences.includes(id)).id,
+    })),
+});
+
 export const customer = {
   licences: [
     {

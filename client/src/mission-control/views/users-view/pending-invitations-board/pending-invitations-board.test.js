@@ -3,7 +3,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { customer, pendingUsers } from 'mission-control/test-story-data';
+import {
+  customer,
+  pendingUsers,
+} from 'mission-control/views/users-view/test-story-data';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 

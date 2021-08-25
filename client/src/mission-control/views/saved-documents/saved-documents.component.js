@@ -1,46 +1,16 @@
 import React, { useMemo } from 'react';
 
-import {
-  IconButton,
-  makeStyles,
-  SvgIcon,
-  Table,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from '@astrosat/astrosat-ui';
+import { IconButton, SvgIcon } from '@astrosat/astrosat-ui';
 
-import { ArrowDropDown } from '@material-ui/icons';
 import { format } from 'date-fns';
-import { usePagination, useSortBy, useTable } from 'react-table';
+// @ts-ignore
+import { useSortBy } from 'react-table';
 
-import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
-import { TablePaginationFooter } from 'mission-control/shared-components/mission-control-table/table.pagination-footer.component';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
+// @ts-ignore
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
-
-const useStyles = makeStyles(theme => ({
-  table: {
-    borderCollapse: 'separate',
-    borderSpacing: theme.spacing(0, 2),
-  },
-}));
-
-const SortableHeader = ({ children, column }) => (
-  // eslint-disable-next-line react/jsx-key
-  <MissionControlTableCell {...column.getHeaderProps()}>
-    <TableSortLabel
-      {...column.getSortByToggleProps()}
-      IconComponent={ArrowDropDown}
-      active={column.isSorted}
-      direction={column.isSortedDesc ? 'desc' : 'asc'}
-    >
-      {children}
-    </TableSortLabel>
-  </MissionControlTableCell>
-);
 
 /**
  *
@@ -54,16 +24,14 @@ const SortableHeader = ({ children, column }) => (
  * }} props
  */
 const SavedDocuments = ({ documents }) => {
-  const styles = useStyles({});
-
   const columns = useMemo(
     () => [
       {
-        Header: props => <SortableHeader {...props}>Title</SortableHeader>,
+        Header: 'Title',
         accessor: 'title',
       },
       {
-        Header: props => <SortableHeader {...props}>Date</SortableHeader>,
+        Header: 'Date',
         accessor: 'date',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
@@ -89,62 +57,21 @@ const SavedDocuments = ({ documents }) => {
 
   const data = useMemo(() => documents, [documents]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headers,
-    prepareRow,
-    page,
-    pageCount,
-    setPageSize,
-    gotoPage,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      initialState: { pageSize: 5, sortBy: [{ id: 'date', desc: true }] },
-      disableSortRemove: true,
-      autoResetPage: false,
-      data,
-      columns,
-    },
-    useSortBy,
-    usePagination,
-  );
-
   return (
     <Wrapper title="Saved Documents">
-      <Table className={styles.table} {...getTableProps()}>
-        <TableHead>
-          <TableRow>{headers.map(column => column.render('Header'))}</TableRow>
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => (
-                  // eslint-disable-next-line react/jsx-key
-                  <MissionControlTableCell
-                    {...cell.getCellProps({
-                      // @ts-ignore
-                      padding: cell.column.id === 'url' ? 'checkbox' : null,
-                    })}
-                  >
-                    {cell.render('Cell')}
-                  </MissionControlTableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <TablePaginationFooter
-        currentPage={pageIndex + 1}
-        rowsPerPage={pageSize}
-        pageCount={pageCount}
-        handleChangeRowsPerPage={setPageSize}
-        handleChangePage={(_, page) => gotoPage(page - 1)}
+      <Table
+        columns={columns}
+        data={data}
+        noDataMessage="No Saved Documents"
+        getCellProps={cell => ({
+          padding: cell.column.id === 'url' ? 'checkbox' : null,
+        })}
+        pluginHooks={[useSortBy]}
+        tableOptions={{
+          initialState: { sortBy: [{ id: 'date', desc: true }] },
+          disableSortRemove: true,
+          autoResetPage: false,
+        }}
       />
     </Wrapper>
   );

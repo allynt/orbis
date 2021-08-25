@@ -3,7 +3,7 @@ import React from 'react';
 import QuickView from './quick-view.component';
 
 export default {
-  title: 'Mission Control/Users View/QuickView',
+  title: 'Mission Control/Users/QuickView',
   component: QuickView,
 };
 
