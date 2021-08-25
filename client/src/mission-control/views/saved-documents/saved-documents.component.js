@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { IconButton, SvgIcon, TableSortLabel } from '@astrosat/astrosat-ui';
+import { IconButton, SvgIcon } from '@astrosat/astrosat-ui';
 
-import { ArrowDropDown } from '@material-ui/icons';
 import { format } from 'date-fns';
 // @ts-ignore
 import { useSortBy } from 'react-table';
@@ -12,18 +11,6 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 // @ts-ignore
 import { ReactComponent as PdfIcon } from '../support/pdf.svg';
-
-const SortableHeader = ({ children, column }) => (
-  <TableSortLabel
-    {...column.getSortByToggleProps({
-      IconComponent: ArrowDropDown,
-      active: column.isSorted,
-      direction: column.isSortedDesc ? 'desc' : 'asc',
-    })}
-  >
-    {children}
-  </TableSortLabel>
-);
 
 /**
  *
@@ -40,11 +27,11 @@ const SavedDocuments = ({ documents }) => {
   const columns = useMemo(
     () => [
       {
-        Header: props => <SortableHeader {...props}>Title</SortableHeader>,
+        Header: 'Title',
         accessor: 'title',
       },
       {
-        Header: props => <SortableHeader {...props}>Date</SortableHeader>,
+        Header: 'Date',
         accessor: 'date',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },

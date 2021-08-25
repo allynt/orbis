@@ -6,10 +6,11 @@ import {
   TableBody,
   TableHead,
   TableRow,
+  TableSortLabel,
 } from '@astrosat/astrosat-ui';
 
+import { ArrowDropDown } from '@material-ui/icons';
 // @ts-ignore
-import deepmerge from 'deepmerge';
 import { usePagination, useTable } from 'react-table';
 
 import { MissionControlTableCell } from './table-cell.component';
@@ -77,7 +78,19 @@ export const Table = ({
               <MissionControlTableCell
                 {...column.getHeaderProps([{}, getHeaderProps(column)])}
               >
-                {column.render('Header')}
+                {column.canSort ? (
+                  <TableSortLabel
+                    {...column.getSortByToggleProps({
+                      IconComponent: ArrowDropDown,
+                      active: column.isSorted,
+                      direction: column.isSortedDesc ? 'desc' : 'asc',
+                    })}
+                  >
+                    {column.render('Header')}
+                  </TableSortLabel>
+                ) : (
+                  column.render('Header')
+                )}
               </MissionControlTableCell>
             ))}
           </TableRow>
