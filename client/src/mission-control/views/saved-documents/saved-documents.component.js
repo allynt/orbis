@@ -13,6 +13,7 @@ import {
 
 import { ArrowDropDown } from '@material-ui/icons';
 import { format } from 'date-fns';
+// @ts-ignore
 import { usePagination, useSortBy, useTable } from 'react-table';
 
 import { MissionControlTableCell } from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
@@ -29,17 +30,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SortableHeader = ({ children, column }) => (
-  // eslint-disable-next-line react/jsx-key
-  <MissionControlTableCell {...column.getHeaderProps()}>
-    <TableSortLabel
-      {...column.getSortByToggleProps()}
-      IconComponent={ArrowDropDown}
-      active={column.isSorted}
-      direction={column.isSortedDesc ? 'desc' : 'asc'}
-    >
-      {children}
-    </TableSortLabel>
-  </MissionControlTableCell>
+  <TableSortLabel
+    {...column.getSortByToggleProps({
+      IconComponent: ArrowDropDown,
+      active: column.isSorted,
+      direction: column.isSortedDesc ? 'desc' : 'asc',
+    })}
+  >
+    {children}
+  </TableSortLabel>
 );
 
 /**
@@ -115,7 +114,14 @@ const SavedDocuments = ({ documents }) => {
     <Wrapper title="Saved Documents">
       <Table className={styles.table} {...getTableProps()}>
         <TableHead>
-          <TableRow>{headers.map(column => column.render('Header'))}</TableRow>
+          <TableRow>
+            {headers.map(column => (
+              // eslint-disable-next-line react/jsx-key
+              <MissionControlTableCell {...column.getHeaderProps()}>
+                {column.render('Header')}
+              </MissionControlTableCell>
+            ))}
+          </TableRow>
         </TableHead>
         <TableBody {...getTableBodyProps()}>
           {page.map(row => {
