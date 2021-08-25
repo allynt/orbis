@@ -1,0 +1,23 @@
+import React from 'react';
+
+import faker from 'faker/locale/en_GB';
+
+import Storage from './storage.component';
+
+const TEST_FILES = new Array(20).fill().map(() => ({
+  id: faker.random.uuid(),
+  title: faker.name.jobTitle(),
+  date: faker.date.past().toISOString(),
+  url: faker.image.imageUrl(),
+}));
+
+export default {
+  title: 'Mission Control/Storage',
+};
+
+const Template = args => <Storage {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
+  files: TEST_FILES,
+};
