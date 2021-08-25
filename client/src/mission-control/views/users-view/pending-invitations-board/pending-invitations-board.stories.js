@@ -1,18 +1,26 @@
 import React from 'react';
 
-import { customer, pendingUsers } from 'mission-control/test-story-data';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
+import { makeCustomer, makeUsers } from '../test-story-data';
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
 export default {
   title: 'Mission Control/Users/Pending Users Board',
   argTypes: {
-    onResendInvitationClick: { action: 'onResendInvitationClick' },
-    onWithdrawInvitationClick: { action: 'onWithdrawInvitationClick' },
+    onResendInvitationClick: { action: true },
+    onWithdrawInvitationClick: { action: true },
   },
 };
 
-const Template = args => <PendingInvitationsBoard {...args} />;
+const pendingUsers = makeUsers('PENDING');
+const customer = makeCustomer(pendingUsers);
+
+const Template = args => (
+  <Wrapper title="Pending Invitations">
+    <PendingInvitationsBoard {...args} />
+  </Wrapper>
+);
 
 export const NoUsers = Template.bind({});
 NoUsers.args = {

@@ -1,14 +1,9 @@
-import React from 'react';
-
-import { TableRow } from '@astrosat/astrosat-ui';
+import React, { useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
-import {
-  MissionControlTable,
-  MissionControlTableCell,
-} from 'mission-control/shared-components/mission-control-table/mission-control-table.component';
+import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
@@ -25,37 +20,41 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
  * }} props
  */
 export const Subscriptions = ({ licenceInformation }) => {
-  const columnHeaders = [
-    'Orb',
-    'Purchased Licences',
-    'Assigned to Users',
-    'Available to Assign',
-  ].map(
-    column => (
-      <MissionControlTableCell key={column} align="left">
-        {column}
-      </MissionControlTableCell>
-    ),
-  )
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Orb',
+        accessor: 'orb',
+      },
+      { Header: 'Purchased Licences', accessor: 'purchased' },
+      { Header: 'Assigned to Users', accessor: 'active' },
+      { Header: 'Available to Assign', accessor: 'pending' },
+    ],
+    [],
+  );
+  const data = useMemo(
+    () =>
+      licenceInformation && Object.keys(licenceInformation).length > 0
+        ? Object.entries(licenceInformation).map(([orb, values]) => ({
+            orb,
+            ...values,
+          }))
+        : [],
+    [licenceInformation],
+  );
 
   return (
     <Wrapper title="Subscriptions">
-      <MissionControlTable
-        columnHeaders={columnHeaders}
+      <Table
+        columns={columns}
+        data={data}
         noDataMessage="No Subscriptions Available"
-        rows={
-          licenceInformation &&
-          Object.entries(licenceInformation).map(
-            ([orb, { active, available, purchased }]) => (
-              <TableRow key={`${orb}-licenses`}>
-                <MissionControlTableCell>{orb}</MissionControlTableCell>
-                <MissionControlTableCell>{purchased}</MissionControlTableCell>
-                <MissionControlTableCell>{active}</MissionControlTableCell>
-                <MissionControlTableCell>{available}</MissionControlTableCell>
-              </TableRow>
-            ),
-          )
-        }
+        getHeaderProps={column => ({
+          align: column.id !== 'orb' ? 'right' : 'left',
+        })}
+        getCellProps={cell => ({
+          align: cell.column.id !== 'orb' ? 'right' : 'left',
+        })}
       />
     </Wrapper>
   );

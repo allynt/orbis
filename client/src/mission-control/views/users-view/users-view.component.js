@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   CloseIcon,
@@ -58,41 +58,55 @@ const UsersView = () => {
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
   const [dialogForm, setDialogForm] = useState(null);
 
-  /** @param { import('typings').CustomerUser } user */
-  const onChangeRoleClick = user =>
-    dispatch(
-      updateCustomerUser({
-        ...user,
-        type:
-          user.type === ADMIN_STATUS.manager
-            ? ADMIN_STATUS.member
-            : ADMIN_STATUS.manager,
-      }),
-    );
-
   const onCreateUserClick = () =>
     setDialogForm({ type: DIALOG_VIEW.createUser });
 
   /** @param { import('typings').CustomerUser } user */
-  const onEditUserClick = user =>
-    setDialogForm({ type: DIALOG_VIEW.editUser, user });
+  const onChangeRoleClick = useCallback(
+    user =>
+      dispatch(
+        updateCustomerUser({
+          ...user,
+          type:
+            user.type === ADMIN_STATUS.manager
+              ? ADMIN_STATUS.member
+              : ADMIN_STATUS.manager,
+        }),
+      ),
+    [dispatch],
+  );
 
   /** @param { import('typings').CustomerUser } user */
-  const onDeleteUserClick = user =>
-    setDialogForm({
-      type: DIALOG_VIEW.deleteUser,
-      user,
-    });
+  const onEditUserClick = useCallback(
+    user => setDialogForm({ type: DIALOG_VIEW.editUser, user }),
+    [],
+  );
 
   /** @param { import('typings').CustomerUser } user */
-  const onResendInvitationClick = user => dispatch(inviteCustomerUser(user));
+  const onDeleteUserClick = useCallback(
+    user =>
+      setDialogForm({
+        type: DIALOG_VIEW.deleteUser,
+        user,
+      }),
+    [],
+  );
 
   /** @param { import('typings').CustomerUser } user */
-  const onWithdrawInvitationClick = user =>
-    setDialogForm({
-      type: DIALOG_VIEW.withdrawInvitation,
-      user,
-    });
+  const onResendInvitationClick = useCallback(
+    user => dispatch(inviteCustomerUser(user)),
+    [dispatch],
+  );
+
+  /** @param { import('typings').CustomerUser } user */
+  const onWithdrawInvitationClick = useCallback(
+    user =>
+      setDialogForm({
+        type: DIALOG_VIEW.withdrawInvitation,
+        user,
+      }),
+    [],
+  );
 
   /**
    * @param {{
