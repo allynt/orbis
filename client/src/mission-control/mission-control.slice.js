@@ -1,6 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { NotificationManager } from 'react-notifications';
 
+import { userSelector } from 'accounts/accounts.selectors';
+import { setUser } from 'accounts/accounts.slice';
 import apiClient from 'api-client';
 
 import { USER_STATUS } from './mission-control.constants';
@@ -276,6 +278,7 @@ export const updateCustomerUser = customerUser => async (
   getState,
 ) => {
   const currentCustomer = selectCurrentCustomer(getState());
+  const currentUser = userSelector(getState());
 
   dispatch(updateCustomerUserRequested());
 
@@ -287,6 +290,9 @@ export const updateCustomerUser = customerUser => async (
     const updatedCustomer = await apiClient.customers.getCustomer(
       currentCustomer.id,
     );
+    if (updatedCustomerUser.user.id === currentUser.id) {
+      dispatch(setUser({ ...currentUser, ...updatedCustomerUser.user }));
+    }
     return dispatch(
       updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
     );
