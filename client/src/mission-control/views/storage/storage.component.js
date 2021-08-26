@@ -13,7 +13,6 @@ import {
 import { format } from 'date-fns';
 import { useSortBy } from 'react-table';
 
-import { DIALOG_VIEW } from 'mission-control/mission-control.constants';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -26,23 +25,16 @@ const DialogCloseButton = styled(IconButton)({
 });
 
 const Storage = ({ files }) => {
-  const [dialogForm, setDialogForm] = useState(null);
+  const [fileId, setFileId] = useState(null);
 
-  const close = () => setDialogForm(null);
+  const close = () => setFileId(null);
 
   const onDeleteFileClick = () => {
-    console.log('DELETE FILE WITH ID: ', dialogForm.value);
-    return setDialogForm(null);
+    console.log('DELETE FILE WITH ID: ', fileId);
+    return setFileId(null);
   };
 
-  const onDeleteFileButtonClick = useCallback(
-    value =>
-      setDialogForm({
-        type: DIALOG_VIEW.deleteFile,
-        value,
-      }),
-    [],
-  );
+  const onDeleteFileButtonClick = useCallback(value => setFileId(value), []);
 
   const columns = useMemo(
     () => [
@@ -90,11 +82,11 @@ const Storage = ({ files }) => {
           }}
         />
       </Wrapper>
-      <Dialog open={!!dialogForm} onClose={close} maxWidth="md">
+      <Dialog open={!!fileId} onClose={close} maxWidth="md">
         <DialogCloseButton onClick={close} aria-label="Close">
           <CloseIcon />
         </DialogCloseButton>
-        <DialogTitle>{dialogForm?.type}</DialogTitle>
+        <DialogTitle>Delete File</DialogTitle>
         <DialogContent>
           <DeleteFileForm
             onDeleteFileClick={onDeleteFileClick}

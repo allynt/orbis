@@ -67,7 +67,6 @@ export const DIALOG_VIEW = {
   withdrawInvitation: 'Confirm',
   editUser: 'Edit User',
   deleteUser: 'Verify Update',
-  deleteFile: 'Delete File',
 };
 
 export const ROWS_PER_PAGE_OPTIONS = ['5', '10', '15', '20'];
