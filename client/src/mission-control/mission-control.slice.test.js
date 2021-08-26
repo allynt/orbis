@@ -1,5 +1,8 @@
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { setUser } from 'accounts/accounts.slice';
 
 import { USER_STATUS } from './mission-control.constants';
 import reducer, {
@@ -44,7 +47,7 @@ describe('Mission Control Slice', () => {
       fetch.resetMocks();
 
       store = mockStore({
-        accounts: { userKey: 'Test-User-Key' },
+        accounts: { userKey: 'Test-User-Key', user: {} },
         missionControl: {
           isMissionControlDialogVisible: false,
           currentCustomer: {
@@ -370,6 +373,38 @@ describe('Mission Control Slice', () => {
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
 
         expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it("Should update the current user if it's the current user being updated", async () => {
+        store = mockStore({
+          accounts: { userKey: '123', user: { id: '1', name: 'Something' } },
+          missionControl: {
+            isMissionControlDialogVisible: false,
+            currentCustomer: {
+              name: 'test-customer',
+              licences: [{ id: '1', orb: 'Rice' }],
+            },
+            customerUsers: [],
+          },
+        });
+
+        const updatedCustomerUser = { user: { id: '1', name: 'Test Name' } };
+        const updatedCustomer = {
+          name: 'test_customer',
+        };
+
+        fetch
+          .once(JSON.stringify(updatedCustomerUser))
+          .once(JSON.stringify(updatedCustomer))
+          .once(JSON.stringify(updatedCustomerUser.user));
+
+        await store.dispatch(updateCustomerUser(updatedCustomerUser));
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: setUser.type,
+            payload: updatedCustomerUser.user,
+          }),
+        );
       });
     });
 

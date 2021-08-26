@@ -94,7 +94,7 @@ export const OrbCardSkeleton = () => {
   const styles = useStyles();
 
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} elevation={0}>
       <CardContent classes={{ root: styles.cardContent }}>
         <Skeleton
           variant="circle"

@@ -31,15 +31,17 @@ const validationSchema = yup.object({
 
 /**
  * @param {{
- *   user: import('typings/orbis').CustomerUser
- *   customer: import('typings/orbis').Customer
- *   availableLicences: import('typings/orbis').Licence[]
+ *   user: import('typings').CustomerUser
+ *   currentUser: import('typings').User
+ *   customer: import('typings').Customer
+ *   availableLicences: import('typings').Licence[]
  *   oneAdminRemaining?: boolean
- *   editUser: (user: import('typings/orbis').CustomerUser) => void
+ *   editUser: (user: import('typings').CustomerUser) => void
  * }} props
  */
 export const EditUserForm = ({
   user,
+  currentUser,
   customer,
   availableLicences,
   oneAdminRemaining,
@@ -159,7 +161,9 @@ export const EditUserForm = ({
                 <FormControlLabel
                   label="No"
                   value={ADMIN_STATUS.member}
-                  disabled={oneAdminRemaining}
+                  disabled={
+                    oneAdminRemaining || currentUser?.id === user.user.id
+                  }
                   control={<Radio />}
                 />
               </RadioGroup>

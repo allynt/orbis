@@ -361,7 +361,11 @@ export const updateUser = createAsyncThunk(
 const accountsSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, { payload }) => {
+      state.user = payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(placeOrder.fulfilled, state => {
       state.error = null;
@@ -469,5 +473,7 @@ const persistConfig = {
   whitelist: ['userKey'],
   storage,
 };
+
+export const { setUser } = accountsSlice.actions;
 
 export default persistReducer(persistConfig, accountsSlice.reducer);
