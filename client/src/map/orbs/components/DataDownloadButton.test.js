@@ -6,7 +6,7 @@ import fetch from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
-import { ADMIN_STATUS } from 'admin/admin.constants';
+import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 
 import DataDownloadButton, {
   getFilenameFromHeader,

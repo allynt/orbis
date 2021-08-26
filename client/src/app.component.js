@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
@@ -19,8 +19,6 @@ import {
 import LandingView from './landing/landing.component';
 import MapLayout from './map';
 import PrivateRoute from './utils/private-route.component';
-
-const Admin = lazy(() => import('./admin/admin.component'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -65,14 +63,6 @@ const App = () => {
           user={user}
           component={MapLayout}
         />
-        <Suspense fallback={<h3>Loading...</h3>}>
-          <PrivateRoute
-            exact
-            path="/admin-console"
-            user={user}
-            component={Admin}
-          />
-        </Suspense>
       </Switch>
     </Box>
   );

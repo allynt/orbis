@@ -10,9 +10,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { push } from 'connected-react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { userSelector } from 'accounts/accounts.selectors';
 import apiClient from 'api-client';
 import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
@@ -22,7 +21,6 @@ import {
   setMenuHeadings,
 } from '../control-panel/control-panel.slice';
 import featureToggles from '../feature-toggles';
-import { ReactComponent as AdminIcon } from './admin.svg';
 import { ReactComponent as GuideIcon } from './guide.svg';
 import { ReactComponent as MissionControlIcon } from './mission-control.svg';
 import {
@@ -62,7 +60,6 @@ const conditionallyAddItemOrItems = (condition, itemOrItems) => {
  */
 export const useToolbarItems = () => {
   const dispatch = useDispatch();
-  const user = useSelector(userSelector);
   const userHasUserRole = useUserRoleAuthorization(['UserRole']);
   const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
 
@@ -172,23 +169,6 @@ export const useToolbarItems = () => {
       tooltip: STORIES,
       order: 3,
     }),
-    ...conditionallyAddItemOrItems(
-      user?.customers?.some(customer => customer.type === 'MANAGER'),
-      {
-        label: 'Admin',
-        icon: (
-          <SvgIcon>
-            <AdminIcon />
-          </SvgIcon>
-        ),
-        action: () => {
-          dispatch(push('/admin-console'));
-        },
-        tooltip: 'Admin',
-        footer: true,
-        order: 4,
-      },
-    ),
   ];
 
   return items.sort((item1, item2) => item1.order - item2.order);

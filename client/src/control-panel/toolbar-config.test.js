@@ -64,13 +64,4 @@ describe('useToolbarItems', () => {
       expect.objectContaining({ label: STORIES }),
     );
   });
-
-  it('Includes the Admin item if the user is a MANAGER of any customer', () => {
-    const { result } = renderHook({
-      user: { customers: [{ type: 'MANAGER' }] },
-    });
-    expect(result.current).toContainEqual(
-      expect.objectContaining({ label: 'Admin' }),
-    );
-  });
 });

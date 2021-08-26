@@ -4,11 +4,11 @@ import { NotificationManager } from 'react-notifications';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import { createCustomerUserSuccess } from 'admin/admin.slice';
 import apiClient from 'api-client';
 import {
   selectCurrentCustomer,
   setCurrentCustomer,
+  createCustomerUserSuccess,
 } from 'mission-control/mission-control.slice';
 
 import {
