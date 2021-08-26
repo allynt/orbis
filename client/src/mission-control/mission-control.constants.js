@@ -27,7 +27,7 @@ export const VIEWS = {
     admin: true,
   },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
-  storage: { label: 'Storage', route: '/storage', Icon: StorageIcon },
+  // storage: { label: 'Storage', route: '/storage', Icon: StorageIcon },
 };
 
 export const ORGANISATION_TYPES = [
@@ -67,7 +67,7 @@ export const DIALOG_VIEW = {
   withdrawInvitation: 'Confirm',
   editUser: 'Edit User',
   deleteUser: 'Verify Update',
-  deleteFile: 'Delete FIle',
+  deleteFile: 'Delete File',
 };
 
 export const ROWS_PER_PAGE_OPTIONS = ['5', '10', '15', '20'];

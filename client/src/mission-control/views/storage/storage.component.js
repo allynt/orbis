@@ -11,6 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import faker from 'faker/locale/en_GB';
 import { useSortBy } from 'react-table';
 
 import { DIALOG_VIEW } from 'mission-control/mission-control.constants';
@@ -29,22 +30,20 @@ const Storage = ({ files }) => {
   const [dialogForm, setDialogForm] = useState(null);
 
   const onDeleteFileClick = useCallback(() => {
-    console.log('DELETE CLICKED');
+    console.log('DELETE FILE WITH ID: ', dialogForm.value);
     return setDialogForm(null);
-  }, []);
+  }, [dialogForm]);
 
-  const onCancelClick = useCallback(() => {
-    console.log('CANCEL CLICKED');
-    return setDialogForm(null);
-  }, []);
+  const onCancelClick = useCallback(() => setDialogForm(null), []);
 
-  const onDeleteFileButtonClick = useCallback(file => {
-    console.log('File: ', file);
-    return setDialogForm({
-      type: DIALOG_VIEW.deleteFile,
-      file,
-    });
-  }, []);
+  const onDeleteFileButtonClick = useCallback(
+    value =>
+      setDialogForm({
+        type: DIALOG_VIEW.deleteFile,
+        value,
+      }),
+    [],
+  );
 
   const columns = useMemo(
     () => [
@@ -58,7 +57,7 @@ const Storage = ({ files }) => {
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
       {
-        accessor: 'options',
+        accessor: 'id',
         disableSortBy: true,
         Cell: ({ value }) => (
           <OptionsMenu>
@@ -83,7 +82,7 @@ const Storage = ({ files }) => {
           noDataMessage="No Storage Data"
           pluginHooks={[useSortBy]}
           getCellProps={cell => ({
-            padding: cell.column.id === 'options' ? 'checkbox' : 'inherit',
+            padding: cell.column.id === 'id' ? 'checkbox' : 'inherit',
           })}
           tableOptions={{
             initialState: { sortBy: [{ id: 'date', desc: true }] },
