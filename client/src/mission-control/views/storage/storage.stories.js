@@ -8,7 +8,6 @@ const TEST_FILES = new Array(20).fill().map(() => ({
   id: faker.random.uuid(),
   title: faker.name.jobTitle(),
   date: faker.date.past().toISOString(),
-  url: faker.image.imageUrl(),
 }));
 
 export default {

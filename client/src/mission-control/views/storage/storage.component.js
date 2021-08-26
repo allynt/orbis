@@ -18,7 +18,7 @@ import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { OptionsMenu } from '../users-view/options-menu.component';
-import { DeleteFileForm } from './forms/delete-file-form';
+import { DeleteFileForm } from './forms/delete-file-form.component';
 
 const DialogCloseButton = styled(IconButton)({
   position: 'absolute',
@@ -28,12 +28,12 @@ const DialogCloseButton = styled(IconButton)({
 const Storage = ({ files }) => {
   const [dialogForm, setDialogForm] = useState(null);
 
-  const onDeleteFileClick = useCallback(() => {
+  const close = () => setDialogForm(null);
+
+  const onDeleteFileClick = () => {
     console.log('DELETE FILE WITH ID: ', dialogForm.value);
     return setDialogForm(null);
-  }, [dialogForm]);
-
-  const onCancelClick = useCallback(() => setDialogForm(null), []);
+  };
 
   const onDeleteFileButtonClick = useCallback(
     value =>
@@ -90,22 +90,15 @@ const Storage = ({ files }) => {
           }}
         />
       </Wrapper>
-      <Dialog
-        open={!!dialogForm}
-        onClose={() => setDialogForm(null)}
-        maxWidth="md"
-      >
-        <DialogCloseButton
-          onClick={() => setDialogForm(null)}
-          aria-label="Close"
-        >
+      <Dialog open={!!dialogForm} onClose={close} maxWidth="md">
+        <DialogCloseButton onClick={close} aria-label="Close">
           <CloseIcon />
         </DialogCloseButton>
         <DialogTitle>{dialogForm?.type}</DialogTitle>
         <DialogContent>
           <DeleteFileForm
             onDeleteFileClick={onDeleteFileClick}
-            onCancelClick={onCancelClick}
+            onCancelClick={close}
           />
         </DialogContent>
       </Dialog>
