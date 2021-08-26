@@ -17,7 +17,7 @@ const Template = args => (
         user: { name: 'John Smith' },
       },
       missionControl: {
-        currentCustomer: { official_name: 'Test Org', id: 'test-id-123' },
+        currentCustomer: { name: 'Test Org', id: 'test-id-123' },
       },
     })}
   >

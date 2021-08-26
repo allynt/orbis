@@ -27,7 +27,7 @@ export const AccountDetailsComponent = ({ width }) => {
         <Grid item xs={12} sm={12} md={4}>
           <Info
             organisationId={customer.id}
-            organisationName={customer.official_name}
+            organisationName={customer.name}
             userName={user.name}
           />
         </Grid>
