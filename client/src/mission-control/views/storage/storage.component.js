@@ -61,7 +61,7 @@ const Storage = ({ files }) => {
         accessor: 'options',
         disableSortBy: true,
         Cell: ({ value }) => (
-          <OptionsMenu data-testid="options-icon">
+          <OptionsMenu>
             <MenuItem onClick={() => onDeleteFileButtonClick(value)}>
               Delete
             </MenuItem>

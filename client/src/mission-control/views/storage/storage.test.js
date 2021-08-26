@@ -34,16 +34,16 @@ describe('<Storage />', () => {
   it('opens options menu when ellipsis icon is clicked', () => {
     const { getAllByTestId, getByRole } = renderComponent();
 
-    userEvent.click(getAllByTestId('options-icon')[1]);
+    userEvent.click(getAllByTestId('options-icon')[0]);
 
-    expect(getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+    expect(getByRole('menuitem', { name: 'Delete' })).toBeInTheDocument();
   });
 
   it('opens dialog when menu button is clicked', () => {
     const { getByRole, getAllByTestId } = renderComponent();
 
     userEvent.click(getAllByTestId('options-icon')[0]);
-    userEvent.click(getByRole('button', { name: 'Delete' }));
+    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
 
     expect(getByRole('dialog')).toBeInTheDocument();
   });
@@ -52,23 +52,23 @@ describe('<Storage />', () => {
     const { getAllByTestId, getByRole } = renderComponent();
 
     userEvent.click(getAllByTestId('options-icon')[0]);
-    userEvent.click(getByRole('button', { name: 'Delete' }));
+    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
 
-    expect(getByRole('dialog')).toBeInTheDocument();
+    expect(getByRole('dialog')).toBeVisible();
 
     userEvent.click(getByRole('button', { name: 'Cancel' }));
-    expect(getByRole('dialog')).not.toBeInTheDocument();
+    expect(getByRole('dialog')).not.toBeVisible();
   });
 
   it('closes dialog when confirm button is clicked', () => {
     const { getAllByTestId, getByRole } = renderComponent();
 
     userEvent.click(getAllByTestId('options-icon')[0]);
-    userEvent.click(getByRole('button', { name: 'Delete' }));
+    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
 
-    expect(getByRole('dialog')).toBeInTheDocument();
+    expect(getByRole('dialog')).toBeVisible();
 
     userEvent.click(getByRole('button', { name: 'Yes' }));
-    expect(getByRole('dialog')).not.toBeInTheDocument();
+    expect(getByRole('dialog')).not.toBeVisible();
   });
 });
