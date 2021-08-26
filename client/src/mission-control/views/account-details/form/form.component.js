@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapping = new Map([
-  [FIELD_NAMES.customerNameOfficial, 'official_name'],
+  [FIELD_NAMES.customerName, 'name'],
   [FIELD_NAMES.customerType, 'company_type'],
   [FIELD_NAMES.registeredNumber, 'registered_id'],
   [FIELD_NAMES.vatNumber, 'vat_number'],
@@ -66,7 +66,7 @@ const transform = {
  *  onSubmit?: (values: Pick<import('typings').Customer,
  *    'address' |
  *    'company_type' |
- *    'official_name' |
+ *    'name' |
  *    'type' |
  *    'vat_number'>) => void
  *  customer?: Partial<import('typings').Customer>
@@ -91,7 +91,7 @@ export const Form = ({ onSubmit, customer = {} }) => {
         onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}
       >
         <TextField
-          {...identifiers[FIELD_NAMES.customerNameOfficial]}
+          {...identifiers[FIELD_NAMES.customerName]}
           label="Organisation Name"
           inputRef={register}
         />
