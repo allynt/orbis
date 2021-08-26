@@ -78,10 +78,10 @@ export const MissionControl = () => {
   }, [user, currentCustomer, dispatch]);
 
   useEffect(() => {
-    if (currentCustomer && !customerUsers) {
+    if (userIsAdmin && currentCustomer && !customerUsers) {
       dispatch(fetchCustomerUsers(currentCustomer));
     }
-  }, [currentCustomer, customerUsers, dispatch]);
+  }, [currentCustomer, customerUsers, dispatch, userIsAdmin]);
 
   const renderAdminOnly = useCallback(
     Component => routeProps =>
