@@ -29,22 +29,22 @@ const Storage = ({ files }) => {
   const [dialogForm, setDialogForm] = useState(null);
 
   const onDeleteFileClick = useCallback(() => {
-    console.log('File: ', dialogForm.file);
+    console.log('DELETE CLICKED');
     return setDialogForm(null);
   }, []);
 
   const onCancelClick = useCallback(() => {
+    console.log('CANCEL CLICKED');
     return setDialogForm(null);
   }, []);
 
-  const onDeleteFileButtonClick = useCallback(
-    file =>
-      setDialogForm({
-        type: DIALOG_VIEW.deleteFile,
-        file,
-      }),
-    [],
-  );
+  const onDeleteFileButtonClick = useCallback(file => {
+    console.log('File: ', file);
+    return setDialogForm({
+      type: DIALOG_VIEW.deleteFile,
+      file,
+    });
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -60,9 +60,11 @@ const Storage = ({ files }) => {
       {
         accessor: 'options',
         disableSortBy: true,
-        Cell: () => (
-          <OptionsMenu>
-            <MenuItem onClick={onDeleteFileButtonClick}>Delete</MenuItem>
+        Cell: ({ value }) => (
+          <OptionsMenu data-testid="options-icon">
+            <MenuItem onClick={() => onDeleteFileButtonClick(value)}>
+              Delete
+            </MenuItem>
           </OptionsMenu>
         ),
       },
