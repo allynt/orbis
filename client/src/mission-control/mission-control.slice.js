@@ -291,7 +291,8 @@ export const updateCustomerUser = customerUser => async (
       currentCustomer.id,
     );
     if (updatedCustomerUser.user.id === currentUser.id) {
-      dispatch(setUser({ ...currentUser, ...updatedCustomerUser.user }));
+      const updatedUser = await apiClient.users.getCurrentUser();
+      dispatch(setUser(updatedUser));
     }
     return dispatch(
       updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),

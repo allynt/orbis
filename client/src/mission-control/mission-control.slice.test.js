@@ -395,7 +395,8 @@ describe('Mission Control Slice', () => {
 
         fetch
           .once(JSON.stringify(updatedCustomerUser))
-          .once(JSON.stringify(updatedCustomer));
+          .once(JSON.stringify(updatedCustomer))
+          .once(JSON.stringify(updatedCustomerUser.user));
 
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
         expect(store.getActions()).toContainEqual(
