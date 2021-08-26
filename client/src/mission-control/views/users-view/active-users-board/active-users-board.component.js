@@ -83,8 +83,9 @@ export const ActiveUsersBoard = ({
                 aria-controls="role-menu"
                 color="secondary"
                 disabled={
-                  customerUser.type === ADMIN_STATUS.manager &&
-                  oneAdminRemaining
+                  (customerUser.type === ADMIN_STATUS.manager &&
+                    oneAdminRemaining) ||
+                  currentUser.id === customerUser.user.id
                 }
                 size="small"
                 endIcon={
