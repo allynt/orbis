@@ -5,7 +5,6 @@ import { combineReducers } from 'redux';
 import drawingTools from 'drawing-tools/drawing-tools.slice';
 
 import accounts from './accounts/accounts.slice';
-import admin from './admin/admin.slice';
 import app from './app.slice';
 import bookmarks from './bookmarks/bookmarks.slice';
 import controlPanel from './control-panel/control-panel.slice';
@@ -21,7 +20,6 @@ export const history = createBrowserHistory();
 const createRootReducer = history =>
   combineReducers({
     accounts,
-    admin,
     app,
     bookmarks,
     controlPanel,
