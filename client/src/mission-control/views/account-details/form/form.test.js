@@ -7,16 +7,13 @@ import { Form } from './form.component';
 
 describe('Form', () => {
   it('Calls onSubmit with the form values', async () => {
-    const official_name = 'Silly test org',
+    const name = 'Silly test org',
       registered_id = '123456789',
       vat_number = '987654321',
       address = '123 Silly street, Faketon, Biscuitshire';
     const onSubmit = jest.fn();
     const { getByRole } = render(<Form onSubmit={onSubmit} />);
-    userEvent.type(
-      getByRole('textbox', { name: /organisation name/i }),
-      official_name,
-    );
+    userEvent.type(getByRole('textbox', { name: /organisation name/i }), name);
     userEvent.click(getByRole('button', { name: /type of organisation/i }));
     userEvent.click(getByRole('option', { name: /charity/i }));
     userEvent.type(
@@ -28,7 +25,7 @@ describe('Form', () => {
     userEvent.click(getByRole('button', { name: /save/i }));
     await waitFor(() =>
       expect(onSubmit).toBeCalledWith({
-        official_name,
+        name: name,
         company_type: 'CHARITY',
         registered_id,
         vat_number,
@@ -40,13 +37,13 @@ describe('Form', () => {
   it('Shows default values', () => {
     const customer = {
       address: '123 Test Street',
-      official_name: 'Test Org',
+      name: 'Test Org',
       registered_id: '123456789',
       company_type: 'CHARITY',
     };
     const { getByRole } = render(<Form customer={customer} />);
     expect(getByRole('textbox', { name: /organisation name/i })).toHaveValue(
-      customer.official_name,
+      customer.name,
     );
     expect(
       getByRole('button', { name: /type of organisation/i }),

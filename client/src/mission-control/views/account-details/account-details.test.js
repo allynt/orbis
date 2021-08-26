@@ -19,7 +19,7 @@ const renderComponent = () => {
     missionControl: {
       currentCustomer: {
         id: 'test-id-123',
-        official_name: 'Test Org',
+        name: 'Test Org',
       },
     },
   });
