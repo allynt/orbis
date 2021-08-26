@@ -21,3 +21,13 @@ export const Default = Template.bind({});
 Default.args = {
   files: TEST_FILES,
 };
+
+export const EmptyData = Template.bind({});
+EmptyData.args = {
+  files: [],
+};
+
+export const NoData = Template.bind({});
+NoData.args = {
+  files: null,
+};

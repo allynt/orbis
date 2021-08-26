@@ -11,7 +11,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import faker from 'faker/locale/en_GB';
 import { useSortBy } from 'react-table';
 
 import { DIALOG_VIEW } from 'mission-control/mission-control.constants';

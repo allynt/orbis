@@ -16,7 +16,7 @@ export const DeleteFileForm = ({ onDeleteFileClick, onCancelClick }) => {
         <Button onClick={onDeleteFileClick}>Yes</Button>
       </Form.Row>
       <Form.Row centered>
-        <Link component="button" onClick={() => onCancelClick()}>
+        <Link component="button" onClick={onCancelClick}>
           Cancel
         </Link>
       </Form.Row>
