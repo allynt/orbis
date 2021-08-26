@@ -300,6 +300,8 @@ class OrbImage(models.Model):
                 file_storage.delete(file_name)
 
         return super().delete(*args, **kwargs)
+
+
 class DataScope(models.Model):
     class Meta:
         app_label = "orbis"

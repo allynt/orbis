@@ -2,6 +2,8 @@ from urllib.parse import quote as urlquote
 
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
@@ -104,8 +106,19 @@ class DataScopeAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         # pre-fetching m2m fields that are used in list_displays
-        # to avoid the "n+1" problem
+        # also explicitly sorting the instances on source_id_pattern
         queryset = super().get_queryset(request)
+        queryset = queryset.order_by(
+            Concat(
+                F("authority"),
+                Value("/"),
+                F("namespace"),
+                Value("/"),
+                F("name"),
+                Value("/"),
+                F("version")
+            )
+        )
         return queryset.prefetch_related("orbs")
 
     def get_orbs_for_list_display(self, obj):
