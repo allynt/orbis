@@ -1,4 +1,5 @@
 import { ReactComponent as ProfileIcon } from './side-panel/side-panel-icons/profile-icon.svg';
+import { ReactComponent as StorageIcon } from './side-panel/side-panel-icons/storage-icon.svg';
 import { ReactComponent as StoreIcon } from './side-panel/side-panel-icons/store-icon.svg';
 import { ReactComponent as SubscriptionsIcon } from './side-panel/side-panel-icons/subscriptions-icon.svg';
 import { ReactComponent as SupportIcon } from './side-panel/side-panel-icons/support-icon.svg';
@@ -26,6 +27,7 @@ export const VIEWS = {
     admin: true,
   },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
+  // storage: { label: 'Storage', route: '/storage', Icon: StorageIcon },
 };
 
 export const ORGANISATION_TYPES = [

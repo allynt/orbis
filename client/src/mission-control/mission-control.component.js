@@ -138,6 +138,7 @@ export const MissionControl = () => {
                 <Route exact path="/mission-control">
                   <Redirect to="/mission-control/support" />
                 </Route>
+                {/* <Route path="/mission-control/storage" component={Storage} /> */}
               </Switch>
             </div>
           </CSSTransition>

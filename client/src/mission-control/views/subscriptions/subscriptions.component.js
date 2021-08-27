@@ -28,7 +28,7 @@ export const Subscriptions = ({ licenceInformation }) => {
       },
       { Header: 'Purchased Licences', accessor: 'purchased' },
       { Header: 'Assigned to Users', accessor: 'active' },
-      { Header: 'Available to Assign', accessor: 'pending' },
+      { Header: 'Available to Assign', accessor: 'available' },
     ],
     [],
   );
