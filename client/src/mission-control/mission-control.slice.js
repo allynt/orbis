@@ -4,6 +4,7 @@ import { NotificationManager } from 'react-notifications';
 import { userSelector } from 'accounts/accounts.selectors';
 import { setUser } from 'accounts/accounts.slice';
 import apiClient from 'api-client';
+import { fetchSourcesSuccess } from 'data-layers/data-layers.slice';
 
 import { USER_STATUS } from './mission-control.constants';
 
@@ -273,6 +274,9 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
   }
 };
 
+/**
+ * @param {import('typings').CustomerUser} customerUser
+ */
 export const updateCustomerUser = customerUser => async (
   dispatch,
   getState,
@@ -293,6 +297,16 @@ export const updateCustomerUser = customerUser => async (
     if (updatedCustomerUser.user.id === currentUser.id) {
       const updatedUser = await apiClient.users.getCurrentUser();
       dispatch(setUser(updatedUser));
+      const hasUpdatedLicences = updatedUser.orbs.some(
+        updatedOrb =>
+          !currentUser.orbs.find(
+            currentOrb => currentOrb.name === updatedOrb.name,
+          ),
+      );
+      if (hasUpdatedLicences) {
+        const sourcesInformation = await apiClient.data.getSources();
+        dispatch(fetchSourcesSuccess(sourcesInformation));
+      }
     }
     return dispatch(
       updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
