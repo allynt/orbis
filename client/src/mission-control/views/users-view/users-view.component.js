@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import {
   CloseIcon,
@@ -56,10 +56,17 @@ const UsersView = () => {
   const activeUsers = useSelector(selectActiveUsers);
   const pendingUsers = useSelector(selectPendingUsers);
   const oneAdminRemaining = useSelector(selectOneAdminRemaining);
-  const [dialogForm, setDialogForm] = useState(null);
+  const [dialogContent, setDialogContent] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!!dialogContent) {
+      setDialogOpen(true);
+    }
+  }, [dialogContent]);
 
   const onCreateUserClick = () =>
-    setDialogForm({ type: DIALOG_VIEW.createUser });
+    setDialogContent({ type: DIALOG_VIEW.createUser });
 
   /** @param { import('typings').CustomerUser } user */
   const onChangeRoleClick = useCallback(
@@ -78,14 +85,14 @@ const UsersView = () => {
 
   /** @param { import('typings').CustomerUser } user */
   const onEditUserClick = useCallback(
-    user => setDialogForm({ type: DIALOG_VIEW.editUser, user }),
+    user => setDialogContent({ type: DIALOG_VIEW.editUser, user }),
     [],
   );
 
   /** @param { import('typings').CustomerUser } user */
   const onDeleteUserClick = useCallback(
     user =>
-      setDialogForm({
+      setDialogContent({
         type: DIALOG_VIEW.deleteUser,
         user,
       }),
@@ -101,7 +108,7 @@ const UsersView = () => {
   /** @param { import('typings').CustomerUser } user */
   const onWithdrawInvitationClick = useCallback(
     user =>
-      setDialogForm({
+      setDialogContent({
         type: DIALOG_VIEW.withdrawInvitation,
         user,
       }),
@@ -116,12 +123,12 @@ const UsersView = () => {
    * }} values
    */
   const handleCreateUserFormSubmit = values => {
-    setDialogForm(null);
+    setDialogOpen(false);
     dispatch(createCustomerUser(values));
   };
 
   const getDialogForm = () => {
-    switch (dialogForm?.type) {
+    switch (dialogContent?.type) {
       case DIALOG_VIEW.createUser:
         return (
           <CreateUserForm
@@ -133,34 +140,34 @@ const UsersView = () => {
       case DIALOG_VIEW.withdrawInvitation:
         return (
           <WithdrawUserInvitationForm
-            user={dialogForm.user}
+            user={dialogContent.user}
             withdrawInvitation={user => {
               dispatch(deleteCustomerUser(user));
-              setDialogForm(null);
+              setDialogOpen(false);
             }}
-            onCancelClick={() => setDialogForm(null)}
+            onCancelClick={() => setDialogOpen(false)}
           />
         );
       case DIALOG_VIEW.editUser:
         return (
           <EditUserForm
-            user={dialogForm.user}
+            user={dialogContent.user}
             currentUser={user}
             customer={currentCustomer}
             availableLicences={availableLicences}
             oneAdminRemaining={oneAdminRemaining}
             editUser={editedUser => {
               dispatch(updateCustomerUser(editedUser));
-              setDialogForm(null);
+              setDialogOpen(false);
             }}
           />
         );
       case DIALOG_VIEW.deleteUser:
         return (
           <DeleteUserForm
-            user={dialogForm.user}
+            user={dialogContent.user}
             deleteUser={user => dispatch(deleteCustomerUser(user))}
-            close={() => setDialogForm(null)}
+            close={() => setDialogOpen(false)}
           />
         );
       default:
@@ -195,17 +202,20 @@ const UsersView = () => {
         />
       </Wrapper>
       <Dialog
-        open={!!dialogForm}
-        onClose={() => setDialogForm(null)}
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        TransitionProps={{
+          onExited: () => setDialogContent(null),
+        }}
         maxWidth="md"
       >
         <DialogCloseButton
-          onClick={() => setDialogForm(null)}
+          onClick={() => setDialogOpen(false)}
           aria-label="Close"
         >
           <CloseIcon />
         </DialogCloseButton>
-        <DialogTitle>{dialogForm?.type}</DialogTitle>
+        <DialogTitle>{dialogContent?.type}</DialogTitle>
         <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
     </>

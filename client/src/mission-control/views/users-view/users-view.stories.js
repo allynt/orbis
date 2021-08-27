@@ -27,6 +27,7 @@ const customer = makeCustomer(users);
 const Template = ({ users }) => (
   <Provider
     store={mockStore({
+      accounts: { user: {} },
       missionControl: {
         customerUsers: users,
         currentCustomer: customer,
