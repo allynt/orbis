@@ -286,32 +286,32 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
 
 /**
  * @param {number} [depth]
- * @param {boolean} [removeDuplicates]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
-export const categorisedOrbsAndSourcesSelector = (depth, removeDuplicates) =>
+export const categorisedOrbsAndSourcesSelector = (depth, ignoreMultipleOrbs) =>
   createSelector(dataSourcesSelector, sources =>
-    createOrbsWithCategorisedSources(sources, depth, removeDuplicates),
+    createOrbsWithCategorisedSources(sources, depth, ignoreMultipleOrbs),
   );
 
 /**
  * @param {number} [depth]
- * @param {boolean} [removeDuplicates]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
 export const activeCategorisedOrbsAndSourcesSelector = (
   depth,
-  removeDuplicates,
+  ignoreMultipleOrbs,
 ) =>
   createSelector(activeDataSourcesSelector, sources =>
-    createOrbsWithCategorisedSources(sources, depth, removeDuplicates),
+    createOrbsWithCategorisedSources(sources, depth, ignoreMultipleOrbs),
   );
 
 /**
  * @param {number} [depth]
- * @param {boolean} [removeDuplicates]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
-export const activeCategorisedSourcesSelector = (depth, removeDuplicates) =>
+export const activeCategorisedSourcesSelector = (depth, ignoreMultipleOrbs) =>
   createSelector(
-    activeCategorisedOrbsAndSourcesSelector(depth, removeDuplicates),
+    activeCategorisedOrbsAndSourcesSelector(depth, ignoreMultipleOrbs),
     orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
   );
 
