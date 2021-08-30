@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
-import { setOther } from 'map/orbs/layers.slice';
+import { setOther, SHARED_STATE_KEY } from 'map/orbs/layers.slice';
 
 import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 
@@ -68,7 +68,7 @@ describe('<IsolationPlusPropertyRadioGroup />', () => {
       {
         orbs: {
           layers: {
-            'test/layer': {
+            [SHARED_STATE_KEY]: {
               other: { property: { ...property, source_id: 'test/layer' } },
             },
           },

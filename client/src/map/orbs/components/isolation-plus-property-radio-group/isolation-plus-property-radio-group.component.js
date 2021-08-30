@@ -11,6 +11,7 @@ import {
   setFilterValue,
   setOther,
   setTimestamp,
+  SHARED_STATE_KEY,
   timestampSelector,
 } from '../../layers.slice';
 import { groupProperties } from './helpers/group-properties.js';
@@ -26,9 +27,9 @@ export const IsolationPlusPropertyRadioGroup = ({
   selectedLayer,
   dispatch,
 }) => {
-  const otherStateKey = `${selectedLayer.authority}/${selectedLayer.namespace}`;
-  const other = useSelector(state => otherSelector(otherStateKey)(state?.orbs));
-  /** @type {import('typings').Source['source_id']}} */
+  const other = useSelector(state =>
+    otherSelector(SHARED_STATE_KEY)(state?.orbs),
+  );
   const selectedProperty = get(other, 'property');
 
   const propertyStateKey = `${selectedProperty?.source_id}/${selectedProperty?.name}`;
@@ -55,7 +56,7 @@ export const IsolationPlusPropertyRadioGroup = ({
   const handlePropertyChange = property => {
     dispatch(
       setOther({
-        key: otherStateKey,
+        key: SHARED_STATE_KEY,
         other: {
           ...other,
           property:
@@ -100,20 +101,24 @@ export const IsolationPlusPropertyRadioGroup = ({
     );
 
   if (!selectedLayer?.metadata?.properties) return null;
-  return groupProperties(selectedLayer.metadata.properties).map(properties => (
-    <PropertyRadio
-      key={`${selectedLayer.source_id}-property-${properties[0].name}`}
-      layerSourceId={selectedLayer?.source_id}
-      properties={properties}
-      onPropertyChange={handlePropertyChange}
-      onFilterSliderChange={handleSliderChange}
-      selectedProperty={selectedProperty}
-      filterRange={filterRange}
-      categoryPath={categoryPath}
-      onDateChange={handleDateChange}
-      selectedTimestamp={selectedTimestamp}
-      clipRange={clipRange}
-      onClipRangeChange={handleClipRangeChange}
-    />
-  ));
+  return (
+    <>
+      {groupProperties(selectedLayer.metadata.properties).map(properties => (
+        <PropertyRadio
+          key={`${selectedLayer.source_id}-property-${properties[0].name}`}
+          layerSourceId={selectedLayer?.source_id}
+          properties={properties}
+          onPropertyChange={handlePropertyChange}
+          onFilterSliderChange={handleSliderChange}
+          selectedProperty={selectedProperty}
+          filterRange={filterRange}
+          categoryPath={categoryPath}
+          onDateChange={handleDateChange}
+          selectedTimestamp={selectedTimestamp}
+          clipRange={clipRange}
+          onClipRangeChange={handleClipRangeChange}
+        />
+      ))}
+    </>
+  );
 };
