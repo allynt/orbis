@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 
-import { setClickedFeatures } from 'map/orbs/layers.slice';
+import { setClickedFeatures, SHARED_STATE_KEY } from 'map/orbs/layers.slice';
 import { MapProvider } from 'MapContext';
 
 import { AnalysisPanel } from './analysis-panel.component';
@@ -21,7 +21,7 @@ const renderComponent = ({ property, clickedFeatures }) => {
   const store = mockStore({
     orbs: {
       layers: {
-        'astrosat/isolation_plus': { other: { property } },
+        [SHARED_STATE_KEY]: { other: { property } },
         [source_id]: { clickedFeatures },
       },
     },

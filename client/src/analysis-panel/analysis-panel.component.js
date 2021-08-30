@@ -25,6 +25,7 @@ import {
   hoveredFeaturesSelector,
   otherSelector,
   setClickedFeatures,
+  SHARED_STATE_KEY,
   timestampSelector,
 } from 'map/orbs/layers.slice';
 
@@ -120,7 +121,7 @@ export const AnalysisPanel = () => {
 
   const dispatch = useDispatch();
   const other = useSelector(state =>
-    otherSelector('astrosat/isolation_plus')(state?.orbs),
+    otherSelector(SHARED_STATE_KEY)(state?.orbs),
   );
   const selectedProperty = get(other, 'property');
   const selectedTimestamp = useSelector(state =>

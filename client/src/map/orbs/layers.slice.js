@@ -5,6 +5,8 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { unionBy, differenceBy } from 'lodash';
 
+export const SHARED_STATE_KEY = 'shared';
+
 /**
  * @typedef {{
  *   [key: string]: {
