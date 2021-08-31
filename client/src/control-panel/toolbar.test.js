@@ -19,12 +19,12 @@ describe('<Toolbar/>', () => {
         label: 'Item 1',
         icon: <div aria-label="Item 1" />,
         roles: ['RoleOne'],
-        action: jest.fn(),
+        onClick: jest.fn(),
       },
     ];
     const { getByLabelText } = render(<Toolbar items={items} />);
     userEvent.click(getByLabelText(items[0].label));
-    expect(items[0].action).toHaveBeenCalled();
+    expect(items[0].onClick).toHaveBeenCalled();
   });
 
   it('Navigates to root when the logo is clicked', () => {

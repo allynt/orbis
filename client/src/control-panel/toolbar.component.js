@@ -51,16 +51,13 @@ const Toolbar = ({ items, openItem }) => {
   /**
    * @param {import('./toolbar-config').ToolbarItem} item
    */
-  const makeSidebarItem = item => (
+  const makeSidebarItem = ({ id, order, footer, ...rest }) => (
     <SidebarItem
-      key={item.label}
-      icon={item.icon}
-      onClick={item.action}
-      tooltip={item.label}
-      selected={openItem === item.label}
-      href={item.href}
+      key={id}
+      selected={openItem === id}
       target="_blank"
       rel="noreferrer noopener"
+      {...rest}
     />
   );
 

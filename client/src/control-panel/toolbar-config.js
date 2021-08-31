@@ -27,9 +27,9 @@ import {
 
 /**
  * @typedef {{
- *  label: string
+ *  id: string
  *  icon: JSX.Element
- *  action?: () => void
+ *  onClick?: () => void
  *  tooltip?: string
  *  order?: number
  *  footer?: boolean
@@ -62,9 +62,9 @@ export const useToolbarItems = ({ dispatch }) => {
     () => [
       ...conditionallyAddItemOrItems(userHasUserRole, [
         {
-          label: DATA_LAYERS,
+          id: DATA_LAYERS,
           icon: <DataIcon titleAccess="data" />,
-          action: () => {
+          onClick: () => {
             dispatch({
               type: 'SET_PANEL',
               panel: DATA_LAYERS,
@@ -76,9 +76,9 @@ export const useToolbarItems = ({ dispatch }) => {
           order: 0,
         },
         {
-          label: BOOKMARKS,
+          id: BOOKMARKS,
           icon: <MapIcon titleAccess="My maps" />,
-          action: () => {
+          onClick: () => {
             dispatch({
               type: 'SET_PANEL',
               panel: BOOKMARKS,
@@ -90,9 +90,9 @@ export const useToolbarItems = ({ dispatch }) => {
           order: 2,
         },
         {
-          label: PROFILE,
+          id: PROFILE,
           icon: <ProfileIcon titleAccess="Profile" />,
-          action: () => {
+          onClick: () => {
             dispatch({
               type: 'SET_PANEL',
               panel: PROFILE,
@@ -108,9 +108,9 @@ export const useToolbarItems = ({ dispatch }) => {
       ...conditionallyAddItemOrItems(
         userHasUserRole && hasSatellitesFeatureAccess,
         {
-          label: SATELLITE_LAYERS,
+          id: SATELLITE_LAYERS,
           icon: <SatelliteIcon />,
-          action: () => {
+          onClick: () => {
             dispatch({
               type: 'SET_PANEL',
               panel: SATELLITE_LAYERS,
@@ -123,7 +123,7 @@ export const useToolbarItems = ({ dispatch }) => {
         },
       ),
       ...conditionallyAddItemOrItems(true, {
-        label: 'Mission Control',
+        id: 'Mission Control',
         icon: (
           <SvgIcon>
             <MissionControlIcon />
@@ -131,10 +131,10 @@ export const useToolbarItems = ({ dispatch }) => {
         ),
         footer: true,
         tooltip: 'Mission Control',
-        action: () => history.push('/mission-control'),
+        onClick: () => history.push('/mission-control'),
       }),
       {
-        label: 'User Guide',
+        id: 'User Guide',
         icon: (
           <SvgIcon>
             <GuideIcon />
@@ -148,9 +148,9 @@ export const useToolbarItems = ({ dispatch }) => {
       ...conditionallyAddItemOrItems(
         featureToggles.stories && userHasUserRole,
         {
-          label: STORIES,
+          id: STORIES,
           icon: <StoryIcon />,
-          action: () => {
+          onClick: () => {
             dispatch({
               type: 'SET_PANEL',
               panel: STORIES,
