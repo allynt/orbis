@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   DataIcon,
@@ -58,107 +58,113 @@ export const useToolbarItems = ({ dispatch }) => {
   const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
 
   /** @type {ToolbarItem[]} */
-  const items = [
-    ...conditionallyAddItemOrItems(userHasUserRole, [
-      {
-        label: DATA_LAYERS,
-        icon: <DataIcon titleAccess="data" />,
-        action: () => {
-          dispatch({
-            type: 'SET_PANEL',
-            panel: DATA_LAYERS,
-            heading: 'SELECT ORB',
-            strapline: 'Choose your ORB and then add data layers',
-          });
+  const items = useMemo(
+    () => [
+      ...conditionallyAddItemOrItems(userHasUserRole, [
+        {
+          label: DATA_LAYERS,
+          icon: <DataIcon titleAccess="data" />,
+          action: () => {
+            dispatch({
+              type: 'SET_PANEL',
+              panel: DATA_LAYERS,
+              heading: 'SELECT ORB',
+              strapline: 'Choose your ORB and then add data layers',
+            });
+          },
+          tooltip: DATA_LAYERS,
+          order: 0,
         },
-        tooltip: DATA_LAYERS,
-        order: 0,
-      },
-      {
-        label: BOOKMARKS,
-        icon: <MapIcon titleAccess="My maps" />,
-        action: () => {
-          dispatch({
-            type: 'SET_PANEL',
-            panel: BOOKMARKS,
-            heading: 'MY MAPS',
-            strapline: 'Save your map and pick up later',
-          });
+        {
+          label: BOOKMARKS,
+          icon: <MapIcon titleAccess="My maps" />,
+          action: () => {
+            dispatch({
+              type: 'SET_PANEL',
+              panel: BOOKMARKS,
+              heading: 'MY MAPS',
+              strapline: 'Save your map and pick up later',
+            });
+          },
+          tooltip: BOOKMARKS,
+          order: 2,
         },
-        tooltip: BOOKMARKS,
-        order: 2,
-      },
-      {
-        label: PROFILE,
-        icon: <ProfileIcon titleAccess="Profile" />,
-        action: () => {
-          dispatch({
-            type: 'SET_PANEL',
-            panel: PROFILE,
-            heading: 'My Account',
-            strapline: 'Edit your details below',
-          });
+        {
+          label: PROFILE,
+          icon: <ProfileIcon titleAccess="Profile" />,
+          action: () => {
+            dispatch({
+              type: 'SET_PANEL',
+              panel: PROFILE,
+              heading: 'My Account',
+              strapline: 'Edit your details below',
+            });
+          },
+          tooltip: PROFILE,
+          footer: true,
+          order: 5,
         },
-        tooltip: PROFILE,
+      ]),
+      ...conditionallyAddItemOrItems(
+        userHasUserRole && hasSatellitesFeatureAccess,
+        {
+          label: SATELLITE_LAYERS,
+          icon: <SatelliteIcon />,
+          action: () => {
+            dispatch({
+              type: 'SET_PANEL',
+              panel: SATELLITE_LAYERS,
+              heading: 'SATELLITE IMAGES',
+              strapline: 'Search and visualise up to date images',
+            });
+          },
+          tooltip: SATELLITE_LAYERS,
+          order: 1,
+        },
+      ),
+      ...conditionallyAddItemOrItems(true, {
+        label: 'Mission Control',
+        icon: (
+          <SvgIcon>
+            <MissionControlIcon />
+          </SvgIcon>
+        ),
         footer: true,
-        order: 5,
-      },
-    ]),
-    ...conditionallyAddItemOrItems(
-      userHasUserRole && hasSatellitesFeatureAccess,
+        tooltip: 'Mission Control',
+        action: () => history.push('/mission-control'),
+      }),
       {
-        label: SATELLITE_LAYERS,
-        icon: <SatelliteIcon />,
-        action: () => {
-          dispatch({
-            type: 'SET_PANEL',
-            panel: SATELLITE_LAYERS,
-            heading: 'SATELLITE IMAGES',
-            strapline: 'Search and visualise up to date images',
-          });
+        label: 'User Guide',
+        icon: (
+          <SvgIcon>
+            <GuideIcon />
+          </SvgIcon>
+        ),
+        footer: true,
+        tooltip: 'User Guide',
+        order: 3,
+        href: apiClient.documents.userGuideUrl(),
+      },
+      ...conditionallyAddItemOrItems(
+        featureToggles.stories && userHasUserRole,
+        {
+          label: STORIES,
+          icon: <StoryIcon />,
+          action: () => {
+            dispatch({
+              type: 'SET_PANEL',
+              panel: STORIES,
+              heading: 'STORIES',
+              strapline: 'Select an Existing Story or Add New',
+            });
+          },
+          tooltip: STORIES,
+          order: 3,
         },
-        tooltip: SATELLITE_LAYERS,
-        order: 1,
-      },
-    ),
-    ...conditionallyAddItemOrItems(true, {
-      label: 'Mission Control',
-      icon: (
-        <SvgIcon>
-          <MissionControlIcon />
-        </SvgIcon>
       ),
-      footer: true,
-      tooltip: 'Mission Control',
-      action: () => history.push('/mission-control'),
-    }),
-    {
-      label: 'User Guide',
-      icon: (
-        <SvgIcon>
-          <GuideIcon />
-        </SvgIcon>
-      ),
-      footer: true,
-      tooltip: 'User Guide',
-      order: 3,
-      href: apiClient.documents.userGuideUrl(),
-    },
-    ...conditionallyAddItemOrItems(featureToggles.stories && userHasUserRole, {
-      label: STORIES,
-      icon: <StoryIcon />,
-      action: () => {
-        dispatch({
-          type: 'SET_PANEL',
-          panel: STORIES,
-          heading: 'STORIES',
-          strapline: 'Select an Existing Story or Add New',
-        });
-      },
-      tooltip: STORIES,
-      order: 3,
-    }),
-  ];
+    ],
+    [dispatch, hasSatellitesFeatureAccess, userHasUserRole],
+  );
 
   return items.sort((item1, item2) => item1.order - item2.order);
 };
