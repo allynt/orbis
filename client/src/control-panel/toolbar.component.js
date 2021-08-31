@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
@@ -27,10 +27,10 @@ const useStyles = makeStyles({
 /**
  * @param {{
  *  items: import('./toolbar-config').ToolbarItem[]
+ *  openItem?: string
  * }} props
  */
-const Toolbar = ({ items }) => {
-  const [selected, setSelected] = useState();
+const Toolbar = ({ items, openItem }) => {
   const history = useHistory();
   const styles = useStyles({});
 
@@ -38,7 +38,6 @@ const Toolbar = ({ items }) => {
    * @param {import('./toolbar-config').ToolbarItem} item
    */
   const select = item => {
-    setSelected(item);
     item.action();
   };
 
@@ -51,7 +50,7 @@ const Toolbar = ({ items }) => {
       icon={item.icon}
       onClick={() => item.action && select(item)}
       tooltip={item.label}
-      selected={selected?.label === item.label}
+      selected={openItem === item.label}
       href={item.href}
       target="_blank"
       rel="noreferrer noopener"

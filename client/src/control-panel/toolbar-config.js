@@ -3,32 +3,26 @@ import React from 'react';
 import {
   DataIcon,
   MapIcon,
+  ProfileIcon,
   SatelliteIcon,
   StoryIcon,
-  ProfileIcon,
   SvgIcon,
 } from '@astrosat/astrosat-ui';
-
-import { push } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
 
 import apiClient from 'api-client';
 import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
+import { history } from 'root.reducer';
 
-import {
-  toggleMenu,
-  setMenuHeadings,
-} from '../control-panel/control-panel.slice';
 import featureToggles from '../feature-toggles';
 import { ReactComponent as GuideIcon } from './guide.svg';
 import { ReactComponent as MissionControlIcon } from './mission-control.svg';
 import {
-  DATA_LAYERS,
-  SATELLITE_LAYERS,
   BOOKMARKS,
-  STORIES,
+  DATA_LAYERS,
   PROFILE,
+  SATELLITE_LAYERS,
+  STORIES,
 } from './toolbar-constants';
 
 /**
@@ -56,10 +50,10 @@ const conditionallyAddItemOrItems = (condition, itemOrItems) => {
 };
 
 /**
+ * @param {{dispatch: React.Dispatch<import('./control-panel.component').ControlPanelAction>}} params
  * @returns {ToolbarItem[]}
  */
-export const useToolbarItems = () => {
-  const dispatch = useDispatch();
+export const useToolbarItems = ({ dispatch }) => {
   const userHasUserRole = useUserRoleAuthorization(['UserRole']);
   const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
 
@@ -70,13 +64,12 @@ export const useToolbarItems = () => {
         label: DATA_LAYERS,
         icon: <DataIcon titleAccess="data" />,
         action: () => {
-          dispatch(toggleMenu(DATA_LAYERS));
-          dispatch(
-            setMenuHeadings({
-              heading: 'SELECT ORB',
-              strapline: 'Choose your ORB and then add data layers',
-            }),
-          );
+          dispatch({
+            type: 'SET_PANEL',
+            panel: DATA_LAYERS,
+            heading: 'SELECT ORB',
+            strapline: 'Choose your ORB and then add data layers',
+          });
         },
         tooltip: DATA_LAYERS,
         order: 0,
@@ -85,13 +78,12 @@ export const useToolbarItems = () => {
         label: BOOKMARKS,
         icon: <MapIcon titleAccess="My maps" />,
         action: () => {
-          dispatch(toggleMenu(BOOKMARKS));
-          dispatch(
-            setMenuHeadings({
-              heading: 'MY MAPS',
-              strapline: 'Save your map and pick up later',
-            }),
-          );
+          dispatch({
+            type: 'SET_PANEL',
+            panel: BOOKMARKS,
+            heading: 'MY MAPS',
+            strapline: 'Save your map and pick up later',
+          });
         },
         tooltip: BOOKMARKS,
         order: 2,
@@ -100,13 +92,12 @@ export const useToolbarItems = () => {
         label: PROFILE,
         icon: <ProfileIcon titleAccess="Profile" />,
         action: () => {
-          dispatch(toggleMenu(PROFILE));
-          dispatch(
-            setMenuHeadings({
-              heading: 'My Account',
-              strapline: 'Edit your details below',
-            }),
-          );
+          dispatch({
+            type: 'SET_PANEL',
+            panel: PROFILE,
+            heading: 'My Account',
+            strapline: 'Edit your details below',
+          });
         },
         tooltip: PROFILE,
         footer: true,
@@ -119,13 +110,12 @@ export const useToolbarItems = () => {
         label: SATELLITE_LAYERS,
         icon: <SatelliteIcon />,
         action: () => {
-          dispatch(toggleMenu(SATELLITE_LAYERS));
-          dispatch(
-            setMenuHeadings({
-              heading: 'SATELLITE IMAGES',
-              strapline: 'Search and visualise up to date images',
-            }),
-          );
+          dispatch({
+            type: 'SET_PANEL',
+            panel: SATELLITE_LAYERS,
+            heading: 'SATELLITE IMAGES',
+            strapline: 'Search and visualise up to date images',
+          });
         },
         tooltip: SATELLITE_LAYERS,
         order: 1,
@@ -140,7 +130,7 @@ export const useToolbarItems = () => {
       ),
       footer: true,
       tooltip: 'Mission Control',
-      action: () => dispatch(push('/mission-control')),
+      action: () => history.push('/mission-control'),
     }),
     {
       label: 'User Guide',
@@ -158,13 +148,12 @@ export const useToolbarItems = () => {
       label: STORIES,
       icon: <StoryIcon />,
       action: () => {
-        dispatch(toggleMenu(STORIES));
-        dispatch(
-          setMenuHeadings({
-            heading: 'STORIES',
-            strapline: 'Select an Existing Story or Add New',
-          }),
-        );
+        dispatch({
+          type: 'SET_PANEL',
+          panel: STORIES,
+          heading: 'STORIES',
+          strapline: 'Select an Existing Story or Add New',
+        });
       },
       tooltip: STORIES,
       order: 3,
