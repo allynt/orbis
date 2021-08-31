@@ -21,12 +21,12 @@ class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
     inlines = (OrbisUserFeedbackRecordInline, )
 
 
-class TermsDocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
-    model = AstrosatUser.terms.through
+class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
+    model = AstrosatUser.documents.through
 
     extra = 0
-    fields = ("terms", "timestamp")
-    verbose_name_plural = "Agreed terms"
+    fields = ("document", "timestamp")
+    verbose_name_plural = "Agreed documents"
 
 
 class UserAdmin(AstrosatUserAdmin):
@@ -34,7 +34,7 @@ class UserAdmin(AstrosatUserAdmin):
     Just like the standard UserAdmin, but adds an entry for each time
     the user has agreed terms
     """
-    inlines = (TermsDocumentAgreementInline, )
+    inlines = (DocumentAgreementInline, )
 
 
 try:

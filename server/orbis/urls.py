@@ -15,7 +15,8 @@ from .views import (
     OrbisUserViewSet,
     OrbisUserFeedbackRecordView,
     DataSourceView,
-    DocumentView,
+    DocumentAgreementListView,
+    DocumentDetailView,
     TokenView,
     OrderViewSet,
 )
@@ -45,7 +46,8 @@ api_urlpatterns = [
     path("customers/<slug:customer_id>/users/<slug:user_id>/onboard/", CustomerUserOnboardView.as_view(), name="customer-users-onboard"),
     path("users/<slug:id>/feedback/", OrbisUserFeedbackRecordView.as_view(), name="users-feedback"),
     path("data/sources/", DataSourceView.as_view(), name="datasources"),
-    path("documents/<str:document_type>/", DocumentView.as_view(), name="documents"),
+    path("documents/agreements/", DocumentAgreementListView.as_view(), name="document-agreements"),
+    path("documents/", DocumentDetailView.as_view(), name="documents"),
     path("data/token/", TokenView.as_view(), name="token"),
     path("", include(api_router.urls)),
 ]  # yapf: disable
