@@ -168,8 +168,8 @@ export const {
 /**
  * @param {Response} response
  * @param {string} title
- * @param {ActionCreatorWithPayload} action
- * @param {Dispatch} dispatch
+ * @param {import('@reduxjs/toolkit').ActionCreatorWithPayload} action
+ * @param {import('redux').Dispatch} dispatch
  */
 const handleFailure = (response, title, action, dispatch) => {
   const message = `${response.status} ${response.statusText}`;
@@ -297,12 +297,14 @@ export const updateCustomerUser = customerUser => async (
     if (updatedCustomerUser.user.id === currentUser.id) {
       const updatedUser = await apiClient.users.getCurrentUser();
       dispatch(setUser(updatedUser));
-      const hasUpdatedLicences = updatedUser.orbs.some(
-        updatedOrb =>
-          !currentUser.orbs.find(
-            currentOrb => currentOrb.name === updatedOrb.name,
-          ),
-      );
+      const hasUpdatedLicences =
+        updatedUser.orbs?.length !== currentUser.orbs?.length ||
+        updatedUser.orbs?.some(
+          updatedOrb =>
+            !currentUser.orbs.find(
+              currentOrb => currentOrb.name === updatedOrb.name,
+            ),
+        );
       if (hasUpdatedLicences) {
         const sourcesInformation = await apiClient.data.getSources();
         dispatch(fetchSourcesSuccess(sourcesInformation));

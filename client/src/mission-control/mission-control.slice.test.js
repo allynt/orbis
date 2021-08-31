@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { setUser } from 'accounts/accounts.slice';
+import { fetchSourcesSuccess } from 'data-layers/data-layers.slice';
 
 import { USER_STATUS } from './mission-control.constants';
 import reducer, {
@@ -388,7 +389,10 @@ describe('Mission Control Slice', () => {
           },
         });
 
-        const updatedCustomerUser = { user: { id: '1', name: 'Test Name' } };
+        const updatedCustomerUser = {
+          user: { id: '1', name: 'Test Name' },
+          licences: [{ id: '1' }],
+        };
         const updatedCustomer = {
           name: 'test_customer',
         };
@@ -403,6 +407,48 @@ describe('Mission Control Slice', () => {
           expect.objectContaining({
             type: setUser.type,
             payload: updatedCustomerUser.user,
+          }),
+        );
+      });
+
+      it("Should refetch sources if the user's licences have changed", async () => {
+        store = mockStore({
+          accounts: {
+            userKey: '123',
+            user: { id: '1', name: 'Something', orbs: [{ name: 'Rice' }] },
+          },
+          missionControl: {
+            currentCustomer: {
+              name: 'test-customer',
+              licences: [{ id: '1', orb: 'Rice' }],
+            },
+            customerUsers: [],
+          },
+        });
+
+        const updatedCustomerUser = {
+          user: { id: '1', name: 'Test Name' },
+          licences: [{ id: '1' }, { id: '2' }],
+        };
+        const updatedCustomer = {
+          name: 'test_customer',
+        };
+
+        fetch
+          .once(JSON.stringify(updatedCustomerUser))
+          .once(JSON.stringify(updatedCustomer))
+          .once(
+            JSON.stringify({
+              ...updatedCustomerUser.user,
+              orbs: [{ name: 'Forest' }],
+            }),
+          )
+          .once(JSON.stringify([]));
+
+        await store.dispatch(updateCustomerUser(updatedCustomerUser));
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: fetchSourcesSuccess.type,
           }),
         );
       });
