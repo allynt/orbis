@@ -33,6 +33,7 @@ export const AccountDetailsComponent = ({ width }) => {
         </Grid>
         <Grid item xs={12} sm={12} md={8}>
           <Form
+            userEmail={user.email}
             customer={customer}
             onSubmit={values =>
               dispatch(updateCustomer({ ...customer, ...values }))
