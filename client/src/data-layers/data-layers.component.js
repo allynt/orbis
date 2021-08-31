@@ -56,7 +56,7 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
 
   const dispatch = useDispatch();
   const activeCategorisedSources = useSelector(
-    activeCategorisedSourcesSelector(1),
+    activeCategorisedSourcesSelector(1, true),
   );
   const selectedLayers = useSelector(activeLayersSelector);
 

@@ -542,6 +542,50 @@ describe('createOrbsWithCategorisedSources', () => {
     expect(result).toEqual(expected);
   });
 
+  it('Only includes sources once if ignoreMultipleOrbs is true', () => {
+    const sources = [
+      {
+        source_id: 'test/source/1',
+        metadata: {
+          application: {
+            orbis: {
+              categories: {
+                name: 'Cat 1',
+                child: {
+                  name: 'Cat 2',
+                  child: {
+                    name: 'Cat 3',
+                  },
+                },
+              },
+              orbs: [
+                {
+                  name: 'Orb 1',
+                },
+                {
+                  name: 'Orb 2',
+                },
+              ],
+            },
+          },
+        },
+      },
+    ];
+    const expected = [
+      {
+        name: 'Orb 1',
+        sources: [
+          {
+            category: 'Cat 1',
+            sources,
+          },
+        ],
+      },
+    ];
+    const result = createOrbsWithCategorisedSources(sources, null, true);
+    expect(result).toEqual(expected);
+  });
+
   describe('puts sources without a category into the root level', () => {
     it.each`
       tag               | value

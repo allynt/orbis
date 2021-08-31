@@ -18,6 +18,7 @@ import {
   setHoveredFeatures,
   timestampSelector,
   dataSelector,
+  SHARED_STATE_KEY,
 } from '../layers.slice';
 
 /** @typedef {import('typings').GeoJsonFeature<import('typings').IsoPlusCommonProperties>} AccessorFeature */
@@ -67,9 +68,7 @@ const configuration = ({
   authToken,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
-  const other = otherSelector(`${source.authority}/${source.namespace}`)(
-    orbState,
-  );
+  const other = otherSelector(SHARED_STATE_KEY)(orbState);
   const data = dataSelector(id)(orbState);
   const selectedProperty = get(other, 'property');
   if (selectedProperty?.source_id !== id) return undefined;

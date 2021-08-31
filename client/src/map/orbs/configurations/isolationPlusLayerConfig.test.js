@@ -5,6 +5,7 @@ import {
   removeClickedFeatures,
   setClickedFeatures,
   setHoveredFeatures,
+  SHARED_STATE_KEY,
 } from '../layers.slice';
 import configFn, {
   LINE_WIDTH,
@@ -52,7 +53,7 @@ const setup = ({
         testProperty: {
           filterValue: filterRange,
         },
-        'test/layer': {
+        [SHARED_STATE_KEY]: {
           other: {
             property: {
               source_id,
