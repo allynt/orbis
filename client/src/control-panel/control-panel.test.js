@@ -48,12 +48,12 @@ describe('controlPanelReducer', () => {
         { open: true, panel: 'Test' },
         { type: 'SET_PANEL', panel: 'Test' },
       );
-      expect(result).toEqual({ open: false });
+      expect(result).toEqual(expect.objectContaining({ open: false }));
     });
   });
 
   describe('CLOSE_PANEL', () => {
-    it('Un-sets everything in state', () => {
+    it('Closes the panel', () => {
       const result = controlPanelReducer(
         {
           panel: 'Test',
@@ -63,7 +63,7 @@ describe('controlPanelReducer', () => {
         },
         { type: 'CLOSE_PANEL' },
       );
-      expect(result).toEqual({ open: false });
+      expect(result).toEqual(expect.objectContaining({ open: false }));
     });
   });
 });

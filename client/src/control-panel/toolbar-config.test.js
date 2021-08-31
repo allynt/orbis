@@ -19,7 +19,7 @@ import {
 const mockStore = createMockStore([thunk]);
 
 const renderHook = initialProps => {
-  return tlRenderHook(() => useToolbarItems(), {
+  return tlRenderHook(({ dispatch }) => useToolbarItems({ dispatch }), {
     wrapper: ({ children, user, orbs }) => (
       <Provider store={mockStore({ accounts: { user }, data: { orbs } })}>
         {children}

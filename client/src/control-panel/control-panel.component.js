@@ -37,7 +37,7 @@ import Toolbar from './toolbar.component';
  * @typedef {{
  *    type: 'SET_PANEL',
  *    panel: string,
- *    heading: string,
+ *    heading?: string,
  *    strapline?: string
  *  } |
  *  {
@@ -62,7 +62,7 @@ export const controlPanelReducer = (state, action) => {
         panel,
         heading,
         strapline,
-        open: panel === state.panel ? (state.open ? false : true) : true,
+        open: panel === state.panel ? !state.open : true,
       };
     }
     case 'CLOSE_PANEL': {
