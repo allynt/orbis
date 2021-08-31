@@ -6,7 +6,11 @@ export class DataClient extends SubClient {
   }
 
   /**
-   * @returns {Promise<import('typings').Source[]>}
+   * @returns {Promise<{
+   *  sources: import('typings').Source[]
+   *  token: string
+   *  timeout: number
+   * }>}
    */
   async getSources() {
     const response = await this.makeAuthenticatedRequest('/sources');
