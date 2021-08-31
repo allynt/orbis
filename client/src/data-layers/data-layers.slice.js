@@ -286,28 +286,33 @@ export const selectDomainList = createSelector(dataSourcesSelector, sources =>
 
 /**
  * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
-export const categorisedOrbsAndSourcesSelector = depth =>
+export const categorisedOrbsAndSourcesSelector = (depth, ignoreMultipleOrbs) =>
   createSelector(dataSourcesSelector, sources =>
-    createOrbsWithCategorisedSources(sources, depth),
+    createOrbsWithCategorisedSources(sources, depth, ignoreMultipleOrbs),
   );
 
 /**
  * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
-export const activeCategorisedOrbsAndSourcesSelector = depth =>
+export const activeCategorisedOrbsAndSourcesSelector = (
+  depth,
+  ignoreMultipleOrbs,
+) =>
   createSelector(activeDataSourcesSelector, sources =>
-    createOrbsWithCategorisedSources(sources, depth),
+    createOrbsWithCategorisedSources(sources, depth, ignoreMultipleOrbs),
   );
 
 /**
  * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
  */
-export const activeCategorisedSourcesSelector = depth =>
+export const activeCategorisedSourcesSelector = (depth, ignoreMultipleOrbs) =>
   createSelector(
-    activeCategorisedOrbsAndSourcesSelector(depth),
-    orbsAndSources =>
-      orbsAndSources.reduce((prev, orb) => [...prev, ...orb.sources], []),
+    activeCategorisedOrbsAndSourcesSelector(depth, ignoreMultipleOrbs),
+    orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
   );
 
 export default dataSlice.reducer;

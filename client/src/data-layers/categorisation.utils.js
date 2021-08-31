@@ -175,9 +175,14 @@ const createNewCategorisedOrb = (orb, source, depth) => {
  * Creates an array of orbs with their sources organised by category
  * @param {Source[]} sources
  * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
  * @returns {OrbWithCategorisedSources[]}
  */
-export const createOrbsWithCategorisedSources = (sources, depth) =>
+export const createOrbsWithCategorisedSources = (
+  sources,
+  depth,
+  ignoreMultipleOrbs = false,
+) =>
   sources?.reduce(
     /**
      * @param {OrbWithCategorisedSources[]} categorisedOrbs
@@ -187,6 +192,7 @@ export const createOrbsWithCategorisedSources = (sources, depth) =>
       let newOrbs = [...categorisedOrbs];
       let orbs = metadata.orbs;
       if (!orbs?.length) orbs = [{ name: NO_ORB_NAME }];
+      if (ignoreMultipleOrbs) orbs = [orbs[0]];
       orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
         if (existingOrb) {
@@ -198,7 +204,6 @@ export const createOrbsWithCategorisedSources = (sources, depth) =>
         const newOrb = createNewCategorisedOrb(orb, source, depth);
         newOrbs = [...newOrbs, newOrb];
       });
-
       return newOrbs;
     },
     [],
