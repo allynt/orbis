@@ -70,9 +70,10 @@ const transform = {
  *    'type' |
  *    'vat_number'>) => void
  *  customer?: Partial<import('typings').Customer>
+ *  userEmail?: import('typings').User['email']
  * }} props
  */
-export const Form = ({ onSubmit, customer = {} }) => {
+export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
   const styles = useStyles();
   const { register, handleSubmit, reset, control, formState } = useForm({
     defaultValues: transform.in(customer),
@@ -90,6 +91,11 @@ export const Form = ({ onSubmit, customer = {} }) => {
         className={styles.form}
         onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}
       >
+        <TextField
+          label="Work Email Address"
+          value={userEmail}
+          InputProps={{ readOnly: true }}
+        />
         <TextField
           {...identifiers[FIELD_NAMES.customerName]}
           label="Organisation Name"

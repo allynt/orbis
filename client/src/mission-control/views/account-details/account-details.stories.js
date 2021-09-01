@@ -14,7 +14,7 @@ const Template = args => (
   <Provider
     store={mockStore({
       accounts: {
-        user: { name: 'John Smith' },
+        user: { name: 'John Smith', email: 'john.smith@test.com' },
       },
       missionControl: {
         currentCustomer: { name: 'Test Org', id: 'test-id-123' },
