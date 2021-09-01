@@ -52,7 +52,6 @@ const PasswordResetForm = ({
   passwordStrength,
 }) => {
   const { register, handleSubmit, errors, watch } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });

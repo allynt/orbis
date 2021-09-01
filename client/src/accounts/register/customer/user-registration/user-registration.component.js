@@ -80,7 +80,6 @@ const UserRegistration = ({
       newPasswordConfirm: undefined,
       acceptedTerms: false,
     },
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });

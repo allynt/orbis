@@ -67,7 +67,6 @@ const LoginForm = ({
   }, [activateAccount, match, user]);
 
   const { register, handleSubmit, formState, errors } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
@@ -80,7 +79,7 @@ const LoginForm = ({
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
       <ErrorWell errors={serverErrors} />
 
       <Form.Row>

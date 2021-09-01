@@ -37,7 +37,6 @@ const useStyles = makeStyles({
 const UpdateUserForm = ({ user, updateUser }) => {
   const styles = useStyles();
   const { handleSubmit, register, formState, reset, errors } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(updateUserFormSchema),
     defaultValues: { ...user },
   });
@@ -92,7 +91,9 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Button
           fullWidth
           type="submit"
-          disabled={!formState.isValid || !formState.dirtyFields.name}
+          disabled={
+            Object.keys(errors).length > 0 || !formState.dirtyFields.name
+          }
         >
           Update Account
         </Button>

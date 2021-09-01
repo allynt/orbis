@@ -57,7 +57,6 @@ const validationSchema = object({
 
 const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
   const { register, handleSubmit, getValues, formState, errors } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
   });
 
