@@ -90,7 +90,6 @@ const PasswordResetForm = ({
           name={FIELD_NAMES.newPasswordConfirm}
           label="New Password Confirmation"
           type="password"
-          autoFocus
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
         />
