@@ -105,6 +105,7 @@ const UserRegistration = ({
           inputRef={register}
           error={!!errors[FIELD_NAMES.email]}
           helperText={errors[FIELD_NAMES.email]?.message}
+          autoFocus
           required
         />
       </Form.Row>
