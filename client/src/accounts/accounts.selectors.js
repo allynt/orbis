@@ -33,7 +33,14 @@ export const isLoggedInSelector = createSelector(
   (user, userKey) => !!user && !!userKey,
 );
 
-export const isLoadingSelector = createSelector(
+export const requestsSelector = createSelector(
   baseSelector,
-  accounts => accounts?.isLoading,
+  accounts => accounts.requests,
 );
+
+export const isLoadingSelector = (/** @type {string} */ requestKey) =>
+  createSelector(requestsSelector, requests => {
+    if (!requestKey)
+      throw new Error(`Must supply a requestKey to isLoadingSelector`);
+    return requests[requestKey] === 'pending';
+  });

@@ -20,10 +20,10 @@ import {
 } from './accounts.constants';
 import {
   errorSelector,
-  isLoadingSelector,
   isLoggedInSelector,
   passwordChangeStatusSelector,
   passwordResetStatusSelector,
+  requestsSelector,
   userSelector,
 } from './accounts.selectors';
 import {
@@ -51,7 +51,7 @@ import Wrapper from './wrapper.component';
 export default () => {
   const dispatch = useDispatch();
   const error = useSelector(errorSelector);
-  const isLoading = useSelector(isLoadingSelector);
+  const accountsRequests = useSelector(requestsSelector);
   const isLoggedIn = useSelector(isLoggedInSelector);
   const resetStatus = useSelector(passwordResetStatusSelector);
   const changeStatus = useSelector(passwordChangeStatusSelector);
@@ -79,7 +79,7 @@ export default () => {
             <CustomerRegistration
               email={user?.email}
               serverErrors={error}
-              isLoading={isLoading}
+              isLoading={accountsRequests.registerCustomer === 'pending'}
               onSubmit={values => dispatch(registerCustomer(values))}
             />
           )}
@@ -90,7 +90,7 @@ export default () => {
           render={() => (
             <UserRegistration
               serverErrors={error}
-              isLoading={isLoading}
+              isLoading={accountsRequests.registerUser === 'pending'}
               onSubmit={values => dispatch(registerUser(values))}
               {...passwordConfig}
             />
@@ -102,7 +102,7 @@ export default () => {
           render={() => (
             <OrderForm
               serverErrors={error}
-              isLoading={isLoading}
+              isLoading={accountsRequests.placeOrder === 'pending'}
               onSubmit={values => dispatch(placeOrder(values))}
             />
           )}
@@ -122,7 +122,10 @@ export default () => {
                 login={values => dispatch(login(values))}
                 serverErrors={error}
                 activateAccount={form => dispatch(activateAccount(form))}
-                isLoading={isLoading}
+                isLoading={
+                  accountsRequests.login === 'pending' ||
+                  accountsRequests.activateAccount === 'pending'
+                }
                 {...props}
                 {...passwordConfig}
               />
@@ -172,7 +175,7 @@ export default () => {
             <ResendVerificationEmail
               email={user?.email}
               onResend={() => dispatch(resendVerificationEmail(user?.email))}
-              isLoading={isLoading}
+              isLoading={accountsRequests.resendVerificationEmail === 'pending'}
             />
           )}
         />
