@@ -86,7 +86,7 @@ const CustomerRegistration = ({
   };
 
   return (
-    <Form noValidate onSubmit={handleSubmit(transformValues)}>
+    <Form onSubmit={handleSubmit(transformValues)}>
       <Typography style={{ textAlign: 'center' }} paragraph>
         <b>Welcome to Orbis.</b> Please complete your account details to
         continue on your path to explore Orbis data. The form below will

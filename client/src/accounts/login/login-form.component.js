@@ -79,7 +79,7 @@ const LoginForm = ({
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <ErrorWell errors={serverErrors} />
 
       <Form.Row>
