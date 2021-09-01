@@ -30,6 +30,15 @@ export const status = {
 const thunkNameFromActionType = actionType => actionType.match(/\/(\w*)\//)[1];
 
 /**
+ * @param {AccountsState} state
+ * @param {string} requestName
+ * @param {'pending' | 'fulfilled' | 'rejected'} status
+ */
+const setRequestStatus = (state, requestName, status) => {
+  state.requests = { ...state.requests, [requestName]: status };
+};
+
+/**
  * @typedef AccountsState
  * @property {string} [userKey]
  * @property {import('typings').User} [user]
@@ -181,7 +190,7 @@ export const activateAccount = createAsyncThunk(
   },
   {
     condition: (_arg, { getState }) => {
-      const requestStatus = getState().accounts.requests.activateAccount;
+      const requestStatus = getState().accounts.requests?.activateAccount;
       return !requestStatus || requestStatus === 'fulfilled';
     },
   },
@@ -380,65 +389,69 @@ const accountsSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(placeOrder.fulfilled, state => {
       state.error = null;
-      state.requests.placeOrder = 'fulfilled';
+      setRequestStatus(state, 'placeOrder', 'fulfilled');
     });
     builder
       .addCase(activateAccount.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         state.userKey = null;
         state.error = null;
-        state.requests.activateAccount = 'fulfilled';
+        setRequestStatus(state, 'activateAccount', 'fulfilled');
       })
       .addCase(activateAccount.rejected, (state, { payload }) => {
         state.error = payload;
         state.userKey = null;
-        state.requests.activateAccount = 'rejected';
+        setRequestStatus(state, 'activateAccount', 'rejected');
       });
     builder
       .addCase(login.fulfilled, (state, { payload }) => {
         state.userKey = payload.userKey;
         state.user = payload.user;
         state.error = null;
-        state.requests.login = 'fulfilled';
+        setRequestStatus(state, 'login', 'fulfilled');
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.user = payload.user;
         state.userKey = null;
         state.error = payload.errors;
-        state.requests.login = 'rejected';
+        setRequestStatus(state, 'login', 'rejected');
       });
     builder.addCase(logout.fulfilled, state => {
       state.userKey = null;
       state.user = null;
       state.error = null;
-      state.requests.logout = 'fulfilled';
+      setRequestStatus(state, 'logout', 'fulfilled');
     });
     builder.addCase(resendVerificationEmail.fulfilled, state => {
       state.error = null;
-      state.requests.resendVerificationEmail = 'fulfilled';
+      setRequestStatus(state, 'resendVerificationEmail', 'fulfilled');
     });
     builder.addCase(changePassword.fulfilled, state => {
       state.changeStatus = status.PENDING;
       state.error = null;
-      state.requests.changePassword = 'fulfilled';
+      setRequestStatus(state, 'changePassword', 'fulfilled');
     });
     builder.addCase(resetPasswordRequest.fulfilled, state => {
       state.resetStatus = status.PENDING;
       state.error = null;
-      state.requests.resetPasswordRequest = 'fulfilled';
+      setRequestStatus(state, 'resetPasswordRequest', 'fulfilled');
     });
     builder.addCase(resetPasswordConfirm.fulfilled, (state, { payload }) => {
       state.resetStatus = status.COMPLETE;
       state.user = payload;
       state.error = null;
-      state.requests.resetPasswordConfirm = 'fulfilled';
+      setRequestStatus(state, 'resetPasswordConfirm', 'fulfilled');
     });
     builder.addMatcher(
       // @ts-ignore
       action =>
         action.type.startsWith(name) && action.type.endsWith('/pending'),
       (state, action) => {
-        state.requests[thunkNameFromActionType(action.type)] = 'pending';
+        setRequestStatus(
+          state,
+          thunkNameFromActionType(action.type),
+          'pending',
+        );
         state.error = null;
       },
     );
@@ -451,7 +464,7 @@ const accountsSlice = createSlice({
       (state, { payload, type }) => {
         state.user = payload;
         state.error = null;
-        state.requests[thunkNameFromActionType(type)] = 'fulfilled';
+        setRequestStatus(state, thunkNameFromActionType(type), 'fulfilled');
       },
     );
     builder.addMatcher(
@@ -473,7 +486,7 @@ const accountsSlice = createSlice({
           .includes(action.type),
       (state, { payload, type }) => {
         state.error = payload;
-        state.requests[thunkNameFromActionType(type)] = 'rejected';
+        setRequestStatus(state, thunkNameFromActionType(type), 'rejected');
       },
     );
   },
