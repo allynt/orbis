@@ -26,7 +26,7 @@ const PrimaryDivider = styled(Divider)(({ theme }) => ({
 }));
 
 const BookmarksPanel = () => {
-  const { createScreenshot, viewState } = useMap();
+  const { createScreenshot, viewState, setViewState } = useMap();
   const dispatch = useDispatch();
   const layers = useSelector(activeLayersSelector);
   const drawn_feature_collection = useSelector(
@@ -71,7 +71,9 @@ const BookmarksPanel = () => {
       <Box py={3} px={1}>
         <BookmarkList
           bookmarks={bookmarks}
-          onSelectBookmark={bookmark => dispatch(selectBookmark(bookmark))}
+          onSelectBookmark={bookmark =>
+            dispatch(selectBookmark({ bookmark, viewState, setViewState }))
+          }
           onDeleteBookmark={bookmark => dispatch(deleteBookmark(bookmark))}
         />
       </Box>
