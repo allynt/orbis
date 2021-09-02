@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 
 import {
   CloseIcon,
@@ -7,8 +7,6 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { useDispatch, useSelector } from 'react-redux';
-
 import { SidePanel } from 'components/side-panel/side-panel.component';
 
 import Profile from '../accounts/profile/profile.component';
@@ -16,13 +14,6 @@ import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
 import DataLayers from '../data-layers/data-layers.component';
 import Satellites from '../satellites/satellites.component';
 import StoriesPanel from '../stories/stories-panel.component';
-import {
-  closeMenu,
-  selectIsMenuVisible,
-  selectHeading,
-  selectStrapline,
-  selectVisibleMenuItem,
-} from './control-panel.slice';
 import { useToolbarItems } from './toolbar-config';
 import {
   BOOKMARKS,
@@ -32,6 +23,55 @@ import {
   STORIES,
 } from './toolbar-constants';
 import Toolbar from './toolbar.component';
+
+/**
+ * @typedef {{
+ *  open: boolean
+ *  panel?: string
+ *  heading?: string
+ *  strapline?: string
+ * }} ControlPanelState
+ */
+
+/**
+ * @typedef {{
+ *    type: 'SET_PANEL',
+ *    panel: string,
+ *    heading?: string,
+ *    strapline?: string
+ *  } |
+ *  {
+ *    type: 'CLOSE_PANEL'
+ *  }} ControlPanelAction
+ */
+
+const defaultState = { open: false };
+
+/**
+ *
+ * @param {ControlPanelState} state
+ * @param {ControlPanelAction} action
+ * @returns {ControlPanelState}
+ */
+export const controlPanelReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_PANEL': {
+      const { panel, heading, strapline } = action;
+      return {
+        ...state,
+        panel,
+        heading,
+        strapline,
+        open: panel === state.panel ? !state.open : true,
+      };
+    }
+    case 'CLOSE_PANEL': {
+      return { ...state, open: false };
+    }
+    default:
+      throw new Error('Unhandled action type in controlPanelReducer');
+  }
+};
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -56,19 +96,18 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
-  const dispatch = useDispatch();
-  const isMenuVisible = useSelector(selectIsMenuVisible);
-  const heading = useSelector(selectHeading);
-  const strapline = useSelector(selectStrapline);
-  const visibleMenuItem = useSelector(selectVisibleMenuItem);
-  const toolbarItems = useToolbarItems();
+  const [{ heading, strapline, open, panel }, dispatch] = useReducer(
+    controlPanelReducer,
+    defaultState,
+  );
+  const toolbarItems = useToolbarItems({ dispatch });
   const styles = useStyles({});
 
   return (
     <>
-      <Toolbar items={toolbarItems} />
+      <Toolbar items={toolbarItems} openItem={open && panel} />
       <SidePanel
-        open={isMenuVisible}
+        open={open}
         contentClassName={styles.content}
         header={
           <div className={styles.header}>
@@ -79,23 +118,23 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
             <IconButton
               size="small"
               className={styles.closeButton}
-              onClick={() => dispatch(closeMenu())}
+              onClick={() => dispatch({ type: 'CLOSE_PANEL' })}
             >
               <CloseIcon fontSize="inherit" />
             </IconButton>
           </div>
         }
       >
-        {visibleMenuItem === DATA_LAYERS && (
+        {panel === DATA_LAYERS && (
           <DataLayers
             sidebarComponents={sidebarComponents}
             drawingToolsEnabled={drawingToolsEnabled}
           />
         )}
-        {visibleMenuItem === SATELLITE_LAYERS && <Satellites />}
-        {visibleMenuItem === BOOKMARKS && <BookmarksPanel />}
-        {visibleMenuItem === STORIES && <StoriesPanel />}
-        {visibleMenuItem === PROFILE && <Profile />}
+        {panel === SATELLITE_LAYERS && <Satellites />}
+        {panel === BOOKMARKS && <BookmarksPanel />}
+        {panel === STORIES && <StoriesPanel />}
+        {panel === PROFILE && <Profile />}
       </SidePanel>
     </>
   );

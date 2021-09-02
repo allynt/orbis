@@ -19,7 +19,7 @@ import {
 const mockStore = createMockStore([thunk]);
 
 const renderHook = initialProps => {
-  return tlRenderHook(() => useToolbarItems(), {
+  return tlRenderHook(({ dispatch }) => useToolbarItems({ dispatch }), {
     wrapper: ({ children, user, orbs }) => (
       <Provider store={mockStore({ accounts: { user }, data: { orbs } })}>
         {children}
@@ -33,15 +33,15 @@ describe('useToolbarItems', () => {
   it('Includes the User Guide item', () => {
     const { result } = renderHook({ dispatch: jest.fn(), user: {} });
     expect(result.current).toContainEqual(
-      expect.objectContaining({ label: 'User Guide' }),
+      expect.objectContaining({ id: 'User Guide' }),
     );
   });
 
   it.each([DATA_LAYERS, BOOKMARKS, PROFILE])(
     'includes the %s item if the user has UserRole',
-    label => {
+    id => {
       const { result } = renderHook({ user: { roles: ['UserRole'] } });
-      expect(result.current).toContainEqual(expect.objectContaining({ label }));
+      expect(result.current).toContainEqual(expect.objectContaining({ id }));
     },
   );
 
@@ -53,7 +53,7 @@ describe('useToolbarItems', () => {
       },
     });
     expect(result.current).toContainEqual(
-      expect.objectContaining({ label: SATELLITE_LAYERS }),
+      expect.objectContaining({ id: SATELLITE_LAYERS }),
     );
   });
 
@@ -61,7 +61,7 @@ describe('useToolbarItems', () => {
     featureToggles.stories = true;
     const { result } = renderHook({ user: { roles: ['UserRole'] } });
     expect(result.current).toContainEqual(
-      expect.objectContaining({ label: STORIES }),
+      expect.objectContaining({ id: STORIES }),
     );
   });
 });

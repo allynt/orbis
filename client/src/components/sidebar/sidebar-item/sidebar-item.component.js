@@ -47,7 +47,7 @@ const iconStyles = makeStyles(theme => ({
  *  href?: string
  * } & Partial<Omit<HTMLAnchorElement, 'children'>>} props
  */
-export const SidebarItem = ({
+const Component = ({
   children,
   icon,
   selected,
@@ -86,3 +86,4 @@ export const SidebarItem = ({
     Content
   );
 };
+export const SidebarItem = React.memo(Component);
