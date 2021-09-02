@@ -52,7 +52,6 @@ const PasswordResetForm = ({
   passwordStrength,
 }) => {
   const { register, handleSubmit, errors, watch } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -91,7 +90,6 @@ const PasswordResetForm = ({
           name={FIELD_NAMES.newPasswordConfirm}
           label="New Password Confirmation"
           type="password"
-          autoFocus
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
         />

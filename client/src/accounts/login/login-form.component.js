@@ -67,7 +67,6 @@ const LoginForm = ({
   }, [activateAccount, match, user]);
 
   const { register, handleSubmit, formState, errors } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });

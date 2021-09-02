@@ -80,7 +80,6 @@ const UserRegistration = ({
       newPasswordConfirm: undefined,
       acceptedTerms: false,
     },
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -106,6 +105,7 @@ const UserRegistration = ({
           inputRef={register}
           error={!!errors[FIELD_NAMES.email]}
           helperText={errors[FIELD_NAMES.email]?.message}
+          autoFocus
           required
         />
       </Form.Row>

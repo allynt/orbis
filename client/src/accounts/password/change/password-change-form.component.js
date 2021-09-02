@@ -65,7 +65,6 @@ const PasswordChangeForm = ({
   const [termsAgreed, setTermsAgreed] = useState(false);
 
   const { register, handleSubmit, errors, watch } = useForm({
-    mode: 'onBlur',
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });

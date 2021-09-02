@@ -89,18 +89,17 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should disable `Reset Password` button when form is invalid', async () => {
-    const { getByRole, getByLabelText } = renderComponent(
+    const { getByRole } = renderComponent(
       store,
       confirmResetPassword,
       resetStatus,
       match,
       error,
     );
-    userEvent.click(getByLabelText(PASSWORD_PLACEHOLDER_TEXT));
+    userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
     await waitFor(() =>
-      userEvent.click(getByLabelText(PASSWORD_CONFIRMATION_PLACEHOLDER_TEXT)),
+      expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled(),
     );
-    expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
   });
 
   it('should enable `Reset Password` button when form is valid', async () => {
