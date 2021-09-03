@@ -70,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
+  // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
   const hasBookmarks = bookmarks?.length > 0;
