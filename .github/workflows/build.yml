@@ -138,14 +138,14 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
-          export GIT_SHA=${GITHUB_SHA:0:7}
+          HEAD_SHA="$(git rev-parse HEAD)"
+          export GIT_SHA=${HEAD_SHA:0:7}
           DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg GITHUB_REGISTRY_TOKEN=${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
-          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
-          export GIT_SHA=${GITHUB_SHA:0:7}
+          HEAD_SHA="$(git rev-parse HEAD)"
+          export GIT_SHA=${HEAD_SHA:0:7}
           docker push ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA}
 
   build-server-docker:
@@ -167,14 +167,14 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
-          export GIT_SHA=${GITHUB_SHA:0:7}
+          HEAD_SHA="$(git rev-parse HEAD)"
+          export GIT_SHA=${HEAD_SHA:0:7}
           DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} -f ./Dockerfile.server.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
-          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
-          export GIT_SHA=${GITHUB_SHA:0:7}
+          HEAD_SHA="$(git rev-parse HEAD)"
+          export GIT_SHA=${HEAD_SHA:0:7}
           docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
