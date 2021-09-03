@@ -1,11 +1,19 @@
+import { push } from 'connected-react-router';
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import {
+  fetchSourcesSuccess,
+  updateLayers,
+} from 'data-layers/data-layers.slice';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
+import { setState as setLayersState } from 'map/orbs/layers.slice';
 
 import reducer, {
   addBookmark,
   deleteBookmark,
   fetchBookmarks,
-  isLoaded,
   isLoadingSelector,
   selectBookmark,
 } from './bookmarks.slice';
@@ -163,6 +171,45 @@ describe('Bookmark Slice', () => {
       await store.dispatch(deleteBookmark(bookmark));
 
       expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    describe('selectBookmark', () => {
+      it('Selects a bookmark', async () => {
+        const sources = [{ source_id: 'source/1/id' }];
+        const setViewState = jest.fn();
+        const viewState = { bearing: 270 };
+        const bookmark = {
+          center: [1, 2],
+          layers: ['source/1/id'],
+          orbs: { layers: 'test-123' },
+          drawn_feature_collection: 'test-feature-collection',
+        };
+        fetch.once(JSON.stringify(sources));
+        const store = mockStore({ data: {} });
+        await store.dispatch(
+          // @ts-ignore
+          selectBookmark({
+            bookmark,
+            setViewState,
+            viewState,
+          }),
+        );
+        const expectedActions = expect.arrayContaining([
+          fetchSourcesSuccess(sources),
+          updateLayers(bookmark.layers),
+          setLayersState('test-123'),
+          setDrawingToolsFeatures('test-feature-collection'),
+          push('/map'),
+        ]);
+        expect(store.getActions()).toEqual(expectedActions);
+        expect(setViewState).toBeCalledWith(
+          expect.objectContaining({
+            ...viewState,
+            longitude: 1,
+            latitude: 2,
+          }),
+        );
+      });
     });
   });
 

@@ -133,7 +133,7 @@ export const selectBookmark = createAsyncThunk(
    */
   async ({ bookmark, setViewState, viewState }, { dispatch, getState }) => {
     const presentSources = dataSourcesSelector(getState());
-    if (!presentSources) {
+    if (!presentSources || presentSources.length === 0) {
       const fetchedSources = await apiClient.data.getSources();
       dispatch(fetchSourcesSuccess(fetchedSources));
     }
