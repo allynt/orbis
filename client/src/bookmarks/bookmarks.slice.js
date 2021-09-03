@@ -10,7 +10,7 @@ import { NotificationManager } from 'react-notifications';
 import apiClient from 'api-client';
 import {
   dataSourcesSelector,
-  fetchSourcesSuccess,
+  fetchSources,
   updateLayers,
 } from 'data-layers/data-layers.slice';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
@@ -134,8 +134,7 @@ export const selectBookmark = createAsyncThunk(
   async ({ bookmark, setViewState, viewState }, { dispatch, getState }) => {
     const presentSources = dataSourcesSelector(getState());
     if (!presentSources || presentSources.length === 0) {
-      const fetchedSources = await apiClient.data.getSources();
-      dispatch(fetchSourcesSuccess(fetchedSources));
+      await dispatch(fetchSources());
     }
     const {
       center: [longitude, latitude],

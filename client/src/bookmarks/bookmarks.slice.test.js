@@ -3,10 +3,7 @@ import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import {
-  fetchSourcesSuccess,
-  updateLayers,
-} from 'data-layers/data-layers.slice';
+import { fetchSources, updateLayers } from 'data-layers/data-layers.slice';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import { setState as setLayersState } from 'map/orbs/layers.slice';
 
@@ -195,7 +192,10 @@ describe('Bookmark Slice', () => {
           }),
         );
         const expectedActions = expect.arrayContaining([
-          fetchSourcesSuccess(sources),
+          expect.objectContaining({
+            type: fetchSources.fulfilled.type,
+            payload: sources,
+          }),
           updateLayers(bookmark.layers),
           setLayersState('test-123'),
           setDrawingToolsFeatures('test-feature-collection'),

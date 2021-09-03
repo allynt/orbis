@@ -4,7 +4,7 @@ import { NotificationManager } from 'react-notifications';
 import { userSelector } from 'accounts/accounts.selectors';
 import { setUser } from 'accounts/accounts.slice';
 import apiClient from 'api-client';
-import { fetchSourcesSuccess } from 'data-layers/data-layers.slice';
+import { fetchSources } from 'data-layers/data-layers.slice';
 
 import { USER_STATUS } from './mission-control.constants';
 
@@ -306,8 +306,7 @@ export const updateCustomerUser = customerUser => async (
             ),
         );
       if (hasUpdatedLicences) {
-        const sourcesInformation = await apiClient.data.getSources();
-        dispatch(fetchSourcesSuccess(sourcesInformation));
+        dispatch(fetchSources());
       }
     }
     return dispatch(
