@@ -19,7 +19,7 @@ env:
 jobs:
   check-trigger-type:
     name: Check Trigger Type
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       ref: ${{ steps.check.outputs.ref }}
     steps:
@@ -33,11 +33,11 @@ jobs:
           fi
   client-tests:
     name: Client-side Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 40
     needs: check-trigger-type
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           ref: ${{needs.check-trigger-type.outputs.ref}}
       - name: Use Node.js 12.x
@@ -75,7 +75,8 @@ jobs:
 
   server-tests:
     name: Server-side Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    needs: check-trigger-type
     timeout-minutes: 40
     container:
       image: python:3.8.6
@@ -96,7 +97,10 @@ jobs:
         ports:
           - "5666:5432"
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{needs.check-trigger-type.outputs.ref}}
+
       - name: Setup container
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
@@ -117,12 +121,12 @@ jobs:
 
   build-client-docker:
     name: Build, Tag and Push Client Docker Image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: check-trigger-type
     timeout-minutes: 40
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           ref: ${{needs.check-trigger-type.outputs.ref}}
 
@@ -134,22 +138,24 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
           export GIT_SHA=${GITHUB_SHA:0:7}
           DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} --build-arg GITHUB_REGISTRY_TOKEN=${{ secrets.ASTROSAT_GITHUB_REGISTRY_TOKEN }} -f ./Dockerfile.client.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
+          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
           export GIT_SHA=${GITHUB_SHA:0:7}
           docker push ${AWS_REGISTRY}/${AWS_CLIENT_REPOSITORY}:${GIT_SHA}
 
   build-server-docker:
     name: Build, Tag and Push Server Docker Image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 40
     needs: check-trigger-type
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           ref: ${{needs.check-trigger-type.outputs.ref}}
 
@@ -161,11 +167,13 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
           export GIT_SHA=${GITHUB_SHA:0:7}
           DOCKER_BUILDKIT=1 docker build . -t ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA} --build-arg COMMIT_SHA=${GIT_SHA} -f ./Dockerfile.server.deployment
 
       - name: Push image to AWS Docker Registry
         run: |
+          export GITHUB_SHA="${{needs.check-trigger-type.outputs.ref}}"
           export GIT_SHA=${GITHUB_SHA:0:7}
           docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
@@ -179,7 +187,7 @@ jobs:
         check-trigger-type,
       ]
     name: Request a Deployment to Testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
       - name: Checkout
