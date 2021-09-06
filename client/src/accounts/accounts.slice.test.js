@@ -245,15 +245,7 @@ describe('Accounts Slice', () => {
   });
 
   describe('Accounts Reducer', () => {
-    describe('pending actions', () => {
-      it('sets isLoading to true', () => {
-        const result = reducer(BASE_STATE, { type: 'accounts/pending' });
-        expect(result.isLoading).toBe(true);
-      });
-    });
-
-    const setsIsLoadingToFalse = true,
-      setsErrorToNull = true,
+    const setsErrorToNull = true,
       setsUserToPayload = true,
       setsErrorToPayload = true,
       setsUserToPayloadUser = true,
@@ -261,24 +253,24 @@ describe('Accounts Slice', () => {
 
     describe.each`
       action                               | config
-      ${registerUser.fulfilled}            | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${registerUser.rejected}             | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${registerCustomer.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${registerCustomer.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${placeOrder.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${placeOrder.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${login.fulfilled}                   | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayloadUser }}
-      ${login.rejected}                    | ${{ setsIsLoadingToFalse, setsUserToPayloadUser, setsUserKeyToNull }}
-      ${resendVerificationEmail.fulfilled} | ${{ setsIsLoadingToFalse, setsErrorToNull }}
-      ${resendVerificationEmail.rejected}  | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${fetchCurrentUser.fulfilled}        | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${fetchCurrentUser.rejected}         | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${updateUser.fulfilled}              | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserToPayload }}
-      ${updateUser.rejected}               | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${logout.fulfilled}                  | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull }}
-      ${logout.rejected}                   | ${{ setsIsLoadingToFalse, setsErrorToPayload }}
-      ${activateAccount.fulfilled}         | ${{ setsIsLoadingToFalse, setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
-      ${activateAccount.rejected}          | ${{ setsIsLoadingToFalse, setsErrorToPayload, setsUserKeyToNull }}
+      ${registerUser.fulfilled}            | ${{ setsErrorToNull, setsUserToPayload }}
+      ${registerUser.rejected}             | ${{ setsErrorToPayload }}
+      ${registerCustomer.fulfilled}        | ${{ setsErrorToNull }}
+      ${registerCustomer.rejected}         | ${{ setsErrorToPayload }}
+      ${placeOrder.fulfilled}              | ${{ setsErrorToNull }}
+      ${placeOrder.rejected}               | ${{ setsErrorToPayload }}
+      ${login.fulfilled}                   | ${{ setsErrorToNull, setsUserToPayloadUser }}
+      ${login.rejected}                    | ${{ setsUserToPayloadUser, setsUserKeyToNull }}
+      ${resendVerificationEmail.fulfilled} | ${{ setsErrorToNull }}
+      ${resendVerificationEmail.rejected}  | ${{ setsErrorToPayload }}
+      ${fetchCurrentUser.fulfilled}        | ${{ setsErrorToNull, setsUserToPayload }}
+      ${fetchCurrentUser.rejected}         | ${{ setsErrorToPayload }}
+      ${updateUser.fulfilled}              | ${{ setsErrorToNull, setsUserToPayload }}
+      ${updateUser.rejected}               | ${{ setsErrorToPayload }}
+      ${logout.fulfilled}                  | ${{ setsErrorToNull, setsUserKeyToNull }}
+      ${logout.rejected}                   | ${{ setsErrorToPayload }}
+      ${activateAccount.fulfilled}         | ${{ setsErrorToNull, setsUserKeyToNull, setsUserToPayloadUser }}
+      ${activateAccount.rejected}          | ${{ setsErrorToPayload, setsUserKeyToNull }}
       ${changePassword.fulfilled}          | ${{ setsErrorToNull }}
       ${changePassword.rejected}           | ${{ setsErrorToPayload }}
       ${resetPasswordRequest.fulfilled}    | ${{ setsErrorToNull }}
@@ -290,7 +282,6 @@ describe('Accounts Slice', () => {
       ({
         action,
         config: {
-          setsIsLoadingToFalse,
           setsErrorToNull,
           setsUserToPayload,
           setsUserToPayloadUser,
@@ -298,17 +289,6 @@ describe('Accounts Slice', () => {
           setsUserKeyToNull,
         },
       }) => {
-        if (setsIsLoadingToFalse) {
-          it('sets isLoading to false', () => {
-            expect(
-              reducer(
-                { ...BASE_STATE, isLoading: true },
-                { type: action.type, payload: {} },
-              ),
-            ).toEqual(expect.objectContaining({ isLoading: false }));
-          });
-        }
-
         if (setsErrorToNull) {
           it('sets error to null', () => {
             expect(

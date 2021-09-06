@@ -25,13 +25,27 @@ export const status = {
 };
 
 /**
+ * @param {string} actionType
+ */
+const thunkNameFromActionType = actionType => actionType.match(/\/(\w*)\//)[1];
+
+/**
+ * @param {AccountsState} state
+ * @param {string} requestName
+ * @param {'pending' | 'fulfilled' | 'rejected'} status
+ */
+const setRequestStatus = (state, requestName, status) => {
+  state.requests = { ...state.requests, [requestName]: status };
+};
+
+/**
  * @typedef AccountsState
  * @property {string} [userKey]
  * @property {import('typings').User} [user]
  * @property {any} [error]
- * @property {boolean} isLoading
  * @property {string} resetStatus
  * @property {string} changeStatus
+ * @property {Record<string, 'pending' | 'fulfilled' | 'rejected'>} requests
  */
 
 /** @type {AccountsState} */
@@ -39,9 +53,9 @@ const initialState = {
   userKey: null,
   user: null,
   error: null,
-  isLoading: false,
   resetStatus: status.NONE,
   changeStatus: status.NONE,
+  requests: {},
 };
 
 const name = 'accounts';
@@ -162,7 +176,7 @@ export const activateAccount = createAsyncThunk(
    * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
    *  {user: import('typings').User},
    *  {key: string},
-   *  {rejectValue: string[]}
+   *  {rejectValue: string[], state: import('react-redux').DefaultRootState}
    * >}
    */
   async (form, { rejectWithValue }) => {
@@ -173,6 +187,12 @@ export const activateAccount = createAsyncThunk(
       const errors = await responseError.getErrors();
       return rejectWithValue(errors);
     }
+  },
+  {
+    condition: (_arg, { getState }) => {
+      const requestStatus = getState().accounts.requests?.activateAccount;
+      return !requestStatus || requestStatus === 'fulfilled';
+    },
   },
 );
 
@@ -369,66 +389,70 @@ const accountsSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(placeOrder.fulfilled, state => {
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'placeOrder', 'fulfilled');
     });
     builder
       .addCase(activateAccount.fulfilled, (state, { payload }) => {
         state.user = payload.user;
         state.userKey = null;
         state.error = null;
-        state.isLoading = false;
+        setRequestStatus(state, 'activateAccount', 'fulfilled');
       })
       .addCase(activateAccount.rejected, (state, { payload }) => {
         state.error = payload;
         state.userKey = null;
-        state.isLoading = false;
+        setRequestStatus(state, 'activateAccount', 'rejected');
       });
     builder
       .addCase(login.fulfilled, (state, { payload }) => {
         state.userKey = payload.userKey;
         state.user = payload.user;
         state.error = null;
-        state.isLoading = false;
+        setRequestStatus(state, 'login', 'fulfilled');
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.user = payload.user;
         state.userKey = null;
         state.error = payload.errors;
-        state.isLoading = false;
+        setRequestStatus(state, 'login', 'rejected');
       });
     builder.addCase(logout.fulfilled, state => {
       state.userKey = null;
       state.user = null;
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'logout', 'fulfilled');
     });
     builder.addCase(resendVerificationEmail.fulfilled, state => {
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'resendVerificationEmail', 'fulfilled');
     });
     builder.addCase(changePassword.fulfilled, state => {
       state.changeStatus = status.PENDING;
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'changePassword', 'fulfilled');
     });
     builder.addCase(resetPasswordRequest.fulfilled, state => {
       state.resetStatus = status.PENDING;
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'resetPasswordRequest', 'fulfilled');
     });
     builder.addCase(resetPasswordConfirm.fulfilled, (state, { payload }) => {
       state.resetStatus = status.COMPLETE;
       state.user = payload;
       state.error = null;
-      state.isLoading = false;
+      setRequestStatus(state, 'resetPasswordConfirm', 'fulfilled');
     });
     builder.addMatcher(
       // @ts-ignore
       action =>
         action.type.startsWith(name) && action.type.endsWith('/pending'),
-      state => {
+      (state, action) => {
+        setRequestStatus(
+          state,
+          thunkNameFromActionType(action.type),
+          'pending',
+        );
         state.error = null;
-        state.isLoading = true;
       },
     );
     builder.addMatcher(
@@ -437,10 +461,10 @@ const accountsSlice = createSlice({
         [registerUser, fetchCurrentUser, registerCustomer, updateUser]
           .map(action => action.fulfilled.type)
           .includes(action.type),
-      (state, { payload }) => {
+      (state, { payload, type }) => {
         state.user = payload;
         state.error = null;
-        state.isLoading = false;
+        setRequestStatus(state, thunkNameFromActionType(type), 'fulfilled');
       },
     );
     builder.addMatcher(
@@ -460,9 +484,9 @@ const accountsSlice = createSlice({
         ]
           .map(action => action.rejected.type)
           .includes(action.type),
-      (state, { payload }) => {
+      (state, { payload, type }) => {
         state.error = payload;
-        state.isLoading = false;
+        setRequestStatus(state, thunkNameFromActionType(type), 'rejected');
       },
     );
   },
