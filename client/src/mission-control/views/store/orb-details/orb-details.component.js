@@ -20,14 +20,12 @@ const MIN_USERS = 3;
 const MAX_USERS = 30;
 const selectOptions = new Array(MAX_USERS + 1)
   .fill(undefined, MIN_USERS)
-  .map((_, i) => {
-    const value = i;
-    return (
-      <MenuItem value={value} key={`menu-item-${value}`}>
-        {value}
-      </MenuItem>
-    );
-  });
+  .map((_, i) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <MenuItem value={i} key={`menu-item-${i}`}>
+      {i}
+    </MenuItem>
+  ));
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
