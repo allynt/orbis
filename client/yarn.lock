@@ -24,10 +24,10 @@
   dependencies:
     tunnel "0.0.6"
 
-"@astrosat/astrosat-ui@^2.4.1":
-  version "2.5.0"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.5.0/c68f18346a7c7036a596776a7ae29ca8d95b63b2281116bf1136d86d67b64c16#012b49ee57d1321ec9896d7725db725e5a314c69"
-  integrity sha512-xCCE4F4FmYHC4Nlh3Duua0YJBPXoahpfb7l8F36JunrI/IQZYNS74cy+R7vjFJiKXqVbvTEUoXyTGRjNDMbK8w==
+"@astrosat/astrosat-ui@^2.5.1":
+  version "2.5.1"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.5.1/1171b719e126145b1165442679dcb5c16860acd4f552edbf1025e87df3068f53#be4c365c75e838c81344ea7e2228a810e592e79c"
+  integrity sha512-3dITD/UZcOqzC8N10tlwG0OOeBxXX1+Bzol6ycWP0MUtnEf8bzxJHhHmEPgyiA6+RwWL5m9kIf4BMqXCfZKZtw==
   dependencies:
     "@material-ui/core" "^4.11.0"
     "@material-ui/lab" "^4.0.0-alpha.56"

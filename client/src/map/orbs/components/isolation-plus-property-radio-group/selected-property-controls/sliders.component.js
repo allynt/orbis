@@ -7,6 +7,8 @@ import {
   makeStyles,
   Switch,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
 import { ColorAdjustSlider, ColormapRangeSlider } from 'components';
@@ -29,6 +31,10 @@ const useStyles = makeStyles(
       margin: spacing(1, 'auto', 2),
     },
     label: { ...caption },
+    toggleButton: {
+      padding: '0.5rem 1rem',
+      fontSize: '1rem',
+    },
   }),
 );
 
@@ -65,6 +71,11 @@ export const Sliders = ({
     return onRangeFilterChange([min, max]);
   };
 
+  const handleToggleClick = bool => {
+    if (isAdjustingColor === bool) return;
+    return setIsAdjustingColor(bool);
+  };
+
   const sliderProps = {
     colorMap: color,
     min: isRealValue(min) ? min : 0,
@@ -89,15 +100,27 @@ export const Sliders = ({
         spacing={1}
         className={styles.label}
       >
-        <Grid item>Adjust Filter</Grid>
-        <Grid item>
-          <Switch
-            checked={isAdjustingColor}
-            onChange={(_, checked) => setIsAdjustingColor(checked)}
-            name="Slider Toggle"
-          />
+        <Grid
+          item
+          container
+          justifyContent="center"
+          component={ToggleButtonGroup}
+        >
+          <ToggleButton
+            selected={!isAdjustingColor}
+            onClick={() => handleToggleClick(false)}
+            className={styles.toggleButton}
+          >
+            Adjust Filter
+          </ToggleButton>
+          <ToggleButton
+            selected={isAdjustingColor}
+            onClick={() => handleToggleClick(true)}
+            className={styles.toggleButton}
+          >
+            Adjust Colour
+          </ToggleButton>
         </Grid>
-        <Grid item>Adjust Colour</Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
         <Fade in={isAdjustingColor} unmountOnExit>
