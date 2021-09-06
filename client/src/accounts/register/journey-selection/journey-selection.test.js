@@ -91,14 +91,14 @@ describe('<JourneySelection />', () => {
     const { getByRole } = renderComponent();
     expect(
       getByRole('link', { name: /Terms and Conditions/i }),
-    ).toHaveAttribute('href', expect.stringContaining('/terms'));
+    ).toHaveAttribute('href', expect.stringContaining('TERMS'));
   });
 
   it('Has a privacy link', () => {
     const { getByRole } = renderComponent();
     expect(getByRole('link', { name: /Privacy Policy/i })).toHaveAttribute(
       'href',
-      expect.stringContaining('/privacy'),
+      expect.stringContaining('PRIVACY'),
     );
   });
 
