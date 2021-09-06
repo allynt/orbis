@@ -1,21 +1,30 @@
 import React from 'react';
 
 import {
+  FormLabel,
   FormControlLabel,
   Grid,
   makeStyles,
   Radio,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
+
+import { capitalize } from 'lodash';
 
 import { InfoButtonTooltip } from 'components';
 
-import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
 import { TooltipContent } from './tooltip-content.component';
 
 const useStyles = makeStyles(theme => ({
   grid: { '& + &': { marginTop: theme.spacing(0.5) } },
   iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
+  toggleButton: {
+    minWidth: '6.875rem',
+    padding: '0.5rem 1rem',
+    fontSize: '0.875rem',
+  },
 }));
 
 /**
@@ -52,9 +61,34 @@ const PropertyRadio = ({
     properties.some(p => p.name === selectedProperty?.name);
 
   const handleRadioClick = () => {
-    onPropertyChange(
+    return onPropertyChange(
       selectedPropertyIsInGroup ? selectedProperty : properties[0],
     );
+  };
+
+  /**
+   * @param {import('typings').Property} property
+   */
+  const handleToggleButtonClick = property => {
+    if (property.name === selectedProperty?.name) return;
+    return onPropertyChange(property);
+  };
+
+  /**
+   * @param {import('typings').Property} property
+   */
+  const getButtonLabelForProperty = property => {
+    if (property.application?.orbis?.display?.property_toggle_label)
+      return property.application.orbis.display.property_toggle_label;
+    switch (property.type) {
+      case 'decile':
+      case 'percentage':
+        return capitalize(property.type);
+      case 'discrete':
+        return 'Categories';
+      default:
+        return 'Number';
+    }
   };
 
   return (
@@ -84,13 +118,26 @@ const PropertyRadio = ({
       </Grid>
       {selectedPropertyIsInGroup && (
         <>
-          {properties.length > 1 && (
-            <DisplayTypeToggleButtons
-              properties={properties}
-              selectedProperty={selectedProperty}
-              onChange={onPropertyChange}
-            />
-          )}
+          <Grid item>
+            <FormLabel>Select display type:</FormLabel>
+          </Grid>
+          <Grid
+            item
+            container
+            justifyContent="center"
+            component={ToggleButtonGroup}
+          >
+            {properties.map(p => (
+              <ToggleButton
+                key={p.name}
+                selected={selectedProperty?.name === p.name}
+                className={styles.toggleButton}
+                onClick={() => handleToggleButtonClick(p)}
+              >
+                {getButtonLabelForProperty(p)}
+              </ToggleButton>
+            ))}
+          </Grid>
           <SelectedPropertyControls
             selectedProperty={selectedProperty}
             filterRange={filterRange}

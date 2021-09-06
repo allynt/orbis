@@ -5,7 +5,6 @@ import {
   Fade,
   Grid,
   makeStyles,
-  Switch,
   Typography,
   ToggleButtonGroup,
   ToggleButton,
@@ -33,7 +32,7 @@ const useStyles = makeStyles(
     label: { ...caption },
     toggleButton: {
       padding: '0.5rem 1rem',
-      fontSize: '1rem',
+      fontSize: '0.875rem',
     },
   }),
 );
