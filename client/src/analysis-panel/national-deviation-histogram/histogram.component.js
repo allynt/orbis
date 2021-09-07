@@ -27,7 +27,7 @@ const LOG_SCALE_MIN_DOMAIN = 0.3;
 
 const SCALE_VALUES = {
   linear: 'Linear',
-  log: 'log',
+  log: 'Log',
 };
 
 /**

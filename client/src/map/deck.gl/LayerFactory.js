@@ -25,6 +25,6 @@ const LAYER_CLASSES = {
  * @returns {LAYER_CLASSES[keyof LAYER_CLASSES]} an instance of the provided class
  */
 export const LayerFactory = (className, configuration = {}) => {
-  const Class = LAYER_CLASSES[className];
+  const Class = LAYER_CLASSES['CustomMVTLayer'];
   return new Class(configuration);
 };
