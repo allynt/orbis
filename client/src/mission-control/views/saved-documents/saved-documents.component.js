@@ -28,15 +28,15 @@ const SavedDocuments = ({ documents }) => {
     () => [
       {
         Header: 'Title',
-        accessor: 'title',
+        accessor: 'name',
       },
       {
         Header: 'Date',
-        accessor: 'date',
+        accessor: 'timestamp',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
       {
-        accessor: 'url',
+        accessor: 'file',
         disableSortBy: true,
         Cell: ({ value }) => (
           <IconButton

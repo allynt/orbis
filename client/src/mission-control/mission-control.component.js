@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Dialog,
@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import apiClient from 'api-client';
+
 import { userSelector } from '../accounts/accounts.selectors';
 import {
   fetchCustomer,
@@ -23,6 +25,7 @@ import {
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
 import AccountDetails from './views/account-details/account-details.component';
+import SavedDocumentsView from './views/saved-documents/saved-documents.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
@@ -68,6 +71,7 @@ export const MissionControl = () => {
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
+  const [documents, setDocuments] = useState([]);
 
   const styles = useStyles({});
 
@@ -82,6 +86,14 @@ export const MissionControl = () => {
       dispatch(fetchCustomerUsers(currentCustomer));
     }
   }, [currentCustomer, customerUsers, dispatch, userIsAdmin]);
+
+  useEffect(() => {
+    const fetchDocs = async () => {
+      const docs = await apiClient.documents.getAgreedDocuments();
+      setDocuments(docs);
+    };
+    fetchDocs();
+  }, []);
 
   const renderAdminOnly = useCallback(
     Component => routeProps =>
@@ -126,10 +138,10 @@ export const MissionControl = () => {
                   path="/mission-control/subscriptions"
                   render={renderAdminOnly(ConnectedSubscriptions)}
                 />
-                {/* <Route
+                <Route
                   path="/mission-control/saved-documents"
-                  component={SavedDocumentsView}
-                /> */}
+                  render={() => <SavedDocumentsView documents={documents} />}
+                />
                 <Route path="/mission-control/support" component={Support} />
                 <Route
                   path="/mission-control/account-details"
