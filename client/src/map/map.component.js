@@ -225,6 +225,16 @@ const Map = ({
     setViewState(rest);
   };
 
+  const getCursor = useCallback(
+    ({ isDragging }) => {
+      if (drawingToolsEnabled && editableLayer.state?.cursor)
+        return editableLayer.state?.cursor;
+      if (drawAoiLayer) return drawAoiLayer.state?.cursor;
+      return isDragging ? 'grabbing' : 'grab';
+    },
+    [drawAoiLayer, drawingToolsEnabled, editableLayer.state],
+  );
+
   const mapProps = {
     ...viewState,
     width: '100%',
@@ -312,10 +322,7 @@ const Map = ({
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
           layers={[drawAoiLayer, editableLayer]}
-          getCursor={
-            drawAoiLayer?.getCursor.bind(drawAoiLayer) ||
-            editableLayer?.getCursor.bind(editableLayer)
-          }
+          getCursor={getCursor}
           style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,
