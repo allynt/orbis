@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { setUser } from 'accounts/accounts.slice';
-import { fetchSourcesSuccess } from 'data-layers/data-layers.slice';
+import { fetchSources } from 'data-layers/data-layers.slice';
 
 import { USER_STATUS } from './mission-control.constants';
 import reducer, {
@@ -413,6 +413,7 @@ describe('Mission Control Slice', () => {
 
       it("Should refetch sources if the user's licences have changed", async () => {
         store = mockStore({
+          data: {},
           accounts: {
             userKey: '123',
             user: { id: '1', name: 'Something', orbs: [{ name: 'Rice' }] },
@@ -448,7 +449,7 @@ describe('Mission Control Slice', () => {
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({
-            type: fetchSourcesSuccess.type,
+            type: fetchSources.pending.type,
           }),
         );
       });

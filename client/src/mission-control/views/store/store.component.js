@@ -27,10 +27,7 @@ export const Store = ({ match, location }) => {
   const { path, url } = match;
   const orbs = useSelector(orbsSelector);
   const fetchOrbsPending = useSelector(
-    /**
-     * @param {import('root.reducer').RootState} state
-     */
-    state => state?.data?.fetchOrbsPending,
+    state => state?.data?.requests?.fetchOrbs === 'pending',
   );
   const placeOrderPending = useSelector(isLoadingSelector('placeOrder'));
   const accountsErrors = useSelector(errorSelector);

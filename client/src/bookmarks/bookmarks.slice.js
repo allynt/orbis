@@ -1,16 +1,24 @@
+import { FlyToInterpolator } from '@deck.gl/core';
 import {
   createAsyncThunk,
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
+import {
+  dataSourcesSelector,
+  fetchSources,
+  updateLayers,
+} from 'data-layers/data-layers.slice';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
+import { setState as setLayersState } from 'map/orbs/layers.slice';
 
 /**
  * @typedef BookmarksState
  * @property {import('typings').Bookmark[]} [bookmarks]
- * @property {import('typings').Bookmark} [selectedBookmark]
  * @property {any} [error]
  * @property {boolean} isLoading
  */
@@ -110,10 +118,49 @@ export const deleteBookmark = createAsyncThunk(
   },
 );
 
+export const selectBookmark = createAsyncThunk(
+  `${name}/selectBookmark`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  void,
+   *  {
+   *    bookmark: import('typings').Bookmark
+   *    viewState: import('MapContext').ViewState
+   *    setViewState: React.Dispatch<import('MapContext').ViewState>
+   *  },
+   *  {rejectValue: string[], state: import('react-redux').DefaultRootState}
+   * >}
+   */
+  async ({ bookmark, setViewState, viewState }, { dispatch, getState }) => {
+    const presentSources = dataSourcesSelector(getState());
+    if (!presentSources || presentSources.length === 0) {
+      await dispatch(fetchSources());
+    }
+    const {
+      center: [longitude, latitude],
+      zoom,
+      layers,
+      orbs,
+      drawn_feature_collection,
+    } = bookmark;
+    setViewState({
+      ...viewState,
+      longitude,
+      latitude,
+      zoom,
+      transitionDuration: 2000,
+      transitionInterpolator: new FlyToInterpolator(),
+    });
+    dispatch(updateLayers(layers || []));
+    dispatch(setLayersState(orbs?.layers));
+    dispatch(setDrawingToolsFeatures(drawn_feature_collection));
+    dispatch(push('/map'));
+  },
+);
+
 /** @type {BookmarksState} */
 const initialState = {
   bookmarks: null,
-  selectedBookmark: null,
   error: null,
   isLoading: false,
 };
@@ -121,18 +168,7 @@ const initialState = {
 const bookmarkSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    selectBookmark: (state, { payload }) => {
-      if (payload !== state.selectedBookmark) {
-        state.selectedBookmark = payload;
-        state.isLoading = true;
-      }
-    },
-    isLoaded: state => {
-      state.isLoading = false;
-      state.selectedBookmark = null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchBookmarks.fulfilled, (state, { payload }) => {
       state.bookmarks = payload;
@@ -154,23 +190,25 @@ const bookmarkSlice = createSlice({
       const filteredBookmarks = state.bookmarks.filter(
         bookmark => bookmark.id !== payload.id,
       );
-      const isSelectedBookmark =
-        state.selectedBookmark && state.selectedBookmark.id === payload.id;
-      const selectedBookmark = isSelectedBookmark
-        ? null
-        : state.selectedBookmark;
 
       state.bookmarks = filteredBookmarks;
-      state.selectedBookmark = selectedBookmark;
       state.error = null;
     });
     builder.addCase(deleteBookmark.rejected, (state, { payload }) => {
       state.error = payload;
     });
+    builder
+      .addCase(selectBookmark.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(selectBookmark.fulfilled, state => {
+        state.isLoading = false;
+      })
+      .addCase(selectBookmark.rejected, state => {
+        state.isLoading = false;
+      });
   },
 });
-
-export const { selectBookmark, isLoaded } = bookmarkSlice.actions;
 
 /**
  * @param {import('typings').RootState} state
@@ -180,10 +218,6 @@ export const baseSelector = state => state?.bookmarks;
 export const bookmarksSelector = createSelector(
   baseSelector,
   bookmarks => bookmarks?.bookmarks,
-);
-export const selectedBookmarkSelector = createSelector(
-  baseSelector,
-  bookmarks => bookmarks?.selectedBookmark,
 );
 export const isLoadingSelector = createSelector(
   baseSelector,

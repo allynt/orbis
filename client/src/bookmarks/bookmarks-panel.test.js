@@ -4,13 +4,14 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import { MapProvider } from 'MapContext';
 
 import BookmarksPanel from './bookmarks-panel.component';
 import { selectBookmark } from './bookmarks.slice';
 
-const mockStore = createMockStore();
+const mockStore = createMockStore([thunk]);
 
 const setup = (initialState = {}) => {
   const store = mockStore(initialState);
@@ -60,10 +61,14 @@ describe('<BookmarksPanel />', () => {
     };
 
     const testBookmark = initialState.bookmarks.bookmarks[0];
-    const action = {
-      type: selectBookmark.type,
-      payload: { id: testBookmark.id, title: testBookmark.title },
-    };
+    const action = expect.objectContaining({
+      type: selectBookmark.pending.type,
+      meta: expect.objectContaining({
+        arg: expect.objectContaining({
+          bookmark: { id: testBookmark.id, title: testBookmark.title },
+        }),
+      }),
+    });
     const { getByRole, store } = setup(initialState);
     userEvent.click(getByRole('button', { name: 'Load' }));
     expect(store.getActions()).toContainEqual(action);
