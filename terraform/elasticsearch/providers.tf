@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket         = "astrosat-terraform-state"
     dynamodb_table = "astrosat-terraform-state-lock"
-    key            = "deployment-state/orbis"
+    key            = "deployment-state/orbis-elasticsearch"
     region         = "eu-west-1"
   }
 
@@ -24,14 +24,9 @@ terraform {
       version = "1.11.1"
     }
 
-    postgresql = {
-      source  = "cyrilgdn/postgresql"
-      version = "~> 1.11.2"
-    }
-
-    random = {
-      source  = "hashicorp/random"
-      version = "3.0.1"
+    elasticsearch = {
+      source  = "phillbaker/elasticsearch",
+      version = "~> 1.5.2"
     }
   }
 
@@ -51,11 +46,6 @@ locals {
 }
 
 // AWS
-
-provider "aws" {
-  alias  = "common"
-  region = "eu-west-1"
-}
 
 provider "aws" {
   region = "eu-west-1"
@@ -83,8 +73,6 @@ provider "kubernetes" {
   load_config_file       = false
 }
 
-// Postgres
-
 data "kubernetes_secret" "environment_secret" {
   metadata {
     name = local.environment_secret_name
@@ -95,16 +83,13 @@ locals {
   env_secrets = data.kubernetes_secret.environment_secret.data
 }
 
-provider "postgresql" {
-  host     = local.env_secrets["db_host"]
-  port     = local.env_secrets["db_port"]
-  database = local.env_secrets["db_name"]
-  username = local.env_secrets["db_user"]
-  password = local.env_secrets["db_password"]
-}
+// Elasticsearch
+data "aws_region" "current" {}
 
-// Random
-
-provider "random" {
-  # Configuration options
+provider "elasticsearch" {
+  url                 = "https://${local.env_secrets["elasticsearch_endpoint"]}"
+  sign_aws_requests   = true
+  aws_region          = data.aws_region.current.name
+  aws_assume_role_arn = local.aws_role_arns[var.environment]
+  healthcheck         = false
 }

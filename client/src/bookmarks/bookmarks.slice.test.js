@@ -1,14 +1,18 @@
+import { push } from 'connected-react-router';
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { fetchSources, updateLayers } from 'data-layers/data-layers.slice';
+import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
+import { setState as setLayersState } from 'map/orbs/layers.slice';
 
 import reducer, {
   addBookmark,
   deleteBookmark,
   fetchBookmarks,
-  isLoaded,
   isLoadingSelector,
   selectBookmark,
-  selectedBookmarkSelector,
 } from './bookmarks.slice';
 
 const mockStore = configureMockStore([thunk]);
@@ -166,18 +170,46 @@ describe('Bookmark Slice', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('should dispatch select bookmark action.', async () => {
-      const bookmark = {
-        id: 5,
-      };
-
-      const expectedActions = [
-        { type: selectBookmark.type, payload: bookmark },
-      ];
-
-      await store.dispatch(selectBookmark(bookmark));
-
-      expect(store.getActions()).toEqual(expectedActions);
+    describe('selectBookmark', () => {
+      it('Selects a bookmark', async () => {
+        const sources = [{ source_id: 'source/1/id' }];
+        const setViewState = jest.fn();
+        const viewState = { bearing: 270 };
+        const bookmark = {
+          center: [1, 2],
+          layers: ['source/1/id'],
+          orbs: { layers: 'test-123' },
+          drawn_feature_collection: 'test-feature-collection',
+        };
+        fetch.once(JSON.stringify(sources));
+        const store = mockStore({ data: {} });
+        await store.dispatch(
+          // @ts-ignore
+          selectBookmark({
+            bookmark,
+            setViewState,
+            viewState,
+          }),
+        );
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: fetchSources.fulfilled.type,
+            payload: sources,
+          }),
+          updateLayers(bookmark.layers),
+          setLayersState('test-123'),
+          setDrawingToolsFeatures('test-feature-collection'),
+          push('/map'),
+        ]);
+        expect(store.getActions()).toEqual(expectedActions);
+        expect(setViewState).toBeCalledWith(
+          expect.objectContaining({
+            ...viewState,
+            longitude: 1,
+            latitude: 2,
+          }),
+        );
+      });
     });
   });
 
@@ -191,12 +223,6 @@ describe('Bookmark Slice', () => {
         error: null,
         isLoading: false,
       };
-    });
-
-    it('should return the initial state', () => {
-      const actualState = reducer(undefined, {});
-
-      expect(actualState).toEqual(beforeState);
     });
 
     it('should update the bookmarks in state, when successfully retrieved', () => {
@@ -267,54 +293,9 @@ describe('Bookmark Slice', () => {
 
       expect(actualState.error).toEqual(error);
     });
-
-    it('should update the selected bookmark in state, when one selected', () => {
-      const bookmark = { id: 1 };
-      beforeState.bookmarks = [{ id: 1 }, { id: 2 }];
-
-      const actualState = reducer(beforeState, {
-        type: selectBookmark.type,
-        payload: bookmark,
-      });
-
-      expect(actualState.selectedBookmark).toEqual(bookmark);
-    });
-
-    it('should update the selected bookmark in state, when one selected', () => {
-      const actualState = reducer(beforeState, {
-        type: isLoaded.type,
-      });
-
-      expect(actualState.isLoading).toEqual(false);
-    });
   });
 
   describe('selectors', () => {
-    describe('selectedBookmarkSelector', () => {
-      it('returns undefined if state is undefined', () => {
-        const result = selectedBookmarkSelector();
-        expect(result).toBeUndefined();
-      });
-
-      it('returns undefined if bookmarks is undefined', () => {
-        const state = {};
-        const result = selectedBookmarkSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns undefined if selectedBookmark is undefined', () => {
-        const state = { bookmarks: {} };
-        const result = selectedBookmarkSelector(state);
-        expect(result).toBeUndefined();
-      });
-
-      it('returns selectedBookmark', () => {
-        const state = { bookmarks: { selectedBookmark: { title: 'heloo' } } };
-        const result = selectedBookmarkSelector(state);
-        expect(result).toEqual(state.bookmarks.selectedBookmark);
-      });
-    });
-
     describe('isLoadingSelector', () => {
       it('returns false if state is undefined', () => {
         const result = isLoadingSelector();

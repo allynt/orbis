@@ -19,8 +19,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {import('typings').Source[]} [sources]
  * @property {any} [error]
  * @property {import('typings').Orb[]} [orbs]
- * @property {boolean} fetchOrbsPending
- * @property {string} [fetchOrbsRequestId]
+ * @property {Record<string, 'pending' | 'fulfilled' |'rejected'>} requests
  */
 
 const name = 'data';
@@ -32,8 +31,7 @@ const initialState = {
   token: null,
   sources: null,
   error: null,
-  fetchOrbsPending: false,
-  fetchOrbsRequestId: undefined,
+  requests: {},
 };
 
 /**
@@ -62,9 +60,41 @@ export const fetchOrbs = createAsyncThunk(
   {
     condition: (_, { getState }) => {
       const {
-        data: { fetchOrbsPending: isFetchingOrbs, fetchOrbsRequestId },
+        data: { requests },
       } = getState();
-      if (isFetchingOrbs && !!fetchOrbsRequestId) return false;
+      return requests?.fetchOrbs !== 'pending';
+    },
+  },
+);
+
+export const fetchSources = createAsyncThunk(
+  `${name}/fetchSources`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  {
+   *    sources: import('typings').Source[];
+   *    token: string;
+   *    timeout: number;
+   *  },
+   *  never,
+   *  { rejectValue: {message: string}, state: import('react-redux').DefaultRootState }
+   * >}
+   */
+  async (_, { rejectWithValue }) => {
+    try {
+      const sources = await apiClient.data.getSources();
+      return sources;
+    } catch (error) {
+      const message = `${error.status} ${error.message}`;
+      return rejectWithValue({ message });
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        data: { requests },
+      } = getState();
+      return requests?.fetchSources !== 'pending';
     },
   },
 );
@@ -83,18 +113,6 @@ const dataSlice = createSlice({
 
       state.layers = layers;
     },
-    fetchSourcesSuccess: (state, { payload }) => {
-      // Convert from minutes to millliseconds and then half the value.
-      // This will ensure we update the token before it expires.
-      const { sources, token, timeout } = payload;
-      const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
-      state.token = token;
-      state.sources = sources;
-      state.pollingPeriod = timeoutInMilliseconds;
-    },
-    fetchSourcesFailure: (state, { payload }) => {
-      state.error = payload;
-    },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
@@ -106,39 +124,57 @@ const dataSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchOrbs.pending, (state, action) => {
-      state.fetchOrbsPending = true;
-      state.fetchOrbsRequestId = action.meta.requestId;
+    builder
+      .addCase(fetchSources.pending, state => {
+        state.requests = {
+          ...state.requests,
+          fetchSources: 'pending',
+        };
+      })
+      .addCase(fetchSources.fulfilled, (state, { payload }) => {
+        // Convert from minutes to millliseconds and then half the value.
+        // This will ensure we update the token before it expires.
+        const { sources, token, timeout } = payload;
+        const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
+        state.token = token;
+        state.sources = sources;
+        state.pollingPeriod = timeoutInMilliseconds;
+        state.requests = {
+          ...state.requests,
+          fetchSources: 'fulfilled',
+        };
+      })
+      .addCase(fetchSources.rejected, (state, { payload }) => {
+        state.error = payload;
+        state.requests = {
+          ...state.requests,
+          fetchSources: 'rejected',
+        };
+      });
+    builder.addCase(fetchOrbs.pending, state => {
+      state.requests = {
+        ...state.requests,
+        fetchOrbs: 'pending',
+      };
     });
     builder.addCase(fetchOrbs.fulfilled, (state, { payload }) => {
       state.orbs = payload;
-      state.fetchOrbsPending = false;
-      state.fetchOrbsRequestId = undefined;
+      state.requests = {
+        ...state.requests,
+        fetchOrbs: 'fulfilled',
+      };
     });
     builder.addCase(fetchOrbs.rejected, (state, { payload }) => {
       state.error = payload;
-      state.fetchOrbsPending = false;
-      state.fetchOrbsRequestId = undefined;
+      state.requests = {
+        ...state.requests,
+        fetchOrbs: 'rejected',
+      };
     });
   },
 });
 
-export const {
-  updateLayers,
-  fetchSourcesFailure,
-  fetchSourcesSuccess,
-  addSource,
-} = dataSlice.actions;
-
-export const fetchSources = () => async dispatch => {
-  try {
-    const sources = await apiClient.data.getSources();
-    return dispatch(fetchSourcesSuccess(sources));
-  } catch (error) {
-    const message = `${error.status} ${error.message}`;
-    return dispatch(fetchSourcesFailure({ message }));
-  }
-};
+export const { updateLayers, addSource } = dataSlice.actions;
 
 export const setLayers = sourceIds => async (dispatch, getState) => {
   if (!sourceIds) return;

@@ -2,16 +2,23 @@ from django.http import FileResponse, HttpResponseNotFound
 
 from rest_framework import status
 from rest_framework.exceptions import APIException
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView, GenericAPIView
+from rest_framework.permissions import BasePermission, IsAuthenticated
 
 from django_filters import rest_framework as filters
 
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
+from astrosat.decorators import swagger_fake
 from astrosat.views import BetterBooleanFilter
 
-from orbis.models import TermsDocument, PrivacyDocument, UserGuideDocument
+from orbis.models import Document, DocumentAgreement, DocumentType, Orb, TermsDocument, PrivacyDocument, UserGuideDocument
+from orbis.serializers import DocumentAgreementSerializer, DocumentSerializer
+
+###########
+# helpers #
+###########
 
 
 class NoMatchingDocumentException(APIException):
@@ -20,67 +27,140 @@ class NoMatchingDocumentException(APIException):
     default_code = "no_matching_document"
 
 
-class DocumentView(GenericAPIView):
+###########
+# filters #
+###########
 
-    _document_view_parameters = [
-        openapi.Parameter(
-            "name", openapi.IN_QUERY, type=openapi.TYPE_STRING
-        ),
-        openapi.Parameter(
-            "version", openapi.IN_QUERY, type=openapi.TYPE_STRING
-        ),
-        openapi.Parameter(
-            "is_active", openapi.IN_QUERY, type=openapi.TYPE_BOOLEAN
-        ),
-    ]  # yapf: disable
 
+class ChoiceInFilter(filters.BaseInFilter, filters.ChoiceFilter):
+    # allows me to pass a list to the ChoiceFilter
+    pass
+
+
+class DefaultValueFilterSet(filters.FilterSet):
+    # allows me to set default values for filters
+    # as per https://django-filter.readthedocs.io/en/stable/guide/tips.html#using-initial-values-as-defaults
+
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
+
+        # if filterset is bound, use initial values as defaults
+        if data is not None:
+            # get a mutable copy of the QuerySet
+            data = data.copy()
+
+            for name, f in self.base_filters.items():
+                initial = f.extra.get("initial")
+
+                # filter param is either missing or empty, use initial as default
+                if not data.get(name) and initial:
+                    data[name] = initial
+
+        super().__init__(
+            data=data, queryset=queryset, request=request, prefix=prefix
+        )
+
+
+class DocumentAgreementFilterSet(DefaultValueFilterSet):
+    class Meta:
+        model = DocumentAgreement
+        fields = ()
+
+    is_active = BetterBooleanFilter(
+        field_name="document__is_active",
+        initial=True,
+    )
+    name = filters.CharFilter(
+        field_name="document__name",
+        lookup_expr="iexact",
+    )
+    type = ChoiceInFilter(
+        field_name="document__type",
+        choices=DocumentType.choices,
+    )
+    version = filters.CharFilter(
+        field_name="document__version",
+        lookup_expr="exact",
+    )
+
+
+class DocumentFilterSet(DefaultValueFilterSet):
+    class Meta:
+        model = Document
+        fields = (
+            "name",
+            "version",
+            "type",
+            "is_active",
+            "orb",
+        )
+
+    is_active = BetterBooleanFilter(initial=True)
+    name = filters.CharFilter(lookup_expr="iexact")
+    orb = filters.ModelChoiceFilter(
+        queryset=Orb.objects.all(),
+        to_field_name="name",
+    )
+    has_orb = filters.BooleanFilter(
+        exclude=True,
+        field_name="orb",
+        lookup_expr="isnull",
+    )
+
+
+#########
+# views #
+#########
+
+
+class DocumentAgreementListView(ListAPIView):
+    """
+    returns all documents that a user has agreed to
+    """
+
+    filter_backends = (filters.DjangoFilterBackend, )
+    filterset_class = DocumentAgreementFilterSet
+    permission_classes = [IsAuthenticated]
+    serializer_class = DocumentAgreementSerializer
+
+    @swagger_fake(DocumentAgreement.objects.none())
     def get_queryset(self):
-        """
-        Dynamically figures out which document type should be returned
-        """
-        document_type = self.kwargs.get("document_type").lower()
-        if document_type == "terms":
-            return TermsDocument.objects.all()
-        elif document_type == "privacy":
-            return PrivacyDocument.objects.all()
-        elif document_type == "guide":
-            return UserGuideDocument.objects.all()
-        raise NoMatchingDocumentException
+        current_user = self.request.user
+        return current_user.agreements.all()
 
+
+class DocumentDetailView(GenericAPIView):
+    """
+    returns a specific document
+    """
+    filter_backends = (filters.DjangoFilterBackend, )
+    filterset_class = DocumentFilterSet
+
+    permission_classes = []
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+
+    @swagger_fake(None)
     def get_object(self):
-        """
-        uses the filter parameters to select a single document from the queryset
-        """
-        document_qs = self.get_queryset()
+        # DocumentDetailView uses filters to specify an object,
+        # rather than the standard lookup_field/lookup_url_kwarg
 
-        document_name_filter = filters.CharFilter(field_name="name")
-        document_version_filter = filters.CharFilter(field_name="version")
-        document_is_active_filter = BetterBooleanFilter(field_name="is_active")
-
-        document_qs = document_name_filter.filter(
-            document_qs, self.request.query_params.get("name", None)
-        )
-        document_qs = document_version_filter.filter(
-            document_qs, self.request.query_params.get("version", None)
-        )
-        document_qs = document_is_active_filter.filter(
-            document_qs,
-            document_is_active_filter.field.clean(
-                # notice that by default, we only return active documents
-                self.request.query_params.get("is_active", True)
-            )
-        )
+        document_qs = self.filter_queryset(self.get_queryset())
 
         if document_qs.count() != 1:
             raise NoMatchingDocumentException
+        document_obj = document_qs[0]
 
-        return document_qs[0]
+        self.check_object_permissions(self.request, document_obj)
+
+        return document_obj
 
     @swagger_auto_schema(
-        manual_parameters=_document_view_parameters,
         responses={status.HTTP_200_OK: "FileResponse"},
     )
-    def get(self, request, document_type):
+    def get(self, request, *args, **kwargs):
+        """
+        returns the file associated w/ this document
+        """
         try:
             document_obj = self.get_object()
         except NoMatchingDocumentException as e:
@@ -100,3 +180,87 @@ class DocumentView(GenericAPIView):
                 )  # yapf: disable
 
         return response
+
+
+# TODO: DELETE THE FOLLOWING CLASS ONCE DB INSTANCES HAVE BEEN MIGRATED
+
+# class DocumentView(GenericAPIView):
+
+#     _document_view_parameters = [
+#         openapi.Parameter(
+#             "name", openapi.IN_QUERY, type=openapi.TYPE_STRING
+#         ),
+#         openapi.Parameter(
+#             "version", openapi.IN_QUERY, type=openapi.TYPE_STRING
+#         ),
+#         openapi.Parameter(
+#             "is_active", openapi.IN_QUERY, type=openapi.TYPE_BOOLEAN
+#         ),
+#     ]  # yapf: disable
+
+#     def get_queryset(self):
+#         """
+#         Dynamically figures out which document type should be returned
+#         """
+#         document_type = self.kwargs.get("document_type").lower()
+#         if document_type == "terms":
+#             return TermsDocument.objects.all()
+#         elif document_type == "privacy":
+#             return PrivacyDocument.objects.all()
+#         elif document_type == "guide":
+#             return UserGuideDocument.objects.all()
+#         raise NoMatchingDocumentException
+
+#     def get_object(self):
+#         """
+#         uses the filter parameters to select a single document from the queryset
+#         """
+#         document_qs = self.get_queryset()
+
+#         document_name_filter = filters.CharFilter(field_name="name")
+#         document_version_filter = filters.CharFilter(field_name="version")
+#         document_is_active_filter = BetterBooleanFilter(field_name="is_active")
+
+#         document_qs = document_name_filter.filter(
+#             document_qs, self.request.query_params.get("name", None)
+#         )
+#         document_qs = document_version_filter.filter(
+#             document_qs, self.request.query_params.get("version", None)
+#         )
+#         document_qs = document_is_active_filter.filter(
+#             document_qs,
+#             document_is_active_filter.field.clean(
+#                 # notice that by default, we only return active documents
+#                 self.request.query_params.get("is_active", True)
+#             )
+#         )
+
+#         if document_qs.count() != 1:
+#             raise NoMatchingDocumentException
+
+#         return document_qs[0]
+
+#     @swagger_auto_schema(
+#         manual_parameters=_document_view_parameters,
+#         responses={status.HTTP_200_OK: "FileResponse"},
+#     )
+#     def get(self, request, document_type):
+#         try:
+#             document_obj = self.get_object()
+#         except NoMatchingDocumentException as e:
+#             return HttpResponseNotFound(e.detail)
+
+#         response = FileResponse(document_obj.file)
+
+#         # if the request came from swagger I ought to make the document downloadable;
+#         # swagger doesn't cope nicely w/ displaying content in another tab
+#         if "api/swagger" in request.headers.get("referer", ""):
+#             content_disposition = response.headers.get(
+#                 "Content-Disposition", None
+#             )
+#             if content_disposition is not None:
+#                 response.headers["Content-Disposition"] = content_disposition.replace(
+#                     "inline", "attachment"
+#                 )  # yapf: disable
+
+#         return response

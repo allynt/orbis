@@ -16,12 +16,16 @@ import { Link } from 'react-router-dom';
 
 import { Wrapper } from '../../../shared-components/wrapper.component';
 
+const MIN_USERS = 3;
 const MAX_USERS = 30;
-const selectOptions = new Array(MAX_USERS).fill().map((_, i) => (
-  <MenuItem value={i + 1} key={`menu-item-${i + 1}`}>
-    {i + 1}
-  </MenuItem>
-));
+const selectOptions = new Array(MAX_USERS + 1)
+  .fill(undefined, MIN_USERS)
+  .map((_, i) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <MenuItem value={i} key={`menu-item-${i}`}>
+      {i}
+    </MenuItem>
+  ));
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
