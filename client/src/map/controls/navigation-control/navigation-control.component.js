@@ -12,28 +12,30 @@ export const NavigationControl = styled(ReactMapGlNavigationControl)(
     right: '2rem',
     zIndex: 1,
     bottom: '2rem',
-    backgroundColor: 'transparent',
-    '& > button': {
+    '& .mapboxgl-ctrl-group': {
+      backgroundColor: 'transparent',
+    },
+    '& button.mapboxgl-ctrl-icon': {
       backgroundColor: theme.palette.background.default,
       transition: theme.transitions.create('opacity', {
         duration: theme.transitions.duration.short,
       }),
-      '& + button': {
+      '& + button.mapboxgl-ctrl-icon': {
         borderColor: theme.palette.primary.main,
       },
-      '&:first-of-type': {
+      '&.mapboxgl-ctrl-zoom-in': {
         borderTopLeftRadius: theme.shape.borderRadius,
         borderTopRightRadius: theme.shape.borderRadius,
         '& > span': {
-          backgroundImage: `url(${plus}) !important`,
+          backgroundImage: `url(${plus})`,
           backgroundSize: '100%',
         },
       },
-      '&:not(:first-of-type):not(:last-of-type) > span': {
+      '&.mapboxgl-ctrl-zoom-out > span': {
         backgroundImage: `url(${minus}) !important`,
         backgroundSize: '100%',
       },
-      '&:last-of-type': {
+      '&.mapboxgl-ctrl-compass': {
         borderBottomLeftRadius: theme.shape.borderRadius,
         borderBottomRightRadius: theme.shape.borderRadius,
         '& > span': {
