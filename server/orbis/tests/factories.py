@@ -24,6 +24,9 @@ from astrosat_users.tests.factories import (
 from orbis.models import (
     OrbisUserProfile,
     OrbisUserFeedbackRecord,
+    Document,
+    DocumentAgreement,
+    DocumentType,
     PrivacyDocument,
     TermsDocument,
     UserGuideDocument,
@@ -115,9 +118,15 @@ class CustomerFactory(AstrosatUserCustomerFactory):
 
 
 class DocumentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Document
 
     name = factory.LazyAttributeSequence(lambda o, n: f"document-{n}")
     version = optional_declaration(FactoryFaker("slug"), chance=50)
+    type = optional_declaration(
+        FactoryFaker("random_element", elements=[x[0] for x in DocumentType]),
+        chance=50
+    )
     is_active = None
 
     @factory.lazy_attribute
@@ -127,21 +136,6 @@ class DocumentFactory(factory.django.DjangoModelFactory):
             content=b"I am a fake document",
             content_type="application/pdf",
         )
-
-
-class PrivacyDocumentFactory(DocumentFactory):
-    class Meta:
-        model = PrivacyDocument
-
-
-class TermsDocumentFactory(DocumentFactory):
-    class Meta:
-        model = TermsDocument
-
-
-class UserGuideDocumentFactory(DocumentFactory):
-    class Meta:
-        model = UserGuideDocument
 
 
 ########

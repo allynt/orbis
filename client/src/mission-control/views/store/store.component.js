@@ -27,12 +27,9 @@ export const Store = ({ match, location }) => {
   const { path, url } = match;
   const orbs = useSelector(orbsSelector);
   const fetchOrbsPending = useSelector(
-    /**
-     * @param {import('root.reducer').RootState} state
-     */
-    state => state?.data?.fetchOrbsPending,
+    state => state?.data?.requests?.fetchOrbs === 'pending',
   );
-  const accountsIsLoading = useSelector(isLoadingSelector);
+  const placeOrderPending = useSelector(isLoadingSelector('placeOrder'));
   const accountsErrors = useSelector(errorSelector);
   const dispatch = useDispatch();
   const fadeTransitionProps = useFadeTransitionProps(location.key);
@@ -82,7 +79,7 @@ export const Store = ({ match, location }) => {
               render={routerProps => (
                 <Checkout
                   orbs={orbs}
-                  isLoading={accountsIsLoading}
+                  isLoading={placeOrderPending}
                   errors={accountsErrors}
                   onConfirmClick={handleConfirmClick}
                   {...routerProps}

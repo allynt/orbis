@@ -55,6 +55,15 @@ describe('<OrbDetails />', () => {
     expect(history.goBack).toBeCalled();
   });
 
+  it('Has a minimum users of 3 and maximum of 30', () => {
+    const { getByRole, queryByRole } = renderComponent();
+    userEvent.click(getByRole('button', { name: /Number of Users/i }));
+    expect(getByRole('option', { name: /^3$/ })).toBeInTheDocument();
+    expect(getByRole('option', { name: /30/ })).toBeInTheDocument();
+    expect(queryByRole('option', { name: /^2$/ })).not.toBeInTheDocument();
+    expect(queryByRole('option', { name: /31/ })).not.toBeInTheDocument();
+  });
+
   it('Navigates to the checkout view with the orb and number of seats as params', () => {
     const { getByRole, history } = renderComponent();
     userEvent.click(getByRole('button', { name: /Number of Users/i }));

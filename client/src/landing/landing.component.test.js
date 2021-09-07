@@ -10,6 +10,9 @@ import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { selectBookmark } from 'bookmarks/bookmarks.slice';
+import { MapProvider } from 'MapContext';
+
 import { regions } from '../map/map.constants';
 import Landing from './landing.component';
 
@@ -46,13 +49,15 @@ const renderComponent = (newUser, n = 10) => {
   const utils = render(
     <Router history={history}>
       <Provider store={store}>
-        <ThemeProvider>
-          <Landing />
-        </ThemeProvider>
+        <MapProvider>
+          <ThemeProvider>
+            <Landing />
+          </ThemeProvider>
+        </MapProvider>
       </Provider>
     </Router>,
   );
-  return { ...utils, history };
+  return { ...utils, history, store };
 };
 
 describe('<Landing />', () => {
@@ -81,11 +86,13 @@ describe('<Landing />', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should transition to map when bookmarked map is clicked', () => {
-    const { history, getByRole } = renderComponent();
+  it('Dispatches the selectBookmark action when a bookmark is clicked', () => {
+    const { getByRole, store } = renderComponent();
 
     userEvent.click(getByRole('button', { name: 'Bookmark Title 2' }));
 
-    expect(history.location.pathname).toBe('/map');
+    expect(store.getActions()).toContainEqual(
+      expect.objectContaining({ type: selectBookmark.pending.type }),
+    );
   });
 });

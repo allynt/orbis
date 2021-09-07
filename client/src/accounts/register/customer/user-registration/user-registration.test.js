@@ -54,7 +54,7 @@ describe('<UserRegistration />', () => {
     const { getByRole } = renderComponent();
     expect(
       getByRole('link', { name: /terms\s&\sconditions/i }),
-    ).toHaveAttribute('href', expect.stringContaining('/terms'));
+    ).toHaveAttribute('href', expect.stringContaining('TERMS'));
   });
 
   it('enables the Sign Up button when the terms and conditions are agreed', () => {

@@ -4,8 +4,6 @@ import thunk from 'redux-thunk';
 import { addLogItem } from 'app.slice';
 
 import reducer, {
-  fetchSourcesFailure,
-  fetchSourcesSuccess,
   fetchSources,
   selectDomainList,
   activeDataSourcesSelector,
@@ -70,16 +68,14 @@ describe('Data Slice', () => {
           },
         );
 
-        const expectedActions = [
-          {
-            type: fetchSourcesFailure.type,
-            payload: { message: '401 Test Error' },
-          },
-        ];
-
         await store.dispatch(fetchSources());
 
-        expect(store.getActions()).toEqual(expectedActions);
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: fetchSources.rejected.type,
+            payload: { message: '401 Test Error' },
+          }),
+        );
       });
 
       it('should dispatch fetch sources success action.', async () => {
@@ -104,13 +100,14 @@ describe('Data Slice', () => {
 
         fetch.mockResponse(JSON.stringify(data));
 
-        const expectedActions = [
-          { type: fetchSourcesSuccess.type, payload: data },
-        ];
-
         await store.dispatch(fetchSources());
 
-        expect(store.getActions()).toEqual(expectedActions);
+        expect(store.getActions()).toContainEqual(
+          expect.objectContaining({
+            type: fetchSources.fulfilled.type,
+            payload: data,
+          }),
+        );
       });
 
       it('should dispatch logDataset action.', async () => {
@@ -239,14 +236,10 @@ describe('Data Slice', () => {
       });
 
       describe('pending', () => {
-        it('Sets is loading status and request id in state', () => {
-          const result = reducer(
-            {},
-            { type: fetchOrbs.pending.type, meta: { requestId: '123-id' } },
-          );
+        it('Sets loading status', () => {
+          const result = reducer({}, { type: fetchOrbs.pending.type });
           expect(result).toEqual({
-            fetchOrbsPending: true,
-            fetchOrbsRequestId: '123-id',
+            requests: { fetchOrbs: 'pending' },
           });
         });
       });
@@ -363,7 +356,7 @@ describe('Data Slice', () => {
         const timeoutInMilliseconds = (data.timeout * 60 * 1000) / 2;
 
         const actualState = reducer(beforeState, {
-          type: fetchSourcesSuccess.type,
+          type: fetchSources.fulfilled.type,
           payload: data,
         });
 
@@ -378,7 +371,7 @@ describe('Data Slice', () => {
         const error = { message: 'Test Bookmarks Error' };
 
         const actualState = reducer(beforeState, {
-          type: fetchSourcesFailure.type,
+          type: fetchSources.rejected.type,
           payload: error,
         });
 

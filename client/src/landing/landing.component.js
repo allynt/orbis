@@ -11,13 +11,10 @@ import {
 
 import ProgressiveImage from 'react-progressive-image-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
-import {
-  fetchSources,
-  selectPollingPeriod,
-} from 'data-layers/data-layers.slice';
+import { useMap } from 'MapContext';
 
 import {
   bookmarksSelector,
@@ -73,33 +70,18 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
-  const pollingPeriod = useSelector(selectPollingPeriod);
-  const history = useHistory();
+  // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
   const hasBookmarks = bookmarks?.length > 0;
   const styles = useStyles({ hasBookmarks });
-
-  useEffect(() => {
-    // Poll API to get new Data token (expires every X seconds/mins etc)
-    // this also fetches the list of data sources the user has access to.
-    dispatch(fetchSources());
-    const interval = setInterval(() => {
-      dispatch(fetchSources());
-    }, pollingPeriod);
-    return () => {
-      // note this is cleared when the Landing component is unloaded
-      // but the MapLayout component starts its own interval for fetchSources
-      clearInterval(interval);
-    };
-  }, [pollingPeriod, dispatch]);
+  const { setViewState, viewState } = useMap();
 
   /**
    * @param {import('typings').Bookmark} bookmark
    */
   const chooseBookmark = bookmark => {
-    dispatch(selectBookmark(bookmark));
-    history.push('/map');
+    dispatch(selectBookmark({ bookmark, setViewState, viewState }));
   };
 
   useEffect(() => {

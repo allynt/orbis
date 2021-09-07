@@ -16,7 +16,6 @@ describe('accounts selectors', () => {
     ${'passwordChangeStatusSelector'} | ${passwordChangeStatusSelector} | ${'changeStatus'} | ${'changed'}
     ${'userSelector'}                 | ${userSelector}                 | ${'user'}         | ${{ name: 'John Smith' }}
     ${'userKeySelector'}              | ${userKeySelector}              | ${'userKey'}      | ${'1234'}
-    ${'isLoadingSelector'}            | ${isLoadingSelector}            | ${'isLoading'}    | ${true}
   `('$selectorName', ({ selector, stateKey, value }) => {
     it('returns undefined if state is undefined', () => {
       const result = selector(undefined);

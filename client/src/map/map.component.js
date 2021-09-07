@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   ButtonGroup,
@@ -14,23 +14,17 @@ import {
   _SunLight as SunLight,
 } from '@deck.gl/core';
 import DeckGL from '@deck.gl/react';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGl, { ScaleControl } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder';
-import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { mapboxTokenSelector } from 'app.slice';
-import {
-  isLoaded as onBookmarkLoaded,
-  isLoadingSelector as bookmarksLoadingSelector,
-  selectedBookmarkSelector,
-} from 'bookmarks/bookmarks.slice';
-import { setLayers } from 'data-layers/data-layers.slice';
+import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmarks.slice';
 import { DrawingToolsToolbox } from 'drawing-tools';
-import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { isDrawingAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
@@ -47,7 +41,6 @@ import {
   extrudedModeSelector,
   extrusionScaleSelector,
   setExtrusionScale,
-  setState as setLayersState,
   toggleExtrudedMode,
 } from './orbs/layers.slice';
 import { useSelectionTools } from './useSelectionTools';
@@ -161,7 +154,6 @@ const Map = ({
   );
   const dispatch = useDispatch();
   const accessToken = useSelector(mapboxTokenSelector);
-  const selectedBookmark = useSelector(selectedBookmarkSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
@@ -174,30 +166,6 @@ const Map = ({
     selectedSceneLayer,
   } = useSatellitesLayers();
   const isDrawingAoi = useSelector(isDrawingAoiSelector);
-
-  useEffect(() => {
-    if (selectedBookmark) {
-      const {
-        center: [longitude, latitude],
-        zoom,
-        layers,
-        orbs,
-        drawn_feature_collection,
-      } = selectedBookmark;
-      setViewState({
-        ...viewState,
-        longitude,
-        latitude,
-        zoom,
-        transitionDuration: 2000,
-        transitionInterpolator: new FlyToInterpolator(),
-      });
-      dispatch(setLayers(layers || []));
-      dispatch(setLayersState(orbs?.layers));
-      dispatch(setDrawingToolsFeatures(drawn_feature_collection));
-      dispatch(onBookmarkLoaded());
-    }
-  }, [selectedBookmark, viewState, setViewState, dispatch]);
 
   const handleGeocoderSelect = useCallback(
     newViewState => setViewState(newViewState),

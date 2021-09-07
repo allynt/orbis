@@ -8,6 +8,7 @@ import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 import {
   fetchSources,
   selectPollingPeriod,
+  dataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 import { MissionControl } from 'mission-control/mission-control.component';
@@ -21,18 +22,21 @@ const MapLayout = () => {
   const { layers, mapComponents, sidebarComponents } = useOrbs();
   const drawingToolsProps = useDrawingTools();
   const pollingPeriod = useSelector(selectPollingPeriod);
+  const sources = useSelector(dataSourcesSelector);
 
   useEffect(() => {
     // Poll API to get new Data token (expires every X seconds/mins etc)
     // this also fetches the list of data sources the user has access to.
-    dispatch(fetchSources());
+    if (!sources || sources.length === 0) {
+      dispatch(fetchSources());
+    }
     const interval = setInterval(() => {
       dispatch(fetchSources());
     }, pollingPeriod);
     return () => {
       clearInterval(interval);
     };
-  }, [pollingPeriod, dispatch]);
+  }, [pollingPeriod, dispatch, sources]);
 
   return (
     <Box
