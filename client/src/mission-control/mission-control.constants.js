@@ -24,7 +24,6 @@ export const VIEWS = {
     label: 'Saved Documents',
     route: '/saved-documents',
     Icon: SavedDocumentsIcon,
-    admin: true,
   },
   users: { label: 'Users', route: '/users', Icon: UsersIcon, admin: true },
   subscriptions: {

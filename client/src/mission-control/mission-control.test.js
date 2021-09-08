@@ -55,10 +55,6 @@ const setup = ({
 };
 
 describe('MissionControl', () => {
-  beforeEach(() => {
-    fetch.mockResponse(JSON.stringify({}));
-  });
-
   it('Is visible if location contains mission-control', () => {
     const { getByRole } = setup({});
     expect(getByRole('heading', { name: /hello/i })).toBeInTheDocument();
@@ -99,6 +95,7 @@ describe('MissionControl', () => {
   });
 
   it('fetches customer if no customer, when component is loaded', () => {
+    fetch.once(JSON.stringify({}));
     const { store } = setup({ currentCustomer: null });
 
     const expectedActions = [
@@ -109,6 +106,7 @@ describe('MissionControl', () => {
   });
 
   it('fetches customerUsers if customer but no customerUsers, when component is loaded', () => {
+    fetch.once(JSON.stringify({}));
     const { store } = setup({ customerUsers: null });
 
     const expectedActions = [

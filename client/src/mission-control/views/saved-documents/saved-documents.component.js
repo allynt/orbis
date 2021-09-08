@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { IconButton, SvgIcon } from '@astrosat/astrosat-ui';
 
@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 // @ts-ignore
 import { useSortBy } from 'react-table';
 
+import apiClient from 'api-client';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -23,7 +24,7 @@ import { ReactComponent as PdfIcon } from '../support/pdf.svg';
  *  }[]
  * }} props
  */
-const SavedDocuments = ({ documents }) => {
+export const SavedDocuments = ({ documents }) => {
   const columns = useMemo(
     () => [
       {
@@ -55,7 +56,7 @@ const SavedDocuments = ({ documents }) => {
     [],
   );
 
-  const data = useMemo(() => documents, [documents]);
+  const data = useMemo(() => (documents ? documents : []), [documents]);
 
   return (
     <Wrapper title="Saved Documents">
@@ -77,4 +78,19 @@ const SavedDocuments = ({ documents }) => {
   );
 };
 
-export default SavedDocuments;
+export default () => {
+  const [documents, setDocuments] = useState(null);
+
+  useEffect(() => {
+    if (!documents) {
+      const fetchDocs = async () => {
+        const docs = await apiClient.documents.getAgreedDocuments();
+        setDocuments(docs);
+      };
+
+      fetchDocs();
+    }
+  }, [documents]);
+
+  return <SavedDocuments documents={documents} />;
+};

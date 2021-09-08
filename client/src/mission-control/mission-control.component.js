@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   Dialog,
@@ -12,8 +12,6 @@ import { push } from 'connected-react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-
-import apiClient from 'api-client';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import {
@@ -71,7 +69,6 @@ export const MissionControl = () => {
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
-  const [documents, setDocuments] = useState([]);
 
   const styles = useStyles({});
 
@@ -86,14 +83,6 @@ export const MissionControl = () => {
       dispatch(fetchCustomerUsers(currentCustomer));
     }
   }, [currentCustomer, customerUsers, dispatch, userIsAdmin]);
-
-  useEffect(() => {
-    const fetchDocs = async () => {
-      const docs = await apiClient.documents.getAgreedDocuments();
-      setDocuments(docs);
-    };
-    fetchDocs();
-  }, []);
 
   const renderAdminOnly = useCallback(
     Component => routeProps =>
@@ -140,7 +129,7 @@ export const MissionControl = () => {
                 />
                 <Route
                   path="/mission-control/saved-documents"
-                  render={() => <SavedDocumentsView documents={documents} />}
+                  component={SavedDocumentsView}
                 />
                 <Route path="/mission-control/support" component={Support} />
                 <Route

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 
-import SavedDocuments from './saved-documents.component';
+import { SavedDocuments } from './saved-documents.component';
 
 const TEST_DOCUMENTS = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
