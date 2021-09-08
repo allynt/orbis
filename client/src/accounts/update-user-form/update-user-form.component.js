@@ -46,10 +46,8 @@ const UpdateUserForm = ({ user, updateUser }) => {
   };
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset({ ...user });
-    }
-  }, [formState.isSubmitSuccessful, user, reset]);
+    reset({ ...user });
+  }, [reset, user]);
 
   return (
     <Grid
