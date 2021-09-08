@@ -13,6 +13,11 @@ import {
 import { ColorAdjustSlider, ColormapRangeSlider } from 'components';
 import { isRealValue } from 'utils/isRealValue';
 
+const SCALE_VALUES = {
+  filter: 'Adjust Filter',
+  colour: 'Adjust Colour',
+};
+
 const useStyles = makeStyles(
   ({ spacing, typography: { caption, pxToRem } }) => ({
     slidersGridItem: {
@@ -53,7 +58,7 @@ export const Sliders = ({
   filterRange,
   onRangeFilterChange,
 }) => {
-  const [isAdjustingColor, setIsAdjustingColor] = useState(false);
+  const [scaleValue, setScaleValue] = useState(SCALE_VALUES.filter);
   const styles = useStyles();
 
   const { min, max, clip_min, clip_max, precision, type } =
@@ -64,15 +69,15 @@ export const Sliders = ({
   const clipMax = clipRange?.[1] ?? clip_max ?? max;
 
   const handleResetClick = () => {
-    if (isAdjustingColor) {
+    if (scaleValue === SCALE_VALUES.colour) {
       return onClipRangeChange([clip_min ?? min, clip_max ?? max]);
     }
     return onRangeFilterChange([min, max]);
   };
 
-  const handleToggleClick = bool => {
-    if (isAdjustingColor === bool) return;
-    return setIsAdjustingColor(bool);
+  const handleToggleChange = (_, newValue) => {
+    if (!newValue || scaleValue === newValue) return;
+    return setScaleValue(newValue);
   };
 
   const sliderProps = {
@@ -104,32 +109,34 @@ export const Sliders = ({
           container
           justifyContent="center"
           component={ToggleButtonGroup}
+          value={scaleValue}
+          onChange={handleToggleChange}
         >
           <ToggleButton
-            selected={!isAdjustingColor}
-            onClick={() => handleToggleClick(false)}
+            selected={scaleValue === SCALE_VALUES.filter}
+            value={SCALE_VALUES.filter}
             className={styles.toggleButton}
           >
-            Adjust Filter
+            {SCALE_VALUES.filter}
           </ToggleButton>
           <ToggleButton
-            selected={isAdjustingColor}
-            onClick={() => handleToggleClick(true)}
+            selected={scaleValue === SCALE_VALUES.colour}
+            value={SCALE_VALUES.colour}
             className={styles.toggleButton}
           >
-            Adjust Colour
+            {SCALE_VALUES.colour}
           </ToggleButton>
         </Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
-        <Fade in={isAdjustingColor} unmountOnExit>
+        <Fade in={scaleValue === SCALE_VALUES.colour} unmountOnExit>
           <ColorAdjustSlider
             {...sliderProps}
             data-testid="color-slider"
             onChange={onClipRangeChange}
           />
         </Fade>
-        <Fade in={!isAdjustingColor} unmountOnExit>
+        <Fade in={scaleValue === SCALE_VALUES.filter} unmountOnExit>
           <ColormapRangeSlider
             {...sliderProps}
             data-testid="range-slider"

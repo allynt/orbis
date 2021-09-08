@@ -1,10 +1,14 @@
 import * as React from 'react';
 
 import { omit } from 'lodash';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
 
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 
 import { NationalDeviationHistogram } from './national-deviation-histogram.component';
+
+const mockStore = configureMockStore();
 
 const props = {
   data: [
@@ -80,9 +84,11 @@ const selectedProperty = {
 export default { title: 'Analysis Panel/National Deviation Histogram' };
 
 const Template = args => (
-  <AnalysisPanelProvider {...args}>
-    <NationalDeviationHistogram {...args} />
-  </AnalysisPanelProvider>
+  <Provider store={mockStore({})}>
+    <AnalysisPanelProvider {...args}>
+      <NationalDeviationHistogram {...args} />
+    </AnalysisPanelProvider>
+  </Provider>
 );
 
 export const NoClickedFeatures = Template.bind({});

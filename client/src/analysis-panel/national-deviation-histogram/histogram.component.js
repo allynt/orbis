@@ -78,24 +78,28 @@ export const Histogram = ({
   const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
 
-  const handleToggleClick = value => {
-    if (scale === value) return;
-    return setScale(value);
+  const handleToggleClick = (_, newValue) => {
+    if (scale === newValue) return;
+    return setScale(newValue);
   };
 
   return (
     <>
-      <ToggleButtonGroup className={styles.buttonGroup}>
+      <ToggleButtonGroup
+        value={scale}
+        onChange={handleToggleClick}
+        className={styles.buttonGroup}
+      >
         <ToggleButton
-          onClick={() => handleToggleClick(SCALE_VALUES.linear)}
-          selected={scale !== SCALE_VALUES.linear}
+          value={SCALE_VALUES.linear}
+          selected={scale === SCALE_VALUES.linear}
           className={styles.toggleButton}
         >
           {SCALE_VALUES.linear}
         </ToggleButton>
         <ToggleButton
-          onClick={() => handleToggleClick(SCALE_VALUES.log)}
-          selected={scale !== SCALE_VALUES.log}
+          value={SCALE_VALUES.log}
+          selected={scale === SCALE_VALUES.log}
           className={styles.toggleButton}
         >
           {SCALE_VALUES.log}

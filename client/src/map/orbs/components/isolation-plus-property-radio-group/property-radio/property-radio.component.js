@@ -118,26 +118,30 @@ const PropertyRadio = ({
       </Grid>
       {selectedPropertyIsInGroup && (
         <>
-          <Grid item>
-            <FormLabel>Select display type:</FormLabel>
-          </Grid>
-          <Grid
-            item
-            container
-            justifyContent="center"
-            component={ToggleButtonGroup}
-          >
-            {properties.map(p => (
-              <ToggleButton
-                key={p.name}
-                selected={selectedProperty?.name === p.name}
-                className={styles.toggleButton}
-                onClick={() => handleToggleButtonClick(p)}
+          {properties?.length > 1 ? (
+            <>
+              <Grid item>
+                <FormLabel>Select display type:</FormLabel>
+              </Grid>
+              <Grid
+                item
+                container
+                justifyContent="center"
+                component={ToggleButtonGroup}
               >
-                {getButtonLabelForProperty(p)}
-              </ToggleButton>
-            ))}
-          </Grid>
+                {properties.map(p => (
+                  <ToggleButton
+                    key={p.name}
+                    selected={selectedProperty?.name === p.name}
+                    className={styles.toggleButton}
+                    onClick={() => handleToggleButtonClick(p)}
+                  >
+                    {getButtonLabelForProperty(p)}
+                  </ToggleButton>
+                ))}
+              </Grid>
+            </>
+          ) : null}
           <SelectedPropertyControls
             selectedProperty={selectedProperty}
             filterRange={filterRange}
