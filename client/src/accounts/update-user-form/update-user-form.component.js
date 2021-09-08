@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Button,
@@ -41,18 +41,13 @@ const UpdateUserForm = ({ user, updateUser }) => {
     defaultValues: { ...user },
   });
 
-  const [submittedData, setSubmittedData] = useState({ ...user });
-
   const onSubmit = values => {
     updateUser(values);
-    setSubmittedData(values);
   };
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
-      reset({ ...submittedData });
-    }
-  }, [formState.isSubmitSuccessful, reset, submittedData]);
+    reset({ ...user });
+  }, [reset, user]);
 
   return (
     <Grid
