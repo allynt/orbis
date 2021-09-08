@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { IconButton, SvgIcon } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import { NotificationManager } from 'react-notifications';
 // @ts-ignore
 import { useSortBy } from 'react-table';
 
@@ -84,8 +85,19 @@ export default () => {
   useEffect(() => {
     if (!documents) {
       const fetchDocs = async () => {
-        const docs = await apiClient.documents.getAgreedDocuments();
-        setDocuments(docs);
+        try {
+          const docs = await apiClient.documents.getAgreedDocuments();
+          setDocuments(docs);
+        } catch (error) {
+          /** @type {import('api-client').ResponseError} */
+          const { message, status } = error;
+          NotificationManager.error(
+            `${status} ${message}`,
+            `Fetching Agreed Documents Error - ${message}`,
+            50000,
+            () => {},
+          );
+        }
       };
 
       fetchDocs();
