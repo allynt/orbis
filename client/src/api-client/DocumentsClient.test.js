@@ -31,5 +31,12 @@ describe('DocumentsClient', () => {
         '/api/documents/?type=GUIDE&has_orb=false&name=analysis-toolbar',
       );
     });
+
+    it('Returns saved documents from response', async () => {
+      const docs = [{ id: 1 }, { id: 2 }];
+      fetch.once(JSON.stringify(docs));
+      const responseSources = await client.getAgreedDocuments();
+      expect(responseSources).toEqual(docs);
+    });
   });
 });

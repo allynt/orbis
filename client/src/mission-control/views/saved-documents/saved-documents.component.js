@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { IconButton, SvgIcon } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import { NotificationManager } from 'react-notifications';
 // @ts-ignore
 import { useSortBy } from 'react-table';
 
+import apiClient from 'api-client';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -23,20 +25,20 @@ import { ReactComponent as PdfIcon } from '../support/pdf.svg';
  *  }[]
  * }} props
  */
-const SavedDocuments = ({ documents }) => {
+export const SavedDocuments = ({ documents }) => {
   const columns = useMemo(
     () => [
       {
         Header: 'Title',
-        accessor: 'title',
+        accessor: 'name',
       },
       {
         Header: 'Date',
-        accessor: 'date',
+        accessor: 'timestamp',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
       {
-        accessor: 'url',
+        accessor: 'file',
         disableSortBy: true,
         Cell: ({ value }) => (
           <IconButton
@@ -55,7 +57,7 @@ const SavedDocuments = ({ documents }) => {
     [],
   );
 
-  const data = useMemo(() => documents, [documents]);
+  const data = useMemo(() => (documents ? documents : []), [documents]);
 
   return (
     <Wrapper title="Saved Documents">
@@ -77,4 +79,30 @@ const SavedDocuments = ({ documents }) => {
   );
 };
 
-export default SavedDocuments;
+export default () => {
+  const [documents, setDocuments] = useState(null);
+
+  useEffect(() => {
+    if (!documents) {
+      const fetchDocs = async () => {
+        try {
+          const docs = await apiClient.documents.getAgreedDocuments();
+          setDocuments(docs);
+        } catch (error) {
+          /** @type {import('api-client').ResponseError} */
+          const { message, status } = error;
+          NotificationManager.error(
+            `${status} ${message}`,
+            `Fetching Agreed Documents Error - ${message}`,
+            50000,
+            () => {},
+          );
+        }
+      };
+
+      fetchDocs();
+    }
+  }, [documents]);
+
+  return <SavedDocuments documents={documents} />;
+};
