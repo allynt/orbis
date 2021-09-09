@@ -27,8 +27,7 @@ export const ButtonControls = React.memo(
    *  setDrawingToolsEnabled: React.Dispatch<boolean>
    *  setDrawMode: React.Dispatch<import('drawing-tools/drawing-tools.config').EditMode>
    *  drawMode: import('drawing-tools/drawing-tools.config').EditMode
-   *  setViewState: React.Dispatch<import('MapContext').ViewState>
-   *  viewState: import('MapContext').ViewState
+   *  updateViewState: (newViewState: import('MapContext').ViewState) => void
    *  selectedMapStyleId: import('map-style/styles').MapStyleKey
    * }} props
    */
@@ -37,8 +36,7 @@ export const ButtonControls = React.memo(
     setDrawingToolsEnabled,
     setDrawMode,
     drawMode,
-    setViewState,
-    viewState,
+    updateViewState,
     selectedMapStyleId,
   }) => {
     const styles = useStyles();
@@ -49,8 +47,7 @@ export const ButtonControls = React.memo(
     const dispatch = useDispatch();
 
     const handleExtrudedModeButtonClick = () => {
-      setViewState({
-        ...viewState,
+      updateViewState({
         pitch: !extrudedMode ? ISOMETRIC_PITCH : 0,
         transitionDuration: 750,
         transitionInterpolator: new FlyToInterpolator(),

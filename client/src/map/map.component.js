@@ -131,6 +131,7 @@ const Map = ({
     bottomDeckRef,
     viewState,
     setViewState,
+    updateViewState,
   } = useMap();
   const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
   const extrusionScale = useSelector(state =>
@@ -196,8 +197,7 @@ const Map = ({
         selectedMapStyleId={selectedMapStyle?.id}
         setDrawMode={setDrawMode}
         setDrawingToolsEnabled={setDrawingToolsEnabled}
-        setViewState={setViewState}
-        viewState={viewState}
+        updateViewState={updateViewState}
       />
 
       <DeckGL

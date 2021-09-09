@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 
 const INITIAL_VIEW_STATE = {
   zoom: 6,
@@ -31,6 +37,7 @@ MapContext.displayName = 'MapContext';
  * @property {React.MutableRefObject<import('@deck.gl/core').Deck>} bottomDeckRef
  * @property {ViewState} viewState
  * @property {React.Dispatch<ViewState>} setViewState
+ * @property {(newViewState: ViewState) => void} updateViewState
  */
 
 /**
@@ -44,6 +51,18 @@ export const MapProvider = props => {
   const bottomDeckRef = useRef(null);
   const [viewState, setViewState] = useState(INITIAL_VIEW_STATE);
 
+  /**
+   * @param {ViewState} newViewState
+   */
+  const updateViewState = useCallback(
+    newViewState =>
+      setViewState(currentViewState => ({
+        ...currentViewState,
+        ...newViewState,
+      })),
+    [],
+  );
+
   return (
     <MapContext.Provider
       value={{
@@ -53,6 +72,7 @@ export const MapProvider = props => {
         bottomDeckRef,
         viewState,
         setViewState,
+        updateViewState,
       }}
       {...props}
     />
@@ -67,6 +87,7 @@ export const MapProvider = props => {
  *   bottomDeckRef: React.MutableRefObject<import('@deck.gl/core').Deck>
  *   viewState: ViewState
  *   setViewState: React.Dispatch<ViewState>
+ *   updateViewState: (newViewState: ViewState) => void
  *   createScreenshot: (callback: BlobCallback) => void
  * }}
  */
