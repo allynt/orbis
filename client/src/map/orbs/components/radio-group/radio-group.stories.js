@@ -40,3 +40,9 @@ Info.args = {
     { value: 2, label: 'Two', info: '2' },
   ],
 };
+
+export const Loading = Template.bind({});
+Loading.args = {
+  ...SimpleOptions.args,
+  isLoading: true,
+};

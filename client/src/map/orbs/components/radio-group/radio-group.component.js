@@ -10,6 +10,7 @@ import {
   ListItemText,
   makeStyles,
   Radio,
+  Skeleton,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -21,6 +22,22 @@ const useStyles = makeStyles(theme => ({
   avatar: { margin: theme.spacing(0, 2) },
 }));
 
+const ComponentSkeleton = ({ n = 4 }) => (
+  <List>
+    {Array(n)
+      .fill()
+      .map(() => (
+        // eslint-disable-next-line react/jsx-key
+        <ListItem>
+          <ListItemIcon>
+            <Skeleton variant="circle" width="1rem" height="1rem" />
+          </ListItemIcon>
+          <ListItemText primary={<Skeleton width="15ch" />} />
+        </ListItem>
+      ))}
+  </List>
+);
+
 /**
  * @template V
  * @param {{
@@ -28,6 +45,7 @@ const useStyles = makeStyles(theme => ({
  *   value?: V
  *   onChange: (value: V) => void
  *   options: {value: V, label?: string, image?: string, info?: string}[]
+ *   isLoading?: boolean
  * }} props
  */
 export const RadioGroup = ({
@@ -35,6 +53,7 @@ export const RadioGroup = ({
   value: valueProp = defaultValue,
   onChange,
   options,
+  isLoading = false,
 }) => {
   const styles = useStyles();
 
@@ -42,6 +61,8 @@ export const RadioGroup = ({
     console.warn('options prop not provided to RadioGroup');
     return null;
   }
+
+  if (isLoading) return <ComponentSkeleton n={options.length} />;
 
   return (
     <List>

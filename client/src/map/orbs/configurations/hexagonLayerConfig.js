@@ -19,7 +19,7 @@ export default ({
   id,
   orbState,
   authToken,
-  defaultValue = 'summer',
+  defaultValue,
   activeSources,
   dispatch,
 }) => {
