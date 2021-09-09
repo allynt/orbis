@@ -140,4 +140,4 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
   );
 };
 
-export default ControlPanel;
+export default React.memo(ControlPanel);
