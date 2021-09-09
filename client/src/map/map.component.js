@@ -1,15 +1,9 @@
 import React, { useCallback } from 'react';
 
-import {
-  ButtonGroup,
-  LoadMask,
-  makeStyles,
-  Slide,
-} from '@astrosat/astrosat-ui';
+import { LoadMask, makeStyles, Slide } from '@astrosat/astrosat-ui';
 
 import {
   AmbientLight,
-  FlyToInterpolator,
   LightingEffect,
   _SunLight as SunLight,
 } from '@deck.gl/core';
@@ -20,32 +14,22 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { mapboxTokenSelector } from 'app.slice';
 import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmarks.slice';
-import { DrawingToolsToolbox } from 'drawing-tools';
-import MapStyleSwitcher from 'map-style/map-style-switcher/map-style-switcher.component';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { isDrawingAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
-import { MapControlButton } from '../components';
+import { ButtonControls } from './controls/button-controls.component';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
 import { NavigationControl } from './controls/navigation-control/navigation-control.component';
-import {
-  isLoadingSelector,
-  mapStylesSelector,
-  selectedMapStyleSelector,
-  selectMapStyle,
-} from './map.slice';
+import { isLoadingSelector, selectedMapStyleSelector } from './map.slice';
 import {
   extrudedModeSelector,
   extrusionScaleSelector,
   setExtrusionScale,
-  toggleExtrudedMode,
 } from './orbs/layers.slice';
 import { useSelectionTools } from './useSelectionTools';
-
-const ISOMETRIC_PITCH = 35;
 
 const useStyles = makeStyles(theme => ({
   map: {
@@ -156,7 +140,6 @@ const Map = ({
   const accessToken = useSelector(mapboxTokenSelector);
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapLoading = useSelector(isLoadingSelector);
-  const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles({ selectedMapStyle });
   const { selectionLayer } = useSelectionTools();
@@ -171,20 +154,6 @@ const Map = ({
     newViewState => setViewState(newViewState),
     [setViewState],
   );
-  const handleMapStyleSelect = useCallback(
-    mapStyle => dispatch(selectMapStyle(mapStyle)),
-    [dispatch],
-  );
-
-  const handleExtrudedModeButtonClick = () => {
-    setViewState({
-      ...viewState,
-      pitch: !extrudedMode ? ISOMETRIC_PITCH : 0,
-      transitionDuration: 750,
-      transitionInterpolator: new FlyToInterpolator(),
-    });
-    dispatch(toggleExtrudedMode());
-  };
 
   const handleExtrusionScaleChange = value =>
     dispatch(setExtrusionScale(value));
@@ -221,26 +190,15 @@ const Map = ({
         </Slide>
       </div>
 
-      <ButtonGroup className={styles.buttonControls} orientation="vertical">
-        <DrawingToolsToolbox
-          open={drawingToolsEnabled}
-          onButtonClick={() => setDrawingToolsEnabled(!drawingToolsEnabled)}
-          onToolSelect={tool => setDrawMode(tool)}
-          selectedTool={drawMode}
-        />
-        <MapControlButton
-          selected={extrudedMode}
-          aria-selected={extrudedMode}
-          onClick={handleExtrudedModeButtonClick}
-        >
-          3D
-        </MapControlButton>
-        <MapStyleSwitcher
-          mapStyles={mapStyles}
-          selectedMapStyle={selectedMapStyle?.id}
-          selectMapStyle={handleMapStyleSelect}
-        />
-      </ButtonGroup>
+      <ButtonControls
+        drawMode={drawMode}
+        drawingToolsEnabled={drawingToolsEnabled}
+        selectedMapStyleId={selectedMapStyle?.id}
+        setDrawMode={setDrawMode}
+        setDrawingToolsEnabled={setDrawingToolsEnabled}
+        setViewState={setViewState}
+        viewState={viewState}
+      />
 
       <DeckGL
         ref={bottomDeckRef}
