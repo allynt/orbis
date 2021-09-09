@@ -101,7 +101,6 @@ export const Sliders = ({
         component="label"
         container
         alignItems="center"
-        spacing={1}
         className={styles.label}
       >
         <Grid
