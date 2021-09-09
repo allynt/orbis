@@ -212,6 +212,18 @@ TEMPLATES = [{
     },
 }]
 
+###########
+# caching #
+###########
+
+CACHES = {
+    "default": {
+        # cache proxy results as needed
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "proxy",
+    }
+}
+
 ################
 # Static files #
 ################

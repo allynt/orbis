@@ -21,8 +21,9 @@ class LocalPagination(pagination.PageNumberPagination):
             OrderedDict([
                 ('type', 'FeatureCollection'),
                 ('count', self.page.paginator.count),
-                ('next', self.get_next_link()),
+                ('pages', self.page.paginator.num_pages),
                 ('previous', self.get_previous_link()),
+                ('next', self.get_next_link()),
                 ('features', features),
             ])
         )

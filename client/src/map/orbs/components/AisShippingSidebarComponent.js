@@ -85,7 +85,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       results={results?.features}
       onPageClick={handlePageClick}
       currentPage={currentPage}
-      pages={results?.requestMetadata?.nPages}
+      pages={results?.pages}
       visible={visible}
       selectedResult={selectedResult}
       onResultClick={handleResultClick}
