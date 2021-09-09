@@ -1,5 +1,16 @@
 from django.core.exceptions import ImproperlyConfigured
 
+##################
+# error-handling #
+##################
+
+
+class ProxyDataException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 ############
 # registry #
 ############

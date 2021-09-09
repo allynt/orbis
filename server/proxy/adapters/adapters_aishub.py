@@ -1,6 +1,6 @@
 import itertools
 
-from .adapters_base import BaseProxyDataAdapter
+from .adapters_base import BaseProxyDataAdapter, ProxyDataException
 """
 Uses the api at: https://www.aishub.net/api
 """
@@ -17,8 +17,8 @@ AISHUB_PROPERTIES = {
     "ROT": "Rate of Turn",
     "NAVSTAT": "Navigational Status",
     "IMO": "IMO Ship Identification Number",
-    "NAME": "Vessel's Name",
-    "TYPE": "TYPE",
+    "NAME": "Vessel Name",
+    "TYPE": "Vessel Type",
     "DEVICE": "Positioning Device Type",
     "A": "Dimension to Bow (metres)",
     "B": "Dimension to Stern (metres)",
@@ -48,7 +48,7 @@ AISHUB_PROPERTY_VALUES = {
         "14": "AIS-SART is active",
         "15": "Not defined (default)",
     },
-    "TYPE": {
+    "Vessel Type": {
         "0": "Not available (default)",
         # "1-19": "Reserved for future use",
         "20": "Wing in ground (WIG), all ships of this type",
@@ -144,6 +144,11 @@ class AISHubFinderAdapter(BaseProxyDataAdapter):
 
         # yapf: disable
 
+        raw_data_summary = raw_data[0]
+        if raw_data_summary.get("ERROR") is True:
+            # note: a common error w/ aishub is trying to access the server more frequenly than 1/minute
+            raise ProxyDataException(raw_data_summary.get("ERROR_MESSAGE", ""))
+
         processed_data = {
             "type": "FeatureCollection",
             "features": [
@@ -163,7 +168,7 @@ class AISHubFinderAdapter(BaseProxyDataAdapter):
                         for k, v in rd.items() if k in AISHUB_PROPERTIES
                     }
                 }
-                for i, rd in enumerate(raw_data, start=1)
+                for i, rd in enumerate(raw_data[1], start=1)
             ]
         }
 
