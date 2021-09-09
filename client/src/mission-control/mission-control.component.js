@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
   inner: {},
 }));
 
-export const MissionControl = () => {
+export const MissionControlComponent = () => {
   const location = useLocation();
   const fadeTransitionProps = useFadeTransitionProps(location.key);
   const dispatch = useDispatch();
@@ -148,3 +148,5 @@ export const MissionControl = () => {
     </Dialog>
   );
 };
+
+export default React.memo(MissionControlComponent);

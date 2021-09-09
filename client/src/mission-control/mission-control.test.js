@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { MissionControl } from './mission-control.component';
+import { MissionControlComponent } from './mission-control.component';
 import {
   fetchCustomerRequested,
   fetchCustomerUsersRequested,
@@ -47,7 +47,7 @@ const setup = ({
   const utils = render(
     <Router history={history}>
       <Provider store={store}>
-        <MissionControl />
+        <MissionControlComponent />
       </Provider>
     </Router>,
   );
