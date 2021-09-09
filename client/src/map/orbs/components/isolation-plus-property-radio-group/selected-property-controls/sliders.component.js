@@ -58,7 +58,7 @@ export const Sliders = ({
   filterRange,
   onRangeFilterChange,
 }) => {
-  const [scaleValue, setScaleValue] = useState(SCALE_VALUES.filter);
+  const [scale, setScale] = useState(SCALE_VALUES.filter);
   const styles = useStyles();
 
   const { min, max, clip_min, clip_max, precision, type } =
@@ -69,15 +69,15 @@ export const Sliders = ({
   const clipMax = clipRange?.[1] ?? clip_max ?? max;
 
   const handleResetClick = () => {
-    if (scaleValue === SCALE_VALUES.colour) {
+    if (scale === SCALE_VALUES.colour) {
       return onClipRangeChange([clip_min ?? min, clip_max ?? max]);
     }
     return onRangeFilterChange([min, max]);
   };
 
   const handleToggleChange = (_, newValue) => {
-    if (!newValue || scaleValue === newValue) return;
-    return setScaleValue(newValue);
+    if (!newValue || scale === newValue) return;
+    return setScale(newValue);
   };
 
   const sliderProps = {
@@ -109,18 +109,18 @@ export const Sliders = ({
           container
           justifyContent="center"
           component={ToggleButtonGroup}
-          value={scaleValue}
+          value={scale}
           onChange={handleToggleChange}
         >
           <ToggleButton
-            selected={scaleValue === SCALE_VALUES.filter}
+            selected={scale === SCALE_VALUES.filter}
             value={SCALE_VALUES.filter}
             className={styles.toggleButton}
           >
             {SCALE_VALUES.filter}
           </ToggleButton>
           <ToggleButton
-            selected={scaleValue === SCALE_VALUES.colour}
+            selected={scale === SCALE_VALUES.colour}
             value={SCALE_VALUES.colour}
             className={styles.toggleButton}
           >
@@ -129,14 +129,14 @@ export const Sliders = ({
         </Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
-        <Fade in={scaleValue === SCALE_VALUES.colour} unmountOnExit>
+        <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>
           <ColorAdjustSlider
             {...sliderProps}
             data-testid="color-slider"
             onChange={onClipRangeChange}
           />
         </Fade>
-        <Fade in={scaleValue === SCALE_VALUES.filter} unmountOnExit>
+        <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
           <ColormapRangeSlider
             {...sliderProps}
             data-testid="range-slider"

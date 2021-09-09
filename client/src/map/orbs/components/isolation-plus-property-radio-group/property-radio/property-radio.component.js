@@ -67,11 +67,11 @@ const PropertyRadio = ({
   };
 
   /**
-   * @param {import('typings').Property} property
+   * @param {import('typings').Property} newProperty
    */
-  const handleToggleButtonClick = property => {
-    if (property.name === selectedProperty?.name) return;
-    return onPropertyChange(property);
+  const handleToggleChange = (_, newProperty) => {
+    if (!newProperty || newProperty.name === selectedProperty?.name) return;
+    return onPropertyChange(newProperty);
   };
 
   /**
@@ -128,13 +128,15 @@ const PropertyRadio = ({
                 container
                 justifyContent="center"
                 component={ToggleButtonGroup}
+                value={selectedProperty}
+                onChange={handleToggleChange}
               >
                 {properties.map(p => (
                   <ToggleButton
                     key={p.name}
                     selected={selectedProperty?.name === p.name}
+                    value={p}
                     className={styles.toggleButton}
-                    onClick={() => handleToggleButtonClick(p)}
                   >
                     {getButtonLabelForProperty(p)}
                   </ToggleButton>

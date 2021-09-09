@@ -79,7 +79,7 @@ export const Histogram = ({
   const yValues = data?.map(d => d.y);
 
   const handleToggleClick = (_, newValue) => {
-    if (scale === newValue) return;
+    if (!newValue || newValue === scale) return;
     return setScale(newValue);
   };
 
