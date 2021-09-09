@@ -19,4 +19,9 @@ export class DocumentsClient extends SubClient {
   userGuideUrl(guideName = 'general') {
     return `${this.apiHost}/api${this.endpoint}/?type=GUIDE&has_orb=false&name=${guideName}`;
   }
+
+  async getAgreedDocuments() {
+    const response = await this.makeAuthenticatedRequest('/agreements/');
+    return response.json();
+  }
 }
