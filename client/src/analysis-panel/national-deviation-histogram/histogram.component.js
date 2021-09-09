@@ -26,8 +26,8 @@ import { isRealValue } from 'utils/isRealValue';
 const LOG_SCALE_MIN_DOMAIN = 0.3;
 
 const SCALE_VALUES = {
-  linear: 'Linear',
-  log: 'Log',
+  linear: 'linear',
+  log: 'log',
 };
 
 /**
@@ -95,14 +95,14 @@ export const Histogram = ({
           selected={scale === SCALE_VALUES.linear}
           className={styles.toggleButton}
         >
-          {SCALE_VALUES.linear}
+          Linear
         </ToggleButton>
         <ToggleButton
           value={SCALE_VALUES.log}
           selected={scale === SCALE_VALUES.log}
           className={styles.toggleButton}
         >
-          {SCALE_VALUES.log}
+          Log
         </ToggleButton>
       </ToggleButtonGroup>
 
