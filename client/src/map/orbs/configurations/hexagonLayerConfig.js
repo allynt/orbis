@@ -14,12 +14,14 @@ import {
 
 const colorRange = schemeYlOrRd[9].map(hexToRgbArray);
 
-/** @type {import("typings").LayerConfiguration<{defaultValue: string}>} */
+/** @type {import("typings").LayerConfiguration<{defaultValue: string, columnSuffix?: string, valueKey?: string}>} */
 export default ({
   id,
   orbState,
   authToken,
+  valueKey = 'value',
   defaultValue,
+  columnSuffix = '',
   activeSources,
   dispatch,
 }) => {
@@ -32,7 +34,7 @@ export default ({
   const getValue = objects =>
     objects.reduce(
       (sum, obj) =>
-        sum + obj[`${otherState?.radioGroupValue ?? defaultValue}_no2`],
+        sum + obj[`${otherState?.[valueKey] ?? defaultValue}${columnSuffix}`],
       0,
     );
 
@@ -53,7 +55,7 @@ export default ({
     extruded: true,
     pickable: true,
     radius: 5000,
-    getPosition: d => [d.Longitude, d.Latitude],
+    getPosition: d => [d.longitude, d.latitude],
     getColorValue: getValue,
     getElevationValue: getValue,
     onDataLoad: () =>
@@ -61,8 +63,8 @@ export default ({
         setOther({ key: id, other: { ...otherState, isLoading: false } }),
       ),
     updateTriggers: {
-      getColorValue: [otherState?.radioGroupValue],
-      getElevationValue: [otherState?.radioGroupValue],
+      getColorValue: [otherState?.[valueKey]],
+      getElevationValue: [otherState?.[valueKey]],
       elevationScale: [extruded],
     },
     transitions: {
