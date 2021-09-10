@@ -48,7 +48,7 @@ AISHUB_PROPERTY_VALUES = {
         "14": "AIS-SART is active",
         "15": "Not defined (default)",
     },
-    "Vessel Type": {
+    "TYPE": {
         "0": "Not available (default)",
         # "1-19": "Reserved for future use",
         "20": "Wing in ground (WIG), all ships of this type",

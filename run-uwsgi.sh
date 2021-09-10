@@ -6,6 +6,7 @@ cd $APP_HOME/server
 export PIPENV_DONT_LOAD_ENV=1
 
 setuser app pipenv run ./manage.py migrate
+setuser app pipenv run ./manage.py createcachetable
 setuser app pipenv run ./manage.py update_site
 setuser app pipenv run ./manage.py collectstatic --no-input --link
 

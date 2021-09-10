@@ -218,10 +218,9 @@ TEMPLATES = [{
 
 CACHES = {
     "default": {
-        # cache proxy results as needed
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "proxy",
-    }
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "proxy_cache",  # name of db table
+    },
 }
 
 ################
