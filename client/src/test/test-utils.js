@@ -15,7 +15,7 @@ const mockStore = createMockStore([thunk]);
  * @param {React.ReactElement} ui
  * @param {(Omit<import('@testing-library/react').RenderOptions, 'queries'>
  *  & {
- *      state?: Partial<import('react-redux').DefaultRootState>
+ *      state?: import('typings').RecursivePartial<import('react-redux').DefaultRootState>
  *      history?: import('history').MemoryHistoryBuildOptions
  *    }
  * )} options
