@@ -20,9 +20,7 @@ from astrosat_users.models import Customer, CustomerUser, get_sentinel_user
 
 from core.utils import html_to_pdf, html_to_pdf_link_callback
 
-from orbis.models import Licence, TermsDocument
-
-
+from orbis.models import Licence, Document
 """
 This is basically implementing a shopping cart model.
 It can probably be factored-out into its own reusable app.
@@ -138,14 +136,6 @@ class Order(models.Model):
         upload_to=order_report_path, blank=True, null=True
     )
 
-    terms = models.ForeignKey(
-        TermsDocument,
-        blank=True,
-        null=True,
-        on_delete=models.PROTECT,
-        related_name="orders"
-    )
-
     @property
     def order_number(self):
         if self.uuid:
@@ -159,7 +149,7 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            terms_agreement = self.user.terms_agreements.first()
+            terms_agreement = self.user.documents.terms().active().first()
             if terms_agreement:
                 self.terms = terms_agreement.terms
         super().save(*args, **kwargs)
@@ -187,13 +177,6 @@ class Order(models.Model):
         )
         if pisa_status.err:
             raise Exception(f"Error generating report: {pisa_status.err}")
-
-        if self.terms:
-            # if there are agreed terms, append them to the template
-            merger = PdfFileMerger()
-            merger.append(buffer)
-            merger.append(self.terms.file)
-            merger.write(buffer)
 
         buffer.seek(0)
 
