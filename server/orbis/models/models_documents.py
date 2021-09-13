@@ -120,6 +120,12 @@ class DocumentQuerySet(models.QuerySet):
     def active(self):
         return self.filter(is_active=True)
 
+    def no_orbs(self):
+        """
+        returns Documents that are not associated w/ any Orb
+        """
+        return self.filter(orb__isnull=True)
+
 
 ##########
 # models #

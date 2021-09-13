@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from astrosat.tests.utils import *
+
+from astrosat_users.models import UserSettings
 from astrosat_users.tests.utils import *
 
 from orbis.models import Licence
@@ -51,3 +53,32 @@ class TestOrbisRegistration:
         assert len(licenced_orbs) == 1
         assert default_orb in licenced_orbs
         assert other_orb not in licenced_orbs
+
+    def test_registration_adds_terms_document_agreement(
+        self, user_data, mock_storage
+    ):
+
+        user_settings = UserSettings.load()
+        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.save()
+
+        terms_document = DocumentFactory(
+            type=DocumentType.TERMS, is_active=True
+        )
+
+        client = APIClient()
+        url = reverse("rest_register")
+
+        test_data = {
+            "email": user_data["email"],
+            "customer_name": "Weyland-Yutani",
+            "password1": user_data["password"],
+            "password2": user_data["password"],
+            "accepted_terms": True,
+        }
+
+        response = client.post(url, test_data)
+        assert status.is_success(response.status_code)
+
+        user = UserModel.objects.get(email=user_data["email"])
+        assert terms_document in user.documents.all()

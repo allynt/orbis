@@ -1,11 +1,13 @@
 import json
 import logging
 
+from django.core.exceptions import ImproperlyConfigured
+
 from rest_framework.utils import encoders
 
 from astrosat_users.views import LoginView as AstrosatUsersLoginView, RegisterView as AstrosatUserRegisterView
 
-from orbis.models import TermsDocument
+from orbis.models import Document
 
 db_logger = logging.getLogger("db")
 
@@ -44,6 +46,9 @@ class RegisterView(AstrosatUserRegisterView):
         if user.accepted_terms:
             # if the user accepted the terms during registration
             # then create a record of that agreement...
-            user.terms.add(TermsDocument.objects.get_active())
+            terms_document = Document.objects.terms().no_orbs().active().first()
+            if not terms_document:
+                raise ImproperlyConfigured("Cannot find active terms Document")
+            user.documents.add(terms_document)
 
         return user
