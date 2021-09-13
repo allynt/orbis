@@ -34,7 +34,7 @@ MapContext.displayName = 'MapContext';
  */
 
 /**
- * @param {React.ClassAttributes<React.Provider<MapContextType>>} props
+ * @param {{children: React.ReactNode}} props
  * @returns {JSX.Element} MapContextProvider
  */
 export const MapProvider = props => {

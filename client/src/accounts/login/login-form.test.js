@@ -1,10 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import LoginForm from './login-form.component';
 
@@ -13,90 +10,68 @@ const PASSWORD_PLACEHOLDER_TEXT = /password \*/i;
 const LOGIN_BUTTON_TEXT = 'Login';
 const EMAIL_TEXT = 'test@test.com';
 const PASSWORD_TEXT = 'testpassword';
-const SIGN_UP = /sign\sup/i;
+const SIGN_UP = /sign up/i;
 const KEEP_LOGGED_IN = /keep\sme\slogged\sin/i;
 const WORK_EMAIL = /work\semail\saddress/i;
 const I_AGREE_TEXT = 'I agree with Terms & Conditions';
-const TERMS_URL = 'www.terms.com';
 
-/**
- * @param {Partial<Pick<import('./login-form.component').LoginProps,
- *   'isLoading'
- *   | 'activateAccount'
- *   | 'match'
- *   | 'serverErrors'
- *   | 'user'>>} [props]
- */
-const renderComponent = props => {
-  const activateAccount = jest.fn();
-  const login = jest.fn();
+/** @type {jest.Mock} */
+let login;
 
-  const utils = render(
-    // @ts-ignore
-    <LoginForm
-      termsUrl={TERMS_URL}
-      passwordMinLength={2}
-      passwordMaxLength={255}
-      activateAccount={activateAccount}
-      login={login}
-      {...props}
-    />,
-    {
-      wrapper: ({ children }) => (
-        <Router history={createMemoryHistory({ initialEntries: ['/'] })}>
-          {children}
-        </Router>
-      ),
-    },
-  );
-  return { ...utils, activateAccount, login };
-};
+beforeEach(() => (login = jest.fn()));
 
 describe('Login Form Component', () => {
   it('should render a form', () => {
-    const { getByRole, getByLabelText } = renderComponent();
+    render(<LoginForm />);
 
     expect(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
     ).toBeInTheDocument();
-    expect(getByLabelText(PASSWORD_PLACEHOLDER_TEXT)).toBeInTheDocument();
-    // expect(getByText(I_AGREE_TEXT)).toBeInTheDocument();
     expect(
-      getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+      screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
     ).toBeInTheDocument();
   });
 
   it('should disable `Login` button when form is invalid', () => {
-    const { getByRole } = renderComponent();
+    render(<LoginForm />);
 
-    expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+    ).toBeDisabled();
   });
 
   it('should enable `Login` button when form is valid', async () => {
-    const { getByRole, getByLabelText } = renderComponent();
+    render(<LoginForm />);
 
-    expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+    ).toBeDisabled();
 
     userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
       EMAIL_TEXT,
     );
 
     await userEvent.type(
-      getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
+      screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
       PASSWORD_TEXT,
     );
 
-    expect(getByRole('button', { name: LOGIN_BUTTON_TEXT })).not.toBeDisabled();
+    expect(
+      screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+    ).not.toBeDisabled();
   });
 
   it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
-    const { getByRole, login } = renderComponent();
+    render(<LoginForm login={login} />);
 
-    const loginButton = getByRole('button', { name: LOGIN_BUTTON_TEXT });
+    const loginButton = screen.getByRole('button', { name: LOGIN_BUTTON_TEXT });
 
     userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
       EMAIL_TEXT,
     );
 
@@ -108,15 +83,20 @@ describe('Login Form Component', () => {
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
-    const { getByRole, getByLabelText, login } = renderComponent();
+    render(
+      <LoginForm login={login} passwordMinLength={2} passwordMaxLength={255} />,
+    );
 
     userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
       EMAIL_TEXT,
     );
-    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
+    userEvent.type(
+      screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
 
-    userEvent.click(getByRole('button', { name: LOGIN_BUTTON_TEXT }));
+    userEvent.click(screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }));
 
     await waitFor(() =>
       expect(login).toHaveBeenCalledWith({
@@ -127,17 +107,25 @@ describe('Login Form Component', () => {
   });
 
   it('calls login with accepted terms if not accepted', async () => {
-    const { login, getByRole, getByLabelText } = renderComponent({
-      user: { accepted_terms: false },
-    });
+    render(
+      <LoginForm
+        login={login}
+        passwordMinLength={2}
+        passwordMaxLength={255}
+        user={{ accepted_terms: false }}
+      />,
+    );
 
     userEvent.type(
-      getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
       EMAIL_TEXT,
     );
-    userEvent.type(getByLabelText(PASSWORD_PLACEHOLDER_TEXT), PASSWORD_TEXT);
-    userEvent.click(getByRole('checkbox'));
-    userEvent.click(getByRole('button', { name: LOGIN_BUTTON_TEXT }));
+    userEvent.type(
+      screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
+      PASSWORD_TEXT,
+    );
+    userEvent.click(screen.getByRole('checkbox'));
+    userEvent.click(screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }));
     await waitFor(() =>
       expect(login).toHaveBeenCalledWith(
         expect.objectContaining({ accepted_terms: true }),
@@ -148,53 +136,64 @@ describe('Login Form Component', () => {
   it('should display error well if login is unsuccessful', () => {
     const serverErrors = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
 
-    const { getByTestId } = renderComponent({ serverErrors });
+    render(<LoginForm serverErrors={serverErrors} />);
 
-    expect(getByTestId('error-well')).toBeInTheDocument();
+    expect(screen.getByTestId('error-well')).toBeInTheDocument();
   });
 
   describe('activateAccount', () => {
+    /** @type {jest.Mock} */
+    let activateAccount;
+    const match = { params: { key: '123' } };
+
+    beforeEach(() => (activateAccount = jest.fn()));
+
     it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
-      const { activateAccount } = renderComponent({
-        user: { is_verified: false },
-        match: { params: { key: '123' } },
-      });
+      render(
+        <LoginForm
+          user={{ is_verified: false }}
+          match={match}
+          activateAccount={activateAccount}
+        />,
+      );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activateAccount if is_verified is a false string and the url has a key', () => {
-      const { activateAccount } = renderComponent({
-        user: { is_verified: 'False' },
-        match: { params: { key: '123' } },
-      });
+      render(
+        <LoginForm
+          user={{ is_verified: 'False' }}
+          match={match}
+          activateAccount={activateAccount}
+        />,
+      );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activate account if user is undefined and the url has a key', () => {
-      const { activateAccount } = renderComponent({
-        user: undefined,
-        match: { params: { key: '123' } },
-      });
+      render(<LoginForm match={match} activateAccount={activateAccount} />);
       expect(activateAccount).toBeCalled();
     });
   });
 
   it('shows a loading spinner if loading', () => {
-    const { getByRole } = renderComponent({ isLoading: true });
-    expect(getByRole('progressbar')).toBeInTheDocument();
+    render(<LoginForm isLoading />);
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 
   it('only shows `Terms and Conditions` checkbox if user has not agreed already', () => {
-    const { getByRole } = renderComponent({ user: { accepted_terms: false } });
+    render(<LoginForm user={{ accepted_terms: false }} />);
 
-    expect(getByRole('checkbox', { name: I_AGREE_TEXT })).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', { name: I_AGREE_TEXT }),
+    ).toBeInTheDocument();
   });
 
   it('does not show `Terms and Conditions` checkbox if user has agreed already', () => {
-    const { queryByRole } = renderComponent({ user: { accepted_terms: true } });
+    render(<LoginForm user={{ accepted_terms: true }} />);
 
     expect(
-      queryByRole('checkbox', { name: I_AGREE_TEXT }),
+      screen.queryByRole('checkbox', { name: I_AGREE_TEXT }),
     ).not.toBeInTheDocument();
   });
 
@@ -202,21 +201,26 @@ describe('Login Form Component', () => {
     /** @type {Partial<import('typings').User>} */
     const user = { registration_stage: 'CUSTOMER' };
 
+    beforeEach(() => {
+      render(<LoginForm user={user} />);
+    });
+
     it('does not show the sign up link', () => {
-      const { queryByRole } = renderComponent({ user });
-      expect(queryByRole('link', { name: SIGN_UP })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('link', { name: SIGN_UP }),
+      ).not.toBeInTheDocument();
     });
 
     it('does not show keep me logged in', () => {
-      const { queryByRole } = renderComponent({ user });
       expect(
-        queryByRole('checkbox', { name: KEEP_LOGGED_IN }),
+        screen.queryByRole('checkbox', { name: KEEP_LOGGED_IN }),
       ).not.toBeInTheDocument();
     });
 
     it('has the work email address label', () => {
-      const { getByRole } = renderComponent({ user });
-      expect(getByRole('textbox', { name: WORK_EMAIL })).toBeInTheDocument();
+      expect(
+        screen.getByRole('textbox', { name: WORK_EMAIL }),
+      ).toBeInTheDocument();
     });
   });
 });
