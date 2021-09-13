@@ -1,9 +1,8 @@
 import React from 'react';
 
-import userEvent from '@testing-library/user-event';
 import { push } from 'connected-react-router';
 
-import { render } from 'test/test-utils';
+import { render, userEvent, screen } from 'test/test-utils';
 
 import { MissionControl } from './mission-control.component';
 import {
@@ -26,27 +25,29 @@ const defaultState = {
 
 describe('MissionControl', () => {
   it('Is visible if location contains mission-control', () => {
-    const { getByRole } = render(<MissionControl />, {
+    render(<MissionControl />, {
       state: defaultState,
       history: { initialEntries: ['/mission-control'] },
     });
-    expect(getByRole('heading', { name: /hello/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /hello/i })).toBeInTheDocument();
   });
 
   it('Is not visible if location does not contain mission-control', () => {
-    const { queryByRole } = render(<MissionControl />, {
+    render(<MissionControl />, {
       state: defaultState,
       history: { initialEntries: ['/totally-not'] },
     });
-    expect(queryByRole('heading', { name: /hello/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: /hello/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('Navigates to map and closes if the backdrop is clicked', () => {
-    const { getByRole, store } = render(<MissionControl />, {
+    const { store } = render(<MissionControl />, {
       state: defaultState,
       history: { initialEntries: ['/mission-control'] },
     });
-    userEvent.click(getByRole('none'));
+    userEvent.click(screen.getByRole('none'));
     expect(store.getActions()).toContainEqual(push('/map'));
   });
 
