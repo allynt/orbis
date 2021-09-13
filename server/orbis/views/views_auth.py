@@ -46,9 +46,8 @@ class RegisterView(AstrosatUserRegisterView):
         if user.accepted_terms:
             # if the user accepted the terms during registration
             # then create a record of that agreement...
-            terms_document = Document.objects.terms().no_orbs().active().first()
-            if not terms_document:
-                raise ImproperlyConfigured("Cannot find active terms Document")
-            user.documents.add(terms_document)
+            user.documents.add(
+                Document.objects.terms().no_orbs().active().first()
+            )
 
         return user

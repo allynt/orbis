@@ -82,3 +82,30 @@ class TestOrbisRegistration:
 
         user = UserModel.objects.get(email=user_data["email"])
         assert terms_document in user.documents.all()
+
+    def test_registration_raises_error_on_missing_terms_document_agreement(
+        self, user_data, mock_storage
+    ):
+
+        user_settings = UserSettings.load()
+        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.save()
+
+        client = APIClient()
+        url = reverse("rest_register")
+
+        test_data = {
+            "email": user_data["email"],
+            "customer_name": "Weyland-Yutani",
+            "password1": user_data["password"],
+            "password2": user_data["password"],
+            "accepted_terms": True,
+        }
+
+        response = client.post(url, test_data)
+        assert status.is_client_error(response.status_code)
+
+        assert response.json()["errors"]["accepted_terms"] == [
+            "Cannot find active TermsDocument"
+        ]
+        assert UserModel.objects.count() == 0

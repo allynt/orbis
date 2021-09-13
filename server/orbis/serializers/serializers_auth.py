@@ -1,6 +1,8 @@
+from rest_framework.exceptions import ValidationError
+
 from astrosat_users.serializers import RegisterSerializer as AstrosatUsersRegisterSerializer
 
-from orbis.models import LicencedCustomer, Orb
+from orbis.models import LicencedCustomer, Orb, Document
 
 
 class RegisterSerializer(AstrosatUsersRegisterSerializer):
@@ -32,3 +34,11 @@ class RegisterSerializer(AstrosatUsersRegisterSerializer):
                     add_missing=True,
                     ignore_existing=False
                 )
+
+    def validate_accepted_terms(self, value):
+
+        if value and not Document.objects.terms().no_orbs().active().first():
+            msg = "Cannot find active TermsDocument"
+            raise ValidationError(msg)
+
+        return value
