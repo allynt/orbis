@@ -95,10 +95,9 @@ const useStyles = makeStyles(theme => ({
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
   scaleControl: {
     position: 'absolute',
-    right: props =>
-      props?.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
+    right: '25rem',
     zIndex: 1,
-    bottom: '0.25em',
+    bottom: '1.25em',
   },
   extrusionSlider: {
     position: 'absolute',
@@ -158,7 +157,7 @@ const Map = ({
   const mapLoading = useSelector(isLoadingSelector);
   const mapStyles = useSelector(mapStylesSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const styles = useStyles({ selectedMapStyle });
+  const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
   const {
     drawAoiLayer,
