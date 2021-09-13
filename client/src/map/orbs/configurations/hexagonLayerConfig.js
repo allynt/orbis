@@ -10,6 +10,7 @@ import {
   extrusionScaleSelector,
   otherSelector,
   setOther,
+  visibilitySelector,
 } from '../layers.slice';
 
 const colorRange = schemeYlOrRd[9].map(hexToRgbArray);
@@ -28,6 +29,7 @@ export default ({
   const extruded = extrudedModeSelector(orbState);
   const extrusionScale = extrusionScaleSelector(orbState);
   const source = find(activeSources, { source_id: id });
+  const visible = visibilitySelector(id)(orbState);
   const otherState = otherSelector(id)(orbState);
   const { url } = source.metadata;
 
@@ -35,16 +37,17 @@ export default ({
   if (valueKey === 'date' && value) {
     value = new Date(value).toISOString();
   }
-  const objectValueKey = `${(value ?? defaultValue).replace(
+  const columnName = `${(value ?? defaultValue).replace(
     '.000Z',
     '',
   )}${columnSuffix}`;
   const getValue = objects =>
-    objects.reduce((sum, obj) => sum + obj[objectValueKey], 0);
+    objects.reduce((sum, obj) => sum + obj[columnName], 0);
 
   return {
     id,
     data: url,
+    visible: visible && source,
     loaders: [CSVLoader],
     loadOptions: {
       fetch: {

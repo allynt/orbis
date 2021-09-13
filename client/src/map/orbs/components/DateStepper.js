@@ -33,8 +33,8 @@ export default ({
     <DateStepper
       dates={dates}
       defaultValue={defaultValue ? new Date(defaultValue).getTime() : undefined}
-      min={min ? new Date(min).getTime() : undefined}
-      max={max ? new Date(max).getTime() : undefined}
+      min={min ? new Date(min).getTime() : dates[0].value}
+      max={max ? new Date(max).getTime() : dates[dates.length - 1].value}
       value={other?.date}
       onChange={(_, date) =>
         dispatch(
