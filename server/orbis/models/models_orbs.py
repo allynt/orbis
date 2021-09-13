@@ -240,12 +240,6 @@ class Orb(models.Model):
         upload_to=orb_logo_path,
         validators=[FileExtensionValidator(["svg"])],
     )
-    terms_document = models.FileField(
-        blank=True,
-        null=True,
-        upload_to=orb_terms_document_path,
-        validators=[FileExtensionValidator(["pdf"])],
-    )
 
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(

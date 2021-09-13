@@ -9,7 +9,7 @@ from rest_framework.test import APIClient
 from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
-from orbis.models import Licence, Orb
+from orbis.models import Licence, Orb, Document
 from orbis.serializers.serializers_orbs import LicenceSerializer
 
 from .factories import *
@@ -30,6 +30,34 @@ class TestOrbsViews:
 
         assert status.is_success(response.status_code)
         assert len(content) == N_ORBS
+
+    def test_orb_has_no_terms(self, user, api_client, mock_storage):
+
+        orb = OrbFactory()
+
+        client = api_client(user)
+
+        url = reverse("orbs-list")
+        response = client.get(url)
+        content = response.json()
+
+        assert status.is_success(response.status_code)
+        assert content[0]["terms_document"] == None
+
+    def test_orb_has_terms(self, user, api_client, mock_storage):
+
+        orb = OrbFactory()
+        orb.documents.add(DocumentFactory(type="TERMS", is_active=True))
+
+        client = api_client(user)
+
+        url = reverse("orbs-list")
+        response = client.get(url)
+        content = response.json()
+
+        assert status.is_success(response.status_code)
+        assert content[0]["terms_document"
+                         ] == "/media/documents/TERMS/document-0.pdf"
 
 
 @pytest.mark.django_db
