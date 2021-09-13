@@ -22,8 +22,17 @@ beforeEach(() => (login = jest.fn()));
 
 describe('Login Form Component', () => {
   it('should render a form', () => {
-    const { container } = render(<LoginForm />);
-    expect(container).toMatchSnapshot();
+    render(<LoginForm />);
+
+    expect(
+      screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
+    ).toBeInTheDocument();
   });
 
   it('should disable `Login` button when form is invalid', () => {
