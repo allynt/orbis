@@ -31,12 +31,16 @@ export default ({
   const otherState = otherSelector(id)(orbState);
   const { url } = source.metadata;
 
+  let value = otherState?.[valueKey];
+  if (valueKey === 'date' && value) {
+    value = new Date(value).toISOString();
+  }
+  const objectValueKey = `${(value ?? defaultValue).replace(
+    '.000Z',
+    '',
+  )}${columnSuffix}`;
   const getValue = objects =>
-    objects.reduce(
-      (sum, obj) =>
-        sum + obj[`${otherState?.[valueKey] ?? defaultValue}${columnSuffix}`],
-      0,
-    );
+    objects.reduce((sum, obj) => sum + obj[objectValueKey], 0);
 
   return {
     id,
