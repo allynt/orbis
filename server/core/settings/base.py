@@ -212,6 +212,17 @@ TEMPLATES = [{
     },
 }]
 
+###########
+# caching #
+###########
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "proxy_cache",  # name of db table
+    },
+}
+
 ################
 # Static files #
 ################

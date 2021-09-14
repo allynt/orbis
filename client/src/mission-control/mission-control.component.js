@@ -101,7 +101,9 @@ export const MissionControlComponent = () => {
   return (
     <Dialog
       open={location.pathname.includes('/mission-control')}
-      classes={styles}
+      classes={{
+        paper: styles.paper,
+      }}
       maxWidth="xl"
       fullWidth
       onClose={handleClose}

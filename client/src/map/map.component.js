@@ -79,10 +79,9 @@ const useStyles = makeStyles(theme => ({
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
   scaleControl: {
     position: 'absolute',
-    right: props =>
-      props?.selectedMapStyle?.id === 'satellite' ? '22.25rem' : '19.25rem',
+    right: '25rem',
     zIndex: 1,
-    bottom: '0.25em',
+    bottom: '1.25em',
   },
   extrusionSlider: {
     position: 'absolute',
@@ -142,7 +141,7 @@ const Map = ({
   const bookmarksLoading = useSelector(bookmarksLoadingSelector);
   const mapLoading = useSelector(isLoadingSelector);
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
-  const styles = useStyles({ selectedMapStyle });
+  const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
   const {
     drawAoiLayer,
@@ -162,6 +161,16 @@ const Map = ({
   const handleViewStateChange = ({ viewState: { width, height, ...rest } }) => {
     setViewState(rest);
   };
+
+  const getCursor = useCallback(
+    ({ isDragging }) => {
+      if (drawingToolsEnabled && editableLayer?.state?.cursor)
+        return editableLayer?.state?.cursor;
+      if (drawAoiLayer) return drawAoiLayer?.state?.cursor;
+      return isDragging ? 'grabbing' : 'grab';
+    },
+    [drawAoiLayer, drawingToolsEnabled, editableLayer],
+  );
 
   const mapProps = {
     ...viewState,
@@ -238,10 +247,7 @@ const Map = ({
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
           layers={[drawAoiLayer, editableLayer]}
-          getCursor={
-            drawAoiLayer?.getCursor.bind(drawAoiLayer) ||
-            editableLayer?.getCursor.bind(editableLayer)
-          }
+          getCursor={getCursor}
           style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,
