@@ -5,9 +5,9 @@ import disastersIconAtlas from './disasterAlertsConfig.iconAtlas.svg';
 import disastersIconMapping from './disasterAlertsConfig.iconMapping.json';
 
 const COLORS = {
-  Orange: [255, 165, 0, 50],
-  Red: [255, 0, 0, 50],
-  Green: [0, 255, 0, 50],
+  Orange: [238, 160, 67, 100],
+  Red: [229, 52, 53, 100],
+  Green: [110, 188, 92, 100],
 };
 
 /**
@@ -41,7 +41,7 @@ export default ({ id, activeSources, dispatch }) => {
 
   /** @param {DisasterFeature} feature */
   const getColor = feature => {
-    if (feature.properties.Class.includes('Cone')) return [150, 150, 150, 150];
+    if (feature.properties.Class.includes('Cone')) return [150, 150, 150, 100];
     if (
       ['Poly_Green', 'Poly_Orange', 'Poly_Red'].includes(
         feature.properties.Class,
