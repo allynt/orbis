@@ -1,4 +1,4 @@
-import { HeatmapLayer } from '@deck.gl/aggregation-layers';
+import { HeatmapLayer, HexagonLayer } from '@deck.gl/aggregation-layers';
 import { TileLayer } from '@deck.gl/geo-layers';
 import { GeoJsonLayer, IconLayer, BitmapLayer } from '@deck.gl/layers';
 
@@ -13,6 +13,7 @@ const LAYER_CLASSES = {
   BitmapLayer,
   HeatmapLayer,
   TileLayer,
+  HexagonLayer,
   ...CustomLayers,
 };
 

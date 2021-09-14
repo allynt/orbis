@@ -269,7 +269,6 @@ const configuration = ({
     id,
     data,
     authToken,
-    binary: true,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,

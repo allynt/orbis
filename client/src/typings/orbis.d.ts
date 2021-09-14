@@ -11,7 +11,8 @@ type LayerName =
   | 'IconLayer'
   | 'BitmapLayer'
   | 'TileLayer'
-  | 'HeatmapLayer';
+  | 'HeatmapLayer'
+  | 'HexagonLayer';
 
 type CategoricalColorMaps =
   | 'Category10'
