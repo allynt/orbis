@@ -147,13 +147,6 @@ class Order(models.Model):
     def natural_key(self):
         return (self.uuid, )
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            terms_agreement = self.user.documents.terms().active().first()
-            if terms_agreement:
-                self.terms = terms_agreement.terms
-        super().save(*args, **kwargs)
-
     def recalculate_cost(self):
         subtotal = self.items.aggregate(Sum("cost"))["cost__sum"]
         self.cost = subtotal * self.order_type.cost_modifier
