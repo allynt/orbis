@@ -7,7 +7,7 @@ import { ExtrusionScaleSlider } from './extrusion-scale-slider.component';
 
 const renderComponent = () => {
   const onChange = jest.fn();
-  const utils = render(<ExtrusionScaleSlider onChange={onChange} />);
+  const utils = render(<ExtrusionScaleSlider onChange={onChange} open />);
   return { ...utils, onChange };
 };
 

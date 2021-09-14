@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { LoadMask, makeStyles, Slide } from '@astrosat/astrosat-ui';
+import { LoadMask, makeStyles } from '@astrosat/astrosat-ui';
 
 import {
   AmbientLight,
@@ -155,8 +155,10 @@ const Map = ({
     [setViewState],
   );
 
-  const handleExtrusionScaleChange = value =>
-    dispatch(setExtrusionScale(value));
+  const handleExtrusionScaleChange = useCallback(
+    value => dispatch(setExtrusionScale(value)),
+    [dispatch],
+  );
 
   const handleViewStateChange = ({ viewState: { width, height, ...rest } }) => {
     setViewState(rest);
@@ -191,13 +193,12 @@ const Map = ({
         open={bookmarksLoading || mapLoading}
       />
       <div className={styles.extrusionSlider}>
-        <Slide in={extrudedMode} direction="up">
-          <ExtrusionScaleSlider
-            value={extrusionScale}
-            onChange={handleExtrusionScaleChange}
-            mapStyle={selectedMapStyle?.id}
-          />
-        </Slide>
+        <ExtrusionScaleSlider
+          open={extrudedMode}
+          value={extrusionScale}
+          onChange={handleExtrusionScaleChange}
+          mapStyle={selectedMapStyle?.id}
+        />
       </div>
 
       <ButtonControls

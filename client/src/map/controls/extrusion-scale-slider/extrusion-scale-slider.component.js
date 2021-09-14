@@ -5,6 +5,7 @@ import {
   Grid,
   makeStyles,
   Slider,
+  Slide,
   Tooltip,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -75,34 +76,34 @@ const schema = yup.object({
  *   value?: number
  *   onChange: (value: number) => void
  *   mapStyle: import('map-style/styles').MapStyleKey
+ *   open?: boolean
  * }} ExtrusionScaleSliderProps
  */
 
 // BUG: [ORB-799] Hitting enter while extrusion scale slider input is focussed refreshes page
-/** @type {React.ForwardRefExoticComponent<ExtrusionScaleSliderProps>} */
-export const ExtrusionScaleSlider = React.forwardRef(
-  ({ value, onChange, mapStyle }, ref) => {
-    const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
-    const styles = useStyles({ lightMapStyle });
-    const { register, handleSubmit, errors, setValue } = useForm({
-      mode: 'all',
-      defaultValues: {
-        text: value,
-      },
-      resolver: yupResolver(schema),
-    });
+/** @param {ExtrusionScaleSliderProps} props */
+let ExtrusionScaleSlider = ({ value, onChange, mapStyle, open = false }) => {
+  const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
+  const styles = useStyles({ lightMapStyle });
+  const { register, handleSubmit, errors, setValue } = useForm({
+    mode: 'all',
+    defaultValues: {
+      text: value,
+    },
+    resolver: yupResolver(schema),
+  });
 
-    /** @type {(event: React.ChangeEvent<{}>, value: number | number[]) => void} */
-    const handleSliderChange = (_, v) => {
-      const value = /** @type {number} */ (v);
-      setValue('text', value, { shouldValidate: true });
-      onChange && onChange(value);
-    };
+  /** @type {(event: React.ChangeEvent<{}>, value: number | number[]) => void} */
+  const handleSliderChange = (_, v) => {
+    const value = /** @type {number} */ (v);
+    setValue('text', value, { shouldValidate: true });
+    onChange && onChange(value);
+  };
 
-    return (
+  return (
+    <Slide in={open} direction="up" mountOnEnter>
       <Grid
         component="form"
-        ref={ref}
         container
         spacing={2}
         onChange={handleSubmit(v => onChange(v.text))}
@@ -136,6 +137,9 @@ export const ExtrusionScaleSlider = React.forwardRef(
           </Tooltip>
         </Grid>
       </Grid>
-    );
-  },
-);
+    </Slide>
+  );
+};
+ExtrusionScaleSlider = React.memo(ExtrusionScaleSlider);
+
+export { ExtrusionScaleSlider };
