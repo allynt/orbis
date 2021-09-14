@@ -23,6 +23,7 @@ import {
 import { useFadeTransitionProps } from './shared-components/useFadeTransitionProps';
 import { SidePanel } from './side-panel/side-panel.component';
 import AccountDetails from './views/account-details/account-details.component';
+import SavedDocumentsView from './views/saved-documents/saved-documents.component';
 import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
@@ -128,10 +129,10 @@ export const MissionControl = () => {
                   path="/mission-control/subscriptions"
                   render={renderAdminOnly(ConnectedSubscriptions)}
                 />
-                {/* <Route
+                <Route
                   path="/mission-control/saved-documents"
                   component={SavedDocumentsView}
-                /> */}
+                />
                 <Route path="/mission-control/support" component={Support} />
                 <Route
                   path="/mission-control/account-details"

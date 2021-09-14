@@ -1,3 +1,4 @@
+from django.core.cache import cache, caches
 from django.shortcuts import get_object_or_404
 from django.urls import resolve
 
@@ -18,11 +19,15 @@ from .models import ProxyDataSource
 from .pagination import LocalPagination
 from .permissions import CanTokenAccessData
 
+PROXY_CACHE = caches["default"]
+
+
 _paginated_geojson_schema = {
     "type": "FeatureCollection",
-    "count": 100,
-    "next": "https://some.url.com/?page=3",
+    "count": 1000,
+    "pages": 100,
     "previous": "https://some.url.com/?page=2",
+    "next": "https://some.url.com/?page=3",
     "features": [
         {
             "id": 1,
@@ -83,8 +88,17 @@ class ProxyDataSourceView(APIView):
 
         try:
 
-            raw_data = proxy_data_source.get_data()
-            processed_data = proxy_data_source.process_data(raw_data)
+            cache_key = "-".join(self.kwargs.values())
+            processed_data = PROXY_CACHE.get(cache_key)
+            if not processed_data:
+                processed_data = proxy_data_source.process_data(
+                    proxy_data_source.get_data()
+                )
+                PROXY_CACHE.set(
+                    cache_key,
+                    processed_data,
+                    timeout=proxy_data_source.timeout,
+                )  # default timeout is "0" - which means "don't cache"
 
             if proxy_data_source.local_pagination:
                 paginator = self.pagination_class()

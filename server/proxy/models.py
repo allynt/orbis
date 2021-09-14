@@ -1,6 +1,7 @@
 import requests
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext as _
 
@@ -84,6 +85,13 @@ class ProxyDataSource(models.Model):
     )
     remote_pagination = models.BooleanField(
         default=False, help_text=_("Is the raw data paginated?")
+    )
+    timeout = models.IntegerField(
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_(
+            "Is there a limit on how frequently (in seconds) the remote data source can be accessed?"
+        )
     )
 
     proxy_url = models.URLField(blank=False, null=False)
