@@ -37,10 +37,7 @@ export default ({
   if (valueKey === 'date' && value) {
     value = new Date(value).toISOString();
   }
-  const columnName = `${(value ?? defaultValue).replace(
-    '.000Z',
-    '',
-  )}${columnSuffix}`;
+  const columnName = `${value ?? defaultValue}${columnSuffix}`;
   const getValue = objects =>
     objects.reduce((sum, obj) => sum + obj[columnName], 0);
 
@@ -54,6 +51,9 @@ export default ({
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
+      },
+      csv: {
+        header: true,
       },
     },
     colorRange,
