@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { maxBy, minBy } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { otherSelector, setOther } from '../layers.slice';
@@ -33,8 +34,8 @@ export default ({
     <DateStepper
       dates={dates}
       defaultValue={defaultValue ? new Date(defaultValue).getTime() : undefined}
-      min={min ? new Date(min).getTime() : dates[0].value}
-      max={max ? new Date(max).getTime() : dates[dates.length - 1].value}
+      min={min ? new Date(min).getTime() : minBy(dates, 'value').value}
+      max={max ? new Date(max).getTime() : maxBy(dates, 'value').value}
       value={other?.date}
       onChange={(_, date) =>
         dispatch(
