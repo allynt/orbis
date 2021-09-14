@@ -1,0 +1,164 @@
+{
+  "DR_Green": {
+    "x": 0,
+    "y": 0,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "DR_Orange": {
+    "x": 40,
+    "y": 0,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "DR_Red": {
+    "x": 80,
+    "y": 0,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "EQ_Green": {
+    "x": 0,
+    "y": 50,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "EQ_Orange": {
+    "x": 40,
+    "y": 50,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "EQ_Red": {
+    "x": 80,
+    "y": 50,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "FL_Green": {
+    "x": 0,
+    "y": 100,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "FL_Orange": {
+    "x": 40,
+    "y": 100,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "FL_Red": {
+    "x": 80,
+    "y": 100,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "TC_Green": {
+    "x": 0,
+    "y": 150,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "TC_Orange": {
+    "x": 40,
+    "y": 150,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "TC_Red": {
+    "x": 80,
+    "y": 150,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "VO_Green": {
+    "x": 0,
+    "y": 200,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "VO_Orange": {
+    "x": 40,
+    "y": 200,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "VO_Red": {
+    "x": 80,
+    "y": 200,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "WF_Green": {
+    "x": 0,
+    "y": 250,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "WF_Orange": {
+    "x": 40,
+    "y": 250,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  },
+  "WF_Red": {
+    "x": 80,
+    "y": 250,
+    "width": 40,
+    "height": 50,
+    "mask": false,
+    "anchorX": 20,
+    "anchorY": 50
+  }
+}
