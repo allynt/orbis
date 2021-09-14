@@ -1,5 +1,8 @@
 import pytest
 
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.core import mail
 from django.urls import resolve, reverse
 
@@ -47,7 +50,8 @@ class TestOrbsViews:
     def test_orb_has_terms(self, user, api_client, mock_storage):
 
         orb = OrbFactory()
-        orb.documents.add(DocumentFactory(type="TERMS", is_active=True))
+        terms_document = DocumentFactory(type="TERMS", is_active=True)
+        orb.documents.add(terms_document)
 
         client = api_client(user)
 
@@ -56,8 +60,9 @@ class TestOrbsViews:
         content = response.json()
 
         assert status.is_success(response.status_code)
-        assert content[0]["terms_document"
-                         ] == "/media/documents/TERMS/document-0.pdf"
+        assert content[0]["terms_document"] == urljoin(
+            settings.MEDIA_URL, terms_document.file.name
+        )
 
 
 @pytest.mark.django_db
