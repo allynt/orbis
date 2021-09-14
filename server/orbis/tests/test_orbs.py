@@ -1,5 +1,8 @@
 import pytest
 
+from urllib.parse import urljoin
+
+from django.conf import settings
 from django.core import mail
 from django.urls import resolve, reverse
 
@@ -30,6 +33,36 @@ class TestOrbsViews:
 
         assert status.is_success(response.status_code)
         assert len(content) == N_ORBS
+
+    def test_orb_has_no_terms(self, user, api_client, mock_storage):
+
+        orb = OrbFactory()
+
+        client = api_client(user)
+
+        url = reverse("orbs-list")
+        response = client.get(url)
+        content = response.json()
+
+        assert status.is_success(response.status_code)
+        assert content[0]["terms_document"] == None
+
+    def test_orb_has_terms(self, user, api_client, mock_storage):
+
+        orb = OrbFactory()
+        terms_document = DocumentFactory(type="TERMS", is_active=True)
+        orb.documents.add(terms_document)
+
+        client = api_client(user)
+
+        url = reverse("orbs-list")
+        response = client.get(url)
+        content = response.json()
+
+        assert status.is_success(response.status_code)
+        assert content[0]["terms_document"] == urljoin(
+            settings.MEDIA_URL, terms_document.file.name
+        )
 
 
 @pytest.mark.django_db
