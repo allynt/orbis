@@ -121,6 +121,12 @@ class OrbQuerySet(models.QuerySet):
     def default(self):
         return self.filter(is_default=True)
 
+    def hidden(self):
+        return self.filter(is_hidden=True)
+
+    def visible(self):
+        return self.filter(is_hidden=False)
+
 
 class DataScopeManager(models.Manager):
     def get_by_natural_key(self, source_id_pattern):

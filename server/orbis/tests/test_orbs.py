@@ -13,7 +13,6 @@ from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
 from orbis.models import Licence, Orb
-from orbis.serializers.serializers_orbs import LicenceSerializer
 
 from .factories import *
 
