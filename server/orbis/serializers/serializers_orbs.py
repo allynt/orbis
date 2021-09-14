@@ -35,9 +35,7 @@ class OrbSerializer(serializers.ModelSerializer):
 
     logo = serializers.SerializerMethodField(method_name="get_logo_b64")
     images = serializers.SerializerMethodField(method_name="get_images_files")
-    terms_document = serializers.SerializerMethodField(
-        method_name="get_terms_documents"
-    )
+    terms_document = serializers.SerializerMethodField()
 
     @swagger_serializer_method(serializer_or_field=serializers.CharField())
     def get_logo_b64(self, obj):
@@ -62,7 +60,7 @@ class OrbSerializer(serializers.ModelSerializer):
         )
         return [image_data.get("file") for image_data in image_serializer.data]
 
-    def get_terms_documents(self, obj):
+    def get_terms_document(self, obj):
         terms_document = obj.documents.terms().active().first()
         if terms_document:
             return DocumentSerializer(terms_document).data["file"]
