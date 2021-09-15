@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 
 import {
   MenuItem,
@@ -11,8 +11,10 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import { NotificationManager } from 'react-notifications';
 import { useSortBy } from 'react-table';
 
+import apiClient from 'api-client';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -24,7 +26,7 @@ const DialogCloseButton = styled(IconButton)({
   right: 0,
 });
 
-const Storage = ({ files }) => {
+export const Storage = ({ files }) => {
   const [fileId, setFileId] = useState(null);
 
   const close = () => setFileId(null);
@@ -98,4 +100,30 @@ const Storage = ({ files }) => {
   );
 };
 
-export default Storage;
+export default () => {
+  const [files, setFiles] = useState(null);
+
+  useEffect(() => {
+    if (!files) {
+      const fetchDocs = async () => {
+        try {
+          const storageFiles = await apiClient.storage.getFiles();
+          setFiles(storageFiles);
+        } catch (error) {
+          /** @type {import('api-client').ResponseError} */
+          const { message, status } = error;
+          NotificationManager.error(
+            `${status} ${message}`,
+            `Fetching Stored Data Error - ${message}`,
+            50000,
+            () => {},
+          );
+        }
+      };
+
+      fetchDocs();
+    }
+  }, [files]);
+
+  return <Storage files={files} />;
+};
