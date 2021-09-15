@@ -10,7 +10,6 @@ export { ImageList } from './image-list/image-list.component';
 export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
 export { InfoButton } from './info-button/info-button.component';
 export { InlineTextField } from './inline-text-field/inline-text-field.component';
-export { LegendItem } from './legend-item/legend-item.component';
 export { LoadingButton } from './loading-button.component';
 export { MapControlButton } from './map-control-button.component';
 export { MultipleFeaturesList } from './multiple-features-list/multiple-features-list.component';

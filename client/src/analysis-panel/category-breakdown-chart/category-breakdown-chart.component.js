@@ -5,8 +5,9 @@ import { Grid, Typography } from '@astrosat/astrosat-ui';
 import { ParentSize } from '@visx/responsive';
 import { find } from 'lodash';
 
-import { LegendItem, SidePanelSection } from 'components';
+import { SidePanelSection } from 'components';
 
+import { LegendItem } from '../legend-item/legend-item.component';
 import { Pie } from './pie.component';
 
 export const isSelected = (datumA, datumB) =>
