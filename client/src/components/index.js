@@ -1,4 +1,5 @@
 export { ColorAdjustSlider } from './color-adjust-slider/color-adjust-slider.component';
+export { ColorLegend } from './color-legend/color-legend.component';
 export { ColormapRangeSlider } from './colormap-range-slider/colormap-range-slider.component';
 export { DateRangeInput } from './date-range-input/date-range-input.component';
 export { DateRangePicker } from './date-range-picker/date-range-picker.component';
