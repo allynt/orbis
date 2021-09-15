@@ -127,6 +127,9 @@ class OrbQuerySet(models.QuerySet):
     def visible(self):
         return self.filter(is_hidden=False)
 
+    def exclusive(self):
+        return self.filter(is_exclusive=True)
+
 
 class DataScopeManager(models.Manager):
     def get_by_natural_key(self, source_id_pattern):
@@ -200,6 +203,10 @@ class LicenceQuerySet(models.QuerySet):
         # returns all licences that have been assigned to a user
         return self.filter(customer_user__isnull=False)
 
+    def exclusive(self):
+        # returns all licences to exclusive orbs
+        return self.filter(orb__is_exclusive=True)
+
     def available(self):
         # returns all licence that have not been assigned to a user
         return self.filter(customer_user__isnull=True)
@@ -255,6 +262,10 @@ class Orb(models.Model):
     is_hidden = models.BooleanField(
         default=False,
         help_text="Licences to a hidden Orb are not shown to CustomerUsers."
+    )
+    is_exclusive = models.BooleanField(
+        default=False,
+        help_text="Licences to exclusive Orbs are automatically removed when licences to other orbs are assigned; they cannot co-exist."
     )
 
     features = models.JSONField(

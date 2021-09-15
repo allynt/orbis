@@ -601,3 +601,35 @@ class TestLicencedCustomer:
             licences__in=remaining_licences
         )
         assert normal_orb in Orb.objects.filter(licences__in=remaining_licences)
+
+    def test_exclusive_licences_removed(self, user, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        customer_user, _ = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        exclusive_orb = OrbFactory(is_exclusive=True)
+        normal_orb = OrbFactory(is_exclusive=False)
+
+        customer.assign_licences(
+            exclusive_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.assign_licences(
+            normal_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.refresh_from_db()
+        customer_user.refresh_from_db()
+
+        assert customer.licences.count() == 2
+        assert customer_user.licences.count() == 1
+        assert exclusive_orb not in Orb.objects.filter(
+            licences__in=customer_user.licences.all()
+        )
+        assert normal_orb in Orb.objects.filter(
+            licences__in=customer_user.licences.all()
+        )

@@ -53,5 +53,13 @@ class LicencedCustomer(AstrosatUsersCustomer):
                     licence = self.add_licences(orb, 1)[0]
                 licence.customer_user = customer_user
                 licence.save()
+
+            # if there are any licences that are not exlusive, then remove all licences that are exclusive
+            exclusive_licences = customer_user.licences.exclusive()
+            if exclusive_licences.exists() and customer_user.licences.exclude(
+                id__in=exclusive_licences.values("id")
+            ):
+                customer_user.licences.remove(*exclusive_licences)
+
             licences.append(licence)
         return licences
