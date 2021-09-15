@@ -125,14 +125,43 @@ describe('<FeatureDetail />', () => {
     expect(screen.getByRole('heading', { name: text })).toBeInTheDocument();
   });
 
-  it('excludes fields specified in `propertiesBlacklist` prop', () => {
+  it('excludes fields specified in `propertiesOmitlist` prop', () => {
     const features = [
       { id: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
     ];
 
-    render(<FeatureDetail features={features} propertiesBlacklist={['id']} />);
+    render(<FeatureDetail features={features} propertiesToOmit={['id']} />);
 
     expect(screen.queryByText('id', { exact: false })).not.toBeInTheDocument();
     expect(screen.queryByText('1')).not.toBeInTheDocument();
+  });
+
+  it('Only shows properties listed in `propertiesToPick`', () => {
+    const feature = {
+      key1: 'value1',
+      key2: 'value2',
+      key3: 'value3',
+      key4: 'value4',
+    };
+    render(
+      <FeatureDetail
+        features={[feature]}
+        propertiesToPick={['key2', 'key4']}
+      />,
+    );
+    expect(screen.queryByText(/key1/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/key3/)).not.toBeInTheDocument();
+  });
+
+  it('Uses the property specified by `titleProperty` from the first item as the title', () => {
+    const title = 'This is the title';
+    render(
+      <FeatureDetail
+        features={[{ title, other: 'Other value' }]}
+        titleProperty="title"
+      />,
+    );
+    expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
+    expect(screen.queryByText('title:')).not.toBeInTheDocument();
   });
 });

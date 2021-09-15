@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { pickBy } from 'lodash';
+import { omit, pick, get } from 'lodash';
 
 import { isEmail } from 'utils/text';
 
@@ -158,8 +158,10 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
- * @property {string[]} propertiesBlacklist
- * @property {(obj: object) => React.ReactNode|null} postFeatureComponent
+ * @property {string} [titleProperty]
+ * @property {string[]} [propertiesToOmit]
+ * @property {string[]} [propertiesToPick]
+ * @property {(obj: object) => React.ReactNode|null} [postFeatureComponent]
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
  */
@@ -191,7 +193,9 @@ const FeatureDetail = ({
   children,
   features,
   title = DEFAULT_TITLE,
-  propertiesBlacklist = [],
+  titleProperty,
+  propertiesToOmit,
+  propertiesToPick,
   postFeatureComponent,
   footer,
 }) => {
@@ -200,19 +204,29 @@ const FeatureDetail = ({
   return (
     <>
       <Typography className={styles.header} component="h1">
-        {title}
+        {titleProperty ? get(features[0], titleProperty) : title}
       </Typography>
       <div className={styles.content}>
         {features &&
-          features?.map(feature => (
-            <List key={feature?.id} className={styles.list}>
-              {mapObject(
-                pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
-              )}
-              {postFeatureComponent ? postFeatureComponent(feature) : null}
-              {footer && <Item jsonKey={footer.label} value={footer.content} />}
-            </List>
-          ))}
+          features?.map(feature => {
+            let properties = { ...feature };
+            if (propertiesToOmit || titleProperty)
+              properties = omit(properties, [
+                ...(Boolean(propertiesToOmit) ? propertiesToOmit : []),
+                ...(titleProperty ? [titleProperty] : []),
+              ]);
+            if (propertiesToPick)
+              properties = pick(properties, propertiesToPick);
+            return (
+              <List key={feature?.id} className={styles.list}>
+                {mapObject(properties)}
+                {postFeatureComponent ? postFeatureComponent(feature) : null}
+                {footer && (
+                  <Item jsonKey={footer.label} value={footer.content} />
+                )}
+              </List>
+            );
+          })}
         {children && children}
       </div>
     </>
