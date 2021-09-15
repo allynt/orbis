@@ -38,7 +38,7 @@ class RegisterSerializer(AstrosatUsersRegisterSerializer):
     def validate_accepted_terms(self, value):
 
         if value and not Document.objects.terms().no_orbs().active().first():
-            msg = "Cannot find active TermsDocument"
+            msg = "Cannot find active Terms Document"
             raise ValidationError(msg)
 
         return value
