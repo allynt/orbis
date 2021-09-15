@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 
-import Storage from './storage.component';
+import { Storage } from './storage.component';
 
 const TEST_FILES = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
