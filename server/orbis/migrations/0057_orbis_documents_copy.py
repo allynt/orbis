@@ -4,8 +4,6 @@
 
 from django.db import migrations
 
-from orbis.models.models_documents import DocumentAgreement, PrivacyDocument
-
 
 def copy_documents(apps, schema_editor):
 

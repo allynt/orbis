@@ -6,6 +6,7 @@ import { DataClient } from './DataClient';
 import { DocumentsClient } from './DocumentsClient';
 import { OrbsClient } from './OrbsClient';
 import { SatellitesClient } from './SatellitesClient';
+import { StorageClient } from './StorageClient';
 import { UsersClient } from './UsersClient';
 
 export class ApiClient {
@@ -18,6 +19,7 @@ export class ApiClient {
   orbs;
   satellites;
   users;
+  storage;
   /** @private */
   subClients = [
     'app',
@@ -29,6 +31,7 @@ export class ApiClient {
     'orbs',
     'satellites',
     'users',
+    'storage',
   ];
 
   constructor() {
@@ -41,6 +44,7 @@ export class ApiClient {
     this.orbs = new OrbsClient();
     this.satellites = new SatellitesClient();
     this.users = new UsersClient();
+    this.storage = new StorageClient();
     this.apiHost =
       process.env.NODE_ENV === 'development'
         ? process.env.REACT_APP_API_HOST

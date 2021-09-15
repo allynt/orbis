@@ -121,6 +121,12 @@ class OrbQuerySet(models.QuerySet):
     def default(self):
         return self.filter(is_default=True)
 
+    def hidden(self):
+        return self.filter(is_hidden=True)
+
+    def visible(self):
+        return self.filter(is_hidden=False)
+
 
 class DataScopeManager(models.Manager):
     def get_by_natural_key(self, source_id_pattern):
@@ -239,12 +245,6 @@ class Orb(models.Model):
         null=True,
         upload_to=orb_logo_path,
         validators=[FileExtensionValidator(["svg"])],
-    )
-    terms_document = models.FileField(
-        blank=True,
-        null=True,
-        upload_to=orb_terms_document_path,
-        validators=[FileExtensionValidator(["pdf"])],
     )
 
     is_active = models.BooleanField(default=True)

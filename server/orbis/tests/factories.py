@@ -25,11 +25,7 @@ from orbis.models import (
     OrbisUserProfile,
     OrbisUserFeedbackRecord,
     Document,
-    DocumentAgreement,
     DocumentType,
-    PrivacyDocument,
-    TermsDocument,
-    UserGuideDocument,
     Orb,
     OrbImage,
     DataScope,
@@ -200,14 +196,6 @@ class OrbFactory(factory.django.DjangoModelFactory):
             name=f"{self.name}_logo.svg",
             content=b'<svg><circle r="50" cx="50" cy="50" fill="red"/></svg>',
             content_type="image/svg+xml",
-        )
-
-    @factory.lazy_attribute
-    def terms_document(self):
-        return SimpleUploadedFile(
-            name=f"{self.name}_terms.pdf",
-            content=b"I am a fake document",
-            content_type="application/pdf",
         )
 
 

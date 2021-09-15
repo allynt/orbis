@@ -19,7 +19,7 @@ export default ({ id, orbState, activeSources, otherStateKey = id }) => {
     id,
     visible: visible && find(activeSources, { source_id: id }),
     data: other?.date
-      ? filter(data.features, feature =>
+      ? filter(data?.features, feature =>
           feature.properties.timestamp.includes(format(otherDate, 'yyyy-MM')),
         )
       : data?.features,

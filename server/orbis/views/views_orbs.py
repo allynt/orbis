@@ -9,4 +9,4 @@ class OrbListView(generics.ListAPIView):
 
     permission_classes = [IsAuthenticated]
     serializer_class = OrbSerializer
-    queryset = Orb.objects.active()
+    queryset = Orb.objects.visible().active()

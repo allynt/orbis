@@ -2,7 +2,7 @@ import React from 'react';
 
 import faker from 'faker/locale/en_GB';
 
-import Storage from './storage.component';
+import { Storage } from './storage.component';
 
 const TEST_FILES = new Array(20).fill().map(() => ({
   id: faker.random.uuid(),

@@ -28,6 +28,13 @@ export default ({
       options={options}
       defaultValue={defaultValue}
       value={other?.[valueKey]}
+      isLoading={
+        selectedLayer.metadata.request_strategy === 'manual'
+          ? other?.isLoading == null
+            ? true
+            : other?.isLoading
+          : false
+      }
       onChange={value =>
         dispatch(
           setOther({

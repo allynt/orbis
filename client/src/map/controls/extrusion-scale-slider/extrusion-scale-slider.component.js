@@ -78,6 +78,7 @@ const schema = yup.object({
  * }} ExtrusionScaleSliderProps
  */
 
+// BUG: [ORB-799] Hitting enter while extrusion scale slider input is focussed refreshes page
 /** @type {React.ForwardRefExoticComponent<ExtrusionScaleSliderProps>} */
 export const ExtrusionScaleSlider = React.forwardRef(
   ({ value, onChange, mapStyle }, ref) => {
