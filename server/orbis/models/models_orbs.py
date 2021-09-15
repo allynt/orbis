@@ -203,6 +203,10 @@ class LicenceQuerySet(models.QuerySet):
         # returns all licences that have been assigned to a user
         return self.filter(customer_user__isnull=False)
 
+    def default(self):
+        # returns all licecnecs to default orbs
+        return self.filter(orb__is_default=True)
+
     def exclusive(self):
         # returns all licences to exclusive orbs
         return self.filter(orb__is_exclusive=True)
