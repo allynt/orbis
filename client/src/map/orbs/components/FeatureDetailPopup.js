@@ -71,19 +71,6 @@ const FeatureDetailPopup = ({
       ? centerOfMass({ type: 'Feature', ...features?.[0] })
       : features[0];
 
-  let title;
-  if (titleProperty) title = get(features[0].properties, titleProperty);
-  const properties = features.map(feature => {
-    let { properties } = feature;
-    if (omitlist || titleProperty)
-      properties = omit(properties, [
-        ...omitlist,
-        ...(titleProperty ? [titleProperty] : []),
-      ]);
-    if (picklist) properties = pick(properties, picklist);
-    return properties;
-  });
-
   return (
     <Popup
       longitude={center.geometry.coordinates[0]}
@@ -92,7 +79,12 @@ const FeatureDetailPopup = ({
       onClose={() => dispatch(action())}
       {...popupProps}
     >
-      <FeatureDetail title={title} features={properties} />
+      <FeatureDetail
+        titleProperty={titleProperty}
+        features={features.map(feature => feature.properties)}
+        propertiesToOmit={omitlist}
+        propertiesToPick={picklist}
+      />
     </Popup>
   );
 };
