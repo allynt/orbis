@@ -28,6 +28,7 @@ const FeatureDetailPopup = ({
   picklist,
   omitlist = [],
   popupProps,
+  labelMapping,
 }) => {
   const dispatch = useDispatch();
 
@@ -84,6 +85,7 @@ const FeatureDetailPopup = ({
         features={features.map(feature => feature.properties)}
         propertiesToOmit={omitlist}
         propertiesToPick={picklist}
+        labelMapping={labelMapping}
       />
     </Popup>
   );

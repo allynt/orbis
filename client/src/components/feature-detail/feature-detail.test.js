@@ -164,4 +164,26 @@ describe('<FeatureDetail />', () => {
     expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
     expect(screen.queryByText('title:')).not.toBeInTheDocument();
   });
+
+  it('Uses labels specified in `labelMapping` rather than keys', () => {
+    const feature = {
+      key1: 'Value 1',
+      key2: 'Value 2',
+      key3: {
+        key4: 'Value 4',
+      },
+    };
+    const labelMapping = {
+      key1: 'Label1',
+      key2: 'Label2',
+      key3: 'Label3',
+      key4: 'Label4',
+    };
+
+    render(<FeatureDetail features={[feature]} labelMapping={labelMapping} />);
+    Object.entries(labelMapping).forEach(([key, label]) => {
+      expect(screen.queryByText(key, { exact: false })).not.toBeInTheDocument();
+      expect(screen.getByText(label, { exact: false })).toBeInTheDocument();
+    });
+  });
 });

@@ -48,9 +48,10 @@ const renderItemValue = value => {
  * @param {{
  *   jsonKey?: string
  *   value: {[key: string]: any}
+ *   labelMapping?: {[key: string]: string}
  * }} props
  */
-const ObjectItem = ({ jsonKey, value }) => (
+const ObjectItem = ({ jsonKey, value, labelMapping }) => (
   <List disablePadding component="div">
     {jsonKey && (
       <ListSubheader disableSticky>
@@ -59,7 +60,7 @@ const ObjectItem = ({ jsonKey, value }) => (
         </Typography>
       </ListSubheader>
     )}
-    {mapObject(value)}
+    {mapObject(value, labelMapping)}
   </List>
 );
 
@@ -75,7 +76,7 @@ const Item = ({ jsonKey, value }) => {
       <ListItemText
         primary={
           <>
-            <b>{jsonKey} </b>
+            <b>{jsonKey}: </b>
             {renderItemValue(value)}
           </>
         }
@@ -117,37 +118,29 @@ const ArrayItem = ({ jsonKey, value }) => (
   </List>
 );
 
-const mapObject = feature => {
+/**
+ * @param {{[key: string]: any}} feature
+ * @param {{[key: string]: string}} [labelMapping]
+ * @returns
+ */
+const mapObject = (feature, labelMapping) => {
   return (
     <>
       {feature &&
         Object.entries(feature).map(([jsonKey, value], i) => {
+          const props = {
+            key: `${jsonKey}-${i}`,
+            jsonKey: labelMapping?.[jsonKey] ? labelMapping[jsonKey] : jsonKey,
+            value,
+          };
           switch (getTypeForValue(value)) {
             case VALUE_TYPE.array:
-              return (
-                <ArrayItem
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={jsonKey}
-                  value={value}
-                />
-              );
+              return <ArrayItem {...props} />;
             case VALUE_TYPE.object:
-              return (
-                <ObjectItem
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={jsonKey}
-                  value={value}
-                />
-              );
+              return <ObjectItem labelMapping={labelMapping} {...props} />;
             case VALUE_TYPE.item:
             default:
-              return (
-                <Item
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={`${jsonKey}:`}
-                  value={value}
-                />
-              );
+              return <Item {...props} />;
           }
         })}
     </>
@@ -164,6 +157,7 @@ const mapObject = feature => {
  * @property {(obj: object) => React.ReactNode|null} [postFeatureComponent]
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
+ * @property {{[key: string]: string}} [labelMapping]
  */
 
 const useStyles = makeStyles(theme => ({
@@ -197,6 +191,7 @@ const FeatureDetail = ({
   propertiesToOmit,
   propertiesToPick,
   postFeatureComponent,
+  labelMapping,
   footer,
 }) => {
   const styles = useStyles();
@@ -219,7 +214,7 @@ const FeatureDetail = ({
               properties = pick(properties, propertiesToPick);
             return (
               <List key={feature?.id} className={styles.list}>
-                {mapObject(properties)}
+                {mapObject(properties, labelMapping)}
                 {postFeatureComponent ? postFeatureComponent(feature) : null}
                 {footer && (
                   <Item jsonKey={footer.label} value={footer.content} />
