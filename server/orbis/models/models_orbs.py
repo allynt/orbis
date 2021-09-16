@@ -27,7 +27,7 @@ An orb can contain multiple data_scopes.  A licence refers to a single orb.
 
 A JWT is created for a user based on the licences held by that user.
 
-A user can only hold a licence if it is owned by that  user's customer (and not in use by another user).
+A user can only hold a licence if it is owned by that user's customer (and not in use by another user).
 
 """
 
@@ -127,6 +127,9 @@ class OrbQuerySet(models.QuerySet):
     def visible(self):
         return self.filter(is_hidden=False)
 
+    def exclusive(self):
+        return self.filter(is_exclusive=True)
+
 
 class DataScopeManager(models.Manager):
     def get_by_natural_key(self, source_id_pattern):
@@ -200,6 +203,14 @@ class LicenceQuerySet(models.QuerySet):
         # returns all licences that have been assigned to a user
         return self.filter(customer_user__isnull=False)
 
+    def default(self):
+        # returns all licecnecs to default orbs
+        return self.filter(orb__is_default=True)
+
+    def exclusive(self):
+        # returns all licences to exclusive orbs
+        return self.filter(orb__is_exclusive=True)
+
     def available(self):
         # returns all licence that have not been assigned to a user
         return self.filter(customer_user__isnull=True)
@@ -228,6 +239,14 @@ class LicenceQuerySet(models.QuerySet):
 
 
 class Orb(models.Model):
+    """
+    An orb is a thematic collection of data & functionality.
+    Orbs can be categorised using the following flags:
+     * is_active - only active orbs are used when assigning licences
+     * is_default - licences to default orbs are automatically assigned to users upon registration, and deleted when those users are deleted
+     * is_hidden - a hidden orb does not appear in the Orbis Store
+     * is_exclusive - a licence to an exclusive orb cannot co-exist with any other licences; an exclusive licence of a user is automatically revoked whenever a licence to a non-exclusive orb is assigned to that user
+    """
     class Meta:
         app_label = "orbis"
         verbose_name = "Orb"
@@ -255,6 +274,10 @@ class Orb(models.Model):
     is_hidden = models.BooleanField(
         default=False,
         help_text="Licences to a hidden Orb are not shown to CustomerUsers."
+    )
+    is_exclusive = models.BooleanField(
+        default=False,
+        help_text="Licences to exclusive Orbs are automatically removed when licences to other orbs are assigned; they cannot co-exist."
     )
 
     features = models.JSONField(
