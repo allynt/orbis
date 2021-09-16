@@ -9,11 +9,12 @@ import { Storage } from './storage.component';
 const TEST_FILES = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
   title: `file-title-${i}`,
-  date: new Date(2020, 0, i).toISOString(),
+  created: new Date(2020, 0, i).toISOString(),
 }));
 
 const renderComponent = () => {
-  const utils = render(<Storage files={TEST_FILES} />);
+  const setFiles = jest.fn();
+  const utils = render(<Storage files={TEST_FILES} setFiles={setFiles} />);
   return { ...utils };
 };
 
@@ -24,8 +25,8 @@ describe('<Storage />', () => {
     userEvent.click(getByText('5'));
     userEvent.click(getByText('20'));
 
-    TEST_FILES.forEach(({ title, date }) => {
-      const displayDate = format(new Date(date), 'dd-MM-yyyy');
+    TEST_FILES.forEach(({ title, created }) => {
+      const displayDate = format(new Date(created), 'dd-MM-yyyy');
       expect(getByText(title)).toBeInTheDocument();
       expect(getByText(displayDate)).toBeInTheDocument();
     });

@@ -26,13 +26,31 @@ const DialogCloseButton = styled(IconButton)({
   right: 0,
 });
 
-export const Storage = ({ files }) => {
+export const Storage = ({ files, setFiles }) => {
   const [fileId, setFileId] = useState(null);
 
   const close = () => setFileId(null);
 
   const onDeleteFileClick = () => {
-    console.log('DELETE FILE WITH ID: ', fileId);
+    const deleteFile = async () => {
+      try {
+        await apiClient.storage.deleteFile(fileId);
+      } catch (error) {
+        const { message, status } = error;
+        NotificationManager.error(
+          `${status} ${message}`,
+          `Deleting Stored Data Error - ${message}`,
+          50000,
+          () => {},
+        );
+      }
+    };
+
+    deleteFile();
+
+    const updatedFiles = files.filter(file => file.id !== fileId);
+    setFiles(updatedFiles);
+
     return setFileId(null);
   };
 
@@ -46,7 +64,7 @@ export const Storage = ({ files }) => {
       },
       {
         Header: 'Date',
-        accessor: 'date',
+        accessor: 'created',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
       {
@@ -125,5 +143,5 @@ export default () => {
     }
   }, [files]);
 
-  return <Storage files={files} />;
+  return <Storage files={files} setFiles={setFiles} />;
 };
