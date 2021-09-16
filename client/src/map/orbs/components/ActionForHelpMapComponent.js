@@ -80,7 +80,7 @@ const ActionForHelpMapComponent = ({ source }) => {
       <FeatureDetail
         features={pickedObjects.map(obj => obj.properties)}
         title={isPersonFeatureType ? 'User Details' : 'Infrastructure Details'}
-        propertiesBlacklist={['Type', 'pk', 'status', 'notes']}
+        propertiesToOmit={['Type', 'pk', 'status', 'notes']}
         postFeatureComponent={
           isPersonFeatureType
             ? feat => (
