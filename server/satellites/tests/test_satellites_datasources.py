@@ -93,6 +93,7 @@ class TestSatelliteDataSourceViews:
         data_source.refresh_from_db()
         assert data_source.name == "test_name"
 
+    @pytest.mark.skip()
     def test_delete_data_source(self, customer_user, api_client):
 
         customer_user = customer_user(type="MEMBER")
