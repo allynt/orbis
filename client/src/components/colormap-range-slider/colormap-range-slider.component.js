@@ -2,6 +2,8 @@ import React, { forwardRef } from 'react';
 
 import { makeStyles, Slider } from '@astrosat/astrosat-ui';
 
+import { scaleLinear } from 'd3-scale';
+
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
 import { ColorScale } from 'utils/ColorScale';
 
@@ -98,6 +100,7 @@ export const ColormapRangeSlider = forwardRef(
       reversed,
     });
     const classes = useStyles({ colorScale, barOnly });
+    const tickScale = scaleLinear().domain([min, max]);
 
     const hasMoved = value[0] !== min || value[1] !== max;
 
@@ -117,12 +120,13 @@ export const ColormapRangeSlider = forwardRef(
         onChange={handleChange}
         value={[...value]}
         track={false}
-        marks={(hasMoved && !barOnly ? value : colorScale.ticks(3)).map(
-          value => ({
-            value,
-            label: value.toFixed(precision ?? DEFAULT_DECIMAL_PRECISION),
-          }),
-        )}
+        marks={(hasMoved && !barOnly
+          ? value
+          : tickScale.ticks(barOnly ? 4 : 3)
+        ).map(value => ({
+          value,
+          label: value.toFixed(precision ?? DEFAULT_DECIMAL_PRECISION),
+        }))}
         step={precision ? Number(`1e-${precision}`) : 1}
         ThumbComponent={barOnly ? () => <></> : undefined}
         {...rest}
