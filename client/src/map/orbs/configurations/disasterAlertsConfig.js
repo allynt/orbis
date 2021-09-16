@@ -5,9 +5,9 @@ import disastersIconAtlas from './disasterAlertsConfig.iconAtlas.svg';
 import disastersIconMapping from './disasterAlertsConfig.iconMapping.json';
 
 const COLORS = {
-  Orange: [238, 160, 67, 100],
-  Red: [229, 52, 53, 100],
-  Green: [110, 188, 92, 100],
+  orange: [238, 160, 67, 100],
+  red: [229, 52, 53, 100],
+  green: [110, 188, 92, 100],
 };
 
 /**
@@ -47,13 +47,13 @@ export default ({ id, activeSources, dispatch }) => {
         feature.properties.Class,
       )
     )
-      return COLORS[feature.properties?.Class.split('_')[1]];
-    return COLORS[feature.properties?.episodealertlevel];
+      return COLORS[feature.properties?.Class.split('_')[1].toLowerCase()];
+    return COLORS[feature.properties?.episodealertlevel.toLowerCase()];
   };
 
   /** @param {DisasterFeature} feature */
   const getIcon = feature =>
-    `${feature.properties.eventtype}_${feature.properties.alertlevel}`;
+    `${feature.properties.eventtype}_${feature.properties.alertlevel}`.toLowerCase();
 
   /** @param {import('typings').PickedMapFeature<DisasterFeatureProperties>} pickedInfo */
   const onClick = pickedInfo => {
