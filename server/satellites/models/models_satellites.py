@@ -5,12 +5,14 @@ from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.fields import related
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema, validate_reserved_words
 
 from astrosat_users.models import CustomerUser
+# from orbis.models import DataStorage
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
 from satellites.utils import project_geometry
@@ -360,6 +362,8 @@ class SatelliteDataSource(models.Model):
 
     objects = SatelliteDataSourceQuerySet.as_manager()
 
+    DEFAULT_STORAGE_SIZE = 0.1
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -390,6 +394,13 @@ class SatelliteDataSource(models.Model):
         blank=False,
         null=False,
         max_length=128,
+    )
+
+    data_storage = models.OneToOneField(
+        "orbis.DataStorage",
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="satellite_source",
     )
 
     @property

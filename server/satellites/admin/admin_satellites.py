@@ -6,7 +6,7 @@ from django.db.models import JSONField
 from django.forms import Select, ModelForm
 from django.utils.html import mark_safe
 
-from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
+from astrosat.admin import get_clickable_fk_list_display, get_clickable_m2m_list_display, JSONAdminWidget
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
 from satellites.models import (
@@ -72,7 +72,11 @@ class SatelliteVisualisationAdmin(admin.ModelAdmin):
 
 @admin.register(SatelliteDataSource)
 class SatelliteDataSourceAdmin(admin.ModelAdmin):
-    list_display = ("name", "customer_user", "source_id")
+    list_display = (
+        "name",
+        "customer_user",
+        "source_id",  # "get_storage_for_list_display",
+    )
     list_filter = ("customer_user", )
     readonly_fields = (
         "created",
@@ -80,6 +84,13 @@ class SatelliteDataSourceAdmin(admin.ModelAdmin):
         "source_id",
     )
     search_fields = ("name", "description")
+
+    def get_storage_for_list_display(self, obj):
+        data_storage = obj.data_storage
+        if data_storage is not None:
+            return get_clickable_fk_list_display(data_storage)
+
+    get_storage_for_list_display.short_description = "Storage"
 
     def get_metadata_for_detail_display(self, obj):
         # (makes metadata look pretty in an HTML template)
