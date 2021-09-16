@@ -27,7 +27,7 @@ An orb can contain multiple data_scopes.  A licence refers to a single orb.
 
 A JWT is created for a user based on the licences held by that user.
 
-A user can only hold a licence if it is owned by that  user's customer (and not in use by another user).
+A user can only hold a licence if it is owned by that user's customer (and not in use by another user).
 
 """
 
@@ -239,6 +239,14 @@ class LicenceQuerySet(models.QuerySet):
 
 
 class Orb(models.Model):
+    """
+    An orb is a thematic collection of data & functionality.
+    Orbs can be categorised using the following flags:
+     * is_active - only active orbs are used when assigning licences
+     * is_default - licences to default orbs are automatically assigned to users upon registration, and deleted when those users are deleted
+     * is_hidden - a hidden orb does not appear in the Orbis Store
+     * is_exclusive - a licence to an exclusive orb cannot co-exist with any other licences; an exclusive licence of a user is automatically revoked whenever a licence to a non-exclusive orb is assigned to that user
+    """
     class Meta:
         app_label = "orbis"
         verbose_name = "Orb"
