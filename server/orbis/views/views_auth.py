@@ -44,10 +44,11 @@ class RegisterView(AstrosatUserRegisterView):
         user = super().perform_create(serializer)
 
         if user.accepted_terms:
-            # if the user accepted the terms during registration
-            # then create a record of that agreement...
+            # if the user accepted the terms and privacy policy during registration
+            # then create a record of those agreements...
             user.documents.add(
-                Document.objects.terms().no_orbs().active().first()
+                Document.objects.terms().no_orbs().active().first(),
+                Document.objects.privacy().no_orbs().active().first(),
             )
 
         return user

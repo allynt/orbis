@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 
 from astrosat.admin import CannotAddModelAdminBase, ReadOnlyModelAdminBase
@@ -21,11 +22,45 @@ class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
     inlines = (OrbisUserFeedbackRecordInline, )
 
 
+class DocumentAgreementInlineForm(forms.ModelForm):
+    """
+    A custom inline form just to display the "document.type" field
+    """
+    class Meta:
+        model = AstrosatUser.documents.through
+
+        fields = ("document", )
+        readonly_fields = (
+            "type",
+            "timestamp",
+        )
+
+    type = forms.CharField(disabled=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        document_agreement = self.instance
+        self.initial = {
+            "type":
+                document_agreement.document.type
+                if document_agreement.pk else "NONE"
+        }
+
+
 class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     model = AstrosatUser.documents.through
 
     extra = 0
-    fields = ("document", "timestamp")
+    fields = (
+        "document",
+        "type",
+        "timestamp",
+    )
+    form = DocumentAgreementInlineForm
+    readonly_fields = (
+        "type",
+        "timestamp",
+    )
     verbose_name_plural = "Agreed documents"
 
 
