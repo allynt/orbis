@@ -1,28 +1,45 @@
+import { DataFilterExtension } from '@deck.gl/extensions';
 import { format } from 'date-fns';
-import { filter, find } from 'lodash';
+import { find } from 'lodash';
 
 import {
-  visibilitySelector,
-  otherSelector,
   dataSelector,
+  otherSelector,
+  visibilitySelector,
 } from '../layers.slice';
 
-/** @type {import("typings/orbis").LayerConfiguration<{otherStateKey?: string}>} */
-export default ({ id, orbState, activeSources, otherStateKey = id }) => {
+/**
+ * @type {import("typings/orbis").LayerConfiguration<{
+ *  otherStateKey?: string
+ *  dateFormat?: string
+ * }>}
+ */
+export default ({
+  id,
+  orbState,
+  activeSources,
+  otherStateKey = id,
+  dateFormat = 'yyyy-MM',
+}) => {
   const visible = visibilitySelector(id)(orbState);
   const other = otherSelector(otherStateKey)(orbState);
   const data = dataSelector(id)(orbState);
 
-  const otherDate = new Date(other?.date);
+  const otherDate = other?.date
+    ? format(new Date(other?.date), dateFormat)
+    : undefined;
 
   return {
     id,
     visible: visible && find(activeSources, { source_id: id }),
-    data: other?.date
-      ? filter(data?.features, feature =>
-          feature.properties.timestamp.includes(format(otherDate, 'yyyy-MM')),
-        )
-      : data?.features,
-    getPosition: d => d.geometry.coordinates,
+    data: data?.features,
+    getPosition: feature => feature.geometry.coordinates,
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    getFilterValue: feature =>
+      otherDate ? Number(feature.properties.timestamp.includes(otherDate)) : 1,
+    filterRange: [1, 1],
+    updateTriggers: {
+      getFilterValue: [other?.date],
+    },
   };
 };
