@@ -54,7 +54,7 @@ class TestOrbisRegistration:
         assert default_orb in licenced_orbs
         assert other_orb not in licenced_orbs
 
-    def test_registration_adds_terms_document_agreement(
+    def test_registration_adds_document_agreements(
         self, user_data, mock_storage
     ):
 
@@ -64,6 +64,9 @@ class TestOrbisRegistration:
 
         terms_document = DocumentFactory(
             type=DocumentType.TERMS, is_active=True
+        )
+        privacy_document = DocumentFactory(
+            type=DocumentType.PRIVACY, is_active=True
         )
 
         client = APIClient()
@@ -82,8 +85,9 @@ class TestOrbisRegistration:
 
         user = UserModel.objects.get(email=user_data["email"])
         assert terms_document in user.documents.all()
+        assert privacy_document in user.documents.all()
 
-    def test_registration_raises_error_on_missing_terms_document_agreement(
+    def test_registration_raises_error_on_missing_documents(
         self, user_data, mock_storage
     ):
 
@@ -106,6 +110,59 @@ class TestOrbisRegistration:
         assert status.is_client_error(response.status_code)
 
         assert response.json()["errors"]["accepted_terms"] == [
-            "Cannot find active Terms Document"
+            "Cannot find active Terms and Privacy Document"
         ]
         assert UserModel.objects.count() == 0
+
+    def test_registration_adds_document_agreements(self, mock_storage):
+
+        user_settings = UserSettings.load()
+        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.save()
+
+        user = UserFactory(accepted_terms=False)
+
+        terms_document = DocumentFactory(
+            type=DocumentType.TERMS, is_active=True
+        )
+        privacy_document = DocumentFactory(
+            type=DocumentType.PRIVACY, is_active=True
+        )
+
+        client = APIClient()
+        url = reverse("rest_login")
+        test_data = {
+            "email": user.email,
+            "password": user.raw_password,
+            "accepted_terms": True
+        }
+
+        response = client.post(url, test_data)
+        assert status.is_success(response.status_code)
+
+        user.refresh_from_db()
+        assert terms_document in user.documents.all()
+        assert privacy_document in user.documents.all()
+
+    def test_login_raises_error_on_missing_documents(self, mock_storage):
+
+        user_settings = UserSettings.load()
+        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.save()
+
+        user = UserFactory(accepted_terms=False)
+
+        client = APIClient()
+        url = reverse("rest_login")
+        test_data = {
+            "email": user.email,
+            "password": user.raw_password,
+            "accepted_terms": True
+        }
+
+        response = client.post(url, test_data)
+        assert status.is_client_error(response.status_code)
+
+        assert response.json()["errors"]["accepted_terms"] == [
+            "Cannot find active Terms and Privacy Document"
+        ]
