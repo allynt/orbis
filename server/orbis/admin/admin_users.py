@@ -24,7 +24,7 @@ class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
 
 class DocumentAgreementInlineForm(forms.ModelForm):
     """
-    A custom inline form just to display the "document.type" field
+    A custom form used by DocumentAgreementInline just to display the "document.type" field
     """
     class Meta:
         model = AstrosatUser.documents.through
@@ -57,10 +57,6 @@ class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
         "timestamp",
     )
     form = DocumentAgreementInlineForm
-    readonly_fields = (
-        "type",
-        "timestamp",
-    )
     verbose_name_plural = "Agreed documents"
 
 

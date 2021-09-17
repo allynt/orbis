@@ -15,6 +15,15 @@ db_logger = logging.getLogger("db")
 class LoginView(AstrosatUsersLoginView):
     def get_success_response(self):
 
+        if "accepted_terms" in self.request.data and self.user.accepted_terms:
+            # if the user accepted the terms and privacy policy during registration
+            # then create a record of those agreements...
+
+            self.user.documents.add(
+                Document.objects.terms().no_orbs().active().first(),
+                Document.objects.privacy().no_orbs().active().first(),
+            )
+
         response = super().get_success_response()
 
         # log this event in the db & analytics elasticsearch
