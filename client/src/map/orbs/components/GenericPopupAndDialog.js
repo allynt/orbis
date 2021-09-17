@@ -56,16 +56,6 @@ const GenericPopupAndDialog = ({
     if (clickedFeatures?.length === 1) setDialogFeature(clickedFeatures[0]);
   }, [clickedFeatures]);
 
-  const hoverPopupProperties = useMemo(() => {
-    const { titleProperty, whitelist, blacklist } = hoverPopupProps;
-    let properties = hoveredFeatures?.[0]?.properties;
-    if (hoverPopupProps.titleProperty)
-      properties = omit(properties, titleProperty);
-    if (blacklist) properties = omit(properties, blacklist);
-    if (whitelist) properties = pick(properties, whitelist);
-    return properties;
-  }, [hoverPopupProps, hoveredFeatures]);
-
   return (
     <>
       {hoveredFeatures?.length ? (
@@ -80,7 +70,10 @@ const GenericPopupAndDialog = ({
               hoveredFeatures[0].properties,
               hoverPopupProps.titleProperty,
             )}
-            features={[hoverPopupProperties]}
+            features={[hoveredFeatures?.[0]?.properties]}
+            titleProperty={hoverPopupProps?.titleProperty}
+            propertiesToOmit={hoverPopupProps?.blacklist}
+            propertiesToPick={hoverPopupProps?.whitelist}
           >
             <List disablePadding>
               <ListItem>

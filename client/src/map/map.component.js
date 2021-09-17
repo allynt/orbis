@@ -164,14 +164,19 @@ const Map = ({
     setViewState(rest);
   };
 
-  const getCursor = useCallback(
-    ({ isDragging }) => {
+  const getBottomMapCursor = useCallback(({ isDragging, isHovering }) => {
+    if (isHovering) return 'pointer';
+    return isDragging ? 'grabbing' : 'grab';
+  }, []);
+
+  const getTopMapCursor = useCallback(
+    cursorState => {
       if (drawingToolsEnabled && editableLayer?.state?.cursor)
         return editableLayer?.state?.cursor;
       if (drawAoiLayer) return drawAoiLayer?.state?.cursor;
-      return isDragging ? 'grabbing' : 'grab';
+      return getBottomMapCursor(cursorState);
     },
-    [drawAoiLayer, drawingToolsEnabled, editableLayer],
+    [drawAoiLayer, drawingToolsEnabled, editableLayer, getBottomMapCursor],
   );
 
   const mapProps = {
@@ -221,6 +226,7 @@ const Map = ({
           selectedSceneLayer,
           selectionLayer,
         ]}
+        getCursor={getBottomMapCursor}
         effects={[lightingEffect]}
         glOptions={{
           preserveDrawingBuffer: true,
@@ -248,7 +254,7 @@ const Map = ({
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
           layers={[drawAoiLayer, editableLayer]}
-          getCursor={getCursor}
+          getCursor={getTopMapCursor}
           style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
           glOptions={{
             preserveDrawingBuffer: true,

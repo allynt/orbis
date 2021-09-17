@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { pickBy } from 'lodash';
+import { omit, pick, get } from 'lodash';
 
 import { isEmail } from 'utils/text';
 
@@ -48,9 +48,10 @@ const renderItemValue = value => {
  * @param {{
  *   jsonKey?: string
  *   value: {[key: string]: any}
+ *   labelMapping?: {[key: string]: string}
  * }} props
  */
-const ObjectItem = ({ jsonKey, value }) => (
+const ObjectItem = ({ jsonKey, value, labelMapping }) => (
   <List disablePadding component="div">
     {jsonKey && (
       <ListSubheader disableSticky>
@@ -59,7 +60,7 @@ const ObjectItem = ({ jsonKey, value }) => (
         </Typography>
       </ListSubheader>
     )}
-    {mapObject(value)}
+    {mapObject(value, labelMapping)}
   </List>
 );
 
@@ -75,7 +76,7 @@ const Item = ({ jsonKey, value }) => {
       <ListItemText
         primary={
           <>
-            <b>{jsonKey} </b>
+            <b>{jsonKey}: </b>
             {renderItemValue(value)}
           </>
         }
@@ -117,37 +118,29 @@ const ArrayItem = ({ jsonKey, value }) => (
   </List>
 );
 
-const mapObject = feature => {
+/**
+ * @param {{[key: string]: any}} feature
+ * @param {{[key: string]: string}} [labelMapping]
+ * @returns
+ */
+const mapObject = (feature, labelMapping) => {
   return (
     <>
       {feature &&
         Object.entries(feature).map(([jsonKey, value], i) => {
+          const props = {
+            key: `${jsonKey}-${i}`,
+            jsonKey: labelMapping?.[jsonKey] ? labelMapping[jsonKey] : jsonKey,
+            value,
+          };
           switch (getTypeForValue(value)) {
             case VALUE_TYPE.array:
-              return (
-                <ArrayItem
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={jsonKey}
-                  value={value}
-                />
-              );
+              return <ArrayItem {...props} />;
             case VALUE_TYPE.object:
-              return (
-                <ObjectItem
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={jsonKey}
-                  value={value}
-                />
-              );
+              return <ObjectItem labelMapping={labelMapping} {...props} />;
             case VALUE_TYPE.item:
             default:
-              return (
-                <Item
-                  key={`${jsonKey}-${i}`}
-                  jsonKey={`${jsonKey}:`}
-                  value={value}
-                />
-              );
+              return <Item {...props} />;
           }
         })}
     </>
@@ -158,10 +151,13 @@ const mapObject = feature => {
  * @typedef FeatureDetailProps
  * @property {{[key: string]: any}[]} [features]
  * @property {React.ReactNode} [children]
- * @property {string[]} propertiesBlacklist
- * @property {(obj: object) => React.ReactNode|null} postFeatureComponent
+ * @property {string} [titleProperty]
+ * @property {string[]} [propertiesToOmit]
+ * @property {string[]} [propertiesToPick]
+ * @property {(obj: object) => React.ReactNode|null} [postFeatureComponent]
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
+ * @property {{[key: string]: string}} [labelMapping]
  */
 
 const useStyles = makeStyles(theme => ({
@@ -191,8 +187,11 @@ const FeatureDetail = ({
   children,
   features,
   title = DEFAULT_TITLE,
-  propertiesBlacklist = [],
+  titleProperty,
+  propertiesToOmit,
+  propertiesToPick,
   postFeatureComponent,
+  labelMapping,
   footer,
 }) => {
   const styles = useStyles();
@@ -200,19 +199,29 @@ const FeatureDetail = ({
   return (
     <>
       <Typography className={styles.header} component="h1">
-        {title}
+        {titleProperty ? get(features[0], titleProperty) : title}
       </Typography>
       <div className={styles.content}>
         {features &&
-          features?.map(feature => (
-            <List key={feature?.id} className={styles.list}>
-              {mapObject(
-                pickBy(feature, (_, key) => !propertiesBlacklist.includes(key)),
-              )}
-              {postFeatureComponent ? postFeatureComponent(feature) : null}
-              {footer && <Item jsonKey={footer.label} value={footer.content} />}
-            </List>
-          ))}
+          features?.map(feature => {
+            let properties = { ...feature };
+            if (propertiesToOmit || titleProperty)
+              properties = omit(properties, [
+                ...(Boolean(propertiesToOmit) ? propertiesToOmit : []),
+                ...(titleProperty ? [titleProperty] : []),
+              ]);
+            if (propertiesToPick)
+              properties = pick(properties, propertiesToPick);
+            return (
+              <List key={feature?.id} className={styles.list}>
+                {mapObject(properties, labelMapping)}
+                {postFeatureComponent ? postFeatureComponent(feature) : null}
+                {footer && (
+                  <Item jsonKey={footer.label} value={footer.content} />
+                )}
+              </List>
+            );
+          })}
         {children && children}
       </div>
     </>

@@ -248,7 +248,7 @@ export const clickedFeaturesSelector = id =>
 
 /** @param {string} id */
 export const hoveredFeaturesSelector = id =>
-  createSelector(baseSelector, state => state[id]?.hoveredFeatures);
+  createSelector(baseSelector, state => state?.[id]?.hoveredFeatures);
 
 /** @param {string} id */
 export const visibilitySelector = id =>

@@ -61,17 +61,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {Omit<import('react-map-gl').PopupProps, "dynamicPosition" | "className">} props
+ * @param {Omit<import('react-map-gl').PopupProps, "className">} props
  */
-export const Popup = props => {
+export const Popup = ({ dynamicPosition = false, ...rest }) => {
   const styles = useStyles();
   return (
     <ReactMapGlPopup
       className={styles.popup}
-      dynamicPosition={false}
+      dynamicPosition={dynamicPosition}
       closeOnClick={false}
       captureClick
-      {...props}
+      {...rest}
     />
   );
 };

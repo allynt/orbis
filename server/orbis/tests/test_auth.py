@@ -106,6 +106,6 @@ class TestOrbisRegistration:
         assert status.is_client_error(response.status_code)
 
         assert response.json()["errors"]["accepted_terms"] == [
-            "Cannot find active TermsDocument"
+            "Cannot find active Terms Document"
         ]
         assert UserModel.objects.count() == 0

@@ -11,7 +11,7 @@ from rest_framework import status
 
 from astrosat.tests.utils import *
 
-from orbis.models import Document, PrivacyDocument, TermsDocument, UserGuideDocument
+from orbis.models import Document
 
 from .factories import *
 

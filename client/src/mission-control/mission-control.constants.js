@@ -33,7 +33,7 @@ export const VIEWS = {
     admin: true,
   },
   support: { label: 'Support', route: '/support', Icon: SupportIcon },
-  // storage: { label: 'Storage', route: '/storage', Icon: StorageIcon },
+  storage: { label: 'Storage', route: '/storage', Icon: StorageIcon },
 };
 
 export const ORGANISATION_TYPES = [
