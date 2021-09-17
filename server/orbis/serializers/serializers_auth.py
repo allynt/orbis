@@ -20,7 +20,7 @@ class ValidateDocumentsExistMixin():
             privacy_document = Document.objects.privacy().no_orbs().active(
             ).first()
 
-            if not terms_document and privacy_document:
+            if not terms_document and not privacy_document:
                 raise ValidationError(
                     "Cannot find active Terms and Privacy Document"
                 )

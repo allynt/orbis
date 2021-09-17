@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from rest_framework import status
+from rest_framework.settings import api_settings as drf_settings
 from rest_framework.test import APIClient
 
 from astrosat.tests.utils import *
@@ -59,7 +60,7 @@ class TestOrbisRegistration:
     ):
 
         user_settings = UserSettings.load()
-        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.require_terms_acceptance = True
         user_settings.save()
 
         terms_document = DocumentFactory(
@@ -92,7 +93,7 @@ class TestOrbisRegistration:
     ):
 
         user_settings = UserSettings.load()
-        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.require_terms_acceptance = True
         user_settings.save()
 
         client = APIClient()
@@ -107,17 +108,49 @@ class TestOrbisRegistration:
         }
 
         response = client.post(url, test_data)
+        content = response.json()
         assert status.is_client_error(response.status_code)
 
-        assert response.json()["errors"]["accepted_terms"] == [
+        assert content["errors"]["accepted_terms"] == [
             "Cannot find active Terms and Privacy Document"
         ]
         assert UserModel.objects.count() == 0
 
-    def test_registration_adds_document_agreements(self, mock_storage):
+
+@pytest.mark.django_db
+class TestOrbisLogin:
+    def test_login_fails_without_document_agreements(self, mock_storage):
+        user_settings = UserSettings.load()
+        user_settings.require_terms_acceptance = True
+        user_settings.save()
+
+        user = UserFactory(accepted_terms=False)
+
+        DocumentFactory(type=DocumentType.TERMS, is_active=True)
+        DocumentFactory(type=DocumentType.PRIVACY, is_active=True)
+
+        client = APIClient()
+        url = reverse("rest_login")
+        test_data = {
+            "email": user.email,
+            "password": user.raw_password,
+            "accepted_terms": False
+        }
+
+        response = client.post(url, test_data)
+        content = response.json()
+        assert status.is_client_error(response.status_code)
+
+        assert content["errors"] == {
+            drf_settings.NON_FIELD_ERRORS_KEY: [
+                f"User {user} has not yet accepted the terms & conditions."
+            ]
+        }
+
+    def test_login_adds_document_agreements(self, mock_storage):
 
         user_settings = UserSettings.load()
-        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.require_terms_acceptance = True
         user_settings.save()
 
         user = UserFactory(accepted_terms=False)
@@ -147,7 +180,7 @@ class TestOrbisRegistration:
     def test_login_raises_error_on_missing_documents(self, mock_storage):
 
         user_settings = UserSettings.load()
-        user_settings.ASTROSAT_USERS_REQUIRE_TERMS_ACCEPTANCE = True
+        user_settings.require_terms_acceptance = True
         user_settings.save()
 
         user = UserFactory(accepted_terms=False)
@@ -161,8 +194,9 @@ class TestOrbisRegistration:
         }
 
         response = client.post(url, test_data)
+        content = response.json()
         assert status.is_client_error(response.status_code)
 
-        assert response.json()["errors"]["accepted_terms"] == [
+        assert content["errors"]["accepted_terms"] == [
             "Cannot find active Terms and Privacy Document"
         ]
