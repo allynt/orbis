@@ -79,9 +79,9 @@ const useStyles = makeStyles(theme => ({
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
   scaleControl: {
     position: 'absolute',
-    right: '25rem',
+    right: '19rem',
     zIndex: 1,
-    bottom: '1.25em',
+    bottom: '.5em',
   },
   extrusionSlider: {
     position: 'absolute',
@@ -261,9 +261,9 @@ const Map = ({
           }}
         />
         <NavigationControl onViewStateChange={handleViewStateChange} />
-        <div className={styles.scaleControl}>
-          <ScaleControl unit="metric" />
-        </div>
+
+        <ScaleControl className={styles.scaleControl} unit="metric" />
+
         <Geocoder
           mapRef={topMapRef}
           mapboxApiAccessToken={accessToken}
