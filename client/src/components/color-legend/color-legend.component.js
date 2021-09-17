@@ -11,13 +11,14 @@ import {
 import { InfoButtonTooltip } from 'components';
 
 /**
- * @param {{property: import('typings').DiscreteProperty}} props
+ * @param {{categories: {[category: string]: {label?: string, color?: string, description?: string}}}} props
  */
-export const DiscretePropertyLegend = ({ property }) => (
+export const ColorLegend = ({ categories }) => (
   <List>
-    {Object.entries(property.categories).map(
-      ([category, { color, description }]) => {
-        const ariaLabel = { 'aria-label': category };
+    {Object.entries(categories).map(
+      ([category, { label: suppliedLabel, color, description }]) => {
+        const label = suppliedLabel || category;
+        const ariaLabel = { 'aria-label': label };
         const ariaLabelProp = !description
           ? ariaLabel
           : { ContainerProps: ariaLabel };
@@ -37,7 +38,7 @@ export const DiscretePropertyLegend = ({ property }) => (
                 />
               ) : null}
             </ListItemIcon>
-            <ListItemText primary={category} />
+            <ListItemText primary={label} />
             {description ? (
               <ListItemSecondaryAction>
                 <InfoButtonTooltip tooltipContent={description} />

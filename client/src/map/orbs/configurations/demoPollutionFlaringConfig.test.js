@@ -21,25 +21,6 @@ describe('demoPollutionFlaringConfig', () => {
       });
       expect(data).toEqual([1, 2]);
     });
-
-    it('returns features with the matching timestamp if other.data exists', () => {
-      const features = [
-        { properties: { id: 1, timestamp: '2020-02-01 00:00:00' } },
-        { properties: { id: 2, timestamp: '2020-01-01 23:00:00' } },
-      ];
-      const { data } = configFn({
-        id: 'test/layer',
-        orbState: {
-          layers: {
-            'test/layer': {
-              data: { features },
-              other: { date: 1577923200000 },
-            },
-          },
-        },
-      });
-      expect(data).toEqual([features[1]]);
-    });
   });
 
   describe('getPosition', () => {
@@ -49,6 +30,25 @@ describe('demoPollutionFlaringConfig', () => {
         1,
         2,
       ]);
+    });
+  });
+
+  describe('getFilterValue', () => {
+    it('Returns 1 if the features timestamp includes the given date', () => {
+      const feature = {
+        properties: { id: 2, timestamp: '2020-01-01 23:00:00' },
+      };
+      const { getFilterValue } = configFn({
+        id: 'test/layer',
+        orbState: {
+          layers: {
+            'test/layer': {
+              other: { date: 1577923200000 },
+            },
+          },
+        },
+      });
+      expect(getFilterValue(feature)).toBe(1);
     });
   });
 });
