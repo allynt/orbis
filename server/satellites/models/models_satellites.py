@@ -5,7 +5,7 @@ from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models.fields import related
+
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
