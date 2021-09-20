@@ -3,8 +3,13 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
+import { Provider } from 'react-redux';
+import createMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
 import { Storage } from './storage.component';
+
+const mockStore = createMockStore([thunk]);
 
 const TEST_FILES = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
@@ -13,9 +18,12 @@ const TEST_FILES = new Array(20).fill().map((_, i) => ({
 }));
 
 const renderComponent = () => {
+  const store = mockStore({});
   const setFiles = jest.fn();
-  const utils = render(<Storage files={TEST_FILES} setFiles={setFiles} />);
-  return { ...utils };
+  const utils = render(<Storage files={TEST_FILES} setFiles={setFiles} />, {
+    wrapper: props => <Provider store={store} {...props} />,
+  });
+  return { ...utils, store };
 };
 
 describe('<Storage />', () => {
