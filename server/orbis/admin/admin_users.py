@@ -60,12 +60,15 @@ class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     verbose_name_plural = "Agreed documents"
 
 
-class DataStorageAdminInline(admin.TabularInline):
+class DataStorageAdminInline(ReadOnlyModelAdminBase, admin.TabularInline):
     model = DataStorage
 
     extra = 0
-    fields = ("title", )
-    readonly_fields = ("created", "size")
+    fields = (
+        "title",
+        "created",
+        "size",
+    )
     verbose_name_plural = "Data Storage"
 
 
