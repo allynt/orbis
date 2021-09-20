@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { ToggleButtonGroup, ToggleButton, Grid } from '@astrosat/astrosat-ui';
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+  makeStyles,
+  Grid,
+} from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
@@ -33,6 +38,12 @@ const OffsetPoint = props => {
   return <Point {...props} y={props.y - +props.size / 2} />;
 };
 
+const useStyles = makeStyles(theme => ({
+  buttonGroup: {
+    marginBottom: theme.spacing(2),
+  },
+}));
+
 /**
  * @param {{
  *   data: {x: number, y: number}[]
@@ -58,6 +69,7 @@ export const Histogram = ({
   const [scale, setScale] = useState(SCALE_VALUES.linear);
   const isLogScale = scale === SCALE_VALUES.log;
   const orbisChartTheme = useChartTheme();
+  const styles = useStyles();
   const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
 
@@ -75,6 +87,7 @@ export const Histogram = ({
         component={ToggleButtonGroup}
         value={scale}
         onChange={handleToggleClick}
+        className={styles.buttonGroup}
       >
         <Grid
           item
