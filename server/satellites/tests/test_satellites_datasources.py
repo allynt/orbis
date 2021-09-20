@@ -93,27 +93,6 @@ class TestSatelliteDataSourceViews:
         data_source.refresh_from_db()
         assert data_source.name == "test_name"
 
-    @pytest.mark.skip()
-    def test_delete_data_source(self, customer_user, api_client):
-
-        customer_user = customer_user(type="MEMBER")
-        data_source = SatelliteDataSourceFactory(customer_user=customer_user)
-
-        client = api_client(customer_user.user)
-        url = reverse(
-            "satellite-data-source-detail",
-            kwargs={
-                "customer_id": str(customer_user.customer.id),
-                "user_id": str(customer_user.user.uuid),
-                "datasource_id": str(data_source.id)
-            }
-        )
-
-        response = client.delete(url)
-
-        assert status.is_success(response.status_code)
-        assert SatelliteDataSource.objects.count() == 0
-
     def test_create_data_source(self, customer_user, api_client):
 
         customer_user = customer_user(type="MEMBER")
