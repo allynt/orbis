@@ -24,17 +24,20 @@ export class ResponseError extends Error {
   /** @returns {Promise<string[] | undefined>} */
   async getErrors() {
     const body = await this.getBody();
-    if (body.detail || !body.errors) {
+    if (body.detail || (!body.errors && !body.non_field_errors)) {
       return;
     }
 
-    const errors = body.errors;
-
     let errorMessages = [];
-    for (const key of Object.keys(errors)) {
-      for (const index in errors[key]) {
-        const array = errors[key];
-        errorMessages = [...errorMessages, array[index]];
+    if (body.non_field_errors) {
+      errorMessages = [...errorMessages, ...body.non_field_errors];
+    }
+    if (body.errors) {
+      for (const key of Object.keys(body.errors)) {
+        for (const index in body.errors[key]) {
+          const array = body.errors[key];
+          errorMessages = [...errorMessages, array[index]];
+        }
       }
     }
     return errorMessages;
