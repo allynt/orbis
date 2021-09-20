@@ -60,7 +60,7 @@ class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     verbose_name_plural = "Agreed documents"
 
 
-class DataStorageAdmin(admin.TabularInline):
+class DataStorageAdminInline(admin.TabularInline):
     model = DataStorage
 
     extra = 0
@@ -76,7 +76,7 @@ class UserAdmin(AstrosatUserAdmin):
     """
     inlines = (
         DocumentAgreementInline,
-        DataStorageAdmin,
+        DataStorageAdminInline,
     )
 
 
