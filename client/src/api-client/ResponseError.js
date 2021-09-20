@@ -28,15 +28,14 @@ export class ResponseError extends Error {
       return;
     }
 
-    const errors = body.errors || body.non_field_errors;
-
     let errorMessages = [];
-    if (Array.isArray(errors)) {
-      errorMessages = errors;
-    } else {
-      for (const key of Object.keys(errors)) {
-        for (const index in errors[key]) {
-          const array = errors[key];
+    if (body.non_field_errors) {
+      errorMessages = [...errorMessages, ...body.non_field_errors];
+    }
+    if (body.errors) {
+      for (const key of Object.keys(body.errors)) {
+        for (const index in body.errors[key]) {
+          const array = body.errors[key];
           errorMessages = [...errorMessages, array[index]];
         }
       }
