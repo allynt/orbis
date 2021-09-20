@@ -35,6 +35,7 @@ from orbis.models import (
     OrderType,
     Order,
     OrderItem,
+    DataStorage,
 )
 
 json_encoder = JSONEncoder()
@@ -271,3 +272,13 @@ class OrderItemFactory(factory.django.DjangoModelFactory):
                     orb=self.orb, customer=self.order.customer
                 )
                 self.licences.add(licence)
+
+
+class DataStorageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = DataStorage
+
+    customer = factory.SubFactory(CustomerFactory)
+    user = factory.SubFactory(UserFactory)
+    title = FactoryFaker("sentence", nb_words=3)
+    size = FactoryFaker("pyfloat", min_value=0, max_value=999)
