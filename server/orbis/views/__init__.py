@@ -5,3 +5,4 @@ from .views_documents import DocumentAgreementListView, DocumentDetailView
 from .views_orbs import OrbListView
 from .views_orders import OrderViewSet
 from .views_auth import LoginView, RegisterView
+from .views_storage import DataStorageViewSet
