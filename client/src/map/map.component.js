@@ -2,14 +2,6 @@ import React, { useCallback } from 'react';
 
 import { LoadMask, makeStyles } from '@astrosat/astrosat-ui';
 
-import {
-  AmbientLight,
-  LightingEffect,
-  _SunLight as SunLight,
-} from '@deck.gl/core';
-import DeckGL from '@deck.gl/react';
-import ReactMapGl, { ScaleControl } from 'react-map-gl';
-import Geocoder from 'react-map-gl-geocoder';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { mapboxTokenSelector } from 'app.slice';
@@ -20,15 +12,16 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { isDrawingAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
+import { BottomMap } from './bottom-map.component';
 import { ButtonControls } from './controls/button-controls.component';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
-import { NavigationControl } from './controls/navigation-control/navigation-control.component';
 import { isLoadingSelector, selectedMapStyleSelector } from './map.slice';
 import {
   extrudedModeSelector,
   extrusionScaleSelector,
   setExtrusionScale,
 } from './orbs/layers.slice';
+import { TopMap } from './top-map.component';
 import { useSelectionTools } from './useSelectionTools';
 
 const useStyles = makeStyles(theme => ({
@@ -77,12 +70,6 @@ const useStyles = makeStyles(theme => ({
     zIndex: 1000,
   },
   buttonControls: { position: 'absolute', right: '2rem', bottom: '8rem' },
-  scaleControl: {
-    position: 'absolute',
-    right: '19rem',
-    zIndex: 1,
-    bottom: '.5em',
-  },
   extrusionSlider: {
     position: 'absolute',
     zIndex: 1,
@@ -93,20 +80,6 @@ const useStyles = makeStyles(theme => ({
     transform: 'translateX(-50%)',
   },
 }));
-
-const ambientLight = new AmbientLight({
-  color: [255, 255, 255],
-  intensity: 1.0,
-});
-
-const dirLight = new SunLight({
-  timestamp: Date.UTC(2019, 7, 1, 10),
-  color: [255, 255, 255],
-  intensity: 1.0,
-});
-
-const lightingEffect = new LightingEffect({ ambientLight, dirLight });
-lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
 /**
  * @param {{
@@ -150,19 +123,17 @@ const Map = ({
   } = useSatellitesLayers();
   const isDrawingAoi = useSelector(isDrawingAoiSelector);
 
-  const handleGeocoderSelect = useCallback(
-    newViewState => setViewState(newViewState),
-    [setViewState],
-  );
-
   const handleExtrusionScaleChange = useCallback(
     value => dispatch(setExtrusionScale(value)),
     [dispatch],
   );
 
-  const handleViewStateChange = ({ viewState: { width, height, ...rest } }) => {
-    setViewState(rest);
-  };
+  const handleViewStateChange = useCallback(
+    ({ viewState: { width, height, ...rest } }) => {
+      setViewState(rest);
+    },
+    [setViewState],
+  );
 
   const getBottomMapCursor = useCallback(({ isDragging, isHovering }) => {
     if (isHovering) return 'pointer';
@@ -178,15 +149,6 @@ const Map = ({
     },
     [drawAoiLayer, drawingToolsEnabled, editableLayer, getBottomMapCursor],
   );
-
-  const mapProps = {
-    ...viewState,
-    width: '100%',
-    height: '100%',
-    reuseMaps: true,
-    preserveDrawingBuffer: true,
-    mapboxApiAccessToken: accessToken,
-  };
 
   const topMapIsController = drawingToolsEnabled || isDrawingAoi;
 
@@ -214,9 +176,9 @@ const Map = ({
         setDrawingToolsEnabled={setDrawingToolsEnabled}
         updateViewState={updateViewState}
       />
-
-      <DeckGL
-        ref={bottomDeckRef}
+      <BottomMap
+        deckRef={bottomDeckRef}
+        mapRef={bottomMapRef}
         controller={!topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
@@ -227,54 +189,22 @@ const Map = ({
           selectionLayer,
         ]}
         getCursor={getBottomMapCursor}
-        effects={[lightingEffect]}
-        glOptions={{
-          preserveDrawingBuffer: true,
-        }}
-      >
-        <ReactMapGl
-          key="bottom"
-          ref={bottomMapRef}
-          mapStyle={selectedMapStyle?.bottomMapStyle}
-          attributionControl={false}
-          {...mapProps}
-        />
-      </DeckGL>
-
-      <ReactMapGl
-        key="top"
-        ref={topMapRef}
-        style={{ pointerEvents: 'none' }}
+        mapStyle={selectedMapStyle?.bottomMapStyle}
+        mapboxApiAccessToken={accessToken}
+      />
+      <TopMap
         mapStyle={selectedMapStyle?.topMapStyle}
-        {...mapProps}
-      >
-        <DeckGL
-          ref={topDeckRef}
-          controller={topMapIsController}
-          viewState={viewState}
-          onViewStateChange={handleViewStateChange}
-          layers={[drawAoiLayer, editableLayer]}
-          getCursor={getTopMapCursor}
-          style={{ pointerEvents: topMapIsController ? 'all' : 'none' }}
-          glOptions={{
-            preserveDrawingBuffer: true,
-          }}
-        />
-        <NavigationControl onViewStateChange={handleViewStateChange} />
-
-        <ScaleControl className={styles.scaleControl} unit="metric" />
-
-        <Geocoder
-          mapRef={topMapRef}
-          mapboxApiAccessToken={accessToken}
-          position="top-right"
-          marker={false}
-          onViewportChange={handleGeocoderSelect}
-        />
-        <React.Suspense fallback={<div>Loading...</div>}>
-          {mapComponents}
-        </React.Suspense>
-      </ReactMapGl>
+        mapRef={topMapRef}
+        deckRef={topDeckRef}
+        controller={topMapIsController}
+        viewState={viewState}
+        onViewStateChange={handleViewStateChange}
+        getCursor={getTopMapCursor}
+        mapComponents={mapComponents}
+        mapboxApiAccessToken={accessToken}
+        editableLayer={editableLayer}
+        drawAoiLayer={drawAoiLayer}
+      />
     </div>
   );
 };
