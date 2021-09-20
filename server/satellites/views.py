@@ -351,7 +351,7 @@ class SatelliteDataSourceViewSet(
         context = super().get_serializer_context()
         context["customer_user"] = self.customer_user
 
-        if self.request.method == 'POST':
+        if self.action == 'create':
             storage = DataStorage(
                 customer=self.customer_user.customer,
                 user=self.customer_user.user,
