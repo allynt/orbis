@@ -1,11 +1,40 @@
 from rest_framework.exceptions import ValidationError
 
-from astrosat_users.serializers import RegisterSerializer as AstrosatUsersRegisterSerializer
+from astrosat_users.serializers import (
+    LoginSerializer as AstrosatUsersLoginSerializer,
+    RegisterSerializer as AstrosatUsersRegisterSerializer,
+)
 
 from orbis.models import LicencedCustomer, Orb, Document
 
 
-class RegisterSerializer(AstrosatUsersRegisterSerializer):
+class ValidateDocumentsExistMixin():
+    """
+    Makes sure that if a user accepted a document,
+    that document actually exists in the db.
+    """
+    def validate_accepted_terms(self, value):
+
+        if value:
+            terms_document = Document.objects.terms().no_orbs().active().first()
+            privacy_document = Document.objects.privacy().no_orbs().active(
+            ).first()
+
+            if not terms_document and not privacy_document:
+                raise ValidationError(
+                    "Cannot find active Terms and Privacy Document"
+                )
+            elif not terms_document:
+                raise ValidationError("Cannot find active Terms Document")
+            elif not privacy_document:
+                raise ValidationError("Cannot find active Privacy Document")
+
+        return value
+
+
+class RegisterSerializer(
+    ValidateDocumentsExistMixin, AstrosatUsersRegisterSerializer
+):
     """
     Overwrites the default RegisterSerializer b/c if I create a Customer
     as part of registration, I want to make sure that in orbis I also
@@ -35,10 +64,8 @@ class RegisterSerializer(AstrosatUsersRegisterSerializer):
                     ignore_existing=False
                 )
 
-    def validate_accepted_terms(self, value):
 
-        if value and not Document.objects.terms().no_orbs().active().first():
-            msg = "Cannot find active Terms Document"
-            raise ValidationError(msg)
-
-        return value
+class LoginSerializer(
+    ValidateDocumentsExistMixin, AstrosatUsersLoginSerializer
+):
+    pass

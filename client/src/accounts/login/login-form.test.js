@@ -13,7 +13,8 @@ const PASSWORD_TEXT = 'testpassword';
 const SIGN_UP = /sign up/i;
 const KEEP_LOGGED_IN = /keep\sme\slogged\sin/i;
 const WORK_EMAIL = /work\semail\saddress/i;
-const I_AGREE_TEXT = 'I agree with Terms & Conditions';
+const I_AGREE_TEXT =
+  'I agree with the Terms & Conditions and the Privacy Policy';
 
 /** @type {jest.Mock} */
 let login;
