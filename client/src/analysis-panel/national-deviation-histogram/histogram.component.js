@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  makeStyles,
-  ToggleButtonGroup,
-  ToggleButton,
-} from '@astrosat/astrosat-ui';
+import { ToggleButtonGroup, ToggleButton, Grid } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
@@ -37,18 +33,6 @@ const OffsetPoint = props => {
   return <Point {...props} y={props.y - +props.size / 2} />;
 };
 
-const useStyles = makeStyles(theme => ({
-  buttonGroup: {
-    margin: '0 auto',
-    marginBottom: theme.spacing(2),
-  },
-  toggleButton: {
-    minWidth: '5.125rem',
-    padding: '0.5rem 1rem',
-    fontSize: '0.875rem',
-  },
-}));
-
 /**
  * @param {{
  *   data: {x: number, y: number}[]
@@ -74,7 +58,6 @@ export const Histogram = ({
   const [scale, setScale] = useState(SCALE_VALUES.linear);
   const isLogScale = scale === SCALE_VALUES.log;
   const orbisChartTheme = useChartTheme();
-  const styles = useStyles();
   const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
 
@@ -85,26 +68,33 @@ export const Histogram = ({
 
   return (
     <>
-      <ToggleButtonGroup
+      <Grid
+        container
+        justifyContent="center"
+        wrap="nowrap"
+        component={ToggleButtonGroup}
         value={scale}
         onChange={handleToggleClick}
-        className={styles.buttonGroup}
       >
-        <ToggleButton
+        <Grid
+          item
+          component={ToggleButton}
+          size="small"
           value={SCALE_VALUES.linear}
           selected={scale === SCALE_VALUES.linear}
-          className={styles.toggleButton}
         >
           Linear
-        </ToggleButton>
-        <ToggleButton
+        </Grid>
+        <Grid
+          item
+          component={ToggleButton}
+          size="small"
           value={SCALE_VALUES.log}
           selected={scale === SCALE_VALUES.log}
-          className={styles.toggleButton}
         >
           Log
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </Grid>
+      </Grid>
 
       <ParentSize>
         {({ width }) => {

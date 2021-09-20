@@ -35,10 +35,6 @@ const useStyles = makeStyles(
       margin: spacing(1, 'auto', 2),
     },
     label: { ...caption },
-    toggleButton: {
-      padding: '0.5rem 1rem',
-      fontSize: '0.875rem',
-    },
   }),
 );
 
@@ -109,22 +105,27 @@ export const Sliders = ({
           justifyContent="center"
           component={ToggleButtonGroup}
           value={scale}
+          wrap="nowrap"
           onChange={handleToggleChange}
         >
-          <ToggleButton
+          <Grid
+            item
+            component={ToggleButton}
+            size="small"
             selected={scale === SCALE_VALUES.filter}
             value={SCALE_VALUES.filter}
-            className={styles.toggleButton}
           >
             {SCALE_VALUES.filter}
-          </ToggleButton>
-          <ToggleButton
+          </Grid>
+          <Grid
+            item
+            component={ToggleButton}
+            size="small"
             selected={scale === SCALE_VALUES.colour}
             value={SCALE_VALUES.colour}
-            className={styles.toggleButton}
           >
             {SCALE_VALUES.colour}
-          </ToggleButton>
+          </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>

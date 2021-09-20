@@ -20,11 +20,6 @@ import { TooltipContent } from './tooltip-content.component';
 const useStyles = makeStyles(theme => ({
   grid: { '& + &': { marginTop: theme.spacing(0.5) } },
   iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
-  toggleButton: {
-    minWidth: '6.875rem',
-    padding: '0.5rem 1rem',
-    fontSize: '0.875rem',
-  },
 }));
 
 /**
@@ -127,19 +122,22 @@ const PropertyRadio = ({
                 item
                 container
                 justifyContent="center"
+                wrap="nowrap"
                 component={ToggleButtonGroup}
                 value={selectedProperty}
                 onChange={handleToggleChange}
               >
                 {properties.map(p => (
-                  <ToggleButton
+                  <Grid
+                    item
+                    component={ToggleButton}
                     key={p.name}
+                    size="small"
                     selected={selectedProperty?.name === p.name}
                     value={p}
-                    className={styles.toggleButton}
                   >
                     {getButtonLabelForProperty(p)}
-                  </ToggleButton>
+                  </Grid>
                 ))}
               </Grid>
             </>
