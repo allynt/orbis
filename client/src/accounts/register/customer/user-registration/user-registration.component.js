@@ -171,13 +171,21 @@ const UserRegistration = ({
         <FormControlLabel
           label={
             <Typography>
-              I agree with&nbsp;
+              I agree with the&nbsp;
               <Link
                 href={apiClient.documents.termsUrl}
                 rel="noreferrer noopener"
                 target="_blank"
               >
                 Terms &amp; Conditions
+              </Link>
+              &nbsp; and the&nbsp;
+              <Link
+                href={apiClient.documents.privacyUrl}
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Privacy Policy
               </Link>
             </Typography>
           }

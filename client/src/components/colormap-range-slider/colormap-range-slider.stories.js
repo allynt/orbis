@@ -41,7 +41,8 @@ const COLOR_MAPS = [
 ];
 
 export default {
-  title: 'Components/MaterialColorMapRangeSlider',
+  title: 'Components/ColormapRangeSlider',
+  component: ColormapRangeSlider,
   argTypes: {
     colorMap: {
       control: {
@@ -109,4 +110,10 @@ export const LongValues = Template.bind({});
 LongValues.args = {
   min: -1000000,
   max: 1000000,
+};
+
+export const BarOnly = Template.bind({});
+BarOnly.args = {
+  ...Percentage.args,
+  barOnly: true,
 };

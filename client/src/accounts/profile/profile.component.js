@@ -51,6 +51,14 @@ const Profile = () => {
           >
             Terms &amp; Conditions
           </Link>
+          &nbsp;and our&nbsp;
+          <Link
+            href={apiClient.documents.privacyUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Privacy Policy
+          </Link>
         </Typography>
       </Box>
     </Box>

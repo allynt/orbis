@@ -21,7 +21,7 @@ export default ({
   activeSources,
   authToken,
   orbState,
-  otherStateKey,
+  otherStateKey = id,
   valueKey,
   defaultValue,
   dateFormat = 'yyyyMMdd',

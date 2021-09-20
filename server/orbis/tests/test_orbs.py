@@ -601,3 +601,83 @@ class TestLicencedCustomer:
             licences__in=remaining_licences
         )
         assert normal_orb in Orb.objects.filter(licences__in=remaining_licences)
+
+    def test_exclusive_licences_removed(self, user, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        customer_user, _ = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        exclusive_orb = OrbFactory(is_exclusive=True)
+        normal_orb = OrbFactory(is_exclusive=False)
+
+        customer.assign_licences(
+            exclusive_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.assign_licences(
+            normal_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.refresh_from_db()
+        customer_user.refresh_from_db()
+
+        customer_licences = customer.licences.all()
+        customer_user_licences = customer_user.licences.all()
+
+        assert customer_licences.count() == 2
+        assert customer_user_licences.count() == 1
+
+        assert exclusive_orb not in Orb.objects.filter(
+            licences__in=customer_user_licences
+        )
+        assert normal_orb in Orb.objects.filter(
+            licences__in=customer_user_licences
+        )
+        assert exclusive_orb in Orb.objects.filter(
+            licences__in=customer_licences
+        )
+        assert normal_orb in Orb.objects.filter(licences__in=customer_licences)
+
+    def test_exclusive_default_licences_deleted(self, user, mock_storage):
+
+        customer = CustomerFactory(logo=None)
+        customer_user, _ = customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        exclusive_default_orb = OrbFactory(is_exclusive=True, is_default=True)
+        normal_orb = OrbFactory(is_exclusive=False, is_default=False)
+
+        customer.assign_licences(
+            exclusive_default_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.assign_licences(
+            normal_orb, [customer_user],
+            add_missing=True,
+            ignore_existing=False
+        )
+
+        customer.refresh_from_db()
+        customer_user.refresh_from_db()
+
+        customer_licences = customer.licences.all()
+        customer_user_licences = customer_user.licences.all()
+
+        assert customer_licences.count() == 1
+        assert customer_user_licences.count() == 1
+
+        assert exclusive_default_orb not in Orb.objects.filter(
+            licences__in=customer_user_licences
+        )
+        assert normal_orb in Orb.objects.filter(
+            licences__in=customer_user_licences
+        )
+        assert exclusive_default_orb not in Orb.objects.filter(
+            licences__in=customer_licences
+        )
+        assert normal_orb in Orb.objects.filter(licences__in=customer_licences)

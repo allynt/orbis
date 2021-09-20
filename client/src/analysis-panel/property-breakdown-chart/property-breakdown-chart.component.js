@@ -6,9 +6,11 @@ import { ParentSize } from '@visx/responsive';
 import { VictoryPie } from 'victory';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
-import { LegendItem, SidePanelSection } from 'components';
+import { SidePanelSection } from 'components';
 import { useChartTheme } from 'hooks/useChartTheme';
 import { DEFAULT_DECIMAL_PRECISION } from 'map/map.constants';
+
+import { LegendItem } from '../legend-item/legend-item.component';
 
 /**
  *

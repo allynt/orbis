@@ -145,6 +145,15 @@ export class ColorScale {
   }
 
   /**
+   * @param {number} [count]
+   * @returns {number[]}
+   */
+  ticks(count) {
+    // @ts-ignore
+    return !this.isDiscrete() ? this.#scale.ticks(count) : null;
+  }
+
+  /**
    * @param  {number | string} value
    * @param {ColorFormat} [format]
    */
