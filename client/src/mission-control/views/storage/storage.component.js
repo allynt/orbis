@@ -12,9 +12,11 @@ import {
 
 import { format } from 'date-fns';
 import { NotificationManager } from 'react-notifications';
+import { useDispatch } from 'react-redux';
 import { useSortBy } from 'react-table';
 
 import apiClient from 'api-client';
+import { fetchSources } from 'data-layers/data-layers.slice';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -27,6 +29,7 @@ const DialogCloseButton = styled(IconButton)({
 });
 
 export const Storage = ({ files, setFiles }) => {
+  const dispatch = useDispatch();
   const [fileId, setFileId] = useState(null);
 
   const close = () => setFileId(null);
@@ -34,6 +37,7 @@ export const Storage = ({ files, setFiles }) => {
   const onDeleteFileClick = async () => {
     try {
       await apiClient.storage.deleteFile(fileId);
+      dispatch(fetchSources());
     } catch (error) {
       const { message, status } = error;
       NotificationManager.error(
