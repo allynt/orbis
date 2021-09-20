@@ -31,22 +31,18 @@ export const Storage = ({ files, setFiles }) => {
 
   const close = () => setFileId(null);
 
-  const onDeleteFileClick = () => {
-    const deleteFile = async () => {
-      try {
-        await apiClient.storage.deleteFile(fileId);
-      } catch (error) {
-        const { message, status } = error;
-        NotificationManager.error(
-          `${status} ${message}`,
-          `Deleting Stored Data Error - ${message}`,
-          50000,
-          () => {},
-        );
-      }
-    };
-
-    deleteFile();
+  const onDeleteFileClick = async () => {
+    try {
+      await apiClient.storage.deleteFile(fileId);
+    } catch (error) {
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Deleting Stored Data Error - ${message}`,
+        50000,
+        () => {},
+      );
+    }
 
     const updatedFiles = files.filter(file => file.id !== fileId);
     setFiles(updatedFiles);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 
@@ -61,7 +61,7 @@ describe('<Storage />', () => {
     expect(getByRole('dialog')).not.toBeVisible();
   });
 
-  it('closes dialog when confirm button is clicked', () => {
+  it('closes dialog when confirm button is clicked', async () => {
     const { getAllByRole, getByRole } = renderComponent();
 
     userEvent.click(getAllByRole('button', { name: 'Options' })[0]);
@@ -70,6 +70,6 @@ describe('<Storage />', () => {
     expect(getByRole('dialog')).toBeVisible();
 
     userEvent.click(getByRole('button', { name: 'Yes' }));
-    expect(getByRole('dialog')).not.toBeVisible();
+    await waitFor(() => expect(getByRole('dialog')).not.toBeVisible());
   });
 });
