@@ -6,7 +6,7 @@ from astrosat.admin import CannotAddModelAdminBase, ReadOnlyModelAdminBase
 from astrosat_users.admin import UserAdmin as AstrosatUserAdmin
 from astrosat_users.models import User as AstrosatUser
 
-from orbis.models import OrbisUserProfile, OrbisUserFeedbackRecord
+from orbis.models import OrbisUserProfile, OrbisUserFeedbackRecord, DataStorage
 
 
 class OrbisUserFeedbackRecordInline(admin.TabularInline):
@@ -60,12 +60,27 @@ class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
     verbose_name_plural = "Agreed documents"
 
 
+class DataStorageAdminInline(ReadOnlyModelAdminBase, admin.TabularInline):
+    model = DataStorage
+
+    extra = 0
+    fields = (
+        "title",
+        "created",
+        "size",
+    )
+    verbose_name_plural = "Data Storage"
+
+
 class UserAdmin(AstrosatUserAdmin):
     """
     Just like the standard UserAdmin, but adds an entry for each time
     the user has agreed terms
     """
-    inlines = (DocumentAgreementInline, )
+    inlines = (
+        DocumentAgreementInline,
+        DataStorageAdminInline,
+    )
 
 
 try:

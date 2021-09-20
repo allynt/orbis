@@ -11,6 +11,7 @@ from drf_yasg2 import openapi
 
 from astrosat.serializers import ConsolidatedErrorsSerializerMixin, ContextVariableDefault
 
+from astrosat.serializers import ContextVariableDefault
 from astrosat_users.models import CustomerUser
 
 from satellites.models import (
@@ -20,6 +21,9 @@ from satellites.models import (
     SatelliteResult,
     SatelliteDataSource,
 )
+
+from orbis.models import DataStorage
+
 from satellites.utils import project_geometry
 
 # TODO: REFACTOR THIS INTO django-astrosat-core
@@ -228,6 +232,7 @@ class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
             "satellite_id",
             "scene_id",
             "visualisation_id",
+            "data_storage",
         )
 
     customer_user = serializers.PrimaryKeyRelatedField(
@@ -239,6 +244,14 @@ class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
     satellite_id = serializers.SlugField(write_only=True)
     scene_id = serializers.SlugField(write_only=True)
     visualisation_id = serializers.SlugField(write_only=True)
+
+    data_storage = serializers.HyperlinkedRelatedField(
+        many=False,
+        write_only=True,
+        default=ContextVariableDefault("storage"),
+        view_name="storage-detail",
+        queryset=DataStorage.objects.all()
+    )
 
     def validate(self, data):
 
