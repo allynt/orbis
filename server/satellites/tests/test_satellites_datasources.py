@@ -6,6 +6,8 @@ from rest_framework import status
 
 from astrosat_users.tests.utils import *
 
+from orbis.models import DataStorage
+
 from .factories import *
 
 
@@ -35,6 +37,8 @@ class TestSatelliteDataSourceViews:
         assert status.is_client_error(response.status_code)
         assert content["detail"
                       ] == "You do not have permission to perform this action."
+
+        assert len(DataStorage.objects.all()) == 0
 
     def test_read_data_source(self, customer_user, api_client):
 
@@ -68,6 +72,8 @@ class TestSatelliteDataSourceViews:
         )  # assert no write-only fields appear in the output
         assert content["source_id"] == data_source.source_id
 
+        assert len(DataStorage.objects.all()) == 0
+
     def test_update_data_source(self, customer_user, api_client):
 
         customer_user = customer_user(type="MEMBER")
@@ -92,6 +98,8 @@ class TestSatelliteDataSourceViews:
         assert status.is_success(response.status_code)
         data_source.refresh_from_db()
         assert data_source.name == "test_name"
+
+        assert len(DataStorage.objects.all()) == 0
 
     def test_create_data_source(self, customer_user, api_client):
 
@@ -120,3 +128,6 @@ class TestSatelliteDataSourceViews:
 
         data_source = SatelliteDataSource.objects.first()
         assert data_source.customer_user == customer_user
+
+        storage = DataStorage.objects.first()
+        assert response.data["name"] == storage.title
