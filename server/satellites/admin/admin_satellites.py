@@ -75,7 +75,8 @@ class SatelliteDataSourceAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "customer_user",
-        "source_id",  # "get_storage_for_list_display",
+        "source_id",
+        "get_storage_for_list_display",
     )
     list_filter = ("customer_user", )
     readonly_fields = (
