@@ -23,6 +23,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * @param {import('typings').Property} property
+ */
+const getButtonLabelForProperty = property => {
+  if (property.application?.orbis?.display?.property_toggle_label)
+    return property.application.orbis.display.property_toggle_label;
+  switch (property.type) {
+    case 'decile':
+    case 'percentage':
+      return capitalize(property.type);
+    case 'discrete':
+      return 'Categories';
+    default:
+      return 'Number';
+  }
+};
+
+/**
  * @param {{
  *   layerSourceId: import('typings').Source['source_id']
  *   properties: import('typings').Property[]
@@ -62,28 +79,13 @@ const PropertyRadio = ({
   };
 
   /**
-   * @param {import('typings').Property} newProperty
+   * @param {string} newPropertyName
    */
-  const handleToggleChange = (_, newProperty) => {
-    if (!newProperty || newProperty.name === selectedProperty?.name) return;
-    return onPropertyChange(newProperty);
-  };
+  const handleToggleChange = (_, newPropertyName) => {
+    if (!newPropertyName || newPropertyName === selectedProperty?.name) return;
 
-  /**
-   * @param {import('typings').Property} property
-   */
-  const getButtonLabelForProperty = property => {
-    if (property.application?.orbis?.display?.property_toggle_label)
-      return property.application.orbis.display.property_toggle_label;
-    switch (property.type) {
-      case 'decile':
-      case 'percentage':
-        return capitalize(property.type);
-      case 'discrete':
-        return 'Categories';
-      default:
-        return 'Number';
-    }
+    const newProperty = properties.find(p => p.name === newPropertyName);
+    return onPropertyChange(newProperty);
   };
 
   return (
@@ -123,8 +125,9 @@ const PropertyRadio = ({
                 container
                 justifyContent="center"
                 wrap="nowrap"
+                size="small"
                 component={ToggleButtonGroup}
-                value={selectedProperty}
+                value={selectedProperty.name}
                 onChange={handleToggleChange}
               >
                 {properties.map(p => (
@@ -132,9 +135,7 @@ const PropertyRadio = ({
                     item
                     component={ToggleButton}
                     key={p.name}
-                    size="small"
-                    selected={selectedProperty?.name === p.name}
-                    value={p}
+                    value={p.name}
                   >
                     {getButtonLabelForProperty(p)}
                   </Grid>

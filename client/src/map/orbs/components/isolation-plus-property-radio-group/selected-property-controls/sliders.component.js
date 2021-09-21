@@ -103,27 +103,16 @@ export const Sliders = ({
           item
           container
           justifyContent="center"
-          component={ToggleButtonGroup}
-          value={scale}
           wrap="nowrap"
+          component={ToggleButtonGroup}
+          size="small"
+          value={scale}
           onChange={handleToggleChange}
         >
-          <Grid
-            item
-            component={ToggleButton}
-            size="small"
-            selected={scale === SCALE_VALUES.filter}
-            value={SCALE_VALUES.filter}
-          >
+          <Grid item component={ToggleButton} value={SCALE_VALUES.filter}>
             {SCALE_VALUES.filter}
           </Grid>
-          <Grid
-            item
-            component={ToggleButton}
-            size="small"
-            selected={scale === SCALE_VALUES.colour}
-            value={SCALE_VALUES.colour}
-          >
+          <Grid item component={ToggleButton} value={SCALE_VALUES.colour}>
             {SCALE_VALUES.colour}
           </Grid>
         </Grid>

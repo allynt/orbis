@@ -80,34 +80,19 @@ export const Histogram = ({
 
   return (
     <>
-      <Grid
-        container
-        justifyContent="center"
-        wrap="nowrap"
-        component={ToggleButtonGroup}
+      <ToggleButtonGroup
+        size="small"
         value={scale}
         onChange={handleToggleClick}
         className={styles.buttonGroup}
       >
-        <Grid
-          item
-          component={ToggleButton}
-          size="small"
-          value={SCALE_VALUES.linear}
-          selected={scale === SCALE_VALUES.linear}
-        >
+        <Grid item component={ToggleButton} value={SCALE_VALUES.linear}>
           Linear
         </Grid>
-        <Grid
-          item
-          component={ToggleButton}
-          size="small"
-          value={SCALE_VALUES.log}
-          selected={scale === SCALE_VALUES.log}
-        >
+        <Grid item component={ToggleButton} value={SCALE_VALUES.log}>
           Log
         </Grid>
-      </Grid>
+      </ToggleButtonGroup>
 
       <ParentSize>
         {({ width }) => {
