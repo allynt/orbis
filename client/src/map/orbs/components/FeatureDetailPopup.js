@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { centerOfMass } from '@turf/turf';
-import { omit, pick, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { FeatureDetail, Popup } from 'components';
