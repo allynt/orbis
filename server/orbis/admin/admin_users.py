@@ -47,13 +47,17 @@ class DocumentAgreementInlineForm(forms.ModelForm):
         }
 
 
-class DocumentAgreementInline(ReadOnlyModelAdminBase, admin.TabularInline):
+class DocumentAgreementInline(admin.TabularInline):
     model = AstrosatUser.documents.through
 
     extra = 0
     fields = (
         "document",
         "type",
+        "timestamp",
+    )
+    readonly_fields = (
+        "document",
         "timestamp",
     )
     form = DocumentAgreementInlineForm
