@@ -74,6 +74,7 @@ export const CreateUserForm = ({
           label="Name"
           error={!!errors[FIELD_NAMES.name]}
           helperText={errors[FIELD_NAMES.name]?.message}
+          autoFocus
         />
       </Form.Row>
       <Form.Row>
