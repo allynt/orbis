@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from astrosat.admin import CannotAddModelAdminBase, ReadOnlyModelAdminBase
+from astrosat.admin import CannotAddModelAdminBase, DeleteOnlyModelAdminBase, ReadOnlyModelAdminBase
 
 from astrosat_users.admin import UserAdmin as AstrosatUserAdmin
 from astrosat_users.models import User as AstrosatUser
@@ -47,17 +47,13 @@ class DocumentAgreementInlineForm(forms.ModelForm):
         }
 
 
-class DocumentAgreementInline(admin.TabularInline):
+class DocumentAgreementInline(DeleteOnlyModelAdminBase, admin.TabularInline):
     model = AstrosatUser.documents.through
 
     extra = 0
     fields = (
         "document",
         "type",
-        "timestamp",
-    )
-    readonly_fields = (
-        "document",
         "timestamp",
     )
     form = DocumentAgreementInlineForm
