@@ -18,25 +18,22 @@ const SCALE_VALUES = {
   colour: 'Adjust Colour',
 };
 
-const useStyles = makeStyles(
-  ({ spacing, typography: { caption, pxToRem } }) => ({
-    slidersGridItem: {
-      position: 'relative',
-      height: pxToRem(90),
-      padding: spacing(2),
-    },
-    slider: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      width: `calc(320px - ${spacing(6)})`,
-      margin: spacing(1, 'auto', 2),
-    },
-    label: { ...caption },
-  }),
-);
+const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
+  slidersGridItem: {
+    position: 'relative',
+    height: pxToRem(90),
+    padding: spacing(2),
+  },
+  slider: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: `calc(320px - ${spacing(6)})`,
+    margin: spacing(1, 'auto', 2),
+  },
+}));
 
 /**
  * @param {{
@@ -92,30 +89,19 @@ export const Sliders = ({
       <Grid item>
         <Typography>Range Filter</Typography>
       </Grid>
-      <Grid
-        item
-        component="label"
-        container
-        alignItems="center"
-        className={styles.label}
-      >
-        <Grid
-          item
-          container
-          justifyContent="center"
-          wrap="nowrap"
-          component={ToggleButtonGroup}
+      <Grid item xs={12}>
+        <ToggleButtonGroup
           size="small"
           value={scale}
           onChange={handleToggleChange}
         >
-          <Grid item component={ToggleButton} value={SCALE_VALUES.filter}>
+          <ToggleButton value={SCALE_VALUES.filter}>
             {SCALE_VALUES.filter}
-          </Grid>
-          <Grid item component={ToggleButton} value={SCALE_VALUES.colour}>
+          </ToggleButton>
+          <ToggleButton value={SCALE_VALUES.colour}>
             {SCALE_VALUES.colour}
-          </Grid>
-        </Grid>
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
         <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>

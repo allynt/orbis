@@ -44,7 +44,12 @@ export const DisplayTypeToggleButtons = ({
    * @param {string} newPropertyName
    */
   const handleToggleChange = (_, newPropertyName) => {
-    if (!newPropertyName || newPropertyName === selectedProperty?.name) return;
+    if (
+      !newPropertyName ||
+      !onChange ||
+      newPropertyName === selectedProperty?.name
+    )
+      return;
 
     const newProperty = properties.find(p => p.name === newPropertyName);
     return onChange(newProperty);
@@ -55,21 +60,19 @@ export const DisplayTypeToggleButtons = ({
       <Grid item xs={moreThanTwoProperties ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid
-        item
-        xs={moreThanTwoProperties ? 7 : 12}
-        container
-        wrap="nowrap"
-        component={ToggleButtonGroup}
-        size="small"
-        value={selectedProperty.name}
-        onChange={handleToggleChange}
-      >
-        {properties.map(p => (
-          <ToggleButton key={p.name} value={p.name}>
-            {getButtonLabelForProperty(p)}
-          </ToggleButton>
-        ))}
+      <Grid item xs={moreThanTwoProperties ? 7 : 12}>
+        <ToggleButtonGroup
+          size="small"
+          value={selectedProperty?.name}
+          onChange={handleToggleChange}
+          orientation={moreThanTwoProperties ? 'vertical' : 'horizontal'}
+        >
+          {properties.map(p => (
+            <ToggleButton key={p.name} value={p.name}>
+              {getButtonLabelForProperty(p)}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
       </Grid>
     </>
   );

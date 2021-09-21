@@ -4,7 +4,6 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   makeStyles,
-  Grid,
 } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
@@ -86,12 +85,8 @@ export const Histogram = ({
         onChange={handleToggleClick}
         className={styles.buttonGroup}
       >
-        <Grid item component={ToggleButton} value={SCALE_VALUES.linear}>
-          Linear
-        </Grid>
-        <Grid item component={ToggleButton} value={SCALE_VALUES.log}>
-          Log
-        </Grid>
+        <ToggleButton value={SCALE_VALUES.linear}>Linear</ToggleButton>
+        <ToggleButton value={SCALE_VALUES.log}>Log</ToggleButton>
       </ToggleButtonGroup>
 
       <ParentSize>
