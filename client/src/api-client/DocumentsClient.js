@@ -5,8 +5,14 @@ export class DocumentsClient extends SubClient {
     super('/documents');
   }
 
+  getTermsUrl(name = '') {
+    return `${this.apiHost}/api${this.endpoint}/?type=TERMS&has_orb=false${
+      name ? `&name=${name}` : ''
+    }`;
+  }
+
   get termsUrl() {
-    return `${this.apiHost}/api${this.endpoint}/?type=TERMS&has_orb=false`;
+    return this.getTermsUrl();
   }
 
   get privacyUrl() {
