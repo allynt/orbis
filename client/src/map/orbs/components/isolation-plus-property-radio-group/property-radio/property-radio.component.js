@@ -52,7 +52,7 @@ const PropertyRadio = ({
     properties.some(p => p.name === selectedProperty?.name);
 
   const handleRadioClick = () => {
-    onPropertyChange(
+    return onPropertyChange(
       selectedPropertyIsInGroup ? selectedProperty : properties[0],
     );
   };
@@ -84,13 +84,13 @@ const PropertyRadio = ({
       </Grid>
       {selectedPropertyIsInGroup && (
         <>
-          {properties.length > 1 && (
+          {properties.length > 1 ? (
             <DisplayTypeToggleButtons
               properties={properties}
               selectedProperty={selectedProperty}
               onChange={onPropertyChange}
             />
-          )}
+          ) : null}
           <SelectedPropertyControls
             selectedProperty={selectedProperty}
             filterRange={filterRange}

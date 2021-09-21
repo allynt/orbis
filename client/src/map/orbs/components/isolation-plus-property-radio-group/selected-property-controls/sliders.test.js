@@ -14,7 +14,7 @@ describe('<Sliders />', () => {
 
   it('Shows the color adjust slider when the toggle is clicked', async () => {
     const { getByTestId, getByRole, queryByTestId } = render(<Sliders />);
-    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: 'Adjust Colour' }));
     await waitFor(() =>
       expect(queryByTestId('range-slider')).not.toBeInTheDocument(),
     );
@@ -49,7 +49,7 @@ describe('<Sliders />', () => {
         onClipRangeChange={onClipRangeChange}
       />,
     );
-    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: 'Adjust Colour' }));
     userEvent.click(getByRole('button', { name: 'Reset' }));
     expect(onClipRangeChange).toBeCalledWith([clip_min, clip_max]);
   });
@@ -65,7 +65,7 @@ describe('<Sliders />', () => {
         onClipRangeChange={onClipRangeChange}
       />,
     );
-    userEvent.click(getByRole('checkbox'));
+    userEvent.click(getByRole('button', { name: 'Adjust Colour' }));
     userEvent.click(getByRole('button', { name: 'Reset' }));
     expect(onClipRangeChange).toBeCalledWith([min, max]);
   });
