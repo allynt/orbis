@@ -19,7 +19,24 @@ const ScaleControl = styled(ReactMapGlScaleControl)({
   bottom: '.5em',
 });
 
+/**
+ * @typedef {{
+ *   mapStyle: import('mapbox-gl').Style,
+ *   mapRef: import('MapContext').MapContextType['topMapRef'],
+ *   deckRef: import('MapContext').MapContextType['topDeckRef'],
+ *   controller: boolean,
+ *   viewState: import('MapContext').ViewState,
+ *   onViewStateChange: (value: import('MapContext').ViewState) => void,
+ *   getCursor: (interactiveState: import('@deck.gl/core/lib/deck').InteractiveState) => string,
+ *   mapComponents: JSX.Element[],
+ *   mapboxApiAccessToken: string,
+ *   editableLayer: import('@nebula.gl/layers').EditableGeoJsonLayer
+ *   drawAoiLayer: import('@nebula.gl/layers').EditableGeoJsonLayer,
+ * }} TopMapProps
+ */
+
 export const TopMap = React.memo(
+  /** @param {TopMapProps} props */
   ({
     mapStyle,
     mapRef,

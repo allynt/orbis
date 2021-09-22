@@ -8,6 +8,20 @@ import {
 import DeckGL from '@deck.gl/react';
 import ReactMapGl from 'react-map-gl';
 
+/**
+ * @typedef {{
+ *  deckRef: import('MapContext').MapContextType['bottomDeckRef'],
+ *  mapRef: import('MapContext').MapContextType['bottomMapRef'],
+ *  controller: boolean,
+ *  viewState: import('MapContext').ViewState,
+ *  onViewStateChange: (value: import('MapContext').ViewState) => void,
+ *  layers: any[],
+ *  getCursor: (interactiveState: import('@deck.gl/core/lib/deck').InteractiveState) => string,
+ *  mapStyle: import('mapbox-gl').Style,
+ *  mapboxApiAccessToken: string
+ * }} BottomMapProps
+ */
+
 const ambientLight = new AmbientLight({
   color: [255, 255, 255],
   intensity: 1.0,
@@ -20,9 +34,11 @@ const dirLight = new SunLight({
 });
 
 const lightingEffect = new LightingEffect({ ambientLight, dirLight });
+// @ts-ignore
 lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
 export const BottomMap = React.memo(
+  /** @param {BottomMapProps} props */
   ({
     deckRef,
     mapRef,
