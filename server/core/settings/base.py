@@ -408,7 +408,8 @@ REST_AUTH_SERIALIZERS = {
     "TOKEN_SERIALIZER":
         "astrosat_users.serializers.KnoxTokenSerializer",
     "LOGIN_SERIALIZER":
-        "astrosat_users.serializers.LoginSerializer",
+        # "astrosat_users.serializers.LoginSerializer",
+        "orbis.serializers.LoginSerializer",
     "PASSWORD_CHANGE_SERIALIZER":
         "astrosat_users.serializers.PasswordChangeSerializer",
     "PASSWORD_RESET_SERIALIZER":

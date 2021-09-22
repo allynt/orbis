@@ -54,7 +54,6 @@ class OrderAdmin(admin.ModelAdmin):
         "created",
         "customer",
         "user",
-        "terms",
         "order_type",
         "cost",
         "report",

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
-import { Button, ButtonGroup, makeStyles } from '@astrosat/astrosat-ui';
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import clsx from 'clsx';
 import numeral from 'numeral';
 import {
   Point,
@@ -22,6 +25,11 @@ import { isRealValue } from 'utils/isRealValue';
 
 const LOG_SCALE_MIN_DOMAIN = 0.3;
 
+const SCALE_VALUES = {
+  linear: 'linear',
+  log: 'log',
+};
+
 /**
  * @param {import('victory').PointProps} props
  */
@@ -31,13 +39,7 @@ const OffsetPoint = props => {
 
 const useStyles = makeStyles(theme => ({
   buttonGroup: {
-    margin: '0 auto',
     marginBottom: theme.spacing(2),
-  },
-  notActive: {
-    color: theme.palette.secondary.contrastText,
-    backgroundColor: theme.palette.secondary.dark,
-    cursor: 'pointer',
   },
 }));
 
@@ -63,29 +65,30 @@ export const Histogram = ({
   line,
   reversed = false,
 }) => {
-  const [scale, setScale] = useState('linear');
-  const isLogScale = scale === 'log';
+  const [scale, setScale] = useState(SCALE_VALUES.linear);
+  const isLogScale = scale === SCALE_VALUES.log;
   const orbisChartTheme = useChartTheme();
   const styles = useStyles();
   const colorScale = new ColorScale({ color, domain, clip, reversed });
   const yValues = data?.map(d => d.y);
 
+  const handleToggleClick = (_, newValue) => {
+    if (!newValue || newValue === scale) return;
+    return setScale(newValue);
+  };
+
   return (
     <>
-      <ButtonGroup className={styles.buttonGroup} size="small">
-        <Button
-          onClick={() => setScale('linear')}
-          className={clsx({ [styles.notActive]: scale !== 'linear' })}
-        >
-          Linear
-        </Button>
-        <Button
-          onClick={() => setScale('log')}
-          className={clsx({ [styles.notActive]: scale !== 'log' })}
-        >
-          Log
-        </Button>
-      </ButtonGroup>
+      <ToggleButtonGroup
+        size="small"
+        value={scale}
+        onChange={handleToggleClick}
+        className={styles.buttonGroup}
+      >
+        <ToggleButton value={SCALE_VALUES.linear}>Linear</ToggleButton>
+        <ToggleButton value={SCALE_VALUES.log}>Log</ToggleButton>
+      </ToggleButtonGroup>
+
       <ParentSize>
         {({ width }) => {
           const padding = { left: 80, top: 20, bottom: 60, right: 10 },

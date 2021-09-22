@@ -4,8 +4,9 @@ import { Grid } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
+import { ColorLegend } from 'components';
+
 import { DateStepper } from '../../date-stepper/date-stepper.component';
-import { DiscretePropertyLegend } from '../discrete-property-legend/discrete-property-legend.component';
 import { Sliders } from './sliders.component';
 
 /**
@@ -61,11 +62,8 @@ export const SelectedPropertyControls = ({
       </Grid>
     ) : null}
     {selectedProperty.type === 'discrete' ? (
-      <DiscretePropertyLegend
-        property={
-          /** @type {import('typings').DiscreteProperty} */ (selectedProperty)
-        }
-      />
+      // @ts-ignore
+      <ColorLegend categories={selectedProperty.categories} />
     ) : (
       <Sliders
         clipRange={clipRange}

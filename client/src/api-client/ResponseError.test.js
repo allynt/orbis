@@ -44,6 +44,40 @@ describe('ResponseError', () => {
       const responseErrors = await error.getErrors();
       expect(responseErrors).toEqual(expected);
     });
+
+    it('Returns a flat list of errors from the response if it contains a non_field_error object', async () => {
+      const non_field_errors = ['non-field-error-1', 'non-field-error-2'];
+      const errors = {
+        non_field_errors,
+      };
+      const response = { json: () => new Promise(resolve => resolve(errors)) };
+      const error = new ResponseError(response);
+      const responseErrors = await error.getErrors();
+      expect(responseErrors).toEqual(non_field_errors);
+    });
+
+    it('Returns a flat list of errors from the response if it contains an error object and non_field_error object', async () => {
+      const non_field_errors = ['non-field-error-1', 'non-field-error-2'];
+      const errors = {
+        errors: {
+          field1: ['field1/error1', 'field1/error2'],
+          field2: ['field2/error1', 'field2/error2'],
+        },
+        non_field_errors,
+      };
+      const expected = [
+        'non-field-error-1',
+        'non-field-error-2',
+        'field1/error1',
+        'field1/error2',
+        'field2/error1',
+        'field2/error2',
+      ];
+      const response = { json: () => new Promise(resolve => resolve(errors)) };
+      const error = new ResponseError(response);
+      const responseErrors = await error.getErrors();
+      expect(responseErrors).toEqual(expected);
+    });
   });
 
   describe('getBody', () => {

@@ -22,7 +22,7 @@ from astrosat.decorators import swagger_fake
 
 from astrosat_users.models.models_customers import CustomerUser
 
-from orbis.models import Orb
+from orbis.models import Orb, DataStorage
 
 from satellites.models import Satellite, SatelliteDataSource, SatelliteSearch, SatelliteResult
 from satellites.serializers import (
@@ -324,7 +324,6 @@ class SatelliteDataSourceViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
 
@@ -351,4 +350,15 @@ class SatelliteDataSourceViewSet(
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["customer_user"] = self.customer_user
+
+        if self.action == 'create':
+            storage = DataStorage(
+                customer=self.customer_user.customer,
+                user=self.customer_user.user,
+                title=self.request.data['name'],
+                size=SatelliteDataSource.DEFAULT_STORAGE_SIZE
+            )
+            storage.save()
+            context["storage"] = storage
+
         return context

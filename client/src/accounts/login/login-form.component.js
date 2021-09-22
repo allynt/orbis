@@ -115,13 +115,21 @@ const LoginForm = ({
             <FormControlLabel
               label={
                 <>
-                  I agree with&nbsp;
+                  I agree with the&nbsp;
                   <Link
                     target="_blank"
-                    href={apiClient.documents.termsUrl}
+                    href={apiClient.documents.getTermsUrl('user_terms')}
                     rel="noopener noreferrer"
                   >
                     Terms &amp; Conditions
+                  </Link>
+                  &nbsp;and the&nbsp;
+                  <Link
+                    target="_blank"
+                    href={apiClient.documents.privacyUrl}
+                    rel="noopener noreferrer"
+                  >
+                    Privacy Policy
                   </Link>
                 </>
               }

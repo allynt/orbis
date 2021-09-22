@@ -58,6 +58,7 @@ export const SaveImageForm = ({ onSubmit }) => {
           inputRef={register}
           error={!!errors.name}
           helperText={errors.name?.message}
+          autoFocus
         />
       </Grid>
       <Grid item>

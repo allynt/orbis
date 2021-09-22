@@ -12,9 +12,11 @@ import {
 
 import { format } from 'date-fns';
 import { NotificationManager } from 'react-notifications';
+import { useDispatch } from 'react-redux';
 import { useSortBy } from 'react-table';
 
 import apiClient from 'api-client';
+import { fetchSources } from 'data-layers/data-layers.slice';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -26,13 +28,29 @@ const DialogCloseButton = styled(IconButton)({
   right: 0,
 });
 
-export const Storage = ({ files }) => {
+export const Storage = ({ files, setFiles }) => {
+  const dispatch = useDispatch();
   const [fileId, setFileId] = useState(null);
 
   const close = () => setFileId(null);
 
-  const onDeleteFileClick = () => {
-    console.log('DELETE FILE WITH ID: ', fileId);
+  const onDeleteFileClick = async () => {
+    try {
+      await apiClient.storage.deleteFile(fileId);
+      dispatch(fetchSources());
+    } catch (error) {
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Deleting Stored Data Error - ${message}`,
+        50000,
+        () => {},
+      );
+    }
+
+    const updatedFiles = files.filter(file => file.id !== fileId);
+    setFiles(updatedFiles);
+
     return setFileId(null);
   };
 
@@ -46,7 +64,7 @@ export const Storage = ({ files }) => {
       },
       {
         Header: 'Date',
-        accessor: 'date',
+        accessor: 'created',
         Cell: ({ value }) => format(new Date(value), 'dd-MM-yyyy'),
       },
       {
@@ -125,5 +143,5 @@ export default () => {
     }
   }, [files]);
 
-  return <Storage files={files} />;
+  return <Storage files={files} setFiles={setFiles} />;
 };

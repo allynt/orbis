@@ -1,32 +1,13 @@
 import React from 'react';
 
 import {
-  Button,
-  ButtonGroup,
   FormLabel,
   Grid,
-  makeStyles,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
-import clsx from 'clsx';
 import { capitalize } from 'lodash';
-
-const useStyles = makeStyles(theme => ({
-  buttonGroup: {
-    width: '100%',
-  },
-  button: {
-    width: '100%',
-    padding: theme.spacing(1),
-    cursor: 'not-allowed',
-    '&$notActive': {
-      color: theme.palette.secondary.contrastText,
-      backgroundColor: theme.palette.secondary.dark,
-      cursor: 'pointer',
-    },
-  },
-  notActive: {},
-}));
 
 /**
  * @param {import('typings').Property} property
@@ -58,14 +39,20 @@ export const DisplayTypeToggleButtons = ({
   onChange,
 }) => {
   const moreThanTwoProperties = properties.length > 2;
-  const styles = useStyles();
 
   /**
-   * @param {import('typings').Property} property
+   * @param {string} newPropertyName
    */
-  const handleClick = property => {
-    if (property.name === selectedProperty?.name || !onChange) return;
-    onChange(property);
+  const handleToggleChange = (_, newPropertyName) => {
+    if (
+      !newPropertyName ||
+      !onChange ||
+      newPropertyName === selectedProperty?.name
+    )
+      return;
+
+    const newProperty = properties.find(p => p.name === newPropertyName);
+    return onChange(newProperty);
   };
 
   return (
@@ -73,29 +60,19 @@ export const DisplayTypeToggleButtons = ({
       <Grid item xs={moreThanTwoProperties ? 5 : 12}>
         <FormLabel>Select display type:</FormLabel>
       </Grid>
-      <Grid
-        item
-        xs={moreThanTwoProperties ? 7 : 12}
-        container
-        justifyContent="center"
-      >
-        <ButtonGroup
-          className={styles.buttonGroup}
+      <Grid item xs={moreThanTwoProperties ? 7 : 12}>
+        <ToggleButtonGroup
           size="small"
+          value={selectedProperty?.name}
+          onChange={handleToggleChange}
           orientation={moreThanTwoProperties ? 'vertical' : 'horizontal'}
         >
-          {properties.map(property => (
-            <Button
-              key={property.name}
-              className={clsx(styles.button, {
-                [styles.notActive]: selectedProperty?.name !== property.name,
-              })}
-              onClick={() => handleClick(property)}
-            >
-              {getButtonLabelForProperty(property)}
-            </Button>
+          {properties.map(p => (
+            <ToggleButton key={p.name} value={p.name}>
+              {getButtonLabelForProperty(p)}
+            </ToggleButton>
           ))}
-        </ButtonGroup>
+        </ToggleButtonGroup>
       </Grid>
     </>
   );

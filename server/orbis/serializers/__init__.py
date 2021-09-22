@@ -3,4 +3,5 @@ from .serializers_documents import DocumentAgreementSerializer, DocumentSerializ
 from .serializers_orbs import OrbSerializer
 from .serializers_orders import OrderSerializer
 from .serializers_users import OrbisUserProfileSerializer, OrbisUserFeedbackRecordSerializer, OrbisUserSerializer
-from .serializers_auth import RegisterSerializer
+from .serializers_auth import LoginSerializer, RegisterSerializer
+from .serializers_storage import DataStorageSerializer

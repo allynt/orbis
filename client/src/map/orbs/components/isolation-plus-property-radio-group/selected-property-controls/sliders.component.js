@@ -5,32 +5,35 @@ import {
   Fade,
   Grid,
   makeStyles,
-  Switch,
   Typography,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
 import { ColorAdjustSlider, ColormapRangeSlider } from 'components';
 import { isRealValue } from 'utils/isRealValue';
 
-const useStyles = makeStyles(
-  ({ spacing, typography: { caption, pxToRem } }) => ({
-    slidersGridItem: {
-      position: 'relative',
-      height: pxToRem(90),
-      padding: spacing(2),
-    },
-    slider: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      width: `calc(320px - ${spacing(6)})`,
-      margin: spacing(1, 'auto', 2),
-    },
-    label: { ...caption },
-  }),
-);
+const SCALE_VALUES = {
+  filter: 'Adjust Filter',
+  colour: 'Adjust Colour',
+};
+
+const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
+  slidersGridItem: {
+    position: 'relative',
+    height: pxToRem(90),
+    padding: spacing(2),
+  },
+  slider: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: `calc(320px - ${spacing(6)})`,
+    margin: spacing(1, 'auto', 2),
+  },
+}));
 
 /**
  * @param {{
@@ -48,7 +51,7 @@ export const Sliders = ({
   filterRange,
   onRangeFilterChange,
 }) => {
-  const [isAdjustingColor, setIsAdjustingColor] = useState(false);
+  const [scale, setScale] = useState(SCALE_VALUES.filter);
   const styles = useStyles();
 
   const { min, max, clip_min, clip_max, precision, type } =
@@ -59,10 +62,15 @@ export const Sliders = ({
   const clipMax = clipRange?.[1] ?? clip_max ?? max;
 
   const handleResetClick = () => {
-    if (isAdjustingColor) {
+    if (scale === SCALE_VALUES.colour) {
       return onClipRangeChange([clip_min ?? min, clip_max ?? max]);
     }
     return onRangeFilterChange([min, max]);
+  };
+
+  const handleToggleChange = (_, newValue) => {
+    if (!newValue || scale === newValue) return;
+    return setScale(newValue);
   };
 
   const sliderProps = {
@@ -81,33 +89,29 @@ export const Sliders = ({
       <Grid item>
         <Typography>Range Filter</Typography>
       </Grid>
-      <Grid
-        item
-        component="label"
-        container
-        alignItems="center"
-        spacing={1}
-        className={styles.label}
-      >
-        <Grid item>Adjust Filter</Grid>
-        <Grid item>
-          <Switch
-            checked={isAdjustingColor}
-            onChange={(_, checked) => setIsAdjustingColor(checked)}
-            name="Slider Toggle"
-          />
-        </Grid>
-        <Grid item>Adjust Colour</Grid>
+      <Grid item xs={12}>
+        <ToggleButtonGroup
+          size="small"
+          value={scale}
+          onChange={handleToggleChange}
+        >
+          <ToggleButton value={SCALE_VALUES.filter}>
+            {SCALE_VALUES.filter}
+          </ToggleButton>
+          <ToggleButton value={SCALE_VALUES.colour}>
+            {SCALE_VALUES.colour}
+          </ToggleButton>
+        </ToggleButtonGroup>
       </Grid>
       <Grid item xs={12} className={styles.slidersGridItem}>
-        <Fade in={isAdjustingColor} unmountOnExit>
+        <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>
           <ColorAdjustSlider
             {...sliderProps}
             data-testid="color-slider"
             onChange={onClipRangeChange}
           />
         </Fade>
-        <Fade in={!isAdjustingColor} unmountOnExit>
+        <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
           <ColormapRangeSlider
             {...sliderProps}
             data-testid="range-slider"

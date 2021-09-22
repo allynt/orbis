@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   List,
@@ -7,7 +7,7 @@ import {
   ThemeProvider,
 } from '@astrosat/astrosat-ui';
 
-import { get, omit, pick } from 'lodash';
+import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
