@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   Link,
@@ -10,6 +11,7 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
+import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
 
 import { LoadingButton } from 'components';
@@ -22,6 +24,17 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'grid',
     justifyItems: 'center',
+  },
+  headingWrapper: {
+    display: 'flex',
+    width: '100%',
+  },
+  icon: { transform: 'rotate(180deg)' },
+  title: {
+    fontWeight: 600,
+    fontSize: '2rem',
+    margin: '0 auto 2.5rem auto',
+    borderBottom: '1px solid #f6be00',
   },
   orderTerms: {
     backgroundColor: theme.palette.background.default,
@@ -43,6 +56,7 @@ const useStyles = makeStyles(theme => ({
  *  errors: string[]
  *  isLoading?: boolean
  *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
+ *  history: import('history').History
  * }} props
  */
 export const Checkout = ({
@@ -51,6 +65,7 @@ export const Checkout = ({
   errors,
   isLoading = false,
   onConfirmClick,
+  history,
 }) => {
   const styles = useStyles();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -64,7 +79,24 @@ export const Checkout = ({
   };
 
   return (
-    <Wrapper title="Your Order" className={styles.wrapper}>
+    <Wrapper className={styles.wrapper}>
+      <div className={styles.headingWrapper}>
+        <Button
+          // @ts-ignore
+          role="link"
+          classes={{ startIcon: styles.icon }}
+          startIcon={<PlayArrow />}
+          variant="text"
+          size="small"
+          color="default"
+          onClick={() => history.goBack()}
+        >
+          Back
+        </Button>
+        <Typography className={styles.title} variant="h1">
+          Your Order
+        </Typography>
+      </div>
       <Typography variant="h3" component="p" paragraph>
         Please read the Terms & Conditions and if everything checks out accept
         the terms and confirm your order.
