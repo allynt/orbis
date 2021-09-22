@@ -200,8 +200,8 @@ const configuration = ({
 
   const onHover = info => {
     if (
-      (info.object == null && !!hoveredFeatures[0]) ||
-      info.object.properties[source.metadata.index] !==
+      (info.object == null && !!hoveredFeatures?.[0]) ||
+      info.object?.properties[source.metadata.index] !==
         hoveredFeatures?.[0]?.object.properties[source.metadata.index]
     )
       return dispatch(
