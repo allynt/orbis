@@ -72,7 +72,8 @@ export const ClickedFeaturesSummary = ({
       }),
     );
 
-  const handleFeatureDelete = feature =>
+  const handleFeatureDelete = feature => {
+    handleFeatureHover();
     dispatch(
       removeClickedFeatures({
         key: selectedProperty?.source_id,
@@ -80,6 +81,7 @@ export const ClickedFeaturesSummary = ({
         clickedFeatures: [feature],
       }),
     );
+  };
 
   const handleDeselectAll = () =>
     dispatch(
