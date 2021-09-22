@@ -11,7 +11,7 @@ import {
   dataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
-import MissionControl from 'mission-control/mission-control.component';
+import { MissionControl } from 'mission-control/mission-control.component';
 
 import ControlPanel from '../control-panel/control-panel.component';
 import Map from './map.component';

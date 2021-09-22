@@ -81,65 +81,65 @@ const schema = yup.object({
  */
 
 // BUG: [ORB-799] Hitting enter while extrusion scale slider input is focussed refreshes page
-/** @param {ExtrusionScaleSliderProps} props */
-let ExtrusionScaleSlider = ({ value, onChange, mapStyle, open = false }) => {
-  const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
-  const styles = useStyles({ lightMapStyle });
-  const { register, handleSubmit, errors, setValue } = useForm({
-    mode: 'all',
-    defaultValues: {
-      text: value,
-    },
-    resolver: yupResolver(schema),
-  });
+export const ExtrusionScaleSlider = React.memo(
+  /** @param {ExtrusionScaleSliderProps} props */
+  ({ value, onChange, mapStyle, open = false }) => {
+    const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
+    const styles = useStyles({ lightMapStyle });
+    const { register, handleSubmit, errors, setValue } = useForm({
+      mode: 'all',
+      defaultValues: {
+        text: value,
+      },
+      resolver: yupResolver(schema),
+    });
 
-  /** @type {(event: React.ChangeEvent<{}>, value: number | number[]) => void} */
-  const handleSliderChange = (_, v) => {
-    const value = /** @type {number} */ (v);
-    setValue('text', value, { shouldValidate: true });
-    onChange && onChange(value);
-  };
+    /** @type {(event: React.ChangeEvent<{}>, value: number | number[]) => void} */
+    const handleSliderChange = (_, v) => {
+      const value = /** @type {number} */ (v);
+      setValue('text', value, { shouldValidate: true });
+      onChange && onChange(value);
+    };
 
-  return (
-    <Slide in={open} direction="up" mountOnEnter>
-      <Grid
-        component="form"
-        container
-        spacing={2}
-        onChange={handleSubmit(v => onChange(v.text))}
-      >
-        <Grid item>
-          <Typography color={lightMapStyle ? 'secondary' : 'textPrimary'}>
-            3D Scale :{' '}
-          </Typography>
+    return (
+      <Slide in={open} direction="up" mountOnEnter>
+        <Grid
+          component="form"
+          container
+          spacing={2}
+          onChange={handleSubmit(v => onChange(v.text))}
+        >
+          <Grid item>
+            <Typography color={lightMapStyle ? 'secondary' : 'textPrimary'}>
+              3D Scale :{' '}
+            </Typography>
+          </Grid>
+          <Grid item xs>
+            <Slider
+              classes={{
+                markLabel: styles.markLabel,
+                markLabelActive: styles.markLabelActive,
+              }}
+              marks={MARKS}
+              min={MIN}
+              value={value}
+              onChange={handleSliderChange}
+              step={1}
+            />
+          </Grid>
+          <Grid item>
+            <Tooltip
+              arrow
+              placement="right"
+              open={!!errors.text}
+              title={errors.text?.message ?? ''}
+            >
+              <input className={styles.input} name="text" ref={register} />
+            </Tooltip>
+          </Grid>
         </Grid>
-        <Grid item xs>
-          <Slider
-            classes={{
-              markLabel: styles.markLabel,
-              markLabelActive: styles.markLabelActive,
-            }}
-            marks={MARKS}
-            min={MIN}
-            value={value}
-            onChange={handleSliderChange}
-            step={1}
-          />
-        </Grid>
-        <Grid item>
-          <Tooltip
-            arrow
-            placement="right"
-            open={!!errors.text}
-            title={errors.text?.message ?? ''}
-          >
-            <input className={styles.input} name="text" ref={register} />
-          </Tooltip>
-        </Grid>
-      </Grid>
-    </Slide>
-  );
-};
-ExtrusionScaleSlider = React.memo(ExtrusionScaleSlider);
-
-export { ExtrusionScaleSlider };
+      </Slide>
+    );
+  },
+);
+ExtrusionScaleSlider.displayName = 'ExtrusionScaleSlider';

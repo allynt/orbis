@@ -22,42 +22,43 @@ const dirLight = new SunLight({
 const lightingEffect = new LightingEffect({ ambientLight, dirLight });
 lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
-let BottomMap = ({
-  deckRef,
-  mapRef,
-  controller,
-  viewState,
-  onViewStateChange,
-  layers = [],
-  getCursor,
-  mapStyle,
-  mapboxApiAccessToken,
-}) => (
-  <DeckGL
-    ref={deckRef}
-    controller={controller}
-    viewState={viewState}
-    onViewStateChange={onViewStateChange}
-    layers={layers}
-    getCursor={getCursor}
-    effects={[lightingEffect]}
-    glOptions={{
-      preserveDrawingBuffer: true,
-    }}
-  >
-    <ReactMapGl
-      key="bottom"
-      ref={mapRef}
-      mapStyle={mapStyle}
-      attributionControl={false}
+export const BottomMap = React.memo(
+  ({
+    deckRef,
+    mapRef,
+    controller,
+    viewState,
+    onViewStateChange,
+    layers = [],
+    getCursor,
+    mapStyle,
+    mapboxApiAccessToken,
+  }) => (
+    <DeckGL
+      ref={deckRef}
+      controller={controller}
       viewState={viewState}
-      width="100%"
-      height="100%"
-      reuseMaps={true}
-      preserveDrawingBuffer={true}
-      mapboxApiAccessToken={mapboxApiAccessToken}
-    />
-  </DeckGL>
+      onViewStateChange={onViewStateChange}
+      layers={layers}
+      getCursor={getCursor}
+      effects={[lightingEffect]}
+      glOptions={{
+        preserveDrawingBuffer: true,
+      }}
+    >
+      <ReactMapGl
+        key="bottom"
+        ref={mapRef}
+        mapStyle={mapStyle}
+        attributionControl={false}
+        viewState={viewState}
+        width="100%"
+        height="100%"
+        reuseMaps={true}
+        preserveDrawingBuffer={true}
+        mapboxApiAccessToken={mapboxApiAccessToken}
+      />
+    </DeckGL>
+  ),
 );
-BottomMap = React.memo(BottomMap);
-export { BottomMap };
+BottomMap.displayName = 'BottomMap';

@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 
 import { render, userEvent, screen } from 'test/test-utils';
 
-import { MissionControlComponent as MissionControl } from './mission-control.component';
+import { MissionControl } from './mission-control.component';
 import {
   fetchCustomerRequested,
   fetchCustomerUsersRequested,

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { MissionControlComponent } from './mission-control.component';
+import { MissionControl } from './mission-control.component';
 
 const mockStore = createMockStore([thunk]);
 
@@ -17,7 +17,7 @@ export default {
 const Template = args => (
   <Provider store={mockStore()}>
     <MemoryRouter initialEntries={args.initialEntries}>
-      <MissionControlComponent {...args} />
+      <MissionControl {...args} />
     </MemoryRouter>
   </Provider>
 );
