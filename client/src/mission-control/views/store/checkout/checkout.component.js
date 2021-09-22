@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
 import {
+  Button,
   Checkbox,
   FormControlLabel,
-  Link,
   makeStyles,
   Paper,
   Typography,
   Well,
 } from '@astrosat/astrosat-ui';
 
+import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
 
 import { LoadingButton } from 'components';
@@ -22,6 +23,19 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'grid',
     justifyItems: 'center',
+  },
+  headingWrapper: {
+    display: 'flex',
+    alignItems: 'baseline',
+    width: '100%',
+  },
+  icon: { transform: 'rotate(180deg)' },
+  title: {
+    fontWeight: 600,
+    fontSize: '2rem',
+    width: 'fit-content',
+    margin: theme.spacing(0, 'auto', 5),
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
   orderTerms: {
     backgroundColor: theme.palette.background.default,
@@ -43,6 +57,7 @@ const useStyles = makeStyles(theme => ({
  *  errors: string[]
  *  isLoading?: boolean
  *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
+ *  history: import('history').History
  * }} props
  */
 export const Checkout = ({
@@ -51,6 +66,7 @@ export const Checkout = ({
   errors,
   isLoading = false,
   onConfirmClick,
+  history,
 }) => {
   const styles = useStyles();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -64,7 +80,24 @@ export const Checkout = ({
   };
 
   return (
-    <Wrapper title="Your Order" className={styles.wrapper}>
+    <Wrapper className={styles.wrapper}>
+      <div className={styles.headingWrapper}>
+        <Button
+          // @ts-ignore
+          role="link"
+          classes={{ startIcon: styles.icon }}
+          startIcon={<PlayArrow />}
+          variant="text"
+          size="small"
+          color="default"
+          onClick={() => history.goBack()}
+        >
+          Back
+        </Button>
+        <Typography className={styles.title} variant="h1">
+          Your Order
+        </Typography>
+      </div>
       <Typography variant="h3" component="p" paragraph>
         Please read the Terms & Conditions and if everything checks out accept
         the terms and confirm your order.
@@ -87,21 +120,10 @@ export const Checkout = ({
         value={users}
         InputProps={{ readOnly: true }}
       />
-      <Paper className={styles.orderTerms}>{orderText}</Paper>
+      <Paper className={styles.orderTerms}>{orderText(orb.name, users)}</Paper>
       <FormControlLabel
         className={styles.checkbox}
-        label={
-          <>
-            I agree with the{' '}
-            <Link
-              href={orb.terms_document}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Terms & Conditions
-            </Link>
-          </>
-        }
+        label={<>I accept the Order Form</>}
         value={acceptedTerms}
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
