@@ -119,7 +119,7 @@ export const Checkout = ({
         value={users}
         InputProps={{ readOnly: true }}
       />
-      <Paper className={styles.orderTerms}>{orderText}</Paper>
+      <Paper className={styles.orderTerms}>{orderText(orb.name, users)}</Paper>
       <FormControlLabel
         className={styles.checkbox}
         label={<>I accept the Order Form</>}
