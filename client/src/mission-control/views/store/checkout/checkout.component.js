@@ -33,8 +33,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     fontWeight: 600,
     fontSize: '2rem',
-    margin: '0 auto 2.5rem auto',
-    borderBottom: '1px solid #f6be00',
+    width: 'fit-content',
+    margin: theme.spacing(0, 'auto', 5),
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
   orderTerms: {
     backgroundColor: theme.palette.background.default,
