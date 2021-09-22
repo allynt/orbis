@@ -5,6 +5,7 @@ import {
   Grid,
   makeStyles,
   Slider,
+  Slide,
   Tooltip,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -75,13 +76,14 @@ const schema = yup.object({
  *   value?: number
  *   onChange: (value: number) => void
  *   mapStyle: import('map-style/styles').MapStyleKey
+ *   open?: boolean
  * }} ExtrusionScaleSliderProps
  */
 
 // BUG: [ORB-799] Hitting enter while extrusion scale slider input is focussed refreshes page
-/** @type {React.ForwardRefExoticComponent<ExtrusionScaleSliderProps>} */
-export const ExtrusionScaleSlider = React.forwardRef(
-  ({ value, onChange, mapStyle }, ref) => {
+export const ExtrusionScaleSlider = React.memo(
+  /** @param {ExtrusionScaleSliderProps} props */
+  ({ value, onChange, mapStyle, open = false }) => {
     const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
     const styles = useStyles({ lightMapStyle });
     const { register, handleSubmit, errors, setValue } = useForm({
@@ -100,42 +102,44 @@ export const ExtrusionScaleSlider = React.forwardRef(
     };
 
     return (
-      <Grid
-        component="form"
-        ref={ref}
-        container
-        spacing={2}
-        onChange={handleSubmit(v => onChange(v.text))}
-      >
-        <Grid item>
-          <Typography color={lightMapStyle ? 'secondary' : 'textPrimary'}>
-            3D Scale :{' '}
-          </Typography>
+      <Slide in={open} direction="up" mountOnEnter>
+        <Grid
+          component="form"
+          container
+          spacing={2}
+          onChange={handleSubmit(v => onChange(v.text))}
+        >
+          <Grid item>
+            <Typography color={lightMapStyle ? 'secondary' : 'textPrimary'}>
+              3D Scale :{' '}
+            </Typography>
+          </Grid>
+          <Grid item xs>
+            <Slider
+              classes={{
+                markLabel: styles.markLabel,
+                markLabelActive: styles.markLabelActive,
+              }}
+              marks={MARKS}
+              min={MIN}
+              value={value}
+              onChange={handleSliderChange}
+              step={1}
+            />
+          </Grid>
+          <Grid item>
+            <Tooltip
+              arrow
+              placement="right"
+              open={!!errors.text}
+              title={errors.text?.message ?? ''}
+            >
+              <input className={styles.input} name="text" ref={register} />
+            </Tooltip>
+          </Grid>
         </Grid>
-        <Grid item xs>
-          <Slider
-            classes={{
-              markLabel: styles.markLabel,
-              markLabelActive: styles.markLabelActive,
-            }}
-            marks={MARKS}
-            min={MIN}
-            value={value}
-            onChange={handleSliderChange}
-            step={1}
-          />
-        </Grid>
-        <Grid item>
-          <Tooltip
-            arrow
-            placement="right"
-            open={!!errors.text}
-            title={errors.text?.message ?? ''}
-          >
-            <input className={styles.input} name="text" ref={register} />
-          </Tooltip>
-        </Grid>
-      </Grid>
+      </Slide>
     );
   },
 );
+ExtrusionScaleSlider.displayName = 'ExtrusionScaleSlider';
