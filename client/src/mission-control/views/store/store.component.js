@@ -8,7 +8,11 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { errorSelector, isLoadingSelector } from 'accounts/accounts.selectors';
 import { placeOrder } from 'accounts/accounts.slice';
-import { fetchOrbs, orbsSelector } from 'data-layers/data-layers.slice';
+import {
+  fetchOrbs,
+  fetchSources,
+  orbsSelector,
+} from 'data-layers/data-layers.slice';
 import { useFadeTransitionProps } from 'mission-control/shared-components/useFadeTransitionProps';
 
 import { Checkout } from './checkout/checkout.component';
@@ -56,6 +60,8 @@ export const Store = ({ match, location }) => {
           paymentType: 'standard',
         }),
       );
+      /* whenever licences are purchased, I should re-fetch sources */
+      dispatch(fetchSources());
       // @ts-ignore
       if (result.type === placeOrder.fulfilled.type)
         dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
