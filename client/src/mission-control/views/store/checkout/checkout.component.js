@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
   headingWrapper: {
     display: 'flex',
+    alignItems: 'baseline',
     width: '100%',
   },
   icon: { transform: 'rotate(180deg)' },
