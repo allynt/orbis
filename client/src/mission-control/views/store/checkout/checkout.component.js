@@ -4,7 +4,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Link,
   makeStyles,
   Paper,
   Typography,
