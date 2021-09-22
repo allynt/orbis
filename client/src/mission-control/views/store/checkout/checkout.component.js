@@ -122,18 +122,7 @@ export const Checkout = ({
       <Paper className={styles.orderTerms}>{orderText}</Paper>
       <FormControlLabel
         className={styles.checkbox}
-        label={
-          <>
-            I agree with the{' '}
-            <Link
-              href={orb.terms_document}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Terms & Conditions
-            </Link>
-          </>
-        }
+        label={<>I accept the Order Form</>}
         value={acceptedTerms}
         onChange={(_, checked) => setAcceptedTerms(checked)}
         control={<Checkbox />}
