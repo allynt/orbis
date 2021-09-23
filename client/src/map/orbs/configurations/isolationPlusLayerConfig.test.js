@@ -294,12 +294,12 @@ describe('isolationPlusLayerConfig', () => {
     });
 
     it(`Dispatches the ${setHoveredFeatures.type} action with undefined if the area is hovered out`, () => {
-      const { onHover, dispatch } = setup();
+      const { onHover, dispatch } = setup({ hoveredFeatures: [{}] });
 
       onHover({});
 
       expect(dispatch).toHaveBeenCalledWith(
-        setHoveredFeatures({ key: source_id, hoveredFeatured: undefined }),
+        setHoveredFeatures({ key: source_id, hoveredFeatures: undefined }),
       );
     });
   });

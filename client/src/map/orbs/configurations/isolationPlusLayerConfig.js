@@ -199,14 +199,19 @@ const configuration = ({
   };
 
   const onHover = info => {
-    return dispatch(
-      setHoveredFeatures({
-        key: id,
-        hoveredFeatures: info.object
-          ? [createReduxSafePickedInfo(info)]
-          : undefined,
-      }),
-    );
+    if (
+      (info.object == null && !!hoveredFeatures?.[0]) ||
+      info.object?.properties[source.metadata.index] !==
+        hoveredFeatures?.[0]?.object.properties[source.metadata.index]
+    )
+      return dispatch(
+        setHoveredFeatures({
+          key: id,
+          hoveredFeatures: info.object
+            ? [createReduxSafePickedInfo(info)]
+            : undefined,
+        }),
+      );
   };
 
   /**
