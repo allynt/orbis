@@ -9,11 +9,6 @@ import {
 
 import { SidePanel } from 'components/side-panel/side-panel.component';
 
-import Profile from '../accounts/profile/profile.component';
-import BookmarksPanel from '../bookmarks/bookmarks-panel.component';
-import DataLayers from '../data-layers/data-layers.component';
-import Satellites from '../satellites/satellites.component';
-import StoriesPanel from '../stories/stories-panel.component';
 import { useToolbarItems } from './toolbar-config';
 import {
   BOOKMARKS,
@@ -23,6 +18,30 @@ import {
   STORIES,
 } from './toolbar-constants';
 import Toolbar from './toolbar.component';
+
+const Profile = React.lazy(() =>
+  import(
+    /* webpackChunkName: "Profile" */ 'accounts/profile/profile.component'
+  ),
+);
+const BookmarksPanel = React.lazy(() =>
+  import(
+    /* webpackChunkName: "Bookmarks" */ 'bookmarks/bookmarks-panel.component'
+  ),
+);
+const DataLayers = React.lazy(() =>
+  import(
+    /* webpackChunkName: "DataLayers" */ 'data-layers/data-layers.component'
+  ),
+);
+const Satellites = React.lazy(() =>
+  import(
+    /* webpackChunkName: "Satellites" */ 'satellites/satellites.component'
+  ),
+);
+const StoriesPanel = React.lazy(() =>
+  import(/* webpackChunkName: "Stories" */ 'stories/stories-panel.component'),
+);
 
 /**
  * @typedef {{
@@ -87,6 +106,9 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     right: 0,
   },
+  fallback: {
+    margin: theme.spacing(2),
+  },
 }));
 
 /**
@@ -125,16 +147,24 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
           </div>
         }
       >
-        {panel === DATA_LAYERS && (
-          <DataLayers
-            sidebarComponents={sidebarComponents}
-            drawingToolsEnabled={drawingToolsEnabled}
-          />
-        )}
-        {panel === SATELLITE_LAYERS && <Satellites />}
-        {panel === BOOKMARKS && <BookmarksPanel />}
-        {panel === STORIES && <StoriesPanel />}
-        {panel === PROFILE && <Profile />}
+        <React.Suspense
+          fallback={
+            <Typography className={styles.fallback}>
+              Loading {heading}...
+            </Typography>
+          }
+        >
+          {panel === DATA_LAYERS && (
+            <DataLayers
+              sidebarComponents={sidebarComponents}
+              drawingToolsEnabled={drawingToolsEnabled}
+            />
+          )}
+          {panel === SATELLITE_LAYERS && <Satellites />}
+          {panel === BOOKMARKS && <BookmarksPanel />}
+          {panel === STORIES && <StoriesPanel />}
+          {panel === PROFILE && <Profile />}
+        </React.Suspense>
       </SidePanel>
     </>
   );
