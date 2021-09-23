@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Dialog,
@@ -70,6 +70,9 @@ export const MissionControl = React.memo(() => {
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
+  const [open, setOpen] = useState(
+    location.pathname.includes('/mission-control'),
+  );
 
   const styles = useStyles({});
 
@@ -96,18 +99,24 @@ export const MissionControl = React.memo(() => {
   );
 
   const handleClose = () => {
-    return dispatch(push('/map'));
+    setOpen(false);
   };
 
   return (
     <Dialog
-      open={location.pathname.includes('/mission-control')}
+      open={open}
       classes={{
         paper: styles.paper,
       }}
       maxWidth="xl"
       fullWidth
       onClose={handleClose}
+      keepMounted={false}
+      TransitionProps={{
+        onExited: () => {
+          dispatch(push('/map'));
+        },
+      }}
     >
       <DialogTitle classes={{ root: styles.title }} disableTypography>
         <Typography variant="h1">{`Hello ${user?.name}`}</Typography>
@@ -152,3 +161,5 @@ export const MissionControl = React.memo(() => {
   );
 });
 MissionControl.displayName = 'MissionControl';
+
+export default MissionControl;
