@@ -17,9 +17,15 @@ import {
 } from './app.slice';
 import PrivateRoute from './utils/private-route.component';
 
-const Accounts = React.lazy(() => import('accounts'));
-const LandingView = React.lazy(() => import('landing/landing.component'));
-const MapLayout = React.lazy(() => import('map'));
+const Accounts = React.lazy(() =>
+  import(/* webpackChunkName: "Accounts" */ 'accounts'),
+);
+const LandingView = React.lazy(() =>
+  import(/* webpackChunkName: "Landing" */ 'landing/landing.component'),
+);
+const MapLayout = React.lazy(() =>
+  import(/* webpackChunkName: "MapLayout" */ 'map'),
+);
 
 const App = () => {
   const dispatch = useDispatch();
