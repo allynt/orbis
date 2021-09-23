@@ -13,12 +13,15 @@ from astrosat_users.models import Customer, User
 
 from orbis.models import Orb, OrbImage, LicencedCustomer, Licence, DataScope, Access
 
-##############################
-# pretty ui for access flags #
-##############################
+################
+# custom forms #
+################
 
 
 class AccessFormField(IntegerField):
+    """
+    a pretty field that lets users easily set access-levels
+    """
     def __init__(self, *args, **kwargs):
         choices = kwargs.pop("choices", ())
         kwargs["widget"] = CheckboxSelectMultiple(choices=choices)
@@ -44,8 +47,26 @@ class AccessFormField(IntegerField):
 
 
 class AccessForm(ModelForm):
+    """
+    An abstract form that uses the above field
+    """
 
     access = AccessFormField(initial=Access.READ, choices=Access.choices())
+
+
+class OrbAdminForm(ModelForm):
+    """
+    A custom Admin Form to make some of the Orb Fields prettier
+    """
+    class Meta:
+        model = Orb
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["short_description"].widget.attrs.update({
+            "cols": 80, "class": "vLargeTextField"
+        })
 
 
 ###########
@@ -129,6 +150,7 @@ class DataScopeAdmin(admin.ModelAdmin):
 
 @admin.register(Orb)
 class OrbAdmin(admin.ModelAdmin):
+    form = OrbAdminForm
     inlines = (
         OrbImageAdminInline,
         DataScopeAdminInline,
