@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   description: {
     fontStyle: 'italic',
+    textAlign: 'center',
   },
   link: {
     marginTop: 'auto',
