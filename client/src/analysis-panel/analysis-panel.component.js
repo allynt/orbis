@@ -1,17 +1,13 @@
 import React from 'react';
 
 import {
-  Box,
-  Button,
   ButtonBase,
   CloseIcon,
-  Dialog,
-  Divider,
   IconButton,
   makeStyles,
-  styled,
   TriangleIcon,
   Typography,
+  CircularProgress,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -29,16 +25,13 @@ import {
   timestampSelector,
 } from 'map/orbs/layers.slice';
 
-import { AnalysisPanelProvider } from './analysis-panel-context';
-import { ClickedFeaturesSummary } from './clicked-features-summary/clicked-features-summary.component';
-import { COMPONENT_MAP } from './component-map';
 import { ContextMenu } from './context-menu/context-menu.component';
-import { MoreInformation } from './more-information/more-information.component';
-import PDF from './pdf-export/pdf-export.component';
 
-const PrimaryDivider = styled(Divider)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
-}));
+const AnalysisPanelContent = React.lazy(() =>
+  import(
+    /* webpackChunkName: "AnalysisPanelContent" */ './analysis-panel-content.component'
+  ),
+);
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -100,15 +93,8 @@ const useStyles = makeStyles(theme => ({
   button: {
     padding: theme.spacing(1, 2),
   },
-}));
-
-const useDialogStyles = makeStyles(theme => ({
-  root: {
-    height: '100%',
-  },
-  paper: {
-    height: '100%',
-    borderRadius: theme.shape.borderRadius,
+  fallback: {
+    margin: theme.spacing(2),
   },
 }));
 
@@ -117,7 +103,6 @@ export const AnalysisPanel = () => {
   const [pdfOpen, setPdfOpen] = React.useState(false);
 
   const styles = useStyles();
-  const dialogStyles = useDialogStyles();
 
   const dispatch = useDispatch();
   const other = useSelector(state =>
@@ -196,70 +181,28 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <AnalysisPanelProvider
-        clickedFeatures={clickedFeatures}
-        currentSource={currentSource}
-        selectedProperty={selectedProperty}
-        selectedTimestamp={selectedTimestamp}
+      <React.Suspense
+        fallback={
+          <Typography className={styles.fallback} variant="h4" component="p">
+            <CircularProgress size="1em" />
+            Loading...
+          </Typography>
+        }
       >
-        <Typography color="primary" className={styles.strapline}>
-          The information below relates to the areas selected on the map.
-        </Typography>
-        <ClickedFeaturesSummary
-          clickedFeatures={clickedFeatures}
-          hoveredFeatures={hoveredFeatures}
-          selectedProperty={selectedProperty}
-          dispatch={dispatch}
-          currentSource={currentSource}
-          fallbackProperty={currentSource?.metadata?.index}
-        />
-        <PrimaryDivider />
-        {dataVisualisationComponents
-          ?.map((componentDefinition, i) => ({ id: i, ...componentDefinition }))
-          .map(componentDefinition => {
-            const Component = COMPONENT_MAP[componentDefinition.name];
-            return (
-              <React.Fragment
-                key={`${componentDefinition.name}-${componentDefinition.id}`}
-              >
-                <Component
-                  selectedProperty={selectedProperty}
-                  selectedTimestamp={selectedTimestamp}
-                  clickedFeatures={clickedFeatures}
-                  dispatch={dispatch}
-                  {...componentDefinition.props}
-                />
-                <PrimaryDivider />
-              </React.Fragment>
-            );
-          })}
-        <MoreInformation
-          currentSource={currentSource}
-          selectedProperty={selectedProperty}
-        />
-        {!pdfIncompatible && (
-          <Box className={styles.buttonContainer}>
-            <Button className={styles.button} onClick={() => setPdfOpen(true)}>
-              Export PDF Report
-            </Button>
-          </Box>
-        )}
-
-        <Dialog
-          classes={dialogStyles}
-          maxWidth="lg"
-          open={pdfOpen}
-          onClose={() => setPdfOpen(false)}
-          aria-labelledby="pdf-export-dialog"
-        >
-          <PDF
+        {!!dataVisualisationComponents && !!clickedFeatures?.length && (
+          <AnalysisPanelContent
+            clickedFeatures={clickedFeatures}
+            currentSource={currentSource}
             selectedProperty={selectedProperty}
             selectedTimestamp={selectedTimestamp}
-            close={() => setPdfOpen(false)}
-            licence={currentSource?.metadata?.licence}
+            dataVisualisationComponents={dataVisualisationComponents}
+            hoveredFeatures={hoveredFeatures}
+            pdfIncompatible={pdfIncompatible}
+            pdfOpen={pdfOpen}
+            setPdfOpen={setPdfOpen}
           />
-        </Dialog>
-      </AnalysisPanelProvider>
+        )}
+      </React.Suspense>
     </SidePanel>
   );
 };
