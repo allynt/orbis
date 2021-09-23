@@ -12,7 +12,7 @@ const setup = ({
   pendingUsers = testPendingUsers,
   customer = testCustomer,
   ...rest
-}) => {
+}) =>
   render(
     <PendingInvitationsBoard
       pendingUsers={pendingUsers}
@@ -20,7 +20,6 @@ const setup = ({
       {...rest}
     />,
   );
-};
 
 describe('PendingUsersBoard', () => {
   const cases = [

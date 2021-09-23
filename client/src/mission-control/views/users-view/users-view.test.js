@@ -4,7 +4,7 @@ import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import UsersView from './users-view.component';
 
-const setup = () => {
+const setup = () =>
   render(<UsersView />, {
     state: {
       accounts: { userKey: '123abc' },
@@ -19,7 +19,6 @@ const setup = () => {
       },
     },
   });
-};
 
 describe('Users View', () => {
   beforeEach(() => {
