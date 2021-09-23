@@ -59,7 +59,7 @@ const App = () => {
   }, [dispatch, userTrackingInterval]);
 
   return (
-    <Box width="100vw" height="100vh" style={{ backgroundColor: '#ffffff' }}>
+    <Box width="100vw" height="100vh">
       <ReactTooltip />
       <React.Suspense
         fallback={

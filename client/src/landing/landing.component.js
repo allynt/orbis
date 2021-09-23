@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     width: '100vw',
     height: '100vh',
     overflow: 'hidden',
+    backgroundColor: theme.palette.background.default,
   },
   background: {
     position: 'absolute',
