@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { LoadingTextFallback } from 'components';
 import { SidePanel } from 'components/side-panel/side-panel.component';
 
 import { useToolbarItems } from './toolbar-config';
@@ -149,9 +150,7 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
       >
         <React.Suspense
           fallback={
-            <Typography className={styles.fallback}>
-              Loading {heading}...
-            </Typography>
+            <LoadingTextFallback>Loading {heading}...</LoadingTextFallback>
           }
         >
           {panel === DATA_LAYERS && (

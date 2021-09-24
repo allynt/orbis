@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 
-import { Box, LoadMask, Fade } from '@astrosat/astrosat-ui';
+import { Box } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
+import { LoadMaskFallback } from 'components';
 import { ToolbarFallback } from 'control-panel/toolbar-fallback.component';
 import {
   fetchSources,
@@ -67,30 +68,14 @@ const MapLayout = () => {
           drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
         />
       </React.Suspense>
-      <React.Suspense
-        fallback={
-          <Fade in>
-            <div>
-              <LoadMask style={{ zIndex: 1 }} open />
-            </div>
-          </Fade>
-        }
-      >
+      <React.Suspense fallback={<LoadMaskFallback />}>
         <Map
           layers={layers}
           mapComponents={mapComponents}
           {...drawingToolsProps}
         />
       </React.Suspense>
-      <React.Suspense
-        fallback={
-          <Fade in>
-            <div>
-              <LoadMask style={{ zIndex: 4 }} open />
-            </div>
-          </Fade>
-        }
-      >
+      <React.Suspense fallback={<LoadMaskFallback zIndex={4} />}>
         {location.pathname.includes('/mission-control') && <MissionControl />}
       </React.Suspense>
       <AnalysisPanel />

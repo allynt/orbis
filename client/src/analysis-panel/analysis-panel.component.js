@@ -7,14 +7,13 @@ import {
   makeStyles,
   TriangleIcon,
   Typography,
-  CircularProgress,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 import { find, get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { SidePanel } from 'components';
+import { LoadingTextFallback, SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
@@ -181,14 +180,7 @@ export const AnalysisPanel = () => {
         </div>
       }
     >
-      <React.Suspense
-        fallback={
-          <Typography className={styles.fallback} variant="h4" component="p">
-            <CircularProgress size="1em" />
-            Loading...
-          </Typography>
-        }
-      >
+      <React.Suspense fallback={<LoadingTextFallback />}>
         {!!dataVisualisationComponents && !!clickedFeatures?.length && (
           <AnalysisPanelContent
             clickedFeatures={clickedFeatures}

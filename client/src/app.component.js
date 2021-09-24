@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 
-import { Box, Fade, LoadMask } from '@astrosat/astrosat-ui';
+import { Box } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import apiClient from 'api-client';
+import { LoadMaskFallback } from 'components';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
@@ -61,15 +62,7 @@ const App = () => {
   return (
     <Box width="100vw" height="100vh">
       <ReactTooltip />
-      <React.Suspense
-        fallback={
-          <Fade in>
-            <div>
-              <LoadMask style={{ zIndex: 1 }} open />
-            </div>
-          </Fade>
-        }
-      >
+      <React.Suspense fallback={<LoadMaskFallback />}>
         <Switch>
           <PrivateRoute exact path="/" user={user} component={LandingView} />
           <Route path="/accounts" component={Accounts} />
