@@ -107,9 +107,6 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     right: 0,
   },
-  fallback: {
-    margin: theme.spacing(2),
-  },
 }));
 
 /**

@@ -92,9 +92,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     padding: theme.spacing(1, 2),
   },
-  fallback: {
-    margin: theme.spacing(2),
-  },
 }));
 
 export const AnalysisPanel = () => {
