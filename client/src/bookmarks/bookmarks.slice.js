@@ -168,11 +168,7 @@ const initialState = {
 const bookmarkSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    setBookmarks: (state, { payload }) => {
-      state.bookmarks = payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchBookmarks.fulfilled, (state, { payload }) => {
       state.bookmarks = payload;
@@ -213,8 +209,6 @@ const bookmarkSlice = createSlice({
       });
   },
 });
-
-export const { setBookmarks } = bookmarkSlice.actions;
 
 /**
  * @param {import('typings').RootState} state

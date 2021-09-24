@@ -5,7 +5,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import apiClient from 'api-client';
-import { bookmarksSelector, setBookmarks } from 'bookmarks/bookmarks.slice';
+import { bookmarksSelector, fetchBookmarks } from 'bookmarks/bookmarks.slice';
 import {
   selectCurrentCustomer,
   setCurrentCustomer,
@@ -95,8 +95,7 @@ export const fetchCurrentUser = createAsyncThunk(
     try {
       const user = await apiClient.users.getCurrentUser();
       if (!bookmarksSelector(getState())) {
-        const bookmarks = await apiClient.bookmarks.getBookmarks();
-        dispatch(setBookmarks(bookmarks));
+        await dispatch(fetchBookmarks());
       }
       return user;
     } catch (responseError) {
