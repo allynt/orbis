@@ -8,42 +8,56 @@ import { render, screen, userEvent } from 'test/test-utils';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-const setup = ({
-  pendingUsers = testPendingUsers,
-  customer = testCustomer,
-  ...rest
-}) =>
-  render(
-    <PendingInvitationsBoard
-      pendingUsers={pendingUsers}
-      customer={customer}
-      {...rest}
-    />,
-  );
+let onWithdrawInvitationClick, onResendInvitationClick;
 
 describe('PendingUsersBoard', () => {
+  beforeEach(() => {
+    onWithdrawInvitationClick = jest.fn();
+    onResendInvitationClick = jest.fn();
+  });
+
   const cases = [
     ['names', 'name'],
     ["email address'", 'email'],
   ];
-  const onWithdrawInvitationClick = jest.fn();
-  const onResendInvitationClick = jest.fn();
 
   it.each(cases)("Displays all pending user's %s", (_, text) => {
-    setup({});
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
+
     testPendingUsers.forEach(user =>
       expect(screen.getByText(user.user[text])).toBeInTheDocument(),
     );
   });
 
   it('Displays user Orb licence names', () => {
-    setup({});
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     expect(screen.getAllByText('Oil, Rice')[0]).toBeInTheDocument();
   });
 
   it('Displays a placeholder if no customer is present', () => {
-    setup({ customer: null });
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={null}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     testPendingUsers.forEach((_, i) =>
       expect(
@@ -53,7 +67,14 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    setup({ customer: { name: 'Customer Name' } });
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={{ name: 'Customer Name' }}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     expect(screen.queryByText('No licences')).not.toBeInTheDocument();
 
@@ -70,7 +91,14 @@ describe('PendingUsersBoard', () => {
       id: '99',
     };
 
-    setup({ pendingUsers: [TEST_USER] });
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={[TEST_USER]}
+        customer={testCustomer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     expect(
       screen.queryByText('Not currently available'),
@@ -79,7 +107,14 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Calls resendInvitation when `Resend Invitation` button is clicked', () => {
-    setup({ onResendInvitationClick });
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     const resendInvitationButton = screen.getAllByText('Resend Invitation')[0];
     expect(resendInvitationButton).toBeInTheDocument();
@@ -88,7 +123,14 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {
-    setup({ onWithdrawInvitationClick });
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
+        onWithdrawInvitationClick={onWithdrawInvitationClick}
+        onResendInvitationClick={onResendInvitationClick}
+      />,
+    );
 
     userEvent.click(screen.getAllByTestId('options-icon')[0]);
 

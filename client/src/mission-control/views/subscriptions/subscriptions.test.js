@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, screen } from 'test/test-utils';
 
 import { Subscriptions } from './subscriptions.component';
 
@@ -43,42 +43,46 @@ describe('<Subscriptions />', () => {
   });
 
   it('Displays a row for each orb', () => {
-    const { getByText } = renderComponent(licenceInformation);
+    render(<Subscriptions licenceInformation={licenceInformation} />);
+
     ['Rice', 'Oil', 'Health'].forEach(orb =>
-      expect(getByText(orb)).toBeInTheDocument(),
+      expect(screen.getByText(orb)).toBeInTheDocument(),
     );
   });
 
   it('Displays the total purchased licences for each orb', () => {
-    const { getByText } = renderComponent(licenceInformation);
+    render(<Subscriptions licenceInformation={licenceInformation} />);
+
     [
       ['Rice', licenceInformation.Rice.purchased],
       ['Oil', licenceInformation.Oil.purchased],
       ['Health', licenceInformation.Health.purchased],
     ].forEach(([orb, count]) =>
-      expect(getByText(orb).parentElement).toHaveTextContent(count),
+      expect(screen.getByText(orb).parentElement).toHaveTextContent(count),
     );
   });
 
   it('Displays the total active licences for each orb', () => {
-    const { getByText } = renderComponent(licenceInformation);
+    render(<Subscriptions licenceInformation={licenceInformation} />);
+
     [
       ['Rice', licenceInformation.Rice.active],
       ['Oil', licenceInformation.Oil.active],
       ['Health', licenceInformation.Health.active],
     ].forEach(([orb, count]) =>
-      expect(getByText(orb).parentElement).toHaveTextContent(count),
+      expect(screen.getByText(orb).parentElement).toHaveTextContent(count),
     );
   });
 
   it('Displays the total available licences for each orb', () => {
-    const { getByText } = renderComponent(licenceInformation);
+    render(<Subscriptions licenceInformation={licenceInformation} />);
+
     [
       ['Rice', licenceInformation.Rice.available],
       ['Oil', licenceInformation.Oil.available],
       ['Health', licenceInformation.Health.available],
     ].forEach(([orb, count]) =>
-      expect(getByText(orb).parentElement).toHaveTextContent(count),
+      expect(screen.getByText(orb).parentElement).toHaveTextContent(count),
     );
   });
 });

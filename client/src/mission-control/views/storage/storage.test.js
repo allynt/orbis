@@ -12,14 +12,9 @@ const TEST_FILES = new Array(20).fill().map((_, i) => ({
   created: new Date(2020, 0, i).toISOString(),
 }));
 
-const setup = () => {
-  const setFiles = jest.fn();
-  return render(<Storage files={TEST_FILES} setFiles={setFiles} />);
-};
-
 describe('<Storage />', () => {
   it('renders a stored files table', () => {
-    setup();
+    render(<Storage files={TEST_FILES} />);
 
     userEvent.click(screen.getByText('5'));
     userEvent.click(screen.getByText('20'));
@@ -32,7 +27,7 @@ describe('<Storage />', () => {
   });
 
   it('opens options menu when ellipsis icon is clicked', () => {
-    setup();
+    render(<Storage files={TEST_FILES} />);
 
     userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
 
@@ -42,7 +37,7 @@ describe('<Storage />', () => {
   });
 
   it('opens dialog when menu button is clicked', () => {
-    setup();
+    render(<Storage files={TEST_FILES} />);
 
     userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
     userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));
@@ -51,7 +46,7 @@ describe('<Storage />', () => {
   });
 
   it('closes dialog when cancel button is clicked', () => {
-    setup();
+    render(<Storage files={TEST_FILES} />);
 
     userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
     userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));
@@ -63,7 +58,8 @@ describe('<Storage />', () => {
   });
 
   it('closes dialog when confirm button is clicked', async () => {
-    setup();
+    const setFiles = jest.fn();
+    render(<Storage files={TEST_FILES} setFiles={setFiles} />);
 
     userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
     userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));

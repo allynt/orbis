@@ -5,14 +5,9 @@ import { render, screen, userEvent } from 'test/test-utils';
 import { VIEWS } from '../mission-control.constants';
 import { SidePanel } from './side-panel.component';
 
-const setup = ({ userIsAdmin = true }) => {
-  const { history } = render(<SidePanel userIsAdmin={userIsAdmin} />);
-  return { history };
-};
-
 describe('MissionControlSidePanel', () => {
   it('renders a side panel', () => {
-    setup({});
+    render(<SidePanel userIsAdmin={true} />);
 
     Object.values(VIEWS).forEach(view => {
       expect(screen.getByText(view.label)).toBeInTheDocument();
@@ -21,7 +16,7 @@ describe('MissionControlSidePanel', () => {
   });
 
   it('switches views when button is clicked', () => {
-    const { history } = setup({});
+    const { history } = render(<SidePanel userIsAdmin={true} />);
 
     userEvent.click(screen.getByText(VIEWS.users.label));
 
@@ -29,7 +24,7 @@ describe('MissionControlSidePanel', () => {
   });
 
   it("Doesn't show admin views if the user is not an admin", () => {
-    setup({ userIsAdmin: false });
+    render(<SidePanel userIsAdmin={false} />);
     expect(
       screen.queryByRole('link', { name: /Orbis Store/i }),
     ).not.toBeInTheDocument();
