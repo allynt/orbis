@@ -2,7 +2,12 @@ import React from 'react';
 
 import { push } from 'connected-react-router';
 
-import { render, userEvent, screen } from 'test/test-utils';
+import {
+  render,
+  userEvent,
+  screen,
+  waitForElementToBeRemoved,
+} from 'test/test-utils';
 
 import { MissionControl } from './mission-control.component';
 import {
@@ -42,12 +47,13 @@ describe('MissionControl', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('Navigates to map and closes if the backdrop is clicked', () => {
+  it('Navigates to map and closes if the backdrop is clicked', async () => {
     const { store } = render(<MissionControl />, {
       state: defaultState,
       history: { initialEntries: ['/mission-control'] },
     });
     userEvent.click(screen.getByRole('none'));
+    await waitForElementToBeRemoved(screen.getByRole('dialog'));
     expect(store.getActions()).toContainEqual(push('/map'));
   });
 

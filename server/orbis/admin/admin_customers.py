@@ -27,8 +27,8 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         (
             "Actions",
             {
-                "classes": ("collapse",),
-                "fields": ("get_grant_licences_for_detail_display",),
+                "classes": ("collapse", ),
+                "fields": ("get_grant_licences_for_detail_display", ),
             },
         ),
         (
@@ -50,7 +50,9 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         # adding some "local" urls to map to the "grant_licences" action below
         urls = [
             path(
-                "<slug:id>/grant/", self.grant_licences, name=f"{LicencedCustomer._meta.db_table}_grant",
+                "<slug:id>/grant/",
+                self.grant_licences,
+                name=f"{LicencedCustomer._meta.db_table}_grant",
             ),
         ] + super().get_urls()  # (order is important)
         return urls
@@ -82,7 +84,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         class GrantLicencesForm(forms.Form):
             orb = forms.ModelChoiceField(
                 label="Orb to grant access to",
-                queryset=Orb.objects.filter(is_hidden=False),
+                queryset=Orb.objects.filter(is_active=True),
                 required=True,
             )
             n_additional_licences = forms.IntegerField(
@@ -98,7 +100,8 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
             )
             ignore_existing = forms.BooleanField(
                 initial=True,
-                label="Ignore users that already have a licence to the selected Orb.",
+                label=
+                "Ignore users that already have a licence to the selected Orb.",
                 required=False,
             )
 
@@ -108,8 +111,11 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
                 licences = orb.licences.filter(orb=orb)
                 customer_users = cleaned_data["customer_users"]
                 if customer_users.exists():
-                    n_available_licences = cleaned_data["n_additional_licences"] + licences.available().count()
-                    n_required_licences = customer_users.count() - licences.filter(customer_user__in=customer_users).count()
+                    n_available_licences = cleaned_data[
+                        "n_additional_licences"] + licences.available().count()
+                    n_required_licences = customer_users.count(
+                    ) - licences.filter(customer_user__in=customer_users
+                                       ).count()
                     if n_available_licences < n_required_licences:
                         raise forms.ValidationError(
                             "You are not granting enough licences for the number of selected users"
@@ -124,7 +130,8 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
             if form.is_valid():
 
                 orb = form.cleaned_data["orb"]
-                n_additional_licences = form.cleaned_data["n_additional_licences"]
+                n_additional_licences = form.cleaned_data[
+                    "n_additional_licences"]
                 customer_users = form.cleaned_data["customer_users"]
                 ignore_existing = form.cleaned_data["ignore_existing"]
 
@@ -132,8 +139,15 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
                     # this action should be all-or-nothing, if any part of it fails
                     # no licences should be granted; hence the "atomic" block below
                     with transaction.atomic():
-                        added_licences = customer.add_licences(orb, n_additional_licences)
-                        assigned_licences = customer.assign_licences(orb, customer_users, ignore_existing=ignore_existing, add_missing=False)
+                        added_licences = customer.add_licences(
+                            orb, n_additional_licences
+                        )
+                        assigned_licences = customer.assign_licences(
+                            orb,
+                            customer_users,
+                            ignore_existing=ignore_existing,
+                            add_missing=False
+                        )
 
                         for licence in added_licences:
                             msg = f"added licence '{licence.id}' to orb '{orb}'."
@@ -143,22 +157,28 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
                             self.message_user(request, msg)
                         if not added_licences and not assigned_licences:
                             msg = "No licences were added or assigned."
-                            self.message_user(request, msg, level=messages.WARNING)
+                            self.message_user(
+                                request, msg, level=messages.WARNING
+                            )
 
                 except Exception as e:
                     self.message_user(request, str(e), level=messages.ERROR)
 
                 change_url = reverse(
-                    f"admin:{LicencedCustomer._meta.db_table}_change", args=[id]
+                    f"admin:{LicencedCustomer._meta.db_table}_change",
+                    args=[id]
                 )
                 return HttpResponseRedirect(change_url)
 
         # provides summary information about the current (visible) licences owned by this customer
         # (effectively, this performs a "group_by" statement and then adds some extra annotations)
-        customer_licences_summary = customer.licences.visible().values("orb").annotate(
+        customer_licences_summary = customer.licences.all(
+        ).values("orb").annotate(
             name=F("orb__name"),
             total_licences=Count("orb"),
-            unassigned_licences=Count("orb", filter=Q(customer_user__isnull=True)),
+            unassigned_licences=Count(
+                "orb", filter=Q(customer_user__isnull=True)
+            ),
         ).order_by("orb__name")
 
         context = {
@@ -170,7 +190,10 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
             "site_title": getattr(settings, "ADMIN_SITE_TITLE", None),
             "index_title": getattr(settings, "ADMIN_INDEX_TITLE", None),
         }
-        return render(request, "orbis/admin/grant_licences.html", context=context)
+        return render(
+            request, "orbis/admin/grant_licences.html", context=context
+        )
+
 
 #############################################################################
 # ensure existing references to AstrosatUserCustomer use this CustomerAdmin #
