@@ -47,10 +47,18 @@ const Footer = styled('footer')(({ theme }) => ({
  *  footer?: React.ReactNode
  *  header?: React.ReactNode
  *  logo?: React.ReactNode
+ *  style?: React.CSSProperties
  * }} props
  */
-export const Sidebar = ({ children, className, footer, header, logo }) => (
-  <Nav className={className}>
+export const Sidebar = ({
+  children,
+  className,
+  footer,
+  header,
+  logo,
+  style,
+}) => (
+  <Nav className={className} style={style}>
     {logo && <Logo>{logo}</Logo>}
     {header && <Header>{header}</Header>}
     <Items>{children}</Items>

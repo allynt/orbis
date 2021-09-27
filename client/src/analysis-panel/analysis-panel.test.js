@@ -1,6 +1,11 @@
 import * as React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import {
+  render,
+  waitFor,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
@@ -58,7 +63,9 @@ describe('<AnalysisPanel />', () => {
     });
     expect(getByText('Data Analysis')).toBeVisible();
     userEvent.click(getByRole('button', { name: 'minimize' }));
-    await waitFor(() => expect(getByText('Data Analysis')).not.toBeVisible());
+    await waitFor(() => expect(getByText('Data Analysis')).not.toBeVisible(), {
+      timeout: 10000,
+    });
   });
 
   it('sets the clickedFeatures to undefined if close is clicked', async () => {

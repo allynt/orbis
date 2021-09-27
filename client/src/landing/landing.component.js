@@ -31,6 +31,8 @@ const useStyles = makeStyles(theme => ({
     width: '100vw',
     height: '100vh',
     overflow: 'hidden',
+    backgroundColor: props =>
+      props.hasBookmarks ? theme.palette.common.white : 'transparent',
   },
   background: {
     position: 'absolute',

@@ -7,8 +7,8 @@ import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import apiClient from 'api-client';
+import { LoadMaskFallback } from 'components';
 
-import Accounts from './accounts';
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
 import {
@@ -16,9 +16,17 @@ import {
   logUserTracking,
   userTrackingIntervalSelector,
 } from './app.slice';
-import LandingView from './landing/landing.component';
-import MapLayout from './map';
 import PrivateRoute from './utils/private-route.component';
+
+const Accounts = React.lazy(() =>
+  import(/* webpackChunkName: "Accounts" */ 'accounts'),
+);
+const LandingView = React.lazy(() =>
+  import(/* webpackChunkName: "Landing" */ 'landing/landing.component'),
+);
+const MapLayout = React.lazy(() =>
+  import(/* webpackChunkName: "MapLayout" */ 'map'),
+);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,18 +60,19 @@ const App = () => {
   }, [dispatch, userTrackingInterval]);
 
   return (
-    <Box width="100vw" height="100vh" style={{ backgroundColor: '#ffffff' }}>
+    <Box width="100vw" height="100vh">
       <ReactTooltip />
-
-      <Switch>
-        <PrivateRoute exact path="/" user={user} component={LandingView} />
-        <Route path="/accounts" component={Accounts} />
-        <PrivateRoute
-          path={['/map', '/mission-control']}
-          user={user}
-          component={MapLayout}
-        />
-      </Switch>
+      <React.Suspense fallback={<LoadMaskFallback />}>
+        <Switch>
+          <PrivateRoute exact path="/" user={user} component={LandingView} />
+          <Route path="/accounts" component={Accounts} />
+          <PrivateRoute
+            path={['/map', '/mission-control']}
+            user={user}
+            component={MapLayout}
+          />
+        </Switch>
+      </React.Suspense>
     </Box>
   );
 };
