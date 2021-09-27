@@ -25,21 +25,14 @@ const licenceInformation = {
   },
 };
 
-const renderComponent = licenceInformation => {
-  const utils = render(
-    <Subscriptions licenceInformation={licenceInformation} />,
-  );
-  return { ...utils };
-};
-
 describe('<Subscriptions />', () => {
   it.each([
     ['undefined', undefined],
     ['null', null],
     ['empty object', {}],
   ])('Displays text when licences are %s', (_, value) => {
-    const { getByText } = renderComponent(value);
-    expect(getByText('No Subscriptions Available')).toBeInTheDocument();
+    render(<Subscriptions licenceInformation={value} />);
+    expect(screen.getByText('No Subscriptions Available')).toBeInTheDocument();
   });
 
   it('Displays a row for each orb', () => {

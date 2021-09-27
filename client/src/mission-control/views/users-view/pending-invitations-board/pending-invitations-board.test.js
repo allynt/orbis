@@ -8,14 +8,7 @@ import { render, screen, userEvent } from 'test/test-utils';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
-let onWithdrawInvitationClick, onResendInvitationClick;
-
 describe('PendingUsersBoard', () => {
-  beforeEach(() => {
-    onWithdrawInvitationClick = jest.fn();
-    onResendInvitationClick = jest.fn();
-  });
-
   const cases = [
     ['names', 'name'],
     ["email address'", 'email'],
@@ -26,8 +19,6 @@ describe('PendingUsersBoard', () => {
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={testCustomer}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
@@ -41,8 +32,6 @@ describe('PendingUsersBoard', () => {
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={testCustomer}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
@@ -54,8 +43,6 @@ describe('PendingUsersBoard', () => {
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={null}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
@@ -71,8 +58,6 @@ describe('PendingUsersBoard', () => {
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={{ name: 'Customer Name' }}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
@@ -95,8 +80,6 @@ describe('PendingUsersBoard', () => {
       <PendingInvitationsBoard
         pendingUsers={[TEST_USER]}
         customer={testCustomer}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
@@ -107,11 +90,11 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Calls resendInvitation when `Resend Invitation` button is clicked', () => {
+    const onResendInvitationClick = jest.fn();
     render(
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={testCustomer}
-        onWithdrawInvitationClick={onWithdrawInvitationClick}
         onResendInvitationClick={onResendInvitationClick}
       />,
     );
@@ -123,12 +106,12 @@ describe('PendingUsersBoard', () => {
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {
+    const onWithdrawInvitationClick = jest.fn();
     render(
       <PendingInvitationsBoard
         pendingUsers={testPendingUsers}
         customer={testCustomer}
         onWithdrawInvitationClick={onWithdrawInvitationClick}
-        onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
