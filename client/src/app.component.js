@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
+import Accounts from 'accounts';
 import apiClient from 'api-client';
 import { LoadMaskFallback } from 'components';
+import LandingView from 'landing/landing.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
@@ -18,12 +20,6 @@ import {
 } from './app.slice';
 import PrivateRoute from './utils/private-route.component';
 
-const Accounts = React.lazy(() =>
-  import(/* webpackChunkName: "Accounts" */ 'accounts'),
-);
-const LandingView = React.lazy(() =>
-  import(/* webpackChunkName: "Landing" */ 'landing/landing.component'),
-);
 const MapLayout = React.lazy(() =>
   import(/* webpackChunkName: "MapLayout" */ 'map'),
 );
@@ -31,6 +27,9 @@ const MapLayout = React.lazy(() =>
 const App = () => {
   const dispatch = useDispatch();
   const userTrackingInterval = useSelector(userTrackingIntervalSelector);
+  const fetchUserRequestStatus = useSelector(
+    state => state.accounts.requests.fetchCurrentUser,
+  );
 
   const user = useSelector(userSelector);
   const userKey = useSelector(userKeySelector);
@@ -58,6 +57,8 @@ const App = () => {
       return () => clearInterval(userTracking);
     }
   }, [dispatch, userTrackingInterval]);
+
+  if (fetchUserRequestStatus === 'pending') return <LoadMaskFallback />;
 
   return (
     <Box width="100vw" height="100vh">
