@@ -1,59 +1,39 @@
 import * as React from 'react';
 
-import {
-  render,
-  waitFor,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
-
 import { setClickedFeatures, SHARED_STATE_KEY } from 'map/orbs/layers.slice';
-import { MapProvider } from 'MapContext';
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { AnalysisPanel } from './analysis-panel.component';
 
-const mockStore = configureMockStore();
-const history = createMemoryHistory({ initialEntries: ['/map'] });
-
 const source_id = 'test/source';
 
-const renderComponent = ({ property, clickedFeatures }) => {
-  const store = mockStore({
+const setup = ({ property, clickedFeatures }) => {
+  const historyOptions = { initialEntries: ['/map'] };
+
+  const state = {
     orbs: {
       layers: {
         [SHARED_STATE_KEY]: { other: { property } },
         [source_id]: { clickedFeatures },
       },
     },
-  });
+  };
 
-  const utils = render(
-    <Provider store={store}>
-      <Router history={history}>
-        <MapProvider>
-          <AnalysisPanel />
-        </MapProvider>
-      </Router>
-    </Provider>,
-  );
-  return { ...utils, history, store };
+  const { history, store } = render(<AnalysisPanel />, {
+    state,
+    historyOptions,
+  });
+  return { history, store };
 };
 
 describe('<AnalysisPanel />', () => {
   it("doesn't show anything if picked info doesn't have properties", () => {
-    const { queryByText } = renderComponent({
-      property: { name: 'test' },
-    });
-    expect(queryByText(/test/i)).not.toBeInTheDocument();
+    setup({ property: { name: 'test' } });
+    expect(screen.queryByText(/test/i)).not.toBeInTheDocument();
   });
 
   it('hides the panel when the minimize button is clicked', async () => {
-    const { getByRole, getByText } = renderComponent({
+    setup({
       property: {
         name: 'test',
         source_id,
@@ -61,15 +41,19 @@ describe('<AnalysisPanel />', () => {
       },
       clickedFeatures: [{ object: { id: '123', properties: { test: 1 } } }],
     });
-    expect(getByText('Data Analysis')).toBeVisible();
-    userEvent.click(getByRole('button', { name: 'minimize' }));
-    await waitFor(() => expect(getByText('Data Analysis')).not.toBeVisible(), {
-      timeout: 10000,
-    });
+
+    expect(screen.getByText('Data Analysis')).toBeVisible();
+    userEvent.click(screen.getByRole('button', { name: 'minimize' }));
+    await waitFor(
+      () => expect(screen.getByText('Data Analysis')).not.toBeVisible(),
+      {
+        timeout: 10000,
+      },
+    );
   });
 
   it('sets the clickedFeatures to undefined if close is clicked', async () => {
-    const { getByRole, store } = renderComponent({
+    const { store } = setup({
       property: {
         name: 'test',
         source_id,
@@ -79,8 +63,9 @@ describe('<AnalysisPanel />', () => {
         { object: { id: 1, properties: { code: 'hello', test: '123' } } },
       ],
     });
+
     await waitFor(() =>
-      userEvent.click(getByRole('button', { name: 'Close' })),
+      userEvent.click(screen.getByRole('button', { name: 'Close' })),
     );
 
     expect(store.getActions()).toEqual(
@@ -94,7 +79,7 @@ describe('<AnalysisPanel />', () => {
   });
 
   it('hides PDF button/icon for layers with no compatible components', () => {
-    const state = {
+    setup({
       property: {
         type: 'discrete',
         name: 'test',
@@ -108,16 +93,14 @@ describe('<AnalysisPanel />', () => {
       clickedFeatures: [
         { object: { properties: { test: 'Digital Seniors' } } },
       ],
-    };
-
-    const { queryByRole } = renderComponent(state);
+    });
 
     expect(
-      queryByRole('button', { name: 'Export PDF Report' }),
+      screen.queryByRole('button', { name: 'Export PDF Report' }),
     ).not.toBeInTheDocument();
 
     expect(
-      queryByRole('button', { name: 'PDF export' }),
+      screen.queryByRole('button', { name: 'PDF export' }),
     ).not.toBeInTheDocument();
   });
 });

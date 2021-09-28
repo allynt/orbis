@@ -2,14 +2,9 @@
 
 import * as React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { CategoryBreakdownChart } from './category-breakdown-chart.component';
-
-const mockStore = configureMockStore();
 
 const PROPERTY = {
     type: 'discrete',
@@ -54,100 +49,92 @@ const PROPERTY = {
     },
   ];
 
-const renderComponent = ({ clickedFeatures = CLICKED_FEATURES } = {}) =>
+const setup = ({ clickedFeatures = CLICKED_FEATURES } = {}) =>
   render(
-    <Provider
-      store={mockStore({
+    <CategoryBreakdownChart
+      selectedProperty={PROPERTY}
+      clickedFeatures={clickedFeatures}
+    />,
+    {
+      state: {
         orbs: {
           isolationPlus: {
             property: PROPERTY,
             clickedFeatures,
           },
         },
-      })}
-    >
-      <CategoryBreakdownChart
-        selectedProperty={PROPERTY}
-        clickedFeatures={clickedFeatures}
-      />
-    </Provider>,
+      },
+    },
   );
 
 describe('<CategoryBreakdownChart />', () => {
   it('returns null if clickedFeatures has no length', () => {
-    const { queryByText } = renderComponent({ clickedFeatures: [] });
-    expect(queryByText(PROPERTY.label)).not.toBeInTheDocument();
+    setup({ clickedFeatures: [] });
+    expect(screen.queryByText(PROPERTY.label)).not.toBeInTheDocument();
   });
 
   it('Shows the property label', () => {
-    const { getByText } = renderComponent();
-    expect(getByText(PROPERTY.label)).toBeInTheDocument();
+    setup();
+    expect(screen.getByText(PROPERTY.label)).toBeInTheDocument();
   });
 
   it('Shows the legend including for all selected categories', () => {
-    const { getByText } = renderComponent();
-    expect(getByText('Apples')).toBeInTheDocument();
-    expect(getByText('Lemons')).toBeInTheDocument();
-    expect(getByText('Limes')).toBeInTheDocument();
+    setup();
+    expect(screen.getByText('Apples')).toBeInTheDocument();
+    expect(screen.getByText('Lemons')).toBeInTheDocument();
+    expect(screen.getByText('Limes')).toBeInTheDocument();
   });
 
   it('Shows the total number of areas when no segment is clicked', () => {
-    const { getByText } = renderComponent();
-    expect(getByText('3')).toBeInTheDocument();
-    expect(getByText('Areas')).toBeInTheDocument();
+    setup();
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('Areas')).toBeInTheDocument();
   });
 
   it('Shows the count of areas in a segment when that segment is clicked', () => {
-    const { getAllByRole, getByText } = renderComponent();
-    userEvent.click(getAllByRole('presentation')[0]);
-    expect(getByText('1 / 3')).toBeInTheDocument();
+    setup();
+    userEvent.click(screen.getAllByRole('presentation')[0]);
+    expect(screen.getByText('1 / 3')).toBeInTheDocument();
   });
 
   it('Unsets the selected segment if the same segment is clicked', () => {
-    const { getAllByRole, getByText } = renderComponent();
-    userEvent.click(getAllByRole('presentation')[0]);
-    expect(getByText('1 / 3')).toBeInTheDocument();
-    userEvent.click(getAllByRole('presentation')[0]);
-    expect(getByText('3')).toBeInTheDocument();
+    setup();
+    userEvent.click(screen.getAllByRole('presentation')[0]);
+    expect(screen.getByText('1 / 3')).toBeInTheDocument();
+    userEvent.click(screen.getAllByRole('presentation')[0]);
+    expect(screen.getByText('3')).toBeInTheDocument();
   });
 
   it('Shows area if only one area is clicked', () => {
-    const { getByText } = renderComponent({
+    setup({
       clickedFeatures: [{ object: { properties: { fruit: 'Limes' } } }],
     });
-    expect(getByText('1')).toBeInTheDocument();
-    expect(getByText('Area')).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(screen.getByText('Area')).toBeInTheDocument();
   });
 
   it('Unsets the selected segment if its category is removed from the features', () => {
-    const { getByText, getAllByRole, rerender } = renderComponent();
-    userEvent.click(getAllByRole('presentation')[0]);
-    expect(getByText('1 / 3')).toBeInTheDocument();
+    const { rerender } = setup();
+
+    userEvent.click(screen.getAllByRole('presentation')[0]);
+    expect(screen.getByText('1 / 3')).toBeInTheDocument();
+
     const [, ...rest] = CLICKED_FEATURES;
+
     rerender(
-      <Provider
-        store={mockStore({
-          orbs: {
-            isolationPlus: {
-              property: PROPERTY,
-              clickedFeatures: rest,
-            },
-          },
-        })}
-      >
-        <CategoryBreakdownChart
-          selectedProperty={PROPERTY}
-          clickedFeatures={rest}
-        />
-      </Provider>,
+      <CategoryBreakdownChart
+        selectedProperty={PROPERTY}
+        clickedFeatures={rest}
+      />,
     );
-    expect(getByText('2')).toBeInTheDocument();
+
+    expect(screen.getByText('2')).toBeInTheDocument();
   });
 
   it('Shows Area if only one area is clicked', () => {
-    const { getByText } = renderComponent({
+    setup({
       clickedFeatures: [{ object: { properties: { fruit: 'Apples' } } }],
     });
-    expect(getByText(/area/i)).toBeInTheDocument();
+    expect(screen.getByText(/area/i)).toBeInTheDocument();
   });
 });
