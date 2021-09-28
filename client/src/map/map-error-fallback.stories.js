@@ -1,12 +1,11 @@
 import React from 'react';
 
-import faker from 'faker';
-
 import { MapErrorFallback } from './map-error-fallback.component';
 
 export default {
   title: 'Map/MapErrorFallback',
   component: MapErrorFallback,
+  args: { messageOnly: false },
   argTypes: { resetErrorBoundary: { action: true } },
 };
 
@@ -18,5 +17,5 @@ const Template = args => (
 
 export const Default = Template.bind({});
 Default.args = {
-  error: new Error(faker.lorem.paragraphs(20)),
+  error: new Error('Something broke'),
 };

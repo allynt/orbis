@@ -7,8 +7,11 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { ErrorBoundary } from 'react-error-boundary';
+
 import { LoadingTextFallback } from 'components';
 import { SidePanel } from 'components/side-panel/side-panel.component';
+import { MapErrorFallback } from 'map/map-error-fallback.component';
 
 import { useToolbarItems } from './toolbar-config';
 import {
@@ -150,16 +153,22 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
             <LoadingTextFallback>Loading {heading}...</LoadingTextFallback>
           }
         >
-          {panel === DATA_LAYERS && (
-            <DataLayers
-              sidebarComponents={sidebarComponents}
-              drawingToolsEnabled={drawingToolsEnabled}
-            />
-          )}
-          {panel === SATELLITE_LAYERS && <Satellites />}
-          {panel === BOOKMARKS && <BookmarksPanel />}
-          {panel === STORIES && <StoriesPanel />}
-          {panel === PROFILE && <Profile />}
+          <ErrorBoundary
+            fallbackRender={props => (
+              <MapErrorFallback messageOnly {...props} />
+            )}
+          >
+            {panel === DATA_LAYERS && (
+              <DataLayers
+                sidebarComponents={sidebarComponents}
+                drawingToolsEnabled={drawingToolsEnabled}
+              />
+            )}
+            {panel === SATELLITE_LAYERS && <Satellites />}
+            {panel === BOOKMARKS && <BookmarksPanel />}
+            {panel === STORIES && <StoriesPanel />}
+            {panel === PROFILE && <Profile />}
+          </ErrorBoundary>
         </React.Suspense>
       </SidePanel>
     </>

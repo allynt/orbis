@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { SHARED_STATE_KEY } from 'map/orbs/layers.slice';
 import { MapProvider } from 'MapContext';
 
 import { AnalysisPanel } from './analysis-panel.component';
@@ -120,7 +121,7 @@ const Template = ({ clickedFeatures, selectedProperty }) => (
     store={mockStore({
       orbs: {
         layers: {
-          'astrosat/isolation_plus': {
+          [SHARED_STATE_KEY]: {
             other: {
               property: selectedProperty,
             },

@@ -36,19 +36,24 @@ const Well = styled(AuiWell)({
   overflow: 'auto',
 });
 
-const Message = styled('pre')(({ theme }) => ({
+// @ts-ignore
+const Message = styled('pre')(({ theme, messageOnly }) => ({
   textAlign: 'initial',
   margin: 0,
-  paddingBottom: theme.spacing(2),
+  paddingBottom: messageOnly ? undefined : theme.spacing(2),
   whiteSpace: 'pre-wrap',
 }));
 
 const Button = styled(AuiButton)({ alignSelf: 'start' });
 
 /**
- * @param {import('react-error-boundary').FallbackProps} props
+ * @param {import('react-error-boundary').FallbackProps & {messageOnly?: boolean}} props
  */
-export const MapErrorFallback = ({ error, resetErrorBoundary }) => (
+export const MapErrorFallback = ({
+  error,
+  resetErrorBoundary,
+  messageOnly = false,
+}) => (
   <Content>
     <Logo />
     <Typography variant="h1" gutterBottom>
@@ -56,7 +61,12 @@ export const MapErrorFallback = ({ error, resetErrorBoundary }) => (
     </Typography>
     {error && (
       <Well icon={false} severity="error" variant="filled">
-        <Message>{error.stack || error.message}</Message>
+        <Message
+          // @ts-ignore
+          messageOnly={messageOnly}
+        >
+          {error.stack && !messageOnly ? error.stack : error.message}
+        </Message>
       </Well>
     )}
     <Typography paragraph>

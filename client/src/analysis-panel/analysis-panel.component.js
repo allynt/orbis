@@ -11,10 +11,12 @@ import {
 
 import clsx from 'clsx';
 import { find, get } from 'lodash';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LoadingTextFallback, SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
+import { MapErrorFallback } from 'map/map-error-fallback.component';
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
@@ -179,17 +181,23 @@ export const AnalysisPanel = () => {
     >
       <React.Suspense fallback={<LoadingTextFallback />}>
         {!!dataVisualisationComponents && !!clickedFeatures?.length && (
-          <AnalysisPanelContent
-            clickedFeatures={clickedFeatures}
-            currentSource={currentSource}
-            selectedProperty={selectedProperty}
-            selectedTimestamp={selectedTimestamp}
-            dataVisualisationComponents={dataVisualisationComponents}
-            hoveredFeatures={hoveredFeatures}
-            pdfIncompatible={pdfIncompatible}
-            pdfOpen={pdfOpen}
-            setPdfOpen={setPdfOpen}
-          />
+          <ErrorBoundary
+            fallbackRender={props => (
+              <MapErrorFallback messageOnly {...props} />
+            )}
+          >
+            <AnalysisPanelContent
+              clickedFeatures={clickedFeatures}
+              currentSource={currentSource}
+              selectedProperty={selectedProperty}
+              selectedTimestamp={selectedTimestamp}
+              dataVisualisationComponents={dataVisualisationComponents}
+              hoveredFeatures={hoveredFeatures}
+              pdfIncompatible={pdfIncompatible}
+              pdfOpen={pdfOpen}
+              setPdfOpen={setPdfOpen}
+            />
+          </ErrorBoundary>
         )}
       </React.Suspense>
     </SidePanel>
