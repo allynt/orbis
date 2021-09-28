@@ -19,8 +19,7 @@ locals {
 }
 
 module "app_deploy" {
-  # source = "../../application-deployment-components/terraform/modules/application-deploy"
-  source = "git::ssh://git@github.com/astrosat/application-deployment-components.git//terraform/modules/application-deploy?ref=main"
+  source = "git::https://github.com/astrosat/application-deployment-components.git//terraform/modules/application-deploy?ref=main"
 
   providers = {
     aws.common = aws.common
