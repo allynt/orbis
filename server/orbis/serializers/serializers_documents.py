@@ -9,6 +9,7 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = (
             "name",
             "version",
+            "title",
             "type",
             "file",
         )

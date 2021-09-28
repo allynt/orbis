@@ -8,7 +8,8 @@ import { SavedDocuments } from './saved-documents.component';
 
 const TEST_DOCUMENTS = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
-  name: `job-title-${i}`,
+  name: `job-name-${i}`,
+  title: `job-title-${i}`,
   timestamp: new Date(2020, 0, i).toISOString(),
   file: `url-${i}`,
 }));
@@ -25,9 +26,9 @@ describe('<Saved Documents />', () => {
     userEvent.click(getByText('5'));
     userEvent.click(getByText('20'));
 
-    TEST_DOCUMENTS.forEach(({ name, timestamp }) => {
+    TEST_DOCUMENTS.forEach(({ title, timestamp }) => {
       const displayDate = format(new Date(timestamp), 'dd-MM-yyyy');
-      expect(getByText(name)).toBeInTheDocument();
+      expect(getByText(title)).toBeInTheDocument();
       expect(getByText(displayDate)).toBeInTheDocument();
     });
   });

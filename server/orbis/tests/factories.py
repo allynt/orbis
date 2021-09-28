@@ -120,6 +120,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
 
     name = factory.LazyAttributeSequence(lambda o, n: f"document-{n}")
     version = optional_declaration(FactoryFaker("slug"), chance=50)
+    title = optional_declaration(FactoryFaker("sentence"), chance=50)
     type = optional_declaration(
         FactoryFaker("random_element", elements=[x[0] for x in DocumentType]),
         chance=50

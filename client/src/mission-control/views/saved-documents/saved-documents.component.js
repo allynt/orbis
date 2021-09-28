@@ -30,7 +30,7 @@ export const SavedDocuments = ({ documents }) => {
     () => [
       {
         Header: 'Title',
-        accessor: 'name',
+        accessor: 'title',
       },
       {
         Header: 'Date',

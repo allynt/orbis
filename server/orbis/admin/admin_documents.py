@@ -30,6 +30,7 @@ class DocumentAdmin(admin.ModelAdmin):
         "name",
         "version",
         "slug",
+        "title",
         "type",
         "orb",
         "is_active",
