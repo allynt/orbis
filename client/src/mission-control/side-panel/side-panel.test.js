@@ -1,43 +1,32 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { VIEWS } from '../mission-control.constants';
 import { SidePanel } from './side-panel.component';
 
-const renderComponent = (userIsAdmin = true) => {
-  const history = createMemoryHistory();
-  const utils = render(<SidePanel userIsAdmin={userIsAdmin} />, {
-    wrapper: props => <Router history={history} {...props} />,
-  });
-  return { ...utils, history };
-};
-
 describe('MissionControlSidePanel', () => {
   it('renders a side panel', () => {
-    const { getByText, getByLabelText } = renderComponent();
+    render(<SidePanel userIsAdmin={true} />);
 
     Object.values(VIEWS).forEach(view => {
-      expect(getByText(view.label)).toBeInTheDocument();
-      expect(getByLabelText(`${view.label} Icon`)).toBeInTheDocument();
+      expect(screen.getByText(view.label)).toBeInTheDocument();
+      expect(screen.getByLabelText(`${view.label} Icon`)).toBeInTheDocument();
     });
   });
 
   it('switches views when button is clicked', () => {
-    const { getByText, history } = renderComponent();
+    const { history } = render(<SidePanel userIsAdmin={true} />);
 
-    userEvent.click(getByText(VIEWS.users.label));
+    userEvent.click(screen.getByText(VIEWS.users.label));
 
     expect(history.location.pathname).toContain(VIEWS.users.route);
   });
 
   it("Doesn't show admin views if the user is not an admin", () => {
-    const { queryByRole } = renderComponent(false);
+    render(<SidePanel userIsAdmin={false} />);
     expect(
-      queryByRole('link', { name: /Orbis Store/i }),
+      screen.queryByRole('link', { name: /Orbis Store/i }),
     ).not.toBeInTheDocument();
   });
 });

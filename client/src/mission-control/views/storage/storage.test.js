@@ -1,15 +1,10 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
-import { Provider } from 'react-redux';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { Storage } from './storage.component';
-
-const mockStore = createMockStore([thunk]);
 
 const TEST_FILES = new Array(20).fill().map((_, i) => ({
   id: `${i}`,
@@ -17,67 +12,61 @@ const TEST_FILES = new Array(20).fill().map((_, i) => ({
   created: new Date(2020, 0, i).toISOString(),
 }));
 
-const renderComponent = () => {
-  const store = mockStore({});
-  const setFiles = jest.fn();
-  const utils = render(<Storage files={TEST_FILES} setFiles={setFiles} />, {
-    wrapper: props => <Provider store={store} {...props} />,
-  });
-  return { ...utils, store };
-};
-
 describe('<Storage />', () => {
   it('renders a stored files table', () => {
-    const { getByText } = renderComponent();
+    render(<Storage files={TEST_FILES} />);
 
-    userEvent.click(getByText('5'));
-    userEvent.click(getByText('20'));
+    userEvent.click(screen.getByText('5'));
+    userEvent.click(screen.getByText('20'));
 
     TEST_FILES.forEach(({ title, created }) => {
       const displayDate = format(new Date(created), 'dd-MM-yyyy');
-      expect(getByText(title)).toBeInTheDocument();
-      expect(getByText(displayDate)).toBeInTheDocument();
+      expect(screen.getByText(title)).toBeInTheDocument();
+      expect(screen.getByText(displayDate)).toBeInTheDocument();
     });
   });
 
   it('opens options menu when ellipsis icon is clicked', () => {
-    const { getAllByRole, getByRole } = renderComponent();
+    render(<Storage files={TEST_FILES} />);
 
-    userEvent.click(getAllByRole('button', { name: 'Options' })[0]);
+    userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
 
-    expect(getByRole('menuitem', { name: 'Delete' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'Delete' }),
+    ).toBeInTheDocument();
   });
 
   it('opens dialog when menu button is clicked', () => {
-    const { getByRole, getAllByRole } = renderComponent();
+    render(<Storage files={TEST_FILES} />);
 
-    userEvent.click(getAllByRole('button', { name: 'Options' })[0]);
-    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
+    userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
+    userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));
 
-    expect(getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('closes dialog when cancel button is clicked', () => {
-    const { getAllByRole, getByRole } = renderComponent();
+    render(<Storage files={TEST_FILES} />);
 
-    userEvent.click(getAllByRole('button', { name: 'Options' })[0]);
-    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
+    userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
+    userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));
 
-    expect(getByRole('dialog')).toBeVisible();
+    expect(screen.getByRole('dialog')).toBeVisible();
 
-    userEvent.click(getByRole('button', { name: 'Cancel' }));
-    expect(getByRole('dialog')).not.toBeVisible();
+    userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.getByRole('dialog')).not.toBeVisible();
   });
 
   it('closes dialog when confirm button is clicked', async () => {
-    const { getAllByRole, getByRole } = renderComponent();
+    const setFiles = jest.fn();
+    render(<Storage files={TEST_FILES} setFiles={setFiles} />);
 
-    userEvent.click(getAllByRole('button', { name: 'Options' })[0]);
-    userEvent.click(getByRole('menuitem', { name: 'Delete' }));
+    userEvent.click(screen.getAllByRole('button', { name: 'Options' })[0]);
+    userEvent.click(screen.getByRole('menuitem', { name: 'Delete' }));
 
-    expect(getByRole('dialog')).toBeVisible();
+    expect(screen.getByRole('dialog')).toBeVisible();
 
-    userEvent.click(getByRole('button', { name: 'Yes' }));
-    await waitFor(() => expect(getByRole('dialog')).not.toBeVisible());
+    userEvent.click(screen.getByRole('button', { name: 'Yes' }));
+    await waitFor(() => expect(screen.getByRole('dialog')).not.toBeVisible());
   });
 });

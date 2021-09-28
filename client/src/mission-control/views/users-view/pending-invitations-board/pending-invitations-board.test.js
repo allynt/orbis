@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
 import {
-  customer,
-  pendingUsers,
+  customer as testCustomer,
+  pendingUsers as testPendingUsers,
 } from 'mission-control/views/users-view/test-story-data';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { PendingInvitationsBoard } from './pending-invitations-board.component';
 
@@ -15,103 +13,114 @@ describe('PendingUsersBoard', () => {
     ['names', 'name'],
     ["email address'", 'email'],
   ];
-  const onWithdrawInvitationClick = jest.fn();
-  const onResendInvitationClick = jest.fn();
+
   it.each(cases)("Displays all pending user's %s", (_, text) => {
-    const { getByText } = render(
+    render(
       <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
       />,
     );
-    pendingUsers.forEach(user =>
-      expect(getByText(user.user[text])).toBeInTheDocument(),
+
+    testPendingUsers.forEach(user =>
+      expect(screen.getByText(user.user[text])).toBeInTheDocument(),
     );
   });
 
   it('Displays user Orb licence names', () => {
-    const { getAllByText } = render(
+    render(
       <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
       />,
     );
 
-    expect(getAllByText('Oil, Rice')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Oil, Rice')[0]).toBeInTheDocument();
   });
 
   it('Displays a placeholder if no customer is present', () => {
-    const { getAllByText } = render(
-      <PendingInvitationsBoard pendingUsers={pendingUsers} customer={null} />,
+    render(
+      <PendingInvitationsBoard
+        pendingUsers={testPendingUsers}
+        customer={null}
+      />,
     );
 
-    pendingUsers.forEach((user, i) =>
-      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
+    testPendingUsers.forEach((_, i) =>
+      expect(
+        screen.getAllByText('Not currently available')[i],
+      ).toBeInTheDocument(),
     );
   });
 
   it('Displays a placeholder when customer is present but has no licences', () => {
-    const { getAllByText, queryByText } = render(
+    render(
       <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
+        pendingUsers={testPendingUsers}
         customer={{ name: 'Customer Name' }}
       />,
     );
 
-    expect(queryByText('No licences')).not.toBeInTheDocument();
+    expect(screen.queryByText('No licences')).not.toBeInTheDocument();
 
-    pendingUsers.forEach((user, i) =>
-      expect(getAllByText('Not currently available')[i]).toBeInTheDocument(),
+    testPendingUsers.forEach((_, i) =>
+      expect(
+        screen.getAllByText('Not currently available')[i],
+      ).toBeInTheDocument(),
     );
   });
 
   it('Displays a placeholder when user has no licences', () => {
     const TEST_USER = {
-      ...pendingUsers[0],
+      ...testPendingUsers[0],
       id: '99',
     };
 
-    const { getByText, queryByText } = render(
+    render(
       <PendingInvitationsBoard
         pendingUsers={[TEST_USER]}
-        customer={customer}
+        customer={testCustomer}
       />,
     );
 
-    expect(queryByText('Not currently available')).not.toBeInTheDocument();
-    expect(getByText('No licences')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Not currently available'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText('No licences')).toBeInTheDocument();
   });
 
   it('Calls resendInvitation when `Resend Invitation` button is clicked', () => {
-    const { getAllByText } = render(
+    const onResendInvitationClick = jest.fn();
+    render(
       <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
         onResendInvitationClick={onResendInvitationClick}
       />,
     );
 
-    const resendInvitationButton = getAllByText('Resend Invitation')[0];
+    const resendInvitationButton = screen.getAllByText('Resend Invitation')[0];
     expect(resendInvitationButton).toBeInTheDocument();
     userEvent.click(resendInvitationButton);
-    expect(onResendInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
+    expect(onResendInvitationClick).toHaveBeenCalledWith(testPendingUsers[0]);
   });
 
   it('Opens `Withdraw Invitation` dialog when button is clicked', () => {
-    const { getByText, getAllByTestId } = render(
+    const onWithdrawInvitationClick = jest.fn();
+    render(
       <PendingInvitationsBoard
-        pendingUsers={pendingUsers}
-        customer={customer}
+        pendingUsers={testPendingUsers}
+        customer={testCustomer}
         onWithdrawInvitationClick={onWithdrawInvitationClick}
       />,
     );
 
-    userEvent.click(getAllByTestId('options-icon')[0]);
+    userEvent.click(screen.getAllByTestId('options-icon')[0]);
 
-    const optionsDropdownButton = getByText('Withdraw');
+    const optionsDropdownButton = screen.getByText('Withdraw');
 
     expect(optionsDropdownButton).toBeInTheDocument();
     userEvent.click(optionsDropdownButton);
-    expect(onWithdrawInvitationClick).toHaveBeenCalledWith(pendingUsers[0]);
+    expect(onWithdrawInvitationClick).toHaveBeenCalledWith(testPendingUsers[0]);
   });
 });
