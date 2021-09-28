@@ -14,8 +14,8 @@ const TEST_DOCUMENTS = new Array(20).fill().map((_, i) => ({
   file: `url-${i}`,
 }));
 
-const renderComponent = () => {
-  const utils = render(<SavedDocuments documents={TEST_DOCUMENTS} />);
+const renderComponent = (documents = TEST_DOCUMENTS) => {
+  const utils = render(<SavedDocuments documents={documents} />);
   return { ...utils };
 };
 
@@ -29,6 +29,24 @@ describe('<Saved Documents />', () => {
     TEST_DOCUMENTS.forEach(({ title, timestamp }) => {
       const displayDate = format(new Date(timestamp), 'dd-MM-yyyy');
       expect(getByText(title)).toBeInTheDocument();
+      expect(getByText(displayDate)).toBeInTheDocument();
+    });
+  });
+
+  it('falls back to name if no title present', () => {
+    const documentsWithoutTitle = TEST_DOCUMENTS.map(doc => ({
+      ...doc,
+      title: null,
+    }));
+
+    const { getByText } = renderComponent(documentsWithoutTitle);
+
+    userEvent.click(getByText('5'));
+    userEvent.click(getByText('20'));
+
+    documentsWithoutTitle.forEach(({ name, timestamp }) => {
+      const displayDate = format(new Date(timestamp), 'dd-MM-yyyy');
+      expect(getByText(name)).toBeInTheDocument();
       expect(getByText(displayDate)).toBeInTheDocument();
     });
   });
