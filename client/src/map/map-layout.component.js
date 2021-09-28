@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
+import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 
@@ -15,6 +16,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 
+import { MapErrorFallback } from './map-error-fallback.component';
 import { useOrbs } from './orbs/useOrbs';
 
 const ControlPanel = React.lazy(() =>
@@ -68,13 +70,15 @@ const MapLayout = () => {
           drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
         />
       </React.Suspense>
-      <React.Suspense fallback={<LoadMaskFallback />}>
-        <Map
-          layers={layers}
-          mapComponents={mapComponents}
-          {...drawingToolsProps}
-        />
-      </React.Suspense>
+      <ErrorBoundary FallbackComponent={MapErrorFallback}>
+        <React.Suspense fallback={<LoadMaskFallback />}>
+          <Map
+            layers={layers}
+            mapComponents={mapComponents}
+            {...drawingToolsProps}
+          />
+        </React.Suspense>
+      </ErrorBoundary>
       <React.Suspense fallback={<LoadMaskFallback zIndex={4} />}>
         {location.pathname.includes('/mission-control') && <MissionControl />}
       </React.Suspense>
