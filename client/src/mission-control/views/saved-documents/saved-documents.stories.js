@@ -7,6 +7,7 @@ import { SavedDocuments } from './saved-documents.component';
 const TEST_DOCUMENTS = new Array(20).fill().map(() => ({
   id: faker.random.uuid(),
   name: faker.name.jobTitle(),
+  title: faker.name.jobTitle(),
   timestamp: faker.date.past().toISOString(),
   file: faker.image.imageUrl(),
 }));

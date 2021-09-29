@@ -138,14 +138,14 @@ class CustomerUserSerializer(AstrosatUsersCustomerUserSerializer):
         """
         customer_user = super().create(validated_data)
         licenced_customer = LicencedCustomer.cast(customer_user.customer)
+        licenced_customer.create_default_licences([customer_user])
+        return customer_user
 
-        default_orbs = Orb.objects.active().default(
-        )  # TODO: THE SET OF DEFAULT ORBS SHOULD EVENTUALLY VARY ACCORDING TO UserProfile
-        for default_orb in default_orbs:
-            assigned_licence = licenced_customer.assign_licences(
-                default_orb, [customer_user],
-                add_missing=True,
-                ignore_existing=False
-            )
-
+    def update(self, instance, validated_data):
+        """
+        Performs a normal update, but then adds removes any exclusive licences as needed
+        """
+        customer_user = super().update(instance, validated_data)
+        licenced_customer = LicencedCustomer.cast(customer_user.customer)
+        licenced_customer.remove_exclusive_licences([customer_user])
         return customer_user

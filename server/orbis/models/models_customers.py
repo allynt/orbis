@@ -1,6 +1,6 @@
 from astrosat_users.models import Customer as AstrosatUsersCustomer
 
-from orbis.models import Licence
+from orbis.models import Licence, Orb
 
 
 class LicencedCustomer(AstrosatUsersCustomer):
@@ -54,7 +54,27 @@ class LicencedCustomer(AstrosatUsersCustomer):
                 licence.customer_user = customer_user
                 licence.save()
 
-            # remove all licences that are exclusive, if there are any licences that are not exlusive
+            self.remove_exclusive_licences([customer_user])
+
+            licences.append(licence)
+        return licences
+
+    def create_default_licences(self, customer_users):
+        default_orbs = Orb.objects.active().default(
+        )  # TODO: THE SET OF DEFAULT ORBS SHOULD EVENTUALLY VARY ACCORDING TO UserProfile
+        for default_orb in default_orbs:
+            self.assign_licences(
+                default_orb,
+                customer_users,
+                add_missing=True,
+                ignore_existing=False,
+            )
+
+    def remove_exclusive_licences(self, customer_users):
+        """
+        remove all licences that are exclusive, if there are any licences that are not exlusive
+        """
+        for customer_user in customer_users:
             exclusive_licences = list(customer_user.licences.exclusive())
             if exclusive_licences and customer_user.licences.exclude(
                 id__in=[
@@ -71,6 +91,3 @@ class LicencedCustomer(AstrosatUsersCustomer):
                     ]
                 ).delete(
                 )  # a default exclusive licence should also be deleted from the customer
-
-            licences.append(licence)
-        return licences

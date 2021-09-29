@@ -170,6 +170,7 @@ class Document(models.Model):
     slug = models.SlugField(
         max_length=128 + 32, editable=False, blank=False, null=False
     )
+    title = models.CharField(max_length=128, blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
