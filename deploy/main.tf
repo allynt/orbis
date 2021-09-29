@@ -14,8 +14,8 @@ variable "tag" {
 }
 
 locals {
-  api_instance_hostname = (var.instance == "primary") ? "api" : var.instance
-  app_instance_hostname = (var.instance == "primary") ? "app" : var.instance
+  api_instance_hostname = (var.instance == "primary") ? "api" : "${var.instance}-api"
+  app_instance_hostname = (var.instance == "primary") ? "app" : "${var.instance}-app"
 }
 
 module "app_deploy" {
