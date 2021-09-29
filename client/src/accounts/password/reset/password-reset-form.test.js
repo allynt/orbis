@@ -13,14 +13,14 @@ const PASSWORD_TEXT = 'newpassword';
 
 describe('Password Reset Form Component', () => {
   let state;
-  let attrs;
+  let props;
 
   beforeEach(() => {
     state = {
       app: { config: { passwordMinLength: 2, passwordMaxLength: 50 } },
     };
 
-    attrs = {
+    props = {
       confirmResetPassword: jest.fn(),
       resetStatus: status.NONE,
       error: null,
@@ -37,7 +37,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should render a form', () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm {...props} />, { state });
 
     expect(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -52,7 +52,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should disable `Reset Password` button when form is invalid', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm {...props} />, { state });
 
     userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
@@ -64,7 +64,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Reset Password` button when form is valid', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm {...props} />, { state });
 
     userEvent.type(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -82,18 +82,18 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm {...props} />, { state });
 
     userEvent.type(screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT), 'te');
 
     userEvent.tab();
 
     userEvent.click(screen.getByText(RESET_BUTTON_TEXT));
-    expect(attrs.confirmResetPassword).not.toHaveBeenCalled();
+    expect(props.confirmResetPassword).not.toHaveBeenCalled();
   });
 
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm {...props} />, { state });
 
     userEvent.type(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -107,7 +107,7 @@ describe('Password Reset Form Component', () => {
     userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
     await waitFor(() =>
-      expect(attrs.confirmResetPassword).toHaveBeenCalledWith(
+      expect(props.confirmResetPassword).toHaveBeenCalledWith(
         {
           [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
           [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
@@ -120,7 +120,7 @@ describe('Password Reset Form Component', () => {
   it('should display error well if password reset is unsuccessful', () => {
     render(
       <PasswordResetForm
-        {...attrs}
+        {...props}
         resetStatus={status.NONE}
         error={['Test Error 1', 'Test Error 2', 'Test Error 3']}
       />,
@@ -132,7 +132,7 @@ describe('Password Reset Form Component', () => {
 
   describe('Password Reset Success View', () => {
     it('should show the Password Reset success view', () => {
-      render(<PasswordResetForm {...attrs} resetStatus={status.COMPLETE} />, {
+      render(<PasswordResetForm {...props} resetStatus={status.COMPLETE} />, {
         state,
       });
 

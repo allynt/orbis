@@ -8,8 +8,6 @@ import { AnalysisPanel } from './analysis-panel.component';
 const source_id = 'test/source';
 
 const setup = ({ property, clickedFeatures }) => {
-  const historyOptions = { initialEntries: ['/map'] };
-
   const state = {
     orbs: {
       layers: {
@@ -19,11 +17,10 @@ const setup = ({ property, clickedFeatures }) => {
     },
   };
 
-  const { history, store } = render(<AnalysisPanel />, {
+  const { store } = render(<AnalysisPanel />, {
     state,
-    historyOptions,
   });
-  return { history, store };
+  return { store };
 };
 
 describe('<AnalysisPanel />', () => {

@@ -55,16 +55,6 @@ const setup = ({ clickedFeatures = CLICKED_FEATURES } = {}) =>
       selectedProperty={PROPERTY}
       clickedFeatures={clickedFeatures}
     />,
-    {
-      state: {
-        orbs: {
-          isolationPlus: {
-            property: PROPERTY,
-            clickedFeatures,
-          },
-        },
-      },
-    },
   );
 
 describe('<CategoryBreakdownChart />', () => {
