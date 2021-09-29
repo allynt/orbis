@@ -1,3 +1,23 @@
+# [2.25.0](https://github.com/astrosat/orbis/compare/v2.24.0...v2.25.0) (2021-09-29)
+
+
+### Bug Fixes
+
+* **frontend:** Further changes ([28ebdcb](https://github.com/astrosat/orbis/commit/28ebdcb652b1147e8a96ca5d7e80406257e9d8dd))
+* **frontend:** Make requested changes ([f09da1b](https://github.com/astrosat/orbis/commit/f09da1b261c39f4260b73aa938b4132b767f5672))
+* **frontend:** Update AccountDetails, remove unused imports ([1e26e41](https://github.com/astrosat/orbis/commit/1e26e41e3f30299fdd7fdefea884161f2a260a99))
+* **frontend:** Update Mission Control/Users View tests ([78a3a93](https://github.com/astrosat/orbis/commit/78a3a93ccf8895e181ce939cc4ad4aa5e14db7a3))
+* **frontend:** Update PendingInvitationBoard ([5efd152](https://github.com/astrosat/orbis/commit/5efd152ab78ded0023a2b3907ac4191b52bb78f7))
+* **frontend:** Update SidePanel test ([8499c9d](https://github.com/astrosat/orbis/commit/8499c9d375b669f656a31271b8963822f0dbbcf5))
+* **frontend:** Update SidePanelListItem ([fff0a17](https://github.com/astrosat/orbis/commit/fff0a17e028c6ad4d019f5ca5ec5c2449eceb4b2))
+
+
+### Features
+
+* **backend:** added title field to documents ([0b7d4dd](https://github.com/astrosat/orbis/commit/0b7d4ddb3a952481aaccaa86f9f9d6a617d92531))
+* **backend:** removing exclusive licences via API ([a9484f8](https://github.com/astrosat/orbis/commit/a9484f8e821ea3ce25438b37f47007bbcce46075))
+* **frontend:** using document.name as a fallback value in case ([73e003c](https://github.com/astrosat/orbis/commit/73e003c6f553c830fde8361042208f997884d5a5))
+
 # [2.24.0](https://github.com/astrosat/orbis/compare/v2.23.0...v2.24.0) (2021-09-27)
 
 
