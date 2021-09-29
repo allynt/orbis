@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ErrorFallback } from './map-error-fallback.component';
+import { ErrorFallback } from './error-fallback.component';
 
 export default {
   title: 'Map/ErrorFallback',

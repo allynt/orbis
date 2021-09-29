@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LoadingTextFallback, SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
-import { ErrorFallback } from 'map/map-error-fallback.component';
+import { ErrorFallback } from 'map/error-fallback.component';
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,

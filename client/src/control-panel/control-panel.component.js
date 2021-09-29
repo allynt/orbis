@@ -11,7 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { LoadingTextFallback } from 'components';
 import { SidePanel } from 'components/side-panel/side-panel.component';
-import { ErrorFallback } from 'map/map-error-fallback.component';
+import { ErrorFallback } from 'map/error-fallback.component';
 
 import { useToolbarItems } from './toolbar-config';
 import {
