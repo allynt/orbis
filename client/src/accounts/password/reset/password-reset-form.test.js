@@ -12,32 +12,8 @@ const RESET_BUTTON_TEXT = 'Reset Password';
 const PASSWORD_TEXT = 'newpassword';
 
 describe('Password Reset Form Component', () => {
-  let state;
-  let attrs;
-
-  beforeEach(() => {
-    state = {
-      app: { config: { passwordMinLength: 2, passwordMaxLength: 50 } },
-    };
-
-    attrs = {
-      confirmResetPassword: jest.fn(),
-      resetStatus: status.NONE,
-      error: null,
-      passwordMinLength: 2,
-      passwordMaxLength: 30,
-      passwordStrength: 0,
-      match: {
-        params: {
-          uid: 'Test UID',
-          token: 'Test Token',
-        },
-      },
-    };
-  });
-
   it('should render a form', () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm />);
 
     expect(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -52,7 +28,7 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should disable `Reset Password` button when form is invalid', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(<PasswordResetForm />);
 
     userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
@@ -64,7 +40,13 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should enable `Reset Password` button when form is valid', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    render(
+      <PasswordResetForm
+        passwordMinLength={2}
+        passwordMaxLength={30}
+        passwordStrength={0}
+      />,
+    );
 
     userEvent.type(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -82,18 +64,33 @@ describe('Password Reset Form Component', () => {
   });
 
   it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    const confirmResetPassword = jest.fn();
+    render(<PasswordResetForm confirmResetPassword={confirmResetPassword} />);
 
     userEvent.type(screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT), 'te');
 
     userEvent.tab();
 
     userEvent.click(screen.getByText(RESET_BUTTON_TEXT));
-    expect(attrs.confirmResetPassword).not.toHaveBeenCalled();
+    expect(confirmResetPassword).not.toHaveBeenCalled();
   });
 
   it('should call `confirmResetPassword` function when form is valid and `Reset Password` button clicked', async () => {
-    render(<PasswordResetForm {...attrs} />, { state });
+    const confirmResetPassword = jest.fn();
+    render(
+      <PasswordResetForm
+        confirmResetPassword={confirmResetPassword}
+        passwordMinLength={2}
+        passwordMaxLength={30}
+        passwordStrength={0}
+        match={{
+          params: {
+            uid: 'Test UID',
+            token: 'Test Token',
+          },
+        }}
+      />,
+    );
 
     userEvent.type(
       screen.getByLabelText(PASSWORD_PLACEHOLDER_TEXT),
@@ -107,7 +104,7 @@ describe('Password Reset Form Component', () => {
     userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
     await waitFor(() =>
-      expect(attrs.confirmResetPassword).toHaveBeenCalledWith(
+      expect(confirmResetPassword).toHaveBeenCalledWith(
         {
           [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
           [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
@@ -120,11 +117,8 @@ describe('Password Reset Form Component', () => {
   it('should display error well if password reset is unsuccessful', () => {
     render(
       <PasswordResetForm
-        {...attrs}
-        resetStatus={status.NONE}
         error={['Test Error 1', 'Test Error 2', 'Test Error 3']}
       />,
-      { state },
     );
 
     expect(screen.getByTestId('error-well')).toBeInTheDocument();
@@ -132,9 +126,7 @@ describe('Password Reset Form Component', () => {
 
   describe('Password Reset Success View', () => {
     it('should show the Password Reset success view', () => {
-      render(<PasswordResetForm {...attrs} resetStatus={status.COMPLETE} />, {
-        state,
-      });
+      render(<PasswordResetForm resetStatus={status.COMPLETE} />);
 
       expect(
         screen.getByText(

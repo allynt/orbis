@@ -8,28 +8,8 @@ import { LayerVisibilityCheckbox } from './layer-visibility-checkbox.component';
 const LAYER = { source_id: 'test/layer/1', metadata: { label: 'Test Layer' } };
 
 describe('<LayerVisibilityCheckbox />', () => {
-  let state;
-  let selectedLayer;
-  let dispatch;
-  let icon = undefined;
-  let info = undefined;
-
-  beforeEach(() => {
-    state = {};
-    selectedLayer = LAYER;
-    dispatch = jest.fn();
-  });
-
   it('shows a checkbox for the selected layer', () => {
-    render(
-      <LayerVisibilityCheckbox
-        selectedLayer={selectedLayer}
-        dispatch={dispatch}
-        icon={icon}
-        info={info}
-      />,
-      { state },
-    );
+    render(<LayerVisibilityCheckbox selectedLayer={LAYER} />);
 
     expect(
       screen.getByRole('checkbox', { name: LAYER.metadata.label }),
@@ -37,14 +17,9 @@ describe('<LayerVisibilityCheckbox />', () => {
   });
 
   it(`Dispatches the ${setVisibility.type} action on click`, () => {
+    const dispatch = jest.fn();
     render(
-      <LayerVisibilityCheckbox
-        selectedLayer={selectedLayer}
-        dispatch={dispatch}
-        icon={icon}
-        info={info}
-      />,
-      { state },
+      <LayerVisibilityCheckbox selectedLayer={LAYER} dispatch={dispatch} />,
     );
 
     userEvent.click(screen.getByRole('checkbox'));
@@ -54,29 +29,13 @@ describe('<LayerVisibilityCheckbox />', () => {
   });
 
   it('Shows an icon if provided', () => {
-    render(
-      <LayerVisibilityCheckbox
-        selectedLayer={selectedLayer}
-        dispatch={dispatch}
-        icon="PicnicSite"
-        info={info}
-      />,
-      { state },
-    );
+    render(<LayerVisibilityCheckbox selectedLayer={LAYER} icon="PicnicSite" />);
 
     expect(screen.getByRole('img', { name: 'PicnicSite' })).toBeInTheDocument();
   });
 
   it('Shows an info icon if info prop is supplied', () => {
-    render(
-      <LayerVisibilityCheckbox
-        selectedLayer={selectedLayer}
-        dispatch={dispatch}
-        icon="PicnicSite"
-        info="hello"
-      />,
-      { state },
-    );
+    render(<LayerVisibilityCheckbox selectedLayer={LAYER} info="hello" />);
 
     expect(screen.getByRole('button', { name: 'Info' })).toBeInTheDocument();
   });
