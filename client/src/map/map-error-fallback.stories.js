@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { MapErrorFallback } from './map-error-fallback.component';
+import { ErrorFallback } from './map-error-fallback.component';
 
 export default {
-  title: 'Map/MapErrorFallback',
-  component: MapErrorFallback,
+  title: 'Map/ErrorFallback',
+  component: ErrorFallback,
   args: { messageOnly: false },
   argTypes: { resetErrorBoundary: { action: true } },
 };
 
 const Template = args => (
   // <div style={{ width: '100%', height: '100vh' }}>
-  <MapErrorFallback {...args} />
+  <ErrorFallback {...args} />
   // </div>
 );
 

@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { LoadingTextFallback, SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
-import { MapErrorFallback } from 'map/map-error-fallback.component';
+import { ErrorFallback } from 'map/map-error-fallback.component';
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
@@ -182,9 +182,7 @@ export const AnalysisPanel = () => {
       <React.Suspense fallback={<LoadingTextFallback />}>
         {!!dataVisualisationComponents && !!clickedFeatures?.length && (
           <ErrorBoundary
-            fallbackRender={props => (
-              <MapErrorFallback messageOnly {...props} />
-            )}
+            fallbackRender={props => <ErrorFallback messageOnly {...props} />}
           >
             <AnalysisPanelContent
               clickedFeatures={clickedFeatures}

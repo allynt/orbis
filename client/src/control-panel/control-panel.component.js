@@ -11,7 +11,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { LoadingTextFallback } from 'components';
 import { SidePanel } from 'components/side-panel/side-panel.component';
-import { MapErrorFallback } from 'map/map-error-fallback.component';
+import { ErrorFallback } from 'map/map-error-fallback.component';
 
 import { useToolbarItems } from './toolbar-config';
 import {
@@ -154,9 +154,7 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
           }
         >
           <ErrorBoundary
-            fallbackRender={props => (
-              <MapErrorFallback messageOnly {...props} />
-            )}
+            fallbackRender={props => <ErrorFallback messageOnly {...props} />}
           >
             {panel === DATA_LAYERS && (
               <DataLayers

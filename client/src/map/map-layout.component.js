@@ -16,7 +16,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 
-import { MapErrorFallback } from './map-error-fallback.component';
+import { ErrorFallback } from './map-error-fallback.component';
 import { useOrbs } from './orbs/useOrbs';
 
 const ControlPanel = React.lazy(() =>
@@ -70,7 +70,7 @@ const MapLayout = () => {
           drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
         />
       </React.Suspense>
-      <ErrorBoundary FallbackComponent={MapErrorFallback}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <React.Suspense fallback={<LoadMaskFallback />}>
           <Map
             layers={layers}

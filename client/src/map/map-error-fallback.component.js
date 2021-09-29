@@ -49,7 +49,7 @@ const Button = styled(AuiButton)({ alignSelf: 'start' });
 /**
  * @param {import('react-error-boundary').FallbackProps & {messageOnly?: boolean}} props
  */
-export const MapErrorFallback = ({
+export const ErrorFallback = ({
   error,
   resetErrorBoundary,
   messageOnly = false,
