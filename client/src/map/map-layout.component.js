@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
-import { LoadMaskFallback } from 'components';
+import { ErrorFallback, LoadMaskFallback } from 'components';
 import { ToolbarFallback } from 'control-panel/toolbar-fallback.component';
 import {
   fetchSources,
@@ -16,7 +16,6 @@ import {
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 
-import { ErrorFallback } from '../components/error-fallback/error-fallback.component';
 import { useOrbs } from './orbs/useOrbs';
 
 const ControlPanel = React.lazy(() =>

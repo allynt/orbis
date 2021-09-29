@@ -14,8 +14,7 @@ import { find, get } from 'lodash';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { LoadingTextFallback, SidePanel } from 'components';
-import { ErrorFallback } from 'components/error-fallback/error-fallback.component';
+import { ErrorFallback, LoadingTextFallback, SidePanel } from 'components';
 import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
