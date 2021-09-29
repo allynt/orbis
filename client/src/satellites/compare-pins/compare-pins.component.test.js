@@ -4,7 +4,7 @@ import { render, screen, userEvent } from 'test/test-utils';
 
 import ComparePins from './compare-pins.component';
 
-const mockScenes = [
+const MOCK_SCENES = [
   {
     id: '32UVD',
     label: 'Pinned Scene 1',
@@ -26,32 +26,8 @@ const mockScenes = [
 ];
 
 describe('Compare Pins Component', () => {
-  let state = null;
-  let props = null;
-
-  beforeEach(() => {
-    state = {
-      satellites: {
-        visualisationId: 'TCI',
-      },
-    };
-
-    props = {
-      selectPinnedScene: jest.fn(),
-      deselectPinnedScene: jest.fn(),
-      clearSelectedPinnedScenes: jest.fn(),
-      deletePinnedScene: jest.fn(),
-      toggleCompareMode: jest.fn(),
-      pinnedScenes: mockScenes,
-      selectedPinnedScenes: [],
-      isCompareMode: false,
-    };
-  });
-
   it('should render an empty list of pinned scenes', () => {
-    const { container } = render(<ComparePins {...props} pinnedScenes={[]} />, {
-      state,
-    });
+    const { container } = render(<ComparePins pinnedScenes={[]} />);
 
     expect(screen.getByText('Compare')).toBeInTheDocument();
     expect(screen.getByText('Clear Pins')).toBeInTheDocument();
@@ -59,61 +35,55 @@ describe('Compare Pins Component', () => {
   });
 
   it('should render a list of pinned scenes', () => {
-    render(<ComparePins {...props} />, {
-      state,
-    });
+    render(<ComparePins pinnedScenes={MOCK_SCENES} />);
+
     const pinnedSceneElements = screen.getAllByRole('listitem');
-    expect(pinnedSceneElements).toHaveLength(mockScenes.length);
+    expect(pinnedSceneElements).toHaveLength(MOCK_SCENES.length);
   });
 
   it('should render Compare Mode button disabled when not enough pinned scenes selected', () => {
-    render(
-      <ComparePins {...props} selectedPinnedScenes={[{ ...mockScenes[1] }]} />,
-      { state },
-    );
+    render(<ComparePins selectedPinnedScenes={[{ ...MOCK_SCENES[1] }]} />);
 
     expect(screen.getByRole('checkbox', { name: 'Compare' })).toBeDisabled();
   });
 
   it('should not be able to toggle Compare Mode when not enough pinned scenes selected', () => {
+    const toggleCompareMode = jest.fn();
     render(
-      <ComparePins {...props} selectedPinnedScenes={[{ ...mockScenes[1] }]} />,
-      { state },
+      <ComparePins
+        selectedPinnedScenes={[{ ...MOCK_SCENES[1] }]}
+        toggleCompareMode={toggleCompareMode}
+      />,
     );
 
     userEvent.click(screen.getByRole('checkbox', { name: 'Compare' }));
-    expect(props.toggleCompareMode).not.toHaveBeenCalled();
+    expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 
   it('should toggle into Compare Mode when there are enough pinned scenes selected', () => {
+    const toggleCompareMode = jest.fn();
     render(
       <ComparePins
-        {...props}
-        selectedPinnedScenes={[mockScenes[0], mockScenes[1]]}
+        selectedPinnedScenes={[MOCK_SCENES[0], MOCK_SCENES[1]]}
+        toggleCompareMode={toggleCompareMode}
       />,
-      { state },
     );
 
     expect(
       screen.getByRole('checkbox', { name: 'Compare' }),
     ).not.toHaveAttribute('disabled');
     userEvent.click(screen.getByRole('checkbox', { name: 'Compare' }));
-    expect(props.toggleCompareMode).toHaveBeenCalled();
+    expect(toggleCompareMode).toHaveBeenCalled();
   });
 
   it('should render Clear Pins button disabled', () => {
-    render(<ComparePins {...props} />, {
-      state,
-    });
+    render(<ComparePins selectedPinnedScenes={[]} />);
 
     expect(screen.getByRole('button', { name: 'Clear Pins' })).toBeDisabled();
   });
 
   it('should render Clear Pins button enabled', () => {
-    render(
-      <ComparePins {...props} selectedPinnedScenes={[{ ...mockScenes[2] }]} />,
-      { state },
-    );
+    render(<ComparePins selectedPinnedScenes={[{ ...MOCK_SCENES[2] }]} />);
 
     expect(
       screen.getByRole('button', { name: 'Clear Pins' }),
@@ -121,44 +91,60 @@ describe('Compare Pins Component', () => {
   });
 
   it('should Clear selected pinned scenes', () => {
+    const clearSelectedPinnedScenes = jest.fn();
     render(
-      <ComparePins {...props} selectedPinnedScenes={[{ ...mockScenes[2] }]} />,
-      { state },
+      <ComparePins
+        selectedPinnedScenes={[{ ...MOCK_SCENES[2] }]}
+        clearSelectedPinnedScenes={clearSelectedPinnedScenes}
+      />,
     );
 
     userEvent.click(screen.getByRole('button', { name: 'Clear Pins' }));
-    expect(props.clearSelectedPinnedScenes).toHaveBeenCalled();
+    expect(clearSelectedPinnedScenes).toHaveBeenCalled();
   });
 
   it("should delete pinned scene, when scene's icon clicked", () => {
-    render(<ComparePins {...props} />, {
-      state,
-    });
+    const deletePinnedScene = jest.fn();
+    render(
+      <ComparePins
+        pinnedScenes={MOCK_SCENES}
+        deletePinnedScene={deletePinnedScene}
+      />,
+    );
 
     userEvent.click(
-      screen.getByRole('button', { name: `delete-icon-${mockScenes[0].id}` }),
+      screen.getByRole('button', { name: `delete-icon-${MOCK_SCENES[0].id}` }),
     );
-    expect(props.deletePinnedScene).toHaveBeenCalledWith(mockScenes[0].id);
+    expect(deletePinnedScene).toHaveBeenCalledWith(MOCK_SCENES[0].id);
   });
 
   it('should deselect pinned scene, when scene clicked and already selected', () => {
+    const deselectPinnedScene = jest.fn();
     render(
-      <ComparePins {...props} selectedPinnedScenes={[{ ...mockScenes[0] }]} />,
-      { state },
+      <ComparePins
+        pinnedScenes={MOCK_SCENES}
+        selectedPinnedScenes={[{ ...MOCK_SCENES[0] }]}
+        deselectPinnedScene={deselectPinnedScene}
+      />,
     );
 
-    userEvent.click(screen.getByRole('checkbox', { name: mockScenes[0].id }));
+    userEvent.click(screen.getByRole('checkbox', { name: MOCK_SCENES[0].id }));
 
-    expect(props.deselectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
+    expect(deselectPinnedScene).toHaveBeenCalledWith(MOCK_SCENES[0]);
   });
 
   it('should select pinned scene, when scene clicked and not already selected', () => {
-    render(<ComparePins {...props} />, {
-      state,
-    });
+    const selectPinnedScene = jest.fn();
+    render(
+      <ComparePins
+        pinnedScenes={MOCK_SCENES}
+        selectPinnedScene={selectPinnedScene}
+        selectedPinnedScenes={[]}
+      />,
+    );
 
-    userEvent.click(screen.getByRole('checkbox', { name: mockScenes[0].id }));
+    userEvent.click(screen.getByRole('checkbox', { name: MOCK_SCENES[0].id }));
 
-    expect(props.selectPinnedScene).toHaveBeenCalledWith(mockScenes[0]);
+    expect(selectPinnedScene).toHaveBeenCalledWith(MOCK_SCENES[0]);
   });
 });
