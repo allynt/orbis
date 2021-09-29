@@ -9,11 +9,7 @@ export default {
   argTypes: { resetErrorBoundary: { action: true } },
 };
 
-const Template = args => (
-  // <div style={{ width: '100%', height: '100vh' }}>
-  <ErrorFallback {...args} />
-  // </div>
-);
+const Template = args => <ErrorFallback {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
