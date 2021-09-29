@@ -3,7 +3,7 @@ import React from 'react';
 import { ErrorFallback } from './error-fallback.component';
 
 export default {
-  title: 'Map/ErrorFallback',
+  title: 'Components/ErrorFallback',
   component: ErrorFallback,
   args: { messageOnly: false },
   argTypes: { resetErrorBoundary: { action: true } },

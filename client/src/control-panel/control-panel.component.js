@@ -10,8 +10,8 @@ import {
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { LoadingTextFallback } from 'components';
+import { ErrorFallback } from 'components/error-fallback/error-fallback.component';
 import { SidePanel } from 'components/side-panel/side-panel.component';
-import { ErrorFallback } from 'map/error-fallback.component';
 
 import { useToolbarItems } from './toolbar-config';
 import {

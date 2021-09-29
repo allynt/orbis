@@ -16,7 +16,7 @@ import {
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 
-import { ErrorFallback } from './error-fallback.component';
+import { ErrorFallback } from '../components/error-fallback/error-fallback.component';
 import { useOrbs } from './orbs/useOrbs';
 
 const ControlPanel = React.lazy(() =>
