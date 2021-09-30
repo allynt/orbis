@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@astrosat/astrosat-ui';
 
+import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import Accounts from 'accounts';
 import apiClient from 'api-client';
-import { LoadMaskFallback } from 'components';
+import { ErrorFallback, LoadMaskFallback } from 'components';
 import LandingView from 'landing/landing.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
@@ -62,18 +63,20 @@ const App = () => {
 
   return (
     <Box width="100vw" height="100vh">
-      <ReactTooltip />
-      <React.Suspense fallback={<LoadMaskFallback />}>
-        <Switch>
-          <PrivateRoute exact path="/" user={user} component={LandingView} />
-          <Route path="/accounts" component={Accounts} />
-          <PrivateRoute
-            path={['/map', '/mission-control']}
-            user={user}
-            component={MapLayout}
-          />
-        </Switch>
-      </React.Suspense>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ReactTooltip />
+        <React.Suspense fallback={<LoadMaskFallback />}>
+          <Switch>
+            <PrivateRoute exact path="/" user={user} component={LandingView} />
+            <Route path="/accounts" component={Accounts} />
+            <PrivateRoute
+              path={['/map', '/mission-control']}
+              user={user}
+              component={MapLayout}
+            />
+          </Switch>
+        </React.Suspense>
+      </ErrorBoundary>
     </Box>
   );
 };
