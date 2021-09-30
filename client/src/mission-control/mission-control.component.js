@@ -29,6 +29,8 @@ import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from 'components';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -126,33 +128,35 @@ export const MissionControl = React.memo(() => {
         <TransitionGroup className={`${styles.main} ${styles.outer}`}>
           <CSSTransition {...fadeTransitionProps}>
             <div className={`${styles.main} ${styles.inner}`}>
-              <Switch location={location}>
-                <Route
-                  path="/mission-control/store"
-                  render={renderAdminOnly(Store)}
-                />
-                <Route
-                  path="/mission-control/users"
-                  render={renderAdminOnly(UsersView)}
-                />
-                <Route
-                  path="/mission-control/subscriptions"
-                  render={renderAdminOnly(ConnectedSubscriptions)}
-                />
-                <Route
-                  path="/mission-control/saved-documents"
-                  component={SavedDocumentsView}
-                />
-                <Route path="/mission-control/support" component={Support} />
-                <Route
-                  path="/mission-control/account-details"
-                  render={renderAdminOnly(AccountDetails)}
-                />
-                <Route exact path="/mission-control">
-                  <Redirect to="/mission-control/support" />
-                </Route>
-                <Route path="/mission-control/storage" component={Storage} />
-              </Switch>
+              <ErrorBoundary FallbackComponent={ErrorFallback}>
+                <Switch location={location}>
+                  <Route
+                    path="/mission-control/store"
+                    render={renderAdminOnly(Store)}
+                  />
+                  <Route
+                    path="/mission-control/users"
+                    render={renderAdminOnly(UsersView)}
+                  />
+                  <Route
+                    path="/mission-control/subscriptions"
+                    render={renderAdminOnly(ConnectedSubscriptions)}
+                  />
+                  <Route
+                    path="/mission-control/saved-documents"
+                    component={SavedDocumentsView}
+                  />
+                  <Route path="/mission-control/support" component={Support} />
+                  <Route
+                    path="/mission-control/account-details"
+                    render={renderAdminOnly(AccountDetails)}
+                  />
+                  <Route exact path="/mission-control">
+                    <Redirect to="/mission-control/support" />
+                  </Route>
+                  <Route path="/mission-control/storage" component={Storage} />
+                </Switch>
+              </ErrorBoundary>
             </div>
           </CSSTransition>
         </TransitionGroup>

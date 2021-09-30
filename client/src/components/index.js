@@ -23,3 +23,4 @@ export { SidePanel } from './side-panel/side-panel.component';
 export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
 export { WrappingChartLabel } from './wrapping-chart-label.component';
+export { ErrorFallback } from './error-fallback/error-fallback.component';
