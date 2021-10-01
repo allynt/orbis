@@ -25,6 +25,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
             "official_name",
             "company_type",
             "registered_id",
+            "vat_number",
             "description",
             "logo",
             "url",
@@ -36,6 +37,7 @@ class CustomerSerializer(AstrosatUsersCustomerSerializer):
         ref_name = "orbis_customer_serializer"
 
     licences = LicenceSerializer(many=True, required=False)
+    logo = serializers.FileField(read_only=True)
 
     def to_internal_value(self, data):
         # when inputting data, include hidden licences...

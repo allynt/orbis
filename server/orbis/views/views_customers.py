@@ -58,6 +58,12 @@ class LicenceNotifyingMixIn(object):
         return message
 
 
+# TODO: If the client allows updating of `Customer.logo` then these views will
+# TODO: have to add `MultiPartParser` and `FormParser` to support file uploads
+# TODO: and send data as FormData from the client.  Since it doesn't, though, I
+# TODO: I have simply made the logo field read-only in CustomerSerializer for now.
+
+
 @method_decorator(swagger_fake(Customer.objects.none()), name="get_queryset")
 class CustomerCreateView(AstrosatUsersCustomerCreateView):
     # notice that I am not using the licence-aware (orbis) CustomerSerializer here
