@@ -143,7 +143,7 @@ class TestOrbisLogin:
 
         assert content["errors"] == {
             drf_settings.NON_FIELD_ERRORS_KEY: [
-                f"User {user} has not yet accepted the terms & conditions."
+                "Please accept our latest Terms & Conditions and Privacy Policy."
             ]
         }
 
