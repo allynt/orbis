@@ -4,12 +4,21 @@ import { BitmapLayer } from '@deck.gl/layers';
 import { dataSelector, visibilitySelector } from '../layers.slice';
 
 /** @type {import("typings/orbis").LayerConfiguration<{visible?: boolean}>} */
-export const baseSatelliteImageConfig = ({ id, data, visible, authToken }) => {
+export const baseSatelliteImageConfig = ({
+  id,
+  data,
+  visible,
+  minZoom,
+  maxZoom,
+  authToken,
+}) => {
   return {
     id,
     data,
     visible,
     tileSize: 256,
+    minZoom,
+    maxZoom,
     renderSubLayers: props => {
       const {
         bbox: { west, south, east, north },
@@ -32,7 +41,8 @@ export const baseSatelliteImageConfig = ({ id, data, visible, authToken }) => {
 };
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, orbState, authToken, ...rest }) => {
+export default ({ id, activeSources, orbState, authToken, ...rest }) => {
+  const source = activeSources?.find(source => source.source_id === id);
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
 
@@ -41,6 +51,8 @@ export default ({ id, orbState, authToken, ...rest }) => {
     data,
     orbState,
     visible,
+    minZoom: source?.metadata?.minZoom,
+    maxZoom: source?.metadata?.maxZoom,
     authToken,
     ...rest,
   });
