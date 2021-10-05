@@ -1,36 +1,13 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
-
 import { setOther, SHARED_STATE_KEY } from 'map/orbs/layers.slice';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { IsolationPlusPropertyRadioGroup } from './isolation-plus-property-radio-group.component';
 
-const mockStore = configureStore();
-
-let dispatch = null;
-
-const renderComponent = (selectedLayer, initialState = {}) => {
-  dispatch = jest.fn();
-  return render(
-    <IsolationPlusPropertyRadioGroup
-      selectedLayer={selectedLayer}
-      dispatch={dispatch}
-    />,
-    {
-      wrapper: ({ children }) => (
-        <Provider store={mockStore(initialState)}>{children}</Provider>
-      ),
-    },
-  );
-};
-
 describe('<IsolationPlusPropertyRadioGroup />', () => {
   it('renders a radio for each property group', () => {
-    const { getByRole } = renderComponent({
+    const selectedLayer = {
       metadata: {
         properties: [
           { name: 'property1', property_group: '1', label: 'Group 1' },
@@ -38,44 +15,69 @@ describe('<IsolationPlusPropertyRadioGroup />', () => {
           { name: 'property3', label: 'Property 2' },
         ],
       },
-    });
-    expect(getByRole('radio', { name: 'Group 1' })).toBeInTheDocument();
-    expect(getByRole('radio', { name: 'Property 2' })).toBeInTheDocument();
+    };
+
+    render(<IsolationPlusPropertyRadioGroup selectedLayer={selectedLayer} />);
+
+    expect(screen.getByRole('radio', { name: 'Group 1' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('radio', { name: 'Property 2' }),
+    ).toBeInTheDocument();
   });
 
   it(`dispatches the ${setOther} action with the selected property when the property changes`, () => {
+    const dispatch = jest.fn();
     const property = { name: 'property1' };
-    const { getByRole } = renderComponent({
+
+    const selectedLayer = {
       authority: 'test',
       namespace: 'layer',
       metadata: { properties: [property] },
-    });
-    userEvent.click(getByRole('radio'));
+    };
+
+    render(
+      <IsolationPlusPropertyRadioGroup
+        selectedLayer={selectedLayer}
+        dispatch={dispatch}
+      />,
+    );
+
+    userEvent.click(screen.getByRole('radio'));
     expect(dispatch).toBeCalledWith(
       setOther(expect.objectContaining({ other: { property } })),
     );
   });
 
   it(`dispatches set other with property as null if the selected property is clicked`, () => {
+    const dispatch = jest.fn();
     const property = { name: 'property1' };
-    const { getByRole } = renderComponent(
-      {
-        authority: 'test',
-        namespace: 'layer',
-        source_id: 'test/layer',
-        metadata: { properties: [property] },
-      },
-      {
-        orbs: {
-          layers: {
-            [SHARED_STATE_KEY]: {
-              other: { property: { ...property, source_id: 'test/layer' } },
-            },
+
+    const selectedLayer = {
+      authority: 'test',
+      namespace: 'layer',
+      source_id: 'test/layer',
+      metadata: { properties: [property] },
+    };
+
+    const state = {
+      orbs: {
+        layers: {
+          [SHARED_STATE_KEY]: {
+            other: { property: { ...property, source_id: 'test/layer' } },
           },
         },
       },
+    };
+
+    render(
+      <IsolationPlusPropertyRadioGroup
+        selectedLayer={selectedLayer}
+        dispatch={dispatch}
+      />,
+      { state },
     );
-    userEvent.click(getByRole('radio'));
+
+    userEvent.click(screen.getByRole('radio'));
     expect(dispatch).toBeCalledWith(
       setOther(expect.objectContaining({ other: { property: {} } })),
     );

@@ -1,45 +1,38 @@
 // @ts-nocheck
 import * as React from 'react';
 
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render, screen } from 'test/test-utils';
 
 import { PropertyTimeSeriesChart } from './property-time-series-chart.component';
 
-const mockStore = configureMockStore();
+const setup = clickedFeatures => {
+  const property = { label: 'Hello', name: 'test' };
 
-const renderComponent = clickedFeatures => {
   const state = {
-    property: { label: 'Hello', name: 'test' },
-    clickedFeatures,
+    orbs: {
+      isolationPlus: {
+        property,
+        clickedFeatures,
+      },
+    },
   };
 
-  const store = mockStore({
-    orbs: {
-      isolationPlus: state,
-    },
-  });
-
-  const utils = render(
-    <Provider store={store}>
-      <PropertyTimeSeriesChart
-        selectedProperty={state.property}
-        clickedFeatures={clickedFeatures}
-        timestampFormat={'yyyy'}
-      />
-    </Provider>,
+  render(
+    <PropertyTimeSeriesChart
+      selectedProperty={property}
+      clickedFeatures={clickedFeatures}
+      timestampFormat={'yyyy'}
+    />,
+    { state },
   );
-
-  return { ...utils };
 };
 
 describe('<PropertyTimeSeriesChart />', () => {
   it('Renders just the title if there are no clicked features', () => {
-    const { getByText, queryByText } = renderComponent(undefined);
+    setup(undefined);
 
-    expect(getByText('Time Series')).toBeInTheDocument();
-    expect(queryByText('Hello')).not.toBeInTheDocument();
+    expect(screen.getByText('Time Series')).toBeInTheDocument();
+    expect(screen.queryByText('Hello')).not.toBeInTheDocument();
   });
 
   it('Formats dates depending on the timestampFormat prop', () => {
@@ -53,9 +46,9 @@ describe('<PropertyTimeSeriesChart />', () => {
       },
     ];
 
-    const { getByText } = renderComponent(clickedFeatures);
+    setup(clickedFeatures);
 
-    expect(getByText('2077')).toBeInTheDocument();
+    expect(screen.getByText('2077')).toBeInTheDocument();
   });
 
   it("Uses aggregate values if there's more than one clicked feature", () => {
@@ -76,8 +69,8 @@ describe('<PropertyTimeSeriesChart />', () => {
       },
     ];
 
-    const { getAllByText } = renderComponent(clickedFeatures);
+    setup(clickedFeatures);
 
-    expect(getAllByText(/3/).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/3/).length).toBeGreaterThanOrEqual(1);
   });
 });
