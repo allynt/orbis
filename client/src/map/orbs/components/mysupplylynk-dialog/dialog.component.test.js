@@ -121,7 +121,7 @@ describe('Dialog', () => {
       />,
     );
 
-    userEvent.click(getByRole('button', { name: 'Close' }));
+    userEvent.click(getByRole('button', { name: /Close/i }));
     expect(onCloseClick).toHaveBeenCalled();
   });
 });

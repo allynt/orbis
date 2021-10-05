@@ -36,7 +36,7 @@ describe('Users View', () => {
   it('Closes the Create User Dialog when the close button is clicked', async () => {
     userEvent.click(screen.getAllByText('Create User')[0]);
     expect(screen.getByRole('dialog')).toBeVisible();
-    userEvent.click(screen.getByLabelText('Close'));
+    userEvent.click(screen.getByRole('button', { name: /Close/i }));
     await waitFor(() => expect(screen.getByRole('dialog')).not.toBeVisible());
   });
 

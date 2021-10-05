@@ -5,13 +5,15 @@ import {
   DialogContent,
   DialogTitle,
   makeStyles,
-  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { push } from 'connected-react-router';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
+import { ErrorFallback } from 'components';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import {
@@ -29,19 +31,15 @@ import { Store } from './views/store/store.component';
 import ConnectedSubscriptions from './views/subscriptions/subscriptions.component';
 import { Support } from './views/support/support.component';
 import UsersView from './views/users-view/users-view.component';
-import { ErrorBoundary } from 'react-error-boundary';
-import { ErrorFallback } from 'components';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     height: '100%',
-    backgroundColor: theme.palette.background.default,
     border: `2px solid ${theme.palette.primary.main}`,
     borderRadius: theme.typography.pxToRem(16),
   },
   title: {
-    backgroundColor: theme.palette.background.default,
-    borderBottom: `2px solid ${theme.palette.primary.main}`,
+    placeItems: 'revert',
   },
   content: {
     display: 'grid',
@@ -120,8 +118,8 @@ export const MissionControl = React.memo(() => {
         },
       }}
     >
-      <DialogTitle classes={{ root: styles.title }} disableTypography>
-        <Typography variant="h1">{`Hello ${user?.name}`}</Typography>
+      <DialogTitle classes={{ root: styles.title }}>
+        {`Hello ${user?.name}`}
       </DialogTitle>
       <DialogContent className={styles.content}>
         <SidePanel className={styles.sidePanel} userIsAdmin={userIsAdmin} />
