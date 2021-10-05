@@ -6,9 +6,9 @@ export class DocumentsClient extends SubClient {
   }
 
   getTermsUrl(name = '') {
-    return `${this.apiHost}/api${this.endpoint}/?type=TERMS&has_orb=false${
-      name ? `&name=${name}` : ''
-    }`;
+    return `${this.apiHost}/api${
+      this.endpoint
+    }/?type=TERMS&is_active=true&has_orb=false${name ? `&name=${name}` : ''}`;
   }
 
   get termsUrl() {
