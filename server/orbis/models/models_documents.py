@@ -163,6 +163,7 @@ class Document(models.Model):
     objects = DocumentManager.from_queryset(DocumentQuerySet)()
 
     name = models.CharField(max_length=128, blank=False, null=False)
+    description = models.TextField(blank=True, null=True)
     version = models.CharField(max_length=32, blank=True, null=True)
     type = models.CharField(
         max_length=32, choices=DocumentType.choices, blank=True, null=True
