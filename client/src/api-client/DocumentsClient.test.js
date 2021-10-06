@@ -13,6 +13,12 @@ describe('DocumentsClient', () => {
     );
   });
 
+  it('Has a named terms url', () => {
+    expect(client.getTermsUrl('user_terms')).toContain(
+      '/api/documents/?type=TERMS&has_orb=false&name=user_terms',
+    );
+  });
+
   it('Has a privacy url', () => {
     expect(client.privacyUrl).toContain(
       '/api/documents/?type=PRIVACY&has_orb=false',
