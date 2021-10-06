@@ -9,13 +9,13 @@ describe('DocumentsClient', () => {
 
   it('Has a terms url', () => {
     expect(client.termsUrl).toContain(
-      '/api/documents/?type=TERMS&is_active=true&has_orb=false',
+      '/api/documents/?type=TERMS&has_orb=false',
     );
   });
 
   it('Has a named terms url', () => {
     expect(client.getTermsUrl('user_terms')).toContain(
-      '/api/documents/?type=TERMS&is_active=true&has_orb=false&name=user_terms',
+      '/api/documents/?type=TERMS&has_orb=false&name=user_terms',
     );
   });
 
