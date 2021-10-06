@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-import { fade, makeStyles } from '@astrosat/astrosat-ui';
+import { alpha, makeStyles } from '@astrosat/astrosat-ui';
 
 import { ColormapRangeSlider } from 'components/colormap-range-slider/colormap-range-slider.component';
 import { ColorScale } from 'utils/ColorScale';
@@ -15,7 +15,7 @@ const makeThumbStyles = (clipValue, colorScale) => {
   return {
     backgroundColor: color,
     '&:hover, &:focus-visible': {
-      boxShadow: `0px 0px 0px 8px ${fade(color, 0.16)}`,
+      boxShadow: `0px 0px 0px 8px ${alpha(color, 0.16)}`,
       '@media (hover: none)': {
         boxShadow: 'none',
       },

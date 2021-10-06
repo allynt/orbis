@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { fade, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { alpha, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import { Busy, NotBusy, VeryBusy } from './icons';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     width: '1rem',
     height: '1rem',
     borderRadius: '50%',
-    boxShadow: `2px 4px 4px ${fade(theme.palette.grey[500], 0.5)}`,
+    boxShadow: `2px 4px 4px ${alpha(theme.palette.grey[500], 0.5)}`,
   },
   text: {
     fontSize: 'inherit',
