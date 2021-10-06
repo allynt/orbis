@@ -1,3 +1,35 @@
+# [2.26.0](https://github.com/astrosat/orbis/compare/v2.25.0...v2.26.0) (2021-10-06)
+
+
+### Bug Fixes
+
+* **frontend:** Add ability to set min/max zoom level ([7c1d590](https://github.com/astrosat/orbis/commit/7c1d590e454f30616af780eab03c5fbd9eeb783c))
+* **frontend:** Change prop name, remove state, refactor tests ([6b24fe2](https://github.com/astrosat/orbis/commit/6b24fe29c523209271fb507c68d6c50d1f606b6e))
+* **frontend:** Streamline category breakdown chart ([e5ebe9a](https://github.com/astrosat/orbis/commit/e5ebe9a21490a0be37a0dcc99f5c18f3bc75cfec))
+* **frontend:** Streamline compare pins tests ([e9910cb](https://github.com/astrosat/orbis/commit/e9910cb14b7989fb2c99078c1f06123bab452d81))
+* **frontend:** Streamline password reset tests ([cfb1035](https://github.com/astrosat/orbis/commit/cfb10358fac7380ff1e4eeba3c0827dec4b2f3c8))
+* **frontend:** Upgrade analysis panel tests ([149e56b](https://github.com/astrosat/orbis/commit/149e56bbd4c7b2505e6f90a53b91cfca4068608e))
+* **frontend:** Upgrade bookmarks panel tests ([832d750](https://github.com/astrosat/orbis/commit/832d7501b55f663938a46d02835bd0d63c20bd4c))
+* **frontend:** Upgrade category breakdown chart tests ([4b556e2](https://github.com/astrosat/orbis/commit/4b556e2ac810bf9bde84763e8f1033798a1006c2))
+* **frontend:** Upgrade checkbox filters tests ([19e334a](https://github.com/astrosat/orbis/commit/19e334a6ec1bc51f0498359dfdfd5253ed3cccdc))
+* **frontend:** Upgrade compare pins tests ([d4277bc](https://github.com/astrosat/orbis/commit/d4277bc1a0b003b0323e58c1f20a2433ae4ae98e))
+* **frontend:** Upgrade iso+ property radio group tests ([a671da2](https://github.com/astrosat/orbis/commit/a671da2211f0bd31a79f73add0d3e368a144c41e))
+* **frontend:** Upgrade layer visibility checkbox tests ([dc28799](https://github.com/astrosat/orbis/commit/dc2879997af6dbdebe8c36b8f2b417dd14a19e72))
+* **frontend:** Upgrade map tests ([132108f](https://github.com/astrosat/orbis/commit/132108fd2f24fa77787d360aa37e589a16bf189c))
+* **frontend:** Upgrade password change form tests ([49d9b43](https://github.com/astrosat/orbis/commit/49d9b43bffbb260bc38295c0389d40c34e68aed3))
+* **frontend:** Upgrade password reset form testsc ([d098d0c](https://github.com/astrosat/orbis/commit/d098d0c7799e04a4d2958047a3dc3b30d631e32a))
+* **frontend:** Upgrade property time series tests ([f0d15d7](https://github.com/astrosat/orbis/commit/f0d15d71b7c93b12d13aeeacd439301d630fc604))
+* **frontend:** Upgrade register form tests ([6f4285e](https://github.com/astrosat/orbis/commit/6f4285e61a92a876b703492afe7afd851ea3cfd2))
+* **frontend:** Upgrade satellite component tests ([47a45f7](https://github.com/astrosat/orbis/commit/47a45f71ee26c5001190eab84c94f3bfe147d5dd))
+
+
+### Features
+
+* **backend:** added the ability to specify additional headers for a ([27c7d0f](https://github.com/astrosat/orbis/commit/27c7d0f43952e13f88bc8cd3512764219c084cd1))
+* **backend:** allow updating of customer via Mission Control ([#1386](https://github.com/astrosat/orbis/issues/1386)) ([9ddf9ca](https://github.com/astrosat/orbis/commit/9ddf9ca79010d18c47127d146f3500630ec1318f))
+* **backend:** updated terms acceptance error message ([#1388](https://github.com/astrosat/orbis/issues/1388)) ([904c1c5](https://github.com/astrosat/orbis/commit/904c1c5531e0229fe19b98eb395f1c9e03d87417))
+* **frontend:** added layer config for tiled raster data ([c4d0e8f](https://github.com/astrosat/orbis/commit/c4d0e8f378c369b78d63313bc7f0586a7a8355b5))
+
 # [2.25.0](https://github.com/astrosat/orbis/compare/v2.24.0...v2.25.0) (2021-09-29)
 
 
