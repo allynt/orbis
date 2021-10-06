@@ -10,6 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import CancelIcon from '@material-ui/icons/Cancel';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import { ReactComponent as CsvIcon } from '../intro/csv.svg';
 
@@ -62,29 +63,50 @@ const UploadControls = styled('div')({
   alignItems: 'center',
 });
 
-export const Form = () => (
-  <FormWrapper>
-    <FileDrop>
-      <Typography variant="h1" component="label" gutterBottom>
-        Drop the file here or <Link variant="inherit">Browse</Link>
-      </Typography>
-      <Typography variant="h4" component="p" paragraph>
-        Only supported files will be processed.
-      </Typography>
-      <UploadIcon>
-        <CsvIcon />
-      </UploadIcon>
-    </FileDrop>
-    <LinearProgress variant="determinate" value={50} />
-    <UploadControls>
-      <Typography variant="h3" component="p">
-        Uploading
-      </Typography>
-      <IconButton size="small">
-        <CancelIcon />
-      </IconButton>
-    </UploadControls>
-    <TextField label="Name Your Data" required />
-    <TextField label="Add a Description for Your Data" />
-  </FormWrapper>
-);
+export const Form = () => {
+  const [uploadStatus] = React.useState('idle');
+
+  return (
+    <FormWrapper>
+      <FileDrop>
+        <Typography variant="h1" component="label" gutterBottom>
+          Drop the file here or <Link variant="inherit">Browse</Link>
+        </Typography>
+        <Typography variant="h4" component="p" paragraph>
+          Only supported files will be processed.
+        </Typography>
+        <UploadIcon>
+          <CsvIcon />
+        </UploadIcon>
+      </FileDrop>
+      <LinearProgress variant="determinate" value={50} />
+      <UploadControls>
+        <Typography variant="h3" component="p">
+          {uploadStatus === 'success'
+            ? 'Uploaded'
+            : uploadStatus === 'error'
+            ? 'Invalid'
+            : uploadStatus === 'pending'
+            ? 'Uploading filename.csv'
+            : 'No file available'}
+        </Typography>
+        <IconButton
+          style={{
+            color:
+              uploadStatus === 'success'
+                ? 'lime'
+                : uploadStatus === 'error'
+                ? 'red'
+                : null,
+          }}
+          size="small"
+          disabled={uploadStatus === 'idle'}
+        >
+          {uploadStatus === 'success' ? <CheckCircleIcon /> : <CancelIcon />}
+        </IconButton>
+      </UploadControls>
+      <TextField label="Name Your Data" required />
+      <TextField label="Add a Description for Your Data" />
+    </FormWrapper>
+  );
+};
