@@ -1,19 +1,11 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
-import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
 
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
-import { MapProvider } from 'MapContext';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import PDF from './pdf-export.component';
-
-const mockStore = configureMockStore();
 
 const initialUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
 
@@ -71,74 +63,63 @@ const getTotals = property => {
   );
 };
 
-const renderComponent = ({
+const setup = ({
   state = initialState,
   licence = initialLicence,
   user = initialUser,
 }) => {
-  const history = createMemoryHistory({ initialEntries: ['/pdf-export'] });
-
   const close = jest.fn();
-
-  const store = mockStore({
-    accounts: { user },
-  });
-
   const utils = render(
-    <Provider store={store}>
-      <Router history={history}>
-        <MapProvider>
-          <AnalysisPanelProvider
-            clickedFeatures={state.clickedFeatures}
-            selectedProperty={state.property}
-            selectedTimestamp={new Date(2019, 0, 1).getTime()}
-            currentSource={{
-              source_id: 'test/source',
-              metadata: {
-                properties: [
-                  { name: '% of people aged 0-17', aggregation: 'mean' },
-                ],
-              },
-            }}
-          >
-            <PDF
-              licence={licence}
-              close={close}
-              selectedProperty={state.property}
-              selectedTimestamp={new Date(2019, 0, 1).getTime()}
-            />
-          </AnalysisPanelProvider>
-        </MapProvider>
-      </Router>
-    </Provider>,
+    <AnalysisPanelProvider
+      clickedFeatures={state.clickedFeatures}
+      selectedProperty={state.property}
+      selectedTimestamp={new Date(2019, 0, 1).getTime()}
+      currentSource={{
+        source_id: 'test/source',
+        metadata: {
+          properties: [{ name: '% of people aged 0-17', aggregation: 'mean' }],
+        },
+      }}
+    >
+      <PDF
+        licence={licence}
+        close={close}
+        selectedProperty={state.property}
+        selectedTimestamp={new Date(2019, 0, 1).getTime()}
+      />
+    </AnalysisPanelProvider>,
+    {
+      state: { accounts: { user } },
+      history: { initialEntries: ['/pdf-export'] },
+    },
   );
-  return { ...utils, close, history, store };
+  return { ...utils, close };
 };
 
 describe('PDF', () => {
   it('renders a PDF preview', () => {
-    const { getByText, getAllByText, getByLabelText } = renderComponent({});
+    setup({});
 
-    expect(getByText('Download PDF Report')).toBeInTheDocument();
+    expect(screen.getByText('Download PDF Report')).toBeInTheDocument();
 
-    expect(getByLabelText('Close')).toBeInTheDocument();
+    expect(screen.getByLabelText('Close')).toBeInTheDocument();
 
     initialState.clickedFeatures.forEach(feat => {
       expect(
-        getByText(`${feat.object.properties.area_name}`),
+        screen.getByText(`${feat.object.properties.area_name}`),
       ).toBeInTheDocument();
     });
 
-    expect(getByText(`${getTotals('population')}`)).toBeInTheDocument();
+    expect(screen.getByText(`${getTotals('population')}`)).toBeInTheDocument();
 
-    expect(getByText(`${getTotals('households')}`)).toBeInTheDocument();
+    expect(screen.getByText(`${getTotals('households')}`)).toBeInTheDocument();
 
     expect(
-      getByText(initialState.property.application.orbis.label),
+      screen.getByText(initialState.property.application.orbis.label),
     ).toBeInTheDocument();
 
     expect(
-      getByText(
+      screen.getByText(
         `${
           initialState.property.aggregation === 'sum' ? 'Sum' : 'Average'
         } of selected areas:`,
@@ -146,7 +127,7 @@ describe('PDF', () => {
     ).toBeInTheDocument();
 
     expect(
-      getAllByText(
+      screen.getAllByText(
         `${
           getTotals(initialState.property.name) /
           initialState.clickedFeatures.length
@@ -155,21 +136,27 @@ describe('PDF', () => {
     ).toEqual(2);
 
     Object.entries(initialState.property.aggregates).forEach(([key, value]) => {
-      expect(getByText(`${key}:`)).toBeInTheDocument();
-      expect(getByText(`${value}`)).toBeInTheDocument();
+      expect(screen.getByText(`${key}:`)).toBeInTheDocument();
+      expect(screen.getByText(`${value}`)).toBeInTheDocument();
     });
 
-    expect(getByText(initialState.property.source)).toBeInTheDocument();
+    expect(screen.getByText(initialState.property.source)).toBeInTheDocument();
 
-    expect(getByText(initialState.property.details)).toBeInTheDocument();
+    expect(screen.getByText(initialState.property.details)).toBeInTheDocument();
 
-    expect(getByText(initialLicence)).toBeInTheDocument();
-
-    expect(getByText(`Report run by: ${initialUser.name}`)).toBeInTheDocument();
-    expect(getByText(`User Name: ${initialUser.email}`)).toBeInTheDocument();
+    expect(screen.getByText(initialLicence)).toBeInTheDocument();
 
     expect(
-      getByText(`Date of the Report: ${format(new Date(), ['MMMM do Y'])}`),
+      screen.getByText(`Report run by: ${initialUser.name}`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(`User Name: ${initialUser.email}`),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        `Date of the Report: ${format(new Date(), ['MMMM do Y'])}`,
+      ),
     ).toBeInTheDocument();
   });
 
@@ -182,9 +169,9 @@ describe('PDF', () => {
       },
     };
 
-    const { getByText } = renderComponent({ state });
+    setup({ state });
 
-    expect(getByText(`Sum of selected areas:`)).toBeInTheDocument();
+    expect(screen.getByText(`Sum of selected areas:`)).toBeInTheDocument();
   });
 
   it('shows `Value` as aggregationLabel if only one clickedFeature', () => {
@@ -204,12 +191,12 @@ describe('PDF', () => {
       ],
     };
 
-    const { getByText } = renderComponent({ state });
-    expect(getByText('Value of selected area:')).toBeInTheDocument();
+    setup({ state });
+    expect(screen.getByText('Value of selected area:')).toBeInTheDocument();
   });
 
   it('does not show `breakdownAggregation` if no data for it exists', () => {
-    const { queryByText } = renderComponent({
+    setup({
       state: {
         ...initialState,
         property: { ...initialState.property, breakdown: undefined },
@@ -217,7 +204,9 @@ describe('PDF', () => {
     });
 
     expect(
-      queryByText('Breakdown of the data summed over all the selected areas:'),
+      screen.queryByText(
+        'Breakdown of the data summed over all the selected areas:',
+      ),
     ).not.toBeInTheDocument();
   });
 
@@ -256,10 +245,12 @@ describe('PDF', () => {
       },
     };
 
-    const { queryByText } = renderComponent({ state });
+    setup({ state });
 
     expect(
-      queryByText('Breakdown of the data summed over all the selected areas:'),
+      screen.queryByText(
+        'Breakdown of the data summed over all the selected areas:',
+      ),
     ).not.toBeInTheDocument();
   });
 
@@ -300,21 +291,21 @@ describe('PDF', () => {
       ],
     };
 
-    const { getAllByText } = renderComponent({ state });
+    setup({ state });
 
-    expect(getAllByText('0').length).toEqual(7);
+    expect(screen.getAllByText('0').length).toEqual(7);
   });
 
   it('does not display username section if username is undefined', () => {
-    const { queryByTestId } = renderComponent({
+    setup({
       user: { email: 'johnsmith@gmail.com' },
     });
 
-    expect(queryByTestId('user-name')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('user-name')).not.toBeInTheDocument();
   });
 
   it('shows a note if the data is based on historical data', () => {
-    const { getByText } = renderComponent({
+    setup({
       state: {
         ...initialState,
         property: {
@@ -323,15 +314,17 @@ describe('PDF', () => {
         },
       },
     });
-    expect(getByText(/historical/i)).toBeInTheDocument();
+    expect(screen.getByText(/historical/i)).toBeInTheDocument();
   });
 
   // Don't put more tests below this one. Something in it causes the subsequent tests to fail.
   // They don't when using Wallaby.js but do when running jest directly.
   it('closes dialog when PDF download button is clicked', () => {
-    const { getByRole, close } = renderComponent({});
+    const { close } = setup({});
 
-    userEvent.click(getByRole('button', { name: 'Download PDF Report' }));
+    userEvent.click(
+      screen.getByRole('button', { name: 'Download PDF Report' }),
+    );
 
     expect(close).toHaveBeenCalled();
   });
