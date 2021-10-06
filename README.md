@@ -3,11 +3,14 @@
 - [orbis](#orbis)
   - [Overview](#overview)
   - [Features](#features)
-  - [How to install](#how-to-install)
-  - [Environment variables](#environment-variables)
-  - [How to start](#how-to-start)
-  - [Testing](#testing)
-    - [End-to-End Testing](#end-to-end-testing)
+  - [Development](#development)
+    - [How to install](#how-to-install)
+    - [Environment variables](#environment-variables)
+    - [How to start](#how-to-start)
+    - [Troubleshooting](#troubleshooting)
+      - [Server 500 on /api/data/sources](#server-500-on-apidatasources)
+    - [Testing](#testing)
+      - [End-to-End Testing](#end-to-end-testing)
   - [Releases](#releases)
     - [Setup GitHub Token](#setup-github-token)
     - [Releasing Code](#releasing-code)
@@ -29,7 +32,37 @@ This is a simple **Django 2.0+** project template with my preferred setup. It is
 - HTTPS and other security related settings on Staging and Production.
 - PostgreSQL database support with psycopg2.
 
-## How to install
+## Development
+
+Orbis uses other API micro-services to provide data to the frontend e.g. `data-sources-directory`. While developing, you will normally want to interact with the `testing` version. For this, you will need to be on the **VPN**. You will need a developer `$PROJ_ROOT/server/.env.local` file so orbis starts up correctly e.g.
+
+```bash
+# secret key...
+DJANGO_SECRET_KEY="mydjangosecretkey"
+
+# domain...
+DJANGO_SITE_DOMAIN="localhost:8000"
+
+# third-party access..
+DJANGO_MAPBOX_TOKEN=mymapboxtoken
+
+DJANGO_TRACKING_ID=mygoogletrackingid
+
+# remote media...
+DJANGO_MEDIA_STORAGE="S3"
+DJANGO_MEDIA_BUCKET="orbis-testing-media"
+
+DJANGO_DATA_SOURCES_DIRECTORY_URL="https://api.testing.data-sources-directory.astrosat.net"
+
+DJANGO_DATA_TOKEN_SECRET="mydjangodatatokensecret"
+
+DJANGO_COPERNICUS_USERNAME="myusername"
+DJANGO_COPERNICUS_PASSWORD="mypassword"
+
+DJANGO_OLSP_URL="https://testing.olsp.astrosat.net"
+```
+
+### How to install
 
 ```bash
 $ django-admin.py startproject \
@@ -42,7 +75,7 @@ $ pipenv install
 
 This will scaffold a new Django/React project, ran inside Docker containers. `project_name` should be the name you want to give to your project. The name you give your project will be interpolated through the files with the **extensions**, named in the command.
 
-## Environment variables
+### Environment variables
 
 These are common between environments. The `ENVIRONMENT` variable loads the correct settings, possible values are: `DEVELOPMENT`, `STAGING`, `PRODUCTION`.
 
@@ -66,7 +99,7 @@ DJANGO_SECURE_SSL_REDIRECT=yes
 DJANGO_SECURE_PROXY_SSL_HEADER=HTTP_X_FORWARDED_PROTO,https
 ```
 
-## How to start
+### How to start
 
 Starting the project starts 3 separate **Docker containers** (in order):
 
@@ -84,9 +117,33 @@ $ docker-compose exec server pipenv run server/manage.py force_verification --us
 
 To view all API endpoints, navigate to "localhost:8000/api/swagger"
 
-## Testing
+### Troubleshooting
 
-### End-to-End Testing
+#### Server 500 on /api/data/sources
+
+This is one of the most common errors you will get, usually it is because you have forgot to turn on the **VPN**, so do check that is on, first. If it is on, then go to data-sources-directory in testing `https://api.testing.data-sources-directory.astrosat.net/admin`. If you can see the login page, your local version of orbis, should be able to query it's API.
+
+Sometimes access issues can be caused by a problem with the **VPN**. So you can continue to to develop, even when there is a VPN issue, we suggest switching to using the **staging** micro-services e.g. `data-sources-directory`, as these are not hidden behind the VPN. To do this you will need to update your local `$PROJ_ROOT/server/.env.local` file. This file specifies URLs to other micro-services used by orbis. So, if we take `data-sources-directory` as an example, we would update 2 settings:
+
+```bash
+DJANGO_DATA_SOURCES_DIRECTORY_URL=""
+DJANGO_DATA_TOKEN_SECRET=""
+```
+
+The URL to use would be `https://staging.data-sources-directory.astrosat.net`. The **token secret** is a bit harder, you need to query the **Kubernetes cluster** to get this secret information. As long as you have `kubectl` setup correctly, then you can query different environments for their secrets e.g.
+
+```bash
+$ kubectl get secret --context staging data-sources-directory-staging-environment-secrets -o json | jq '.data | with_entries(.value |= @base64d)'
+$ kubectl get secret --context staging data-sources-directory-staging-primary-deployment-secrets -o json | jq '.data | with_entries(.value |= @base64d)'
+```
+
+> **NOTE**: If you need to query any other (non production) environments, it is a simple case of changing any reference to `staging` with the environment you are interested in.
+
+The output from the `kubectl` command, will include the `data token`, copy/paste that to the Django env variable in `.env.local` file. Restart your docker containers and once they are all up and running, you should get a successful response from `/api/data/sources` when you go to the **map**.
+
+### Testing
+
+#### End-to-End Testing
 
 We use [Cypress](https://www.cypress.io/) to run our End-to-End tests. We augment Cypress with the [Cypress Cucumber Preprocessor](https://github.com/TheBrainFamily/cypress-cucumber-preprocessor). This allows us to use the `cucumber`/`gherkin` syntax to write **Feature** files. The idea is, **BAs** write the **Feature** files to define the requirements of the app, while the **developers** take these and implement a solution to each **Scenario**. Running and passing the tests, is proof, we have developed what was asked for.
 

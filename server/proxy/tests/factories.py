@@ -25,5 +25,6 @@ class ProxyDataSourceFactory(factory.django.DjangoModelFactory):
         "random_element", elements=ProxyDataSource.ProxyMethodType
     )
     proxy_params = FactoryFaker("pydict", value_types=str)
+    proxy_headers = None
 
     adapter_name = "noop"
