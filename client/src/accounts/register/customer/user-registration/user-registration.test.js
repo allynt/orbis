@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
 import UserRegistration from './user-registration.component';
 
@@ -16,55 +13,53 @@ const PASSWORD_CONFIRMATION_REGEX = /password\sconfirmation/i;
 const AGREE_CHECKBOX_REGEX = /i\sagree\swith/i;
 const SIGN_UP_REGEX = /sign\sup/i;
 
-const renderComponent = ({ serverErrors = [], isLoading = false } = {}) => {
-  const onSubmit = jest.fn();
-  const history = createMemoryHistory();
-  const utils = render(
-    <UserRegistration
-      onSubmit={onSubmit}
-      serverErrors={serverErrors}
-      isLoading={isLoading}
-    />,
-    {
-      wrapper: ({ children }) => <Router history={history}>{children}</Router>,
-    },
-  );
-  return { onSubmit, history, ...utils };
-};
-
 describe('<UserRegistration />', () => {
   it('shows the user registration form', () => {
-    const { getByRole, getByLabelText } = renderComponent();
-    expect(getByRole('textbox', { name: EMAIL_REGEX })).toBeInTheDocument();
+    render(<UserRegistration />);
+
     expect(
-      getByRole('textbox', { name: FIRST_NAME_REGEX }),
+      screen.getByRole('textbox', { name: EMAIL_REGEX }),
     ).toBeInTheDocument();
-    expect(getByRole('textbox', { name: LAST_NAME_REGEX })).toBeInTheDocument();
     expect(
-      getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
+      screen.getByRole('textbox', { name: FIRST_NAME_REGEX }),
     ).toBeInTheDocument();
-    expect(getByLabelText(PASSWORD_REGEX)).toBeInTheDocument();
-    expect(getByLabelText(PASSWORD_CONFIRMATION_REGEX)).toBeInTheDocument();
     expect(
-      getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }),
+      screen.getByRole('textbox', { name: LAST_NAME_REGEX }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(PASSWORD_REGEX)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(PASSWORD_CONFIRMATION_REGEX),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }),
     ).toBeInTheDocument();
   });
 
   it('Has a terms and conditions link', () => {
-    const { getByRole } = renderComponent();
+    render(<UserRegistration />);
+
     expect(
-      getByRole('link', { name: /terms\s&\sconditions/i }),
+      screen.getByRole('link', { name: /terms\s&\sconditions/i }),
     ).toHaveAttribute('href', expect.stringContaining('TERMS'));
   });
 
   it('enables the Sign Up button when the terms and conditions are agreed', () => {
-    const { getByRole } = renderComponent();
-    expect(getByRole('button', { name: SIGN_UP_REGEX })).toBeDisabled();
-    userEvent.click(getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }));
-    expect(getByRole('button', { name: SIGN_UP_REGEX })).not.toBeDisabled();
+    render(<UserRegistration />);
+
+    expect(screen.getByRole('button', { name: SIGN_UP_REGEX })).toBeDisabled();
+    userEvent.click(
+      screen.getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }),
+    );
+    expect(
+      screen.getByRole('button', { name: SIGN_UP_REGEX }),
+    ).not.toBeDisabled();
   });
 
   it('calls onSubmit with the form values on successful completion', async () => {
+    const onSubmit = jest.fn();
     const values = {
       email: 'test@test.com',
       name: 'Test Person',
@@ -73,21 +68,34 @@ describe('<UserRegistration />', () => {
       newPasswordConfirm: 'thisisareallygoodpassword',
       acceptedTerms: true,
     };
-    const { getByRole, getByLabelText, onSubmit } = renderComponent();
-    userEvent.type(getByRole('textbox', { name: EMAIL_REGEX }), values.email);
-    userEvent.type(getByRole('textbox', { name: FIRST_NAME_REGEX }), 'Test');
-    userEvent.type(getByRole('textbox', { name: LAST_NAME_REGEX }), 'Person');
+
+    render(<UserRegistration onSubmit={onSubmit} />);
+
     userEvent.type(
-      getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
+      screen.getByRole('textbox', { name: EMAIL_REGEX }),
+      values.email,
+    );
+    userEvent.type(
+      screen.getByRole('textbox', { name: FIRST_NAME_REGEX }),
+      'Test',
+    );
+    userEvent.type(
+      screen.getByRole('textbox', { name: LAST_NAME_REGEX }),
+      'Person',
+    );
+    userEvent.type(
+      screen.getByRole('textbox', { name: ORGANISATION_NAME_REGEX }),
       values.organisationName,
     );
-    userEvent.type(getByLabelText(PASSWORD_REGEX), values.newPassword);
+    userEvent.type(screen.getByLabelText(PASSWORD_REGEX), values.newPassword);
     userEvent.type(
-      getByLabelText(PASSWORD_CONFIRMATION_REGEX),
+      screen.getByLabelText(PASSWORD_CONFIRMATION_REGEX),
       values.newPasswordConfirm,
     );
-    userEvent.click(getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }));
-    userEvent.click(getByRole('button', { name: SIGN_UP_REGEX }));
+    userEvent.click(
+      screen.getByRole('checkbox', { name: AGREE_CHECKBOX_REGEX }),
+    );
+    userEvent.click(screen.getByRole('button', { name: SIGN_UP_REGEX }));
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
         ...values,
@@ -96,16 +104,14 @@ describe('<UserRegistration />', () => {
   });
 
   it('displays server errors if there are any', () => {
-    const { getByText } = renderComponent({
-      serverErrors: ['test error'],
-    });
-    expect(getByText(/test\serror/i)).toBeInTheDocument();
+    render(<UserRegistration serverErrors={['test error']} />);
+
+    expect(screen.getByText(/test\serror/i)).toBeInTheDocument();
   });
 
   it('shows a loading spinner when loading', () => {
-    const { getAllByRole } = renderComponent({
-      isLoading: true,
-    });
-    expect(getAllByRole('progressbar')[1]).toBeInTheDocument();
+    render(<UserRegistration isLoading={true} />);
+
+    expect(screen.getAllByRole('progressbar')[1]).toBeInTheDocument();
   });
 });
