@@ -94,7 +94,7 @@ export const Storage = ({ files, setFiles }) => {
           }}
         />
       </Wrapper>
-      <Dialog open={!!fileId} maxWidth="md">
+      <Dialog open={!!fileId} onClose={close} maxWidth="md">
         <DialogTitle onClose={close}>Delete File</DialogTitle>
         <DialogContent>
           <DeleteFileForm
