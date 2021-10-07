@@ -8,7 +8,7 @@ class ProxyAuthentication(AuthBase):
     AuthenticationTypes = TextChoices(
         # TODO: ADD OTHER TYPES
         "AuthenticationTypes",
-        ["BASIC", "BEARER", "APIKEY", "URL_PARAM"]
+        ["BASIC", "BEARER", "APIKEY", "URL_PARAM", "API_ALLOWREQUEST"]
     )
 
     def __init__(self, proxy_data_source):
@@ -37,6 +37,11 @@ class ProxyAuthentication(AuthBase):
             request.headers[
                 "Authorization"
             ] = "api-key " + self.proxy_data_source.proxy_authentication_token
+
+        elif proxy_authentication_type == self.AuthenticationTypes.API_ALLOWREQUEST:
+            request.headers[
+                "X-API-AllowRequest"
+            ] = self.proxy_data_source.proxy_authentication_token
 
         else:
             raise NotImplementedError(proxy_authentication_type)

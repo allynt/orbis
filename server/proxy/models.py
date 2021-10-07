@@ -22,11 +22,6 @@ def validate_string_dict(value, field_name=None):
     if not isinstance(value, dict):
         raise ValidationError(f"{field_name or ''} must be a JSON object")
 
-    if not all([
-        isinstance(k, str) and isinstance(v, str) for k, v in value.items()
-    ]):
-        raise ValidationError(f"{field_name or ''} can only contain strings")
-
 
 def validate_proxy_params(value):
     return validate_string_dict(value, field_name="proxy_params")
