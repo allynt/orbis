@@ -100,7 +100,7 @@ describe('Satellite Visualisation Component', () => {
     const { getByRole } = renderComponent();
     userEvent.click(getByRole('button', { name: 'Save Image' }));
     expect(getByRole('dialog')).toBeVisible();
-    userEvent.click(getByRole('button', { name: 'Close' }));
+    userEvent.click(getByRole('button', { name: /Close/i }));
     expect(getByRole('dialog')).not.toBeVisible();
   });
 });

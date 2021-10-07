@@ -6,7 +6,7 @@ import {
   ListItemText,
   Typography,
   makeStyles,
-  fade,
+  alpha,
 } from '@astrosat/astrosat-ui';
 
 import { Link } from 'react-router-dom';
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.background.default,
       backgroundColor: theme.palette.primary.main,
       '&:hover': {
-        backgroundColor: fade(theme.palette.grey[400], 0.3),
+        backgroundColor: alpha(theme.palette.grey[400], 0.3),
       },
     },
     cursor: 'pointer',

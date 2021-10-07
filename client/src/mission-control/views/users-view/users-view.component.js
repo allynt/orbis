@@ -1,13 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
-import {
-  CloseIcon,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  styled,
-} from '@astrosat/astrosat-ui';
+import { Dialog, DialogContent, DialogTitle } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -40,11 +33,6 @@ import {
 } from './forms';
 import { PendingInvitationsBoard } from './pending-invitations-board/pending-invitations-board.component';
 import QuickView from './quick-view/quick-view.component';
-
-const DialogCloseButton = styled(IconButton)({
-  position: 'absolute',
-  right: 0,
-});
 
 const UsersView = () => {
   const dispatch = useDispatch();
@@ -209,13 +197,9 @@ const UsersView = () => {
         }}
         maxWidth="md"
       >
-        <DialogCloseButton
-          onClick={() => setDialogOpen(false)}
-          aria-label="Close"
-        >
-          <CloseIcon />
-        </DialogCloseButton>
-        <DialogTitle>{dialogContent?.type}</DialogTitle>
+        <DialogTitle onClose={() => setDialogOpen(false)}>
+          {dialogContent?.type}
+        </DialogTitle>
         <DialogContent>{getDialogForm()}</DialogContent>
       </Dialog>
     </>
