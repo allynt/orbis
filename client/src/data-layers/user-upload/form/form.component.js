@@ -126,8 +126,14 @@ const DropzoneInput = ({ getFilesFromEvent, onFiles, ...props }) => {
 };
 
 /** @param {import('react-dropzone-uploader').IPreviewProps} props */
-const DropzonePreview = ({ meta }) => {
+const DropzonePreview = ({ meta, fileWithMeta }) => {
   const { percent = 0, status, name } = meta;
+
+  const handleButtonClick = () => {
+    if (status === 'done') fileWithMeta.remove();
+    if (status === 'preparing') fileWithMeta.cancel();
+  };
+
   return (
     <>
       <LinearProgress
@@ -137,7 +143,7 @@ const DropzonePreview = ({ meta }) => {
       <UploadControls>
         <Typography variant="h3" component="p">
           {status === 'done'
-            ? 'Uploaded'
+            ? `Uploaded ${name}`
             : status?.includes('error')
             ? 'Invalid'
             : status === 'preparing'
@@ -155,6 +161,7 @@ const DropzonePreview = ({ meta }) => {
           }}
           size="small"
           disabled={!status}
+          onClick={handleButtonClick}
         >
           {status === 'done' ? <CheckCircleIcon /> : <CancelIcon />}
         </IconButton>
@@ -170,13 +177,30 @@ const UploadControls = styled('div')({
 });
 
 export const Form = () => {
+  /**
+   *  @param {import('react-dropzone-uploader').IFileWithMeta} file
+   *  @param {import('react-dropzone-uploader').StatusValue} status
+   *  @param {import('react-dropzone-uploader').IFileWithMeta[]} allFiles
+   */
+  const handleChangeStatus = (file, status, allFiles) => {
+    console.log({ file: file.meta.name, status, allFiles });
+    if (allFiles.length > 1 && status !== 'removed') {
+      allFiles.forEach(f => {
+        if (f.meta.name !== file.meta.name) {
+          f.remove();
+        }
+      });
+    }
+  };
+
   return (
     <FormWrapper>
       <Dropzone
-        // autoUpload
-        onChangeStatus={stuff => console.log(stuff)}
+        getUploadParams={({ meta }) => {
+          console.log(meta);
+        }}
+        onChangeStatus={handleChangeStatus}
         multiple={false}
-        maxFiles={1}
         InputComponent={DropzoneInput}
         PreviewComponent={DropzonePreview}
         LayoutComponent={DropzoneLayout}
