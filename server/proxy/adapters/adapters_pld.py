@@ -1,10 +1,9 @@
-from datetime import datetime
+import pandas as pd
+
 from .adapters_base import BaseProxyDataAdapter
 """
 Uses the api at: https://planningdata.london.gov.uk/api-guest/applications/_search
 """
-
-DATE_FORMAT = "%d/%m/%Y"
 
 
 class PldAdapter(BaseProxyDataAdapter):
@@ -16,10 +15,11 @@ class PldAdapter(BaseProxyDataAdapter):
         processed_data = {"type": "FeatureCollection", "features": []}
 
         for i, rd in enumerate(raw_data['hits']['hits'], start=1):
-            commencement_date = rd["_source"].get("actual_commencement_date")
-            completion_date = rd["_source"].get("actual_completion_date")
             source = rd["_source"]
+            commencement_date = source.get("actual_commencement_date")
+            completion_date = source.get("actual_completion_date")
 
+            # yapf: disable
             processed_data["features"].append({
                 "id": i,
                 "geometry": {
@@ -31,34 +31,22 @@ class PldAdapter(BaseProxyDataAdapter):
                     ]
                 },
                 "properties": {
-                    "name":
-                        rd["_id"],
-                    "development_type":
-                        source["development_type"],
-                    "street_name":
-                        source["street_name"],
-                    "postcode":
-                        source["postcode"],
-                    "description":
-                        source["description"],
-                    "site_number":
-                        source["site_number"],
-                    "score":
-                        rd["_score"],
-                    "status":
-                        source["status"],
-                    "decision_date":
-                        datetime.strptime(
-                            rd["_source"].get("decision_date"), DATE_FORMAT
-                        ).isoformat(),
-                    "commencement_date":
-                        datetime.strptime(commencement_date,
-                                          DATE_FORMAT).isoformat()
+                    "Project ID": rd["_id"],
+                    "UPRN": source["uprn"],
+                    "Address": f"{source['site_number']}, {source['street_name']}, {source['postcode']}",
+                    "Description": source["description"],
+                    "Application Approved Date": source.get("decision_date"),
+                    "Permission Expires": source.get("lapsed_date"),
+                    "Type of Approval": source["application_type_full"],
+                    "Commencement Date": commencement_date
                         if commencement_date is not None else "null",
-                    "completion_date":
-                        datetime.strptime(completion_date,
-                                          DATE_FORMAT).isoformat()
+                    "Completion Date": completion_date
                         if completion_date is not None else "null",
+                    "Total Number of Units": "TBD",
+                    "Total Number of Bedrooms": "TBD",
+                    "Overall Gain / Loss of Units": "TBD",
+                    "Housing Mix": "TBD",
+                    "Tenure Mix": "TBD",
                 }
             })
 

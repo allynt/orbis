@@ -178,15 +178,24 @@ class ProxyDataSource(models.Model):
         """
         Requests data from the proxied API
         """
-
         # TODO: REMOTE PAGINATION
-        response = requests.request(
-            self.proxy_method,
-            self.proxy_url,
-            auth=ProxyAuthentication(self),
-            headers=self.proxy_headers,
-            params=self.proxy_params,
-        )
+        if self.proxy_method == self.ProxyMethodType.POST:
+            response = requests.request(
+                self.proxy_method,
+                self.proxy_url,
+                auth=ProxyAuthentication(self),
+                headers=self.proxy_headers,
+                json=self.proxy_params,
+            )
+        else:
+            response = requests.request(
+                self.proxy_method,
+                self.proxy_url,
+                auth=ProxyAuthentication(self),
+                headers=self.proxy_headers,
+                params=self.proxy_params,
+            )
+
         response.raise_for_status()
         return response.json()
 
