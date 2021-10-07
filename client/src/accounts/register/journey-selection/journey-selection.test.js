@@ -11,12 +11,7 @@ const CONTINUE_REGEX = /continue/i;
 
 describe('<JourneySelection />', () => {
   it('displays a radio for Team', () => {
-    render(
-      <JourneySelection
-        individualRegistrationIsOpen={true}
-        customerRegistrationIsOpen={true}
-      />,
-    );
+    render(<JourneySelection />);
 
     expect(screen.getByRole('radio', { name: TEAM_REGEX })).toBeInTheDocument();
   });
@@ -82,9 +77,9 @@ describe('<JourneySelection />', () => {
   });
 
   it('Has a terms and conditions link', () => {
-    const { getByRole } = render(<JourneySelection />);
+    render(<JourneySelection />);
     expect(
-      getByRole('link', { name: /Terms and Conditions/i }),
+      screen.getByRole('link', { name: /Terms and Conditions/i }),
     ).toHaveAttribute('href', expect.stringContaining('TERMS'));
   });
 

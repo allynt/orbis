@@ -17,11 +17,10 @@ const setup = ({
     accounts: { user: { customers: [{ type: ADMIN_STATUS.manager }] } },
   },
   adminOnly = undefined,
-} = {}) => {
-  return render(<DataDownloadButton url={url} adminOnly={adminOnly} />, {
+} = {}) =>
+  render(<DataDownloadButton url={url} adminOnly={adminOnly} />, {
     state,
   });
-};
 
 describe('<DataDownloadButton />', () => {
   it("warns if url isn't supplied and renders nothing", () => {

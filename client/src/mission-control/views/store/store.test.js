@@ -15,9 +15,7 @@ const setup = ({ state = { data: { orbs } }, pathname = '' } = {}) => {
   const path = '/mission-control/store';
   return render(
     <Store
-      // @ts-ignore
       match={{ path }}
-      // @ts-ignore
       location={{ key: '123', pathname: `${path}${pathname}` }}
     />,
     { state },
@@ -25,6 +23,10 @@ const setup = ({ state = { data: { orbs } }, pathname = '' } = {}) => {
 };
 
 describe('<Store />', () => {
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
   it("Fetches orbs if there aren't any", () => {
     const { store } = setup({ state: { data: { orbs: undefined } } });
 
