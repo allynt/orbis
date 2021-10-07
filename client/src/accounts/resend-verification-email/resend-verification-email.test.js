@@ -1,39 +1,28 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { default as ResendVerificationEmail } from './resend-verification-email.component';
-
-const wrapper = ({ children }) => (
-  <Router history={createMemoryHistory()}>{children}</Router>
-);
 
 describe('<ResendVerificationEmail />', () => {
   it("displays the user's email", () => {
     const email = 'test@test.com';
-    const { getByText } = render(<ResendVerificationEmail email={email} />, {
-      wrapper,
-    });
-    expect(getByText(email)).toBeInTheDocument();
+    render(<ResendVerificationEmail email={email} />);
+
+    expect(screen.getByText(email)).toBeInTheDocument();
   });
 
   it('calls onResend when the resend button is clicked', () => {
     const onResend = jest.fn();
-    const { getByRole } = render(
-      <ResendVerificationEmail onResend={onResend} />,
-      { wrapper },
-    );
-    userEvent.click(getByRole('button', { name: /resend\semail/i }));
+    render(<ResendVerificationEmail onResend={onResend} />);
+
+    userEvent.click(screen.getByRole('button', { name: /resend\semail/i }));
     expect(onResend).toBeCalled();
   });
 
   it('shows a spinner if loading', () => {
-    const { getByRole } = render(<ResendVerificationEmail isLoading />, {
-      wrapper,
-    });
-    expect(getByRole('progressbar')).toBeInTheDocument();
+    render(<ResendVerificationEmail isLoading />);
+
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 });

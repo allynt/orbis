@@ -1,16 +1,13 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import Toolbar from './toolbar.component';
 
 describe('<Toolbar/>', () => {
   it('Works if no items are provided', () => {
-    const { getByTitle } = render(<Toolbar />);
-    expect(getByTitle('Orbis Logo')).toBeInTheDocument();
+    render(<Toolbar />);
+    expect(screen.getByTitle('Orbis Logo')).toBeInTheDocument();
   });
 
   it("Calls the item's action on click", () => {
@@ -22,8 +19,10 @@ describe('<Toolbar/>', () => {
         onClick: jest.fn(),
       },
     ];
-    const { getByLabelText } = render(<Toolbar items={items} />);
-    userEvent.click(getByLabelText(items[0].label));
+
+    render(<Toolbar items={items} />);
+
+    userEvent.click(screen.getByLabelText(items[0].label));
     expect(items[0].onClick).toHaveBeenCalled();
   });
 
@@ -33,16 +32,11 @@ describe('<Toolbar/>', () => {
       { label: 'Item 2', roles: ['RoleTwo'] },
     ];
 
-    const history = createMemoryHistory();
-    history.push('/fake/not/root/route');
+    const { history } = render(<Toolbar items={items} />, {
+      history: { initialEntries: ['/fake/not/root/route'] },
+    });
 
-    const { getByTitle } = render(
-      <Router history={history}>
-        <Toolbar items={items} />
-      </Router>,
-    );
-
-    userEvent.click(getByTitle('Orbis Logo'));
+    userEvent.click(screen.getByTitle('Orbis Logo'));
 
     expect(history.location.pathname).toBe('/');
   });

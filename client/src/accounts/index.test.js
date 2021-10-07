@@ -1,12 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
-import { MemoryRouter, Router } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import {
   CONFIRM_EMAIL,
@@ -33,10 +27,8 @@ import {
 
 import Accounts from '.';
 
-const mockStore = configureMockStore([thunk]);
-
-const renderComponent = (initialEntries = ['']) => {
-  const store = mockStore({
+const setup = (initialEntries = [''], state) => {
+  const defaultState = {
     app: {
       config: {
         passwordMinLength: 0,
@@ -46,41 +38,43 @@ const renderComponent = (initialEntries = ['']) => {
     },
     accounts: { user: { email: 'test@test.com', customers: [] } },
     missionControl: {},
+  };
+
+  return render(<Accounts />, {
+    state: state ? state : defaultState,
+    history: { initialEntries },
   });
-  const utils = render(<Accounts />, {
-    wrapper: ({ children }) => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-      </Provider>
-    ),
-  });
-  return { store, ...utils };
 };
 
 describe('Accounts index', () => {
   it(`Shows journey selection when route is ${REGISTER}`, async () => {
-    const { getAllByRole } = renderComponent([REGISTER]);
+    setup([REGISTER]);
+
     await waitFor(() =>
-      expect(getAllByRole('radio').length).toBeGreaterThanOrEqual(1),
+      expect(screen.getAllByRole('radio').length).toBeGreaterThanOrEqual(1),
     );
   });
 
   describe(`${REGISTER_CUSTOMER}`, () => {
     it(`Shows CustomerRegistration when route is ${REGISTER_CUSTOMER}`, async () => {
-      const { getAllByRole } = renderComponent([REGISTER_CUSTOMER]);
+      setup([REGISTER_CUSTOMER]);
+
       await waitFor(() =>
-        expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+        expect(screen.getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
       );
     });
 
     it(`dispatches ${registerCustomer.name} when submitted`, async () => {
       fetch.mockResponse(JSON.stringify({}));
-      const { getByRole, store } = renderComponent([REGISTER_CUSTOMER]);
+      const { store } = setup([REGISTER_CUSTOMER]);
+
       userEvent.type(
-        getByRole('textbox', { name: /organisation\sname/i }),
+        screen.getByRole('textbox', { name: /organisation\sname/i }),
         'Test Company',
       );
-      userEvent.click(getByRole('button', { name: /next/i }));
+
+      userEvent.click(screen.getByRole('button', { name: /next/i }));
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({ type: registerCustomer.fulfilled.type }),
@@ -91,30 +85,37 @@ describe('Accounts index', () => {
 
   describe(`${REGISTER_CUSTOMER_USER}`, () => {
     it(`Shows UserRegistration when route is ${REGISTER_CUSTOMER_USER}`, async () => {
-      const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_USER]);
+      setup([REGISTER_CUSTOMER_USER]);
+
       await waitFor(() =>
-        expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+        expect(screen.getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
       );
     });
 
     it(`dispatches ${registerUser.typePrefix} action when submitted`, async () => {
-      const { getByRole, getByLabelText, store } = renderComponent([
-        REGISTER_CUSTOMER_USER,
-      ]);
-      userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
-      userEvent.type(getByRole('textbox', { name: /first/i }), 'John');
-      userEvent.type(getByRole('textbox', { name: /last/i }), 'Smith');
+      const { store } = setup([REGISTER_CUSTOMER_USER]);
+
       userEvent.type(
-        getByRole('textbox', { name: /organisation\sname/i }),
+        screen.getByRole('textbox', { name: /email/i }),
+        'test@test.com',
+      );
+      userEvent.type(screen.getByRole('textbox', { name: /first/i }), 'John');
+      userEvent.type(screen.getByRole('textbox', { name: /last/i }), 'Smith');
+      userEvent.type(
+        screen.getByRole('textbox', { name: /organisation\sname/i }),
         'Weyland-Yutani',
       );
-      userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.type(
-        getByLabelText(/password\sconfirmation/i),
+        screen.getByLabelText(/password \*/i),
         'pandaconcretespoon',
       );
-      userEvent.click(getByRole('checkbox'));
-      userEvent.click(getByRole('button', { name: /sign\sup/i }));
+      userEvent.type(
+        screen.getByLabelText(/password\sconfirmation/i),
+        'pandaconcretespoon',
+      );
+      userEvent.click(screen.getByRole('checkbox'));
+      userEvent.click(screen.getByRole('button', { name: /sign\sup/i }));
+
       await waitFor(() =>
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
@@ -127,16 +128,19 @@ describe('Accounts index', () => {
 
   describe(`${REGISTER_CUSTOMER_ORDER}`, () => {
     it(`Shows OrderForm when route is ${REGISTER_CUSTOMER_ORDER}`, async () => {
-      const { getAllByRole } = renderComponent([REGISTER_CUSTOMER_ORDER]);
+      setup([REGISTER_CUSTOMER_ORDER]);
+
       await waitFor(() =>
-        expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+        expect(screen.getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
       );
     });
 
     it(`dispatches ${placeOrder.name} action when submitted`, async () => {
-      const { getByRole, store } = renderComponent([REGISTER_CUSTOMER_ORDER]);
-      userEvent.click(getByRole('checkbox'));
-      userEvent.click(getByRole('button'));
+      const { store } = setup([REGISTER_CUSTOMER_ORDER]);
+
+      userEvent.click(screen.getByRole('checkbox'));
+      userEvent.click(screen.getByRole('button'));
+
       await waitFor(() => {
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({ type: placeOrder.fulfilled.type }),
@@ -150,33 +154,39 @@ describe('Accounts index', () => {
       `Shows LoginForm when route is %s`,
       async path => {
         fetch.once(JSON.stringify({}));
-        const { getAllByRole } = renderComponent([path]);
+        setup([path]);
+
         await waitFor(() =>
-          expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+          expect(screen.getAllByRole('textbox').length).toBeGreaterThanOrEqual(
+            1,
+          ),
         );
       },
     );
 
     it('Redirects to root if user is logged in, is verified, and registration stage is falsy', () => {
-      const store = mockStore({
+      const state = {
         accounts: { user: { is_verified: true }, userKey: '123' },
-      });
-      const history = createMemoryHistory({ initialEntries: [LOGIN] });
-      render(<Accounts />, {
-        wrapper: ({ children }) => (
-          <Provider store={store}>
-            <Router history={history}>{children}</Router>
-          </Provider>
-        ),
-      });
+      };
+
+      const { history } = setup([LOGIN], state);
+
       expect(history.location.pathname).toBe('/');
     });
 
     it(`dispatches ${login.fulfilled.type} action when submitted`, async () => {
-      const { getByRole, getByLabelText, store } = renderComponent([LOGIN]);
-      userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
-      userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
-      userEvent.click(getByRole('button', { name: /login/i }));
+      const { store } = setup([LOGIN]);
+
+      userEvent.type(
+        screen.getByRole('textbox', { name: /email/i }),
+        'test@test.com',
+      );
+      userEvent.type(
+        screen.getByLabelText(/password \*/i),
+        'pandaconcretespoon',
+      );
+      userEvent.click(screen.getByRole('button', { name: /login/i }));
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({ type: login.fulfilled.type }),
@@ -187,17 +197,25 @@ describe('Accounts index', () => {
 
   describe(`${PASSWORD_CHANGE}`, () => {
     it(`dispatches ${changePassword.fulfilled.type} action when submitted`, async () => {
-      const { getByLabelText, getByRole, store } = renderComponent([
-        PASSWORD_CHANGE,
-      ]);
-      userEvent.type(getByLabelText(/old\spassword/i), 'thisisanoldpassword');
-      userEvent.type(getByLabelText(/new\spassword$/i), 'thisismynewpassword');
+      const { store } = setup([PASSWORD_CHANGE]);
+
       userEvent.type(
-        getByLabelText(/new\spassword\sconfirmation/i),
+        screen.getByLabelText(/old\spassword/i),
+        'thisisanoldpassword',
+      );
+      userEvent.type(
+        screen.getByLabelText(/new\spassword$/i),
         'thisismynewpassword',
       );
-      userEvent.click(getByRole('checkbox'));
-      userEvent.click(getByRole('button', { name: /change\spassword/i }));
+      userEvent.type(
+        screen.getByLabelText(/new\spassword\sconfirmation/i),
+        'thisismynewpassword',
+      );
+      userEvent.click(screen.getByRole('checkbox'));
+      userEvent.click(
+        screen.getByRole('button', { name: /change\spassword/i }),
+      );
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({ type: changePassword.fulfilled.type }),
@@ -208,15 +226,20 @@ describe('Accounts index', () => {
 
   describe(`${PASSWORD_RESET_REQUEST}`, () => {
     it(`Shows PasswordResetRequest when route is ${PASSWORD_RESET_REQUEST}`, async () => {
-      const { getAllByRole } = renderComponent([PASSWORD_RESET_REQUEST]);
-      await waitFor(() => expect(getAllByRole('textbox').length).toBe(1));
+      setup([PASSWORD_RESET_REQUEST]);
+
+      await waitFor(() =>
+        expect(screen.getAllByRole('textbox').length).toBe(1),
+      );
     });
 
     it(`dispatches ${resetPasswordRequest.fulfilled.type} action when submitted`, async () => {
       fetch.once(JSON.stringify({}));
-      const { getByRole, store } = renderComponent([PASSWORD_RESET_REQUEST]);
-      userEvent.type(getByRole('textbox'), 'test@test.com');
-      userEvent.click(getByRole('button'));
+      const { store } = setup([PASSWORD_RESET_REQUEST]);
+
+      userEvent.type(screen.getByRole('textbox'), 'test@test.com');
+      userEvent.click(screen.getByRole('button'));
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({
@@ -229,25 +252,29 @@ describe('Accounts index', () => {
 
   describe(`${PASSWORD_RESET}`, () => {
     it(`Shows PasswordResetForm when route is ${PASSWORD_RESET}`, async () => {
-      const { getByRole } = renderComponent([PASSWORD_RESET]);
+      setup([PASSWORD_RESET]);
+
       await waitFor(() =>
         expect(
-          getByRole('button', { name: 'Reset Password' }),
+          screen.getByRole('button', { name: 'Reset Password' }),
         ).toBeInTheDocument(),
       );
     });
 
     it(`dispatches the ${resetPasswordConfirm.fulfilled.type} action when filled out correctly`, async () => {
       fetch.once(JSON.stringify({}));
-      const { getByRole, getByLabelText, store } = renderComponent([
-        PASSWORD_RESET,
-      ]);
-      userEvent.type(getByLabelText(/new\spassword$/i), 'pandaconcretespoon');
+      const { store } = setup([PASSWORD_RESET]);
+
       userEvent.type(
-        getByLabelText(/new\spassword\sconfirmation/i),
+        screen.getByLabelText(/new\spassword$/i),
         'pandaconcretespoon',
       );
-      userEvent.click(getByRole('button', { name: /reset\spassword/i }));
+      userEvent.type(
+        screen.getByLabelText(/new\spassword\sconfirmation/i),
+        'pandaconcretespoon',
+      );
+      userEvent.click(screen.getByRole('button', { name: /reset\spassword/i }));
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({
@@ -260,13 +287,18 @@ describe('Accounts index', () => {
 
   describe(`${RESEND}`, () => {
     it(`Shows ResendVerificationEmail when route is ${RESEND}`, () => {
-      const { getByRole } = renderComponent([RESEND]);
-      expect(getByRole('button', { name: 'Resend email' })).toBeInTheDocument();
+      setup([RESEND]);
+
+      expect(
+        screen.getByRole('button', { name: 'Resend email' }),
+      ).toBeInTheDocument();
     });
 
     it(`dispatches ${resendVerificationEmail.fulfilled.type} action when button is clicked`, async () => {
-      const { getByRole, store } = renderComponent([RESEND]);
-      userEvent.click(getByRole('button', { name: 'Resend email' }));
+      const { store } = setup([RESEND]);
+
+      userEvent.click(screen.getByRole('button', { name: 'Resend email' }));
+
       await waitFor(() =>
         expect(store.getActions()).toContainEqual(
           expect.objectContaining({
