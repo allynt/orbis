@@ -85,32 +85,36 @@ describe('Accounts index', () => {
 
   describe(`${REGISTER_CUSTOMER_USER}`, () => {
     it(`Shows UserRegistration when route is ${REGISTER_CUSTOMER_USER}`, async () => {
-      const { getAllByRole } = setup([REGISTER_CUSTOMER_USER]);
+      setup([REGISTER_CUSTOMER_USER]);
 
       await waitFor(() =>
-        expect(getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
+        expect(screen.getAllByRole('textbox').length).toBeGreaterThanOrEqual(1),
       );
     });
 
     it(`dispatches ${registerUser.typePrefix} action when submitted`, async () => {
-      const { getByRole, getByLabelText, store } = setup([
-        REGISTER_CUSTOMER_USER,
-      ]);
+      const { store } = setup([REGISTER_CUSTOMER_USER]);
 
-      userEvent.type(getByRole('textbox', { name: /email/i }), 'test@test.com');
-      userEvent.type(getByRole('textbox', { name: /first/i }), 'John');
-      userEvent.type(getByRole('textbox', { name: /last/i }), 'Smith');
       userEvent.type(
-        getByRole('textbox', { name: /organisation\sname/i }),
+        screen.getByRole('textbox', { name: /email/i }),
+        'test@test.com',
+      );
+      userEvent.type(screen.getByRole('textbox', { name: /first/i }), 'John');
+      userEvent.type(screen.getByRole('textbox', { name: /last/i }), 'Smith');
+      userEvent.type(
+        screen.getByRole('textbox', { name: /organisation\sname/i }),
         'Weyland-Yutani',
       );
-      userEvent.type(getByLabelText(/password \*/i), 'pandaconcretespoon');
       userEvent.type(
-        getByLabelText(/password\sconfirmation/i),
+        screen.getByLabelText(/password \*/i),
         'pandaconcretespoon',
       );
-      userEvent.click(getByRole('checkbox'));
-      userEvent.click(getByRole('button', { name: /sign\sup/i }));
+      userEvent.type(
+        screen.getByLabelText(/password\sconfirmation/i),
+        'pandaconcretespoon',
+      );
+      userEvent.click(screen.getByRole('checkbox'));
+      userEvent.click(screen.getByRole('button', { name: /sign\sup/i }));
 
       await waitFor(() =>
         expect(store.getActions()).toEqual(
