@@ -1,5 +1,6 @@
 import React from 'react';
 
+import 'react-dropzone-uploader/dist/styles.css';
 import {
   TextField,
   Typography,
@@ -11,6 +12,7 @@ import {
 
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Dropzone from 'react-dropzone-uploader';
 
 import { ReactComponent as CsvIcon } from '../intro/csv.svg';
 
@@ -57,6 +59,110 @@ const FileDrop = styled('div')(({ theme }) => ({
   padding: theme.spacing(2, 2, 3),
 }));
 
+/** @param {import('react-dropzone-uploader').ILayoutProps} props */
+const DropzoneLayout = ({ dropzoneProps, input, previews }) => {
+  const { className, ...rest } = dropzoneProps;
+  return (
+    <>
+      <FileDrop {...rest}>{input}</FileDrop>
+      {previews.length ? (
+        previews
+      ) : (
+        // @ts-ignore
+        <DropzonePreview meta={{}} />
+      )}
+    </>
+  );
+};
+
+/** @param {import('react-dropzone-uploader').IInputProps} props */
+const DropzoneInput = ({ getFilesFromEvent, onFiles, ...props }) => {
+  const inputRef = React.useRef(null);
+
+  const handleBrowseClick = () => {
+    inputRef.current.click();
+  };
+
+  /**
+   * @param {React.ChangeEvent<HTMLInputElement>} event
+   */
+  const handleInputChange = async event => {
+    const files = await getFilesFromEvent(event);
+    onFiles(files);
+  };
+
+  return (
+    <>
+      <input
+        id="file-input"
+        aria-labelledby="browse-link"
+        type="file"
+        ref={inputRef}
+        onChange={handleInputChange}
+        {...props}
+      />
+      <Typography variant="h1" component="div" gutterBottom>
+        Drop the file here or{' '}
+        <Link
+          id="browse-link"
+          aria-controls="file-input"
+          // @ts-ignore
+          component="button"
+          type="button"
+          variant="h1"
+          onClick={handleBrowseClick}
+        >
+          Browse
+        </Link>
+      </Typography>
+      <Typography variant="h4" component="p" paragraph>
+        Only supported files will be processed.
+      </Typography>
+      <UploadIcon>
+        <CsvIcon />
+      </UploadIcon>
+    </>
+  );
+};
+
+/** @param {import('react-dropzone-uploader').IPreviewProps} props */
+const DropzonePreview = ({ meta }) => {
+  const { percent = 0, status, name } = meta;
+  return (
+    <>
+      <LinearProgress
+        variant="determinate"
+        value={status === 'done' ? 100 : percent}
+      />
+      <UploadControls>
+        <Typography variant="h3" component="p">
+          {status === 'done'
+            ? 'Uploaded'
+            : status?.includes('error')
+            ? 'Invalid'
+            : status === 'preparing'
+            ? `Uploading ${name}`
+            : 'No file available'}
+        </Typography>
+        <IconButton
+          style={{
+            color:
+              status === 'done'
+                ? 'lime'
+                : status?.includes('error')
+                ? 'red'
+                : null,
+          }}
+          size="small"
+          disabled={!status}
+        >
+          {status === 'done' ? <CheckCircleIcon /> : <CancelIcon />}
+        </IconButton>
+      </UploadControls>
+    </>
+  );
+};
+
 const UploadControls = styled('div')({
   display: 'grid',
   gridTemplateColumns: '1fr min-content',
@@ -64,47 +170,17 @@ const UploadControls = styled('div')({
 });
 
 export const Form = () => {
-  const [uploadStatus] = React.useState('idle');
-
   return (
     <FormWrapper>
-      <FileDrop>
-        <Typography variant="h1" component="label" gutterBottom>
-          Drop the file here or <Link variant="inherit">Browse</Link>
-        </Typography>
-        <Typography variant="h4" component="p" paragraph>
-          Only supported files will be processed.
-        </Typography>
-        <UploadIcon>
-          <CsvIcon />
-        </UploadIcon>
-      </FileDrop>
-      <LinearProgress variant="determinate" value={50} />
-      <UploadControls>
-        <Typography variant="h3" component="p">
-          {uploadStatus === 'success'
-            ? 'Uploaded'
-            : uploadStatus === 'error'
-            ? 'Invalid'
-            : uploadStatus === 'pending'
-            ? 'Uploading filename.csv'
-            : 'No file available'}
-        </Typography>
-        <IconButton
-          style={{
-            color:
-              uploadStatus === 'success'
-                ? 'lime'
-                : uploadStatus === 'error'
-                ? 'red'
-                : null,
-          }}
-          size="small"
-          disabled={uploadStatus === 'idle'}
-        >
-          {uploadStatus === 'success' ? <CheckCircleIcon /> : <CancelIcon />}
-        </IconButton>
-      </UploadControls>
+      <Dropzone
+        // autoUpload
+        onChangeStatus={stuff => console.log(stuff)}
+        multiple={false}
+        maxFiles={1}
+        InputComponent={DropzoneInput}
+        PreviewComponent={DropzonePreview}
+        LayoutComponent={DropzoneLayout}
+      />
       <TextField label="Name Your Data" required />
       <TextField label="Add a Description for Your Data" />
     </FormWrapper>
