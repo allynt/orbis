@@ -7,7 +7,7 @@ import {
   Slider,
   Typography,
   Tooltip,
-  fade,
+  alpha,
   Box,
 } from '@astrosat/astrosat-ui';
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1.5),
   },
   markLabel: {
-    color: fade(theme.palette.text.primary, 0.5),
+    color: alpha(theme.palette.text.primary, 0.5),
     transform: 'rotate(-90deg) translate(-1em, -2em)',
   },
   markLabelActive: {

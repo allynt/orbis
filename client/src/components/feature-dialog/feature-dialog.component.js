@@ -1,12 +1,10 @@
 import * as React from 'react';
 
 import {
-  CloseIcon,
   Dialog,
   DialogContent,
   DialogTitle,
   Divider,
-  IconButton,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -85,10 +83,7 @@ export const FeatureDialog = ({
 
   return !!feature ? (
     <Dialog open={open} maxWidth="md" fullWidth>
-      <IconButton className={styles.closeButton} onClick={onClose}>
-        <CloseIcon titleAccess="Close" />
-      </IconButton>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle onClose={onClose}>{title}</DialogTitle>
       <DialogContent className={styles.content}>
         {Object.entries(renderableProperties).map(([key, value]) => (
           <React.Fragment key={`${key}-${value}`}>

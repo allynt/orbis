@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  fade,
+  alpha,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -16,13 +16,13 @@ const useStyles = makeStyles(theme => ({
       theme.shape.borderRadius,
     )} 0 0 ${theme.typography.pxToRem(theme.shape.borderRadius)}`,
     '&:hover': {
-      backgroundColor: fade(theme.palette.grey[400], 0.3),
+      backgroundColor: alpha(theme.palette.grey[400], 0.3),
     },
     '&$selected': {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.secondary.main,
       '&:hover': {
-        backgroundColor: fade(theme.palette.grey[400], 0.3),
+        backgroundColor: alpha(theme.palette.grey[400], 0.3),
       },
     },
   },

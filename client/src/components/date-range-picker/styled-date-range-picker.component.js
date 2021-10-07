@@ -1,4 +1,4 @@
-import { fade, styled } from '@astrosat/astrosat-ui';
+import { alpha, styled } from '@astrosat/astrosat-ui';
 
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
@@ -41,7 +41,7 @@ export const StyledDateRangePicker = styled(DateRangePicker)(
       borderRadius: shape.borderRadius,
       background: palette.text.primary,
       '&:hover': {
-        background: fade(palette.text.primary, 0.7),
+        background: alpha(palette.text.primary, 0.7),
       },
     },
     '& .rdrPprevButton': {

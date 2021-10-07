@@ -7,7 +7,7 @@ import {
   ListItem,
   Typography,
   makeStyles,
-  fade,
+  alpha,
 } from '@astrosat/astrosat-ui';
 
 import { get } from 'lodash';
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   divider: {
-    borderBottomColor: fade(theme.palette.primary.main, 0.55),
+    borderBottomColor: alpha(theme.palette.primary.main, 0.55),
   },
   secondaryProperty: {
     '& > span': {

@@ -1,4 +1,4 @@
-import { fade, useTheme } from '@astrosat/astrosat-ui';
+import { alpha, useTheme } from '@astrosat/astrosat-ui';
 
 import { assign } from 'lodash';
 
@@ -58,7 +58,7 @@ export const useChartTheme = () => {
         }),
         grid: {
           fill: 'none',
-          stroke: fade(astrosatUiTheme.palette.text.disabled, 0.2),
+          stroke: alpha(astrosatUiTheme.palette.text.disabled, 0.2),
           strokeDasharray: 5,
           pointerEvents: 'painted',
         },
@@ -69,7 +69,7 @@ export const useChartTheme = () => {
         },
         tickLabels: assign({}, baseLabelStyles, {
           padding: 10,
-          fill: fade(astrosatUiTheme.palette.text.primary, 0.75),
+          fill: alpha(astrosatUiTheme.palette.text.primary, 0.75),
         }),
       },
     },
