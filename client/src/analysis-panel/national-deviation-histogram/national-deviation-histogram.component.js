@@ -32,7 +32,7 @@ export const NationalDeviationHistogram = ({
   const aggregationLabel =
     selectedProperty?.aggregation === 'sum' ? 'Sum' : 'Average';
 
-  const { areaValue } = useAnalysisPanelContext();
+  const { areaValue, meanAreaValue } = useAnalysisPanelContext();
   const selectedPropertyOtherState = useSelector(state =>
     otherSelector(`${selectedProperty.source_id}/${selectedProperty.name}`)(
       state?.orbs,
@@ -60,7 +60,7 @@ export const NationalDeviationHistogram = ({
             }
             labelY="Number of Areas in GB"
             data={data}
-            line={areaValue}
+            line={meanAreaValue}
           />
         ) : null}
         <Grid container spacing={1} alignItems="center">
