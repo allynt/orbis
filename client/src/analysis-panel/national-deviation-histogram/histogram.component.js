@@ -107,7 +107,7 @@ export const Histogram = ({
               containerComponent={
                 <VictoryVoronoiContainer
                   labels={({ datum }) => {
-                    if (datum.childName === 'mean-line')
+                    if (datum.childName === 'mean-scatter')
                       return `Average of selected areas: ${datum.x}`;
                     return null;
                   }}
@@ -180,7 +180,6 @@ export const Histogram = ({
               {isRealValue(line) ? (
                 <VictoryGroup groupComponent={<g data-testid="line" />}>
                   <VictoryLine
-                    name="mean-line"
                     data={[
                       { x: line, y: isLogScale ? LOG_SCALE_MIN_DOMAIN : 0 },
                       { x: line, y: Math.max(...yValues) },
