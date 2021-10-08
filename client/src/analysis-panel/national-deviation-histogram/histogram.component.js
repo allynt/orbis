@@ -16,6 +16,8 @@ import {
   VictoryGroup,
   VictoryLine,
   VictoryScatter,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
 } from 'victory';
 
 import { WrappingChartLabel } from 'components';
@@ -102,6 +104,16 @@ export const Histogram = ({
               padding={padding}
               domainPadding={{ x: width / data.length }}
               scale={{ y: scale }}
+              containerComponent={
+                <VictoryVoronoiContainer
+                  labels={({ datum }) => {
+                    if (datum.childName === 'mean-line')
+                      return `Average of selected areas: ${datum.x}`;
+                    return null;
+                  }}
+                  labelComponent={<VictoryTooltip constrainToVisibleArea />}
+                />
+              }
             >
               <VictoryAxis
                 fixLabelOverlap
@@ -168,12 +180,14 @@ export const Histogram = ({
               {isRealValue(line) ? (
                 <VictoryGroup groupComponent={<g data-testid="line" />}>
                   <VictoryLine
+                    name="mean-line"
                     data={[
                       { x: line, y: isLogScale ? LOG_SCALE_MIN_DOMAIN : 0 },
                       { x: line, y: Math.max(...yValues) },
                     ]}
                   />
                   <VictoryScatter
+                    name="mean-scatter"
                     dataComponent={<OffsetPoint />}
                     size={5}
                     style={{
