@@ -31,11 +31,7 @@ const configuration = ({
   onGroupHover,
 }) => {
   const isVisible = visibilitySelector(id)(orbState);
-
-  let data;
-  if (!filterData) {
-    data = dataSelector(id)(orbState);
-  }
+  const data = dataSelector(id)(orbState);
 
   /**
    * @param {GeoJsonFeature[]} data
