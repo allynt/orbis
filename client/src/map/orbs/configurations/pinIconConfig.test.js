@@ -7,6 +7,7 @@ import configFn from './pinIconConfig';
 
 const setup = ({
   state = {},
+  filterData = undefined,
   activeSources = [{ source_id: 'test/layer' }],
   onGroupHover,
   onPointHover,
@@ -17,6 +18,7 @@ const setup = ({
   const setViewState = jest.fn();
   const utils = configFn({
     id: 'test/layer',
+    filterData,
     activeSources,
     dispatch,
     setViewState,
@@ -34,6 +36,15 @@ const setup = ({
 };
 
 describe('pinIconConfig', () => {
+  describe('filterData', () => {
+    it('uses prop data if present', () => {
+      const testData = [{ name: 'test-feature' }];
+      const { data } = setup({ filterData: testData });
+
+      expect(data).toEqual(testData);
+    });
+  });
+
   describe('visible', () => {
     it('is true if the layer is visible in state and the layer is active', () => {
       const { visible } = setup({ state: { visible: true } });
