@@ -20,6 +20,7 @@ import {
 
 const configuration = ({
   id,
+  filterData,
   activeSources,
   dispatch,
   setViewState,
@@ -30,7 +31,11 @@ const configuration = ({
   onGroupHover,
 }) => {
   const isVisible = visibilitySelector(id)(orbState);
-  const data = dataSelector(id)(orbState);
+
+  let data;
+  if (!filterData) {
+    data = dataSelector(id)(orbState);
+  }
 
   /**
    * @param {GeoJsonFeature[]} data
@@ -99,7 +104,7 @@ const configuration = ({
 
   return {
     id,
-    data: data,
+    data: !!filterData ? filterData : data,
     visible:
       isVisible && !!activeSources?.find(source => source.source_id === id),
     onClick: handleClick,

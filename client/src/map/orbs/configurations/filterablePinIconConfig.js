@@ -43,7 +43,7 @@ const filterablePinIconConfig = ({
 
   return pinIconConfig({
     id,
-    data: getFeatures(),
+    filterData: getFeatures(),
     orbState,
     ...rest,
   });
