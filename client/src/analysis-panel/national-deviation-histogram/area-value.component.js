@@ -21,20 +21,13 @@ export const AreaValue = ({ value, aggregated = false, aggregationLabel }) => {
   return (
     <>
       <Grid item>
-        <Typography
-          className={styles.italic}
-          variant="h4"
-          component="p"
-          color="primary"
-        >
+        <Typography className={styles.italic} variant="h4" component="p">
           {aggregated ? aggregationLabel : 'Value'} of selected area
           {aggregated ? 's' : ''}:
         </Typography>
       </Grid>
       <Grid item>
-        <Typography className={styles.italic} color="primary">
-          {value}
-        </Typography>
+        <Typography className={styles.italic}>{value}</Typography>
       </Grid>
     </>
   );
