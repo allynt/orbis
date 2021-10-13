@@ -5,6 +5,8 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { removeAllLayerFeatures } from 'map/orbs/layers.slice';
+
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
@@ -63,7 +65,10 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
   const dataSources = useSelector(dataSourcesSelector);
 
   const handleDialogSubmit = sources => {
+    const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
+
     dispatch(setLayers(sources));
+    dispatch(removeAllLayerFeatures(layersToBeRemoved));
     toggle(false);
   };
 

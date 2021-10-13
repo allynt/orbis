@@ -159,6 +159,10 @@ const layersSlice = createSlice({
         clickedFeatures: newFeatures.length ? newFeatures : undefined,
       };
     },
+    removeAllLayerFeatures: (state, { payload }) => {
+      if (!payload) return;
+      payload.forEach(key => (state[key] = undefined));
+    },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
@@ -210,6 +214,7 @@ const layersSlice = createSlice({
 export const {
   addClickedFeatures,
   removeClickedFeatures,
+  removeAllLayerFeatures,
   setClickedFeatures,
   setData,
   setExtrusionScale,
