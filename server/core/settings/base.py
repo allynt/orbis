@@ -134,11 +134,14 @@ USER_TRACKING_INTERVAL = env("DJANGO_USER_TRACKING_INTERVAL", default=60000)
 COPERNICUS_USERNAME = env("DJANGO_COPERNICUS_USERNAME", default="")
 COPERNICUS_PASSWORD = env("DJANGO_COPERNICUS_PASSWORD", default="")
 
-DATA_TOKEN_SECRET = env("DJANGO_DATA_TOKEN_SECRET", default="itsasecret")
 DATA_TOKEN_ALGORITHM = env("DJANGO_DATA_TOKEN_ALGORITHM", default="HS256")
 DATA_SOURCES_DIRECTORY_URL = env(
     "DJANGO_DATA_SOURCES_DIRECTORY_URL",
-    default="https://data-sources-directory.testing.astrosat.net"
+    default="",
+)
+DATA_TOKEN_SECRET = env(
+    "DJANGO_DATA_TOKEN_SECRET",
+    default="",
 )
 
 DATA_INDEX_URL = env(
