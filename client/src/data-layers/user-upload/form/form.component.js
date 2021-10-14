@@ -198,6 +198,7 @@ export const Form = () => {
       <Dropzone
         getUploadParams={({ meta }) => {
           console.log(meta);
+          return { url: '' };
         }}
         onChangeStatus={handleChangeStatus}
         multiple={false}
