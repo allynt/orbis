@@ -67,6 +67,7 @@ export const SavedDocuments = ({ documents }) => {
         noDataMessage="No Saved Documents"
         getCellProps={cell => ({
           padding: cell.column.id === 'url' ? 'checkbox' : null,
+          align: cell.column.id === 'file' ? 'right' : 'left',
         })}
         pluginHooks={[useSortBy]}
         tableOptions={{
