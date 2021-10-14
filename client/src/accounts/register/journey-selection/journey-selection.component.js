@@ -26,7 +26,7 @@ const SmallPrint = () => {
       you proceed, you need to accept our{' '}
       <Link
         variant="inherit"
-        href={apiClient.documents.getTermsUrl('initial')}
+        href={apiClient.documents.getTermsUrl('order_terms_with_curiosity')}
         target="_blank"
         rel="noreferrer noopener"
       >
