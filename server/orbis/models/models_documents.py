@@ -148,12 +148,13 @@ class Document(models.Model):
                 name="unique_type_name_version"
             ),
             models.UniqueConstraint(
-                fields=["type", "name", "orb", "is_active"],
+                fields=["type", "name", "orb"],
+                condition=Q(is_active=True),
                 name="unique_type_name_orb_active"
             ),
             models.UniqueConstraint(
-                fields=["type", "name", "is_active"],
-                condition=Q(orb=None),
+                fields=["type", "name"],
+                condition=Q(orb=None, is_active=True),
                 name="unique_type_name_active"
             ),
         ]
@@ -181,9 +182,7 @@ class Document(models.Model):
         validators=[FileExtensionValidator(["pdf"])],
     )
 
-    is_active = models.BooleanField(
-        null=True
-    )  # forcing a nullable boolean to be unique is a clever way of ensuring only 1 instance can be active (subject to the constraints above)
+    is_active = models.BooleanField(default=False)
 
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -212,6 +211,12 @@ class Document(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self))
         return super().save(*args, **kwargs)
+        # try:
+        #     return super().save(*args, **kwargs)
+        # except IntegrityError as ex:
+        #     raise ValidationError(
+        #         "An active document of this type already exists with this name:"
+        #     ) from ex
 
 
 class DocumentAgreement(models.Model):

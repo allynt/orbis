@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django import forms
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 
 from orbis.models import Document
 
@@ -24,8 +27,50 @@ class HasAgreementsFilter(admin.SimpleListFilter):
         return qs
 
 
+class DocumentAdminForm(ModelForm):
+    class Meta:
+        model = Document
+        fields = "__all__"
+
+    def clean(self):
+        """
+        Check a Document's UniqueConstraints during cleaning.
+        """
+        cleaned_data = super().clean()
+
+        other_documents = Document.objects.exclude(pk=self.instance.pk)
+
+        # Check `unique_type_name_version_orb` and `unique_type_name_version`
+        # constraints.
+        if other_documents.filter(
+            type=cleaned_data["type"],
+            name=cleaned_data["name"],
+            version=cleaned_data["version"],
+            orb=cleaned_data["orb"],
+        ).exists():
+            raise ValidationError(
+                "`type`, `name` and `orb` must be unique"
+            )
+
+        # Check `unique_type_name_orb_active and `unique_type_name_active`
+        # constraints.
+        if other_documents.filter(
+            type=cleaned_data["type"],
+            name=cleaned_data["name"],
+            orb=cleaned_data["orb"],
+            is_active=True,
+        ) and cleaned_data["is_active"]:
+            raise ValidationError(
+                "There cannot be multiple active documents with the same `type`, `name` and `orb`"
+            )
+
+        return cleaned_data
+
+
 @admin.register(Document)
 class DocumentAdmin(admin.ModelAdmin):
+    form = DocumentAdminForm
+
     fields = (
         "name",
         "version",
