@@ -211,12 +211,6 @@ class Document(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self))
         return super().save(*args, **kwargs)
-        # try:
-        #     return super().save(*args, **kwargs)
-        # except IntegrityError as ex:
-        #     raise ValidationError(
-        #         "An active document of this type already exists with this name:"
-        #     ) from ex
 
 
 class DocumentAgreement(models.Model):
