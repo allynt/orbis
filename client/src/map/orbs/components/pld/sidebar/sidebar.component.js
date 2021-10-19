@@ -22,7 +22,6 @@ export const PldSidebarComponent = ({
   iconColor,
 }) => {
   const styles = useStyles();
-  console.log('SEELECTED LAYER: ', selectedLayer);
 
   return (
     <Grid className={styles.wrapper} container spacing={2}>
