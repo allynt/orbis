@@ -15,20 +15,20 @@ from proxy.authentication import ProxyAuthentication
 ###########
 
 
-def validate_string_dict(value, field_name=None):
+def validate_dict(value, field_name=None):
     """
-    validate that value is a dictionary of strings
+    validate that value is a dictionary
     """
     if not isinstance(value, dict):
         raise ValidationError(f"{field_name or ''} must be a JSON object")
 
 
 def validate_proxy_params(value):
-    return validate_string_dict(value, field_name="proxy_params")
+    return validate_dict(value, field_name="proxy_params")
 
 
 def validate_proxy_headers(value):
-    return validate_string_dict(value, field_name="proxy_headers")
+    return validate_dict(value, field_name="proxy_headers")
 
 
 ########################
