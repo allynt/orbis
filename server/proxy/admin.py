@@ -107,18 +107,4 @@ class ProxyDataSourceAdmin(admin.ModelAdmin):
                 msg = _("URL-PARAM Authentication requires parameters.")
                 self.message_user(request, msg, level=messages.WARNING)
 
-        elif authentication_type == ProxyAuthentication.AuthenticationTypes.API_ALLOWREQUEST:
-
-            if not obj.proxy_authentication_token:
-                msg = _("API-AllowRequest Authentication requires a token")
-                self.message_user(request, msg, level=messages.WARNING)
-            if (
-                obj.proxy_authentication_username or
-                obj.proxy_authentication_password
-            ):
-                msg = _(
-                    "API-AllowRequest Authentication will not use username nor password."
-                )
-                self.message_user(request, msg, level=messages.WARNING)
-
         return super().save_model(request, obj, form, change)
