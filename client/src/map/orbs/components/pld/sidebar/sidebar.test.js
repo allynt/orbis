@@ -44,7 +44,6 @@ const DEVELOPMENT_TYPES = [
 describe('<PldSidebarComponent />', () => {
   it('Shows the results if there are any', () => {
     const selectedLayer = { source_id: 'test-source-id' };
-    const state = {};
 
     render(
       <PldSidebarComponent
@@ -54,9 +53,6 @@ describe('<PldSidebarComponent />', () => {
         constructionPhaseFilters={CONSTRUCTION_PHASES}
         developmentTypeFilters={DEVELOPMENT_TYPES}
       />,
-      {
-        state,
-      },
     );
 
     expect(
