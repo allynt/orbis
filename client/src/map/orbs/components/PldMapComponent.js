@@ -6,7 +6,7 @@ import { FeatureDetail, Popup } from 'components';
 
 import { clickedFeaturesSelector, setClickedFeatures } from '../layers.slice';
 
-const AisShippingMapComponent = ({ source }) => {
+const PldMapComponent = ({ source }) => {
   const pickedObjects = useSelector(state =>
     clickedFeaturesSelector(source?.source_id)(state?.orbs),
   );
@@ -31,10 +31,11 @@ const AisShippingMapComponent = ({ source }) => {
     >
       <FeatureDetail
         features={pickedObjects.map(obj => obj.properties)}
-        title="Planning Policy Lead"
+        propertiesToOmit={['icon']}
+        title={pickedObjects[0].properties['Development Type']}
       />
     </Popup>
   );
 };
 
-export default AisShippingMapComponent;
+export default PldMapComponent;

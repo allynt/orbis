@@ -13,7 +13,13 @@ const sourceId = 'test/layer';
 const feature = {
   id: '123',
   geometry: { coordinates: [0, 1] },
-  properties: { pk: '123', Type: true, Address: 'Test Address' },
+  properties: {
+    pk: '123',
+    Type: true,
+    Address: 'Test Address',
+    'Development Type': 'New Build',
+    icon: 'Test Icon',
+  },
 };
 const state = {
   orbs: {
@@ -36,13 +42,12 @@ const renderComponent = () => {
 
 describe('<PldMapComponent />', () => {
   it('should display a popup of feature details', () => {
-    const { getByText, getByRole } = renderComponent();
+    const { getByText, getByRole, queryByText } = renderComponent();
 
-    expect(
-      getByRole('heading', { name: 'Planning Policy Lead' }),
-    ).toBeInTheDocument();
+    expect(getByRole('heading', { name: 'New Build' })).toBeInTheDocument();
 
     expect(getByText('Address:')).toBeInTheDocument();
     expect(getByText('Test Address')).toBeInTheDocument();
+    expect(queryByText('Test Icon')).not.toBeInTheDocument();
   });
 });
