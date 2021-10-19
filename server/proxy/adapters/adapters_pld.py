@@ -1,9 +1,14 @@
-import pandas as pd
-
-from .adapters_base import BaseProxyDataAdapter
 """
 Uses the api at: https://planningdata.london.gov.uk/api-guest/applications/_search
 """
+from .adapters_base import BaseProxyDataAdapter
+
+ICONS = [
+    ("New Build", "new-build"),
+    ("Conversion", "conversion"),
+    ("Change of Use", "change-of-use"),
+    ("Extension", "extension"),
+]
 
 
 class PldAdapter(BaseProxyDataAdapter):
@@ -13,11 +18,17 @@ class PldAdapter(BaseProxyDataAdapter):
     def process_data(self, raw_data):
         # assume raw_data is the same shape as SAMPLE_DATA
         processed_data = {"type": "FeatureCollection", "features": []}
+        hits_data = raw_data['hits']['hits']
 
-        for i, rd in enumerate(raw_data['hits']['hits'], start=1):
+        for i, rd in enumerate(hits_data, start=1):
             source = rd["_source"]
-            commencement_date = source.get("actual_commencement_date")
-            completion_date = source.get("actual_completion_date")
+            icon_id = None
+
+            # Get the icon id for the Label name.
+            for icon in ICONS:
+                if icon[0] == source["development_type"]:
+                    icon_id = icon[1]
+                    break
 
             # yapf: disable
             processed_data["features"].append({
@@ -33,20 +44,12 @@ class PldAdapter(BaseProxyDataAdapter):
                 "properties": {
                     "Project ID": rd["_id"],
                     "UPRN": source["uprn"],
-                    "Address": f"{source['site_number']}, {source['street_name']}, {source['postcode']}",
+                    "Address": f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
                     "Description": source["description"],
-                    "Application Approved Date": source.get("decision_date"),
-                    "Permission Expires": source.get("lapsed_date"),
-                    "Type of Approval": source["application_type_full"],
-                    "Commencement Date": commencement_date
-                        if commencement_date is not None else "null",
-                    "Completion Date": completion_date
-                        if completion_date is not None else "null",
-                    "Total Number of Units": "TBD",
-                    "Total Number of Bedrooms": "TBD",
-                    "Overall Gain / Loss of Units": "TBD",
-                    "Housing Mix": "TBD",
-                    "Tenure Mix": "TBD",
+                    "Status": source["status"],
+                    "Development Type": source["development_type"],
+                    "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
+                    "icon": f"{icon_id}-{source['status'].lower()}",
                 }
             })
 
