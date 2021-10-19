@@ -1,13 +1,8 @@
 import * as React from 'react';
 
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { render, screen } from 'test/test-utils';
 
 import { PldSidebarComponent } from './sidebar.component';
-
-const mockStore = createMockStore([thunk]);
 
 const CONSTRUCTION_PHASES = [
   {
@@ -49,7 +44,7 @@ const DEVELOPMENT_TYPES = [
 describe('<PldSidebarComponent />', () => {
   it('Shows the results if there are any', () => {
     const selectedLayer = { source_id: 'test-source-id' };
-    const store = mockStore({});
+    const state = {};
 
     render(
       <PldSidebarComponent
@@ -60,9 +55,7 @@ describe('<PldSidebarComponent />', () => {
         developmentTypeFilters={DEVELOPMENT_TYPES}
       />,
       {
-        wrapper: ({ children }) => (
-          <Provider store={store}>{children}</Provider>
-        ),
+        state,
       },
     );
 

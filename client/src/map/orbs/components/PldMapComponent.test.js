@@ -1,12 +1,9 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+import { render, screen } from 'test/test-utils';
 
 import PldMapComponent from './PldMapComponent';
 
-const mockStore = configureMockStore();
 jest.mock('react-map-gl', () => ({ Popup: ({ children }) => <>{children}</> }));
 
 const sourceId = 'test/layer';
@@ -32,22 +29,16 @@ const state = {
   },
 };
 
-const renderComponent = () => {
-  const store = mockStore(state);
-  const utils = render(<PldMapComponent source={{ source_id: sourceId }} />, {
-    wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
-  });
-  return { ...utils, store };
-};
-
 describe('<PldMapComponent />', () => {
   it('should display a popup of feature details', () => {
-    const { getByText, getByRole, queryByText } = renderComponent();
+    render(<PldMapComponent source={{ source_id: sourceId }} />, { state });
 
-    expect(getByRole('heading', { name: 'New Build' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'New Build' }),
+    ).toBeInTheDocument();
 
-    expect(getByText('Address:')).toBeInTheDocument();
-    expect(getByText('Test Address')).toBeInTheDocument();
-    expect(queryByText('Test Icon')).not.toBeInTheDocument();
+    expect(screen.getByText('Address:')).toBeInTheDocument();
+    expect(screen.getByText('Test Address')).toBeInTheDocument();
+    expect(screen.queryByText('Test Icon')).not.toBeInTheDocument();
   });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PldSidebarComponent } from './pld/sidebar/sidebar.component';
 
-const ConnectedWrapper = ({ selectedLayer, dispatch }) => (
+const ConnectedWrapper = ({ selectedLayer }) => (
   <PldSidebarComponent
     selectedLayer={selectedLayer}
     color={
