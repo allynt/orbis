@@ -201,6 +201,10 @@ class Document(models.Model):
         return " - ".join(filter(None, [self.name, self.version]))
 
     @property
+    def file_exists(self):
+        return self.file.storage.exists(self.file.path)
+
+    @property
     def has_agreements(self):
         return self.n_agreements > 0
 
@@ -235,3 +239,6 @@ class DocumentAgreement(models.Model):
     )
 
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.document}: {self.user}"

@@ -118,7 +118,7 @@ const LoginForm = ({
                   I agree with the&nbsp;
                   <Link
                     target="_blank"
-                    href={apiClient.documents.getTermsUrl('user_login_terms')}
+                    href={apiClient.documents.getTermsUrl('user_terms')}
                     rel="noopener noreferrer"
                   >
                     Terms &amp; Conditions

@@ -148,6 +148,7 @@ class DocumentDetailView(GenericAPIView):
 
         if document_qs.count() != 1:
             raise NoMatchingDocumentException
+
         document_obj = document_qs[0]
 
         self.check_object_permissions(self.request, document_obj)

@@ -15,8 +15,14 @@ export class DocumentsClient extends SubClient {
     return this.getTermsUrl();
   }
 
+  getPrivacyUrl(name = '') {
+    return `${this.apiHost}/api${this.endpoint}/?type=PRIVACY&has_orb=false${
+      name ? `&name=${name}` : ''
+    }`;
+  }
+
   get privacyUrl() {
-    return `${this.apiHost}/api${this.endpoint}/?type=PRIVACY&has_orb=false`;
+    return this.getPrivacyUrl();
   }
 
   /**

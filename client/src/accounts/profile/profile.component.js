@@ -45,7 +45,7 @@ const Profile = () => {
         <Typography>
           Read our&nbsp;
           <Link
-            href={apiClient.documents.getTermsUrl('customer_terms_and_profile')}
+            href={apiClient.documents.getTermsUrl('general_terms')}
             rel="noopener noreferrer"
             target="_blank"
           >

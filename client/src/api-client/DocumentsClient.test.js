@@ -25,6 +25,12 @@ describe('DocumentsClient', () => {
     );
   });
 
+  it('Has a named privacy url', () => {
+    expect(client.getPrivacyUrl('general_privacy')).toContain(
+      '/api/documents/?type=PRIVACY&has_orb=false&name=general_privacy',
+    );
+  });
+
   describe('userGuideUrl', () => {
     it('returns the general guide by default', () => {
       expect(client.userGuideUrl()).toContain(
