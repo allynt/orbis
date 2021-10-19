@@ -9,6 +9,7 @@
     - [How to start](#how-to-start)
     - [Troubleshooting](#troubleshooting)
       - [Server 500 on /api/data/sources](#server-500-on-apidatasources)
+      - [Missing documents](#unable-to-registerlogin-due-to-missing-documents)
     - [Testing](#testing)
       - [End-to-End Testing](#end-to-end-testing)
   - [Releases](#releases)
@@ -140,6 +141,15 @@ $ kubectl get secret --context staging data-sources-directory-staging-primary-de
 > **NOTE**: If you need to query any other (non production) environments, it is a simple case of changing any reference to `staging` with the environment you are interested in.
 
 The output from the `kubectl` command, will include the `data token`, copy/paste that to the Django env variable in `.env.local` file. Restart your docker containers and once they are all up and running, you should get a successful response from `/api/data/sources` when you go to the **map**.
+
+#### Unable to register/login due to missing documents
+
+In order to authenticate with **ORBIS** certain key `Documents` must exist in the db:
+
+* "customer_terms" - T&C document that must be agreed when creating a customer
+* "user_terms" - T&C document that must be agreed when creating an (invited) user
+* "general_terms" - T&C document that is linked to from the *User Profile* view
+* "general_privacy" - the one-and-only privacy document
 
 ### Testing
 

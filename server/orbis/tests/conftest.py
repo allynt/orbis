@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 from astrosat_users.serializers import UserSerializer
 from astrosat_users.tests.utils import *
 
-from .factories import UserFactory
+from .factories import DocumentFactory, UserFactory
 
 
 @pytest.fixture
@@ -63,3 +63,35 @@ def user_data():
     user.delete()
 
     return data
+
+
+@pytest.fixture
+def documents():
+    """
+    Provides correct set of initial documents
+    """
+
+    DocumentFactory(
+        type="TERMS",
+        name="customer_terms",
+        orb=None,
+        is_active=True,
+    )
+    DocumentFactory(
+        type="TERMS",
+        name="user_terms",
+        orb=None,
+        is_active=True,
+    )
+    DocumentFactory(
+        type="TERMS",
+        name="general_terms",
+        orb=None,
+        is_active=True,
+    )
+    DocumentFactory(
+        type="PRIVACY",
+        name="general_privacy",
+        orb=None,
+        is_active=True,
+    )

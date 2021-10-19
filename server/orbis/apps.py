@@ -8,6 +8,12 @@ class AppConfig(AppConfig):
 
     def ready(self):
 
+        try:
+            # register any checks...
+            import orbis.checks  # noqa
+        except ImportError:
+            pass
+
         # register any signals...
         try:
             import orbis.signals  # noqa

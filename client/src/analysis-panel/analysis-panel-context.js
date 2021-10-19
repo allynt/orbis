@@ -10,6 +10,7 @@ import { aggregateValues } from './aggregateValues';
  * @property {string} [populationTotal]
  * @property {string} [householdTotal]
  * @property {number} [areaValue]
+ * @property {number} [meanAreaValue]
  * @property {{name: string, value: number}[]} [breakdownAggregation]
  */
 
@@ -57,6 +58,15 @@ export const AnalysisPanelProvider = ({
     [clickedFeatures, selectedProperty, selectedTimestamp],
   );
 
+  const meanAreaValue = useMemo(() => {
+    if (selectedProperty?.aggregation === 'mean') return areaValue;
+    return aggregateValues(
+      clickedFeatures,
+      { ...selectedProperty, aggregation: 'mean' },
+      selectedTimestamp,
+    );
+  }, [areaValue, clickedFeatures, selectedProperty, selectedTimestamp]);
+
   const breakdownAggregation = useMemo(
     () =>
       selectedProperty?.breakdown
@@ -97,6 +107,7 @@ export const AnalysisPanelProvider = ({
         populationTotal,
         householdTotal,
         areaValue,
+        meanAreaValue,
         breakdownAggregation,
       }}
     >

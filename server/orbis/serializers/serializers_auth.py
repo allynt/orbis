@@ -16,9 +16,11 @@ class ValidateDocumentsExistMixin():
     def validate_accepted_terms(self, value):
 
         if value:
-            terms_document = Document.objects.terms().no_orbs().active().first()
+            terms_document = Document.objects.terms().no_orbs().active().filter(
+                name=self.terms_document_name
+            )
             privacy_document = Document.objects.privacy().no_orbs().active(
-            ).first()
+            ).filter(name=self.privacy_document_name)
 
             if not terms_document and not privacy_document:
                 raise ValidationError(
@@ -40,6 +42,14 @@ class RegisterSerializer(
     as part of registration, I want to make sure that in orbis I also
     create any default licences for the associated CustomerUser.
     """
+    @property
+    def privacy_document_name(self):
+        return "general_privacy"
+
+    @property
+    def terms_document_name(self):
+        return "customer_terms"
+
     def custom_signup(self, request, user):
 
         # This creates customer & customer_user (if "customer_name" was passed to the serializer)
@@ -68,4 +78,10 @@ class RegisterSerializer(
 class LoginSerializer(
     ValidateDocumentsExistMixin, AstrosatUsersLoginSerializer
 ):
-    pass
+    @property
+    def privacy_document_name(self):
+        return "general_privacy"
+
+    @property
+    def terms_document_name(self):
+        return "user_terms"

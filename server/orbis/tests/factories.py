@@ -125,7 +125,7 @@ class DocumentFactory(factory.django.DjangoModelFactory):
         FactoryFaker("random_element", elements=[x[0] for x in DocumentType]),
         chance=50
     )
-    is_active = None
+    is_active = False
 
     @factory.lazy_attribute
     def file(self):
