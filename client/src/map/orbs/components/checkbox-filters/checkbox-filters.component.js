@@ -98,12 +98,14 @@ export const CheckboxFilters = ({
 
   return filters ? (
     <List disablePadding>
-      {filters.map(({ value, icon, label }) => {
+      {filters.map(({ value, icon, label, bgColor }) => {
         const labelId = `checkbox-label-${value
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
         const checked = isPropertyOff(filterValue, value);
+        const icColor = !iconColor && bgColor ? bgColor : iconColor;
+
         return (
           <ListItem
             key={value}
@@ -121,7 +123,10 @@ export const CheckboxFilters = ({
             {(Icon || colorScale) && (
               <ListItemIcon
                 className={styles.iconWrapper}
-                style={{ backgroundColor: colorScale?.get(value) }}
+                style={{
+                  backgroundColor: bgColor ? bgColor : colorScale?.get(value),
+                  color: icColor,
+                }}
               >
                 {Icon && <Icon fontSize="small" titleAccess={icon} />}
               </ListItemIcon>
