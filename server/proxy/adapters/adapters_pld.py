@@ -50,6 +50,7 @@ class PldAdapter(BaseProxyDataAdapter):
                     "Development Type": source["development_type"],
                     "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
                     "icon": f"{icon_id}-{source['status'].lower()}",
+                    "decision_date": source["decision_date"],
                 }
             })
 
