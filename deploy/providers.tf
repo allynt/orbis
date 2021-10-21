@@ -21,11 +21,6 @@ terraform {
       version = "1.11.1"
     }
 
-    elasticsearch = {
-      source  = "phillbaker/elasticsearch",
-      version = "~> 1.5.2"
-    }
-
     postgresql = {
       source  = "cyrilgdn/postgresql"
       version = "~> 1.11.2"
@@ -50,7 +45,7 @@ provider "kubernetes" {
   host                   = module.app_deploy.kubernetes_host
   cluster_ca_certificate = module.app_deploy.kubernetes_certificate
   token                  = module.app_deploy.kubernetes_token
-  load_config_file = false
+  load_config_file       = false
 }
 
 provider "postgresql" {
@@ -60,12 +55,3 @@ provider "postgresql" {
   username = module.app_deploy.db_user
   password = module.app_deploy.db_password
 }
-
-provider "elasticsearch" {
-  url = module.app_deploy.es_url
-  sign_aws_requests   = true
-  aws_region          = module.app_deploy.aws_region_name
-  aws_assume_role_arn = module.app_deploy.aws_role_arn
-  healthcheck = false
-}
-
