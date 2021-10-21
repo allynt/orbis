@@ -3,12 +3,34 @@ import { FlyToInterpolator } from '@deck.gl/core';
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
 
-import { setClickedFeatures, dataSelector } from '../layers.slice';
+import {
+  setClickedFeatures,
+  filterValueSelector,
+  dataSelector,
+} from '../layers.slice';
 import iconAtlas from './pldConfig.iconAtlas.svg';
 import iconMapping from './pldConfig.iconMapping.json';
 
 const configuration = ({ id, orbState, dispatch, setViewState }) => {
+  const filterValue = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
+
+  const getFeatures = () => {
+    if (!data) return data;
+
+    let newFeatures = data.features.filter(({ properties }) => {
+      const developmentType = properties['Development Type'];
+      const status = properties['Status'];
+      return (
+        !filterValue.includes(developmentType) && !filterValue.includes(status)
+      );
+    });
+
+    return {
+      ...data,
+      features: newFeatures,
+    };
+  };
 
   const onClick = info => {
     if (info.object.properties.cluster) {
@@ -30,7 +52,7 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
   };
 
   return {
-    data,
+    data: getFeatures(),
     pointType: 'icon',
     iconAtlas,
     iconMapping,

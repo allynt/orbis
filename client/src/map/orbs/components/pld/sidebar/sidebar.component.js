@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 export const PldSidebarComponent = ({
   selectedLayer,
+  dispatch,
   color,
   constructionPhaseFilters,
   developmentTypeFilters,
@@ -31,11 +32,17 @@ export const PldSidebarComponent = ({
       </Grid>
       <Grid item xs={11}>
         <Typography variant="h4">Construction Phase</Typography>
-        <CheckboxFilters filters={constructionPhaseFilters} />
+        <CheckboxFilters
+          dispatch={dispatch}
+          selectedLayer={selectedLayer}
+          filters={constructionPhaseFilters}
+        />
       </Grid>
       <Grid item xs={11}>
         <Typography variant="h4">Development Type</Typography>
         <CheckboxFilters
+          dispatch={dispatch}
+          selectedLayer={selectedLayer}
           color={color}
           filters={developmentTypeFilters}
           iconColor={iconColor}
