@@ -25,19 +25,11 @@ export default ({ dispatch, selectedLayer, ...rest }) => {
   /**
    * @param {any} value
    */
-  const handleChange = value => () => {
+  const handleChange = (newFilterValue, value, checked) => {
     const { source_id } = selectedLayer;
-    let newFilterValue;
-    if (filterValue === undefined || filterValue === null)
-      newFilterValue = [value];
-    else if (filterValue.includes(value))
-      newFilterValue = filterValue.filter(v => v !== value);
-    else newFilterValue = newFilterValue = [...filterValue, value];
 
     dispatch(setFilterValue({ key: source_id, filterValue: newFilterValue }));
-    dispatch(
-      logProperty(selectedLayer, value, !isPropertyOff(filterValue, value)),
-    );
+    dispatch(logProperty(selectedLayer, value, checked));
   };
 
   return (

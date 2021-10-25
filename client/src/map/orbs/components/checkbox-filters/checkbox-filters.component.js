@@ -73,6 +73,17 @@ export const CheckboxFilters = ({
           : filters.map(f => f.value),
     });
 
+  const handleCheckboxChange = (value, checked) => () => {
+    let newFilterValue;
+    if (filterValue === undefined || filterValue === null)
+      newFilterValue = [value];
+    else if (filterValue.includes(value))
+      newFilterValue = filterValue.filter(v => v !== value);
+    else newFilterValue = newFilterValue = [...filterValue, value];
+
+    onChange(newFilterValue, value, checked);
+  };
+
   return filters ? (
     <List disablePadding>
       {filters.map(({ value, icon, label, bgColor }) => {
@@ -80,6 +91,7 @@ export const CheckboxFilters = ({
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
+        // This is backwards, beware!
         const checked = isPropertyOff(filterValue, value);
         const icColor = !iconColor && bgColor ? bgColor : iconColor;
 
@@ -88,7 +100,7 @@ export const CheckboxFilters = ({
             key={value}
             role={undefined}
             button
-            onClick={onChange(value)}
+            onClick={handleCheckboxChange(value, checked)}
           >
             <ListItemIcon style={{ minWidth: 'max-content' }}>
               <Checkbox
