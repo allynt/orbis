@@ -3,11 +3,8 @@ import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import {
   MenuItem,
   Dialog,
-  styled,
-  IconButton,
   DialogTitle,
   DialogContent,
-  CloseIcon,
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
@@ -22,11 +19,6 @@ import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { OptionsMenu } from '../users-view/options-menu.component';
 import { DeleteFileForm } from './forms/delete-file-form.component';
-
-const DialogCloseButton = styled(IconButton)({
-  position: 'absolute',
-  right: 0,
-});
 
 export const Storage = ({ files, setFiles }) => {
   const dispatch = useDispatch();
@@ -103,10 +95,7 @@ export const Storage = ({ files, setFiles }) => {
         />
       </Wrapper>
       <Dialog open={!!fileId} onClose={close} maxWidth="md">
-        <DialogCloseButton onClick={close} aria-label="Close">
-          <CloseIcon />
-        </DialogCloseButton>
-        <DialogTitle>Delete File</DialogTitle>
+        <DialogTitle onClose={close}>Delete File</DialogTitle>
         <DialogContent>
           <DeleteFileForm
             onDeleteFileClick={onDeleteFileClick}

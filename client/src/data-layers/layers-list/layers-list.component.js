@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { styled, Typography, fade } from '@astrosat/astrosat-ui';
+import { styled, Typography, alpha } from '@astrosat/astrosat-ui';
 
 import { SidePanelSection } from 'components';
 
 const CategoryHeader = styled(Typography)(({ theme }) => ({
   ...theme.typography.h3,
-  backgroundColor: fade(theme.palette.common.white, 0.17),
+  backgroundColor: alpha(theme.palette.common.white, 0.17),
   padding: '0.75rem 1rem',
 }));
 

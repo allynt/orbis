@@ -1,20 +1,17 @@
 import React, { Fragment } from 'react';
 
 import {
-  CloseIcon,
   Dialog,
   DialogContent,
   DialogTitle,
   Divider as AuiDivider,
-  fade,
-  IconButton,
+  alpha,
   Link,
   List,
   ListItem,
   ListItemText,
   makeStyles,
   styled,
-  ThemeProvider,
 } from '@astrosat/astrosat-ui';
 
 const NOT_AVAILABLE = 'Not available';
@@ -47,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
-    backgroundColor: fade(theme.palette.primary.main, 0.3),
+    backgroundColor: alpha(theme.palette.primary.main, 0.3),
   },
   listLabel: {
     fontWeight: theme.typography.fontWeightBold,
@@ -82,96 +79,93 @@ export const MySupplyLynkDialog = ({ supplier, onCloseClick, isVisible }) => {
   const styles = useStyles();
 
   return (
-    <ThemeProvider theme="light">
-      <Dialog open={isVisible} onClose={onCloseClick} maxWidth="lg" fullWidth>
-        <IconButton className={styles.closeButton} onClick={onCloseClick}>
-          <CloseIcon titleAccess="Close" />
-        </IconButton>
-        <DialogTitle>{supplier.Name || 'Supplier'}</DialogTitle>
-        <DialogContent className={styles.content}>
-          <SectionLabel>{LABELS.contactDetailsLabel}</SectionLabel>
-          <List dense>
-            {supplier['Contact Name'] && (
-              <ListItem data-testid="contact-name">
-                {supplier['Contact Name']}
-              </ListItem>
-            )}
-            {supplier['Contact Email Address'] && (
-              <ListItem data-testid="contact-email">
-                {supplier['Contact Email Address']}
-              </ListItem>
-            )}
-            {supplier['Contact Phone Number'] && (
-              <ListItem>{supplier['Contact Phone Number']}</ListItem>
-            )}
-            {supplier.URL && (
-              <ListItem>
-                <Link
-                  href={supplier.URL}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  {supplier.URL}
-                </Link>
-              </ListItem>
-            )}
-          </List>
-          <Divider />
-          <SectionLabel>{LABELS.addressLabel}</SectionLabel>
-          <List dense>
-            {supplier['Address Line 1'] && (
-              <ListItem data-testid="address-line-1">
-                {supplier['Address Line 1']}
-              </ListItem>
-            )}
-            {supplier['Address Line 2'] && (
-              <ListItem>{supplier['Address Line 2']}</ListItem>
-            )}
-            {supplier.City && <ListItem>{supplier.City}</ListItem>}
-            {supplier.County && <ListItem>{supplier.County}</ListItem>}
-            {supplier.Postcode && <ListItem>{supplier.Postcode}</ListItem>}
-          </List>
-          <Divider />
-          <Heading>{LABELS.businessInformationHeading}</Heading>
-          <Divider />
-          <SectionLabel>{LABELS.existingLineOfBusinessLabel}</SectionLabel>
-          <TextItem>{supplier['Line of Business'] || NOT_AVAILABLE}</TextItem>
-          <Divider />
-          <SectionLabel className={styles.highlight}>
-            {LABELS.newProductLinesLabel}
-          </SectionLabel>
-          <TextItem className={styles.highlight}>
-            {supplier['New Product Lines'] || NOT_AVAILABLE}
-          </TextItem>
-          <Divider />
-          <SectionLabel>{LABELS.paymentTermsLabel}</SectionLabel>
-          <TextItem>{supplier['Payment Terms'] || NOT_AVAILABLE}</TextItem>
-          <Divider />
-          <Heading>{LABELS.itemsHeading}</Heading>
-          <Divider />
-          {supplier.Items.map(({ Name, ...rest }) => (
-            <Fragment key={Name}>
-              <SectionLabel>{Name || NOT_AVAILABLE}</SectionLabel>
-              <List dense>
-                {Object.entries(rest).map(([key, value]) => (
-                  <ListItem key={key}>
-                    <ListItemText
-                      primaryTypographyProps={{
-                        className: styles.listLabel,
-                        variant: 'body1',
-                      }}
-                      secondaryTypographyProps={{ variant: 'body1' }}
-                      primary={key}
-                      secondary={value || NOT_AVAILABLE}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-              <Divider />
-            </Fragment>
-          ))}
-        </DialogContent>
-      </Dialog>
-    </ThemeProvider>
+    <Dialog open={isVisible} onClose={onCloseClick} maxWidth="lg" fullWidth>
+      <DialogTitle onClose={onCloseClick}>
+        {supplier.Name || 'Supplier'}
+      </DialogTitle>
+      <DialogContent className={styles.content}>
+        <SectionLabel>{LABELS.contactDetailsLabel}</SectionLabel>
+        <List dense>
+          {supplier['Contact Name'] && (
+            <ListItem data-testid="contact-name">
+              {supplier['Contact Name']}
+            </ListItem>
+          )}
+          {supplier['Contact Email Address'] && (
+            <ListItem data-testid="contact-email">
+              {supplier['Contact Email Address']}
+            </ListItem>
+          )}
+          {supplier['Contact Phone Number'] && (
+            <ListItem>{supplier['Contact Phone Number']}</ListItem>
+          )}
+          {supplier.URL && (
+            <ListItem>
+              <Link
+                href={supplier.URL}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {supplier.URL}
+              </Link>
+            </ListItem>
+          )}
+        </List>
+        <Divider />
+        <SectionLabel>{LABELS.addressLabel}</SectionLabel>
+        <List dense>
+          {supplier['Address Line 1'] && (
+            <ListItem data-testid="address-line-1">
+              {supplier['Address Line 1']}
+            </ListItem>
+          )}
+          {supplier['Address Line 2'] && (
+            <ListItem>{supplier['Address Line 2']}</ListItem>
+          )}
+          {supplier.City && <ListItem>{supplier.City}</ListItem>}
+          {supplier.County && <ListItem>{supplier.County}</ListItem>}
+          {supplier.Postcode && <ListItem>{supplier.Postcode}</ListItem>}
+        </List>
+        <Divider />
+        <Heading>{LABELS.businessInformationHeading}</Heading>
+        <Divider />
+        <SectionLabel>{LABELS.existingLineOfBusinessLabel}</SectionLabel>
+        <TextItem>{supplier['Line of Business'] || NOT_AVAILABLE}</TextItem>
+        <Divider />
+        <SectionLabel className={styles.highlight}>
+          {LABELS.newProductLinesLabel}
+        </SectionLabel>
+        <TextItem className={styles.highlight}>
+          {supplier['New Product Lines'] || NOT_AVAILABLE}
+        </TextItem>
+        <Divider />
+        <SectionLabel>{LABELS.paymentTermsLabel}</SectionLabel>
+        <TextItem>{supplier['Payment Terms'] || NOT_AVAILABLE}</TextItem>
+        <Divider />
+        <Heading>{LABELS.itemsHeading}</Heading>
+        <Divider />
+        {supplier.Items.map(({ Name, ...rest }) => (
+          <Fragment key={Name}>
+            <SectionLabel>{Name || NOT_AVAILABLE}</SectionLabel>
+            <List dense>
+              {Object.entries(rest).map(([key, value]) => (
+                <ListItem key={key}>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      className: styles.listLabel,
+                      variant: 'body1',
+                    }}
+                    secondaryTypographyProps={{ variant: 'body1' }}
+                    primary={key}
+                    secondary={value || NOT_AVAILABLE}
+                  />
+                </ListItem>
+              ))}
+            </List>
+            <Divider />
+          </Fragment>
+        ))}
+      </DialogContent>
+    </Dialog>
   );
 };

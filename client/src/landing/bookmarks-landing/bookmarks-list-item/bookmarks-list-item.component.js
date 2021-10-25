@@ -4,7 +4,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  fade,
+  alpha,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   subtitle: {
-    color: fade(theme.palette.text.primary, 0.7),
+    color: alpha(theme.palette.text.primary, 0.7),
   },
 }));
 

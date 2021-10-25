@@ -1,5 +1,5 @@
 from base64 import b64encode
-from requests.auth import AuthBase
+from requests.auth import AuthBase, HTTPBasicAuth
 
 from django.db.models import TextChoices
 
@@ -23,12 +23,10 @@ class ProxyAuthentication(AuthBase):
             pass
 
         elif proxy_authentication_type == self.AuthenticationTypes.BASIC:
-            request.headers["Authorization"] = "Basic " + b64encode(
-                b":".join(
-                    self.proxy_data_source.proxy_authentication_username,
-                    self.proxy_data_source.proxy_authentication_password,
-                )
-            ).strip()
+            HTTPBasicAuth(
+                self.proxy_data_source.proxy_authentication_username,
+                self.proxy_data_source.proxy_authentication_password,
+            )(request)
 
         elif proxy_authentication_type == self.AuthenticationTypes.BEARER:
             request.headers[

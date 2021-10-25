@@ -133,7 +133,7 @@ class TestDocumentViews:
             name="test", version="v1", type=DocumentType.GUIDE, is_active=True
         )
         user_guide_2 = DocumentFactory(
-            name="test", version="v2", type=DocumentType.GUIDE, is_active=None
+            name="test", version="v2", type=DocumentType.GUIDE, is_active=False
         )
 
         client = api_client(user)

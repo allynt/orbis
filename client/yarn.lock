@@ -24,10 +24,10 @@
   dependencies:
     tunnel "0.0.6"
 
-"@astrosat/astrosat-ui@^2.5.3":
-  version "2.5.3"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.5.3/7585316ed5bdbe1c609f9324aae90d4e39118adee33abaa4a410bb24cd1a002e#f4c470a9441b57070ea78c77e92704d4fa83f36a"
-  integrity sha512-rlAj9JssNtB9K2Qz5I+Q+fnCcS+5Tc+LaWGJuRz2Ee5kh2hGRek8wxBfX90FUEitunfMYO/ondamXComVCMM8A==
+"@astrosat/astrosat-ui@^2.7.0":
+  version "2.7.0"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.7.0/6354a1a7ed1fa0a2e9fb87219f3d3a7f7dddb99ddb3c33800df7e6b4ded9cdf0#b597868e7440c02c4e4c168f15b9e422b2105beb"
+  integrity sha512-ViVu7g39Ys17YCsczSh1ToMx28HShmoIe7X5heZSauVcH8ccZ3KOAriGd07ragl6s3EVjbsOeM0UDYD8CfpK+w==
   dependencies:
     "@material-ui/core" "^4.11.0"
     "@material-ui/lab" "^4.0.0-alpha.56"
@@ -7309,9 +7309,9 @@
     "@types/react" "*"
 
 "@types/react@*":
-  version "17.0.22"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.22.tgz#c80d1d0e87fe953bae3ab273bef451dea1a6291b"
-  integrity sha512-kq/BMeaAVLJM6Pynh8C2rnr/drCK+/5ksH0ch9asz+8FW3DscYCIEFtCeYTFeIx/ubvOsMXmRfy7qEJ76gM96A==
+  version "17.0.27"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.27.tgz#6498ed9b3ad117e818deb5525fa1946c09f2e0e6"
+  integrity sha512-zgiJwtsggVGtr53MndV7jfiUESTqrbxOcBvwfe6KS/9bzaVPCTDieTWnFNecVNx6EAaapg5xsLLWFfHHR437AA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"

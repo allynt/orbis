@@ -20,6 +20,7 @@ import {
 
 const configuration = ({
   id,
+  filterData,
   activeSources,
   dispatch,
   setViewState,
@@ -99,7 +100,7 @@ const configuration = ({
 
   return {
     id,
-    data: data,
+    data: !!filterData ? filterData : data,
     visible:
       isVisible && !!activeSources?.find(source => source.source_id === id),
     onClick: handleClick,

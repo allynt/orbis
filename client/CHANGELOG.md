@@ -1,3 +1,94 @@
+# [2.27.0](https://github.com/astrosat/orbis/compare/v2.26.0...v2.27.0) (2021-10-20)
+
+
+### Bug Fixes
+
+* **backend:** Add description field to model ([cf8bf8f](https://github.com/astrosat/orbis/commit/cf8bf8f91fe906d72ebd7fc11125124e368eef22))
+* **backend:** Change validation function ([6c32347](https://github.com/astrosat/orbis/commit/6c32347223a97b7404e4b934f01ebef492405180))
+* **backend:** Remove bespoke auth handling ([f0baba5](https://github.com/astrosat/orbis/commit/f0baba51ec79dc7b7d64dbb76c98d8b4a6fead52))
+* **backend:** Remove commented out code ([1c67ce1](https://github.com/astrosat/orbis/commit/1c67ce1b9c24342d7305eb1a37c175576ce5ed78))
+* **backend:** Update adapter to what is needed ([e4b72cf](https://github.com/astrosat/orbis/commit/e4b72cf9dcdfe3491f4a3bf74510b08b0723f31a))
+* **backend:** Update proxy data source dbase ([ed7392b](https://github.com/astrosat/orbis/commit/ed7392b48339b7a1c016bfea6444d9d61eb2229e))
+* **backend:** Update sample data ([205a5c4](https://github.com/astrosat/orbis/commit/205a5c4be02eede24710197ad019e0285ca4c1f7))
+* **frontend:** Add color override for each checkbox ([79bd5cd](https://github.com/astrosat/orbis/commit/79bd5cd727a264b26f138ad3e127bad5f038ae49))
+* **frontend:** Add Map components for PLD data ([2ef0f1d](https://github.com/astrosat/orbis/commit/2ef0f1db442d4cda83b31590f478be04b5929970))
+* **frontend:** Add Provider to storage stories ([ac26fb6](https://github.com/astrosat/orbis/commit/ac26fb61f0a887073b02adfdaf484f90ca357286))
+* **frontend:** Add test to pinIconConfig test ([269fbbb](https://github.com/astrosat/orbis/commit/269fbbbdd0a9e915ed64d6667c81866a91f2896b))
+* **frontend:** Fix alignment of icon ([4b34b09](https://github.com/astrosat/orbis/commit/4b34b09c0b03a52a4b3d5653b85b4ada5aa177fa))
+* **frontend:** Fix cell props ([5d30ba8](https://github.com/astrosat/orbis/commit/5d30ba8e4d7fcd088ee73120759a3d99b066691e))
+* **frontend:** Fix index tests ([b5161d1](https://github.com/astrosat/orbis/commit/b5161d15666fabc2f8ea028e50ab66a6d98f236c))
+* **frontend:** Fix pinIconConfig features filter bug ([cf64d4b](https://github.com/astrosat/orbis/commit/cf64d4b3350650eefcbde47cd77f6e2f19606987))
+* **frontend:** Fixed some missed tests, re-added a resetMocks in beforeEach ([18b92f3](https://github.com/astrosat/orbis/commit/18b92f357c78e68d1cd8cd15010315be87e703b6))
+* **frontend:** Make PLD sidebar more like design ([39d463e](https://github.com/astrosat/orbis/commit/39d463e12bccfb07ac7733b69fce2d7fa95e64ea))
+* **frontend:** Remove unnecessary empty state in test ([c4ed91f](https://github.com/astrosat/orbis/commit/c4ed91f946ac8f3391228b3b3274ded41a8fa97a))
+* **frontend:** Remove unnecessary is_active request parameter ([2f309e2](https://github.com/astrosat/orbis/commit/2f309e2cb673f03bf68c58cd0b3695dade5e26c3))
+* **frontend:** Revert selector ([ef8a829](https://github.com/astrosat/orbis/commit/ef8a829081b0021f633017b04c1a26679859660c))
+* **frontend:** Specify the name of terms doc to use ([bd1b83d](https://github.com/astrosat/orbis/commit/bd1b83dcfe49b089479752e4e4de5673a65fcfe5))
+* **frontend:** Update astrosat-ui ([8e8bd74](https://github.com/astrosat/orbis/commit/8e8bd740f3c41d4732f3c23630af47bfbd975fde))
+* **frontend:** Update name of doc to use in login form ([750c00a](https://github.com/astrosat/orbis/commit/750c00ab41c870bdd5dc773e8f145d94c9ffef0b))
+* **frontend:** Update name of terms used for customer sign-up ([68d08ca](https://github.com/astrosat/orbis/commit/68d08cad613b33ee9e6daffe2357b11888e51c99))
+* **frontend:** Update tests to newer method ([b64400b](https://github.com/astrosat/orbis/commit/b64400bc959d21ed118e37258c0595d4ce0eb610))
+* **frontend:** Update the name of terms document used ([05c139c](https://github.com/astrosat/orbis/commit/05c139c2d04f240518bbd549ef8e31075389a3a8))
+* **frontend:** Update to use correct PLD icon atlas ([8574566](https://github.com/astrosat/orbis/commit/8574566d12e8bd2a7acf429a6da741b07cc5cc07))
+* **frontend:** Upgrade action for help tests ([6ea797f](https://github.com/astrosat/orbis/commit/6ea797fec920f929feb692524217abeec7a151af))
+* **frontend:** Upgrade completion test ([02cec93](https://github.com/astrosat/orbis/commit/02cec93afaa08822d76f1aa44a823396115cac34))
+* **frontend:** Upgrade data download button tests ([bea7a56](https://github.com/astrosat/orbis/commit/bea7a56ab34c08e7b37c49bdb09f863f9422c914))
+* **frontend:** Upgrade index tests ([284a62d](https://github.com/astrosat/orbis/commit/284a62dd6c27ac4abd72727620e258601a5940a8))
+* **frontend:** Upgrade journey selection tests ([3589a5e](https://github.com/astrosat/orbis/commit/3589a5eed742e335fc6d54577dcc0e1528436cda))
+* **frontend:** Upgrade landing tests ([82c5dba](https://github.com/astrosat/orbis/commit/82c5dbab86a69f5f994e2432a270f8c04674ccc8))
+* **frontend:** Upgrade national deviation histogram tests ([987a66a](https://github.com/astrosat/orbis/commit/987a66a3fe14b5837e5315c6b56b915eee1b50a5))
+* **frontend:** Upgrade orb details tests ([d2a3ec4](https://github.com/astrosat/orbis/commit/d2a3ec45b44dcf9730b6fee33fc6f37f89ef9d88))
+* **frontend:** Upgrade orbs tests ([5c66620](https://github.com/astrosat/orbis/commit/5c6662017e75eb2c01a476c430e9fbad46ffa266))
+* **frontend:** Upgrade password reset request form tests ([238008e](https://github.com/astrosat/orbis/commit/238008e891e7ffcd8ec5f0b67ef799a77ba51020))
+* **frontend:** Upgrade PDF tests ([84fe134](https://github.com/astrosat/orbis/commit/84fe134a9f39bfe5cf6807f7bb23d5eb543fd196))
+* **frontend:** Upgrade resend verification email tests ([940c5e5](https://github.com/astrosat/orbis/commit/940c5e520a9b4260e5674433c378104721b76f52))
+* **frontend:** Upgrade store tests ([128a8c8](https://github.com/astrosat/orbis/commit/128a8c88fad7f103f3658c20995a1c57548af02d))
+* **frontend:** Upgrade toolbar tests ([d1cfc10](https://github.com/astrosat/orbis/commit/d1cfc1002d4b00b28db0cd1eddf5081276b50056))
+* **frontend:** Upgrade user-registration tests ([ff66a79](https://github.com/astrosat/orbis/commit/ff66a794a6c01df43eeac9fba30ba23acc34abf5))
+
+
+### Features
+
+* **backend:** Add ability to post JSON in PRoxy requests ([fcb2dcc](https://github.com/astrosat/orbis/commit/fcb2dcc0cba4f041c1c7d381b7f38a3d3dbaeec8))
+* **backend:** Add new Proxy authentication type ([685f5e1](https://github.com/astrosat/orbis/commit/685f5e1a90cddcc09513bbdf74520856426de0ca))
+* **backend:** refactored document names ([#1407](https://github.com/astrosat/orbis/issues/1407)) ([37e6702](https://github.com/astrosat/orbis/commit/37e67028eb828a334d1b722bb7be829a15b6f43b))
+* **backend:** Simplify Document constraints ([3f97932](https://github.com/astrosat/orbis/commit/3f9793202c773d0cea474e2c9bcc010d7abda8e0))
+* **backend:** Translate PLD data to GeoJSON FeatureCollection ([5681088](https://github.com/astrosat/orbis/commit/56810888a3cba2902dbd3fe48997ed6cb9a0a460))
+* **frontend:** Simple client for PLD ([926f30c](https://github.com/astrosat/orbis/commit/926f30c6cad49bf87d82b4ce83f1119f1398a0f7))
+* **ns:** First attempt at IR API integration ([#1390](https://github.com/astrosat/orbis/issues/1390)) ([cdb4992](https://github.com/astrosat/orbis/commit/cdb4992917c79e291b6c0d0796c7bcb355562940))
+
+# [2.26.0](https://github.com/astrosat/orbis/compare/v2.25.0...v2.26.0) (2021-10-06)
+
+
+### Bug Fixes
+
+* **frontend:** Add ability to set min/max zoom level ([7c1d590](https://github.com/astrosat/orbis/commit/7c1d590e454f30616af780eab03c5fbd9eeb783c))
+* **frontend:** Change prop name, remove state, refactor tests ([6b24fe2](https://github.com/astrosat/orbis/commit/6b24fe29c523209271fb507c68d6c50d1f606b6e))
+* **frontend:** Streamline category breakdown chart ([e5ebe9a](https://github.com/astrosat/orbis/commit/e5ebe9a21490a0be37a0dcc99f5c18f3bc75cfec))
+* **frontend:** Streamline compare pins tests ([e9910cb](https://github.com/astrosat/orbis/commit/e9910cb14b7989fb2c99078c1f06123bab452d81))
+* **frontend:** Streamline password reset tests ([cfb1035](https://github.com/astrosat/orbis/commit/cfb10358fac7380ff1e4eeba3c0827dec4b2f3c8))
+* **frontend:** Upgrade analysis panel tests ([149e56b](https://github.com/astrosat/orbis/commit/149e56bbd4c7b2505e6f90a53b91cfca4068608e))
+* **frontend:** Upgrade bookmarks panel tests ([832d750](https://github.com/astrosat/orbis/commit/832d7501b55f663938a46d02835bd0d63c20bd4c))
+* **frontend:** Upgrade category breakdown chart tests ([4b556e2](https://github.com/astrosat/orbis/commit/4b556e2ac810bf9bde84763e8f1033798a1006c2))
+* **frontend:** Upgrade checkbox filters tests ([19e334a](https://github.com/astrosat/orbis/commit/19e334a6ec1bc51f0498359dfdfd5253ed3cccdc))
+* **frontend:** Upgrade compare pins tests ([d4277bc](https://github.com/astrosat/orbis/commit/d4277bc1a0b003b0323e58c1f20a2433ae4ae98e))
+* **frontend:** Upgrade iso+ property radio group tests ([a671da2](https://github.com/astrosat/orbis/commit/a671da2211f0bd31a79f73add0d3e368a144c41e))
+* **frontend:** Upgrade layer visibility checkbox tests ([dc28799](https://github.com/astrosat/orbis/commit/dc2879997af6dbdebe8c36b8f2b417dd14a19e72))
+* **frontend:** Upgrade map tests ([132108f](https://github.com/astrosat/orbis/commit/132108fd2f24fa77787d360aa37e589a16bf189c))
+* **frontend:** Upgrade password change form tests ([49d9b43](https://github.com/astrosat/orbis/commit/49d9b43bffbb260bc38295c0389d40c34e68aed3))
+* **frontend:** Upgrade password reset form testsc ([d098d0c](https://github.com/astrosat/orbis/commit/d098d0c7799e04a4d2958047a3dc3b30d631e32a))
+* **frontend:** Upgrade property time series tests ([f0d15d7](https://github.com/astrosat/orbis/commit/f0d15d71b7c93b12d13aeeacd439301d630fc604))
+* **frontend:** Upgrade register form tests ([6f4285e](https://github.com/astrosat/orbis/commit/6f4285e61a92a876b703492afe7afd851ea3cfd2))
+* **frontend:** Upgrade satellite component tests ([47a45f7](https://github.com/astrosat/orbis/commit/47a45f71ee26c5001190eab84c94f3bfe147d5dd))
+
+
+### Features
+
+* **backend:** added the ability to specify additional headers for a ([27c7d0f](https://github.com/astrosat/orbis/commit/27c7d0f43952e13f88bc8cd3512764219c084cd1))
+* **backend:** allow updating of customer via Mission Control ([#1386](https://github.com/astrosat/orbis/issues/1386)) ([9ddf9ca](https://github.com/astrosat/orbis/commit/9ddf9ca79010d18c47127d146f3500630ec1318f))
+* **backend:** updated terms acceptance error message ([#1388](https://github.com/astrosat/orbis/issues/1388)) ([904c1c5](https://github.com/astrosat/orbis/commit/904c1c5531e0229fe19b98eb395f1c9e03d87417))
+* **frontend:** added layer config for tiled raster data ([c4d0e8f](https://github.com/astrosat/orbis/commit/c4d0e8f378c369b78d63313bc7f0586a7a8355b5))
+
 # [2.25.0](https://github.com/astrosat/orbis/compare/v2.24.0...v2.25.0) (2021-09-29)
 
 

@@ -173,7 +173,7 @@ const UserRegistration = ({
             <Typography>
               I agree with the&nbsp;
               <Link
-                href={apiClient.documents.getTermsUrl('initial')}
+                href={apiClient.documents.getTermsUrl('customer_terms')}
                 rel="noreferrer noopener"
                 target="_blank"
               >

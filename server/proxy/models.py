@@ -15,17 +15,20 @@ from proxy.authentication import ProxyAuthentication
 ###########
 
 
-def validate_proxy_params(value):
+def validate_dict(value, field_name=None):
     """
-    validate that proxy_params is a dictionary of strings
+    validate that value is a dictionary
     """
     if not isinstance(value, dict):
-        raise ValidationError("proxy_params must be a JSON object")
+        raise ValidationError(f"{field_name or ''} must be a JSON object")
 
-    if not all([
-        isinstance(k, str) and isinstance(v, str) for k, v in value.items()
-    ]):
-        raise ValidationError("proxy_params can only contain strings")
+
+def validate_proxy_params(value):
+    return validate_dict(value, field_name="proxy_params")
+
+
+def validate_proxy_headers(value):
+    return validate_dict(value, field_name="proxy_headers")
 
 
 ########################
@@ -98,6 +101,15 @@ class ProxyDataSource(models.Model):
     proxy_method = models.CharField(
         max_length=16, blank=False, null=False, choices=ProxyMethodType.choices
     )
+    proxy_headers = models.JSONField(
+        blank=True,
+        null=True,
+        validators=[validate_proxy_headers],
+        help_text=_(
+            "A dictionary of any extra headers to include in the request to the proxy_url "
+        )
+    )
+
     proxy_authentication_type = models.CharField(
         max_length=16,
         blank=True,
@@ -166,14 +178,24 @@ class ProxyDataSource(models.Model):
         """
         Requests data from the proxied API
         """
-
         # TODO: REMOTE PAGINATION
-        response = requests.request(
-            self.proxy_method,
-            self.proxy_url,
-            auth=ProxyAuthentication(self),
-            params=self.proxy_params,
-        )
+        if self.proxy_method == self.ProxyMethodType.POST:
+            response = requests.request(
+                self.proxy_method,
+                self.proxy_url,
+                auth=ProxyAuthentication(self),
+                headers=self.proxy_headers,
+                json=self.proxy_params,
+            )
+        else:
+            response = requests.request(
+                self.proxy_method,
+                self.proxy_url,
+                auth=ProxyAuthentication(self),
+                headers=self.proxy_headers,
+                params=self.proxy_params,
+            )
+
         response.raise_for_status()
         return response.json()
 

@@ -64,10 +64,14 @@ class TestOrbisRegistration:
         user_settings.save()
 
         terms_document = DocumentFactory(
-            type=DocumentType.TERMS, is_active=True
+            type=DocumentType.TERMS,
+            name="customer_terms",
+            is_active=True,
         )
         privacy_document = DocumentFactory(
-            type=DocumentType.PRIVACY, is_active=True
+            type=DocumentType.PRIVACY,
+            name="general_privacy",
+            is_active=True,
         )
 
         client = APIClient()
@@ -156,10 +160,14 @@ class TestOrbisLogin:
         user = UserFactory(accepted_terms=False)
 
         terms_document = DocumentFactory(
-            type=DocumentType.TERMS, is_active=True
+            type=DocumentType.TERMS,
+            name="user_terms",
+            is_active=True,
         )
         privacy_document = DocumentFactory(
-            type=DocumentType.PRIVACY, is_active=True
+            type=DocumentType.PRIVACY,
+            name="general_privacy",
+            is_active=True,
         )
 
         client = APIClient()

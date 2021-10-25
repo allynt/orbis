@@ -1,15 +1,12 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import fetch from 'jest-fetch-mock';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
+
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { setData } from '../layers.slice.js';
 import ActionForHelpMapComponent from './ActionForHelpMapComponent';
 
-const mockStore = configureMockStore();
 jest.mock('react-map-gl', () => ({ Popup: ({ children }) => <>{children}</> }));
 
 const sourceId = 'test/layer';
@@ -29,17 +26,6 @@ const state = {
   },
 };
 
-const renderComponent = () => {
-  const store = mockStore(state);
-  const utils = render(
-    <ActionForHelpMapComponent source={{ source_id: sourceId }} />,
-    {
-      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
-    },
-  );
-  return { ...utils, store };
-};
-
 describe('<ActionForHelpMapComponent />', () => {
   beforeEach(() => {
     fetch.resetMocks();
@@ -49,9 +35,13 @@ describe('<ActionForHelpMapComponent />', () => {
     it('Makes the update response with the new note or status', () => {
       fetch.once(JSON.stringify({}));
       const note = 'Test note';
-      const { getByRole } = renderComponent();
-      userEvent.type(getByRole('textbox', { name: 'Popup Note' }), note);
-      userEvent.click(getByRole('button', { name: 'Save' }));
+      render(<ActionForHelpMapComponent source={{ source_id: sourceId }} />, {
+        state,
+      });
+
+      userEvent.type(screen.getByRole('textbox', { name: 'Popup Note' }), note);
+      userEvent.click(screen.getByRole('button', { name: 'Save' }));
+
       expect(fetch).toHaveBeenCalledWith(
         expect.stringContaining(`/${feature.properties.pk}`),
         expect.objectContaining({ body: JSON.stringify({ notes: note }) }),
@@ -82,9 +72,13 @@ describe('<ActionForHelpMapComponent />', () => {
         },
       });
 
-      const { getByRole, store } = renderComponent();
-      userEvent.type(getByRole('textbox', { name: 'Popup Note' }), note);
-      userEvent.click(getByRole('button', { name: 'Save' }));
+      const { store } = render(
+        <ActionForHelpMapComponent source={{ source_id: sourceId }} />,
+        { state },
+      );
+
+      userEvent.type(screen.getByRole('textbox', { name: 'Popup Note' }), note);
+      userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
       await waitFor(() => {
         expect(store.getActions()).toContainEqual(expectedActions);

@@ -4,13 +4,11 @@ import {
   Avatar,
   Button,
   Checkbox,
-  CloseIcon,
   Dialog,
   DialogContent,
   DialogTitle,
   EyeIcon,
   EyeSlashIcon,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -125,15 +123,11 @@ const Visualisation = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle className={styles.dialogTitle}>
+        <DialogTitle
+          className={styles.dialogTitle}
+          onClose={() => setSaveImageFormOpen(false)}
+        >
           Name Your Image
-          <IconButton
-            className={styles.closeButton}
-            color="inherit"
-            onClick={() => setSaveImageFormOpen(false)}
-          >
-            <CloseIcon titleAccess="Close" />
-          </IconButton>
         </DialogTitle>
         <DialogContent>
           <SaveImageForm onSubmit={handleSaveImageSubmit} />

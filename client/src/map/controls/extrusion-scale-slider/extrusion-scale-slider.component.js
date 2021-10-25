@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {
-  fade,
+  alpha,
   Grid,
   makeStyles,
   Slider,
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.primary,
     backgroundColor: props =>
-      fade(
+      alpha(
         props.lightMapStyle
           ? theme.palette.background.default
           : theme.palette.background.paper,
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   markLabel: {
     color: props =>
-      fade(
+      alpha(
         props.lightMapStyle
           ? theme.palette.secondary.main
           : theme.palette.text.primary,

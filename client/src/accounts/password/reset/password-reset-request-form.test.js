@@ -1,58 +1,31 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { status } from '../../accounts.slice';
 import PasswordResetRequestForm from './password-reset-request-form.component';
 
 const RESET_BUTTON_TEXT = 'Reset Password';
 
-const renderComponent = (resetPassword, resetStatus, error) =>
-  render(
-    <Router history={createMemoryHistory()}>
-      <PasswordResetRequestForm
-        resetPassword={resetPassword}
-        resetStatus={resetStatus}
-        error={error}
-      />
-    </Router>,
-  );
-
 describe('Password Reset Request Form Component', () => {
-  let resetPassword = null;
-  let resetStatus = null;
-  let error = null;
-
-  beforeEach(() => {
-    resetPassword = jest.fn();
-    resetStatus = status.NONE;
-    error = [];
-  });
-
   it('should render a form', () => {
-    const { getByText, getByRole } = renderComponent(
-      resetPassword,
-      resetStatus,
-      error,
-    );
+    render(<PasswordResetRequestForm />);
 
-    expect(getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
-    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(screen.getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
+    const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
+
     expect(resetButton).toBeInTheDocument();
     expect(resetButton).toHaveAttribute('disabled');
-    expect(getByText('Do you have an account?')).toBeInTheDocument();
-    expect(getByText('Login')).toBeInTheDocument();
+    expect(screen.getByText('Do you have an account?')).toBeInTheDocument();
+    expect(screen.getByText('Login')).toBeInTheDocument();
   });
 
   it('should disable `Reset Password` button when Email too short', async () => {
-    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+    render(<PasswordResetRequestForm />);
 
-    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toHaveAttribute('disabled');
-    userEvent.type(getByRole('textbox', { name: 'Email' }), 't');
+    userEvent.type(screen.getByRole('textbox', { name: 'Email' }), 't');
 
     userEvent.tab();
 
@@ -62,11 +35,14 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should disable `Reset Password` button when Email invalid', async () => {
-    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+    render(<PasswordResetRequestForm />);
 
-    const resetButton = getByRole('button', { name: RESET_BUTTON_TEXT });
+    const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
     expect(resetButton).toHaveAttribute('disabled');
-    userEvent.type(getByRole('textbox', { name: 'Email' }), 'testtest.com');
+    userEvent.type(
+      screen.getByRole('textbox', { name: 'Email' }),
+      'testtest.com',
+    );
 
     userEvent.tab();
 
@@ -76,14 +52,19 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should enable `Reset Password` button when form is valid', async () => {
-    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+    render(<PasswordResetRequestForm />);
 
-    expect(getByRole('button', { name: RESET_BUTTON_TEXT })).toBeDisabled();
-    userEvent.type(getByRole('textbox', { name: 'Email' }), 'test@test.com');
+    expect(
+      screen.getByRole('button', { name: RESET_BUTTON_TEXT }),
+    ).toBeDisabled();
+    userEvent.type(
+      screen.getByRole('textbox', { name: 'Email' }),
+      'test@test.com',
+    );
 
     await waitFor(() =>
       expect(
-        getByRole('button', { name: RESET_BUTTON_TEXT }),
+        screen.getByRole('button', { name: RESET_BUTTON_TEXT }),
       ).not.toBeDisabled(),
     );
   });
@@ -91,25 +72,25 @@ describe('Password Reset Request Form Component', () => {
   it.each(['', 't', 'testtest.com', 'test@test.'])(
     'should not call resetPassword function when email is %s and `Reset Password` button clicked',
     email => {
-      const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+      const resetPassword = jest.fn();
+      render(<PasswordResetRequestForm resetPassword={resetPassword} />);
 
-      userEvent.type(getByRole('textbox', { name: 'Email' }), email);
-
+      userEvent.type(screen.getByRole('textbox', { name: 'Email' }), email);
       userEvent.tab();
-
-      userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
+      userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
       expect(resetPassword).not.toHaveBeenCalled();
     },
   );
 
   it('should call resetPassword function when form is valid and `Reset Password` button clicked', async () => {
-    const { getByRole } = renderComponent(resetPassword, resetStatus, error);
+    const resetPassword = jest.fn();
+    render(<PasswordResetRequestForm resetPassword={resetPassword} />);
 
     const EMAIL_TEXT = 'test@test.com';
-    userEvent.type(getByRole('textbox', { name: 'Email' }), EMAIL_TEXT);
+    userEvent.type(screen.getByRole('textbox', { name: 'Email' }), EMAIL_TEXT);
 
-    userEvent.click(getByRole('button', { name: RESET_BUTTON_TEXT }));
+    userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
     await waitFor(() =>
       expect(resetPassword).toHaveBeenCalledWith({ email: EMAIL_TEXT }),
@@ -117,24 +98,21 @@ describe('Password Reset Request Form Component', () => {
   });
 
   it('should display error well if password reset is unsuccessful', () => {
-    error = ['Test Error 1', 'Test Error 2', 'Test Error 3'];
+    render(
+      <PasswordResetRequestForm
+        error={['Test Error 1', 'Test Error 2', 'Test Error 3']}
+      />,
+    );
 
-    const { getByTestId } = renderComponent(resetPassword, status.NONE, error);
-
-    expect(getByTestId('error-well')).toBeInTheDocument();
+    expect(screen.getByTestId('error-well')).toBeInTheDocument();
   });
 
   describe('Password Reset Success View', () => {
     it('should show the Password Change success view', () => {
-      const { getByText } = renderComponent(
-        resetPassword,
-        status.PENDING,
-        error,
-      );
+      render(<PasswordResetRequestForm resetStatus={status.PENDING} />);
 
-      expect(getByText('Check your email')).toBeInTheDocument();
-
-      expect(getByText('Return to login')).toBeInTheDocument();
+      expect(screen.getByText('Check your email')).toBeInTheDocument();
+      expect(screen.getByText('Return to login')).toBeInTheDocument();
     });
   });
 });

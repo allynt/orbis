@@ -73,7 +73,7 @@ describe('<FeatureDialog />', () => {
 
   it('Calls `onClose` when close is clicked', () => {
     const { getByRole, onClose } = renderComponent();
-    userEvent.click(getByRole('button', { name: 'Close' }));
+    userEvent.click(getByRole('button', { name: /Close/i }));
     expect(onClose).toHaveBeenCalled();
   });
 
