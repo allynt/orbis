@@ -147,7 +147,16 @@ class DataSourceView(APIView):
         headers = {"Authorization": f"Bearer {data_token}"}
 
         try:
-            response = requests.get(url, headers=headers, timeout=2.5)
+
+            response = requests.get(
+                url,
+                headers=headers,
+                timeout=2.5,
+                proxies={
+                    "http": settings.REQUESTS_PROXY,
+                    "https": settings.REQUESTS_PROXY,
+                } if settings.REQUESTS_PROXY else None
+            )
             if not status.is_success(response.status_code):
                 raise APIException("Error retrieving data sources")
         except Timeout as e:
