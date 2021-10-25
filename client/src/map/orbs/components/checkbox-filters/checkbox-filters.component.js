@@ -10,10 +10,6 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-import { useSelector } from 'react-redux';
-
-import { logProperty } from 'data-layers/data-layers.slice';
-import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(theme => ({
@@ -36,23 +32,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const isPropertyOff = (filters, property) => {
+export const isPropertyOff = (filters, property) => {
   return (
     filters === undefined || filters === null || !filters.includes(property)
   );
 };
 
 /**
- * @type {import('typings').SidebarComponent<{
+ * @param {{
+ *   onChange: (value: any) => () => void
+ *   filterValue: any[]
  *   filters: {value: any, label?: string, icon?: string}[]
  *   color?: string
  *   colorMap?: import('typings').ColorMap
  *   iconColor?: string
- * }>}
+ * }} props
  */
 export const CheckboxFilters = ({
-  selectedLayer,
-  dispatch,
+  onChange,
+  filterValue,
   filters,
   color,
   colorMap,
@@ -60,9 +58,6 @@ export const CheckboxFilters = ({
 }) => {
   if (!filters) console.error('No `filters` prop supplied to CheckboxFilters');
 
-  const filterValue = useSelector(state =>
-    filterValueSelector(selectedLayer?.source_id)(state?.orbs),
-  );
   const styles = useStyles({
     color,
     iconColor,
@@ -78,38 +73,6 @@ export const CheckboxFilters = ({
           : filters.map(f => f.value),
     });
 
-  /**
-   * @param {any} value
-   */
-  const handleChange = value => () => {
-    const { source_id } = selectedLayer;
-    let newFilterValue;
-    if (
-      filterValue?.checkboxFilters === undefined ||
-      filterValue?.checkboxFilters === null
-    )
-      newFilterValue = { checkboxFilters: [value] };
-    else if (filterValue?.checkboxFilters.includes(value))
-      newFilterValue = {
-        ...filterValue,
-        checkboxFilters: filterValue?.checkboxFilters.filter(v => v !== value),
-      };
-    else
-      newFilterValue = {
-        ...filterValue,
-        checkboxFilters: [...filterValue?.checkboxFilters, value],
-      };
-
-    dispatch(setFilterValue({ key: source_id, filterValue: newFilterValue }));
-    dispatch(
-      logProperty(
-        selectedLayer,
-        value,
-        !isPropertyOff(filterValue?.checkboxFilters, value),
-      ),
-    );
-  };
-
   return filters ? (
     <List disablePadding>
       {filters.map(({ value, icon, label, bgColor }) => {
@@ -117,7 +80,7 @@ export const CheckboxFilters = ({
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
-        const checked = isPropertyOff(filterValue?.checkboxFilters, value);
+        const checked = isPropertyOff(filterValue, value);
         const icColor = !iconColor && bgColor ? bgColor : iconColor;
 
         return (
@@ -125,7 +88,7 @@ export const CheckboxFilters = ({
             key={value}
             role={undefined}
             button
-            onClick={handleChange(value)}
+            onClick={onChange(value)}
           >
             <ListItemIcon style={{ minWidth: 'max-content' }}>
               <Checkbox
