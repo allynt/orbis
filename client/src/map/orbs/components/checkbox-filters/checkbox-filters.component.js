@@ -84,15 +84,29 @@ export const CheckboxFilters = ({
   const handleChange = value => () => {
     const { source_id } = selectedLayer;
     let newFilterValue;
-    if (filterValue === undefined || filterValue === null)
-      newFilterValue = [value];
-    else if (filterValue.includes(value))
-      newFilterValue = filterValue.filter(v => v !== value);
-    else newFilterValue = [...filterValue, value];
+    if (
+      filterValue?.checkboxFilters === undefined ||
+      filterValue?.checkboxFilters === null
+    )
+      newFilterValue = { checkboxFilters: [value] };
+    else if (filterValue?.checkboxFilters.includes(value))
+      newFilterValue = {
+        ...filterValue,
+        checkboxFilters: filterValue?.checkboxFilters.filter(v => v !== value),
+      };
+    else
+      newFilterValue = {
+        ...filterValue,
+        checkboxFilters: [...filterValue?.checkboxFilters, value],
+      };
 
     dispatch(setFilterValue({ key: source_id, filterValue: newFilterValue }));
-    return dispatch(
-      logProperty(selectedLayer, value, !isPropertyOff(filterValue, value)),
+    dispatch(
+      logProperty(
+        selectedLayer,
+        value,
+        !isPropertyOff(filterValue?.checkboxFilters, value),
+      ),
     );
   };
 
@@ -103,7 +117,7 @@ export const CheckboxFilters = ({
           .toString()
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
-        const checked = isPropertyOff(filterValue, value);
+        const checked = isPropertyOff(filterValue?.checkboxFilters, value);
         const icColor = !iconColor && bgColor ? bgColor : iconColor;
 
         return (

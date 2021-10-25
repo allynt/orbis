@@ -15,16 +15,38 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
   const filterValue = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
 
-  const getFeatures = () => {
-    if (!data) return data;
+  const getFeatures = ({ data, filters }) => {
+    const { startDate, endDate, checkboxFilters } = filters;
 
-    let newFeatures = data.features.filter(({ properties }) => {
-      const developmentType = properties['Development Type'];
-      const status = properties['Status'];
-      return (
-        !filterValue.includes(developmentType) && !filterValue.includes(status)
-      );
-    });
+    // no data or filtering params, return original data
+    if (!data || (!checkboxFilters?.length && !startDate && !endDate)) {
+      return data;
+    }
+
+    let newFeatures = data.features;
+
+    // filter by date range
+    if (!!startDate && !!endDate) {
+      newFeatures = newFeatures.filter(f => {
+        const submissionDateTimestamp = new Date(f.properties.decision_date);
+        return (
+          submissionDateTimestamp >= startDate.getTime() &&
+          submissionDateTimestamp <= endDate.getTime()
+        );
+      });
+    }
+
+    // filter by checkbox filters
+    if (!!checkboxFilters) {
+      newFeatures = newFeatures.filter(({ properties }) => {
+        const developmentType = properties['Development Type'];
+        const status = properties['Status'];
+        return (
+          !checkboxFilters.includes(developmentType) &&
+          !checkboxFilters.includes(status)
+        );
+      });
+    }
 
     return {
       ...data,
@@ -51,8 +73,16 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     }
   };
 
+  const filters = {
+    checkboxFilters: filterValue?.checkboxFilters,
+    startDate:
+      filterValue?.range?.startDate && new Date(filterValue?.range.startDate),
+    endDate:
+      filterValue?.range?.endDate && new Date(filterValue?.range.endDate),
+  };
+
   return {
-    data: getFeatures(),
+    data: getFeatures({ data, filters }),
     pointType: 'icon',
     iconAtlas,
     iconMapping,
