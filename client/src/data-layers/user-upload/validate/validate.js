@@ -1,27 +1,47 @@
-import { parse } from '@loaders.gl/core';
+import { parse, selectLoader, registerLoaders } from '@loaders.gl/core';
 import { CSVLoader } from '@loaders.gl/csv';
+import { intersection } from 'lodash';
 
+import { ERROR_MAP } from './error-map';
+
+registerLoaders([CSVLoader]);
+
+const PARSE_OPTIONS = { csv: { header: true } };
+
+/**
+ * @param {any[]} array
+ */
+function notEmpty(array) {
+  if (array.length === 0) throw Error('emptyFile');
+}
+
+/**
+ * @param {{}[]} parsedCsv
+ */
+function validateCsv(parsedCsv) {
+  const headers = Object.keys(parsedCsv[0]).map(v => v.toLowerCase());
+  if (
+    intersection(headers, ['latitude', 'lat', 'longitude', 'lon', 'long'])
+      .length !== 2
+  )
+    throw Error('incorrectHeaders');
+}
+
+/**
+ * @param {File} file
+ */
 export default async function validate(file) {
   try {
-    const val = await parse(file, [CSVLoader]);
-    if (val.length === 0)
-      throw new Error("Cannot read property 'length' of undefined");
-    if (val.some(values => !Object.keys(values).includes('latitude')))
-      throw new Error('Must include latitude and longitude headers');
+    const loader = await selectLoader(file);
+    const parsedFile = await parse(file, PARSE_OPTIONS);
+    notEmpty(parsedFile);
+    switch (loader.name) {
+      case CSVLoader.name:
+      default:
+        validateCsv(parsedFile);
+    }
     return false;
   } catch (error) {
-    if (
-      error.message.includes('No valid loader found') ||
-      error.message.includes('arrayBuffer is not a function')
-    )
-      return 'Invalid file format. Please upload a file according to the guidelines!';
-    if (
-      error.message.includes(
-        "Cannot read properties of undefined (reading 'length')",
-      ) ||
-      error.message.includes("Cannot read property 'length' of undefined")
-    )
-      return 'The uploaded file is empty, therefore we can not show anything on the map. Please fill it with data and start the upload process again. We are not saving this file so you don’t have to worry about it.';
-    return error.message;
+    return ERROR_MAP.get(error.message) ?? error.message;
   }
 }

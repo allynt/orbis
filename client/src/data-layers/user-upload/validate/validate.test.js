@@ -3,14 +3,17 @@
 import validate from './validate';
 
 describe('validate', () => {
-  it('checks file is a CSV file', async () => {
-    const testFile = new File(
-      ['latitude,longitude\nvalue1,value2'],
-      'test.csv',
-      {
-        type: 'text/csv',
-      },
-    );
+  it.each([
+    'latitude,longitude',
+    'lat,lon',
+    'lat,long',
+    'Latitude,Longitude',
+    'Lat,Lon',
+    'Lat,Long',
+  ])('Returns falsy if the file is valid', async header => {
+    const testFile = new File([`${header}\nvalue1,value2`], 'test.csv', {
+      type: 'text/csv',
+    });
 
     const result = await validate(testFile);
 
