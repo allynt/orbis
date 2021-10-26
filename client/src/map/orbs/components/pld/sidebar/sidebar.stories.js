@@ -4,49 +4,51 @@ import { PldSidebarComponent } from './sidebar.component';
 
 export default {
   title: 'Orbs/PLD/SidebarComponent',
-  args: {
-    visible: true,
-  },
-  argTypes: {
-    onPageClick: { action: true },
-  },
+};
+
+const metadata = {
+  color: 'transparent',
+  constructionPhaseFilters: [
+    {
+      icon: 'Circle',
+      value: 'Approved',
+      bgColor: '#75b7b2',
+    },
+    {
+      icon: 'Circle',
+      value: 'Commenced',
+      bgColor: '#f52455',
+    },
+    {
+      icon: 'Circle',
+      value: 'Completed',
+      bgColor: '#8aea73',
+    },
+  ],
+  developmentTypeFilters: [
+    {
+      icon: 'Conversion',
+      value: 'Conversion',
+    },
+    {
+      icon: 'NewBuild',
+      value: 'New Build',
+    },
+    {
+      icon: 'ChangeOfUse',
+      value: 'Change of Use',
+    },
+    {
+      icon: 'Extension',
+      value: 'Extension',
+    },
+  ],
+  iconColor: 'white',
 };
 
 const Template = args => <PldSidebarComponent {...args} />;
 
-export const NoResults = Template.bind({});
-
-export const IsLoading = Template.bind({});
-IsLoading.args = {
-  isLoading: true,
-};
-
-export const Results = Template.bind({});
-Results.args = {
-  results: new Array(10).fill(undefined).map(() => ({
-    properties: {
-      'Project ID': 'Test Project ID',
-      Address: 'Test Address',
-      'Development Type': 'Test Development Type',
-    },
-  })),
-};
-
-export const ActiveResult = Template.bind({});
-ActiveResult.args = {
-  results: new Array(10).fill(undefined).map((_, i) => ({
-    properties: {
-      'Project ID': 'Test Project ID',
-      Address: 'Test Address',
-      'Development Type': 'Test Development Type',
-    },
-  })),
-  selectedResult: { properties: { placeId: 2 } },
-};
-
-export const WithPages = Template.bind({});
-WithPages.args = {
-  ...ActiveResult.args,
-  pages: 10,
-  currentPage: 1,
+export const Default = Template.bind({});
+Default.args = {
+  ...metadata,
 };

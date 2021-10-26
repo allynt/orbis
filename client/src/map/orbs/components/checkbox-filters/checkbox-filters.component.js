@@ -40,7 +40,7 @@ export const isPropertyOff = (filters, property) => {
 
 /**
  * @param {{
- *   onChange: (value: any) => () => void
+ *   onChange: (newFilterValue: any[], value: any, checked: boolean) => void
  *   filterValue: any[]
  *   filters: {value: any, label?: string, icon?: string}[]
  *   color?: string
@@ -79,7 +79,7 @@ export const CheckboxFilters = ({
       newFilterValue = [value];
     else if (filterValue.includes(value))
       newFilterValue = filterValue.filter(v => v !== value);
-    else newFilterValue = newFilterValue = [...filterValue, value];
+    else newFilterValue = [...filterValue, value];
 
     onChange(newFilterValue, value, checked);
   };

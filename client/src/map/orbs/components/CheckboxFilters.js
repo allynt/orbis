@@ -5,10 +5,7 @@ import { useSelector } from 'react-redux';
 import { logProperty } from 'data-layers/data-layers.slice';
 import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 
-import {
-  CheckboxFilters,
-  isPropertyOff,
-} from './checkbox-filters/checkbox-filters.component';
+import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
 
 /**
  *  @type {import("typings").SidebarComponent<{
@@ -23,7 +20,9 @@ export default ({ dispatch, selectedLayer, ...rest }) => {
   );
 
   /**
+   * @param {any[]} newFilterValue
    * @param {any} value
+   * @param {boolean} checked
    */
   const handleChange = (newFilterValue, value, checked) => {
     const { source_id } = selectedLayer;
