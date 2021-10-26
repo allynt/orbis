@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ThemeProvider } from '@astrosat/astrosat-ui';
 
+import fetch from 'jest-fetch-mock';
+
 import { selectBookmark } from 'bookmarks/bookmarks.slice';
 import { render, screen, userEvent } from 'test/test-utils';
 
@@ -19,6 +21,8 @@ const TEST_BOOKMARKS = new Array(10).fill(undefined).map((_, i) => ({
   created: '2020-01-31T12:01:22.640053Z',
   thumbnail: 'test-image-URL',
 }));
+
+fetch.enableMocks();
 
 const setup = newUser => {
   const bookmarks = newUser ? [] : TEST_BOOKMARKS;

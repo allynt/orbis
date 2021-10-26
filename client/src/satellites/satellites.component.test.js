@@ -1,5 +1,7 @@
 import React from 'react';
 
+import fetch from 'jest-fetch-mock';
+
 import { fireEvent, render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { Panels } from './satellite.constants';
@@ -23,6 +25,8 @@ const SEARCH_TAB = ['tab', { name: 'Search' }];
 const RESULTS_TAB = ['tab', { name: 'Results' }];
 /** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
 const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
+
+fetch.enableMocks();
 
 describe('Satellites', () => {
   let state;

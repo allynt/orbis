@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { StorageClient } from './StorageClient';
 
+fetch.enableMocks();
+
 describe('StorageClient', () => {
   beforeEach(() => {
     fetch.resetMocks();

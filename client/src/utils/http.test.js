@@ -1,3 +1,4 @@
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -11,6 +12,8 @@ const USER_STATE = {
   user: null,
   error: null,
 };
+
+fetch.enableMocks();
 
 describe('Http', () => {
   let beforeState;

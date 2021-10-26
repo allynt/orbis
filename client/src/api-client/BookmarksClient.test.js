@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { BookmarksClient } from './BookmarksClient';
 
+fetch.enableMocks();
+
 describe('BookmarksClient', () => {
   beforeEach(() => {
     fetch.resetMocks();

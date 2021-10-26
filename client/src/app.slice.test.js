@@ -1,3 +1,4 @@
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -12,6 +13,8 @@ import reducer, {
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
+
+fetch.enableMocks();
 
 describe('App Slice', () => {
   describe('App Actions', () => {

@@ -23,6 +23,8 @@ const setup = () => {
   return { store };
 };
 
+fetchMock.enableMocks();
+
 describe('<AccountDetails />', () => {
   it('Shows information in the info box', () => {
     setup();

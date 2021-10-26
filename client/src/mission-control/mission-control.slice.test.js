@@ -40,6 +40,8 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
+fetch.enableMocks();
+
 describe('Mission Control Slice', () => {
   describe('Actions', () => {
     let store = null;

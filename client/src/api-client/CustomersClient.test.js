@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { CustomersClient } from './CustomersClient';
 
+fetch.enableMocks();
+
 describe('CustomersClient', () => {
   /** @type {CustomersClient} */
   let client;

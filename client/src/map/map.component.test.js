@@ -1,10 +1,14 @@
 import * as React from 'react';
 
+import fetch from 'jest-fetch-mock';
+
 import { render, screen } from 'test/test-utils';
 
 import Map from './map.component';
 
 jest.mock('@deck.gl/react');
+
+fetch.enableMocks();
 
 describe('<Map />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));

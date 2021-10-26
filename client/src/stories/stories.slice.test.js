@@ -1,3 +1,4 @@
+import fetch from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -14,6 +15,8 @@ import reducer, {
   selectStory,
   STORIES,
 } from './stories.slice';
+
+fetch.enableMocks();
 
 const mockStore = configureMockStore([thunk]);
 

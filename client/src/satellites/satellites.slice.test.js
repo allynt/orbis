@@ -32,6 +32,8 @@ import reducer, {
   onUnmount,
 } from './satellites.slice';
 
+fetch.enableMocks();
+
 const mockStore = configureMockStore([thunk]);
 
 describe('Satellites Slice', () => {

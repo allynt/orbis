@@ -1,4 +1,4 @@
-import { enableFetchMocks } from 'jest-fetch-mock';
+// import { enableFetchMocks } from 'jest-fetch-mock';
 import '@testing-library/jest-dom/extend-expect';
 
 import './polyfills/flat-map';
@@ -7,7 +7,7 @@ import './polyfills/object-fromEntries';
 
 import '../public/config';
 
-enableFetchMocks();
+// enableFetchMocks();
 global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest
   .fn()

@@ -1,4 +1,8 @@
+import fetch from 'jest-fetch-mock';
+
 import { DocumentsClient } from './DocumentsClient';
+
+fetch.enableMocks();
 
 describe('DocumentsClient', () => {
   /** @type {DocumentsClient} */

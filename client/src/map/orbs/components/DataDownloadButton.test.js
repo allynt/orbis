@@ -10,6 +10,7 @@ import DataDownloadButton, {
 } from './DataDownloadButton';
 
 jest.mock('file-saver');
+fetch.enableMocks();
 
 const setup = ({
   url = 'http://test.com/download',

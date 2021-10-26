@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { SubClient } from './SubClient';
 
+fetch.enableMocks();
+
 describe('SubClient', () => {
   /** @type {SubClient} */
   let subClient;

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { push } from 'connected-react-router';
-import fetch from 'jest-fetch-mock';
+import fetchMock from 'jest-fetch-mock';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -39,6 +39,8 @@ const BASE_STATE = {
   _persist: { rehydrated: true, version: 1 },
 };
 
+fetchMock.enableMocks();
+
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
     let store = null;
@@ -49,7 +51,7 @@ describe('Accounts Slice', () => {
     };
 
     beforeEach(() => {
-      fetch.resetMocks();
+      fetchMock.resetMocks();
 
       store = mockStore({
         accounts: {
@@ -60,7 +62,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch register failure action.', async () => {
-      fetch.mockResponse(
+      fetchMock.mockResponse(
         JSON.stringify({
           errors: errorMessages,
         }),
@@ -94,7 +96,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch register success action.', async () => {
-      fetch.mockResponse(JSON.stringify({}));
+      fetchMock.mockResponse(JSON.stringify({}));
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({
           payload: {},
@@ -121,7 +123,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch fetch user failure action.', async () => {
-      fetch.mockResponse(
+      fetchMock.mockResponse(
         JSON.stringify({
           errors: errorMessages,
         }),
@@ -147,7 +149,7 @@ describe('Accounts Slice', () => {
 
     it('should dispatch fetch user success action.', async () => {
       const user = { username: 'testusername', email: 'testusername@test.com' };
-      fetch.mockResponse(JSON.stringify(user));
+      fetchMock.mockResponse(JSON.stringify(user));
 
       await store.dispatch(fetchCurrentUser());
       expect(store.getActions()).toContainEqual(
@@ -159,7 +161,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch logout failure action.', async () => {
-      fetch.mockResponse(
+      fetchMock.mockResponse(
         JSON.stringify({
           errors: errorMessages,
         }),
@@ -187,7 +189,7 @@ describe('Accounts Slice', () => {
       const userKey = { token: 'testkey' };
       const user = { username: 'testusername', email: 'testusername@test.com' };
 
-      fetch.once(JSON.stringify(userKey)).once(JSON.stringify(user));
+      fetchMock.once(JSON.stringify(userKey)).once(JSON.stringify(user));
 
       await store.dispatch(logout());
 
@@ -197,7 +199,7 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch update user failure action.', async () => {
-      fetch.once(
+      fetchMock.once(
         JSON.stringify({
           errors: errorMessages,
         }),
@@ -229,7 +231,7 @@ describe('Accounts Slice', () => {
     it('should dispatch update user success action.', async () => {
       const userKey = { token: 'testkey' };
 
-      fetch.mockResponse(JSON.stringify(userKey));
+      fetchMock.mockResponse(JSON.stringify(userKey));
 
       const form = {
         email: 'testusername@test.com',
@@ -407,7 +409,7 @@ describe('Accounts Slice', () => {
     };
 
     beforeEach(() => {
-      fetch.resetMocks();
+      fetchMock.resetMocks();
       dispatch = jest.fn();
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
@@ -451,7 +453,7 @@ describe('Accounts Slice', () => {
       const errorResponse = { errors: { test: ['problem'] } };
 
       it('creates new customer and sets in state', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
@@ -462,7 +464,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches failure on create customer error', async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Test Error',
         });
@@ -473,7 +475,7 @@ describe('Accounts Slice', () => {
       });
 
       it('creates a customer user and sets in state', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
@@ -484,7 +486,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches failure on customer user creation error', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(errorResponse), {
             status: 401,
@@ -500,7 +502,7 @@ describe('Accounts Slice', () => {
       });
 
       it('fetches the user after customer and customer user creation', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
@@ -514,7 +516,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches the success action', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
@@ -527,7 +529,7 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to order view', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(fetchUserResponse));
@@ -536,7 +538,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches failure on fetch user failure', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(createCustomerResponse))
           .once(JSON.stringify(createCustomerUserResponse))
           .once(JSON.stringify(errorResponse), {
@@ -592,8 +594,8 @@ describe('Accounts Slice', () => {
       };
 
       it('calls the success action on successful request', async () => {
-        fetch.once(JSON.stringify(placeOrderResponseBody));
-        fetch.once(JSON.stringify(fetchCustomerResponseBody));
+        fetchMock.once(JSON.stringify(placeOrderResponseBody));
+        fetchMock.once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({ type: placeOrder.fulfilled.type }),
@@ -601,7 +603,7 @@ describe('Accounts Slice', () => {
       });
 
       it('calls the failure action on failed request', async () => {
-        fetch.once(JSON.stringify(failureResponseBody), {
+        fetchMock.once(JSON.stringify(failureResponseBody), {
           status: 401,
           statusText: 'Test Error',
         });
@@ -615,7 +617,7 @@ describe('Accounts Slice', () => {
       });
 
       it('fetches the updated customer and sets', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(placeOrderResponseBody))
           .once(JSON.stringify(fetchCustomerResponseBody));
         await placeOrder(formValues)(dispatch, getState, undefined);
@@ -625,7 +627,7 @@ describe('Accounts Slice', () => {
       });
 
       it('calls the failure action on fetch customer failure', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(placeOrderResponseBody))
           .once(JSON.stringify(failureResponseBody), {
             status: 418,
@@ -641,8 +643,8 @@ describe('Accounts Slice', () => {
       });
 
       it('Uses the customer id from the user if current customer is undefined', async () => {
-        fetch.once(JSON.stringify(placeOrderResponseBody));
-        fetch.once(JSON.stringify(fetchCustomerResponseBody));
+        fetchMock.once(JSON.stringify(placeOrderResponseBody));
+        fetchMock.once(JSON.stringify(fetchCustomerResponseBody));
         jest.spyOn(window, 'fetch');
         await placeOrder(formValues)(dispatch, () => ({
           missionControl: { isLoading: false },
@@ -654,7 +656,7 @@ describe('Accounts Slice', () => {
             },
           },
         }));
-        expect(fetch).toHaveBeenNthCalledWith(
+        expect(fetchMock).toHaveBeenNthCalledWith(
           1,
           expect.stringContaining('/api/customers/testcustomerId/orders/'),
           expect.anything(),
@@ -701,7 +703,7 @@ describe('Accounts Slice', () => {
       };
 
       it('shows the resend email view if the user is not verified', async () => {
-        fetch.once(JSON.stringify(loginReponseUserNotVerified), {
+        fetchMock.once(JSON.stringify(loginReponseUserNotVerified), {
           status: 418,
           statusText: 'Error',
         });
@@ -710,7 +712,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches the failure action if the login request fails', async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 418,
           statusText: 'Error',
         });
@@ -727,7 +729,7 @@ describe('Accounts Slice', () => {
       });
 
       it('fetches the user and dispatches success action', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
         await login(formValues)(dispatch);
@@ -743,7 +745,7 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches the failure action if the get user request fails', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(errorResponse), { status: 418 });
         await login(formValues)(dispatch);
@@ -758,7 +760,7 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to root if the user is not in the process of registering', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserResponse));
         await login(formValues)(dispatch);
@@ -766,7 +768,7 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to REGISTER_CUSTOMER if the user needs to create a customer', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserCustomerResponse));
         await login(formValues)(dispatch);
@@ -774,7 +776,7 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to REGISTER_CUSTOMER_ORDER if the user needs to place an order', async () => {
-        fetch
+        fetchMock
           .once(JSON.stringify(loginResponse))
           .once(JSON.stringify(getUserOrderResponse));
         await login(formValues)(dispatch);
@@ -784,7 +786,7 @@ describe('Accounts Slice', () => {
 
     describe('activateAccount', () => {
       it(`dispatches ${activateAccount.rejected.type} if the response is not ok`, async () => {
-        fetch.once(
+        fetchMock.once(
           JSON.stringify({
             errors: {
               test: ['¿problema?'],
@@ -803,7 +805,7 @@ describe('Accounts Slice', () => {
 
       it(`dispatches ${activateAccount.fulfilled.type} on successful activation`, async () => {
         const user = { name: 'Test User' };
-        fetch.once(JSON.stringify({ user }));
+        fetchMock.once(JSON.stringify({ user }));
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -816,7 +818,7 @@ describe('Accounts Slice', () => {
 
     describe('resendVerificationEmail', () => {
       it(`dispatches ${resendVerificationEmail.rejected.type} on failed request`, async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Wrong',
         });
@@ -830,7 +832,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resendVerificationEmail.fulfilled.type} on success`, async () => {
-        fetch.once(JSON.stringify({}));
+        fetchMock.once(JSON.stringify({}));
         await resendVerificationEmail('')(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({
@@ -842,7 +844,7 @@ describe('Accounts Slice', () => {
 
     describe('changePassword', () => {
       it(`dispatches ${changePassword.rejected.type} on failed request`, async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Wrong',
         });
@@ -856,7 +858,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${changePassword.fulfilled.type} on success`, async () => {
-        fetch.once(JSON.stringify({}));
+        fetchMock.once(JSON.stringify({}));
         await changePassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({ type: changePassword.fulfilled.type }),
@@ -866,7 +868,7 @@ describe('Accounts Slice', () => {
 
     describe('resetPasswordConfirm', () => {
       it(`dispatches ${resetPasswordConfirm.rejected.type} on failed request`, async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Wrong',
         });
@@ -881,7 +883,7 @@ describe('Accounts Slice', () => {
 
       it(`dispatches ${resetPasswordConfirm.fulfilled.type} with user on success`, async () => {
         const user = { name: 'Test user' };
-        fetch.once(JSON.stringify({ user }));
+        fetchMock.once(JSON.stringify({ user }));
         await resetPasswordConfirm({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -894,7 +896,7 @@ describe('Accounts Slice', () => {
 
     describe('resetPasswordRequest', () => {
       it(`dispatches ${resetPasswordRequest.rejected.type} on failed request`, async () => {
-        fetch.once(JSON.stringify(errorResponse), {
+        fetchMock.once(JSON.stringify(errorResponse), {
           status: 401,
           statusText: 'Wrong',
         });
@@ -908,7 +910,7 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resetPasswordRequest.fulfilled.type} on success`, async () => {
-        fetch.once(JSON.stringify({}));
+        fetchMock.once(JSON.stringify({}));
         await resetPasswordRequest({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({

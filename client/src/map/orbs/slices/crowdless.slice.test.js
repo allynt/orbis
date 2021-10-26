@@ -1,3 +1,5 @@
+import fetch from 'jest-fetch-mock';
+
 import reducer, {
   setSelectedResult,
   isLoadingSelector,
@@ -7,6 +9,8 @@ import reducer, {
   setVisibility,
   visibilitySelector,
 } from './crowdless.slice';
+
+fetch.enableMocks();
 
 describe('crowdless slice', () => {
   describe('actions', () => {

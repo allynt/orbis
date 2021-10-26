@@ -3,6 +3,7 @@ import React from 'react';
 import { BitmapLayer } from '@deck.gl/layers';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { act, renderHook as tlRenderHook } from '@testing-library/react-hooks';
+import fetch from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 
@@ -15,6 +16,8 @@ import {
 import { useSatellitesLayers } from './useSatellitesLayers';
 
 const mockStore = configureMockStore();
+
+fetch.enableMocks();
 
 /**
  * @param {import('./satellites.slice').SatellitesState

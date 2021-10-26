@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { OrbsClient } from './OrbsClient';
 
+fetch.enableMocks();
+
 describe('OrbsClient', () => {
   /** @type {OrbsClient} */
   let client;

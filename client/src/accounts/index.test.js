@@ -1,5 +1,7 @@
 import React from 'react';
 
+import fetchMock from 'jest-fetch-mock';
+
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import {
@@ -46,6 +48,8 @@ const setup = (initialEntries = [''], state) => {
   });
 };
 
+fetchMock.enableMocks();
+
 describe('Accounts index', () => {
   it(`Shows journey selection when route is ${REGISTER}`, async () => {
     setup([REGISTER]);
@@ -65,7 +69,7 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${registerCustomer.name} when submitted`, async () => {
-      fetch.mockResponse(JSON.stringify({}));
+      fetchMock.mockResponse(JSON.stringify({}));
       const { store } = setup([REGISTER_CUSTOMER]);
 
       userEvent.type(
@@ -153,7 +157,7 @@ describe('Accounts index', () => {
     it.each([LOGIN, CONFIRM_EMAIL])(
       `Shows LoginForm when route is %s`,
       async path => {
-        fetch.once(JSON.stringify({}));
+        fetchMock.once(JSON.stringify({}));
         setup([path]);
 
         await waitFor(() =>
@@ -234,7 +238,7 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${resetPasswordRequest.fulfilled.type} action when submitted`, async () => {
-      fetch.once(JSON.stringify({}));
+      fetchMock.once(JSON.stringify({}));
       const { store } = setup([PASSWORD_RESET_REQUEST]);
 
       userEvent.type(screen.getByRole('textbox'), 'test@test.com');
@@ -262,7 +266,7 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches the ${resetPasswordConfirm.fulfilled.type} action when filled out correctly`, async () => {
-      fetch.once(JSON.stringify({}));
+      fetchMock.once(JSON.stringify({}));
       const { store } = setup([PASSWORD_RESET]);
 
       userEvent.type(

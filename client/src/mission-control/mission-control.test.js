@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { push } from 'connected-react-router';
+import fetch from 'jest-fetch-mock';
 
 import {
   render,
@@ -27,6 +28,8 @@ const defaultState = {
     currentCustomer: testCustomer,
   },
 };
+
+fetch.enableMocks();
 
 describe('MissionControl', () => {
   it('Is visible if location contains mission-control', () => {

@@ -9,6 +9,7 @@ describe('AppClient', () => {
         id: 1,
         stuff: 'things',
       };
+      fetch.enableMocks();
       fetch.once(JSON.stringify(config));
       const client = new AppClient();
       const responseConfig = await client.getConfig();
