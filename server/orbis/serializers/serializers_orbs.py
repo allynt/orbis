@@ -31,6 +31,7 @@ class OrbSerializer(serializers.ModelSerializer):
             "terms_document",
             "features",
             "licence_cost",
+            "can_purchase",
         )
 
     logo = serializers.SerializerMethodField(method_name="get_logo_b64")

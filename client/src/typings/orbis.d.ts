@@ -82,6 +82,7 @@ type Orb = {
   images: string[];
   features?: FeatureKey[];
   terms_document?: string;
+  can_purchase?: boolean;
 };
 
 type SourceCategories = {

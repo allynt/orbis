@@ -279,6 +279,10 @@ class Orb(models.Model):
         default=False,
         help_text="Licences to exclusive Orbs are automatically removed when licences to other orbs are assigned; they cannot co-exist."
     )
+    can_purchase = models.BooleanField(
+        default=True,
+        help_text="Only Licences to purchasable Orbs can be ordered."
+    )
 
     features = models.JSONField(
         blank=True,

@@ -59,10 +59,17 @@ class OrderItemSerializer(serializers.ModelSerializer):
         return order_item
 
     def validate(self, data):
+        orb = data["orb"]
+        if not orb.can_purchase:
+            raise serializers.ValidationError(
+                f"Licences cannot be ordered for orb '{orb}'."
+            )
+            
         if "expiration" in data and "subscription_period" in data:
             raise serializers.ValidationError(
                 "'expiration' or 'subscription_period' can be provided, but not both."
             )
+            
         return data
 
 

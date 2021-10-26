@@ -5,8 +5,20 @@ import { render, screen, userEvent } from 'test/test-utils';
 import { OrbDetails } from './orb-details.component';
 
 const orbs = [
-  { id: 1, name: 'Orb 1 Name', description: 'Orb 1 Description', images: [''] },
-  { id: 2, name: 'Orb 2 Name', description: 'Orb 2 Description', images: [''] },
+  {
+    id: 1,
+    name: 'Orb 1 Name',
+    description: 'Orb 1 Description',
+    images: [''],
+    can_purchase: true,
+  },
+  {
+    id: 2,
+    name: 'Orb 2 Name',
+    description: 'Orb 2 Description',
+    images: [''],
+    can_purchase: true,
+  },
 ];
 
 describe('<OrbDetails />', () => {
@@ -70,5 +82,38 @@ describe('<OrbDetails />', () => {
     userEvent.click(screen.getByRole('link', { name: /get access/i }));
     expect(history.location.pathname).toContain('/checkout');
     expect(history.location.search).toBe('?orbId=1&users=5');
+  });
+
+  it('Hides the access link if the orb cannot be purchased', () => {
+    const unpurchaseableOrbs = orbs.map(object => ({
+      ...object,
+      can_purchase: false,
+    }));
+
+    render(
+      <OrbDetails orbs={unpurchaseableOrbs} match={{ params: { orbId: 1 } }} />,
+    );
+
+    expect(
+      screen.queryByRole('button', { name: /get access/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('Shows the mailto link if the orb cannot be purchased', () => {
+    const unpurchaseableOrbs = orbs.map(object => ({
+      ...object,
+      can_purchase: false,
+    }));
+
+    render(
+      <OrbDetails
+        orbs={unpurchaseableOrbs}
+        match={{ params: { orbId: '1' } }}
+      />,
+    );
+
+    expect(
+      screen.getByRole('link', { name: 'sales@astrosat.net' }),
+    ).toBeInTheDocument();
   });
 });
