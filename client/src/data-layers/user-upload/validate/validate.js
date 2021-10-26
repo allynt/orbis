@@ -19,11 +19,8 @@ function notEmpty(array) {
  * @param {{}[]} parsedCsv
  */
 function validateCsv(parsedCsv) {
-  const headers = Object.keys(parsedCsv[0]).map(v => v.toLowerCase());
-  if (
-    intersection(headers, ['latitude', 'lat', 'longitude', 'lon', 'long'])
-      .length !== 2
-  )
+  const headers = Object.keys(parsedCsv[0]);
+  if (intersection(headers, ['latitude', 'longitude']).length !== 2)
     throw Error('incorrectHeaders');
 }
 
