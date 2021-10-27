@@ -5,7 +5,7 @@ const ERROR_MAP = {
    */
   get(message) {
     for (const key in this) {
-      if (message.includes(key)) {
+      if (message.toLowerCase().includes(key.toLowerCase())) {
         return this[key];
       }
     }
@@ -27,7 +27,11 @@ const ERROR_MAP = {
   incorrectHeaders: 'Must include latitude and longitude headers',
 };
 ERROR_MAP.register(
-  ['No valid loader found', 'arrayBuffer is not a function'],
+  [
+    'No valid loader found',
+    'arrayBuffer is not a function',
+    'the source image could not be decoded',
+  ],
   'invalidFormat',
 );
 ERROR_MAP.register(
