@@ -1,8 +1,6 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { get } from 'lodash';
 
-import { getValueForTimestamp } from 'utils/data';
-
 import {
   otherSelector,
   timestampSelector,
@@ -11,16 +9,6 @@ import {
 } from '../layers.slice';
 
 export const COLOR_PRIMARY = [246, 190, 0, 255];
-
-export const getValue = (feature, selectedProperty, selectedTimestamp) => {
-  const value = selectedProperty.timeseries
-    ? getValueForTimestamp(
-        feature.properties[selectedProperty.name],
-        selectedTimestamp ?? selectedProperty.timeseries_latest_timestamp,
-      )
-    : get(feature.properties, selectedProperty.name);
-  return value;
-};
 
 const configuration = ({ id, activeSources, orbState, authToken }) => {
   const source = activeSources?.find(source => source.source_id === id);
