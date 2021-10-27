@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   success: {},
 }));
 
-const Dropzone = ({ onChange, value, error }) => {
+const Dropzone = ({ onChange, value, error, onClear }) => {
   const styles = useStyles();
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: acceptedFiles => onChange(acceptedFiles[0]),
@@ -121,7 +121,7 @@ const Dropzone = ({ onChange, value, error }) => {
           })}
           size="small"
           disabled={!value}
-          // onClick={handleButtonClick}
+          onClick={onClear}
         >
           {!!value && !error ? <CheckCircleIcon /> : <CancelIcon />}
         </IconButton>
@@ -144,18 +144,24 @@ const schema = yup.object({
 });
 
 export const Form = () => {
-  const { register, handleSubmit, control, errors } = useForm({
+  const { register, handleSubmit, control, errors, setValue } = useForm({
     defaultValues: { file: null, name: '', description: '' },
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+
+  const handleFileClear = () => {
+    setValue('file', null, { shouldValidate: false, shouldDirty: false });
+  };
 
   return (
     <FormWrapper noValidate onSubmit={handleSubmit(console.log)}>
       <Controller
         name="file"
         control={control}
-        render={props => <Dropzone error={errors.file} {...props} />}
+        render={props => (
+          <Dropzone error={errors.file} onClear={handleFileClear} {...props} />
+        )}
       />
       <TextField
         id="name"
