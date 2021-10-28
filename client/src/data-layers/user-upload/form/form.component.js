@@ -34,6 +34,12 @@ const schema = yup.object({
   }),
 });
 
+/**
+ * @param {{
+ *  onBackClick: React.MouseEventHandler<HTMLButtonElement>,
+ *  onSubmit: (values:{file: File, name: string, description?: string}) => void
+ * }} props
+ */
 export const Form = ({ onBackClick, onSubmit }) => {
   const { register, handleSubmit, control, errors, setValue } = useForm({
     defaultValues: { file: null, name: '', description: '' },
@@ -46,7 +52,6 @@ export const Form = ({ onBackClick, onSubmit }) => {
   };
 
   const handleFormSubmit = handleSubmit(values => {
-    console.log(values);
     onSubmit(values);
   });
 

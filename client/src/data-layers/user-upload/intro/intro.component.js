@@ -25,6 +25,11 @@ const Wrapper = styled('div')(({ theme }) => ({
   },
 }));
 
+/**
+ * @param {{
+ *  onNextClick: React.MouseEventHandler<HTMLButtonElement>
+ * }} props
+ */
 const Intro = ({ onNextClick }) => (
   <Wrapper>
     <CsvIcon />

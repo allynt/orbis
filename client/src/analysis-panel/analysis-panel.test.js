@@ -47,7 +47,7 @@ describe('<AnalysisPanel />', () => {
         timeout: 10000,
       },
     );
-  });
+  }, 10000);
 
   it('sets the clickedFeatures to undefined if close is clicked', async () => {
     const { store } = setup({

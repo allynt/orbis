@@ -67,12 +67,12 @@ const Dropzone = ({ onChange, value, error, onClear }) => {
 
   return (
     <>
-      <FileDrop {...getRootProps()}>
+      <FileDrop {...getRootProps({ 'data-testid': 'dropzone' })}>
         <input
-          id="file-input"
-          aria-labelledby="browse-link"
-          type="file"
-          {...getInputProps()}
+          {...getInputProps({
+            id: 'file-input',
+            'aria-labelledby': 'browse-link',
+          })}
         />
         <Typography variant="h1" component="div" gutterBottom>
           Drop the file here or{' '}
@@ -99,6 +99,7 @@ const Dropzone = ({ onChange, value, error, onClear }) => {
           variant="h3"
           component="p"
           color={error ? 'error' : 'inherit'}
+          data-testid="file-error-message"
         >
           {error ? error.message : value ? value.name : 'No file available'}
         </Typography>
@@ -110,6 +111,7 @@ const Dropzone = ({ onChange, value, error, onClear }) => {
           size="small"
           disabled={!value}
           onClick={onClear}
+          aria-label="Clear file"
         >
           {!!value && !error ? <CheckCircleIcon /> : <CancelIcon />}
         </IconButton>
