@@ -1,7 +1,7 @@
 import validate from './validate';
 
 describe('validate', () => {
-  it('Returns falsy if the file is valid', async () => {
+  it('Returns true if the file is valid', async () => {
     const testFile = new File(
       [`latitude,longitude\nvalue1,value2`],
       'test.csv',
@@ -12,7 +12,7 @@ describe('validate', () => {
 
     const result = await validate(testFile);
 
-    expect(result).toBeFalsy();
+    expect(result).toBe(true);
   });
 
   it('returns error message if file is wrong format', async () => {

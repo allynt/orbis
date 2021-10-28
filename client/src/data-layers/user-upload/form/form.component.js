@@ -29,6 +29,7 @@ const schema = yup.object({
   name: yup.string().required('Please enter a name'),
   description: yup.string(),
   file: yup.mixed().test({
+    // Files are validated here
     async test(value) {
       const result = await validate(value);
       if (typeof result === 'string')

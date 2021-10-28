@@ -10,6 +10,19 @@ import { Success } from './success/success.component';
 
 const Stages = { intro: 'intro', form: 'form', success: 'success' };
 
+/**
+ * This handles the whole User Upload journey
+ *
+ * `onSubmit` in `Form` is called with the uploaded file, name, and description.
+ * The form also validates the file using `validate` hooked into `yup` hooked into `react-hook-form`.
+ *
+ * The file is parsed for validation but the parsed result will need to be used for conversion to GeoJson
+ * I was going to look into a way of spitting that parsed file out of the validation but didn't get round to it
+ *
+ * @param {{
+ *   onComplete: React.MouseEventHandler<HTMLButtonElement>
+ * }} props
+ */
 const UserUpload = ({ onComplete }) => {
   const [stage, setStage] = useState(Stages.intro);
   const fadeTransitionProps = useFadeTransitionProps(stage);
