@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography, styled } from '@astrosat/astrosat-ui';
+import { Typography, styled, Button } from '@astrosat/astrosat-ui';
 
 import { ReactComponent as CsvIcon } from './csv.svg';
 import { ReactComponent as MapIcon } from './map.svg';
@@ -9,7 +9,7 @@ const Wrapper = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: theme.spacing(2, '25%'),
-  maxWidth: '31.25rem',
+  justifyItems: 'center',
   textAlign: 'center',
   [theme.breakpoints.down('xs')]: {
     gap: theme.spacing(2),
@@ -17,12 +17,15 @@ const Wrapper = styled('div')(({ theme }) => ({
   '& svg': {
     padding: theme.spacing(2),
   },
-  '& .MuiTypography-root': {
+  '& .MuiTypography-root, & .MuiButton-root': {
     gridColumn: '1/-1',
+  },
+  '& .MuiButton-root': {
+    width: 'fit-content',
   },
 }));
 
-export const Intro = () => (
+const Intro = ({ onNextClick }) => (
   <Wrapper>
     <CsvIcon />
     <MapIcon />
@@ -37,5 +40,8 @@ export const Intro = () => (
       180 degrees, inclusive. Latitude ranges between -90 and 90 degrees,
       inclusive.
     </Typography>
+    <Button onClick={onNextClick}>Next</Button>
   </Wrapper>
 );
+
+export { Intro };

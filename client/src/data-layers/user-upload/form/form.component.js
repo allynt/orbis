@@ -15,6 +15,12 @@ const FormWrapper = styled('form')(({ theme }) => ({
   rowGap: theme.spacing(2),
 }));
 
+const Buttons = styled('div')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: theme.spacing(2),
+}));
+
 const schema = yup.object({
   name: yup.string().required('Please enter a name'),
   description: yup.string(),
@@ -28,7 +34,7 @@ const schema = yup.object({
   }),
 });
 
-export const Form = () => {
+export const Form = ({ onBackClick, onSubmit }) => {
   const { register, handleSubmit, control, errors, setValue } = useForm({
     defaultValues: { file: null, name: '', description: '' },
     resolver: yupResolver(schema),
@@ -39,8 +45,13 @@ export const Form = () => {
     setValue('file', null, { shouldValidate: false, shouldDirty: false });
   };
 
+  const handleFormSubmit = handleSubmit(values => {
+    console.log(values);
+    onSubmit(values);
+  });
+
   return (
-    <FormWrapper noValidate onSubmit={handleSubmit(console.log)}>
+    <FormWrapper noValidate onSubmit={handleFormSubmit}>
       <Controller
         name="file"
         control={control}
@@ -63,7 +74,12 @@ export const Form = () => {
         label="Add a Description for Your Data"
         inputRef={register}
       />
-      <Button type="submit">Upload</Button>
+      <Buttons>
+        <Button color="secondary" onClick={onBackClick}>
+          Back
+        </Button>
+        <Button type="submit">Upload</Button>
+      </Buttons>
     </FormWrapper>
   );
 };
