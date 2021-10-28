@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Typography, styled, Button } from '@astrosat/astrosat-ui';
 
+import { Dots } from '../dots.component';
 import { ReactComponent as CsvIcon } from './csv.svg';
 import { ReactComponent as MapIcon } from './map.svg';
 
@@ -17,7 +18,7 @@ const Wrapper = styled('div')(({ theme }) => ({
   '& svg': {
     padding: theme.spacing(2),
   },
-  '& .MuiTypography-root, & .MuiButton-root': {
+  '& .MuiTypography-root, & .MuiButton-root, & .dots': {
     gridColumn: '1/-1',
   },
   '& .MuiButton-root': {
@@ -45,6 +46,7 @@ const Intro = ({ onNextClick }) => (
       180 degrees, inclusive. Latitude ranges between -90 and 90 degrees,
       inclusive.
     </Typography>
+    <Dots className="dots" />
     <Button onClick={onNextClick}>Next</Button>
   </Wrapper>
 );

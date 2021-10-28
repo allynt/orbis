@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
+import { Dots } from '../dots.component';
 import validate from '../validate/validate';
 import { Dropzone } from './dropzone.component';
 
@@ -13,6 +14,9 @@ const FormWrapper = styled('form')(({ theme }) => ({
   display: 'grid',
   gridAutoFlow: 'row',
   rowGap: theme.spacing(2),
+  '& .dots': {
+    justifySelf: 'center',
+  },
 }));
 
 const Buttons = styled('div')(({ theme }) => ({
@@ -79,6 +83,7 @@ export const Form = ({ onBackClick, onSubmit }) => {
         label="Add a Description for Your Data"
         inputRef={register}
       />
+      <Dots className="dots" activeIndex={1} />
       <Buttons>
         <Button color="secondary" onClick={onBackClick}>
           Back
