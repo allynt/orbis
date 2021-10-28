@@ -60,7 +60,7 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     data,
     extensions: [new DataFilterExtension({ filterSize: 3 })],
     getFilterValue,
-    filterRange: [[dateRange], [0, 1], [0, 1]],
+    filterRange: [[dateRange], [1, 1], [1, 1]],
     updateTriggers: {
       getFilterValue: [filterRange],
     },
