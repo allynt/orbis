@@ -55,15 +55,15 @@ describe('<PldSidebarComponent />', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('heading', { name: /date range/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('textbox', { name: /start date/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('textbox', { name: /end date/i }),
-    ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole('heading', { name: /date range/i }),
+    // ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole('textbox', { name: /start date/i }),
+    // ).toBeInTheDocument();
+    // expect(
+    //   screen.getByRole('textbox', { name: /end date/i }),
+    // ).toBeInTheDocument();
 
     expect(
       screen.getByRole('heading', { name: /construction phase/i }),

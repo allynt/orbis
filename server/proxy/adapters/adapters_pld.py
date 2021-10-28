@@ -1,7 +1,10 @@
 """
 Uses the api at: https://planningdata.london.gov.uk/api-guest/applications/_search
 """
+from datetime import datetime
 from .adapters_base import BaseProxyDataAdapter
+
+DATE_FORMAT = "%d/%M/%Y"
 
 ICONS = [
     ("New Build", "new-build"),
@@ -50,6 +53,7 @@ class PldAdapter(BaseProxyDataAdapter):
                     "Development Type": source["development_type"],
                     "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
                     "icon": f"{icon_id}-{source['status'].lower()}",
+                    "decision_date": datetime.strptime(source["decision_date"], DATE_FORMAT).isoformat(),
                 }
             })
 

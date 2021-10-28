@@ -6,30 +6,27 @@ import { render, screen, userEvent } from 'test/test-utils';
 
 import { CheckboxFilters } from './checkbox-filters.component';
 
-const LAYER = {
-    source_id: 'test/layer/1',
+const FILTERS = [
+  {
+    value: 'Picnic site',
+    label: 'Picnic site',
+    icon: 'PicnicSite',
   },
-  FILTERS = [
-    {
-      value: 'Picnic site',
-      label: 'Picnic site',
-      icon: 'PicnicSite',
-    },
-    {
-      value: 'Place of Worship',
-      label: 'Place of Worship',
-      icon: 'PlaceOfWorship',
-    },
-    {
-      value: 'Food bank',
-      label: 'Food Bank',
-      icon: 'FoodBank',
-    },
-  ];
+  {
+    value: 'Place of Worship',
+    label: 'Place of Worship',
+    icon: 'PlaceOfWorship',
+  },
+  {
+    value: 'Food bank',
+    label: 'Food Bank',
+    icon: 'FoodBank',
+  },
+];
 
 describe('<CheckboxFilters />', () => {
   it('Shows checkboxes for each value in the filters prop', () => {
-    render(<CheckboxFilters selectedLayer={LAYER} filters={FILTERS} />);
+    render(<CheckboxFilters filters={FILTERS} />);
 
     FILTERS.forEach(({ label }) =>
       expect(screen.getByRole('checkbox', { name: label })).toBeInTheDocument(),
@@ -38,10 +35,7 @@ describe('<CheckboxFilters />', () => {
 
   it('Uses value if label is undefined', () => {
     render(
-      <CheckboxFilters
-        selectedLayer={LAYER}
-        filters={FILTERS.map(({ label, ...rest }) => rest)}
-      />,
+      <CheckboxFilters filters={FILTERS.map(({ label, ...rest }) => rest)} />,
     );
 
     FILTERS.forEach(({ value }) =>
@@ -50,7 +44,7 @@ describe('<CheckboxFilters />', () => {
   });
 
   it('Shows all checkboxes as checked if the state is undefined', () => {
-    render(<CheckboxFilters selectedLayer={LAYER} filters={FILTERS} />);
+    render(<CheckboxFilters filters={FILTERS} />);
 
     FILTERS.forEach(({ label }) =>
       expect(screen.getByRole('checkbox', { name: label })).toBeChecked(),
@@ -58,19 +52,12 @@ describe('<CheckboxFilters />', () => {
   });
 
   it('Shows a checkbox unchecked if that value is filtered', () => {
-    const state = {
-      orbs: {
-        layers: {
-          [LAYER.source_id]: {
-            filterValue: [FILTERS[1].value, FILTERS[2].value],
-          },
-        },
-      },
-    };
-
-    render(<CheckboxFilters selectedLayer={LAYER} filters={FILTERS} />, {
-      state,
-    });
+    render(
+      <CheckboxFilters
+        filters={FILTERS}
+        filterValue={[FILTERS[1].value, FILTERS[2].value]}
+      />,
+    );
 
     expect(
       screen.getByRole('checkbox', { name: FILTERS[1].label }),
@@ -78,79 +65,32 @@ describe('<CheckboxFilters />', () => {
   });
 
   it(`Dispatches ${setFilterValue.type} with the unchecked value when filterValue is undefined in state`, () => {
-    const dispatch = jest.fn();
-    render(
-      <CheckboxFilters
-        selectedLayer={LAYER}
-        filters={FILTERS}
-        dispatch={dispatch}
-      />,
-    );
+    const onChange = jest.fn();
+    render(<CheckboxFilters filters={FILTERS} onChange={onChange} />);
 
     userEvent.click(screen.getByRole('checkbox', { name: FILTERS[0].label }));
-    expect(dispatch).toHaveBeenCalledWith(
-      setFilterValue({
-        key: LAYER.source_id,
-        filterValue: [FILTERS[0].value],
-      }),
+    expect(onChange).toHaveBeenCalledWith(
+      [FILTERS[0].value],
+      FILTERS[0].value,
+      true,
     );
   });
 
   it(`Dispatches ${setFilterValue.type} action with all the checked checkboxes when one is checked`, () => {
-    const dispatch = jest.fn();
-    const state = {
-      orbs: {
-        layers: {
-          [LAYER.source_id]: {
-            filterValue: [FILTERS[1].value, FILTERS[2].value],
-          },
-        },
-      },
-    };
-
+    const onChange = jest.fn();
     render(
       <CheckboxFilters
-        selectedLayer={LAYER}
         filters={FILTERS}
-        dispatch={dispatch}
+        filterValue={[FILTERS[1].value, FILTERS[2].value]}
+        onChange={onChange}
       />,
-      { state },
     );
 
     userEvent.click(screen.getByRole('checkbox', { name: FILTERS[0].label }));
-    expect(dispatch).toHaveBeenCalledWith(
-      setFilterValue({
-        key: LAYER.source_id,
-        filterValue: expect.arrayContaining(FILTERS.map(f => f.value)),
-      }),
-    );
-  });
-
-  it(`Dispatches ${setFilterValue.type} action with checked checkboxes when some are removed from state`, () => {
-    const dispatch = jest.fn();
-    const state = {
-      orbs: {
-        layers: {
-          [LAYER.source_id]: { filterValue: FILTERS.map(f => f.value) },
-        },
-      },
-    };
-
-    render(
-      <CheckboxFilters
-        selectedLayer={LAYER}
-        filters={FILTERS}
-        dispatch={dispatch}
-      />,
-      { state },
-    );
-
-    userEvent.click(screen.getByRole('checkbox', { name: FILTERS[1].label }));
-    expect(dispatch).toHaveBeenCalledWith(
-      setFilterValue({
-        key: LAYER.source_id,
-        filterValue: [FILTERS[0].value, FILTERS[2].value],
-      }),
+    expect(onChange).toHaveBeenCalledWith(
+      expect.arrayContaining(FILTERS.map(f => f.value)),
+      FILTERS[0].value,
+      true,
     );
   });
 });
