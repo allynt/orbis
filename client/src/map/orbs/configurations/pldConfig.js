@@ -1,4 +1,6 @@
 import { FlyToInterpolator } from '@deck.gl/core';
+import { DataFilterExtension } from '@deck.gl/extensions';
+import { sub } from 'date-fns';
 
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
@@ -12,46 +14,21 @@ import iconAtlas from './pldConfig.iconAtlas.svg';
 import iconMapping from './pldConfig.iconMapping.json';
 
 const configuration = ({ id, orbState, dispatch, setViewState }) => {
-  const filterValue = filterValueSelector(id)(orbState);
+  const filterRange = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
 
-  const getFeatures = ({ data, filters }) => {
-    const { startDate, endDate, checkboxFilters } = filters;
+  const getFilterValue = ({ properties }) => {
+    const date = new Date(properties.decision_date).getTime();
 
-    // no data or filtering params, return original data
-    if (!data || (!checkboxFilters?.length && !startDate && !endDate)) {
-      return data;
-    }
+    const status = Number(
+      !filterRange?.constructionPhase?.includes(properties?.Status),
+    );
 
-    let newFeatures = data.features;
+    const phase = Number(
+      !filterRange?.developmentType?.includes(properties?.['Development Type']),
+    );
 
-    // filter by date range
-    if (!!startDate && !!endDate) {
-      newFeatures = newFeatures.filter(f => {
-        const submissionDateTimestamp = new Date(f.properties.decision_date);
-        return (
-          submissionDateTimestamp >= startDate.getTime() &&
-          submissionDateTimestamp <= endDate.getTime()
-        );
-      });
-    }
-
-    // filter by checkbox filters
-    if (!!checkboxFilters) {
-      newFeatures = newFeatures.filter(({ properties }) => {
-        const developmentType = properties['Development Type'];
-        const status = properties['Status'];
-        return (
-          !checkboxFilters.includes(developmentType) &&
-          !checkboxFilters.includes(status)
-        );
-      });
-    }
-
-    return {
-      ...data,
-      features: newFeatures,
-    };
+    return [date, status, phase];
   };
 
   const onClick = info => {
@@ -73,16 +50,20 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     }
   };
 
-  const filters = {
-    checkboxFilters: filterValue?.checkboxFilters,
-    startDate:
-      filterValue?.range?.startDate && new Date(filterValue?.range.startDate),
-    endDate:
-      filterValue?.range?.endDate && new Date(filterValue?.range.endDate),
-  };
+  const dateRange = [
+    new Date(filterRange?.dateRange?.startDate).getTime() ||
+      sub(Date.now(), { years: 10 }).getTime(),
+    new Date(filterRange?.dateRange?.endDate).getTime() || Date.now(),
+  ];
 
   return {
-    data: getFeatures({ data, filters }),
+    data,
+    extensions: [new DataFilterExtension({ filterSize: 3 })],
+    getFilterValue,
+    filterRange: [[dateRange], [0, 1], [0, 1]],
+    updateTriggers: {
+      getFilterValue: [filterRange],
+    },
     pointType: 'icon',
     iconAtlas,
     iconMapping,

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
+import { sub } from 'date-fns';
 import { useSelector } from 'react-redux';
 
 import { CheckboxFilters } from 'map/orbs/components/checkbox-filters/checkbox-filters.component';
@@ -31,10 +32,17 @@ export const PldSidebarComponent = ({
   const handleChange = filter => newFilterValue =>
     dispatch(
       setFilterValue({
-        ...filterValue,
-        [filter]: newFilterValue,
+        key: selectedLayer?.source_id,
+        filterValue: { ...filterValue, [filter]: newFilterValue },
       }),
     );
+
+  const { startDate, endDate } = filterValue?.dateRange || {};
+
+  const dateRange = {
+    startDate: startDate || sub(Date.now(), { years: 10 }).toISOString(),
+    endDate: endDate || new Date().toISOString(),
+  };
 
   return (
     <Grid className={styles.wrapper} container direction="column" spacing={2}>
@@ -43,14 +51,14 @@ export const PldSidebarComponent = ({
         <DateRangeFilter
           maxDate="today"
           onSubmit={handleChange('dateRange')}
-          range={filterValue['dataRange']}
+          range={dateRange}
         />
       </Grid>
       <Grid item>
         <Typography variant="h4">Construction Phase</Typography>
         <CheckboxFilters
           onChange={handleChange('constructionPhase')}
-          filterValue={filterValue['constructionPhase']}
+          filterValue={filterValue?.constructionPhase}
           filters={constructionPhaseFilters}
         />
       </Grid>
@@ -58,7 +66,7 @@ export const PldSidebarComponent = ({
         <Typography variant="h4">Development Type</Typography>
         <CheckboxFilters
           onChange={handleChange('developmentType')}
-          filterValue={filterValue['developmentType']}
+          filterValue={filterValue?.developmentType}
           filters={developmentTypeFilters}
           color={color}
           iconColor={iconColor}
