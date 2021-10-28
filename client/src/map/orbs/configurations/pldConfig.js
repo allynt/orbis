@@ -18,7 +18,7 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
   const data = dataSelector(id)(orbState);
 
   const getFilterValue = ({ properties }) => {
-    const date = new Date(properties.decision_date).getTime();
+    // const date = new Date(properties.decision_date).getTime();
 
     const status = Number(
       !filterRange?.constructionPhase?.includes(properties?.Status),
@@ -28,7 +28,7 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
       !filterRange?.developmentType?.includes(properties?.['Development Type']),
     );
 
-    return [date, status, phase];
+    return [status, phase];
   };
 
   const onClick = info => {
@@ -50,17 +50,20 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     }
   };
 
-  const dateRange = [
-    new Date(filterRange?.dateRange?.startDate).getTime() ||
-      sub(Date.now(), { years: 10 }).getTime(),
-    new Date(filterRange?.dateRange?.endDate).getTime() || Date.now(),
-  ];
+  // const dateRange = [
+  //   new Date(filterRange?.dateRange?.startDate).getTime() ||
+  //     sub(Date.now(), { years: 10 }).getTime(),
+  //   new Date(filterRange?.dateRange?.endDate).getTime() || Date.now(),
+  // ];
 
   return {
     data,
-    extensions: [new DataFilterExtension({ filterSize: 3 })],
+    extensions: [new DataFilterExtension({ filterSize: 2 })],
     getFilterValue,
-    filterRange: [[dateRange], [1, 1], [1, 1]],
+    filterRange: [
+      [1, 1],
+      [1, 1],
+    ],
     updateTriggers: {
       getFilterValue: [filterRange],
     },

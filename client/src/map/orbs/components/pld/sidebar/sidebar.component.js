@@ -37,23 +37,23 @@ export const PldSidebarComponent = ({
       }),
     );
 
-  const { startDate, endDate } = filterValue?.dateRange || {};
+  // const { startDate, endDate } = filterValue?.dateRange || {};
 
-  const dateRange = {
-    startDate: startDate || sub(Date.now(), { years: 10 }).toISOString(),
-    endDate: endDate || new Date().toISOString(),
-  };
+  // const dateRange = {
+  //   startDate: startDate || sub(Date.now(), { years: 10 }).toISOString(),
+  //   endDate: endDate || new Date().toISOString(),
+  // };
 
   return (
     <Grid className={styles.wrapper} container direction="column" spacing={2}>
-      <Grid item>
+      {/* <Grid item>
         <Typography variant="h4">Date Range</Typography>
         <DateRangeFilter
           maxDate="today"
           onSubmit={handleChange('dateRange')}
           range={dateRange}
         />
-      </Grid>
+      </Grid> */}
       <Grid item>
         <Typography variant="h4">Construction Phase</Typography>
         <CheckboxFilters
