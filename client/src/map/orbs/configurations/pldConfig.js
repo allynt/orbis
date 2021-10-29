@@ -10,8 +10,16 @@ import {
   filterValueSelector,
   dataSelector,
 } from '../layers.slice';
-import iconAtlas from './pldConfig.iconAtlas.svg';
-import iconMapping from './pldConfig.iconMapping.json';
+
+const PIN_COLORS = {
+  allowed: [170, 0, 0, 255],
+  approved: [117, 183, 178, 255],
+  commenced: [245, 36, 85, 255],
+  completed: [138, 234, 115, 255],
+  lapsed: [0, 0, 0, 255],
+  'pending legacy record': [85, 0, 255, 255],
+  superseded: [0, 85, 255, 255],
+};
 
 const configuration = ({ id, orbState, dispatch, setViewState }) => {
   const filterRange = filterValueSelector(id)(orbState);
@@ -50,11 +58,14 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     }
   };
 
-  // const dateRange = [
-  //   new Date(filterRange?.dateRange?.startDate).getTime() ||
-  //     sub(Date.now(), { years: 10 }).getTime(),
-  //   new Date(filterRange?.dateRange?.endDate).getTime() || Date.now(),
-  // ];
+  const getPinColor = feature => {
+    let color = null;
+    if (!feature.properties['cluster']) {
+      color = PIN_COLORS[feature.properties['Status'].toLowerCase()];
+    }
+
+    return color;
+  };
 
   return {
     data,
@@ -68,8 +79,7 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
       getFilterValue: [filterRange],
     },
     pointType: 'icon',
-    iconAtlas,
-    iconMapping,
+    getPinColor,
     getIconSize: 60,
     pickable: true,
     onClick,

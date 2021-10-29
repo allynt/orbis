@@ -462,5 +462,37 @@
     "height": 24,
     "anchorY": 17,
     "mask": true
+  },
+  "change-of-use": {
+    "x": 822,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
+  },
+  "conversion": {
+    "x": 846,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
+  },
+  "extension": {
+    "x": 875,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
+  },
+  "new-build": {
+    "x": 900,
+    "y": 0,
+    "width": 24,
+    "height": 24,
+    "anchorY": 17,
+    "mask": true
   }
 }
