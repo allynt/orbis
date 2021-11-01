@@ -1,20 +1,13 @@
 import * as React from 'react';
 
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { Grid, Typography } from '@astrosat/astrosat-ui';
 
-import { sub } from 'date-fns';
+import { subYears } from 'date-fns';
 import { useSelector } from 'react-redux';
 
 import { CheckboxFilters } from 'map/orbs/components/checkbox-filters/checkbox-filters.component';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
-
-const useStyles = makeStyles(() => ({
-  wrapper: {
-    height: '100%',
-    width: '100%',
-  },
-}));
 
 export const PldSidebarComponent = ({
   selectedLayer,
@@ -24,7 +17,6 @@ export const PldSidebarComponent = ({
   developmentTypeFilters,
   iconColor,
 }) => {
-  const styles = useStyles();
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
@@ -37,23 +29,23 @@ export const PldSidebarComponent = ({
       }),
     );
 
-  // const { startDate, endDate } = filterValue?.dateRange || {};
+  const { startDate, endDate } = filterValue?.dateRange || {};
 
-  // const dateRange = {
-  //   startDate: startDate || sub(Date.now(), { years: 10 }).toISOString(),
-  //   endDate: endDate || new Date().toISOString(),
-  // };
+  const dateRange = {
+    startDate: startDate || subYears(new Date(2020, 2, 26), 1).toISOString(),
+    endDate: endDate || new Date(2020, 2, 26).toISOString(),
+  };
 
   return (
-    <Grid className={styles.wrapper} container direction="column" spacing={2}>
-      {/* <Grid item>
+    <Grid container direction="column" spacing={2}>
+      <Grid item>
         <Typography variant="h4">Date Range</Typography>
         <DateRangeFilter
           maxDate="today"
           onSubmit={handleChange('dateRange')}
           range={dateRange}
         />
-      </Grid> */}
+      </Grid>
       <Grid item>
         <Typography variant="h4">Construction Phase</Typography>
         <CheckboxFilters
