@@ -22,8 +22,8 @@ const PIN_COLORS = {
 };
 
 const defaultDateRange = {
-  startDate: subYears(new Date(), 10).toISOString(),
-  endDate: new Date().toISOString(),
+  startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
+  endDate: new Date(2020, 2, 26).toISOString(),
 };
 
 const configuration = ({ id, orbState, dispatch, setViewState }) => {

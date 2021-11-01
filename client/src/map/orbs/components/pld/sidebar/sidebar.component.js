@@ -32,8 +32,8 @@ export const PldSidebarComponent = ({
   const { startDate, endDate } = filterValue?.dateRange || {};
 
   const dateRange = {
-    startDate: startDate || subYears(Date.now(), 10).toISOString(),
-    endDate: endDate || new Date().toISOString(),
+    startDate: startDate || subYears(new Date(2020, 2, 26), 1).toISOString(),
+    endDate: endDate || new Date(2020, 2, 26).toISOString(),
   };
 
   return (
