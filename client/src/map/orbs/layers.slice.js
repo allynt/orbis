@@ -170,7 +170,11 @@ const layersSlice = createSlice({
       if (!payload) return;
       const { layersToBeRemoved } = payload;
       layersToBeRemoved.forEach(
-        key => (state[key].clickedFeatures = undefined),
+        key =>
+          (state[key] = {
+            ...state[key],
+            clickedFeatures: undefined,
+          }),
       );
     },
     /** @type {SetHoveredFeaturesAction} */
