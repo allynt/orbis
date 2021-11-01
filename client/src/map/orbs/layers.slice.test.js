@@ -337,10 +337,7 @@ describe('layers slice', () => {
           },
         };
 
-        const result = reducer(
-          state,
-          clearLayerFeatures({ layersToBeRemoved: payload }),
-        );
+        const result = reducer(state, clearLayerFeatures(payload));
 
         expect(result).toEqual(expected);
       });

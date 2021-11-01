@@ -54,9 +54,10 @@ export const SHARED_STATE_KEY = 'shared';
  */
 
 /**
- * @typedef {GenericOrbAction<{
- *   layersToBeRemoved: string[]
- * }>} ClearLayerFeaturesAction
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<import('typings').Source['source_id'][]>
+ * >} ClearLayerFeaturesAction
  */
 
 /**
@@ -168,8 +169,7 @@ const layersSlice = createSlice({
     /** @type {ClearLayerFeaturesAction} */
     clearLayerFeatures: (state, { payload }) => {
       if (!payload) return;
-      const { layersToBeRemoved } = payload;
-      layersToBeRemoved.forEach(
+      payload.forEach(
         key =>
           (state[key] = {
             ...state[key],

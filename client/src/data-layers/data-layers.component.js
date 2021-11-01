@@ -69,7 +69,7 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
 
     dispatch(setLayers(sources));
     if (layersToBeRemoved.length) {
-      dispatch(clearLayerFeatures({ layersToBeRemoved }));
+      dispatch(clearLayerFeatures(layersToBeRemoved));
     }
     toggle(false);
   };
