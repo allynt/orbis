@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   Button,
+  Link,
   makeStyles,
   MenuItem,
   Select,
@@ -12,7 +13,7 @@ import {
 
 import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { Wrapper } from '../../../shared-components/wrapper.component';
 
@@ -101,7 +102,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
 
   if (!orb) return null;
 
-  const { images, name, description } = orb;
+  const { images, name, description, can_purchase } = orb;
 
   return (
     <Wrapper className={styles.wrapper}>
@@ -124,27 +125,40 @@ export const OrbDetails = ({ orbs, history, match }) => {
         {name}
       </Typography>
       <Typography className={styles.description}>{description}</Typography>
-      <div className={styles.selectWrapper}>
-        <Typography>How many Users do you need?</Typography>
-        <Select
-          fullWidth={!smUp}
-          value={numberOfUsers}
-          // @ts-ignore
-          onChange={event => setNumberOfUsers(event.target.value)}
-          inputProps={{ 'aria-label': 'Number of Users' }}
-        >
-          {selectOptions}
-        </Select>
-      </div>
-      <Link
-        className={styles.link}
-        to={`${match.url?.replace(
-          `/${orbId}`,
-          '',
-        )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
-      >
-        <Button>Get Access</Button>
-      </Link>
+      {can_purchase ? (
+        <>
+          <div className={styles.selectWrapper}>
+            <Typography>How many Users do you need?</Typography>
+            <Select
+              fullWidth={!smUp}
+              value={numberOfUsers}
+              // @ts-ignore
+              onChange={event => setNumberOfUsers(event.target.value)}
+              inputProps={{ 'aria-label': 'Number of Users' }}
+            >
+              {selectOptions}
+            </Select>
+          </div>
+          <RouterLink
+            className={styles.link}
+            to={`${match.url?.replace(
+              `/${orbId}`,
+              '',
+            )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
+          >
+            <Button>Get Access</Button>
+          </RouterLink>
+        </>
+      ) : (
+        <div>
+          This orb cannot currently be purchased via the application. If you are
+          interested in accessing its data, please contact &nbsp;
+          <Link className={styles.link} href="mailto:sales@astrosat.net">
+            sales@astrosat.net
+          </Link>
+          .
+        </div>
+      )}
     </Wrapper>
   );
 };

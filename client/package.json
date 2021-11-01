@@ -1,6 +1,6 @@
 {
   "name": "orbis",
-  "version": "2.26.0",
+  "version": "2.27.0",
   "private": true,
   "types": "./src/typings",
   "scripts": {
@@ -23,7 +23,7 @@
     "chromatic": "chromatic --project-token ee7d59d7c137"
   },
   "dependencies": {
-    "@astrosat/astrosat-ui": "^2.5.3",
+    "@astrosat/astrosat-ui": "^2.7.0",
     "@deck.gl/aggregation-layers": "^8.4.10",
     "@deck.gl/core": "^8.3.6",
     "@deck.gl/extensions": "^8.3.6",

@@ -38,10 +38,14 @@ django-storages = "*"
 djangorestframework = "*"
 # API for GIS
 djangorestframework-gis = "*"
+# API authentication
+djangorestframework-simplejwt = "*"
 # dynamic API
 drf-flex-fields = "*"
 # API documentation
 drf-yasg2 = "*"
+# convert json to pandas-compatible stuff
+flatten-json = "~=0.1"
 # GIS data processing
 geopandas = "*"
 # MapBox SDK
@@ -54,9 +58,10 @@ pypdf3 = "*"
 psycopg2-binary = "*"
 # data tokens
 pyjwt = "*"
-djangorestframework-simplejwt = "*"
 # task broker
 redis = "*"
+# proxying requests...
+pysocks = "*"
 # sentinel data
 sentinelsat = "*"
 # more pdf reports
@@ -65,7 +70,6 @@ xhtml2pdf = "*"
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
 dat-utils = {editable = true,git = "https://github.com/astrosat/dat-utils.git",ref = "master"}
-flatten-json = "~=0.1"
 
 [dev-packages]
 # coverage reports for GitHub, GitLab, etc.

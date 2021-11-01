@@ -64,7 +64,7 @@ export const SelectedPropertyControls = ({
     {selectedProperty.type === 'discrete' ? (
       // @ts-ignore
       <ColorLegend categories={selectedProperty.categories} />
-    ) : (
+    ) : selectedProperty.disableRangeFilter === true ? null : (
       <Sliders
         clipRange={clipRange}
         filterRange={filterRange}

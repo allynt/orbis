@@ -164,6 +164,8 @@ class OrbFactory(factory.django.DjangoModelFactory):
     is_active = True
     is_default = False
     is_hidden = False
+    is_exclusive = False
+    can_purchase = True
     licence_cost = FactoryFaker("pyfloat", min_value=1.0, max_value=10.0)
     name = factory.LazyAttributeSequence(lambda o, n: f"orb-{n}")
 

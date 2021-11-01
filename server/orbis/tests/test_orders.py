@@ -398,3 +398,34 @@ class TestOrderViews:
         assert status.is_success(response.status_code)
 
         assert terms_document in user.documents.all()
+
+    def test_cannot_create_order_to_unpurchaseable_orb(
+        self, user, api_client, mock_storage
+    ):
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, type="MANAGER", status="ACTIVE")
+
+        orb = OrbFactory(can_purchase=False)
+
+        order_type = OrderTypeFactory()
+        order_data = {
+            "order_type": order_type.name,
+            "items": [{
+                "orb": orb.name,
+                "n_licences": 10,
+            }]
+        }
+
+        client = api_client(user)
+        url = reverse("orders-list", args=[customer.id])
+        response = client.post(url, order_data, format="json")
+        assert status.is_client_error(response.status_code)
+
+        content = response.json()
+
+        assert content["items"] == [{
+            drf_settings.NON_FIELD_ERRORS_KEY: [
+                f"Licences cannot be ordered for orb '{orb}'."
+            ]
+        }]
