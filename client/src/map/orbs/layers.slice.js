@@ -159,7 +159,7 @@ const layersSlice = createSlice({
         clickedFeatures: newFeatures.length ? newFeatures : undefined,
       };
     },
-    removeAllLayerFeatures: (state, { payload }) => {
+    clearLayerFeatures: (state, { payload }) => {
       if (!payload) return;
       payload.forEach(key => (state[key] = undefined));
     },
@@ -214,7 +214,7 @@ const layersSlice = createSlice({
 export const {
   addClickedFeatures,
   removeClickedFeatures,
-  removeAllLayerFeatures,
+  clearLayerFeatures,
   setClickedFeatures,
   setData,
   setExtrusionScale,
