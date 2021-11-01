@@ -68,7 +68,9 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
     const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
 
     dispatch(setLayers(sources));
-    dispatch(clearLayerFeatures(layersToBeRemoved));
+    if (layersToBeRemoved.length) {
+      dispatch(clearLayerFeatures({ layersToBeRemoved }));
+    }
     toggle(false);
   };
 

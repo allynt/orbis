@@ -55,6 +55,12 @@ export const SHARED_STATE_KEY = 'shared';
 
 /**
  * @typedef {GenericOrbAction<{
+ *   layersToBeRemoved: string[]
+ * }>} ClearLayerFeaturesAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
  *     hoveredFeatures?: GeoJsonFeature[]
  *   }>} SetHoveredFeaturesAction
  */
@@ -159,9 +165,13 @@ const layersSlice = createSlice({
         clickedFeatures: newFeatures.length ? newFeatures : undefined,
       };
     },
+    /** @type {ClearLayerFeaturesAction} */
     clearLayerFeatures: (state, { payload }) => {
       if (!payload) return;
-      payload.forEach(key => (state[key] = undefined));
+      const { layersToBeRemoved } = payload;
+      layersToBeRemoved.forEach(
+        key => (state[key].clickedFeatures = undefined),
+      );
     },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
