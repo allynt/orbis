@@ -1,6 +1,6 @@
 import { FlyToInterpolator } from '@deck.gl/core';
-import { DataFilterExtension } from '@deck.gl/extensions';
-import { sub } from 'date-fns';
+import { subYears } from 'date-fns';
+import { filter } from 'lodash';
 
 import { MAX_ZOOM } from 'map/map.constants';
 import { easeInOutCubic } from 'utils/easingFunctions';
@@ -21,22 +21,47 @@ const PIN_COLORS = {
   superseded: [0, 85, 255, 255],
 };
 
+const defaultDateRange = {
+  startDate: subYears(new Date(), 10).toISOString(),
+  endDate: new Date().toISOString(),
+};
+
 const configuration = ({ id, orbState, dispatch, setViewState }) => {
   const filterRange = filterValueSelector(id)(orbState);
-  const data = dataSelector(id)(orbState);
+  const rawData = dataSelector(id)(orbState);
 
-  const getFilterValue = ({ properties }) => {
-    // const date = new Date(properties.decision_date).getTime();
+  const {
+    constructionPhase: constructionPhaseFilter,
+    developmentType: developmentTypeFilter,
+  } = filterRange ?? {};
+  const dateRangeFilter = filterRange?.dateRange ?? defaultDateRange;
+  const filteredData = {
+    ...rawData,
+    features: filter(rawData?.features, feature => {
+      if (
+        dateRangeFilter.startDate &&
+        feature.properties.decision_date < dateRangeFilter.startDate
+      )
+        return false;
 
-    const status = Number(
-      !filterRange?.constructionPhase?.includes(properties?.Status),
-    );
+      if (
+        dateRangeFilter.endDate &&
+        feature.properties.decision_date > dateRangeFilter.endDate
+      )
+        return false;
 
-    const phase = Number(
-      !filterRange?.developmentType?.includes(properties?.['Development Type']),
-    );
+      if (constructionPhaseFilter?.includes(feature.properties?.Status))
+        return false;
 
-    return [status, phase];
+      if (
+        developmentTypeFilter?.includes(
+          feature.properties?.['Development Type'],
+        )
+      )
+        return false;
+
+      return true;
+    }),
   };
 
   const onClick = info => {
@@ -68,19 +93,9 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
   };
 
   return {
-    data,
-    extensions: [new DataFilterExtension({ filterSize: 2 })],
-    getFilterValue,
-    filterRange: [
-      [1, 1],
-      [1, 1],
-    ],
-    updateTriggers: {
-      getFilterValue: [filterRange],
-    },
+    data: filteredData,
     pointType: 'icon',
     getPinColor,
-    getIconSize: 60,
     pickable: true,
     onClick,
   };
