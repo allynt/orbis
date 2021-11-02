@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button, Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  CloseIcon,
+  Grid,
+  makeStyles,
+  Typography,
+  IconButton,
+} from '@astrosat/astrosat-ui';
 
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { createStaticRanges } from 'react-date-range';
@@ -17,7 +24,9 @@ import { StyledDateRangePicker } from './styled-date-range-picker.component';
 const useStyles = makeStyles(theme => ({
   container: {
     maxWidth: theme.typography.pxToRem(890),
+    position: 'relative',
   },
+  closeButton: { position: 'absolute', right: 0, top: 0 },
 }));
 
 const staticRanges = createStaticRanges([
@@ -58,6 +67,7 @@ const staticRanges = createStaticRanges([
 /**
  * @param {{
  *  onApply: (range: DateRange<Date>) => void
+ *  onClose: () => void
  *  minDate?: Date
  *  maxDate?: Date
  *  initialRange?: DateRange<Date>
@@ -65,6 +75,7 @@ const staticRanges = createStaticRanges([
  */
 export const DateRangePicker = ({
   onApply,
+  onClose,
   minDate,
   maxDate,
   initialRange = {
@@ -92,6 +103,9 @@ export const DateRangePicker = ({
       spacing={1}
       alignItems="center"
     >
+      <IconButton className={styles.closeButton} size="small" onClick={onClose}>
+        <CloseIcon fontSize="inherit" titleAccess="Close date picker" />
+      </IconButton>
       <Grid item xs>
         <StyledDateRangePicker
           minDate={minDate}

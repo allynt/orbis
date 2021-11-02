@@ -157,6 +157,7 @@ export const DateRangeFilter = ({
           minDate={minDate && new Date(minDate)}
           maxDate={maxDate && new Date(maxDate)}
           onApply={handleDateRangePickerApply}
+          onClose={() => setPickerOpen(false)}
           initialRange={dateRepresentation}
         />
       }
