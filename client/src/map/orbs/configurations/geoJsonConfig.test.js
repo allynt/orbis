@@ -1,20 +1,28 @@
-import geoJsonLayer from './geoJsonConfig.js';
+import { hexToRgbArray } from 'utils/color';
 
-describe('geoJsonLayer', () => {
-  const id = 'test-id',
-    orbState = {
-      layers: { [id]: { data: 'test-data', visible: 'test-visible' } },
-    };
-  let result;
+import geoJsonLayer, { DEFAULT_LINE_COLOR } from './geoJsonConfig.js';
 
-  beforeEach(() => {
-    result = geoJsonLayer({ id, orbState });
+const setup = ({ orbState = undefined } = {}) =>
+  geoJsonLayer({
+    id: 'test/layer',
+    orbState: {
+      ...orbState,
+      layers: {
+        ...orbState?.layers,
+        'test/layer': {
+          ...orbState?.layers?.['test/layer'],
+          data: 'data/url',
+        },
+      },
+    },
+    filled: true,
+    stroked: true,
+    lineColor: '#00ff00',
+    filledColor: 'black',
+    highlightColor: 'yellow',
   });
-  it('Returns a config using data from state', () => {
-    expect(result.data).toBe(orbState.layers[id].data);
-  });
-
-  it('Returns a config using visible from state', () => {
-    expect(result.visible).toBe(orbState.layers[id].visible);
-  });
+it('test line color', () => {
+  const result = setup();
+  const lineColor = result.getLineColor();
+  expect(lineColor).toEqual(DEFAULT_LINE_COLOR);
 });
