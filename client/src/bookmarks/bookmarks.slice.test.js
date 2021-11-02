@@ -17,6 +17,8 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
+fetch.enableMocks();
+
 describe('Bookmark Slice', () => {
   describe('Bookmark Actions', () => {
     let store = null;

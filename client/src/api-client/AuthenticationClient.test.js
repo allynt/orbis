@@ -2,6 +2,8 @@ import fetch from 'jest-fetch-mock';
 
 import { AuthenticationClient } from './AuthenticationClient';
 
+fetch.enableMocks();
+
 describe('AuthenticationClient', () => {
   /** @type {AuthenticationClient} */
   let client;

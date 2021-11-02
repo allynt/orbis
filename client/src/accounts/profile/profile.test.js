@@ -1,6 +1,8 @@
 // @ts-nocheck
 import React from 'react';
 
+import fetchMock from 'jest-fetch-mock';
+
 import { logout, updateUser } from 'accounts/accounts.slice';
 import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
@@ -13,6 +15,8 @@ const state = {
   },
 };
 
+fetchMock.enableMocks();
+
 describe('<Profile />', () => {
   it('dispatches the logout action when logout is clicked', () => {
     const { store } = render(<Profile />, { state });
@@ -23,7 +27,7 @@ describe('<Profile />', () => {
   });
 
   it('dispatches the updateUser action when the user is updated', async () => {
-    fetch.once(JSON.stringify({}));
+    fetchMock.once(JSON.stringify({}));
     const { store } = render(<Profile />, { state });
     userEvent.type(screen.getByRole('textbox', { name: /name/i }), 'John');
     userEvent.click(screen.getByRole('button', { name: /update\saccount/i }));

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import fetchMock from 'jest-fetch-mock';
+
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 import { FIELD_NAMES } from 'utils/validators';
 
@@ -119,8 +121,9 @@ describe('Register Form Component', () => {
   });
 
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
+    fetchMock.enableMocks();
     const registerUser = jest.fn();
-    fetch.mockResponse(JSON.stringify({}, { status: 200 }));
+    fetchMock.mockResponse(JSON.stringify({}, { status: 200 }));
 
     render(<RegisterForm {...testAppConfig} registerUser={registerUser} />);
 

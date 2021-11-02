@@ -9,6 +9,8 @@ import ActionForHelpMapComponent from './ActionForHelpMapComponent';
 
 jest.mock('react-map-gl', () => ({ Popup: ({ children }) => <>{children}</> }));
 
+fetch.enableMocks();
+
 const sourceId = 'test/layer';
 const feature = {
   id: '123',

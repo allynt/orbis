@@ -11,6 +11,8 @@ import { Store } from './store.component';
 
 const orbs = new Array(5).fill().map((_, i) => ({ id: i, name: `Orb ${i}` }));
 
+fetchMock.enableMocks();
+
 const setup = ({ state = { data: { orbs } }, pathname = '' } = {}) => {
   const path = '/mission-control/store';
   return render(

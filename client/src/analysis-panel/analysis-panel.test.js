@@ -29,26 +29,6 @@ describe('<AnalysisPanel />', () => {
     expect(screen.queryByText(/test/i)).not.toBeInTheDocument();
   });
 
-  it('hides the panel when the minimize button is clicked', async () => {
-    setup({
-      property: {
-        name: 'test',
-        source_id,
-        application: { orbis: { data_visualisation_components: [] } },
-      },
-      clickedFeatures: [{ object: { id: '123', properties: { test: 1 } } }],
-    });
-
-    expect(screen.getByText('Data Analysis')).toBeVisible();
-    userEvent.click(screen.getByRole('button', { name: 'minimize' }));
-    await waitFor(
-      () => expect(screen.getByText('Data Analysis')).not.toBeVisible(),
-      {
-        timeout: 10000,
-      },
-    );
-  });
-
   it('sets the clickedFeatures to undefined if close is clicked', async () => {
     const { store } = setup({
       property: {

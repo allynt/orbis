@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render as rtlRender } from '@testing-library/react';
+import { render as rtlRender, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
@@ -34,6 +34,24 @@ function render(ui, { state = {}, history: historyOptions, ...options } = {}) {
   return { ...utils, history, store };
 }
 
+function fireFileDropEvent(node, file) {
+  const event = new Event('drop', { bubbles: true });
+  const files = [file];
+  const data = {
+    dataTransfer: {
+      files,
+      items: files.map(file => ({
+        kind: 'file',
+        type: file.type,
+        getAsFile: () => file,
+      })),
+      types: ['Files'],
+    },
+  };
+  Object.assign(event, data);
+  fireEvent(node, event);
+}
+
 export * from '@testing-library/react';
 export { default as userEvent } from '@testing-library/user-event';
-export { render };
+export { render, fireFileDropEvent };
