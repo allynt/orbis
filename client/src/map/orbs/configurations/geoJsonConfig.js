@@ -25,8 +25,8 @@ const geoJsonConfiguration = ({
   id,
   authToken,
   orbState,
-  filled,
-  stroked,
+  filled = true,
+  stroked = true,
   lineColor = DEFAULT_LINE_COLOR,
   filledColor = DEFAULT_FILLED_COLOR,
   highlightColor = DEFAULT_HIGHLIGHT_COLOR,
@@ -39,8 +39,7 @@ const geoJsonConfiguration = ({
   const newFilledColor = hexToRgbArray(filledColor);
   const newHighLightColor = hexToRgbArray(highlightColor);
 
-  const getFillColor = () =>
-    filled || filled === undefined ? newFilledColor : newFilledColor.concat(0);
+  const getFillColor = () => (filled ? newFilledColor : null);
 
   const getLineColor = () =>
     stroked || stroked === undefined ? newLineColor : undefined;
