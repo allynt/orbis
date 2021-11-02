@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Fade,
@@ -82,6 +82,7 @@ export const DateRangeFilter = ({
     },
     resolver: yupResolver(schema),
   });
+
   /** @type {[DateRange<Date> | undefined, React.Dispatch<DateRange<Date>>]} */
   const [dateRepresentation, setDateRepresentation] = useState(
     range ? stringDateRangeToDateRange(range) : undefined,
@@ -122,6 +123,14 @@ export const DateRangeFilter = ({
     setValue(FIELD_NAMES.endDate, undefined);
     onSubmitProp({ startDate: undefined, endDate: undefined });
   };
+
+  useEffect(() => {
+    if (range) {
+      setValue(FIELD_NAMES.startDate, range.startDate);
+      setValue(FIELD_NAMES.endDate, range.endDate);
+      setDateRepresentation(stringDateRangeToDateRange(range));
+    }
+  }, [range, setValue]);
 
   return (
     <Tooltip
