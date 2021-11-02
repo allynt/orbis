@@ -126,9 +126,22 @@ export const DateRangeFilter = ({
 
   useEffect(() => {
     if (range) {
-      setValue(FIELD_NAMES.startDate, range.startDate);
-      setValue(FIELD_NAMES.endDate, range.endDate);
-      setDateRepresentation(stringDateRangeToDateRange(range));
+      const dateRange = stringDateRangeToDateRange(range);
+      setValue(
+        FIELD_NAMES.startDate,
+        formatDate(dateRange[FIELD_NAMES.startDate]),
+        {
+          shouldValidate: true,
+        },
+      );
+      setValue(
+        FIELD_NAMES.endDate,
+        formatDate(dateRange[FIELD_NAMES.endDate]),
+        {
+          shouldValidate: true,
+        },
+      );
+      setDateRepresentation(dateRange);
     }
   }, [range, setValue]);
 
