@@ -54,6 +54,13 @@ export const SHARED_STATE_KEY = 'shared';
  */
 
 /**
+ * @typedef {import('@reduxjs/toolkit').CaseReducer<
+ *   LayersState,
+ *   import('@reduxjs/toolkit').PayloadAction<import('typings').Source['source_id'][]>
+ * >} ClearLayerFeaturesAction
+ */
+
+/**
  * @typedef {GenericOrbAction<{
  *     hoveredFeatures?: GeoJsonFeature[]
  *   }>} SetHoveredFeaturesAction
@@ -159,6 +166,17 @@ const layersSlice = createSlice({
         clickedFeatures: newFeatures.length ? newFeatures : undefined,
       };
     },
+    /** @type {ClearLayerFeaturesAction} */
+    clearLayerFeatures: (state, { payload }) => {
+      if (!payload) return;
+      payload.forEach(
+        key =>
+          (state[key] = {
+            ...state[key],
+            clickedFeatures: undefined,
+          }),
+      );
+    },
     /** @type {SetHoveredFeaturesAction} */
     setHoveredFeatures: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
@@ -210,6 +228,7 @@ const layersSlice = createSlice({
 export const {
   addClickedFeatures,
   removeClickedFeatures,
+  clearLayerFeatures,
   setClickedFeatures,
   setData,
   setExtrusionScale,

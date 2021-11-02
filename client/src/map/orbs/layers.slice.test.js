@@ -11,6 +11,7 @@ import reducer, {
   setClickedFeatures,
   addClickedFeatures,
   removeClickedFeatures,
+  clearLayerFeatures,
   setExtrusionScale,
   setFilterValue,
   setHoveredFeatures,
@@ -305,6 +306,40 @@ describe('layers slice', () => {
         expect(result).toEqual(
           expect.objectContaining({ [key]: { clickedFeatures: undefined } }),
         );
+      });
+    });
+
+    describe('clearLayerFeatures', () => {
+      it('clears all features from payload sources', () => {
+        const state = {
+          'test-layer-1': {
+            clickedFeatures: [{ name: 'test-feature-1' }],
+          },
+          'test-layer-2': {
+            clickedFeatures: [{ name: 'test-feature-2' }],
+          },
+          'test-layer-3': {
+            clickedFeatures: [{ name: 'test-feature-3' }],
+          },
+        };
+
+        const payload = ['test-layer-1', 'test-layer-3'];
+
+        const expected = {
+          'test-layer-1': {
+            clickedFeatures: undefined,
+          },
+          'test-layer-2': {
+            clickedFeatures: [{ name: 'test-feature-2' }],
+          },
+          'test-layer-3': {
+            clickedFeatures: undefined,
+          },
+        };
+
+        const result = reducer(state, clearLayerFeatures(payload));
+
+        expect(result).toEqual(expected);
       });
     });
 
