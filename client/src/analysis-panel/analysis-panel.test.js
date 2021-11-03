@@ -41,17 +41,16 @@ describe('<AnalysisPanel />', () => {
       ],
     });
 
+    userEvent.click(screen.getByRole('button', { name: 'Close' }));
     await waitFor(() =>
-      userEvent.click(screen.getByRole('button', { name: 'Close' })),
-    );
-
-    expect(store.getActions()).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          type: setClickedFeatures.type,
-          payload: { key: source_id, clickedFeatures: undefined },
-        }),
-      ]),
+      expect(store.getActions()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: setClickedFeatures.type,
+            payload: { key: source_id, clickedFeatures: undefined },
+          }),
+        ]),
+      ),
     );
   });
 
