@@ -1,3 +1,42 @@
+# [2.28.0](https://github.com/astrosat/orbis/compare/v2.27.0...v2.28.0) (2021-11-03)
+
+
+### Bug Fixes
+
+* **backend:** Change the icon returned ([762be30](https://github.com/astrosat/orbis/commit/762be30531fc466d6b29cd0c7a3a2865330e732a))
+* **devops:** Append `-api` or `-app` to hostname ([a3ed030](https://github.com/astrosat/orbis/commit/a3ed03011c5620965a184d356818489614cfd2f5))
+* **devops:** Remove commented out code ([d81871a](https://github.com/astrosat/orbis/commit/d81871a557f4fae1a69cd33519fcf56297c0a796))
+* **devops:** Remove unnecessary terraform provider ([828d20a](https://github.com/astrosat/orbis/commit/828d20adae4292ce5558c29666774f8122fb50d5))
+* **devops:** Set Github token so app can clone deploy repo ([8347053](https://github.com/astrosat/orbis/commit/834705304442c2e13f26e116c552ced91edc241f))
+* **devops:** Update reference to tagged version ([35f9829](https://github.com/astrosat/orbis/commit/35f9829a7a70c60c3e105e3a18b628ae043f3df0))
+* **devops:** Use re-usable deployment module ([b63df03](https://github.com/astrosat/orbis/commit/b63df03c66c5ea907dc2961d252478b0db09fecc))
+* **frontend:** Add date to adapter ([77b36cc](https://github.com/astrosat/orbis/commit/77b36cc26ad493997fb272b64f04be42bf535bde))
+* **frontend:** Add tests, types, tidy logic ([28ef046](https://github.com/astrosat/orbis/commit/28ef046a79397e66d326e874e00b6dd188372ddd))
+* **frontend:** Clean up branch, remove logs ([af6bb7a](https://github.com/astrosat/orbis/commit/af6bb7af844955b46b469956c78546f79fc08625))
+* **frontend:** Comment out date range tests ([463fe47](https://github.com/astrosat/orbis/commit/463fe47f6bc6f8c7b3dd289fd2a86f3894e00dc2))
+* **frontend:** Delete test suite, remove date range features ([0ee287d](https://github.com/astrosat/orbis/commit/0ee287d090e618d99a7c02bcf1c885d3fcceebfe))
+* **frontend:** Do not display sliders if metadata says so ([9f47d2c](https://github.com/astrosat/orbis/commit/9f47d2c606cd02a806cf89cf1acdfe1f2f425d09))
+* **frontend:** Filter checkbox logic, stories, tests ([e59837e](https://github.com/astrosat/orbis/commit/e59837e62708b7d0011ac6662714bf757daf3610))
+* **frontend:** Get filtering working, update components ([ed2826e](https://github.com/astrosat/orbis/commit/ed2826ed866adf7235940abdac5f1a11a1999c29))
+* **frontend:** Initial solution ([2ae8c33](https://github.com/astrosat/orbis/commit/2ae8c33362b85ebd9b66e725c26fbbb950255aa5))
+* **frontend:** Make checkbox filters a connected component ([1c380fb](https://github.com/astrosat/orbis/commit/1c380fb6b192812f1029a59792cfe0bddfa39340))
+* **frontend:** Remove unnecessary code ([1428667](https://github.com/astrosat/orbis/commit/1428667074004a70947114e7e6aa525d9e0d9df0))
+* **frontend:** Restore tools.local.example, accidental delete ([f7b2535](https://github.com/astrosat/orbis/commit/f7b2535e9cab928557e59df285654be690f8398f))
+* **frontend:** Update checkboxes to use same data type as date range ([7d19441](https://github.com/astrosat/orbis/commit/7d1944107fc0adfd6d6d5f29b3401c272c68385b))
+* **frontend:** Update Python adapter ([eeca0d3](https://github.com/astrosat/orbis/commit/eeca0d38f3664af2a8ea47d14b3b9ef4486f2e1d))
+* **frontend:** Update sidebar component and config ([ac47a56](https://github.com/astrosat/orbis/commit/ac47a562a5ed77361b4c9cc94d8e210ee74663f5))
+* **frontend:** Update slice action ([d3084ff](https://github.com/astrosat/orbis/commit/d3084ffaffc7778756e202865cbbb58909915cbc))
+* **frontend:** Update tests, fix filterRange ([7abd337](https://github.com/astrosat/orbis/commit/7abd3374d5243eff8f5c29d4bfd7ae4d5a378e9b))
+* **frontend:** Update tests, update components ([0c3651c](https://github.com/astrosat/orbis/commit/0c3651cf8d4486bd98af32fc42130c2200ad071f))
+* **frontend:** Update types, revert to array from object ([417d1bc](https://github.com/astrosat/orbis/commit/417d1bc70333f9b764cab4a2270c3054ef314e7e))
+
+
+### Features
+
+* **backend:** added the ability to proxy requests using socks5 ([#1394](https://github.com/astrosat/orbis/issues/1394)) ([bd65651](https://github.com/astrosat/orbis/commit/bd65651aa3865ec38c194337ed5726dcae557ebe))
+* **frontend:** Add WFC Vector Timeseries handling ([f5c8746](https://github.com/astrosat/orbis/commit/f5c87463dc9dbb63d8e0be44cd7f8e610084b19a))
+* **frontend:** Use Pin layer for PLD ([44dbd67](https://github.com/astrosat/orbis/commit/44dbd67f97ed9823dd78cd221dd2b5d0feadb8de))
+
 # [2.27.0](https://github.com/astrosat/orbis/compare/v2.26.0...v2.27.0) (2021-10-20)
 
 
