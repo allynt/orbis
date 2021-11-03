@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Fade,
@@ -82,6 +82,7 @@ export const DateRangeFilter = ({
     },
     resolver: yupResolver(schema),
   });
+
   /** @type {[DateRange<Date> | undefined, React.Dispatch<DateRange<Date>>]} */
   const [dateRepresentation, setDateRepresentation] = useState(
     range ? stringDateRangeToDateRange(range) : undefined,
@@ -123,6 +124,27 @@ export const DateRangeFilter = ({
     onSubmitProp({ startDate: undefined, endDate: undefined });
   };
 
+  useEffect(() => {
+    if (range) {
+      const dateRange = stringDateRangeToDateRange(range);
+      setValue(
+        FIELD_NAMES.startDate,
+        formatDate(dateRange[FIELD_NAMES.startDate]),
+        {
+          shouldValidate: true,
+        },
+      );
+      setValue(
+        FIELD_NAMES.endDate,
+        formatDate(dateRange[FIELD_NAMES.endDate]),
+        {
+          shouldValidate: true,
+        },
+      );
+      setDateRepresentation(dateRange);
+    }
+  }, [range, setValue]);
+
   return (
     <Tooltip
       classes={{
@@ -148,6 +170,7 @@ export const DateRangeFilter = ({
           minDate={minDate && new Date(minDate)}
           maxDate={maxDate && new Date(maxDate)}
           onApply={handleDateRangePickerApply}
+          onClose={() => setPickerOpen(false)}
           initialRange={dateRepresentation}
         />
       }

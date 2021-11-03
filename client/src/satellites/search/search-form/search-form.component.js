@@ -211,6 +211,7 @@ const SearchForm = ({
                 : new Date(),
             }}
             onApply={handleDateRangePickerApply}
+            onClose={() => setPickerOpen(false)}
           />
         }
       >

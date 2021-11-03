@@ -9,6 +9,11 @@ import { CheckboxFilters } from 'map/orbs/components/checkbox-filters/checkbox-f
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
 
+const DEFAULT_DATE_RANGE = {
+  startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
+  endDate: new Date(2020, 2, 26).toISOString(),
+};
+
 export const PldSidebarComponent = ({
   selectedLayer,
   dispatch,
@@ -25,15 +30,23 @@ export const PldSidebarComponent = ({
     dispatch(
       setFilterValue({
         key: selectedLayer?.source_id,
-        filterValue: { ...filterValue, [filter]: newFilterValue },
+        filterValue: {
+          ...filterValue,
+          [filter]:
+            filter === 'dateRange' &&
+            newFilterValue.startDate == null &&
+            newFilterValue.endDate == null
+              ? DEFAULT_DATE_RANGE
+              : newFilterValue,
+        },
       }),
     );
 
   const { startDate, endDate } = filterValue?.dateRange || {};
 
   const dateRange = {
-    startDate: startDate || subYears(new Date(2020, 2, 26), 1).toISOString(),
-    endDate: endDate || new Date(2020, 2, 26).toISOString(),
+    startDate: startDate || DEFAULT_DATE_RANGE.startDate,
+    endDate: endDate || DEFAULT_DATE_RANGE.endDate,
   };
 
   return (
