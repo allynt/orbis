@@ -4,13 +4,14 @@ import { Box } from '@astrosat/astrosat-ui';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import Accounts from 'accounts';
 import apiClient from 'api-client';
 import { ErrorFallback, LoadMaskFallback } from 'components';
 import LandingView from 'landing/landing.component';
+import { MissionControl } from 'mission-control/mission-control.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
@@ -25,7 +26,15 @@ const MapLayout = React.lazy(() =>
   import(/* webpackChunkName: "MapLayout" */ 'map'),
 );
 
+// const MissionControl = React.lazy(() =>
+//   import(
+//     /* webpackChunkName: "MissionControl" */ 'mission-control/mission-control.component'
+//   ),
+// );
+
 const App = () => {
+  /** @type {import('history').Location<{backgroundLocation?: import('history').Location}>} */
+  const location = useLocation();
   const dispatch = useDispatch();
   const userTrackingInterval = useSelector(userTrackingIntervalSelector);
   const fetchUserRequestStatus = useSelector(
@@ -61,24 +70,33 @@ const App = () => {
 
   if (fetchUserRequestStatus === 'pending') return <LoadMaskFallback />;
 
+  console.log(location);
+
   return (
     <Box width="100vw" height="100vh">
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <ReactTooltip />
         <React.Suspense fallback={<LoadMaskFallback />}>
-          <Switch>
+          <Switch location={location.state?.backgroundLocation || location}>
             <PrivateRoute exact path="/" user={user} component={LandingView} />
             <Route path="/accounts" component={Accounts} />
-            <PrivateRoute
-              path={['/map', '/mission-control']}
-              user={user}
-              component={MapLayout}
-            />
+            <PrivateRoute path="/map" user={user} component={MapLayout} />
           </Switch>
+          {location.state?.backgroundLocation && (
+            <Switch>
+              <Route path="/mission-control" component={MissionControl} />
+            </Switch>
+          )}
         </React.Suspense>
       </ErrorBoundary>
     </Box>
   );
 };
+
+/* 
+<React.Suspense fallback={<LoadMaskFallback zIndex={4} />}>
+  {location.pathname.includes('/mission-control') && <MissionControl />}
+</React.Suspense>
+*/
 
 export default App;

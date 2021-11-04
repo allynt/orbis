@@ -9,6 +9,8 @@ import {
   SvgIcon,
 } from '@astrosat/astrosat-ui';
 
+import { useLocation } from 'react-router-dom';
+
 import apiClient from 'api-client';
 import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
@@ -54,6 +56,7 @@ const conditionallyAddItemOrItems = (condition, itemOrItems) => {
  * @returns {ToolbarItem[]}
  */
 export const useToolbarItems = ({ dispatch }) => {
+  const location = useLocation();
   const userHasUserRole = useUserRoleAuthorization(['UserRole']);
   const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
 
@@ -131,7 +134,10 @@ export const useToolbarItems = ({ dispatch }) => {
         ),
         footer: true,
         tooltip: 'Mission Control',
-        onClick: () => history.push('/mission-control'),
+        onClick: () =>
+          history.push('/mission-control', {
+            backgroundLocation: location,
+          }),
       }),
       {
         id: 'User Guide',

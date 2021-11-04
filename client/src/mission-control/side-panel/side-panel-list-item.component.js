@@ -41,7 +41,7 @@ const SidePanelListItem = ({ view, Icon, to, selected }) => {
     <ListItem
       role="link"
       component={Link}
-      to={to}
+      to={location => ({ ...location, pathname: to })}
       replace
       classes={listItemClasses}
       selected={selected}
