@@ -141,13 +141,10 @@ export const OrbDetails = ({ orbs, history, match }) => {
           </div>
           <RouterLink
             className={styles.link}
-            to={location => ({
-              ...location,
-              pathname: `${match.url?.replace(
-                `/${orbId}`,
-                '',
-              )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`,
-            })}
+            to={`${match.url?.replace(
+              `/${orbId}`,
+              '',
+            )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
           >
             <Button>Get Access</Button>
           </RouterLink>

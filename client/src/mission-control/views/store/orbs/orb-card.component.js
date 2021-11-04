@@ -82,7 +82,7 @@ export const OrbCard = ({ orb, style }) => {
           className={styles.link}
           // @ts-ignore
           component={RouterLink}
-          to={location => ({ ...location, pathname: `${url}/${id}` })}
+          to={`${url}/${id}`}
         >
           Learn more about this Orb
         </Link>

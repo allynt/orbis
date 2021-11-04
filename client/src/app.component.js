@@ -19,6 +19,7 @@ import {
   fetchAppConfig,
   logUserTracking,
   userTrackingIntervalSelector,
+  backgroundLocationSelector,
 } from './app.slice';
 import PrivateRoute from './utils/private-route.component';
 
@@ -40,6 +41,7 @@ const App = () => {
   const fetchUserRequestStatus = useSelector(
     state => state.accounts.requests.fetchCurrentUser,
   );
+  const backgroundLocation = useSelector(backgroundLocationSelector);
 
   const user = useSelector(userSelector);
   const userKey = useSelector(userKeySelector);
@@ -77,12 +79,12 @@ const App = () => {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <ReactTooltip />
         <React.Suspense fallback={<LoadMaskFallback />}>
-          <Switch location={location.state?.backgroundLocation || location}>
+          <Switch location={backgroundLocation || location}>
             <PrivateRoute exact path="/" user={user} component={LandingView} />
             <Route path="/accounts" component={Accounts} />
             <PrivateRoute path="/map" user={user} component={MapLayout} />
           </Switch>
-          {location.state?.backgroundLocation && (
+          {backgroundLocation && (
             <Switch>
               <Route path="/mission-control" component={MissionControl} />
             </Switch>

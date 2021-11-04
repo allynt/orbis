@@ -64,12 +64,7 @@ export const Store = ({ match, location }) => {
       dispatch(fetchSources());
       // @ts-ignore
       if (result.type === placeOrder.fulfilled.type)
-        dispatch(
-          push(
-            `${url}/completion/?orbId=${orbId}&users=${users}`,
-            location.state,
-          ),
-        );
+        dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
     } catch (error) {
       console.error(error);
     }

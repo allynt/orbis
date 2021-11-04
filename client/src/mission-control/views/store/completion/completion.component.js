@@ -63,13 +63,7 @@ export const Completion = ({ orbs, location }) => {
             <Typography component="p" variant="h2" paragraph>
               Godspeed!
             </Typography>
-            <Link
-              className={styles.link}
-              to={location => ({
-                ...location,
-                pathname: '/mission-control/users',
-              })}
-            >
+            <Link className={styles.link} to={`/mission-control/users`}>
               <Button>Take me to Users</Button>
             </Link>
           </Grid>

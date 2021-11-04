@@ -19,6 +19,7 @@ import {
 } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { backgroundLocationSelector, setBackgroundLocation } from 'app.slice';
 import { ErrorFallback } from 'components';
 
 import { userSelector } from '../accounts/accounts.selectors';
@@ -74,6 +75,7 @@ export const MissionControl = React.memo(() => {
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
+  const backgroundLocation = useSelector(backgroundLocationSelector);
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
@@ -121,7 +123,8 @@ export const MissionControl = React.memo(() => {
       keepMounted={false}
       TransitionProps={{
         onExited: () => {
-          dispatch(push('/map'));
+          dispatch(push(backgroundLocation.pathname));
+          dispatch(setBackgroundLocation(null));
         },
       }}
     >
@@ -158,9 +161,7 @@ export const MissionControl = React.memo(() => {
                   />
                   <Route path={`${match.path}/storage`} component={Storage} />
                   <Route exact path="/mission-control">
-                    <Redirect
-                      to={{ ...location, pathname: `${match.path}/support` }}
-                    />
+                    <Redirect to={`${match.path}/support`} />
                   </Route>
                 </Switch>
               </ErrorBoundary>
