@@ -34,7 +34,7 @@ jobs:
   client-tests:
     name: Client-side Tests
     runs-on: ubuntu-20.04
-    timeout-minutes: 40
+    timeout-minutes: 60
     needs: check-trigger-type
     steps:
       - uses: actions/checkout@v2
