@@ -13,6 +13,8 @@ import { history } from 'root.reducer';
 const Dashboards = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const searchParams = new URLSearchParams(location.search);
+  const sourceId = searchParams.get('source_id');
 
   return (
     <Box width="100vw" height="100vh" overflow="hidden" display="flex">
@@ -31,7 +33,7 @@ const Dashboards = () => {
           />
         </SidebarBottomItems>
       </Sidebar>
-      DASHBOARD
+      {sourceId}
     </Box>
   );
 };

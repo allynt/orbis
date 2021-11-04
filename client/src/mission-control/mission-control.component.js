@@ -123,7 +123,9 @@ export const MissionControl = React.memo(() => {
       keepMounted={false}
       TransitionProps={{
         onExited: () => {
-          dispatch(push(backgroundLocation.pathname));
+          dispatch(
+            push(`${backgroundLocation.pathname}${backgroundLocation.search}`),
+          );
           dispatch(setBackgroundLocation(null));
         },
       }}
