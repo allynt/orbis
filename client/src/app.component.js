@@ -10,8 +10,8 @@ import ReactTooltip from 'react-tooltip';
 import Accounts from 'accounts';
 import apiClient from 'api-client';
 import { ErrorFallback, LoadMaskFallback } from 'components';
+import Dashboards from 'dashboards/dashboards.component';
 import LandingView from 'landing/landing.component';
-import { MissionControl } from 'mission-control/mission-control.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
@@ -27,11 +27,11 @@ const MapLayout = React.lazy(() =>
   import(/* webpackChunkName: "MapLayout" */ 'map'),
 );
 
-// const MissionControl = React.lazy(() =>
-//   import(
-//     /* webpackChunkName: "MissionControl" */ 'mission-control/mission-control.component'
-//   ),
-// );
+const MissionControl = React.lazy(() =>
+  import(
+    /* webpackChunkName: "MissionControl" */ 'mission-control/mission-control.component'
+  ),
+);
 
 const App = () => {
   /** @type {import('history').Location<{backgroundLocation?: import('history').Location}>} */
@@ -83,6 +83,11 @@ const App = () => {
             <PrivateRoute exact path="/" user={user} component={LandingView} />
             <Route path="/accounts" component={Accounts} />
             <PrivateRoute path="/map" user={user} component={MapLayout} />
+            <PrivateRoute
+              path="/dashboard"
+              user={user}
+              component={Dashboards}
+            />
           </Switch>
           {backgroundLocation && (
             <Switch>
@@ -94,11 +99,5 @@ const App = () => {
     </Box>
   );
 };
-
-/* 
-<React.Suspense fallback={<LoadMaskFallback zIndex={4} />}>
-  {location.pathname.includes('/mission-control') && <MissionControl />}
-</React.Suspense>
-*/
 
 export default App;

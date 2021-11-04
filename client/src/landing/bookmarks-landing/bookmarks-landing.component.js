@@ -9,6 +9,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { Link as RouterLink } from 'react-router-dom';
+
 import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.component';
 import { MAX_VISIBLE_BOOKMARKS } from './landing-constants';
 
@@ -82,6 +84,9 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           ))}
         </ImageList>
       </Collapse>
+      <RouterLink to="/dashboard?source_id=astrosat%2Fproxy%2Fpld%2Flatest">
+        GO DASHBOARDS
+      </RouterLink>
     </>
   );
 };
