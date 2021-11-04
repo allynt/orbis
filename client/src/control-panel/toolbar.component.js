@@ -2,31 +2,7 @@ import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
-import { useHistory } from 'react-router-dom';
-
 import { Sidebar, SidebarItem, SidebarBottomItems } from 'components/sidebar';
-
-import { ReactComponent as OrbisLogo } from '../orbis-light.svg';
-
-const useLogoStyles = makeStyles({
-  logo: {
-    height: '3rem',
-    color: '#ffffff',
-    cursor: 'pointer',
-  },
-});
-
-const Logo = React.memo(function Logo() {
-  const styles = useLogoStyles();
-  const history = useHistory();
-  return (
-    <OrbisLogo
-      title="Orbis Logo"
-      className={styles.logo}
-      onClick={() => history.push('/')}
-    />
-  );
-});
 
 const useStyles = makeStyles({
   toolbar: {
@@ -62,7 +38,7 @@ const Toolbar = ({ items, openItem }) => {
   );
 
   return (
-    <Sidebar className={styles.toolbar} logo={<Logo />}>
+    <Sidebar className={styles.toolbar}>
       {items?.filter(item => !item.footer).map(makeSidebarItem)}
       <SidebarBottomItems>
         {items?.filter(item => item.footer).map(makeSidebarItem)}
