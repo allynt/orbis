@@ -193,7 +193,7 @@ This scaffolds the message in your editor of choice, when committing code. You t
 1. Click **repo** checkbox to give full access
 1. Click **Generate token** button
 1. Save token locally, **NOTE:** you will not be able to see the value again
-1. In `.bashrc` add `export GITHUB_TOKEN='????????'`
+1. In `.bashrc` add `export GITHUB_REGISTRY_TOKEN='????????'`
 
 ### Releasing Code
 
