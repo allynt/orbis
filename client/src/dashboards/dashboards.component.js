@@ -93,4 +93,4 @@ const Dashboards = () => {
   );
 };
 
-export default Dashboards;
+export { Dashboards };

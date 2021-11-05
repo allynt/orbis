@@ -10,7 +10,6 @@ import ReactTooltip from 'react-tooltip';
 import Accounts from 'accounts';
 import apiClient from 'api-client';
 import { ErrorFallback, LoadMaskFallback } from 'components';
-import Dashboards from 'dashboards/dashboards.component';
 import LandingView from 'landing/landing.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
@@ -31,6 +30,10 @@ const MissionControl = React.lazy(() =>
   import(
     /* webpackChunkName: "MissionControl" */ 'mission-control/mission-control.component'
   ),
+);
+
+const Dashboards = React.lazy(() =>
+  import(/* webpackChunkName: "Dashboards" */ 'dashboards'),
 );
 
 const App = () => {
