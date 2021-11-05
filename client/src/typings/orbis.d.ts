@@ -194,6 +194,7 @@ type Source = {
   source_id: string;
   domain?: string;
   metadata: SourceMetadata;
+  data?: any;
 };
 
 type CategoryHierarchy = {

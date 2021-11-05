@@ -3,6 +3,7 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
+import { find } from 'lodash';
 import { NotificationManager } from 'react-notifications';
 
 import { userSelector } from 'accounts/accounts.selectors';
@@ -350,5 +351,14 @@ export const activeCategorisedSourcesSelector = (depth, ignoreMultipleOrbs) =>
     activeCategorisedOrbsAndSourcesSelector(depth, ignoreMultipleOrbs),
     orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
   );
+
+/**
+ * @param {import('typings').Source['source_id']} source_id
+ */
+export const dataSourceByIdSelector = source_id => {
+  return createSelector(baseSelector, state =>
+    find(state?.sources, { source_id }),
+  );
+};
 
 export default dataSlice.reducer;

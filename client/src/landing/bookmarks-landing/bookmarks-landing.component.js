@@ -84,7 +84,7 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           ))}
         </ImageList>
       </Collapse>
-      <RouterLink to="/dashboard?source_id=astrosat/dashboard/test/latest">
+      <RouterLink to="/dashboard?source_id=astrosat/demo/rice_vector/v3">
         GO DASHBOARDS
       </RouterLink>
     </>
