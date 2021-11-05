@@ -122,7 +122,7 @@ export const userTrackingIntervalSelector = createSelector(
 
 export const backgroundLocationSelector = createSelector(
   baseSelector,
-  state => state.backgroundLocation,
+  state => state?.backgroundLocation,
 );
 
 export default appSlice.reducer;

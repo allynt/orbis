@@ -82,6 +82,7 @@ export const MissionControl = React.memo(() => {
   const [open, setOpen] = useState(
     location.pathname.includes('/mission-control'),
   );
+  console.log(match);
 
   const styles = useStyles({});
 
@@ -124,7 +125,9 @@ export const MissionControl = React.memo(() => {
       TransitionProps={{
         onExited: () => {
           dispatch(
-            push(`${backgroundLocation.pathname}${backgroundLocation.search}`),
+            push(
+              `${backgroundLocation?.pathname}${backgroundLocation?.search}`,
+            ),
           );
           dispatch(setBackgroundLocation(null));
         },

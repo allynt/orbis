@@ -8,6 +8,7 @@ import {
   userEvent,
   screen,
   waitForElementToBeRemoved,
+  waitFor,
 } from 'test/test-utils';
 
 import { MissionControl } from './mission-control.component';
@@ -31,6 +32,11 @@ const defaultState = {
 
 fetch.enableMocks();
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useRouteMatch: () => ({ path: '/mission-control' }),
+}));
+
 describe('MissionControl', () => {
   it('Is visible if location contains mission-control', () => {
     render(<MissionControl />, {
@@ -50,9 +56,12 @@ describe('MissionControl', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('Navigates to map and closes if the backdrop is clicked', async () => {
+  it('Navigates to the background location and closes if the backdrop is clicked', async () => {
     const { store } = render(<MissionControl />, {
-      state: defaultState,
+      state: {
+        ...defaultState,
+        app: { backgroundLocation: { pathname: '/map', search: '' } },
+      },
       history: { initialEntries: ['/mission-control'] },
     });
     userEvent.click(screen.getByRole('none'));
