@@ -4,7 +4,7 @@ Uses the api at: https://planningdata.london.gov.uk/api-guest/applications/_sear
 from datetime import datetime
 from .adapters_base import BaseProxyDataAdapter
 
-DATE_FORMAT = "%d/%M/%Y"
+DATE_FORMAT = "%d/%m/%Y"
 
 ICONS = [
     ("New Build", "new-build"),
