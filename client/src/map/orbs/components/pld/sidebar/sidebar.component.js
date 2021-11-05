@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Grid, Typography } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import { subYears } from 'date-fns';
 import { useSelector } from 'react-redux';
@@ -14,6 +14,15 @@ const DEFAULT_DATE_RANGE = {
   endDate: new Date(2020, 2, 26).toISOString(),
 };
 
+const useStyles = makeStyles(theme => ({
+  dateHeading: {
+    paddingBottom: '1.5rem',
+  },
+  checkboxHeading: {
+    paddingBottom: '1rem',
+  },
+}));
+
 export const PldSidebarComponent = ({
   selectedLayer,
   dispatch,
@@ -22,6 +31,8 @@ export const PldSidebarComponent = ({
   developmentTypeFilters,
   iconColor,
 }) => {
+  const styles = useStyles();
+
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
@@ -52,7 +63,9 @@ export const PldSidebarComponent = ({
   return (
     <Grid container direction="column" spacing={2}>
       <Grid item>
-        <Typography variant="h4">Date Range</Typography>
+        <Typography className={styles.dateHeading} variant="h4">
+          Date Range
+        </Typography>
         <DateRangeFilter
           maxDate="today"
           onSubmit={handleChange('dateRange')}
@@ -60,7 +73,9 @@ export const PldSidebarComponent = ({
         />
       </Grid>
       <Grid item>
-        <Typography variant="h4">Construction Phase</Typography>
+        <Typography className={styles.checkboxHeading} variant="h4">
+          Construction Phase
+        </Typography>
         <CheckboxFilters
           onChange={handleChange('constructionPhase')}
           filterValue={filterValue?.constructionPhase}
@@ -68,7 +83,9 @@ export const PldSidebarComponent = ({
         />
       </Grid>
       <Grid item>
-        <Typography variant="h4">Development Type</Typography>
+        <Typography className={styles.checkboxHeading} variant="h4">
+          Development Type
+        </Typography>
         <CheckboxFilters
           onChange={handleChange('developmentType')}
           filterValue={filterValue?.developmentType}

@@ -34,6 +34,7 @@ jobs:
   client-tests:
     name: Client-side Tests
     runs-on: ubuntu-20.04
+    continue-on-error: true
     timeout-minutes: 40
     needs: check-trigger-type
     steps:
@@ -76,6 +77,7 @@ jobs:
   server-tests:
     name: Server-side Tests
     runs-on: ubuntu-20.04
+    continue-on-error: true
     needs: check-trigger-type
     timeout-minutes: 40
     container:
@@ -180,8 +182,6 @@ jobs:
   deploy-to-testing:
     needs:
       [
-        client-tests,
-        server-tests,
         build-client-docker,
         build-server-docker,
         check-trigger-type,

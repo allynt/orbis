@@ -13,7 +13,7 @@ import {
 
 const PIN_COLORS = {
   allowed: [170, 0, 0, 255],
-  approved: [117, 183, 178, 255],
+  approved: [55, 229, 216, 255],
   commenced: [245, 36, 85, 255],
   completed: [138, 234, 115, 255],
   lapsed: [0, 0, 0, 255],
