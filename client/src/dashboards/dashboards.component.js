@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, SvgIcon } from '@astrosat/astrosat-ui';
+import { Box, MapIcon, SvgIcon } from '@astrosat/astrosat-ui';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,8 +70,16 @@ const Dashboards = () => {
   return (
     <Box width="100vw" height="100vh" overflow="hidden" display="flex">
       <Sidebar>
+        <SidebarItem
+          tooltip="Go to Map"
+          onClick={() => {
+            history.push('/map');
+          }}
+          icon={<MapIcon />}
+        />
         <SidebarBottomItems>
           <SidebarItem
+            tooltip="Mission Control"
             onClick={() => {
               dispatch(setBackgroundLocation(location));
               history.push('/mission-control');
