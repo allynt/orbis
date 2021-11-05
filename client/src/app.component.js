@@ -72,8 +72,6 @@ const App = () => {
 
   if (fetchUserRequestStatus === 'pending') return <LoadMaskFallback />;
 
-  console.log(location);
-
   return (
     <Box width="100vw" height="100vh">
       <ErrorBoundary FallbackComponent={ErrorFallback}>

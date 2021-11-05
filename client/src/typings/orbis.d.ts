@@ -106,7 +106,8 @@ type OrbisApplicationMetadata = {
     };
   };
   map_component?: ComponentDefinition;
-  sidebar_component?: ComponentDefinition;
+  sidebar_component?: ComponentDefinition | ComponentDefinition[];
+  dashboard_component?: ComponentDefinition;
 };
 
 type BaseProperty = {
