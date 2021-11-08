@@ -1,11 +1,12 @@
 import { hexToRgbArray } from 'utils/color';
 
-import geoJsonLayer, {
+import configFn, {
   DEFAULT_FILLED_COLOR,
   DEFAULT_LINE_COLOR,
   DEFAULT_HIGHLIGHT_COLOR,
 } from './geoJsonConfig.js';
 
+// TODO: ASK MARK ABOUT THIS
 const DEFAULT_FILL_COLOR = hexToRgbArray(DEFAULT_FILLED_COLOR);
 const DEFAULT_STROKE_COLOR = hexToRgbArray(DEFAULT_LINE_COLOR);
 const DEFAULT_HIGHLIGHTED_COLOR = hexToRgbArray(DEFAULT_HIGHLIGHT_COLOR);
@@ -18,7 +19,7 @@ const setup = ({
   pickable,
   highlightColor,
 } = {}) =>
-  geoJsonLayer({
+  configFn({
     filled,
     filledColor,
     lineColor,
@@ -29,7 +30,7 @@ const setup = ({
 
 describe('GeoJsonConfig', () => {
   describe('Filled Color', () => {
-    it('test when no fill props supplied', () => {
+    it('test when no filled props supplied', () => {
       const { filled, getFillColor } = setup();
 
       expect(filled).toBe(true);
@@ -95,11 +96,11 @@ describe('GeoJsonConfig', () => {
       expect(getLineColor()).toEqual(DEFAULT_STROKE_COLOR);
     });
 
-    it('test when stroke is false and no lineColor supplied', () => {
+    it('test when stroked is false and no lineColor supplied', () => {
       const { stroked, getLineColor } = setup({ stroked: false });
 
       expect(stroked).toBe(false);
-      expect(getLineColor()).toBeUndefined();
+      expect(getLineColor()).toBeNull();
     });
 
     it('test visible with default color when stroked is true and no lineColor supplied', () => {
@@ -111,7 +112,9 @@ describe('GeoJsonConfig', () => {
 
     it('test visible with default color when stroke not set and lineColor supplied', () => {
       const lineColor = '#ffffff';
+
       const { stroked, getLineColor } = setup({ lineColor });
+
       expect(stroked).toBe(true);
       expect(getLineColor()).not.toEqual(DEFAULT_STROKE_COLOR);
       expect(getLineColor()).toEqual(hexToRgbArray(lineColor));
@@ -130,7 +133,7 @@ describe('GeoJsonConfig', () => {
       expect(getLineColor()).toEqual(hexToRgbArray(lineColor));
     });
 
-    it('test color is undefined when stroked is false and lineColor supplied', () => {
+    it('test color is null when stroked is false and lineColor supplied', () => {
       const lineColor = '#ffffff';
 
       const { stroked, getLineColor } = setup({
@@ -139,7 +142,7 @@ describe('GeoJsonConfig', () => {
       });
 
       expect(stroked).toBe(false);
-      expect(getLineColor()).toBeUndefined();
+      expect(getLineColor()).toBeNull();
     });
   });
 
@@ -147,7 +150,7 @@ describe('GeoJsonConfig', () => {
     it('test when no pickable props supplied', () => {
       const { pickable, highlightColor } = setup();
 
-      expect(pickable).toBe(undefined);
+      expect(pickable).toBe(true);
       expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
     });
 
@@ -157,7 +160,8 @@ describe('GeoJsonConfig', () => {
       });
 
       expect(pickable).toBe(false);
-      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).not.toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).toBeNull();
     });
 
     it('test visible with default color when pickable is true and no highlightColor supplied', () => {
@@ -168,28 +172,29 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test visible with custom color when pickable is true and highlightColor supplied', () => {
-      const newhighlightColor = '#000000';
+      const testHighLightColor = '#ffffff';
 
       const { pickable, highlightColor } = setup({
         pickable: true,
-        newhighlightColor,
+        highlightColor: testHighLightColor,
       });
 
       expect(pickable).toBe(true);
-      // expect(highlightColor()).not.toEqual(DEFAULT_HIGHLIGHTED_COLOR);
-      expect(highlightColor()).toEqual(hexToRgbArray(newhighlightColor));
+      expect(highlightColor()).not.toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).toEqual(hexToRgbArray(testHighLightColor));
     });
 
     it('test highLightColor invisible when pickable set false and highLightColor supplied', () => {
-      const newhighlightColor = '#ffffff';
+      const testHighLightColor = '#ffffff';
 
       const { pickable, highlightColor } = setup({
         pickable: false,
-        newhighlightColor,
+        highlightColor: testHighLightColor,
       });
 
       expect(pickable).toBe(false);
-      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).not.toEqual(hexToRgbArray(testHighLightColor));
+      expect(highlightColor()).toBeNull();
     });
   });
 });

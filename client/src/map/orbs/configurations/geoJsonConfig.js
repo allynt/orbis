@@ -13,7 +13,7 @@ export const DEFAULT_HIGHLIGHT_COLOR = '#483D8B';
  *   id: string
  *   stroked: boolean
  *   filled: boolean
- *   isHighlighted: boolean
+ *   pickable: boolean
  *   lineColor: string
  *   filledColor: string
  *   highlightColor: string
@@ -28,7 +28,7 @@ const geoJsonConfiguration = ({
   orbState,
   filled = true,
   stroked = true,
-  isHighlighted = true,
+  pickable = true,
   lineColor = DEFAULT_LINE_COLOR,
   filledColor = DEFAULT_FILLED_COLOR,
   highlightColor = DEFAULT_HIGHLIGHT_COLOR,
@@ -42,19 +42,15 @@ const geoJsonConfiguration = ({
   const newHighLightColor = hexToRgbArray(highlightColor);
 
   const getFillColor = () => (filled ? newFilledColor : null);
-
-  const getLineColor = () =>
-    stroked || stroked === undefined ? newLineColor : undefined;
-
-  const getHighlightColor = () =>
-    isHighlighted ? newHighLightColor : undefined;
+  const getLineColor = () => (stroked ? newLineColor : null);
+  const getHighlightColor = () => (pickable ? newHighLightColor : null);
 
   return {
     id,
     data,
     orbState,
     visible,
-    pickable: isHighlighted,
+    pickable,
     autoHighlight: true,
     filled,
     stroked,
