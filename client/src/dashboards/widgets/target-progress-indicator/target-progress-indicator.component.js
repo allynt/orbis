@@ -1,23 +1,33 @@
 import React from 'react';
 
-import { makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { makeStyles, Typography, Grid } from '@astrosat/astrosat-ui';
 
 import { VictoryLabel, VictoryAnimation, VictoryPie } from 'victory';
+
+import { InfoButtonTooltip } from 'components';
 
 const useStyles = makeStyles(theme => ({
   container: {
     // get BC from UI library
     backgroundColor: '#3e4e56',
-    display: 'flex',
-    flexDirection: 'column',
     width: 'fit-content',
     height: 'fit-content',
     borderRadius: theme.shape.borderRadius,
   },
-  title: {},
+  header: {
+    padding: theme.spacing(3),
+  },
+  title: {
+    maxWidth: '90%',
+  },
+  info: {
+    height: '1rem',
+    width: '1rem',
+  },
 }));
 
-const CircularProgress = ({ progress, width = 400 }) => {
+const CircularProgress = ({ target = {}, width = 400 }) => {
+  const { name, progress } = target;
   const data = [
     { x: 1, y: progress },
     { x: 2, y: 100 - progress },
@@ -28,6 +38,7 @@ const CircularProgress = ({ progress, width = 400 }) => {
         standalone={false}
         width={width}
         height={width}
+        padding={0}
         data={data}
         innerRadius={120}
         cornerRadius={25}
@@ -44,13 +55,18 @@ const CircularProgress = ({ progress, width = 400 }) => {
       />
       <VictoryAnimation duration={1000} data={progress}>
         {newProps => {
+          const isNumber = typeof newProps === 'number';
           return (
             <VictoryLabel
               textAnchor="middle"
               verticalAnchor="middle"
               x={200}
               y={200}
-              text={`${Math.round(newProps)}%`}
+              text={
+                isNumber
+                  ? `${Math.round(newProps)}%`
+                  : `${name} Target Required`
+              }
               style={{ fontSize: 45, fill: '#fff' }}
             />
           );
@@ -60,14 +76,34 @@ const CircularProgress = ({ progress, width = 400 }) => {
   );
 };
 
-export const TargetProgressIndicator = ({ progress, width }) => {
+export const TargetProgressIndicator = ({ target, width }) => {
   const styles = useStyles({});
+  if (!target) {
+    return null;
+  }
   return (
-    <div className={styles.container}>
-      <Typography color="primary" className={styles.title}>
-        Title Goes Here
-      </Typography>
-      <CircularProgress progress={progress} width={width} />
-    </div>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      className={styles.container}
+    >
+      <Grid
+        item
+        container
+        justifyContent="space-between"
+        alignItems="baseline"
+        className={styles.header}
+      >
+        <Typography color="primary" className={styles.title}>
+          {target.description}
+        </Typography>
+        <InfoButtonTooltip
+          tooltipContent={target.description}
+          iconButtonClassName={styles.info}
+        />
+      </Grid>
+      <CircularProgress target={target} width={width} />
+    </Grid>
   );
 };
