@@ -148,50 +148,48 @@ describe('GeoJsonConfig', () => {
       const { pickable, highlightColor } = setup();
 
       expect(pickable).toBe(undefined);
-      expect(highlightColor).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
     });
 
-    // it('test when pickable is false and no highlightColor supplied', () => {
-    //   const { pickable, highlightColor } = setup({
-    //     pickable: false,
-    //   });
+    it('test when pickable is false and no highlightColor supplied', () => {
+      const { pickable, highlightColor } = setup({
+        pickable: false,
+      });
 
-    //   expect(pickable).toBe(false);
-    //   expect(highlightColor).not.toEqual(DEFAULT_HIGHLIGHTED_COLOR);
-    //   expect(highlightColor).toBeNull();
-    // });
+      expect(pickable).toBe(false);
+      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+    });
 
     it('test visible with default color when pickable is true and no highlightColor supplied', () => {
       const { pickable, highlightColor } = setup({ pickable: true });
 
       expect(pickable).toBe(true);
-      expect(highlightColor).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
     });
 
-    // it('test visible with custom color when pickable is true and highlightColor supplied', () => {
-    //   const newHighLightColor1 = '#ffffff';
+    it('test visible with custom color when pickable is true and highlightColor supplied', () => {
+      const newhighlightColor = '#000000';
 
-    //   const { pickable, highlightColor } = setup({
-    //     pickable: true,
-    //     newHighLightColor,
-    //   });
+      const { pickable, highlightColor } = setup({
+        pickable: true,
+        newhighlightColor,
+      });
 
-    //   expect(pickable).toBe(true);
-    //   expect(highlightColor).not.toEqual(DEFAULT_FILL_COLOR);
-    //   expect(highlightColor).toEqual(hexToRgbArray(newHighLightColor));
-    // });
+      expect(pickable).toBe(true);
+      // expect(highlightColor()).not.toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+      expect(highlightColor()).toEqual(hexToRgbArray(newhighlightColor));
+    });
 
-    // it('test highLightColor invisible when pickable set false and highLightColor supplied', () => {
-    //   const newHighLightColor = '#ffffff';
+    it('test highLightColor invisible when pickable set false and highLightColor supplied', () => {
+      const newhighlightColor = '#ffffff';
 
-    //   const { pickable, highlightColor } = setup({
-    //     pickable: false,
-    //     newHighLightColor,
-    //   });
+      const { pickable, highlightColor } = setup({
+        pickable: false,
+        newhighlightColor,
+      });
 
-    //   expect(pickable).toBe(false);
-    //   expect(highlightColor).not.toEqual(newHighLightColor);
-    //   expect(highlightColor).toBeNull();
-    // });
+      expect(pickable).toBe(false);
+      expect(highlightColor()).toEqual(DEFAULT_HIGHLIGHTED_COLOR);
+    });
   });
 });
