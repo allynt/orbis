@@ -6,10 +6,10 @@ export default {
   title: 'Dashboard/Widgets/Target Progress Indicator',
 };
 
-const Template = ({ target, width }) => {
+const Template = ({ source, width }) => {
   return (
     <div style={{ padding: '2rem' }}>
-      <TargetProgressIndicator target={target} width={width} />
+      <TargetProgressIndicator source={source} width={width} />
     </div>
   );
 };
@@ -17,43 +17,47 @@ const Template = ({ target, width }) => {
 export const Default = Template.bind({});
 Default.args = {
   width: 400,
-  target: {
+  source: {
     name: 'Housing Delivery',
     description:
       '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-    progress: 22,
+    target: 300,
+    progress: 122,
   },
 };
 
 export const NoProgress = Template.bind({});
 NoProgress.args = {
   width: 400,
-  target: {
+  source: {
     name: 'Housing Delivery',
     description:
       '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-    progress: undefined,
+    target: undefined,
+    progress: 122,
   },
 };
 
 export const SmallSize = Template.bind({});
 SmallSize.args = {
   width: 200,
-  target: {
+  source: {
     name: 'Housing Delivery',
     description:
       '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-    progress: 22,
+    target: 300,
+    progress: 122,
   },
 };
 
 export const LargeSize = Template.bind({});
 LargeSize.args = {
   width: 500,
-  target: {
+  source: {
     name: 'Housing Delivery',
     description:
       '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-    progress: 22,
+    target: 300,
+    progress: 122,
   },
 };

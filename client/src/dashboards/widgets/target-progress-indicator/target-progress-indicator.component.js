@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { makeStyles, Typography, Grid } from '@astrosat/astrosat-ui';
 
@@ -26,11 +26,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CircularProgress = ({ target = {}, width = 400 }) => {
-  const { name, progress } = target;
+const CircularProgress = ({ source = {}, width = 400 }) => {
+  const { name, target, progress } = source;
+
+  let percentage = useMemo(() => Math.round((progress / target) * 100), [
+    progress,
+    target,
+  ]);
+
   const data = [
-    { x: 1, y: progress },
-    { x: 2, y: 100 - progress },
+    { x: 1, y: percentage },
+    { x: 2, y: 100 - percentage },
   ];
   return (
     <svg width={width} height={width} viewBox={`0 0 ${width} ${width}`}>
@@ -40,7 +46,7 @@ const CircularProgress = ({ target = {}, width = 400 }) => {
         height={width}
         padding={0}
         data={data}
-        innerRadius={120}
+        innerRadius={150}
         cornerRadius={25}
         animate={{ duration: 1000 }}
         labels={() => null}
@@ -53,7 +59,7 @@ const CircularProgress = ({ target = {}, width = 400 }) => {
           },
         }}
       />
-      <VictoryAnimation duration={1000} data={progress}>
+      <VictoryAnimation duration={1000} data={percentage}>
         {newProps => {
           const isNumber = typeof newProps === 'number';
           return (
@@ -76,9 +82,9 @@ const CircularProgress = ({ target = {}, width = 400 }) => {
   );
 };
 
-export const TargetProgressIndicator = ({ target, width }) => {
+export const TargetProgressIndicator = ({ source, width }) => {
   const styles = useStyles({});
-  if (!target) {
+  if (!source) {
     return null;
   }
   return (
@@ -96,14 +102,14 @@ export const TargetProgressIndicator = ({ target, width }) => {
         className={styles.header}
       >
         <Typography color="primary" className={styles.title}>
-          {target.description}
+          {source.description}
         </Typography>
         <InfoButtonTooltip
-          tooltipContent={target.description}
+          tooltipContent={source.description}
           iconButtonClassName={styles.info}
         />
       </Grid>
-      <CircularProgress target={target} width={width} />
+      <CircularProgress source={source} width={width} />
     </Grid>
   );
 };
