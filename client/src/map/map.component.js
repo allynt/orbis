@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { mapboxTokenSelector } from 'app.slice';
 import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmarks.slice';
+import { isDrawingAoiSelector } from 'data-layers/aoi/aoi.slice';
+import { useAoiLayer } from 'data-layers/aoi/useAoiLayer';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { isDrawingAoiSelector } from 'satellites/satellites.slice';
+import { isDrawingSatelliteAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
 import { BottomMap } from './bottom-map.component';
@@ -116,11 +118,16 @@ const Map = ({
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
+
+  const { drawAoiLayer } = useAoiLayer();
+
   const {
-    drawAoiLayer,
+    drawSatelliteAoiLayer,
     scenesLayer,
     selectedSceneLayer,
   } = useSatellitesLayers();
+  const isDrawingSatelliteAoi = useSelector(isDrawingSatelliteAoiSelector);
+
   const isDrawingAoi = useSelector(isDrawingAoiSelector);
 
   const handleExtrusionScaleChange = useCallback(
@@ -145,12 +152,20 @@ const Map = ({
       if (drawingToolsEnabled && editableLayer?.state?.cursor)
         return editableLayer?.state?.cursor;
       if (drawAoiLayer) return drawAoiLayer?.state?.cursor;
+      if (drawSatelliteAoiLayer) return drawSatelliteAoiLayer?.state?.cursor;
       return getBottomMapCursor(cursorState);
     },
-    [drawAoiLayer, drawingToolsEnabled, editableLayer, getBottomMapCursor],
+    [
+      drawAoiLayer,
+      drawSatelliteAoiLayer,
+      drawingToolsEnabled,
+      editableLayer,
+      getBottomMapCursor,
+    ],
   );
 
-  const topMapIsController = drawingToolsEnabled || isDrawingAoi;
+  const topMapIsController =
+    drawingToolsEnabled || isDrawingSatelliteAoi || isDrawingAoi;
 
   return (
     <div className={styles.map}>
@@ -204,6 +219,7 @@ const Map = ({
         mapboxApiAccessToken={accessToken}
         editableLayer={editableLayer}
         drawAoiLayer={drawAoiLayer}
+        drawSatelliteAoiLayer={drawSatelliteAoiLayer}
       />
     </div>
   );

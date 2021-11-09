@@ -24,7 +24,7 @@ import { DEFAULT_CLOUD_COVER, Panels } from './satellite.constants';
  * @property {number} cloudCoverPercentage
  * ==== Control ====
  * @property {string} visiblePanel
- * @property {boolean} isDrawingAoi
+ * @property {boolean} isDrawingSatelliteAoi
  * @property {boolean} selectedSceneLayerVisible
  * ==== Generic ====
  * @property {{message: string}} [error]
@@ -70,7 +70,7 @@ export const searchSatelliteScenes = createAsyncThunk(
   `${name}/searchSatelliteScenes`,
   async (query, { getState, rejectWithValue }) => {
     try {
-      const aoi = aoiSelector(getState());
+      const aoi = satelliteAoiSelector(getState());
       return await apiClient.satellites.runQuery({ ...query, aoi });
     } catch (responseError) {
       /** @type {import('api-client').ResponseError} */
@@ -131,7 +131,7 @@ export const saveImage = createAsyncThunk(
 const initialState = {
   visualisationId: 'TCI',
   cloudCoverPercentage: DEFAULT_CLOUD_COVER,
-  isDrawingAoi: false,
+  isDrawingSatelliteAoi: false,
   visiblePanel: Panels.SEARCH,
   selectedSceneLayerVisible: false,
   requests: {},
@@ -168,16 +168,16 @@ const satellitesSlice = createSlice({
     setVisiblePanel: (state, { payload }) => {
       state.visiblePanel = payload;
     },
-    startDrawingAoi: state => {
-      state.isDrawingAoi = true;
+    startDrawingSatelliteAoi: state => {
+      state.isDrawingSatelliteAoi = true;
       if (state.aoi?.length >= 1) state.aoi = undefined;
     },
-    endDrawingAoi: (state, { payload }) => {
-      state.isDrawingAoi = false;
+    endDrawingSatelliteAoi: (state, { payload }) => {
+      state.isDrawingSatelliteAoi = false;
       state.aoi = payload;
     },
-    onUnmount: state => {
-      state.isDrawingAoi = false;
+    onSatelliteUnmount: state => {
+      state.isDrawingSatelliteAoi = false;
       state.visiblePanel = Panels.NONE;
     },
   },
@@ -228,9 +228,9 @@ export const {
   setCloudCoverPercentage,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
-  startDrawingAoi,
-  endDrawingAoi,
-  onUnmount,
+  startDrawingSatelliteAoi,
+  endDrawingSatelliteAoi,
+  onSatelliteUnmount,
 } = satellitesSlice.actions;
 
 /**
@@ -268,7 +268,10 @@ export const hoveredSceneSelector = createSelector(
   state => state?.hoveredScene,
 );
 
-export const aoiSelector = createSelector(baseSelector, state => state?.aoi);
+export const satelliteAoiSelector = createSelector(
+  baseSelector,
+  state => state?.aoi,
+);
 
 export const cloudCoverPercentageSelector = createSelector(
   baseSelector,
@@ -280,9 +283,9 @@ export const visiblePanelSelector = createSelector(
   state => state?.visiblePanel,
 );
 
-export const isDrawingAoiSelector = createSelector(
+export const isDrawingSatelliteAoiSelector = createSelector(
   baseSelector,
-  state => state?.isDrawingAoi,
+  state => state?.isDrawingSatelliteAoi,
 );
 
 export const selectedSceneLayerVisibleSelector = createSelector(

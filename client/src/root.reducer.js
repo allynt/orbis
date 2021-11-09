@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import drawingTools from 'drawing-tools/drawing-tools.slice';
 
 import accounts from './accounts/accounts.slice';
+import aois from './data-layers/aoi/aoi.slice';
 import app from './app.slice';
 import bookmarks from './bookmarks/bookmarks.slice';
 import data from './data-layers/data-layers.slice';
@@ -27,6 +28,7 @@ const createRootReducer = history =>
     orbs,
     router: connectRouter(history),
     satellites,
+    aois,
     stories,
     missionControl,
   });
