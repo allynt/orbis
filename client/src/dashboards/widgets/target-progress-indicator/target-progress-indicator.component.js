@@ -3,12 +3,24 @@ import React from 'react';
 import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import { VictoryLabel, VictoryAnimation, VictoryPie } from 'victory';
+import { Text } from '@visx/text';
+import clsx from 'clsx';
+import { VictoryAnimation, VictoryPie } from 'victory';
 
 const useStyles = makeStyles(theme => ({
   circle: {
     fill: theme.palette.background.default,
   },
+  text: {
+    fill: theme.palette.text.primary,
+    fontWeight: 600,
+    '&$value': { fontSize: 48 },
+    '&$target': { fontSize: 14 },
+    '&$noTarget': { fontSize: 16 },
+  },
+  value: {},
+  target: {},
+  noTarget: {},
 }));
 
 export const TargetProgressIndicator = ({ source }) => {
@@ -58,25 +70,49 @@ export const TargetProgressIndicator = ({ source }) => {
                 },
               }}
             />
-            {/* <VictoryAnimation duration={1000} data={percentage}>
-        {newProps => {
-          const isNumber = typeof newProps === 'number';
-          return (
-            <VictoryLabel
-              textAnchor="middle"
-              verticalAnchor="middle"
-              x={200}
-              y={200}
-              text={
-                isNumber
-                  ? `${Math.round(newProps)}%`
-                  : `${name} Target Required`
-              }
-              style={{ fontSize: 45, fill: '#fff' }}
-            />
-          );
-        }}
-      </VictoryAnimation> */}
+            <VictoryAnimation duration={1000} data={percentage}>
+              {newProps => {
+                const isNumber =
+                  typeof newProps === 'number' && !isNaN(newProps);
+                return isNumber ? (
+                  <>
+                    <Text
+                      width={radius}
+                      textAnchor="middle"
+                      verticalAnchor="end"
+                      x={radius}
+                      y={radius}
+                      dy={-8}
+                      className={clsx(styles.text, styles.value)}
+                    >
+                      {`${Math.round(newProps)}%`}
+                    </Text>
+                    <Text
+                      width={radius}
+                      textAnchor="middle"
+                      verticalAnchor="start"
+                      x={radius}
+                      y={radius}
+                      dy={8}
+                      className={clsx(styles.text, styles.target)}
+                    >
+                      {`Target ${target} Units`}
+                    </Text>
+                  </>
+                ) : (
+                  <Text
+                    width={radius}
+                    textAnchor="middle"
+                    verticalAnchor="middle"
+                    x={radius}
+                    y={radius}
+                    className={clsx(styles.text, styles.noTarget)}
+                  >
+                    {`${name} Target Required`}
+                  </Text>
+                );
+              }}
+            </VictoryAnimation>
           </svg>
         );
       }}
