@@ -11,9 +11,9 @@ export const DEFAULT_HIGHLIGHT_COLOR = '#483D8B';
 /**
  * @param {{
  *   id: string
- *   filled: string
- *   outlined: string
- *   highlighted: string
+ *   filledColor: string
+ *   outlineColor: string
+ *   highlightColor: string
  *   isFilled: boolean
  *   isHighlighted: boolean
  *   isOutlined: boolean
@@ -27,19 +27,19 @@ const geoJsonConfiguration = ({
   authToken,
   orbState,
   isFilled = true,
-  isOutlined = true,
+  filledColor = DEFAULT_FILLED_COLOR,
   isHighlighted = true,
-  filled = DEFAULT_LINE_COLOR,
-  outlined = DEFAULT_FILLED_COLOR,
-  highlighted = DEFAULT_HIGHLIGHT_COLOR,
+  highlightColor = DEFAULT_HIGHLIGHT_COLOR,
+  isOutlined = true,
+  outlineColor = DEFAULT_LINE_COLOR,
   ...rest
 }) => {
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
 
-  const newLineColor = hexToRgbArray(outlined);
-  const newFilledColor = hexToRgbArray(filled);
-  const newHighLightColor = hexToRgbArray(highlighted);
+  const newLineColor = hexToRgbArray(outlineColor);
+  const newFilledColor = hexToRgbArray(filledColor);
+  const newHighLightColor = hexToRgbArray(highlightColor);
 
   const getFillColor = () => (isFilled ? newFilledColor : null);
   const getLineColor = () => (isOutlined ? newLineColor : null);

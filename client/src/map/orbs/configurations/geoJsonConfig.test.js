@@ -12,186 +12,190 @@ const HIGHLIGHT_COLOR_RGB = hexToRgbArray(DEFAULT_HIGHLIGHT_COLOR);
 
 const setup = ({
   filled,
-  isFilled,
-  outlined,
-  isOutlined,
-  isHighlighted,
-  highlighted,
+  filledColor,
+  stroked,
+  outlineColor,
+  pickable,
+  highlightColor,
 } = {}) =>
   configFn({
-    filled,
-    isFilled,
-    outlined,
-    isOutlined,
-    isHighlighted,
-    highlighted,
+    isFilled: filled,
+    filledColor,
+    isOutlined: stroked,
+    outlineColor,
+    isHighlighted: pickable,
+    highlightColor,
   });
 
 describe('GeoJsonConfig', () => {
   describe('Filled Color', () => {
-    it('test when no isFilled props supplied', () => {
-      const { isFilled, getFillColor } = setup();
+    it('test when no filled props supplied', () => {
+      const { filled, getFillColor } = setup();
 
-      expect(isFilled).toBe(true);
+      expect(filled).toBe(true);
       expect(getFillColor()).toEqual(FILLED_COLOR_RGB);
     });
 
-    it('test when isFilled is false and no filled supplied', () => {
-      const { isFilled, getFillColor } = setup({ isFilled: false });
+    it('test when filled is false and no filledColor supplied', () => {
+      const { filled, getFillColor } = setup({ filled: false });
 
-      expect(isFilled).toBe(false);
+      expect(filled).toBe(false);
       expect(getFillColor()).toBeNull();
     });
 
-    it('test visible with default color when isFilled is true and no fill supplied', () => {
-      const { isFilled, getFillColor } = setup({ isFilled: true });
+    it('test visible with default color when filled is true and no filledColor supplied', () => {
+      const { filled, getFillColor } = setup({ filled: true });
 
-      expect(isFilled).toBe(true);
+      expect(filled).toBe(true);
       expect(getFillColor()).toEqual(FILLED_COLOR_RGB);
     });
 
-    it('test visible with default color when isFilled not set and filled supplied', () => {
-      const filled = '#ffffff';
+    it('test visible with default color when filled not set and filledColor supplied', () => {
+      const testFilledColor = '#ffffff';
 
-      const { isFilled, getFillColor } = setup({ filled });
-
-      expect(isFilled).toBe(true);
-      expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
-      expect(getFillColor()).toEqual(hexToRgbArray(filled));
-    });
-
-    it('test visible with custom color when isFilled is true and filled supplied', () => {
-      const filled = '#ffffff';
-
-      const { isFilled, getFillColor } = setup({
-        isFilled: true,
-        filled,
+      const { filled, getFillColor } = setup({
+        filledColor: testFilledColor,
       });
 
-      expect(isFilled).toBe(true);
+      expect(filled).toBe(true);
       expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
-      expect(getFillColor()).toEqual(hexToRgbArray(filled));
+      expect(getFillColor()).toEqual(hexToRgbArray(testFilledColor));
     });
 
-    it('test color is null when isFilled is false and filled supplied', () => {
-      const filled = '#ffffff';
+    it('test visible with custom color when filled is true and filledColor supplied', () => {
+      const testFilledColor = '#ffffff';
 
-      const { isFilled, getFillColor } = setup({
-        isFilled: false,
-        filled,
+      const { filled, getFillColor } = setup({
+        filled: true,
+        filledColor: testFilledColor,
       });
 
-      expect(isFilled).toBe(false);
+      expect(filled).toBe(true);
+      expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
+      expect(getFillColor()).toEqual(hexToRgbArray(testFilledColor));
+    });
+
+    it('test color is null when filled is false and filledColor supplied', () => {
+      const testFilledColor = '#ffffff';
+
+      const { filled, getFillColor } = setup({
+        filled: false,
+        testFilledColor,
+      });
+
+      expect(filled).toBe(false);
       expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
       expect(getFillColor()).toBeNull();
     });
   });
 
   describe('Line Color', () => {
-    it('test when no isOutlined props supplied', () => {
-      const { isOutlined, getLineColor } = setup();
+    it('test when no stroked props supplied', () => {
+      const { stroked, getLineColor } = setup();
 
-      expect(isOutlined).toBe(true);
+      expect(stroked).toBe(true);
       expect(getLineColor()).toEqual(STROKE_COLOR_RGB);
     });
 
-    it('test when isOutlined is false and no outlined supplied', () => {
-      const { isOutlined, getLineColor } = setup({ isOutlined: false });
+    it('test when stroked is false and no outlineColor supplied', () => {
+      const { stroked, getLineColor } = setup({ stroked: false });
 
-      expect(isOutlined).toBe(false);
+      expect(stroked).toBe(false);
       expect(getLineColor()).toBeNull();
     });
 
-    it('test visible with default color when isOutlined is true and no outlined supplied', () => {
-      const { isOutlined, getLineColor } = setup({ isOutlined: true });
+    it('test visible with default color when stroked is true and no outlineColor supplied', () => {
+      const { stroked, getLineColor } = setup({ stroked: true });
 
-      expect(isOutlined).toBe(true);
+      expect(stroked).toBe(true);
       expect(getLineColor()).toEqual(STROKE_COLOR_RGB);
     });
 
-    it('test visible with default color when isOutlined not set and outlined supplied', () => {
+    it('test visible with default color when stroked not set and outlineColor supplied', () => {
       const testColor = '#ffffff';
 
-      const { isOutlined, getLineColor } = setup({ outlined: testColor });
+      const { stroked, getLineColor } = setup({
+        outlineColor: testColor,
+      });
 
-      expect(isOutlined).toBe(true);
+      expect(stroked).toBe(true);
       expect(getLineColor()).not.toEqual(STROKE_COLOR_RGB);
       expect(getLineColor()).toEqual(hexToRgbArray(testColor));
     });
 
-    it('test visible with custom color when isOutlined is true and outlined supplied', () => {
+    it('test visible with custom color when stroked is true and outlineColor supplied', () => {
       const testColor = '#ffffff';
 
-      const { isOutlined, getLineColor } = setup({
-        isOutlined: true,
-        outlined: testColor,
+      const { stroked, getLineColor } = setup({
+        stroked: true,
+        outlineColor: testColor,
       });
 
-      expect(isOutlined).toBe(true);
+      expect(stroked).toBe(true);
       expect(getLineColor()).not.toEqual(STROKE_COLOR_RGB);
       expect(getLineColor()).toEqual(hexToRgbArray(testColor));
     });
 
-    it('test color is null when isOutlined is false and outlined supplied', () => {
+    it('test color is null when stroked is false and outlineColor supplied', () => {
       const testColor = '#ffffff';
 
-      const { isOutlined, getLineColor } = setup({
-        isOutlined: false,
-        testColor,
+      const { stroked, getLineColor } = setup({
+        stroked: false,
+        outlineColor: testColor,
       });
 
-      expect(isOutlined).toBe(false);
+      expect(stroked).toBe(false);
       expect(getLineColor()).toBeNull();
     });
   });
 
   describe('Highlight Color', () => {
-    it('test when no isHighlighted props supplied', () => {
-      const { isHighlighted, highlightColor } = setup();
+    it('test when no pickable props supplied', () => {
+      const { pickable, highlightColor } = setup();
 
-      expect(isHighlighted).toBe(true);
+      expect(pickable).toBe(true);
       expect(highlightColor()).toEqual(HIGHLIGHT_COLOR_RGB);
     });
 
-    it('test when isHighlighted is false and no highlighted supplied', () => {
-      const { isHighlighted, highlightColor } = setup({
-        isHighlighted: false,
+    it('test when pickable is false and no highlightColor supplied', () => {
+      const { pickable, highlightColor } = setup({
+        pickable: false,
       });
 
-      expect(isHighlighted).toBe(false);
+      expect(pickable).toBe(false);
       expect(highlightColor()).not.toEqual(HIGHLIGHT_COLOR_RGB);
       expect(highlightColor()).toBeNull();
     });
 
-    it('test visible with default color when isHighlighted is true and no highlighted supplied', () => {
-      const { isHighlighted, highlightColor } = setup({ isHighlighted: true });
+    it('test visible with default color when pickable is true and no highlightColor supplied', () => {
+      const { pickable, highlightColor } = setup({ pickable: true });
 
-      expect(isHighlighted).toBe(true);
+      expect(pickable).toBe(true);
       expect(highlightColor()).toEqual(HIGHLIGHT_COLOR_RGB);
     });
 
-    it('test visible with custom color when isHighlighted is true and highlighted supplied', () => {
+    it('test visible with custom color when pickable is true and highlightColor supplied', () => {
       const testHighLightColor = '#ffffff';
 
-      const { isHighlighted, highlightColor } = setup({
-        isHighlighted: true,
-        highlighted: testHighLightColor,
+      const { pickable, highlightColor } = setup({
+        pickable: true,
+        highlightColor: testHighLightColor,
       });
 
-      expect(isHighlighted).toBe(true);
+      expect(pickable).toBe(true);
       expect(highlightColor()).not.toEqual(HIGHLIGHT_COLOR_RGB);
       expect(highlightColor()).toEqual(hexToRgbArray(testHighLightColor));
     });
 
-    it('test isHighlighted invisible when isHighlighted set false and highlighted supplied', () => {
+    it('test highlighted invisible when pickable set false and highlightColor supplied', () => {
       const testHighLightColor = '#ffffff';
 
-      const { isHighlighted, highlightColor } = setup({
-        isHighlighted: false,
-        highlighted: testHighLightColor,
+      const { pickable, highlightColor } = setup({
+        pickable: false,
+        highlightColor: testHighLightColor,
       });
 
-      expect(isHighlighted).toBe(false);
+      expect(pickable).toBe(false);
       expect(highlightColor()).not.toEqual(hexToRgbArray(testHighLightColor));
       expect(highlightColor()).toBeNull();
     });
