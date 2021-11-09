@@ -25,7 +25,12 @@ export const VIEWS = {
     route: '/saved-documents',
     Icon: SavedDocumentsIcon,
   },
-  users: { label: 'Users', route: '/users', Icon: UsersIcon, admin: true },
+  users: {
+    label: 'Users',
+    route: '/users',
+    Icon: UsersIcon,
+    admin: true,
+  },
   subscriptions: {
     label: 'Subscriptions',
     route: '/subscriptions',

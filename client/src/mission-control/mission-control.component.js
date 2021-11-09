@@ -10,9 +10,16 @@ import {
 import { push } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import {
+  Redirect,
+  Route,
+  Switch,
+  useLocation,
+  useRouteMatch,
+} from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { backgroundLocationSelector, setBackgroundLocation } from 'app.slice';
 import { ErrorFallback } from 'components';
 
 import { userSelector } from '../accounts/accounts.selectors';
@@ -62,11 +69,13 @@ const useStyles = makeStyles(theme => ({
 
 export const MissionControl = React.memo(() => {
   const location = useLocation();
+  const match = useRouteMatch();
   const fadeTransitionProps = useFadeTransitionProps(location.key);
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
+  const backgroundLocation = useSelector(backgroundLocationSelector);
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
@@ -114,7 +123,12 @@ export const MissionControl = React.memo(() => {
       keepMounted={false}
       TransitionProps={{
         onExited: () => {
-          dispatch(push('/map'));
+          dispatch(
+            push(
+              `${backgroundLocation?.pathname}${backgroundLocation?.search}`,
+            ),
+          );
+          dispatch(setBackgroundLocation(null));
         },
       }}
     >
@@ -127,32 +141,32 @@ export const MissionControl = React.memo(() => {
           <CSSTransition {...fadeTransitionProps}>
             <div className={`${styles.main} ${styles.inner}`}>
               <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Switch location={location}>
+                <Switch>
                   <Route
-                    path="/mission-control/store"
+                    path={`${match.path}/store`}
                     render={renderAdminOnly(Store)}
                   />
                   <Route
-                    path="/mission-control/users"
+                    path={`${match.path}/users`}
                     render={renderAdminOnly(UsersView)}
                   />
                   <Route
-                    path="/mission-control/subscriptions"
+                    path={`${match.path}/subscriptions`}
                     render={renderAdminOnly(ConnectedSubscriptions)}
                   />
                   <Route
-                    path="/mission-control/saved-documents"
+                    path={`${match.path}/saved-documents`}
                     component={SavedDocumentsView}
                   />
-                  <Route path="/mission-control/support" component={Support} />
+                  <Route path={`${match.path}/support`} component={Support} />
                   <Route
-                    path="/mission-control/account-details"
+                    path={`${match.path}/account-details`}
                     render={renderAdminOnly(AccountDetails)}
                   />
+                  <Route path={`${match.path}/storage`} component={Storage} />
                   <Route exact path="/mission-control">
-                    <Redirect to="/mission-control/support" />
+                    <Redirect to={`${match.path}/support`} />
                   </Route>
-                  <Route path="/mission-control/storage" component={Storage} />
                 </Switch>
               </ErrorBoundary>
             </div>

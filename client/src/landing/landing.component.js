@@ -14,6 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
+import {
+  dataSourcesSelector,
+  fetchSources,
+} from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 
 import {
@@ -75,6 +79,7 @@ const Landing = () => {
   // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
+  const sources = useSelector(dataSourcesSelector);
   const hasBookmarks = bookmarks?.length > 0;
   const styles = useStyles({ hasBookmarks });
   const { setViewState, viewState } = useMap();
@@ -91,6 +96,12 @@ const Landing = () => {
       dispatch(fetchBookmarks());
     }
   }, [bookmarks, dispatch]);
+
+  useEffect(() => {
+    if (!sources || sources.length === 0) {
+      dispatch(fetchSources());
+    }
+  }, [dispatch, sources]);
 
   return (
     <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
@@ -125,8 +136,15 @@ const Landing = () => {
             ) : (
               <NoBookmarksLanding />
             )}
+
             <RouterLink className={styles.link} to="/map">
               <Button color="secondary">Browse Map</Button>
+            </RouterLink>
+            <RouterLink
+              className={styles.link}
+              to="/dashboard?source_id=astrosat/demo/rice_vector/v3"
+            >
+              <Button color="secondary">Test Dashboards</Button>
             </RouterLink>
           </div>
         </Container>

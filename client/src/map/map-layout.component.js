@@ -4,7 +4,6 @@ import { Box } from '@astrosat/astrosat-ui';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
 
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 import { ErrorFallback, LoadMaskFallback } from 'components';
@@ -27,14 +26,7 @@ const Map = React.lazy(() =>
   import(/* webpackChunkName: "Map" */ './map.component'),
 );
 
-const MissionControl = React.lazy(() =>
-  import(
-    /* webpackChunkName: "MissionControl" */ 'mission-control/mission-control.component'
-  ),
-);
-
 const MapLayout = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const { layers, mapComponents, sidebarComponents } = useOrbs();
   const drawingToolsProps = useDrawingTools();
@@ -78,9 +70,6 @@ const MapLayout = () => {
           />
         </React.Suspense>
       </ErrorBoundary>
-      <React.Suspense fallback={<LoadMaskFallback zIndex={4} />}>
-        {location.pathname.includes('/mission-control') && <MissionControl />}
-      </React.Suspense>
       <AnalysisPanel />
     </Box>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 
 import { renderHook as tlRenderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -21,9 +22,11 @@ const mockStore = createMockStore([thunk]);
 const renderHook = initialProps => {
   return tlRenderHook(({ dispatch }) => useToolbarItems({ dispatch }), {
     wrapper: ({ children, user, orbs }) => (
-      <Provider store={mockStore({ accounts: { user }, data: { orbs } })}>
-        {children}
-      </Provider>
+      <MemoryRouter>
+        <Provider store={mockStore({ accounts: { user }, data: { orbs } })}>
+          {children}
+        </Provider>
+      </MemoryRouter>
     ),
     initialProps,
   });

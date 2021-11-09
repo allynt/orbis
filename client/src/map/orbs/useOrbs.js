@@ -10,17 +10,12 @@ import {
 } from 'data-layers/data-layers.slice';
 import { setIsLoading } from 'map/map.slice';
 import { useMap } from 'MapContext';
+import { dataUrlFromSource } from 'utils/data';
 import { getData } from 'utils/http';
 
 import { LayerFactory } from '../deck.gl/LayerFactory';
 import { setData, layersWithDataSelector } from './layers.slice';
 import { orbsSelector } from './orbsSelectors';
-
-const dataUrlFromId = source => {
-  return source.data && typeof source.data === 'string'
-    ? source.data
-    : source.metadata.url;
-};
 
 export const useOrbs = () => {
   const { setViewState } = useMap();
@@ -43,7 +38,7 @@ export const useOrbs = () => {
   const fetchData = useCallback(
     async source => {
       try {
-        const response = await getData(dataUrlFromId(source), {
+        const response = await getData(dataUrlFromSource(source), {
           Authorization: `Bearer ${authToken}`,
         });
 

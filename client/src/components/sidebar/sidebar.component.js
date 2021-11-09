@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { List, styled } from '@astrosat/astrosat-ui';
+import { List, styled, makeStyles } from '@astrosat/astrosat-ui';
+
+import { useHistory } from 'react-router-dom';
+
+import { ReactComponent as OrbisLogo } from './orbis-light.svg';
 
 export const SidebarBottomItems = styled('div')({ marginTop: 'auto' });
 
@@ -40,6 +44,26 @@ const Footer = styled('footer')(({ theme }) => ({
   padding: theme.spacing(2, 1, 0),
 }));
 
+const useLogoStyles = makeStyles({
+  logo: {
+    height: '3rem',
+    color: '#ffffff',
+    cursor: 'pointer',
+  },
+});
+
+const DefaultLogo = React.memo(function Logo() {
+  const styles = useLogoStyles();
+  const history = useHistory();
+  return (
+    <OrbisLogo
+      title="Orbis Logo"
+      className={styles.logo}
+      onClick={() => history.push('/')}
+    />
+  );
+});
+
 /**
  * @param {{
  *  children?: React.ReactNode
@@ -55,7 +79,7 @@ export const Sidebar = ({
   className,
   footer,
   header,
-  logo,
+  logo = <DefaultLogo />,
   style,
 }) => (
   <Nav className={className} style={style}>

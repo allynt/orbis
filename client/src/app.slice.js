@@ -12,6 +12,7 @@ export const DEFAULT_MAP_STYLE = 3;
  * @property {import('typings').AppConfig} config
  * @property {{message: string}} [error]
  * @property {any[]} trackingQueue
+ * @property {import('history').Location} [backgroundLocation]
  */
 
 /** @type {AppState} */
@@ -40,6 +41,9 @@ const appSlice = createSlice({
         item => !payload.includes(current(item)),
       );
     },
+    setBackgroundLocation: (state, { payload }) => {
+      state.backgroundLocation = payload;
+    },
   },
 });
 
@@ -48,6 +52,7 @@ export const {
   appConfigFailure,
   addLogItem,
   removeLogItems,
+  setBackgroundLocation,
 } = appSlice.actions;
 
 export const fetchAppConfig = () => async dispatch => {
@@ -113,6 +118,11 @@ export const mapboxTokenSelector = createSelector(
 export const userTrackingIntervalSelector = createSelector(
   configSelector,
   config => config?.userTrackingInterval,
+);
+
+export const backgroundLocationSelector = createSelector(
+  baseSelector,
+  state => state?.backgroundLocation,
 );
 
 export default appSlice.reducer;

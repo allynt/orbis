@@ -28,3 +28,12 @@ export const createReduxSafePickedInfo = info => ({
     },
   },
 });
+
+/**
+ * @param {import('typings').Source} source
+ */
+export const dataUrlFromSource = source => {
+  return source.data && typeof source.data === 'string'
+    ? source.data
+    : source.metadata.url;
+};
