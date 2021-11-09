@@ -11,12 +11,12 @@ export const DEFAULT_HIGHLIGHT_COLOR = '#483D8B';
 /**
  * @param {{
  *   id: string
- *   stroked: boolean
- *   filled: boolean
- *   pickable: boolean
- *   lineColor: string
- *   filledColor: string
- *   highlightColor: string
+ *   filled: string
+ *   outlined: string
+ *   highlighted: string
+ *   isFilled: boolean
+ *   isHighlighted: boolean
+ *   isOutlined: boolean
  *   activeSources?: import('typings').Source[]
  *   orbState: import('../orbReducer').OrbState
  *   authToken?: string
@@ -26,34 +26,34 @@ const geoJsonConfiguration = ({
   id,
   authToken,
   orbState,
-  filled = true,
-  stroked = true,
-  pickable = true,
-  lineColor = DEFAULT_LINE_COLOR,
-  filledColor = DEFAULT_FILLED_COLOR,
-  highlightColor = DEFAULT_HIGHLIGHT_COLOR,
+  isFilled = true,
+  isOutlined = true,
+  isHighlighted = true,
+  filled = DEFAULT_LINE_COLOR,
+  outlined = DEFAULT_FILLED_COLOR,
+  highlighted = DEFAULT_HIGHLIGHT_COLOR,
   ...rest
 }) => {
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
 
-  const newLineColor = hexToRgbArray(lineColor);
-  const newFilledColor = hexToRgbArray(filledColor);
-  const newHighLightColor = hexToRgbArray(highlightColor);
+  const newLineColor = hexToRgbArray(outlined);
+  const newFilledColor = hexToRgbArray(filled);
+  const newHighLightColor = hexToRgbArray(highlighted);
 
-  const getFillColor = () => (filled ? newFilledColor : null);
-  const getLineColor = () => (stroked ? newLineColor : null);
-  const getHighlightColor = () => (pickable ? newHighLightColor : null);
+  const getFillColor = () => (isFilled ? newFilledColor : null);
+  const getLineColor = () => (isOutlined ? newLineColor : null);
+  const getHighlightColor = () => (isHighlighted ? newHighLightColor : null);
 
   return {
     id,
     data,
     orbState,
     visible,
-    pickable,
     autoHighlight: true,
-    filled,
-    stroked,
+    filled: isFilled,
+    stroked: isOutlined,
+    pickable: isHighlighted,
     getLineWidth: 4,
     lineWidthMinPixels: 1,
     getLineColor,
