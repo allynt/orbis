@@ -26,18 +26,36 @@ const useStyles = makeStyles(theme => ({
 export const TargetProgressIndicator = ({ source }) => {
   const styles = useStyles({});
 
+  if (!source) {
+    return null;
+  }
+
+  const COLORS = {
+    blue: '#37e5d8',
+    green: '#d6ea69',
+    yellow: '#ffb72e',
+    red: '#f52455',
+  };
+
   const { name, target, progress } = source;
-
-  let percentage = Math.round((progress / target) * 100);
-
+  const percentage = Math.round((progress / target) * 100);
   const data = [
     { x: 1, y: percentage },
     { x: 2, y: 100 - percentage },
   ];
 
-  if (!source) {
-    return null;
-  }
+  const getColor = value => {
+    if (value < 25) {
+      return COLORS.blue;
+    } else if (value < 50) {
+      return COLORS.green;
+    } else if (value < 75) {
+      return COLORS.yellow;
+    } else {
+      return COLORS.red;
+    }
+  };
+
   return (
     <ParentSize>
       {({ width }) => {
@@ -64,7 +82,7 @@ export const TargetProgressIndicator = ({ source }) => {
               style={{
                 data: {
                   fill: ({ datum }) => {
-                    const color = datum.y > 30 ? 'green' : 'red';
+                    const color = getColor(datum.y);
                     return datum.x === 1 ? color : 'transparent';
                   },
                 },
@@ -82,6 +100,7 @@ export const TargetProgressIndicator = ({ source }) => {
                       verticalAnchor="end"
                       x={radius}
                       y={radius}
+                      // ERROR
                       dy={-8}
                       className={clsx(styles.text, styles.value)}
                     >
