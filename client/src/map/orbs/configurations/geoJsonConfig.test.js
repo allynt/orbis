@@ -9,6 +9,7 @@ import configFn, {
 const FILLED_COLOR_RGB = hexToRgbArray(DEFAULT_FILLED_COLOR);
 const STROKE_COLOR_RGB = hexToRgbArray(DEFAULT_LINE_COLOR);
 const HIGHLIGHT_COLOR_RGB = hexToRgbArray(DEFAULT_HIGHLIGHT_COLOR);
+const TEST_COLOR = '#ffffff';
 
 const setup = ({
   isFilled,
@@ -51,36 +52,30 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test visible with default color when filled not set and filledColor supplied', () => {
-      const testFilledColor = '#ffffff';
-
       const { filled, getFillColor } = setup({
-        filledColor: testFilledColor,
+        filledColor: TEST_COLOR,
       });
 
       expect(filled).toBe(true);
       expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
-      expect(getFillColor()).toEqual(hexToRgbArray(testFilledColor));
+      expect(getFillColor()).toEqual(hexToRgbArray(TEST_COLOR));
     });
 
     it('test visible with custom color when filled is true and filledColor supplied', () => {
-      const testFilledColor = '#ffffff';
-
       const { filled, getFillColor } = setup({
         isFilled: true,
-        filledColor: testFilledColor,
+        filledColor: TEST_COLOR,
       });
 
       expect(filled).toBe(true);
       expect(getFillColor()).not.toEqual(FILLED_COLOR_RGB);
-      expect(getFillColor()).toEqual(hexToRgbArray(testFilledColor));
+      expect(getFillColor()).toEqual(hexToRgbArray(TEST_COLOR));
     });
 
     it('test color is null when filled is false and filledColor supplied', () => {
-      const testFilledColor = '#ffffff';
-
       const { filled, getFillColor } = setup({
         isFilled: false,
-        testFilledColor,
+        testFilledColor: TEST_COLOR,
       });
 
       expect(filled).toBe(false);
@@ -112,36 +107,30 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test visible with default color when stroked not set and outlineColor supplied', () => {
-      const testColor = '#ffffff';
-
       const { stroked, getLineColor } = setup({
-        outlineColor: testColor,
+        outlineColor: TEST_COLOR,
       });
 
       expect(stroked).toBe(true);
       expect(getLineColor()).not.toEqual(STROKE_COLOR_RGB);
-      expect(getLineColor()).toEqual(hexToRgbArray(testColor));
+      expect(getLineColor()).toEqual(hexToRgbArray(TEST_COLOR));
     });
 
     it('test visible with custom color when stroked is true and outlineColor supplied', () => {
-      const testColor = '#ffffff';
-
       const { stroked, getLineColor } = setup({
         isOutlined: true,
-        outlineColor: testColor,
+        outlineColor: TEST_COLOR,
       });
 
       expect(stroked).toBe(true);
       expect(getLineColor()).not.toEqual(STROKE_COLOR_RGB);
-      expect(getLineColor()).toEqual(hexToRgbArray(testColor));
+      expect(getLineColor()).toEqual(hexToRgbArray(TEST_COLOR));
     });
 
     it('test color is null when stroked is false and outlineColor supplied', () => {
-      const testColor = '#ffffff';
-
       const { stroked, getLineColor } = setup({
         isOutlined: false,
-        outlineColor: testColor,
+        outlineColor: TEST_COLOR,
       });
 
       expect(stroked).toBe(false);
@@ -175,28 +164,24 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test visible with custom color when pickable is true and highlightColor supplied', () => {
-      const testHighLightColor = '#ffffff';
-
       const { pickable, highlightColor } = setup({
         isHighlighted: true,
-        highlightColor: testHighLightColor,
+        highlightColor: TEST_COLOR,
       });
 
       expect(pickable).toBe(true);
       expect(highlightColor()).not.toEqual(HIGHLIGHT_COLOR_RGB);
-      expect(highlightColor()).toEqual(hexToRgbArray(testHighLightColor));
+      expect(highlightColor()).toEqual(hexToRgbArray(TEST_COLOR));
     });
 
     it('test highlighted invisible when pickable set false and highlightColor supplied', () => {
-      const testHighLightColor = '#ffffff';
-
       const { pickable, highlightColor } = setup({
         isHighlighted: false,
-        testHighLightColor,
+        testHighLightColor: TEST_COLOR,
       });
 
       expect(pickable).toBe(false);
-      expect(highlightColor()).not.toEqual(hexToRgbArray(testHighLightColor));
+      expect(highlightColor()).not.toEqual(hexToRgbArray(TEST_COLOR));
       expect(highlightColor()).toBeNull();
     });
   });
