@@ -26,7 +26,12 @@ const useStyles = makeStyles(theme => ({
  *   drawingToolsEnabled?: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
  * }} props
  */
-const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
+const DataLayers = ({
+  sidebarComponents,
+  drawingToolsEnabled,
+  aoiDrawMode,
+  setAoiDrawMode,
+}) => {
   const styles = useStyles();
 
   const activeCategorisedSources = useSelector(
@@ -43,6 +48,8 @@ const DataLayers = ({ sidebarComponents, drawingToolsEnabled }) => {
         sidebarComponents={sidebarComponents}
         activeCategorisedSources={activeCategorisedSources}
         drawingToolsEnabled={drawingToolsEnabled}
+        aoiDrawMode={aoiDrawMode}
+        setAoiDrawMode={setAoiDrawMode}
       />
     </div>
   );

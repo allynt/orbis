@@ -15,6 +15,7 @@ import {
   setVisiblePanel,
   startDrawingAoi,
   visiblePanelSelector,
+  saveAoi,
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
@@ -45,6 +46,8 @@ const DataLayersToolbar = ({
   sidebarComponents,
   activeCategorisedSources,
   drawingToolsEnabled,
+  aoiDrawMode,
+  setAoiDrawMode,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
@@ -86,7 +89,12 @@ const DataLayersToolbar = ({
           />
         )}
         {visiblePanel === Panels.AOI && (
-          <AoiView onDrawAoiClick={onDrawAoiClick} />
+          <AoiView
+            onDrawAoiClick={onDrawAoiClick}
+            onSubmit={form => dispatch(saveAoi(form))}
+            aoiDrawMode={aoiDrawMode}
+            setAoiDrawMode={setAoiDrawMode}
+          />
         )}
       </div>
     </div>

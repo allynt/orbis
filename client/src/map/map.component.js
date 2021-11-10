@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { mapboxTokenSelector } from 'app.slice';
 import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmarks.slice';
-import { isDrawingAoiSelector } from 'data-layers/aoi/aoi.slice';
-import { useAoiLayer } from 'data-layers/aoi/useAoiLayer';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -97,6 +95,8 @@ const Map = ({
   setDrawingToolsEnabled,
   drawMode,
   setDrawMode,
+  isDrawingAoi,
+  drawAoiLayer,
 }) => {
   const {
     topMapRef,
@@ -119,16 +119,12 @@ const Map = ({
   const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
 
-  const { drawAoiLayer } = useAoiLayer();
-
   const {
     drawSatelliteAoiLayer,
     scenesLayer,
     selectedSceneLayer,
   } = useSatellitesLayers();
   const isDrawingSatelliteAoi = useSelector(isDrawingSatelliteAoiSelector);
-
-  const isDrawingAoi = useSelector(isDrawingAoiSelector);
 
   const handleExtrusionScaleChange = useCallback(
     value => dispatch(setExtrusionScale(value)),
@@ -160,6 +156,7 @@ const Map = ({
       return getBottomMapCursor(cursorState);
     },
     [
+      isDrawingAoi,
       drawAoiLayer,
       drawSatelliteAoiLayer,
       drawingToolsEnabled,
