@@ -17,8 +17,6 @@ const AoiToolbox = ({ onToolSelect, selectedTool }) => {
   const styles = useStyles();
 
   const handleToolChange = tool => {
-    // console.log('HANDLIONG TOOL CHANGE: ', tool);
-    // console.log('SELECTED TOOL: ', selectedTool);
     if (onToolSelect === null) {
       return;
     }
@@ -39,6 +37,7 @@ const AoiToolbox = ({ onToolSelect, selectedTool }) => {
             onClick={() => handleToolChange(value)}
             className={styles.button}
             size="small"
+            aria-label={text}
           >
             <Icon />
           </IconButton>

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
+import AoiToolbox from './toolbox/aoi-toolbox.component';
+
 const useStyles = makeStyles({
   wrapper: {
     display: 'flex',
@@ -13,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Aoi = ({ onDrawAoiClick }) => {
+const Aoi = ({ onDrawAoiClick, onSubmit, aoiDrawMode, setAoiDrawMode }) => {
   const styles = useStyles();
 
   return (
@@ -22,9 +24,17 @@ const Aoi = ({ onDrawAoiClick }) => {
         Search
       </Typography>
       <Typography paragraph>
-        Please select the Area Of Interest on the map to earch for available
+        Please select the Area Of Interest on the map to search for available
         data.
       </Typography>
+
+      <AoiToolbox
+        onToolSelect={tool => {
+          setAoiDrawMode(tool);
+          onDrawAoiClick();
+        }}
+        selectedTool={aoiDrawMode}
+      />
 
       <Button
         color="secondary"
