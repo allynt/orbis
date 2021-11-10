@@ -1,6 +1,8 @@
-import { DrawRectangleMode, ViewMode } from '@nebula.gl/edit-modes';
+import { useEffect, useState } from 'react';
+
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { feature, featureCollection, geometry } from '@turf/turf';
+import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Panels } from 'data-layers/data-layers.constants';
@@ -12,13 +14,22 @@ import {
   isDrawingAoiSelector,
   visiblePanelSelector,
 } from './aoi.slice';
+import { DRAW_MODE_MAP } from './toolbox/aoi-toolbox.constants';
 
-export const useAoiLayer = () => {
+export const useAoiLayer = ({ defaultAoiDrawMode = 'ViewMode' } = {}) => {
   const dispatch = useDispatch();
+
+  const [aoiDrawMode, setAoiDrawMode] = useState(defaultAoiDrawMode);
 
   const isDrawingAoi = useSelector(isDrawingAoiSelector);
   const visiblePanel = useSelector(visiblePanelSelector);
   const aoi = useSelector(aoiSelector);
+
+  useEffect(() => {
+    if (!isDrawingAoi) {
+      setAoiDrawMode('ViewMode');
+    }
+  }, [isDrawingAoi]);
 
   const onEdit = ({ editType, updatedData }) => {
     if (editType !== 'addFeature') return;
@@ -31,8 +42,8 @@ export const useAoiLayer = () => {
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
     data: featureCollection(aoi ? [feature(geometry('Polygon', [aoi]))] : []),
-    visible: visiblePanel === Panels.DATA_LAYERS || visiblePanel === Panels.AOI,
-    mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
+    visible: visiblePanel === Panels.AOI,
+    mode: get(DRAW_MODE_MAP, aoiDrawMode),
     selectedFeatureIndexes: [],
     onEdit,
     getFillColor,
@@ -42,6 +53,9 @@ export const useAoiLayer = () => {
   });
 
   return {
-    drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
+    drawAoiLayer,
+    isDrawingAoi,
+    aoiDrawMode,
+    setAoiDrawMode,
   };
 };
