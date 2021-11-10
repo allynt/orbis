@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Paper,
-  Box,
-  Typography,
-  lighten,
-  makeStyles,
-} from '@astrosat/astrosat-ui';
+import { Paper, Typography, lighten, makeStyles } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 

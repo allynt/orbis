@@ -7,6 +7,8 @@ import { Text } from '@visx/text';
 import clsx from 'clsx';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
+import { COLORS } from '../../constants';
+
 const useStyles = makeStyles(theme => ({
   circle: {
     fill: theme.palette.background.default,
@@ -23,34 +25,28 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-export const TargetProgressIndicator = ({ source }) => {
+const TargetProgressIndicator = ({ source }) => {
   const styles = useStyles({});
 
   if (!source) {
     return null;
   }
 
-  const COLORS = {
-    blue: '#37e5d8',
-    green: '#d6ea69',
-    yellow: '#ffb72e',
-    red: '#f52455',
-  };
-
   const { name, target, progress } = source;
-  const percentage = Math.round((progress / target) * 100);
-  const data = [
-    { x: 1, y: percentage },
-    { x: 2, y: 100 - percentage },
-  ];
+
+  const percentage = Math.round((progress / target) * 100) || null,
+    data = [
+      { x: 1, y: percentage },
+      { x: 2, y: 100 - percentage },
+    ];
 
   const getColor = value => {
     if (value < 25) {
       return COLORS.blue;
     } else if (value < 50) {
-      return COLORS.green;
-    } else if (value < 75) {
       return COLORS.yellow;
+    } else if (value < 75) {
+      return COLORS.green;
     } else {
       return COLORS.red;
     }
@@ -60,13 +56,15 @@ export const TargetProgressIndicator = ({ source }) => {
     <ParentSize>
       {({ width }) => {
         const radius = width / 2,
-          progressBarWidth = 16;
+          progressBarWidth = 16,
+          bgCirlceRadius = radius - progressBarWidth / 2;
+
         return (
           <svg width={width} height={width} viewBox={`0 0 ${width} ${width}`}>
             <circle
               cx={radius}
               cy={radius}
-              r={radius - progressBarWidth / 2}
+              r={bgCirlceRadius > 0 ? bgCirlceRadius : 0}
               className={styles.circle}
             />
             <VictoryPie
@@ -90,8 +88,7 @@ export const TargetProgressIndicator = ({ source }) => {
             />
             <VictoryAnimation duration={1000} data={percentage}>
               {newProps => {
-                const isNumber =
-                  typeof newProps === 'number' && !isNaN(newProps);
+                const isNumber = typeof newProps === 'number';
                 return isNumber ? (
                   <>
                     <Text
@@ -100,7 +97,6 @@ export const TargetProgressIndicator = ({ source }) => {
                       verticalAnchor="end"
                       x={radius}
                       y={radius}
-                      // ERROR
                       dy={-8}
                       className={clsx(styles.text, styles.value)}
                     >
@@ -138,3 +134,5 @@ export const TargetProgressIndicator = ({ source }) => {
     </ParentSize>
   );
 };
+
+export default TargetProgressIndicator;
