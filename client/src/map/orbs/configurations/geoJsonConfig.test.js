@@ -11,19 +11,19 @@ const STROKE_COLOR_RGB = hexToRgbArray(DEFAULT_LINE_COLOR);
 const HIGHLIGHT_COLOR_RGB = hexToRgbArray(DEFAULT_HIGHLIGHT_COLOR);
 
 const setup = ({
-  filled,
+  isFilled,
   filledColor,
-  stroked,
+  isOutlined,
   outlineColor,
-  pickable,
+  isHighlighted,
   highlightColor,
 } = {}) =>
   configFn({
-    isFilled: filled,
+    isFilled,
     filledColor,
-    isOutlined: stroked,
+    isOutlined,
     outlineColor,
-    isHighlighted: pickable,
+    isHighlighted,
     highlightColor,
   });
 
@@ -37,14 +37,14 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test when filled is false and no filledColor supplied', () => {
-      const { filled, getFillColor } = setup({ filled: false });
+      const { filled, getFillColor } = setup({ isFilled: false });
 
       expect(filled).toBe(false);
       expect(getFillColor()).toBeNull();
     });
 
     it('test visible with default color when filled is true and no filledColor supplied', () => {
-      const { filled, getFillColor } = setup({ filled: true });
+      const { filled, getFillColor } = setup({ isFilled: true });
 
       expect(filled).toBe(true);
       expect(getFillColor()).toEqual(FILLED_COLOR_RGB);
@@ -66,7 +66,7 @@ describe('GeoJsonConfig', () => {
       const testFilledColor = '#ffffff';
 
       const { filled, getFillColor } = setup({
-        filled: true,
+        isFilled: true,
         filledColor: testFilledColor,
       });
 
@@ -79,7 +79,7 @@ describe('GeoJsonConfig', () => {
       const testFilledColor = '#ffffff';
 
       const { filled, getFillColor } = setup({
-        filled: false,
+        isFilled: false,
         testFilledColor,
       });
 
@@ -98,14 +98,14 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test when stroked is false and no outlineColor supplied', () => {
-      const { stroked, getLineColor } = setup({ stroked: false });
+      const { stroked, getLineColor } = setup({ isOutlined: false });
 
       expect(stroked).toBe(false);
       expect(getLineColor()).toBeNull();
     });
 
     it('test visible with default color when stroked is true and no outlineColor supplied', () => {
-      const { stroked, getLineColor } = setup({ stroked: true });
+      const { stroked, getLineColor } = setup({ isOutlined: true });
 
       expect(stroked).toBe(true);
       expect(getLineColor()).toEqual(STROKE_COLOR_RGB);
@@ -127,7 +127,7 @@ describe('GeoJsonConfig', () => {
       const testColor = '#ffffff';
 
       const { stroked, getLineColor } = setup({
-        stroked: true,
+        isOutlined: true,
         outlineColor: testColor,
       });
 
@@ -140,7 +140,7 @@ describe('GeoJsonConfig', () => {
       const testColor = '#ffffff';
 
       const { stroked, getLineColor } = setup({
-        stroked: false,
+        isOutlined: false,
         outlineColor: testColor,
       });
 
@@ -159,7 +159,7 @@ describe('GeoJsonConfig', () => {
 
     it('test when pickable is false and no highlightColor supplied', () => {
       const { pickable, highlightColor } = setup({
-        pickable: false,
+        isHighlighted: false,
       });
 
       expect(pickable).toBe(false);
@@ -168,7 +168,7 @@ describe('GeoJsonConfig', () => {
     });
 
     it('test visible with default color when pickable is true and no highlightColor supplied', () => {
-      const { pickable, highlightColor } = setup({ pickable: true });
+      const { pickable, highlightColor } = setup({ isHighlighted: true });
 
       expect(pickable).toBe(true);
       expect(highlightColor()).toEqual(HIGHLIGHT_COLOR_RGB);
@@ -178,7 +178,7 @@ describe('GeoJsonConfig', () => {
       const testHighLightColor = '#ffffff';
 
       const { pickable, highlightColor } = setup({
-        pickable: true,
+        isHighlighted: true,
         highlightColor: testHighLightColor,
       });
 
@@ -191,8 +191,8 @@ describe('GeoJsonConfig', () => {
       const testHighLightColor = '#ffffff';
 
       const { pickable, highlightColor } = setup({
-        pickable: false,
-        highlightColor: testHighLightColor,
+        isHighlighted: false,
+        testHighLightColor,
       });
 
       expect(pickable).toBe(false);

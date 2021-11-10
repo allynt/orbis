@@ -37,13 +37,13 @@ const geoJsonConfiguration = ({
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
 
-  const newLineColor = hexToRgbArray(outlineColor);
+  const newOutlineColor = hexToRgbArray(outlineColor);
   const newFilledColor = hexToRgbArray(filledColor);
-  const newHighLightColor = hexToRgbArray(highlightColor);
+  const newHighlightColor = hexToRgbArray(highlightColor);
 
   const getFillColor = () => (isFilled ? newFilledColor : null);
-  const getLineColor = () => (isOutlined ? newLineColor : null);
-  const getHighlightColor = () => (isHighlighted ? newHighLightColor : null);
+  const getLineColor = () => (isOutlined ? newOutlineColor : null);
+  const getHighlightColor = () => (isHighlighted ? newHighlightColor : null);
 
   return {
     id,
