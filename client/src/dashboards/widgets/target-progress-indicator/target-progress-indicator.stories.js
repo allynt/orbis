@@ -1,6 +1,7 @@
 import React from 'react';
 
-import WidgetWrapper from '../../components/widget-wrapper.component';
+import { COLORS } from '../../constants';
+import WidgetWrapper from '../widget-wrapper.component';
 import TargetProgressIndicator from './target-progress-indicator.component';
 
 export default {
@@ -23,6 +24,7 @@ Default.args = {
       '% Houses Delivered so Far Out of Housing Delivery Target For Previous 5 Financial Years.',
     info:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni, nisi excepturi. Nemo quia iusto, vel tempora deleniti suscipit rerum soluta inventore consectetur ab consequatur doloribus beatae vero saepe ex magnam.',
+    color: COLORS.blue,
     target: 300,
     progress: 240,
   },

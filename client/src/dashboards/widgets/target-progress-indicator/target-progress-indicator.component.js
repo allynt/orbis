@@ -7,8 +7,6 @@ import { Text } from '@visx/text';
 import clsx from 'clsx';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
-import { COLORS } from '../../constants';
-
 const useStyles = makeStyles(theme => ({
   circle: {
     fill: theme.palette.background.default,
@@ -16,9 +14,9 @@ const useStyles = makeStyles(theme => ({
   text: {
     fill: theme.palette.text.primary,
     fontWeight: 600,
-    '&$value': { fontSize: 48 },
-    '&$target': { fontSize: 14 },
-    '&$noTarget': { fontSize: 16 },
+    '&$value': { fontSize: theme.typography.pxToRem(48) },
+    '&$target': { fontSize: theme.typography.pxToRem(14) },
+    '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
   },
   value: {},
   target: {},
@@ -32,25 +30,13 @@ const TargetProgressIndicator = ({ source }) => {
     return null;
   }
 
-  const { name, target, progress } = source;
+  const { name, target, progress, color } = source;
 
   const percentage = Math.round((progress / target) * 100) || null,
     data = [
       { x: 1, y: percentage },
       { x: 2, y: 100 - percentage },
     ];
-
-  const getColor = value => {
-    if (value < 25) {
-      return COLORS.blue;
-    } else if (value < 50) {
-      return COLORS.yellow;
-    } else if (value < 75) {
-      return COLORS.green;
-    } else {
-      return COLORS.red;
-    }
-  };
 
   return (
     <ParentSize>
@@ -79,10 +65,7 @@ const TargetProgressIndicator = ({ source }) => {
               labels={() => null}
               style={{
                 data: {
-                  fill: ({ datum }) => {
-                    const color = getColor(datum.y);
-                    return datum.x === 1 ? color : 'transparent';
-                  },
+                  fill: ({ datum }) => (datum.x === 1 ? color : 'transparent'),
                 },
               }}
             />

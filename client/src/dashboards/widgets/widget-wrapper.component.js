@@ -8,7 +8,7 @@ import { InfoButtonTooltip } from 'components';
 
 const useStyles = makeStyles(theme => ({
   info: {
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
   },
   paper: {
     backgroundColor: lighten(theme.palette.background.default, 0.055),
@@ -42,7 +42,10 @@ const Widget = ({
           {title}
         </Typography>
         {!!info ? (
-          <InfoButtonTooltip tooltipContent={info} className={styles.info} />
+          <InfoButtonTooltip
+            tooltipContent={info}
+            iconButtonClassName={styles.info}
+          />
         ) : null}
       </div>
       {children}
