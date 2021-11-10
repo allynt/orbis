@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Button, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  makeStyles,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
+import SaveAoiForm from './save-aoi-form/save-aoi-form.component';
 import AoiToolbox from './toolbox/aoi-toolbox.component';
 
 const useStyles = makeStyles({
@@ -13,10 +21,18 @@ const useStyles = makeStyles({
     margin: '0 auto',
     marginTop: '1rem',
   },
+  dialogTitle: { position: 'relative' },
 });
 
 const Aoi = ({ onDrawAoiClick, onSubmit, aoiDrawMode, setAoiDrawMode }) => {
   const styles = useStyles();
+
+  const [saveAoiFormOpen, setSaveAoiFormOpen] = useState(false);
+
+  const handleSaveAoiSubmit = values => {
+    setSaveAoiFormOpen(false);
+    onSubmit(values);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -38,11 +54,28 @@ const Aoi = ({ onDrawAoiClick, onSubmit, aoiDrawMode, setAoiDrawMode }) => {
 
       <Button
         color="secondary"
-        onClick={onDrawAoiClick}
+        onClick={() => setSaveAoiFormOpen(true)}
         className={styles.button}
       >
         Save
       </Button>
+
+      <Dialog
+        open={saveAoiFormOpen}
+        onClose={() => setSaveAoiFormOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle
+          className={styles.dialogTitle}
+          onClose={() => setSaveAoiFormOpen(false)}
+        >
+          Name Your Aoi
+        </DialogTitle>
+        <DialogContent>
+          <SaveAoiForm onSubmit={handleSaveAoiSubmit} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
