@@ -82,7 +82,6 @@ export const MissionControl = React.memo(() => {
   const [open, setOpen] = useState(
     location.pathname.includes('/mission-control'),
   );
-  console.log(match);
 
   const styles = useStyles({});
 
