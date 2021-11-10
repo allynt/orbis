@@ -151,8 +151,12 @@ const Map = ({
     cursorState => {
       if (drawingToolsEnabled && editableLayer?.state?.cursor)
         return editableLayer?.state?.cursor;
-      if (drawAoiLayer) return drawAoiLayer?.state?.cursor;
-      if (drawSatelliteAoiLayer) return drawSatelliteAoiLayer?.state?.cursor;
+      if (isDrawingAoi && drawAoiLayer?.state?.cursor) {
+        return drawAoiLayer?.state?.cursor;
+      }
+      if (drawSatelliteAoiLayer) {
+        return drawSatelliteAoiLayer?.state?.cursor;
+      }
       return getBottomMapCursor(cursorState);
     },
     [
