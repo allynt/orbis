@@ -107,7 +107,7 @@ jobs:
         run: |
           apt-get update && apt-get install -y postgresql-client python3-gdal
           pip3 install --upgrade pip
-          pip3 install --upgrade pipenv
+          pip3 install --upgrade pipenv==2021.5.29
 
       - name: Install Dependencies and Run Tests
         working-directory: server
