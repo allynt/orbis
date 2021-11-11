@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { darken } from '@astrosat/astrosat-ui';
+
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
 import {
@@ -7,6 +9,7 @@ import {
   VictoryChart,
   VictoryLine,
   VictoryScatter,
+  VictoryGroup,
 } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
@@ -43,8 +46,28 @@ const LineChart = ({
             label={yLabel}
             tickFormat={t => numeral(Number(t).toLocaleString()).format('0 a')}
           />
-          <VictoryLine />
-          <VictoryScatter />
+          {ranges.map((range, i) => {
+            const color = chartTheme.colors[i];
+            const props = {
+              data,
+              x,
+              y: range,
+            };
+            return (
+              <VictoryGroup key={range}>
+                <VictoryLine {...props} style={{ data: { stroke: color } }} />
+                <VictoryScatter
+                  {...props}
+                  style={{
+                    data: {
+                      stroke: darken(color, 0.2),
+                      fill: color,
+                    },
+                  }}
+                />
+              </VictoryGroup>
+            );
+          })}
         </VictoryChart>
       )}
     </ParentSize>
