@@ -47,7 +47,7 @@ const LineChart = ({
             tickFormat={t => numeral(Number(t).toLocaleString()).format('0 a')}
           />
           {ranges.map((range, i) => {
-            const color = chartTheme.colors[i];
+            const color = chartTheme.colors[i % chartTheme.colors.length];
             const props = {
               data,
               x,
