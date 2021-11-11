@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-const TargetProgressIndicator = ({ source }) => {
+export const TargetProgressIndicator = ({ source }) => {
   const styles = useStyles({});
 
   if (!source) {
@@ -117,5 +117,3 @@ const TargetProgressIndicator = ({ source }) => {
     </ParentSize>
   );
 };
-
-export default TargetProgressIndicator;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import TargetProgressIndicator from './target-progress-indicator.component';
+import { TargetProgressIndicator } from './target-progress-indicator.component';
 
 const TEST_SOURCE = {
   name: 'Housing Delivery',
