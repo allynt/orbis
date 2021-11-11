@@ -1,7 +1,6 @@
 import { alpha, useTheme } from '@astrosat/astrosat-ui';
 
-import { assign } from 'lodash';
-import { VictoryTheme } from 'victory';
+import deepmerge from 'deepmerge';
 
 // *
 // * Colors
@@ -17,17 +16,11 @@ const colors = [
   '#ffa048',
 ];
 
-// *
-// * Layout
-// *
 const baseProps = {
   colorScale: colors,
   animate: true,
 };
 
-// *
-// * Strokes
-// *
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
@@ -42,50 +35,64 @@ export const useChartTheme = () => {
     stroke: 'transparent',
   };
 
-  const centeredLabelStyles = assign({}, baseLabelStyles, {
+  const centeredLabelStyles = deepmerge(baseLabelStyles, {
     textAnchor: 'middle',
   });
+
+  const baseAxisStyles = {
+    style: {
+      axis: {
+        fill: 'transparent',
+        stroke: astrosatUiTheme.palette.text.primary,
+        strokeWidth: 1,
+        strokeLinecap,
+        strokeLinejoin,
+      },
+      axisLabel: deepmerge(centeredLabelStyles, {
+        padding: 40,
+        fill: astrosatUiTheme.palette.primary.main,
+      }),
+      grid: {
+        fill: 'none',
+        strokeDasharray: 5,
+        pointerEvents: 'painted',
+      },
+      ticks: {
+        fill: 'transparent',
+        size: 1,
+        stroke: 'transparent',
+      },
+      tickLabels: deepmerge(baseLabelStyles, {
+        padding: 10,
+        fill: astrosatUiTheme.palette.text.primary,
+      }),
+    },
+  };
 
   return {
     colors,
     fontSize: 14,
-    axis: {
+    independentAxis: deepmerge(baseAxisStyles, {
       style: {
-        axis: {
-          fill: 'transparent',
-          stroke: astrosatUiTheme.palette.text.primary,
-          strokeWidth: 1,
-          strokeLinecap,
-          strokeLinejoin,
-        },
-        axisLabel: assign({}, centeredLabelStyles, {
-          padding: 40,
-          fill: astrosatUiTheme.palette.primary.main,
-        }),
         grid: {
-          fill: 'none',
-          stroke: alpha(astrosatUiTheme.palette.text.disabled, 0.2),
-          strokeDasharray: 5,
-          pointerEvents: 'painted',
-        },
-        ticks: {
-          fill: 'transparent',
-          size: 1,
           stroke: 'transparent',
         },
-        tickLabels: assign({}, baseLabelStyles, {
-          padding: 10,
-          fill: astrosatUiTheme.palette.text.primary,
-        }),
       },
-    },
-    bar: assign({}, baseProps, {
+    }),
+    dependentAxis: deepmerge(baseAxisStyles, {
+      style: {
+        grid: {
+          stroke: alpha(astrosatUiTheme.palette.text.disabled, 0.2),
+        },
+      },
+    }),
+    bar: deepmerge(baseProps, {
       style: {
         labels: baseLabelStyles,
       },
       barRatio: 0.8,
     }),
-    chart: assign({}, baseProps, {
+    chart: deepmerge(baseProps, {
       padding: { left: 80, top: 20, bottom: 60, right: 10 },
     }),
     stack: {

@@ -2,11 +2,11 @@ import React from 'react';
 
 import faker from 'faker';
 
-import { StackedBarWithLineChart } from './stacked-bar-chart.component';
+import { StackedBarChart } from './stacked-bar-chart.component';
 
 export default { title: 'Dashboards/Widgets/StackedBarChart' };
 
-const Template = args => <StackedBarWithLineChart {...args} />;
+const Template = args => <StackedBarChart {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
