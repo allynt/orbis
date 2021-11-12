@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { COLORS } from '../../constants';
-import { Widget } from '../widget-wrapper.component';
+import { Widget } from '../widget.component';
 import { TargetProgressIndicator } from './target-progress-indicator.component';
 
 export default {

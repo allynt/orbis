@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const Widget = ({
+const Widget = ({
   children,
   title,
   titleSize = 'medium',
@@ -52,3 +52,5 @@ export const Widget = ({
     </Paper>
   );
 };
+
+export { Widget };

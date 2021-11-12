@@ -40,5 +40,7 @@
   "[python]": {
     "editor.tabSize": 4
   },
-  "python.analysis.extraPaths": ["./server/"]
+  "python.analysis.extraPaths": [
+    "./server/"
+  ]
 }

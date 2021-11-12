@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LineChart } from './line-chart.component';
+import { Chart } from './chart.component';
 
 const data = new Array(10).fill(undefined).map((_, i) => ({
   value: i,
@@ -10,11 +10,11 @@ const data = new Array(10).fill(undefined).map((_, i) => ({
 }));
 
 export default {
-  title: 'Dashboards/Widgets/Line Chart',
+  title: 'Dashboards/Widgets/Chart',
 };
 
 const Template = args => {
-  return <LineChart {...args} />;
+  return <Chart {...args} />;
 };
 
 export const Default = Template.bind({});
@@ -24,4 +24,5 @@ Default.args = {
   ranges: ['value', 'square', 'sum'],
   xLabel: 'Financial Year',
   yLabel: 'Affordable Housing %age',
+  renderRange: () => {},
 };
