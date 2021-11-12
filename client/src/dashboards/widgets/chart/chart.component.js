@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
-import { VictoryAxis, VictoryChart, VictoryStack } from 'victory';
+import { VictoryAxis, VictoryChart, VictoryStack, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 
@@ -18,15 +18,23 @@ import { useChartTheme } from '../../useChartTheme';
  * }} props
  */
 const Chart = ({
-  x = 'x',
   ranges = ['y'],
   xLabel = '',
   yLabel = '',
-  data,
   renderRange,
   stacked,
+  grouped,
 }) => {
   const chartTheme = useChartTheme();
+  const getWrappers = () => {
+    if (stacked) {
+      return <VictoryStack>{ranges.map(renderRange)}</VictoryStack>;
+    } else if (grouped) {
+      return <VictoryGroup offset={20}>{ranges.map(renderRange)}</VictoryGroup>;
+    } else {
+      return ranges.map(renderRange);
+    }
+  };
   return (
     <ParentSize>
       {({ width }) => (
@@ -42,11 +50,7 @@ const Chart = ({
             label={yLabel}
             tickFormat={t => numeral(Number(t).toLocaleString()).format('0 a')}
           />
-          {stacked ? (
-            <VictoryStack>{ranges.map(renderRange)}</VictoryStack>
-          ) : (
-            ranges.map(renderRange)
-          )}
+          {getWrappers()}
         </VictoryChart>
       )}
     </ParentSize>
