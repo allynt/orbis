@@ -53,4 +53,4 @@ const Widget = ({
   );
 };
 
-export default Widget;
+export { Widget };

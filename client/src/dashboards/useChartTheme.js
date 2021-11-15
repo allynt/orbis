@@ -107,5 +107,23 @@ export const useChartTheme = () => {
         labels: baseLabelStyles,
       },
     },
+    line: {
+      style: {
+        data: {
+          stroke: astrosatUiTheme.palette.primary.main,
+          strokeWidth: 2,
+        },
+      },
+    },
+    scatter: {
+      size: 8,
+      style: {
+        data: {
+          stroke: astrosatUiTheme.palette.primary.dark,
+          strokeWidth: 2,
+          fill: astrosatUiTheme.palette.primary.main,
+        },
+      },
+    },
   };
 };

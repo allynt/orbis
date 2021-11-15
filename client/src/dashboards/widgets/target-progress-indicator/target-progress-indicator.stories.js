@@ -1,18 +1,18 @@
 import React from 'react';
 
 import { COLORS } from '../../constants';
-import WidgetWrapper from '../widget-wrapper.component';
-import TargetProgressIndicator from './target-progress-indicator.component';
+import { Widget } from '../widget.component';
+import { TargetProgressIndicator } from './target-progress-indicator.component';
 
 export default {
-  title: 'Dashboard/Widgets/Target Progress Indicator',
+  title: 'Dashboards/Widgets/Target Progress Indicator',
 };
 
 const Template = ({ source }) => {
   return (
-    <WidgetWrapper title={source?.title} info={source?.info}>
+    <Widget title={source?.title} info={source?.info}>
       <TargetProgressIndicator source={source} />
-    </WidgetWrapper>
+    </Widget>
   );
 };
 
