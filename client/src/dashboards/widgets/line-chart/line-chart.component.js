@@ -2,15 +2,7 @@ import React from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import { ParentSize } from '@visx/responsive';
-import numeral from 'numeral';
-import {
-  VictoryAxis,
-  VictoryChart,
-  VictoryLine,
-  VictoryScatter,
-  VictoryGroup,
-} from 'victory';
+import { VictoryLine, VictoryScatter, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 import { Chart } from '../chart/chart.component';
@@ -34,7 +26,6 @@ const LineChart = ({
   const chartTheme = useChartTheme();
 
   const renderRange = (range, i) => {
-    // concrete implementation of generic chart
     const color = chartTheme.colors[i % chartTheme.colors.length];
     const props = {
       data,
