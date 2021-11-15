@@ -25,39 +25,35 @@ const LineChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const renderRange = (range, i) => {
-    const color = chartTheme.colors[i % chartTheme.colors.length];
-    const props = {
-      data,
-      x,
-      y: range,
-    };
-    return (
-      <VictoryGroup key={range}>
-        <VictoryLine {...props} style={{ data: { stroke: color } }} />
-        <VictoryScatter
-          {...props}
-          style={{
-            data: {
-              stroke: darken(color, 0.2),
-              fill: color,
-            },
-          }}
-        />
-      </VictoryGroup>
-    );
+  const renderWidget = width => {
+    return ranges.map((range, i) => {
+      const color = chartTheme.colors[i % chartTheme.colors.length],
+        scatterWidth = width * 0.5,
+        props = {
+          data,
+          x,
+          y: range,
+        };
+
+      return (
+        <VictoryGroup key={range}>
+          <VictoryLine {...props} style={{ data: { stroke: color } }} />
+          <VictoryScatter
+            {...props}
+            style={{
+              data: {
+                stroke: darken(color, 0.2),
+                width: scatterWidth,
+                fill: color,
+              },
+            }}
+          />
+        </VictoryGroup>
+      );
+    });
   };
 
-  return (
-    <Chart
-      x={x}
-      ranges={ranges}
-      xLabel={xLabel}
-      yLabel={yLabel}
-      data={data}
-      renderRange={renderRange}
-    />
-  );
+  return <Chart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />;
 };
 
 export { LineChart };

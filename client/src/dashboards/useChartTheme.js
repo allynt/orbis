@@ -116,7 +116,6 @@ export const useChartTheme = () => {
       },
     },
     scatter: {
-      size: 8,
       style: {
         data: {
           stroke: astrosatUiTheme.palette.primary.dark,

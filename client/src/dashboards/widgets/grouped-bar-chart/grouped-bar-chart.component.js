@@ -9,8 +9,8 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
   const chartTheme = useChartTheme();
 
   const renderWidget = width => {
-    const barWidth = width / data.length;
-    const offset = width / barWidth;
+    const barWidth = width / data.length,
+      offset = width / barWidth;
     return (
       <VictoryGroup offset={offset}>
         {data.map((arr, i) => (
