@@ -92,14 +92,14 @@ const configuration = ({
           transitionInterpolator: new FlyToInterpolator(),
         });
       } else {
-        if (typeof onGroupClick === 'function')
-          return onGroupClick(info.objects);
-        if (onGroupClick === true) return defaultClick(info.objects);
+        if (onGroupClick) {
+          return defaultClick(info.objects);
+        }
       }
     } else {
-      if (typeof onPointClick === 'function')
-        return onPointClick([info.object]);
-      if (onPointClick === true) return defaultClick([info.object]);
+      if (onPointClick) {
+        return defaultClick([info.object]);
+      }
     }
   };
 
