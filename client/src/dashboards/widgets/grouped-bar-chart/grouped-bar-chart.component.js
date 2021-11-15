@@ -1,30 +1,33 @@
 import React from 'react';
 
-import { VictoryBar } from 'victory';
+import { VictoryBar, VictoryGroup } from 'victory';
 
+import { useChartTheme } from '../../useChartTheme';
 import { Chart } from '../chart/chart.component';
 
-const GroupedBarChart = ({
-  x = 'x',
-  ranges = ['y'],
-  xLabel = '',
-  yLabel = '',
-  data,
-}) => {
-  const renderRange = (range, i) => {
-    return <VictoryBar key={i} data={data[i]} x={x} y={range} />;
+const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
+  const chartTheme = useChartTheme();
+
+  const renderWidget = width => {
+    const barWidth = width / data.length;
+    const offset = width / barWidth;
+    return (
+      <VictoryGroup offset={offset}>
+        {data.map((arr, i) => (
+          <VictoryBar
+            // eslint-disable-next-line react/no-array-index-key
+            key={`dataset-${i}`}
+            data={arr}
+            style={{
+              data: { fill: chartTheme.colors[i], width: barWidth },
+            }}
+          />
+        ))}
+      </VictoryGroup>
+    );
   };
 
-  return (
-    <Chart
-      ranges={ranges}
-      xLabel={xLabel}
-      yLabel={yLabel}
-      data={data}
-      renderRange={renderRange}
-      grouped
-    />
-  );
+  return <Chart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />;
 };
 
 export { GroupedBarChart };
