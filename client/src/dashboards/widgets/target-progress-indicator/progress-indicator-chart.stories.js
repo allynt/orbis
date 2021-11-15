@@ -2,16 +2,16 @@ import React from 'react';
 
 import { COLORS } from '../../constants';
 import { Widget } from '../widget.component';
-import { TargetProgressIndicator } from './target-progress-indicator.component';
+import { ProgressIndicatorChart } from './progress-indicator-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/Target Progress Indicator',
+  title: 'Dashboards/Widgets/Progress Indicator Chart',
 };
 
 const Template = ({ source }) => {
   return (
     <Widget title={source?.title} info={source?.info}>
-      <TargetProgressIndicator source={source} />
+      <ProgressIndicatorChart source={source} />
     </Widget>
   );
 };

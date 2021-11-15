@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 
-import { TargetProgressIndicator } from './target-progress-indicator.component';
+import { ProgressIndicatorChart } from './progress-indicator-chart.component';
 
 const TEST_SOURCE = {
   name: 'Housing Delivery',
@@ -15,7 +15,7 @@ const TEST_SOURCE = {
 describe('Target Progress Indicator', () => {
   it('renders', () => {
     const { getByText } = render(
-      <TargetProgressIndicator source={TEST_SOURCE} />,
+      <ProgressIndicatorChart source={TEST_SOURCE} />,
     );
 
     expect(getByText('Target 300 Units')).toBeInTheDocument();
@@ -23,9 +23,7 @@ describe('Target Progress Indicator', () => {
 
   it('shows no target message when no target is provided', () => {
     const { getByText } = render(
-      <TargetProgressIndicator
-        source={{ ...TEST_SOURCE, target: undefined }}
-      />,
+      <ProgressIndicatorChart source={{ ...TEST_SOURCE, target: undefined }} />,
     );
 
     expect(getByText('Housing Delivery Target Required')).toBeInTheDocument();
@@ -33,7 +31,7 @@ describe('Target Progress Indicator', () => {
 
   it('shows no target message when no progress is provided', () => {
     const { getByText } = render(
-      <TargetProgressIndicator
+      <ProgressIndicatorChart
         source={{ ...TEST_SOURCE, progress: undefined }}
       />,
     );

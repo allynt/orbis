@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-export const TargetProgressIndicator = ({ source }) => {
+const ProgressIndicatorChart = ({ source }) => {
   const styles = useStyles({});
 
   if (!source) {
@@ -117,3 +117,5 @@ export const TargetProgressIndicator = ({ source }) => {
     </ParentSize>
   );
 };
+
+export { ProgressIndicatorChart };
