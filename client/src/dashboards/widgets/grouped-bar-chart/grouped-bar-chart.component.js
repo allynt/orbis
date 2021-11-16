@@ -10,7 +10,7 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
 
   // TODO: width and offset responsive values
 
-  const renderWidget = width => {
+  const renderGroupedBarChart = width => {
     const barWidth = width / data.length,
       offset = width / barWidth;
     return (
@@ -30,7 +30,11 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
   };
 
   return (
-    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />
+    <BaseChart
+      xLabel={xLabel}
+      yLabel={yLabel}
+      renderWidget={renderGroupedBarChart}
+    />
   );
 };
 

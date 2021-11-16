@@ -21,19 +21,33 @@ const StackedBarChart = ({
   yLabel = '',
   data,
 }) => {
-  const renderWidget = width => {
-    const barWidth = width * 0.1;
+  const renderStackedBarChart = width => {
+    const barWidth = width / 15;
     return (
       <VictoryStack>
         {ranges.map((range, i) => {
-          return <VictoryBar key={range} data={data} x={x} y={range} />;
+          return (
+            <VictoryBar
+              key={range}
+              data={data}
+              x={x}
+              y={range}
+              style={{
+                data: { width: 100 },
+              }}
+            />
+          );
         })}
       </VictoryStack>
     );
   };
 
   return (
-    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />
+    <BaseChart
+      xLabel={xLabel}
+      yLabel={yLabel}
+      renderWidget={renderStackedBarChart}
+    />
   );
 };
 

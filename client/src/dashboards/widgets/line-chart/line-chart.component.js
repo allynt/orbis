@@ -25,7 +25,7 @@ const LineChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const renderWidget = width => {
+  const renderLineChart = width => {
     return ranges.map((range, i) => {
       const color = chartTheme.colors[i % chartTheme.colors.length],
         scatterWidth = width * 0.5,
@@ -54,7 +54,7 @@ const LineChart = ({
   };
 
   return (
-    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderLineChart} />
   );
 };
 
