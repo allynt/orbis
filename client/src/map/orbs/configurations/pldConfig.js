@@ -11,6 +11,7 @@ import {
   dataSelector,
 } from '../layers.slice';
 
+const DEFAULT_COLOR = [246, 190, 0];
 const PIN_COLORS = {
   allowed: [170, 0, 0, 255],
   approved: [55, 229, 216, 255],
@@ -26,7 +27,14 @@ const defaultDateRange = {
   endDate: new Date(2020, 2, 26).toISOString(),
 };
 
-const configuration = ({ id, orbState, dispatch, setViewState }) => {
+const configuration = ({
+  id,
+  orbState,
+  dispatch,
+  setViewState,
+  onPointClick,
+  onGroupClick,
+}) => {
   const filterRange = filterValueSelector(id)(orbState);
   const rawData = dataSelector(id)(orbState);
 
@@ -64,6 +72,14 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
     }),
   };
 
+  const defaultClick = data =>
+    dispatch(
+      setClickedFeatures({
+        key: id,
+        clickedFeatures: data,
+      }),
+    );
+
   const onClick = info => {
     if (info.object.properties.cluster) {
       if (info.object.properties.expansion_zoom <= MAX_ZOOM) {
@@ -75,16 +91,20 @@ const configuration = ({ id, orbState, dispatch, setViewState }) => {
           transitionEasing: easeInOutCubic,
           transitionInterpolator: new FlyToInterpolator(),
         });
+      } else {
+        if (onGroupClick) {
+          return defaultClick(info.objects);
+        }
       }
     } else {
-      return dispatch(
-        setClickedFeatures({ key: id, clickedFeatures: [info.object] }),
-      );
+      if (onPointClick) {
+        return defaultClick([info.object]);
+      }
     }
   };
 
   const getPinColor = feature => {
-    let color = null;
+    let color = DEFAULT_COLOR;
     if (!feature.properties['cluster']) {
       color = PIN_COLORS[feature.properties['Status'].toLowerCase()];
     }

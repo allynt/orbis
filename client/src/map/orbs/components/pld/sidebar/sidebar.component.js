@@ -30,6 +30,8 @@ export const PldSidebarComponent = ({
   constructionPhaseFilters,
   developmentTypeFilters,
   iconColor,
+  minFilterDate,
+  maxFilterDate,
 }) => {
   const styles = useStyles();
 
@@ -67,7 +69,8 @@ export const PldSidebarComponent = ({
           Date Range
         </Typography>
         <DateRangeFilter
-          maxDate="today"
+          minDate={minFilterDate}
+          maxDate={maxFilterDate}
           onSubmit={handleChange('dateRange')}
           range={dateRange}
         />

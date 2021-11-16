@@ -53,7 +53,7 @@ class PldAdapter(BaseProxyDataAdapter):
                     "Development Type": source["development_type"],
                     "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
                     "icon": icon_id,
-                    "decision_date": datetime.strptime(source["decision_date"], DATE_FORMAT).isoformat(),
+                    "decision_date": f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
                 }
             })
 
