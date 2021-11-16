@@ -2,7 +2,7 @@ import React from 'react';
 
 import { VictoryBar, VictoryStack } from 'victory';
 
-import { Chart } from '../chart/chart.component';
+import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
@@ -32,7 +32,9 @@ const StackedBarChart = ({
     );
   };
 
-  return <Chart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />;
+  return (
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />
+  );
 };
 
 export { StackedBarChart };

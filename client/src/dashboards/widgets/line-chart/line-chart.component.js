@@ -5,7 +5,7 @@ import { darken } from '@astrosat/astrosat-ui';
 import { VictoryLine, VictoryScatter, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
-import { Chart } from '../chart/chart.component';
+import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
@@ -53,7 +53,9 @@ const LineChart = ({
     });
   };
 
-  return <Chart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />;
+  return (
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderWidget} />
+  );
 };
 
 export { LineChart };

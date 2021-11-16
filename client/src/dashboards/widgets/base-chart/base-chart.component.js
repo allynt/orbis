@@ -13,7 +13,7 @@ import { useChartTheme } from '../../useChartTheme';
  *  renderWidget: (width: number) => React.ReactNode
  * }} props
  */
-const Chart = ({ xLabel = '', yLabel = '', renderWidget }) => {
+const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
   const chartTheme = useChartTheme();
   return (
     <ParentSize>
@@ -37,4 +37,4 @@ const Chart = ({ xLabel = '', yLabel = '', renderWidget }) => {
   );
 };
 
-export { Chart };
+export { BaseChart };
