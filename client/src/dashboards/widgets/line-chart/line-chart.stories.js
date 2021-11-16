@@ -1,17 +1,13 @@
 import React from 'react';
 
+import * as data from '../../mock-data/waltham-forest/mock_approvals_granted';
 import { LineChart } from './line-chart.component';
-
-const data = new Array(10).fill(undefined).map((_, i) => ({
-  value: i,
-  square: i * i,
-  exponent: i ** i,
-  sum: i + i,
-}));
 
 export default {
   title: 'Dashboards/Widgets/Line Chart',
 };
+
+// TODO: Breaks if some range values are missing (some only have 2019/2020, no 2021)
 
 const Template = args => {
   return <LineChart {...args} />;
@@ -19,9 +15,9 @@ const Template = args => {
 
 export const Default = Template.bind({});
 Default.args = {
-  data,
-  x: 'value',
-  ranges: ['value', 'square', 'sum'],
-  xLabel: 'Financial Year',
-  yLabel: 'Affordable Housing %age',
+  data: data.properties.find(p => p.name === 'Monthly').data,
+  x: 'Month',
+  ranges: ['2019', '2020'],
+  xLabel: 'Year',
+  yLabel: 'Data Property Name / Unit',
 };
