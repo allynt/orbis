@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     backgroundColor: lighten(theme.palette.background.default, 0.055),
     padding: theme.spacing(3),
+    height: 'fit-content',
   },
   header: {
     display: 'flex',
@@ -22,6 +23,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ * children: React.ReactNode
+ * title: string
+ * titleSize?: string
+ * info?: string
+ * className?: string
+ * }} props
+ */
 const Widget = ({
   children,
   title,

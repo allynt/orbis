@@ -11,7 +11,6 @@ import { BaseChart } from '../base-chart/base-chart.component';
  *  xLabel?: string
  *  yLabel?: string
  *  data: any[]
-
  * }} props
  */
 const StackedBarChart = ({
@@ -22,6 +21,8 @@ const StackedBarChart = ({
   data,
 }) => {
   const renderStackedBarChart = width => {
+    // TODO: Responsive barWidth value
+
     const barWidth = width / 15;
     return (
       <VictoryStack>

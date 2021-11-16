@@ -23,14 +23,14 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-const ProgressIndicatorChart = ({ source }) => {
+const ProgressIndicatorChart = ({ property, color }) => {
   const styles = useStyles({});
 
-  if (!source) {
+  if (!property) {
     return null;
   }
 
-  const { name, target, progress, color } = source;
+  const { name, target, progress } = property;
 
   const percentage = Math.round((progress / target) * 100) || null,
     data = [

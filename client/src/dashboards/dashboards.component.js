@@ -42,22 +42,22 @@ const getData = async (url, token) => {
   return await res.json();
 };
 
-const useSourceData = sourceId => {
-  const dispatch = useDispatch();
-  const source = useSelector(dataSourceByIdSelector(sourceId));
-  const dataToken = useSelector(selectDataToken);
-  const data = useSelector(state => dataSelector(sourceId)(state?.orbs));
+// const useSourceData = sourceId => {
+//   const dispatch = useDispatch();
+//   const source = useSelector(dataSourceByIdSelector(sourceId));
+//   const dataToken = useSelector(selectDataToken);
+//   const data = useSelector(state => dataSelector(sourceId)(state?.orbs));
 
-  useEffect(() => {
-    if (!data || typeof data === 'string') {
-      getData(dataUrlFromSource(source), dataToken).then(data =>
-        dispatch(setData({ key: source.source_id, data })),
-      );
-    }
-  }, [data, dataToken, source, dispatch]);
+//   useEffect(() => {
+//     if (!data || typeof data === 'string') {
+//       getData(dataUrlFromSource(source), dataToken).then(data =>
+//         dispatch(setData({ key: source.source_id, data })),
+//       );
+//     }
+//   }, [data, dataToken, source, dispatch]);
 
-  return data;
-};
+//   return data;
+// };
 
 const Dashboards = () => {
   const location = useLocation();
@@ -65,19 +65,21 @@ const Dashboards = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const sourceId = searchParams.get('source_id');
-  const source = useSelector(dataSourceByIdSelector(sourceId));
-  const data = useSourceData(sourceId);
+  // const source = useSelector(dataSourceByIdSelector(sourceId));
+  // const data = useSourceData(sourceId);
 
-  const dashboardComponentDefinition =
-    source.metadata.application.orbis.dashboard_component;
+  // const dashboardComponentDefinition =
+  //   source.metadata.application.orbis.dashboard_component;
 
   const handleProfileClose = () => setProfileOpen(false);
 
-  if (!dashboardComponentDefinition) return null;
+  // if (!dashboardComponentDefinition) return null;
 
-  const { name, props: dashboardProps = {} } = dashboardComponentDefinition;
+  // const { name, props: dashboardProps = {} } = dashboardComponentDefinition;
 
-  const Dashboard = React.lazy(() => import(`./components/${name}.component`));
+  const Dashboard = React.lazy(() =>
+    import(`./components/TestDashboard.component`),
+  );
 
   return (
     <>
@@ -114,7 +116,7 @@ const Dashboards = () => {
         </Sidebar>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <React.Suspense fallback={<LoadMaskFallback />}>
-            <Dashboard data={data} {...dashboardProps} />
+            <Dashboard />
           </React.Suspense>
         </ErrorBoundary>
       </Box>
