@@ -1,3 +1,5 @@
+// stacked bar chart
+
 module.exports = {
   name:
     'Mock Data for Progression of Units Relating to Planning Schedule Graph',

@@ -1,3 +1,5 @@
+// grouped bar chart
+
 module.exports = {
   name: 'Mock Data for Total Housing Delivery Graph',
   version: '1.0.0',
