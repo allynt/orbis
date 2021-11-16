@@ -22,11 +22,14 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'stretch',
     padding: '2rem',
+    gap: '1rem',
   },
   barCharts: {
     display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'stretch',
     padding: '2rem',
+    gap: '1rem',
   },
   lineCharts: {
     padding: '2rem',

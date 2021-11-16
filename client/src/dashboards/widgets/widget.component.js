@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: lighten(theme.palette.background.default, 0.055),
     padding: theme.spacing(3),
     height: 'fit-content',
+    width: '100%',
   },
   header: {
     display: 'flex',
@@ -41,6 +42,9 @@ const Widget = ({
   ...rest
 }) => {
   const styles = useStyles({});
+
+  // TODO: title width affects size of child component
+
   return (
     <Paper className={clsx(styles.paper, className)} {...rest}>
       <div className={styles.header}>

@@ -34,7 +34,7 @@ const StackedBarChart = ({
               x={x}
               y={range}
               style={{
-                data: { width: 100 },
+                data: { width: 50 },
               }}
             />
           );
