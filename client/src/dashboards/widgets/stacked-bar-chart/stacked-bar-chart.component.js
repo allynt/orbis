@@ -21,12 +21,10 @@ const StackedBarChart = ({
   data,
 }) => {
   const renderStackedBarChart = width => {
-    // TODO: Responsive barWidth value
-
-    const barWidth = width / 15;
+    const barWidth = width / 20;
     return (
       <VictoryStack>
-        {ranges.map((range, i) => {
+        {ranges.map(range => {
           return (
             <VictoryBar
               key={range}
@@ -34,7 +32,7 @@ const StackedBarChart = ({
               x={x}
               y={range}
               style={{
-                data: { width: 50 },
+                data: { width: barWidth },
               }}
             />
           );

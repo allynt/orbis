@@ -11,13 +11,13 @@ const useStyles = makeStyles(theme => ({
   parentSize: {
     display: 'flex',
     justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   circle: {
     fill: theme.palette.background.default,
   },
   text: {
     fill: theme.palette.text.primary,
-    fontWeight: 600,
     '&$value': { fontSize: theme.typography.pxToRem(48) },
     '&$target': { fontSize: theme.typography.pxToRem(14) },
     '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
@@ -47,7 +47,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
       {({ width }) => {
         const halfWidth = width / 2,
           radius = halfWidth / 2,
-          progressBarWidth = 16,
+          progressBarWidth = width / 20,
           bgCirlceRadius = radius - progressBarWidth / 2;
 
         return (
@@ -78,10 +78,9 @@ const ProgressIndicatorChart = ({ property, color }) => {
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={data}>
-              {newProps => {
-                const isNumber = typeof newProps === 'number';
-                return isNumber ? (
+            <VictoryAnimation duration={1000} data={{ percentage }}>
+              {newProps =>
+                !!newProps.percentage ? (
                   <>
                     <Text
                       width={radius}
@@ -92,7 +91,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
                       dy={-8}
                       className={clsx(styles.text, styles.value)}
                     >
-                      {`${Math.round(newProps)}%`}
+                      {`${Math.round(Number(newProps.percentage))}%`}
                     </Text>
                     <Text
                       width={radius}
@@ -117,8 +116,8 @@ const ProgressIndicatorChart = ({ property, color }) => {
                   >
                     {`${name} Target Required`}
                   </Text>
-                );
-              }}
+                )
+              }
             </VictoryAnimation>
           </svg>
         );

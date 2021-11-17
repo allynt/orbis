@@ -3,15 +3,18 @@
 module.exports = {
   properties: [
     {
-      title: 'Mock data for progress indicator charts.',
+      title:
+        '% Houses Delivered so Far Out of Housing Delivery Target For Previous 5 Financial Years.',
       info:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Housing Delivery',
       target: 300,
-      progress: 240,
+      // to test error state
+      progress: undefined,
     },
     {
-      title: 'Mock data for progress indicator charts.',
+      title:
+        '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
       info:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Intermediate Delivery',
@@ -19,7 +22,7 @@ module.exports = {
       progress: 1100,
     },
     {
-      title: 'Mock data for progress indicator charts.',
+      title: '% Market Houses Delivered so Far Out of Current Financial Year',
       info:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Market Houses',
@@ -27,7 +30,7 @@ module.exports = {
       progress: 121,
     },
     {
-      title: 'Mock data for progress indicator charts.',
+      title: '% Social Rented Houses Delivered so Far Out of Yearly Target',
       info:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Social Rented',
