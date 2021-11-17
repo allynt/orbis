@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
   },
   progressIndicators: {
     display: 'flex',
-    alignItems: 'stretch',
     padding: '2rem',
     gap: '1rem',
   },

@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
   parentSize: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'flex-end',
   },
   circle: {
     fill: theme.palette.background.default,

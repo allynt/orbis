@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     backgroundColor: lighten(theme.palette.background.default, 0.055),
     padding: theme.spacing(3),
+    height: 'fit-content',
     width: '100%',
   },
   header: {
