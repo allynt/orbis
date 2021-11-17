@@ -4,10 +4,8 @@ import { render } from '@testing-library/react';
 
 import { ProgressIndicatorChart } from './progress-indicator-chart.component';
 
-const TEST_SOURCE = {
+const TEST_PROPERTY = {
   name: 'Housing Delivery',
-  title: 'Test Title',
-  info: 'This is some test info.',
   target: 300,
   progress: 122,
 };
@@ -15,24 +13,26 @@ const TEST_SOURCE = {
 describe('Target Progress Indicator', () => {
   it('renders', () => {
     const { getByText } = render(
-      <ProgressIndicatorChart source={TEST_SOURCE} />,
+      <ProgressIndicatorChart property={TEST_PROPERTY} />,
     );
 
     expect(getByText('Target 300 Units')).toBeInTheDocument();
   });
 
-  it('shows no target message when no target is provided', () => {
+  it('shows default message when no target is provided', () => {
     const { getByText } = render(
-      <ProgressIndicatorChart source={{ ...TEST_SOURCE, target: undefined }} />,
+      <ProgressIndicatorChart
+        property={{ ...TEST_PROPERTY, target: undefined }}
+      />,
     );
 
     expect(getByText('Housing Delivery Target Required')).toBeInTheDocument();
   });
 
-  it('shows no target message when no progress is provided', () => {
+  it('shows default message when no progress is provided', () => {
     const { getByText } = render(
       <ProgressIndicatorChart
-        source={{ ...TEST_SOURCE, progress: undefined }}
+        property={{ ...TEST_PROPERTY, progress: undefined }}
       />,
     );
 

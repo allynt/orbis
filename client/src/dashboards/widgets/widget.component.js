@@ -41,9 +41,6 @@ const Widget = ({
   ...rest
 }) => {
   const styles = useStyles({});
-
-  // TODO: title width affects size of child component
-
   return (
     <Paper className={clsx(styles.paper, className)} {...rest}>
       <div className={styles.header}>
