@@ -140,12 +140,12 @@ const Landing = () => {
             <RouterLink className={styles.link} to="/map">
               <Button color="secondary">Browse Map</Button>
             </RouterLink>
-            {/* <RouterLink
+            <RouterLink
               className={styles.link}
               to="/dashboard?source_id=astrosat/demo/rice_vector/v3"
             >
               <Button color="secondary">Test Dashboards</Button>
-            </RouterLink> */}
+            </RouterLink>
           </div>
         </Container>
       </div>
