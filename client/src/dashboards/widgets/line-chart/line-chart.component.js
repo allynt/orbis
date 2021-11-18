@@ -26,7 +26,7 @@ const LineChart = ({
   const chartTheme = useChartTheme();
 
   const renderLineChart = width => {
-    return ranges.map((range, i) => {
+    return ranges?.map((range, i) => {
       const color = chartTheme.colors[i % chartTheme.colors.length],
         scatterWidth = width / 2,
         props = {

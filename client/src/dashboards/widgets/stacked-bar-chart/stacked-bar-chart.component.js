@@ -24,7 +24,7 @@ const StackedBarChart = ({
     const barWidth = width / 20;
     return (
       <VictoryStack>
-        {ranges.map(range => (
+        {ranges?.map(range => (
           <VictoryBar
             key={range}
             data={data}

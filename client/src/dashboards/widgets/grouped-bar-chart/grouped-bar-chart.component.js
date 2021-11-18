@@ -20,7 +20,7 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
       offset = width / barWidth;
     return (
       <VictoryGroup offset={offset}>
-        {data.map((arr, i) => (
+        {data?.map((arr, i) => (
           <VictoryBar
             // eslint-disable-next-line react/no-array-index-key
             key={`dataset-${i}`}

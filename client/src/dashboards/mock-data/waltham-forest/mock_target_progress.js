@@ -1,4 +1,4 @@
-// Progress indicator chart (created by me, not data team)
+// progress indicator chart (created by me, not data team)
 
 module.exports = {
   properties: [
@@ -9,7 +9,7 @@ module.exports = {
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Housing Delivery',
       target: 300,
-      // to test error state
+      // to view no data state
       progress: undefined,
     },
     {
