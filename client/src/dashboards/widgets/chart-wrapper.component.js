@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
  * className?: string
  * }} props
  */
-const Widget = ({
+const ChartWrapper = ({
   children,
   title,
   titleSize = 'medium',
@@ -64,4 +64,4 @@ const Widget = ({
   );
 };
 
-export { Widget };
+export { ChartWrapper };

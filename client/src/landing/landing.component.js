@@ -144,7 +144,13 @@ const Landing = () => {
               className={styles.link}
               to="/dashboard?source_id=astrosat/demo/rice_vector/v3"
             >
-              <Button color="secondary">Test Dashboards</Button>
+              <Button color="secondary">Waltham Forest Dashboard</Button>
+            </RouterLink>
+            <RouterLink
+              className={styles.link}
+              to="/dashboard?source_id=astrosat/demo/air_pollution/v2"
+            >
+              <Button color="secondary">Nature Scotland Dashboard</Button>
             </RouterLink>
           </div>
         </Container>

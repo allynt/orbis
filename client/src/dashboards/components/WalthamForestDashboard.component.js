@@ -8,11 +8,11 @@ import * as stackedData from '../mock-data/waltham-forest/mock_progression_vs_pl
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import * as groupedData from '../mock-data/waltham-forest/mock_total_housing_delivery';
 import { useChartTheme } from '../useChartTheme';
+import { ChartWrapper } from '../widgets/chart-wrapper.component';
 import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.component';
 import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
-import { Widget } from '../widgets/widget.component';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -43,7 +43,7 @@ const TestDashboard = () => {
       {/* PROGRESS INDICATOR CHARTS */}
       <div className={styles.progressIndicators}>
         {progressData.properties.map((property, i) => (
-          <Widget
+          <ChartWrapper
             key={property.name}
             title={property.title}
             info={property.info}
@@ -52,13 +52,13 @@ const TestDashboard = () => {
               property={property}
               color={chartTheme.colors[i]}
             />
-          </Widget>
+          </ChartWrapper>
         ))}
       </div>
 
       {/* STACKED AND GROUPED BAR CHARTS */}
       <div className={styles.barCharts}>
-        <Widget title={stackedData.name} info={stackedData.name}>
+        <ChartWrapper title={stackedData.name} info={stackedData.name}>
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
@@ -66,19 +66,19 @@ const TestDashboard = () => {
             data={stackedData.properties[0].data}
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
           />
-        </Widget>
-        <Widget title={groupedData.name} info={groupedData.name}>
+        </ChartWrapper>
+        <ChartWrapper title={groupedData.name} info={groupedData.name}>
           <GroupedBarChart
             xLabel="Year"
             yLabel={groupedData.properties[0].name}
             data={WFCGroupedDataTransformer(groupedData.properties[0].data)}
           />
-        </Widget>
+        </ChartWrapper>
       </div>
 
       {/* MULTIPLE LINE CHARTS */}
       <div className={styles.lineCharts}>
-        <Widget title={lineData.name} info={lineData.name}>
+        <ChartWrapper title={lineData.name} info={lineData.name}>
           <LineChart
             data={lineData.properties.find(p => p.name === 'Monthly').data}
             x="Month"
@@ -86,7 +86,7 @@ const TestDashboard = () => {
             xLabel="Year"
             yLabel="Data Property Name / Unit"
           />
-        </Widget>
+        </ChartWrapper>
       </div>
     </div>
   );

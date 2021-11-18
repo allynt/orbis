@@ -28,7 +28,11 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
           <VictoryAxis
             dependentAxis
             label={yLabel}
-            tickFormat={t => numeral(Number(t).toLocaleString()).format('0 a')}
+            tickFormat={t =>
+              numeral(Number(t).toLocaleString()).format(
+                `${t > 1000 ? '0.0' : '0'} a`,
+              )
+            }
           />
           {renderWidget(width)}
         </VictoryChart>
