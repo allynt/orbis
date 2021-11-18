@@ -1,3 +1,30 @@
+## [2.28.1](https://github.com/astrosat/orbis/compare/v2.28.0...v2.28.1) (2021-11-18)
+
+
+### Bug Fixes
+
+* **backend:** fixed the date format for the PLD adapter ([4782525](https://github.com/astrosat/orbis/commit/4782525ad1b9ef9792081a730c887af5bf28b526))
+* **backend:** Update date format ([a7db461](https://github.com/astrosat/orbis/commit/a7db461d9285534e4601cce5a25e45599f389502))
+* **ci:** Increase client tests timeout ([370d4d4](https://github.com/astrosat/orbis/commit/370d4d4c4593a412643699c35d31aec8fe57fd89))
+* **frontend:** Add stories, logic and data props ([b13baab](https://github.com/astrosat/orbis/commit/b13baabed60c3983b932d7a8eafb341b68626821))
+* **frontend:** Add widget wrapper component, add getColor function, update stories ([55439c1](https://github.com/astrosat/orbis/commit/55439c1cc11b88d713722cd46924fe62a2e4a979))
+* **frontend:** Added percentage calculation ([62c4bab](https://github.com/astrosat/orbis/commit/62c4bab3d0df5033ae26b2e9de5ed530d4592c81))
+* **frontend:** Create basic structure, update theme ([7f7ae45](https://github.com/astrosat/orbis/commit/7f7ae455c47ea020bef849d00fa37593a2e5a52e))
+* **frontend:** Example tests for layer config ([c349e9e](https://github.com/astrosat/orbis/commit/c349e9eef860b538544a2e0e0b486d1f06536e74))
+* **frontend:** Fix styling issues with PLD ([4c9f155](https://github.com/astrosat/orbis/commit/4c9f155c7acefcc71c01e39d744f49b916b26a09))
+* **frontend:** Handle multiple colors ([ed1ae2d](https://github.com/astrosat/orbis/commit/ed1ae2dfc1f469ef1571c68c1b832c831857031e))
+* **frontend:** Initial construction ([9590c95](https://github.com/astrosat/orbis/commit/9590c95eb8f6e52af8fbbb046a3a7b964b6ec095))
+* **frontend:** Logic, styling, stories, tests ([02f5a04](https://github.com/astrosat/orbis/commit/02f5a04393166807e4fd118ddffc8f3d41beb632))
+* **frontend:** Make PR changes, and update color functionality ([32bd2f0](https://github.com/astrosat/orbis/commit/32bd2f046d6de4f2e6349ac8a255032745a6cf4e))
+* **frontend:** Remove unnecessary function checks ([ab5d06d](https://github.com/astrosat/orbis/commit/ab5d06d03f1c882fbd5902aa08b62a0db3c667be))
+* **frontend:** Replace text component, add styles ([a5210d8](https://github.com/astrosat/orbis/commit/a5210d89eec37b2d0960e07e3d3eeeb293b60a22))
+* **frontend:** Set default color for pin and group clicks ([dc8b18b](https://github.com/astrosat/orbis/commit/dc8b18bb5fdde36520a716a50c77b6fafd66bf21))
+* **frontend:** Set min/max range for date filtering ([0472e6b](https://github.com/astrosat/orbis/commit/0472e6b762080f83e0393f1251f4e1cd3fd2ea1e))
+* **frontend:** Temporarily remove dashbard from landing page ([7852cbe](https://github.com/astrosat/orbis/commit/7852cbe09fcf67a6b850251aab1f5f320ebcddc7))
+* **frontend:** Update logic and styles ([ab6fe79](https://github.com/astrosat/orbis/commit/ab6fe79a7be9c08f40748cf37a6d553adc87bd8c))
+* **frontend:** Update logic and styles ([e2d8d6a](https://github.com/astrosat/orbis/commit/e2d8d6a39efa107f9f5e0bd52feda27b85b42110))
+* **frontend:** Updated pin layer icon atlas ([2d84972](https://github.com/astrosat/orbis/commit/2d84972cd255b164f6a4e9ca1f2446f0ebc0ef2a))
+
 # [2.28.0](https://github.com/astrosat/orbis/compare/v2.27.0...v2.28.0) (2021-11-03)
 
 
