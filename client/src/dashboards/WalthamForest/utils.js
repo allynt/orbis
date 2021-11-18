@@ -1,4 +1,4 @@
-export const WFCGroupedDataTransformer = data => [
+export const GroupedDataTransformer = data => [
   ...Object.values(
     data.reduce(
       (acc, cur) => ({
@@ -9,3 +9,14 @@ export const WFCGroupedDataTransformer = data => [
     ),
   ),
 ];
+
+export const LineDataTransformer = data => {
+  const uniqueKeys = [
+    ...new Set(data.reduce((acc, cur) => [...acc, ...Object.keys(cur)], [])),
+  ];
+
+  return data.map(obj =>
+    // @ts-ignore
+    uniqueKeys.reduce((acc, cur) => ({ ...acc, [cur]: obj[cur] ?? null }), {}),
+  );
+};
