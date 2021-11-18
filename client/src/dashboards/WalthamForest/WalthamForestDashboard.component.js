@@ -2,7 +2,6 @@ import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
-import { WFCGroupedDataTransformer } from '../data-transformers/utils';
 import * as lineData from '../mock-data/waltham-forest/mock_approvals_granted';
 import * as stackedData from '../mock-data/waltham-forest/mock_progression_vs_planning_schedule';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
@@ -13,6 +12,7 @@ import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.
 import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
+import { WFCGroupedDataTransformer } from './utils';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const TestDashboard = () => {
+const WalthamForestDashboard = () => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
   return (
@@ -92,4 +92,4 @@ const TestDashboard = () => {
   );
 };
 
-export default TestDashboard;
+export default WalthamForestDashboard;

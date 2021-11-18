@@ -77,7 +77,9 @@ const Dashboards = () => {
 
   const { name, props: dashboardProps = {} } = dashboardComponentDefinition;
 
-  const Dashboard = React.lazy(() => import(`./components/${name}.component`));
+  const Dashboard = React.lazy(() =>
+    import(`./${name}/${name}Dashboard.component`),
+  );
 
   return (
     <>

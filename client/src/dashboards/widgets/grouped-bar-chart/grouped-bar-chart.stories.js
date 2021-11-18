@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { WFCGroupedDataTransformer } from '../../data-transformers/utils';
 import * as data from '../../mock-data/waltham-forest/mock_total_housing_delivery';
+import { WFCGroupedDataTransformer } from '../../WalthamForest/utils';
 import { GroupedBarChart } from './grouped-bar-chart.component';
 
 export default {

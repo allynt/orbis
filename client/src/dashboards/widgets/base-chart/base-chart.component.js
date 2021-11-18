@@ -15,6 +15,13 @@ import { useChartTheme } from '../../useChartTheme';
  */
 const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
   const chartTheme = useChartTheme();
+
+  const getTickFormat = t => {
+    return numeral(Number(t).toLocaleString()).format(
+      `${t > 1000 ? '0.0' : '0'} a`,
+    );
+  };
+
   return (
     <ParentSize>
       {({ width }) => (
@@ -28,11 +35,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
           <VictoryAxis
             dependentAxis
             label={yLabel}
-            tickFormat={t =>
-              numeral(Number(t).toLocaleString()).format(
-                `${t > 1000 ? '0.0' : '0'} a`,
-              )
-            }
+            tickFormat={getTickFormat}
           />
           {renderWidget(width)}
         </VictoryChart>
