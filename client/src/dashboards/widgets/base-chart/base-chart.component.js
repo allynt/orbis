@@ -2,31 +2,26 @@ import React from 'react';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
-import { VictoryAxis, VictoryChart, VictoryStack } from 'victory';
+import { VictoryAxis, VictoryChart } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 
 /**
  * @param {{
- *  x: string
- *  ranges: string[]
  *  xLabel?: string
  *  yLabel?: string
- *  data: any[]
- *  renderRange: (value: string, index: number, array: string[]) => React.ReactNode
- *  stacked: boolean
+ *  renderWidget: (width: number) => React.ReactNode
  * }} props
  */
-const Chart = ({
-  x = 'x',
-  ranges = ['y'],
-  xLabel = '',
-  yLabel = '',
-  data,
-  renderRange,
-  stacked,
-}) => {
+const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
   const chartTheme = useChartTheme();
+
+  const getTickFormat = t => {
+    return numeral(Number(t).toLocaleString()).format(
+      `${t > 1000 ? '0.0' : '0'} a`,
+    );
+  };
+
   return (
     <ParentSize>
       {({ width }) => (
@@ -40,17 +35,13 @@ const Chart = ({
           <VictoryAxis
             dependentAxis
             label={yLabel}
-            tickFormat={t => numeral(Number(t).toLocaleString()).format('0 a')}
+            tickFormat={getTickFormat}
           />
-          {stacked ? (
-            <VictoryStack>{ranges.map(renderRange)}</VictoryStack>
-          ) : (
-            ranges.map(renderRange)
-          )}
+          {renderWidget(width)}
         </VictoryChart>
       )}
     </ParentSize>
   );
 };
 
-export { Chart };
+export { BaseChart };

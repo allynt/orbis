@@ -8,12 +8,15 @@ import clsx from 'clsx';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
 const useStyles = makeStyles(theme => ({
+  parentSize: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
   circle: {
     fill: theme.palette.background.default,
   },
   text: {
     fill: theme.palette.text.primary,
-    fontWeight: 600,
     '&$value': { fontSize: theme.typography.pxToRem(48) },
     '&$target': { fontSize: theme.typography.pxToRem(14) },
     '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
@@ -23,14 +26,14 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-export const TargetProgressIndicator = ({ source }) => {
+const ProgressIndicatorChart = ({ property, color }) => {
   const styles = useStyles({});
 
-  if (!source) {
+  if (!property) {
     return null;
   }
 
-  const { name, target, progress, color } = source;
+  const { name, target, progress } = property;
 
   const percentage = Math.round((progress / target) * 100) || null,
     data = [
@@ -39,14 +42,19 @@ export const TargetProgressIndicator = ({ source }) => {
     ];
 
   return (
-    <ParentSize>
+    <ParentSize className={styles.parentSize}>
       {({ width }) => {
-        const radius = width / 2,
-          progressBarWidth = 16,
+        const halfWidth = width / 2,
+          radius = halfWidth / 2,
+          progressBarWidth = width / 20,
           bgCirlceRadius = radius - progressBarWidth / 2;
 
         return (
-          <svg width={width} height={width} viewBox={`0 0 ${width} ${width}`}>
+          <svg
+            width={halfWidth}
+            height={halfWidth}
+            viewBox={`0 0 ${halfWidth} ${halfWidth}`}
+          >
             <circle
               cx={radius}
               cy={radius}
@@ -55,8 +63,8 @@ export const TargetProgressIndicator = ({ source }) => {
             />
             <VictoryPie
               standalone={false}
-              width={width}
-              height={width}
+              width={halfWidth}
+              height={halfWidth}
               padding={0}
               data={data}
               innerRadius={radius - progressBarWidth}
@@ -69,10 +77,9 @@ export const TargetProgressIndicator = ({ source }) => {
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={percentage}>
-              {newProps => {
-                const isNumber = typeof newProps === 'number';
-                return isNumber ? (
+            <VictoryAnimation duration={1000} data={{ percentage }}>
+              {newProps =>
+                !!newProps.percentage ? (
                   <>
                     <Text
                       width={radius}
@@ -83,7 +90,7 @@ export const TargetProgressIndicator = ({ source }) => {
                       dy={-8}
                       className={clsx(styles.text, styles.value)}
                     >
-                      {`${Math.round(newProps)}%`}
+                      {`${Math.round(Number(newProps.percentage))}%`}
                     </Text>
                     <Text
                       width={radius}
@@ -108,8 +115,8 @@ export const TargetProgressIndicator = ({ source }) => {
                   >
                     {`${name} Target Required`}
                   </Text>
-                );
-              }}
+                )
+              }
             </VictoryAnimation>
           </svg>
         );
@@ -117,3 +124,5 @@ export const TargetProgressIndicator = ({ source }) => {
     </ParentSize>
   );
 };
+
+export { ProgressIndicatorChart };

@@ -13,6 +13,8 @@ const useStyles = makeStyles(theme => ({
   paper: {
     backgroundColor: lighten(theme.palette.background.default, 0.055),
     padding: theme.spacing(3),
+    height: 'fit-content',
+    width: '100%',
   },
   header: {
     display: 'flex',
@@ -22,7 +24,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Widget = ({
+/**
+ * @param {{
+ * children: React.ReactNode
+ * title: string
+ * titleSize?: string
+ * info?: string
+ * className?: string
+ * }} props
+ */
+const ChartWrapper = ({
   children,
   title,
   titleSize = 'medium',
@@ -53,4 +64,4 @@ const Widget = ({
   );
 };
 
-export { Widget };
+export { ChartWrapper };

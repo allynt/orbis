@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { VictoryBar } from 'victory';
+import { VictoryBar, VictoryStack } from 'victory';
 
-import { Chart } from '../chart/chart.component';
+import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
@@ -11,7 +11,6 @@ import { Chart } from '../chart/chart.component';
  *  xLabel?: string
  *  yLabel?: string
  *  data: any[]
-
  * }} props
  */
 const StackedBarChart = ({
@@ -21,18 +20,30 @@ const StackedBarChart = ({
   yLabel = '',
   data,
 }) => {
-  const renderRange = (range, i) => {
-    return <VictoryBar key={range} data={data} x={x} y={range} />;
+  const renderStackedBarChart = width => {
+    const barWidth = width / 20;
+    return (
+      <VictoryStack>
+        {ranges?.map(range => (
+          <VictoryBar
+            key={range}
+            data={data}
+            x={x}
+            y={range}
+            style={{
+              data: { width: barWidth },
+            }}
+          />
+        ))}
+      </VictoryStack>
+    );
   };
+
   return (
-    <Chart
-      x={x}
-      ranges={ranges}
+    <BaseChart
       xLabel={xLabel}
       yLabel={yLabel}
-      data={data}
-      renderRange={renderRange}
-      stacked
+      renderWidget={renderStackedBarChart}
     />
   );
 };

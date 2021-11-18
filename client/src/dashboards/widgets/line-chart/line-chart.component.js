@@ -2,18 +2,10 @@ import React from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import { ParentSize } from '@visx/responsive';
-import numeral from 'numeral';
-import {
-  VictoryAxis,
-  VictoryChart,
-  VictoryLine,
-  VictoryScatter,
-  VictoryGroup,
-} from 'victory';
+import { VictoryLine, VictoryScatter, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
-import { Chart } from '../chart/chart.component';
+import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
@@ -33,39 +25,36 @@ const LineChart = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  const renderRange = (range, i) => {
-    // concrete implementation of generic chart
-    const color = chartTheme.colors[i % chartTheme.colors.length];
-    const props = {
-      data,
-      x,
-      y: range,
-    };
-    return (
-      <VictoryGroup key={range}>
-        <VictoryLine {...props} style={{ data: { stroke: color } }} />
-        <VictoryScatter
-          {...props}
-          style={{
-            data: {
-              stroke: darken(color, 0.2),
-              fill: color,
-            },
-          }}
-        />
-      </VictoryGroup>
-    );
+  const renderLineChart = width => {
+    return ranges?.map((range, i) => {
+      const color = chartTheme.colors[i % chartTheme.colors.length],
+        scatterWidth = width / 2,
+        props = {
+          data,
+          x,
+          y: range,
+        };
+
+      return (
+        <VictoryGroup key={range}>
+          <VictoryLine {...props} style={{ data: { stroke: color } }} />
+          <VictoryScatter
+            {...props}
+            style={{
+              data: {
+                stroke: darken(color, 0.2),
+                width: scatterWidth,
+                fill: color,
+              },
+            }}
+          />
+        </VictoryGroup>
+      );
+    });
   };
 
   return (
-    <Chart
-      x={x}
-      ranges={ranges}
-      xLabel={xLabel}
-      yLabel={yLabel}
-      data={data}
-      renderRange={renderRange}
-    />
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderLineChart} />
   );
 };
 

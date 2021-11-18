@@ -1,7 +1,6 @@
 import React from 'react';
 
-import faker from 'faker';
-
+import * as data from '../../mock-data/waltham-forest/mock_progression_vs_planning_schedule';
 import { StackedBarChart } from './stacked-bar-chart.component';
 
 export default { title: 'Dashboards/Widgets/StackedBarChart' };
@@ -10,20 +9,9 @@ const Template = args => <StackedBarChart {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  data: Array(5)
-    .fill()
-    .map((_, i) => ({
-      year: `20${i + 17}`,
-      'Units ahead of Schedule': faker.random.number(1000),
-      'Units Behind Schedule': faker.random.number(1000),
-      'Units on Schedule': faker.random.number(1000),
-    })),
-  ranges: [
-    'Units ahead of Schedule',
-    'Units Behind Schedule',
-    'Units on Schedule',
-  ],
-  x: 'year',
+  data: data.properties[0].data,
+  ranges: ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
+  x: 'Year',
   xLabel: 'Financial Year',
-  yLabel: 'Number of Units',
+  yLabel: data.properties[0].name,
 };
