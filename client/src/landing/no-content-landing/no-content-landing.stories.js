@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { NoBookmarksLanding } from './no-bookmarks-landing.component';
+import { NoBookmarksLanding } from './no-content-landing.component';
 
 export default {
   title: 'Landing/No Bookmarks Landing',

@@ -8,7 +8,7 @@ import reducer, {
   fetchSources,
   selectDomainList,
   activeDataSourcesSelector,
-  dashboardSources,
+  dashboardSourcesSelector,
   dataSourcesSelector,
   selectPollingPeriod,
   selectDataToken,
@@ -464,39 +464,41 @@ describe('Data Slice', () => {
 
     describe('dashBoardSourcesSelector', () => {
       it('should return the list of data sources', () => {
-        const state = {
-          data: {
-            sources: [
-              { dashboard: 'name 1' },
-              { dashboard: 'name 2' },
-              { dashboard_component: 'dashboard 1' },
-            ],
+        const sourceWithDashboard = {
+            metadata: {
+              application: {
+                orbis: {
+                  dashboard_component: {
+                    name: 'dashboard 1',
+                  },
+                },
+              },
+            },
           },
-        };
-        const result = dashboardSources(state);
-        expect(result).toEqual(state.data.sources[2]);
+          state = {
+            data: {
+              sources: [
+                { metadata: {} },
+                { metadata: {} },
+                sourceWithDashboard,
+              ],
+            },
+          };
+        const result = dashboardSourcesSelector(state);
+        expect(result).toEqual([sourceWithDashboard]);
       });
       it('should return an empty array if no data state is present', () => {
         const state = {
           data: {
-            sources: [
-              { dashboard_component: 'dashboard 1' },
-              { dashboard_component: 'dashboard 2' },
-              { dashboard_component: 'dashboard 3' },
-            ],
+            sources: [{ metadata: {} }, { metadata: {} }, { metadata: {} }],
           },
         };
-        const expected = [
-          state.data.sources[0],
-          state.data.sources[1],
-          state.data.sources[2],
-        ];
-        const result = dashboardSources(state);
-        expect(result).toEqual(expected);
+        const result = dashboardSourcesSelector(state);
+        expect(result).toEqual([]);
       });
       it('should return an empty array if no sources are present', () => {
-        const state = { data: {} };
-        const result = dashboardSources(state);
+        const state = { data: { sources: null } };
+        const result = dashboardSourcesSelector(state);
         expect(result).toEqual([]);
       });
     });

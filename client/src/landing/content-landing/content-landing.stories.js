@@ -5,11 +5,11 @@ import faker from 'faker/locale/en_GB';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { BookmarksLanding } from './bookmarks-landing.component';
+import { ContentLanding } from './content-landing.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default { title: 'Landing/Bookmarks Landing' };
+export default { title: 'Landing/Content Landing' };
 
 const makeBookmark = () => ({
   id: faker.random.uuid(),
@@ -20,7 +20,7 @@ const makeBookmark = () => ({
 
 const Template = args => (
   <Router history={createBrowserHistory()}>
-    <BookmarksLanding {...args} />
+    <ContentLanding {...args} />
   </Router>
 );
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { render, userEvent } from 'test/test-utils';
 
-import { BookmarksLanding } from './bookmarks-landing.component';
+import { ContentLanding } from './content-landing.component';
 
 const VIEW_ALL = { name: /view all/i };
 const HIDE_ALL = { name: /hide all/i };
@@ -18,11 +18,11 @@ const renderComponent = (n = 10) => {
     thumbnail: 'test-image-URL',
   }));
 
-  const utils = render(<BookmarksLanding bookmarks={bookmarks} />);
+  const utils = render(<ContentLanding bookmarks={bookmarks} />);
   return { ...utils };
 };
 
-describe('<BookmarksLanding />', () => {
+describe('<ContentLanding />', () => {
   it('does not render the `View all` button if the number of bookmarks is 4 or less', () => {
     const { queryByRole } = renderComponent(4);
 

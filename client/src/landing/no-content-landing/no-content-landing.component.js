@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const NoBookmarksLanding = () => {
+export const NoContentLanding = () => {
   const styles = useStyles();
   return (
     <>
