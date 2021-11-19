@@ -1,4 +1,4 @@
-// Sorts entries, each with year/gross/net values, into 2 nested arrays of gross and net, so that Victory can show a separate dataset for each.
+/** Sorts entries, each with year/gross/net values, into 2 nested arrays of gross and net, so that Victory can show a separate dataset for each. */
 export const groupedDataTransformer = data =>
   Object.values(
     data.reduce(
@@ -10,7 +10,7 @@ export const groupedDataTransformer = data =>
     ),
   );
 
-// Creates an array of all possible keys across the entries, then creates a new object for each entry containing each of those keys, setting the entry's own value for each key if it exists, and setting it to null if it is undefined.
+/** Creates an array of all unique keys across the entries, then creates a new object for each entry containing each of those keys, setting the entry's own value for each key if it exists, and setting it to null if it is undefined */
 export const lineDataTransformer = data => {
   const uniqueKeys = [
     ...new Set(data.reduce((acc, cur) => [...acc, ...Object.keys(cur)], [])),

@@ -27,7 +27,6 @@ describe('Waltham Forest Data Transformers', () => {
         ];
 
       const result = groupedDataTransformer(data);
-
       expect(result).toEqual(expected);
     });
   });
@@ -44,7 +43,6 @@ describe('Waltham Forest Data Transformers', () => {
         ];
 
       const result = lineDataTransformer(data);
-
       expect(result).toEqual(expected);
     });
 
@@ -55,7 +53,6 @@ describe('Waltham Forest Data Transformers', () => {
       ];
 
       const result = lineDataTransformer(data);
-
       expect(result).toEqual(data);
     });
 
@@ -66,7 +63,6 @@ describe('Waltham Forest Data Transformers', () => {
       ];
 
       const result = lineDataTransformer(data);
-
       expect(result).toEqual(data);
     });
   });
