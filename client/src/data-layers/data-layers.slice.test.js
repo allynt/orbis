@@ -8,6 +8,7 @@ import reducer, {
   fetchSources,
   selectDomainList,
   activeDataSourcesSelector,
+  dashboardSources,
   dataSourcesSelector,
   selectPollingPeriod,
   selectDataToken,
@@ -458,6 +459,45 @@ describe('Data Slice', () => {
         };
         const result = selectPollingPeriod(state);
         expect(result).toBeUndefined();
+      });
+    });
+
+    describe('dashBoardSourcesSelector', () => {
+      it('should return the list of data sources', () => {
+        const state = {
+          data: {
+            sources: [
+              { dashboard: 'name 1' },
+              { dashboard: 'name 2' },
+              { dashboard_component: 'dashboard 1' },
+            ],
+          },
+        };
+        const result = dashboardSources(state);
+        expect(result).toEqual(state.data.sources[2]);
+      });
+      it('should return an empty array if no data state is present', () => {
+        const state = {
+          data: {
+            sources: [
+              { dashboard_component: 'dashboard 1' },
+              { dashboard_component: 'dashboard 2' },
+              { dashboard_component: 'dashboard 3' },
+            ],
+          },
+        };
+        const expected = [
+          state.data.sources[0],
+          state.data.sources[1],
+          state.data.sources[2],
+        ];
+        const result = dashboardSources(state);
+        expect(result).toEqual(expected);
+      });
+      it('should return an empty array if no sources are present', () => {
+        const state = { data: {} };
+        const result = dashboardSources(state);
+        expect(result).toEqual([]);
       });
     });
 

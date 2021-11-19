@@ -17,6 +17,7 @@ import { OrbisLogo } from 'components';
 import {
   dataSourcesSelector,
   fetchSources,
+  dashboardSources,
 } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 
@@ -25,10 +26,11 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
-import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
+import { ContentLanding } from './bookmarks-landing/bookmarks-landing.component';
 import backgroundImagePlaceholder from './landing-image-placeholder.png';
 import backgroundImage from './landing-image.png';
 import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
+// import { dashboardSources } from '../data-layers/data-layers.slice';
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -79,23 +81,38 @@ const Landing = () => {
   // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
+  const dashboards = useSelector(dashboardSources);
+  console.log('dashboards', dashboards);
   const sources = useSelector(dataSourcesSelector);
+
   const hasBookmarks = bookmarks?.length > 0;
+  // const hasDashboards = dashboards?.length > 0;
   const styles = useStyles({ hasBookmarks });
   const { setViewState, viewState } = useMap();
 
   /**
    * @param {import('typings').Bookmark} bookmark
+   * @param {import('typings').DasBoard} dashboard
    */
   const chooseBookmark = bookmark => {
     dispatch(selectBookmark({ bookmark, setViewState, viewState }));
   };
+
+  // const chooseDashboard = dashboard => {
+  //   dispatch(({ dashboard, setViewState, viewState }));
+  // };
 
   useEffect(() => {
     if (!bookmarks) {
       dispatch(fetchBookmarks());
     }
   }, [bookmarks, dispatch]);
+
+  // useEffect(() => {
+  //   if (!dashboards) {
+  //     dispatch(fetchSources());
+  //   }
+  // }, [dashboards, dispatch]);
 
   useEffect(() => {
     if (!sources || sources.length === 0) {
@@ -129,12 +146,14 @@ const Landing = () => {
           <OrbisLogo className={styles.logo} titleAccess="Orbis Logo" />
           <div className={styles.content}>
             {hasBookmarks ? (
-              <BookmarksLanding
+              <ContentLanding
                 bookmarks={bookmarks}
                 chooseBookmark={chooseBookmark}
+                // chooseDashboard={chooseDashoard}
               />
             ) : (
               <NoBookmarksLanding />
+              // <NOContentLanding/>
             )}
 
             <RouterLink className={styles.link} to="/map">
@@ -144,14 +163,13 @@ const Landing = () => {
               className={styles.link}
               to="/dashboard?source_id=astrosat/demo/rice_vector/v3"
             >
-              <Button color="secondary">Waltham Forest Dashboard</Button>
+              <Button color="secondary">Test Dashboards </Button>
             </RouterLink>
-            <RouterLink
-              className={styles.link}
-              to="/dashboard?source_id=astrosat/demo/air_pollution/v2"
-            >
-              <Button color="secondary">Nature Scotland Dashboard</Button>
-            </RouterLink>
+            <div style={{ color: 'black', backgroundColor: 'pink' }}>
+              {dashboards.map(dashboard => (
+                <div key={dashboard.name}>{dashboard.name}</div>
+              ))}
+            </div>
           </div>
         </Container>
       </div>

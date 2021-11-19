@@ -9,6 +9,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { DashBoardListItem } from 'landing/dashboard/dashboards-list-item.component';
+
 import { BookmarksListItem } from './bookmarks-list-item/bookmarks-list-item.component';
 import { MAX_VISIBLE_BOOKMARKS } from './landing-constants';
 
@@ -26,7 +28,17 @@ const useStyles = makeStyles(theme => ({
     overflowY: props => (props.viewAllItems ? 'auto' : 'hidden'),
     maxHeight: theme.typography.pxToRem(258 * 2.5),
   },
+
   bookmark: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  dashboards: {
+    overflowY: props => (props.viewAllItems ? 'auto' : 'hidden'),
+    maxHeight: theme.typography.pxToRem(258 * 2.5),
+  },
+
+  dashboard: {
     display: 'flex',
     justifyContent: 'center',
   },
@@ -38,7 +50,7 @@ const useStyles = makeStyles(theme => ({
  *   chooseBookmark?: (bookmark: import('typings').Bookmark) => void
  * }} props
  */
-export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
+export const ContentLanding = ({ bookmarks, dashboards, chooseBookmark }) => {
   const [viewAllItems, setViewAllItems] = useState(false);
   /** @type {React.Ref<HTMLUListElement>} */
   const gridRef = useRef();
@@ -78,6 +90,22 @@ export const BookmarksLanding = ({ bookmarks, chooseBookmark }) => {
           {bookmarks?.map(bookmark => (
             <ImageListItem key={bookmark.id} className={styles.bookmark}>
               <BookmarksListItem bookmark={bookmark} onClick={chooseBookmark} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+        <ImageList
+          ref={gridRef}
+          className={styles.dashboards}
+          rowHeight="auto"
+          // cols={MAX_VISIBLE_BOOKMARKS}
+          // gap={4}
+        >
+          {dashboards?.map(dashboard => (
+            <ImageListItem key={dashboard.id} className={styles.dashboard}>
+              <DashBoardListItem
+                dashboard={dashboard}
+                // onClick={chooseDashboard}
+              />
             </ImageListItem>
           ))}
         </ImageList>
