@@ -60,7 +60,6 @@ class OrbisUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrbisUserProfile
         fields = [
-            "orb_state",
             "onboarded",
             "units",
             "region",

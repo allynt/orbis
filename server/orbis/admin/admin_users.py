@@ -1,13 +1,8 @@
 from django import forms
 from django.contrib import admin
-from django.db import models
 
-from astrosat.admin import (
-    CannotAddModelAdminBase,
-    DeleteOnlyModelAdminBase,
-    ReadOnlyModelAdminBase,
-    JSONAdminWidget,
-)
+from astrosat.admin import CannotAddModelAdminBase, DeleteOnlyModelAdminBase, ReadOnlyModelAdminBase
+
 from astrosat_users.admin import UserAdmin as AstrosatUserAdmin
 from astrosat_users.models import User as AstrosatUser
 
@@ -24,7 +19,6 @@ class OrbisUserFeedbackRecordInline(admin.TabularInline):
 
 @admin.register(OrbisUserProfile)
 class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
-    formfield_overrides = {models.JSONField: {"widget": JSONAdminWidget}}
     inlines = (OrbisUserFeedbackRecordInline, )
 
 
