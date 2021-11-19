@@ -1,5 +1,5 @@
-export const GroupedDataTransformer = data => [
-  ...Object.values(
+export const groupedDataTransformer = data => {
+  return Object.values(
     data.reduce(
       (acc, cur) => ({
         gross: [...acc.gross, { x: cur.Year, y: cur['Total Gross'] }],
@@ -7,16 +7,15 @@ export const GroupedDataTransformer = data => [
       }),
       { gross: [], net: [] },
     ),
-  ),
-];
+  );
+};
 
-export const LineDataTransformer = data => {
+export const lineDataTransformer = data => {
   const uniqueKeys = [
     ...new Set(data.reduce((acc, cur) => [...acc, ...Object.keys(cur)], [])),
   ];
 
   return data.map(obj =>
-    // @ts-ignore
     uniqueKeys.reduce((acc, cur) => ({ ...acc, [cur]: obj[cur] ?? null }), {}),
   );
 };

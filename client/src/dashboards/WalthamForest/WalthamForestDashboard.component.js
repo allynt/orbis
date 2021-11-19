@@ -12,7 +12,7 @@ import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.
 import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
-import { GroupedDataTransformer, LineDataTransformer } from './utils';
+import { groupedDataTransformer, lineDataTransformer } from './utils';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -39,21 +39,17 @@ const WalthamForestDashboard = () => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
 
-  // useMemo? useCallback? There will be lots of rerenders with no data changing if users are making posts/manipulating data, so makes sense
-
-  // fix deps
   const groupedChartData = useMemo(
-    () => GroupedDataTransformer(groupedData.properties[0].data),
-    [],
-  );
-
-  const lineChartData = useMemo(
-    () =>
-      LineDataTransformer(
-        lineData.properties.find(p => p.name === 'Monthly').data,
-      ),
-    [],
-  );
+      () => groupedDataTransformer(groupedData.properties[0].data),
+      [],
+    ),
+    lineChartData = useMemo(
+      () =>
+        lineDataTransformer(
+          lineData.properties.find(p => p.name === 'Monthly').data,
+        ),
+      [],
+    );
 
   return (
     <div className={styles.dashboard}>
