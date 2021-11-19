@@ -7,6 +7,7 @@ import drawingTools from 'drawing-tools/drawing-tools.slice';
 import accounts from './accounts/accounts.slice';
 import app from './app.slice';
 import bookmarks from './bookmarks/bookmarks.slice';
+import dashboards from './dashboards/dashboards.slice';
 import data from './data-layers/data-layers.slice';
 import map from './map/map.slice';
 import orbs from './map/orbs/orbReducer';
@@ -29,6 +30,7 @@ const createRootReducer = history =>
     satellites,
     stories,
     missionControl,
+    dashboards,
   });
 
 const rootReducer = createRootReducer(history);
