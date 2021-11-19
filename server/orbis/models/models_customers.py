@@ -56,7 +56,8 @@ class LicencedCustomer(AstrosatUsersCustomer):
 
             self.remove_exclusive_licences([customer_user])
 
-            licences.append(licence)
+            licences.append(Licence.objects.get(pk=licence.pk))  # re-fetch licence to force __init__ to re-run
+
         return licences
 
     def create_default_licences(self, customer_users):

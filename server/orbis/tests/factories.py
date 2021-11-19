@@ -70,11 +70,10 @@ class OrbisUserProfileFactory(factory.django.DjangoModelFactory):
 
     onboarded = FactoryFaker("boolean")
     units = FactoryFaker(
-        "random_element", elements=[x[0] for x in OrbisUserProfile.UnitChoices]
+        "random_element", elements=OrbisUserProfile.UnitChoices,
     )
     region = FactoryFaker(
-        "random_element",
-        elements=[x[0] for x in OrbisUserProfile.RegionChoices]
+        "random_element", elements=OrbisUserProfile.RegionChoices,
     )
 
     # "orbis_profile=None" means that if I create an OrbisUserProfile explicitly, another profile won't be created
@@ -161,6 +160,7 @@ class OrbFactory(factory.django.DjangoModelFactory):
 
     description = optional_declaration(FactoryFaker("text"), chance=50)
     short_description = optional_declaration(FactoryFaker("text"), chance=50)
+    # default_orb_state = FactoryFaker("pydict", nb_elements=2, value_types=str)
     is_active = True
     is_default = False
     is_hidden = False
