@@ -1,18 +1,11 @@
-<<<<<<< HEAD
-import React, { useEffect } from 'react';
-=======
-import React, { useMemo } from 'react';
->>>>>>> missing-values-data-transformer
+import React, { useEffect, useMemo } from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { widgetDataSelector, getWidgetData } from '../dashboards.slice';
-import * as lineData from '../mock-data/waltham-forest/mock_approvals_granted';
-import * as stackedData from '../mock-data/waltham-forest/mock_progression_vs_planning_schedule';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
-import * as groupedData from '../mock-data/waltham-forest/mock_total_housing_delivery';
 import { useChartTheme } from '../useChartTheme';
 import { ChartWrapper } from '../widgets/chart-wrapper.component';
 import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.component';
@@ -59,17 +52,13 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
 
-  const lineTest = useSelector(widgetDataSelector(sourceId, 'line-chart'));
-  const stackedTest = useSelector(
+  const lineData = useSelector(widgetDataSelector(sourceId, 'line-chart'));
+  const stackedData = useSelector(
     widgetDataSelector(sourceId, 'stacked-bar-chart'),
   );
-  const groupedTest = useSelector(
+  const groupedData = useSelector(
     widgetDataSelector(sourceId, 'grouped-chart'),
   );
-
-  console.log('lineTest: ', lineTest);
-  console.log('stackedTest: ', stackedTest);
-  console.log('groupedTest: ', groupedTest);
 
   const dispatch = useDispatch();
 
@@ -82,89 +71,56 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
   // useEffect(() => {
   //   const result = widgets?.map(widget => useWidgets(sourceId, widget));
   // }, [sourceId, widgets]);
+
   const groupedChartData = useMemo(
-      () => groupedDataTransformer(groupedData.properties[0].data),
-      [],
+      () => groupedDataTransformer(groupedData?.properties[0].data),
+      [groupedData],
     ),
     lineChartData = useMemo(
-      () =>
-        lineDataTransformer(
-          lineData.properties.find(p => p.name === 'Monthly').data,
-        ),
-      [],
-    );
+      () => lineDataTransformer(lineData?.properties[0].data),
+      [lineData],
+    ),
+    stackedGroupData = useMemo(() => stackedData?.properties[0].data, [
+      stackedData,
+    ]);
+
+  console.log('lineChartData: ', lineChartData);
+  console.log('stackedGroupData: ', stackedGroupData);
+  console.log('groupedChartData: ', groupedChartData);
 
   return (
-    <>
-      <div className={styles.dashboard}>
-        {/* PROGRESS INDICATOR CHARTS */}
-        <div className={styles.progressIndicators}>
-          {progressData.properties.map((property, i) => (
-            <ChartWrapper
-              key={property.name}
-              title={property.title}
-              info={property.info}
-            >
-              <ProgressIndicatorChart
-                property={property}
-                color={chartTheme.colors[i]}
-              />
-            </ChartWrapper>
-          ))}
-        </div>
-
-        {/* STACKED AND GROUPED BAR CHARTS */}
-        <div className={styles.barCharts}>
-          <ChartWrapper title={stackedData.name} info={stackedData.name}>
-            <StackedBarChart
-              x="Year"
-              xLabel="Financial Year"
-              yLabel={stackedData.properties[0].name}
-              data={stackedData.properties[0].data}
-              ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
+    <div className={styles.dashboard}>
+      {/* PROGRESS INDICATOR CHARTS */}
+      <div className={styles.progressIndicators}>
+        {progressData.properties.map((property, i) => (
+          <ChartWrapper
+            key={property.name}
+            title={property.title}
+            info={property.info}
+          >
+            <ProgressIndicatorChart
+              property={property}
+              color={chartTheme.colors[i]}
             />
           </ChartWrapper>
-<<<<<<< HEAD
-          <ChartWrapper title={groupedData.name} info={groupedData.name}>
-            <GroupedBarChart
-              xLabel="Year"
-              yLabel={groupedData.properties[0].name}
-              data={WFCGroupedDataTransformer(groupedData.properties[0].data)}
-            />
-          </ChartWrapper>
-        </div>
-
-        {/* MULTIPLE LINE CHARTS */}
-        <div className={styles.lineCharts}>
-          <ChartWrapper title={lineData.name} info={lineData.name}>
-            <LineChart
-              data={lineData.properties.find(p => p.name === 'Monthly').data}
-              x="Month"
-              ranges={['2019', '2020']}
-              xLabel="Year"
-              yLabel="Data Property Name / Unit"
-            />
-          </ChartWrapper>
-        </div>
-=======
         ))}
       </div>
 
       {/* STACKED AND GROUPED BAR CHARTS */}
       <div className={styles.barCharts}>
-        <ChartWrapper title={stackedData.name} info={stackedData.name}>
+        <ChartWrapper title={stackedData?.name} info={stackedData?.name}>
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={stackedData.properties[0].name}
-            data={stackedData.properties[0].data}
+            yLabel={stackedGroupData}
+            data={stackedGroupData}
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
           />
         </ChartWrapper>
-        <ChartWrapper title={groupedData.name} info={groupedData.name}>
+        <ChartWrapper title={groupedData?.name} info={groupedData?.name}>
           <GroupedBarChart
             xLabel="Year"
-            yLabel={groupedData.properties[0].name}
+            yLabel={groupedData}
             data={groupedChartData}
           />
         </ChartWrapper>
@@ -172,7 +128,7 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
 
       {/* MULTIPLE LINE CHARTS */}
       <div className={styles.lineCharts}>
-        <ChartWrapper title={lineData.name} info={lineData.name}>
+        <ChartWrapper title={lineData?.name} info={lineData?.name}>
           <LineChart
             data={lineChartData}
             x="Month"
@@ -181,9 +137,8 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
             yLabel="Data Property Name / Unit"
           />
         </ChartWrapper>
->>>>>>> missing-values-data-transformer
       </div>
-    </>
+    </div>
   );
 };
 

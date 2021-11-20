@@ -20,9 +20,7 @@ const dashboardsSlice = createSlice({
 export const getWidgetData = (source_id, component, url) => async dispatch => {
   const result = await import(`./mock-data/waltham-forest/${url}`);
 
-  const data = result.default.properties?.[0]?.data;
-
-  dispatch(setWidgetData({ source_id, component, data }));
+  dispatch(setWidgetData({ source_id, component, data: result.default }));
 };
 
 export const { setWidgetData } = dashboardsSlice.actions;
