@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect } from 'react';
+=======
+import React, { useMemo } from 'react';
+>>>>>>> missing-values-data-transformer
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
@@ -15,7 +19,7 @@ import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.
 import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
-import { WFCGroupedDataTransformer } from './utils';
+import { groupedDataTransformer, lineDataTransformer } from './utils';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -78,6 +82,17 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
   // useEffect(() => {
   //   const result = widgets?.map(widget => useWidgets(sourceId, widget));
   // }, [sourceId, widgets]);
+  const groupedChartData = useMemo(
+      () => groupedDataTransformer(groupedData.properties[0].data),
+      [],
+    ),
+    lineChartData = useMemo(
+      () =>
+        lineDataTransformer(
+          lineData.properties.find(p => p.name === 'Monthly').data,
+        ),
+      [],
+    );
 
   return (
     <>
@@ -109,6 +124,7 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
               ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
             />
           </ChartWrapper>
+<<<<<<< HEAD
           <ChartWrapper title={groupedData.name} info={groupedData.name}>
             <GroupedBarChart
               xLabel="Year"
@@ -130,6 +146,42 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
             />
           </ChartWrapper>
         </div>
+=======
+        ))}
+      </div>
+
+      {/* STACKED AND GROUPED BAR CHARTS */}
+      <div className={styles.barCharts}>
+        <ChartWrapper title={stackedData.name} info={stackedData.name}>
+          <StackedBarChart
+            x="Year"
+            xLabel="Financial Year"
+            yLabel={stackedData.properties[0].name}
+            data={stackedData.properties[0].data}
+            ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
+          />
+        </ChartWrapper>
+        <ChartWrapper title={groupedData.name} info={groupedData.name}>
+          <GroupedBarChart
+            xLabel="Year"
+            yLabel={groupedData.properties[0].name}
+            data={groupedChartData}
+          />
+        </ChartWrapper>
+      </div>
+
+      {/* MULTIPLE LINE CHARTS */}
+      <div className={styles.lineCharts}>
+        <ChartWrapper title={lineData.name} info={lineData.name}>
+          <LineChart
+            data={lineChartData}
+            x="Month"
+            ranges={['2019', '2020', '2021']}
+            xLabel="Year"
+            yLabel="Data Property Name / Unit"
+          />
+        </ChartWrapper>
+>>>>>>> missing-values-data-transformer
       </div>
     </>
   );
