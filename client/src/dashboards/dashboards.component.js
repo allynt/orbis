@@ -68,14 +68,13 @@ const Dashboards = () => {
   const source = useSelector(dataSourceByIdSelector(sourceId));
   // const data = useSourceData(sourceId);
 
-  const dashboardComponentDefinition =
-    source.metadata.application.orbis.dashboard_component;
+  const dashboardProps = source.metadata.application.orbis.dashboard_component;
 
   const handleProfileClose = () => setProfileOpen(false);
 
-  if (!dashboardComponentDefinition) return null;
+  if (!dashboardProps) return null;
 
-  const { name, props: dashboardProps = {} } = dashboardComponentDefinition;
+  const { name, widgets } = dashboardProps;
 
   const Dashboard = React.lazy(() =>
     import(`./${name}/${name}Dashboard.component`),
@@ -116,7 +115,7 @@ const Dashboards = () => {
         </Sidebar>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <React.Suspense fallback={<LoadMaskFallback />}>
-            <Dashboard />
+            <Dashboard sourceId={sourceId} widgets={widgets} />
           </React.Suspense>
         </ErrorBoundary>
       </Box>
