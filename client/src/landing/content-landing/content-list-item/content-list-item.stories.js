@@ -3,18 +3,18 @@ import * as React from 'react';
 import isChromatic from 'chromatic/isChromatic';
 import faker from 'faker/locale/en_GB';
 
-import { BookmarksListItem } from './content-list-item.component';
+import { ContentListItem } from './content-list-item.component';
 
 if (isChromatic()) faker.seed(1);
 
 export default {
-  title: 'Landing/Bookmarks Landing/Bookmarks List Item',
+  title: 'Landing/Content Landing/Content List Item',
   argTypes: {
     onClick: { action: 'onClick' },
   },
 };
 
-const Template = args => <BookmarksListItem {...args} />;
+const Template = args => <ContentListItem {...args} />;
 
 export const NoBookmark = Template.bind({});
 

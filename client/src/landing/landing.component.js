@@ -138,8 +138,8 @@ const Landing = () => {
             {hasContent ? (
               <ContentLanding
                 bookmarks={bookmarks}
-                dashboards={dashboards}
                 chooseBookmark={chooseBookmark}
+                dashboards={dashboards}
                 chooseDashboard={chooseDashboard}
               />
             ) : (

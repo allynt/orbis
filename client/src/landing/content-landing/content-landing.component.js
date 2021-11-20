@@ -12,9 +12,6 @@ import {
 import { ContentListItem } from './content-list-item/content-list-item.component';
 import { MAX_VISIBLE_ITEMS, CONTENT_TYPES } from './landing-constants';
 
-const TEST_IMAGE =
-  'https://media.istockphoto.com/vectors/logo-of-a-green-life-tree-with-roots-and-leaves-vector-illustration-vector-id1130887322?k=20&m=1130887322&s=612x612&w=0&h=dPVnCDJ4ocIqtn51iJDzEKdesx_RikdT74asv81jJdk=';
-
 const useStyles = makeStyles(theme => ({
   controls: {
     width: '100%',
@@ -35,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ExpandableItems = ({
+const ExpandableItemList = ({
   data,
   contentType,
   viewAllContent,
@@ -68,14 +65,13 @@ const ExpandableItems = ({
           cols={MAX_VISIBLE_ITEMS}
           gap={4}
         >
-          {data?.map(datum => {
+          {data?.map(item => {
             return (
-              <ImageListItem key={datum?.id} className={styles.contentItem}>
-                <ContentListItem
-                  item={datum}
-                  title={datum?.name}
-                  onClick={onClick}
-                />
+              <ImageListItem
+                key={item?.id ?? item?.source_id}
+                className={styles.contentItem}
+              >
+                <ContentListItem item={item} onClick={onClick} />
               </ImageListItem>
             );
           })}
@@ -85,18 +81,18 @@ const ExpandableItems = ({
   );
 };
 
-// TODO: update types when dashboard data available
-
 /**
  * @param {{
  *   bookmarks: import('typings').Bookmark[]
  *   chooseBookmark?: (bookmark: import('typings').Bookmark) => void
+ *   dashboards: import('typings').Source[]
+ *   chooseDashboard?: (dashboard: import('typings').Source) => void
  * }} props
  */
 export const ContentLanding = ({
   bookmarks,
-  dashboards,
   chooseBookmark,
+  dashboards,
   chooseDashboard,
 }) => {
   const [viewAllContent, setViewAllContent] = useState({
@@ -114,31 +110,40 @@ export const ContentLanding = ({
       gridRef.current.scrollTo(0, 0);
   }, [viewAllContent]);
 
-  // UNCOMMENT AND USE THIS VARIABLE TO SEE MANY DASHBOARDS
-  // const testDashboards = new Array(10).fill(dashboards[0]).map((d, i) => ({
-  //   ...d,
-  //   name: `made-up-name${i}`,
-  //   thumbnail: TEST_IMAGE,
-  // }));
+  // a random placeholder image, will delete when real thumbs available
+  const testThumb =
+    'https://media.istockphoto.com/vectors/logo-of-a-green-life-tree-with-roots-and-leaves-vector-illustration-vector-id1130887322?k=20&m=1130887322&s=612x612&w=0&h=dPVnCDJ4ocIqtn51iJDzEKdesx_RikdT74asv81jJdk=';
+
+  // some fake data using a real dashboard, with image and name, delete later
+  const testDashboards = new Array(10).fill(dashboards[0]).map((d, i) => ({
+    ...d,
+    source_id: `${d.source_id}-${i}`,
+    name: `made-up-name-${i}`,
+    thumbnail: testThumb,
+  }));
 
   return (
     <>
-      <ExpandableItems
-        data={bookmarks}
-        contentType={CONTENT_TYPES.maps}
-        viewAllContent={viewAllContent[CONTENT_TYPES.maps]}
-        gridRef={gridRef}
-        onClick={chooseBookmark}
-        toggle={toggle}
-      />
-      <ExpandableItems
-        data={dashboards?.map(d => ({ ...d, thumbnail: TEST_IMAGE }))}
-        contentType={CONTENT_TYPES.dashboards}
-        viewAllContent={viewAllContent[CONTENT_TYPES.dashboards]}
-        gridRef={gridRef}
-        onClick={chooseDashboard}
-        toggle={toggle}
-      />
+      {!!bookmarks ? (
+        <ExpandableItemList
+          data={bookmarks}
+          contentType={CONTENT_TYPES.maps}
+          viewAllContent={viewAllContent[CONTENT_TYPES.maps]}
+          gridRef={gridRef}
+          onClick={chooseBookmark}
+          toggle={toggle}
+        />
+      ) : null}
+      {!!dashboards ? (
+        <ExpandableItemList
+          data={testDashboards}
+          contentType={CONTENT_TYPES.dashboards}
+          viewAllContent={viewAllContent[CONTENT_TYPES.dashboards]}
+          gridRef={gridRef}
+          onClick={chooseDashboard}
+          toggle={toggle}
+        />
+      ) : null}
     </>
   );
 };
