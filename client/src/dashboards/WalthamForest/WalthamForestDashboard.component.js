@@ -35,19 +35,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// const useWidgets = (sourceId, widget) => {
-//   const { componentName, props } = widget;
-
-//   const widgetData = useSelector(widgetDataSelector(sourceId, componentName));
-
-//   const Widget = React.lazy(() =>
-//     import(`../widgets/${componentName}.component`),
-//   );
-
-//   / REST OF PROPS MUST BE HERE TOO, LABELS, RANGE ETC!!!
-//   return <Widget data={widgetData} {...props} />;
-// };
-
 const WalthamForestDashboard = ({ sourceId, widgets }) => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
@@ -57,7 +44,7 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
     widgetDataSelector(sourceId, 'stacked-bar-chart'),
   );
   const groupedData = useSelector(
-    widgetDataSelector(sourceId, 'grouped-chart'),
+    widgetDataSelector(sourceId, 'grouped-bar-chart'),
   );
 
   const dispatch = useDispatch();
@@ -68,10 +55,6 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
     });
   }, [sourceId, widgets, dispatch]);
 
-  // useEffect(() => {
-  //   const result = widgets?.map(widget => useWidgets(sourceId, widget));
-  // }, [sourceId, widgets]);
-
   const groupedChartData = useMemo(
       () => groupedDataTransformer(groupedData?.properties[0].data),
       [groupedData],
@@ -80,13 +63,9 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
       () => lineDataTransformer(lineData?.properties[0].data),
       [lineData],
     ),
-    stackedGroupData = useMemo(() => stackedData?.properties[0].data, [
+    stackedChartData = useMemo(() => stackedData?.properties[0].data, [
       stackedData,
     ]);
-
-  console.log('lineChartData: ', lineChartData);
-  console.log('stackedGroupData: ', stackedGroupData);
-  console.log('groupedChartData: ', groupedChartData);
 
   return (
     <div className={styles.dashboard}>
@@ -112,15 +91,15 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={stackedGroupData}
-            data={stackedGroupData}
+            yLabel={stackedChartData?.properties?.[0]?.name}
+            data={stackedChartData}
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
           />
         </ChartWrapper>
         <ChartWrapper title={groupedData?.name} info={groupedData?.name}>
           <GroupedBarChart
             xLabel="Year"
-            yLabel={groupedData}
+            yLabel={groupedData?.properties?.[0]?.name}
             data={groupedChartData}
           />
         </ChartWrapper>

@@ -39,6 +39,8 @@ const StackedBarChart = ({
     );
   };
 
+  if (!data) return null;
+
   return (
     <BaseChart
       xLabel={xLabel}

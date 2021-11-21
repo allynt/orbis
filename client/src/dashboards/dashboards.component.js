@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -24,40 +24,8 @@ import {
   ErrorFallback,
 } from 'components';
 import { ReactComponent as MissionControlIcon } from 'control-panel/mission-control.svg';
-import {
-  dataSourceByIdSelector,
-  selectDataToken,
-} from 'data-layers/data-layers.slice';
-import { setData, dataSelector } from 'map/orbs/layers.slice';
+import { dataSourceByIdSelector } from 'data-layers/data-layers.slice';
 import { history } from 'root.reducer';
-import { dataUrlFromSource } from 'utils/data';
-
-// const getData = async (url, token) => {
-//   const res = await fetch(url, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-
-//   return await res.json();
-// };
-
-// const useSourceData = sourceId => {
-//   const dispatch = useDispatch();
-//   const source = useSelector(dataSourceByIdSelector(sourceId));
-//   const dataToken = useSelector(selectDataToken);
-//   const data = useSelector(state => dataSelector(sourceId)(state?.orbs));
-
-//   useEffect(() => {
-//     if (!data || typeof data === 'string') {
-//       getData(dataUrlFromSource(source), dataToken).then(data =>
-//         dispatch(setData({ key: source.source_id, data })),
-//       );
-//     }
-//   }, [data, dataToken, source, dispatch]);
-
-//   return data;
-// };
 
 const Dashboards = () => {
   const location = useLocation();
@@ -66,7 +34,6 @@ const Dashboards = () => {
   const searchParams = new URLSearchParams(location.search);
   const sourceId = searchParams.get('source_id');
   const source = useSelector(dataSourceByIdSelector(sourceId));
-  // const data = useSourceData(sourceId);
 
   const dashboardProps = source.metadata.application.orbis.dashboard_component;
 
@@ -74,7 +41,10 @@ const Dashboards = () => {
 
   if (!dashboardProps) return null;
 
-  const { name, widgets } = dashboardProps;
+  const {
+    name,
+    props: { widgets },
+  } = dashboardProps;
 
   const Dashboard = React.lazy(() =>
     import(`./${name}/${name}Dashboard.component`),
