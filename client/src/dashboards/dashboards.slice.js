@@ -34,7 +34,7 @@ export const { setWidgetData } = dashboardsSlice.actions;
 /** @param {import('typings').RootState} state */
 const baseSelector = state => state?.dashboards;
 
-/** @param {import('typings').Source} source_id */
+/** @param {import('typings').Source['source_id']} source_id */
 /** @param {string} datasetName */
 export const widgetDataSelector = (source_id, datasetName) => {
   return createSelector(baseSelector, state => {
