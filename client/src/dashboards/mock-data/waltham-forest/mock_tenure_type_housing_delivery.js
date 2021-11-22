@@ -42,7 +42,7 @@ module.exports = {
           'Social Rented': 218,
           'Private Rented Sector': 442,
         },
-        // two entries with year '2018-2019', 1st is being overwritten by second
+        // two entries with year '2018-2019', first is being overwritten by second
         {
           Year: '2018-2019',
           'Affordable Rent': 304,
