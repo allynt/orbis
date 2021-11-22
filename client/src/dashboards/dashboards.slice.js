@@ -7,20 +7,22 @@ const dashboardsSlice = createSlice({
   initialState,
   reducers: {
     setWidgetData: (state, { payload }) => {
-      const { source_id, component, data } = payload;
+      const { source_id, name, data } = payload;
 
       state[source_id] = {
         ...state[source_id],
-        [component]: data,
+        [name]: data,
       };
     },
   },
 });
 
-export const getWidgetData = (source_id, component, url) => async dispatch => {
-  const result = await import(`./mock-data/waltham-forest/${url}`);
+export const fetchWidgetData = (source_id, name, url) => async dispatch => {
+  const result = await import(`${url}.js`);
 
-  dispatch(setWidgetData({ source_id, component, data: result.default }));
+  // './mock-data/waltham-forest/mock_progression_vs_planning_schedule'
+
+  dispatch(setWidgetData({ source_id, name, data: result.default }));
 };
 
 export const { setWidgetData } = dashboardsSlice.actions;

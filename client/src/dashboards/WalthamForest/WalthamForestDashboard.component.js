@@ -4,7 +4,7 @@ import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { widgetDataSelector, getWidgetData } from '../dashboards.slice';
+import { widgetDataSelector, fetchWidgetData } from '../dashboards.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
 import { ChartWrapper } from '../widgets/chart-wrapper.component';
@@ -38,34 +38,48 @@ const useStyles = makeStyles(() => ({
 const WalthamForestDashboard = ({ sourceId, widgets }) => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
-
-  const lineData = useSelector(widgetDataSelector(sourceId, 'line-chart'));
-  const stackedData = useSelector(
-    widgetDataSelector(sourceId, 'stacked-bar-chart'),
-  );
-  const groupedData = useSelector(
-    widgetDataSelector(sourceId, 'grouped-bar-chart'),
-  );
-
   const dispatch = useDispatch();
 
+  // NEED TO MERGE TRANSFORMER PR THEN MERGE MASTER INTO HERE!!!
+  // 1. add props to metadata
+
+  // all data, including 'name', 'version', etc
+  const approvalsGranted = useSelector(
+      widgetDataSelector(sourceId, 'ApprovalsGranted'),
+    ),
+    progressionVsPlanning = useSelector(
+      widgetDataSelector(sourceId, 'ProgressionVsPlanning'),
+    ),
+    tenureHousingDelivery = useSelector(
+      widgetDataSelector(sourceId, 'TenureHousingDelivery'),
+    ),
+    totalHousingDelivery = useSelector(
+      widgetDataSelector(sourceId, 'TotalHousingDelivery'),
+    );
+
   useEffect(() => {
-    widgets.forEach(({ component, url }) => {
-      dispatch(getWidgetData(sourceId, component, url));
-    });
+    widgets.forEach(({ name, url }) =>
+      dispatch(fetchWidgetData(sourceId, name, url)),
+    );
   }, [sourceId, widgets, dispatch]);
 
-  const groupedChartData = useMemo(
-      () => groupedDataTransformer(groupedData?.properties[0].data),
-      [groupedData],
+  // only arrays of chart data, cached
+  const totalHousingDeliveryChartData = useMemo(
+      () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
+      [totalHousingDelivery],
     ),
-    lineChartData = useMemo(
-      () => lineDataTransformer(lineData?.properties[0].data),
-      [lineData],
+    approvalsGrantedChartData = useMemo(
+      () => lineDataTransformer(approvalsGranted?.properties[0].data),
+      [approvalsGranted],
     ),
-    stackedChartData = useMemo(() => stackedData?.properties[0].data, [
-      stackedData,
-    ]);
+    progressionVsPlanningChartData = useMemo(
+      () => progressionVsPlanning?.properties[0].data,
+      [progressionVsPlanning],
+    ),
+    TenureHousingDeliveryChartData = useMemo(
+      () => tenureHousingDelivery?.properties[0].data,
+      [tenureHousingDelivery],
+    );
 
   return (
     <div className={styles.dashboard}>
@@ -87,29 +101,38 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
 
       {/* STACKED AND GROUPED BAR CHARTS */}
       <div className={styles.barCharts}>
-        <ChartWrapper title={stackedData?.name} info={stackedData?.name}>
+        <ChartWrapper
+          title={progressionVsPlanning?.name}
+          info={progressionVsPlanning?.name}
+        >
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={stackedChartData?.properties?.[0]?.name}
-            data={stackedChartData}
+            yLabel={progressionVsPlanningChartData?.properties?.[0]?.name}
+            data={progressionVsPlanningChartData}
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
           />
         </ChartWrapper>
-        <ChartWrapper title={groupedData?.name} info={groupedData?.name}>
+        <ChartWrapper
+          title={totalHousingDelivery?.name}
+          info={totalHousingDelivery?.name}
+        >
           <GroupedBarChart
             xLabel="Year"
-            yLabel={groupedData?.properties?.[0]?.name}
-            data={groupedChartData}
+            yLabel={totalHousingDelivery?.properties?.[0]?.name}
+            data={totalHousingDeliveryChartData}
           />
         </ChartWrapper>
       </div>
 
       {/* MULTIPLE LINE CHARTS */}
       <div className={styles.lineCharts}>
-        <ChartWrapper title={lineData?.name} info={lineData?.name}>
+        <ChartWrapper
+          title={approvalsGranted?.name}
+          info={approvalsGranted?.name}
+        >
           <LineChart
-            data={lineChartData}
+            data={approvalsGrantedChartData}
             x="Month"
             ranges={['2019', '2020', '2021']}
             xLabel="Year"
