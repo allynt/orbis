@@ -13,6 +13,7 @@ import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
+import { widgetData } from './widget-data';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const WalthamForestDashboard = ({ sourceId, widgets }) => {
+const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
   const dispatch = useDispatch();
@@ -55,12 +56,12 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
     );
 
   useEffect(() => {
-    widgets.forEach(({ datasetName, url }) =>
+    widgetData.forEach(({ datasetName, url }) =>
       dispatch(fetchWidgetData(sourceId, datasetName, url)),
     );
-  }, [sourceId, widgets, dispatch]);
+  }, [sourceId, dispatch]);
 
-  // only arrays of chart data, cached
+  // only arrays of chart data, transformed where needed and cached
   const totalHousingDeliveryChartData = useMemo(
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
       [totalHousingDelivery],
@@ -80,13 +81,13 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
 
   return (
     <div className={styles.dashboard}>
-      {/* PROGRESS INDICATOR CHARTS */}
+      {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         {progressData.properties.map((property, i) => (
           <ChartWrapper
             key={property.name}
             title={property.title}
-            info={property.info}
+            info="This is a test description"
           >
             <ProgressIndicatorChart
               property={property}
@@ -96,39 +97,38 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
         ))}
       </div>
 
-      {/* STACKED AND GROUPED BAR CHARTS */}
+      {/* stacked/grouped bar charts */}
       <div className={styles.barCharts}>
         <ChartWrapper
-          title={progressionVsPlanning?.name}
-          info={progressionVsPlanning?.name}
+          title="Progression of Units Relating to Planning Schedule"
+          info="This is a test description"
         >
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={progressionVsPlanningChartData?.properties?.[0]?.name}
-            data={progressionVsPlanningChartData}
+            yLabel="Number of Units"
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
+            data={progressionVsPlanningChartData}
           />
         </ChartWrapper>
         <ChartWrapper
-          title={totalHousingDelivery?.name}
-          info={totalHousingDelivery?.name}
+          title="Total Housing Delivery 2016-2021"
+          info="This is a test description"
         >
           <GroupedBarChart
             xLabel="Year"
-            yLabel={totalHousingDelivery?.properties?.[0]?.name}
+            yLabel="Housing Delivery in Units"
             data={totalHousingDeliveryChartData}
           />
         </ChartWrapper>
         <ChartWrapper
-          title={tenureHousingDelivery?.name}
-          info={tenureHousingDelivery?.name}
+          title="Housing Delivery by Tenure Type 2016-2021"
+          info="This is a test description"
         >
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={tenureHousingDeliveryChartData?.properties?.[0]?.name}
-            data={tenureHousingDeliveryChartData}
+            yLabel="Housing Delivery in Units"
             ranges={[
               'Affordable Rent',
               'Intermediate',
@@ -136,22 +136,23 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
               'Social Rented',
               'Private Rented Sector',
             ]}
+            data={tenureHousingDeliveryChartData}
           />
         </ChartWrapper>
       </div>
 
-      {/* LINE CHART */}
+      {/* line chart */}
       <div className={styles.lineCharts}>
         <ChartWrapper
-          title={approvalsGranted?.name}
-          info={approvalsGranted?.name}
+          title="No. of Housing Approvals Granted Over Time"
+          info="This is a test description"
         >
           <LineChart
-            data={approvalsGrantedChartData}
             x="Month"
-            ranges={['2019', '2020', '2021']}
             xLabel="Year"
             yLabel="Data Property Name / Unit"
+            ranges={['2019', '2020', '2021']}
+            data={approvalsGrantedChartData}
           />
         </ChartWrapper>
       </div>

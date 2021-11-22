@@ -42,10 +42,7 @@ const Dashboards = () => {
 
   if (!dashboardComponentDefinition) return null;
 
-  const {
-    name,
-    props: { widgets },
-  } = dashboardComponentDefinition;
+  const { name } = dashboardComponentDefinition;
 
   const Dashboard = React.lazy(() =>
     import(`./${name}/${name}Dashboard.component`),
@@ -86,7 +83,7 @@ const Dashboards = () => {
         </Sidebar>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <React.Suspense fallback={<LoadMaskFallback />}>
-            <Dashboard sourceId={sourceId} widgets={widgets} />
+            <Dashboard sourceId={sourceId} />
           </React.Suspense>
         </ErrorBoundary>
       </Box>

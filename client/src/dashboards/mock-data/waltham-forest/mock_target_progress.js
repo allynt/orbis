@@ -4,7 +4,7 @@ module.exports = {
   properties: [
     {
       title:
-        '% Houses Delivered so Far Out of Housing Delivery Target For Previous 5 Financial Years.',
+        '% of Houses Delivered So Far out of Previous 5 Financial Years Target.',
       info:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae et cupiditate eos earum.',
       name: 'Housing Delivery',

@@ -42,6 +42,7 @@ module.exports = {
           'Social Rented': 218,
           'Private Rented Sector': 442,
         },
+        // two entries with year '2018-2019', 1st is being overwritten by second
         {
           Year: '2018-2019',
           'Affordable Rent': 304,
@@ -58,6 +59,7 @@ module.exports = {
           'Social Rented': 251,
           'Private Rented Sector': 517,
         },
+        // 2020-2021 not rendering, caused by above issue (comment one of the duplicates out and it appears as normal)
         {
           Year: '2020-2021',
           'Affordable Rent': 277,
