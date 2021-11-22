@@ -19,9 +19,6 @@ const dashboardsSlice = createSlice({
 
 export const fetchWidgetData = (source_id, name, url) => async dispatch => {
   const result = await import(`${url}.js`);
-
-  // './mock-data/waltham-forest/mock_progression_vs_planning_schedule'
-
   dispatch(setWidgetData({ source_id, name, data: result.default }));
 };
 
