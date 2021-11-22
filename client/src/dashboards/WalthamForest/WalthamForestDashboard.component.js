@@ -40,9 +40,6 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
   const chartTheme = useChartTheme();
   const dispatch = useDispatch();
 
-  // NEED TO MERGE TRANSFORMER PR THEN MERGE MASTER INTO HERE!!!
-  // 1. add props to metadata
-
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
       widgetDataSelector(sourceId, 'ApprovalsGranted'),
@@ -123,9 +120,27 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
             data={totalHousingDeliveryChartData}
           />
         </ChartWrapper>
+        <ChartWrapper
+          title={tenureHousingDelivery?.name}
+          info={tenureHousingDelivery?.name}
+        >
+          <StackedBarChart
+            x="Year"
+            xLabel="Financial Year"
+            yLabel={TenureHousingDeliveryChartData?.properties?.[0]?.name}
+            data={TenureHousingDeliveryChartData}
+            ranges={[
+              'Affordable Rent',
+              'Intermediate',
+              'Market',
+              'Social Rented',
+              'Private Rented Sector',
+            ]}
+          />
+        </ChartWrapper>
       </div>
 
-      {/* MULTIPLE LINE CHARTS */}
+      {/* LINE CHART */}
       <div className={styles.lineCharts}>
         <ChartWrapper
           title={approvalsGranted?.name}
