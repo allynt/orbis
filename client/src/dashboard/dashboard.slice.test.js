@@ -1,10 +1,10 @@
 import fetch from 'jest-fetch-mock';
 
-import reducer, { setWidgetData, widgetDataSelector } from './dashboards.slice';
+import reducer, { setWidgetData, widgetDataSelector } from './dashboard.slice';
 
 fetch.enableMocks();
 
-describe('Dashboards Slice', () => {
+describe('Dashboard Slice', () => {
   describe('reducer', () => {
     let beforeState;
     beforeEach(() => {
@@ -64,7 +64,7 @@ describe('Dashboards Slice', () => {
     describe('widgetDataSelector', () => {
       it('selects data for a specific widget', () => {
         const state = {
-            dashboards: {
+            dashboard: {
               'test-source': {
                 'test-dataset-name': { name: 'this is the original test data' },
               },
@@ -80,7 +80,7 @@ describe('Dashboards Slice', () => {
       });
 
       it('returns undefined if no data is present', () => {
-        const state = { dashboards: {} };
+        const state = { dashboard: {} };
 
         const result = widgetDataSelector(
           'test-source',

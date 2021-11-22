@@ -27,7 +27,7 @@ import { ReactComponent as MissionControlIcon } from 'control-panel/mission-cont
 import { dataSourceByIdSelector } from 'data-layers/data-layers.slice';
 import { history } from 'root.reducer';
 
-const Dashboards = () => {
+const Dashboard = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -45,7 +45,7 @@ const Dashboards = () => {
   const { name } = dashboardComponentDefinition;
 
   const Dashboard = React.lazy(() =>
-    import(`./${name}/${name}Dashboard.component`),
+    import(`./${name}/${name}Config.component`),
   );
 
   return (
@@ -102,4 +102,4 @@ const Dashboards = () => {
   );
 };
 
-export { Dashboards };
+export { Dashboard };

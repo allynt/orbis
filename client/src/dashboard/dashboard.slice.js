@@ -5,8 +5,8 @@ export const initialState = {
   error: null,
 };
 
-const dashboardsSlice = createSlice({
-  name: 'dashboards',
+const dashboardSlice = createSlice({
+  name: 'dashboard',
   initialState,
   reducers: {
     setWidgetData: (state, { payload }) => {
@@ -29,10 +29,10 @@ export const fetchWidgetData = (
   dispatch(setWidgetData({ source_id, datasetName, data: result.default }));
 };
 
-export const { setWidgetData } = dashboardsSlice.actions;
+export const { setWidgetData } = dashboardSlice.actions;
 
 /** @param {import('typings').RootState} state */
-const baseSelector = state => state?.dashboards;
+const baseSelector = state => state?.dashboard;
 
 /** @param {import('typings').Source['source_id']} source_id */
 /** @param {string} datasetName */
@@ -42,4 +42,4 @@ export const widgetDataSelector = (source_id, datasetName) => {
   });
 };
 
-export default dashboardsSlice.reducer;
+export default dashboardSlice.reducer;

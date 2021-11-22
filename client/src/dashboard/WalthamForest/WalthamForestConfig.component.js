@@ -4,7 +4,7 @@ import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { widgetDataSelector, fetchWidgetData } from '../dashboards.slice';
+import { widgetDataSelector, fetchWidgetData } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
 import { ChartWrapper } from '../widgets/chart-wrapper.component';

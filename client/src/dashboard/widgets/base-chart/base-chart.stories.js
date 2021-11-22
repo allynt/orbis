@@ -3,7 +3,7 @@ import React from 'react';
 import { BaseChart } from './base-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/Base Chart',
+  title: 'Dashboard/Widgets/Base Chart',
 };
 
 const Template = args => {

@@ -5,7 +5,7 @@ import { useChartTheme } from '../../useChartTheme';
 import { ProgressIndicatorChart } from './progress-indicator-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/Progress Indicator Chart',
+  title: 'Dashboard/Widgets/Progress Indicator Chart',
 };
 
 const Template = ({ properties }) => {
