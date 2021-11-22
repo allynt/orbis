@@ -13,7 +13,7 @@ import { chartDataSelector, fetchChartData } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { walthamApiMetadata } from './waltham-api-metadata.constants';
+import { walthamApiMetadata } from './waltham.constants';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
