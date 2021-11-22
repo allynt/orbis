@@ -1,4 +1,4 @@
-export const chartApiData = [
+export const walthamApiMetadata = [
   {
     datasetName: 'ApprovalsGranted',
     url: './mock-data/waltham-forest/mock_approvals_granted',

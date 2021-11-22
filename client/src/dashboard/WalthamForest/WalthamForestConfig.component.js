@@ -12,8 +12,8 @@ import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.c
 import { chartDataSelector, fetchChartData } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
-import { chartApiData } from './chart-api-metadata';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
+import { walthamApiMetadata } from './waltham-api-metadata.constants';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -56,7 +56,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
     );
 
   useEffect(() => {
-    chartApiData.forEach(({ datasetName, url }) =>
+    walthamApiMetadata.forEach(({ datasetName, url }) =>
       dispatch(fetchChartData(sourceId, datasetName, url)),
     );
   }, [sourceId, dispatch]);

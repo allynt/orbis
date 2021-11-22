@@ -1,9 +1,13 @@
 /**
- * @param {object[]} data array of objects with year/gross/net properties
+ * This function is necessary because the data does not match what Victory
+ * expects. Specifically, the 'gross' and 'net' values must be split into
+ * separate arrays so that they can be uses to render separate chart data.
+ *
+ * @param {object[]} data
  * @returns {{
  *  x: string
  *  y: number
- * }[][]} array of nested arrays containing objects, separated by gross/net
+ * }[][]}
  */
 export const groupedDataTransformer = data => {
   if (!data) return;
@@ -20,9 +24,10 @@ export const groupedDataTransformer = data => {
 };
 
 /**
- * Creates an array of all unique keys across the entries, then creates a new
- * object for each entry containing each of those keys, setting the entry's own
- * value for each key if it exists, defaulting to null if it is undefined
+ * This function is necessary because the data entries do not always have equal
+ * keys, and victory does not accept missing keys. It does however accept 'null'
+ * values, so this fills any missing keys will 'null' so the data is useable.
+ *
  * @param {Object[]} data
  * @returns {Object[]}
  */
