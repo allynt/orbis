@@ -55,8 +55,8 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
     );
 
   useEffect(() => {
-    widgets.forEach(({ name, url }) =>
-      dispatch(fetchWidgetData(sourceId, name, url)),
+    widgets.forEach(({ datasetName, url }) =>
+      dispatch(fetchWidgetData(sourceId, datasetName, url)),
     );
   }, [sourceId, widgets, dispatch]);
 
