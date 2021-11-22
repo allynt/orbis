@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
@@ -12,7 +12,7 @@ import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.
 import { LineChart } from '../widgets/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
-import { WFCGroupedDataTransformer } from './utils';
+import { groupedDataTransformer, lineDataTransformer } from './utils';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -38,6 +38,19 @@ const useStyles = makeStyles(() => ({
 const WalthamForestDashboard = () => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
+
+  const groupedChartData = useMemo(
+      () => groupedDataTransformer(groupedData.properties[0].data),
+      [],
+    ),
+    lineChartData = useMemo(
+      () =>
+        lineDataTransformer(
+          lineData.properties.find(p => p.name === 'Monthly').data,
+        ),
+      [],
+    );
+
   return (
     <div className={styles.dashboard}>
       {/* PROGRESS INDICATOR CHARTS */}
@@ -71,7 +84,7 @@ const WalthamForestDashboard = () => {
           <GroupedBarChart
             xLabel="Year"
             yLabel={groupedData.properties[0].name}
-            data={WFCGroupedDataTransformer(groupedData.properties[0].data)}
+            data={groupedChartData}
           />
         </ChartWrapper>
       </div>
@@ -80,9 +93,9 @@ const WalthamForestDashboard = () => {
       <div className={styles.lineCharts}>
         <ChartWrapper title={lineData.name} info={lineData.name}>
           <LineChart
-            data={lineData.properties.find(p => p.name === 'Monthly').data}
+            data={lineChartData}
             x="Month"
-            ranges={['2019', '2020']}
+            ranges={['2019', '2020', '2021']}
             xLabel="Year"
             yLabel="Data Property Name / Unit"
           />

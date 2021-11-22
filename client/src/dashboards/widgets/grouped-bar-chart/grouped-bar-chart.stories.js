@@ -1,7 +1,7 @@
 import React from 'react';
 
-import * as data from '../../mock-data/waltham-forest/mock_total_housing_delivery';
-import { WFCGroupedDataTransformer } from '../../WalthamForest/utils';
+import * as groupedData from '../../mock-data/waltham-forest/mock_total_housing_delivery';
+import { groupedDataTransformer } from '../../WalthamForest/utils';
 import { GroupedBarChart } from './grouped-bar-chart.component';
 
 export default {
@@ -15,6 +15,6 @@ const Template = args => {
 export const Default = Template.bind({});
 Default.args = {
   xLabel: 'Year',
-  yLabel: data.properties[0].name,
-  data: WFCGroupedDataTransformer(data.properties[0].data),
+  yLabel: groupedData.properties[0].name,
+  data: groupedDataTransformer(groupedData.properties[0].data),
 };
