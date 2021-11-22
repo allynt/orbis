@@ -35,16 +35,17 @@ const Dashboards = () => {
   const sourceId = searchParams.get('source_id');
   const source = useSelector(dataSourceByIdSelector(sourceId));
 
-  const dashboardProps = source.metadata.application.orbis.dashboard_component;
+  const dashboardComponentDefinition =
+    source.metadata.application.orbis.dashboard_component;
 
   const handleProfileClose = () => setProfileOpen(false);
 
-  if (!dashboardProps) return null;
+  if (!dashboardComponentDefinition) return null;
 
   const {
     name,
     props: { widgets },
-  } = dashboardProps;
+  } = dashboardComponentDefinition;
 
   const Dashboard = React.lazy(() =>
     import(`./${name}/${name}Dashboard.component`),

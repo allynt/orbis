@@ -73,7 +73,7 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
       () => progressionVsPlanning?.properties[0].data,
       [progressionVsPlanning],
     ),
-    TenureHousingDeliveryChartData = useMemo(
+    tenureHousingDeliveryChartData = useMemo(
       () => tenureHousingDelivery?.properties[0].data,
       [tenureHousingDelivery],
     );
@@ -127,8 +127,8 @@ const WalthamForestDashboard = ({ sourceId, widgets }) => {
           <StackedBarChart
             x="Year"
             xLabel="Financial Year"
-            yLabel={TenureHousingDeliveryChartData?.properties?.[0]?.name}
-            data={TenureHousingDeliveryChartData}
+            yLabel={tenureHousingDeliveryChartData?.properties?.[0]?.name}
+            data={tenureHousingDeliveryChartData}
             ranges={[
               'Affordable Rent',
               'Intermediate',
