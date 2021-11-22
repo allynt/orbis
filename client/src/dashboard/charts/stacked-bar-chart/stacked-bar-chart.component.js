@@ -45,7 +45,7 @@ const StackedBarChart = ({
     <BaseChart
       xLabel={xLabel}
       yLabel={yLabel}
-      renderWidget={renderStackedBarChart}
+      renderChart={renderStackedBarChart}
     />
   );
 };

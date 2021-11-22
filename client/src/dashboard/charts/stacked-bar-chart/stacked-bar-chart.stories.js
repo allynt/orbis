@@ -3,7 +3,7 @@ import React from 'react';
 import * as data from '../../mock-data/waltham-forest/mock_progression_vs_planning_schedule';
 import { StackedBarChart } from './stacked-bar-chart.component';
 
-export default { title: 'Dashboard/Widgets/StackedBarChart' };
+export default { title: 'Dashboard/Charts/StackedBarChart' };
 
 const Template = args => <StackedBarChart {...args} />;
 

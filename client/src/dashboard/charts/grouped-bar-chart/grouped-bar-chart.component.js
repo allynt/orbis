@@ -40,7 +40,7 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
     <BaseChart
       xLabel={xLabel}
       yLabel={yLabel}
-      renderWidget={renderGroupedBarChart}
+      renderChart={renderGroupedBarChart}
     />
   );
 };

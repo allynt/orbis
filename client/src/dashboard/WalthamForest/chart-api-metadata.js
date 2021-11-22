@@ -1,4 +1,4 @@
-export const widgetData = [
+export const chartApiData = [
   {
     datasetName: 'ApprovalsGranted',
     url: './mock-data/waltham-forest/mock_approvals_granted',

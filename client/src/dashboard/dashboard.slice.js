@@ -9,7 +9,7 @@ const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {
-    setWidgetData: (state, { payload }) => {
+    setChartData: (state, { payload }) => {
       const { source_id, datasetName, data } = payload;
 
       state[source_id] = {
@@ -20,23 +20,23 @@ const dashboardSlice = createSlice({
   },
 });
 
-export const fetchWidgetData = (
+export const fetchChartData = (
   source_id,
   datasetName,
   url,
 ) => async dispatch => {
   const result = await import(`${url}.js`);
-  dispatch(setWidgetData({ source_id, datasetName, data: result.default }));
+  dispatch(setChartData({ source_id, datasetName, data: result.default }));
 };
 
-export const { setWidgetData } = dashboardSlice.actions;
+export const { setChartData } = dashboardSlice.actions;
 
 /** @param {import('typings').RootState} state */
 const baseSelector = state => state?.dashboard;
 
 /** @param {import('typings').Source['source_id']} source_id */
 /** @param {string} datasetName */
-export const widgetDataSelector = (source_id, datasetName) => {
+export const chartDataSelector = (source_id, datasetName) => {
   return createSelector(baseSelector, state => {
     return state?.[source_id]?.[datasetName];
   });

@@ -4,16 +4,16 @@ import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { widgetDataSelector, fetchWidgetData } from '../dashboard.slice';
+import { ChartWrapper } from '../charts/chart-wrapper.component';
+import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
+import { LineChart } from '../charts/line-chart/line-chart.component';
+import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progress-indicator-chart.component';
+import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
+import { chartDataSelector, fetchChartData } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
-import { ChartWrapper } from '../widgets/chart-wrapper.component';
-import { GroupedBarChart } from '../widgets/grouped-bar-chart/grouped-bar-chart.component';
-import { LineChart } from '../widgets/line-chart/line-chart.component';
-import { ProgressIndicatorChart } from '../widgets/progress-indicator-chart/progress-indicator-chart.component';
-import { StackedBarChart } from '../widgets/stacked-bar-chart/stacked-bar-chart.component';
+import { chartApiData } from './chart-api-metadata';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { widgetData } from './widget-data';
 
 const useStyles = makeStyles(() => ({
   dashboard: {
@@ -43,21 +43,21 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
-      widgetDataSelector(sourceId, 'ApprovalsGranted'),
+      chartDataSelector(sourceId, 'ApprovalsGranted'),
     ),
     progressionVsPlanning = useSelector(
-      widgetDataSelector(sourceId, 'ProgressionVsPlanning'),
+      chartDataSelector(sourceId, 'ProgressionVsPlanning'),
     ),
     tenureHousingDelivery = useSelector(
-      widgetDataSelector(sourceId, 'TenureHousingDelivery'),
+      chartDataSelector(sourceId, 'TenureHousingDelivery'),
     ),
     totalHousingDelivery = useSelector(
-      widgetDataSelector(sourceId, 'TotalHousingDelivery'),
+      chartDataSelector(sourceId, 'TotalHousingDelivery'),
     );
 
   useEffect(() => {
-    widgetData.forEach(({ datasetName, url }) =>
-      dispatch(fetchWidgetData(sourceId, datasetName, url)),
+    chartApiData.forEach(({ datasetName, url }) =>
+      dispatch(fetchChartData(sourceId, datasetName, url)),
     );
   }, [sourceId, dispatch]);
 

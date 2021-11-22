@@ -5,7 +5,7 @@ import { lineDataTransformer } from '../../WalthamForest/utils';
 import { LineChart } from './line-chart.component';
 
 export default {
-  title: 'Dashboard/Widgets/Line Chart',
+  title: 'Dashboard/Charts/Line Chart',
 };
 
 const data = lineData.properties.find(p => p.name === 'Monthly').data;

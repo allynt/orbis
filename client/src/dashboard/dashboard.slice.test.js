@@ -1,6 +1,6 @@
 import fetch from 'jest-fetch-mock';
 
-import reducer, { setWidgetData, widgetDataSelector } from './dashboard.slice';
+import reducer, { setChartData, chartDataSelector } from './dashboard.slice';
 
 fetch.enableMocks();
 
@@ -19,12 +19,12 @@ describe('Dashboard Slice', () => {
       expect(actualState).toEqual(expect.objectContaining(beforeState));
     });
 
-    describe('setWidgetData', () => {
-      it("builds widget data by source_id and dataset name if it doesn't exist", () => {
+    describe('setChartData', () => {
+      it("builds chart data by source_id and dataset name if it doesn't exist", () => {
         const state = {},
-          widgetData = {
+          chartData = {
             source_id: 'test-source',
-            name: 'test-dataset-name',
+            datasetName: 'test-dataset-name',
             data: { name: 'this is some test data' },
           },
           expected = {
@@ -33,20 +33,20 @@ describe('Dashboard Slice', () => {
             },
           };
 
-        const result = reducer(state, setWidgetData(widgetData));
+        const result = reducer(state, setChartData(chartData));
         expect(result).toEqual(expected);
       });
     });
 
-    it('replaces widget data in state', () => {
+    it('replaces chart data in state', () => {
       const state = {
           'test-source': {
             'test-dataset-name': { name: 'this is the original test data' },
           },
         },
-        widgetData = {
+        chartData = {
           source_id: 'test-source',
-          name: 'test-dataset-name',
+          datasetName: 'test-dataset-name',
           data: { name: 'this is the new test data' },
         },
         expected = {
@@ -55,14 +55,14 @@ describe('Dashboard Slice', () => {
           },
         };
 
-      const result = reducer(state, setWidgetData(widgetData));
+      const result = reducer(state, setChartData(chartData));
       expect(result).toEqual(expected);
     });
   });
 
   describe('selectors', () => {
-    describe('widgetDataSelector', () => {
-      it('selects data for a specific widget', () => {
+    describe('chartDataSelector', () => {
+      it('selects data for a specific chart', () => {
         const state = {
             dashboard: {
               'test-source': {
@@ -72,7 +72,7 @@ describe('Dashboard Slice', () => {
           },
           expected = { name: 'this is the original test data' };
 
-        const result = widgetDataSelector(
+        const result = chartDataSelector(
           'test-source',
           'test-dataset-name',
         )(state);
@@ -82,7 +82,7 @@ describe('Dashboard Slice', () => {
       it('returns undefined if no data is present', () => {
         const state = { dashboard: {} };
 
-        const result = widgetDataSelector(
+        const result = chartDataSelector(
           'test-source',
           'test-dataset-name',
         )(state);

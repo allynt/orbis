@@ -10,10 +10,10 @@ import { useChartTheme } from '../../useChartTheme';
  * @param {{
  *  xLabel?: string
  *  yLabel?: string
- *  renderWidget: (width: number) => React.ReactNode
+ *  renderChart: (width: number) => React.ReactNode
  * }} props
  */
-const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
+const BaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
   const chartTheme = useChartTheme();
 
   const getTickFormat = t => {
@@ -37,7 +37,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderWidget }) => {
             label={yLabel}
             tickFormat={getTickFormat}
           />
-          {renderWidget(width)}
+          {renderChart(width)}
         </VictoryChart>
       )}
     </ParentSize>

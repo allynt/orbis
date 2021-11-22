@@ -56,7 +56,7 @@ const LineChart = ({
   if (!data) return null;
 
   return (
-    <BaseChart xLabel={xLabel} yLabel={yLabel} renderWidget={renderLineChart} />
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderChart={renderLineChart} />
   );
 };
 
