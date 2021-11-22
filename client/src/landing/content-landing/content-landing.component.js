@@ -85,7 +85,7 @@ const ExpandableItemList = ({
  * @param {{
  *   bookmarks: import('typings').Bookmark[]
  *   chooseBookmark?: (bookmark: import('typings').Bookmark) => void
- *   dashboards: import('typings').Source[]
+ *   dashboards: object[]
  *   chooseDashboard?: (dashboard: import('typings').Source) => void
  * }} props
  */
@@ -110,18 +110,6 @@ export const ContentLanding = ({
       gridRef.current.scrollTo(0, 0);
   }, [viewAllContent]);
 
-  // a random placeholder image, will delete when real thumbs available
-  const testThumb =
-    'https://media.istockphoto.com/vectors/logo-of-a-green-life-tree-with-roots-and-leaves-vector-illustration-vector-id1130887322?k=20&m=1130887322&s=612x612&w=0&h=dPVnCDJ4ocIqtn51iJDzEKdesx_RikdT74asv81jJdk=';
-
-  // some fake data using a real dashboard, with image and name, delete later
-  const testDashboards = new Array(10).fill(dashboards[0]).map((d, i) => ({
-    ...d,
-    source_id: `${d.source_id}-${i}`,
-    name: `made-up-name-${i}`,
-    thumbnail: testThumb,
-  }));
-
   return (
     <>
       {!!bookmarks ? (
@@ -136,7 +124,7 @@ export const ContentLanding = ({
       ) : null}
       {!!dashboards ? (
         <ExpandableItemList
-          data={testDashboards}
+          data={dashboards}
           contentType={CONTENT_TYPES.dashboards}
           viewAllContent={viewAllContent[CONTENT_TYPES.dashboards]}
           gridRef={gridRef}

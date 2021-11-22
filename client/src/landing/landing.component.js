@@ -84,7 +84,12 @@ const Landing = () => {
   const dashboards = useSelector(dashboardSourcesSelector);
   const sources = useSelector(dataSourcesSelector);
 
-  const hasContent = bookmarks?.length > 0 || dashboards?.length > 0;
+  const hasContent = bookmarks?.length > 0 || dashboards?.length > 0,
+    dashboardComponents = dashboards.map(d => ({
+      ...d.metadata.application.orbis.dashboard_component,
+      source_id: d.source_id,
+    }));
+
   const styles = useStyles({ hasContent });
   const { setViewState, viewState } = useMap();
 
@@ -139,7 +144,7 @@ const Landing = () => {
               <ContentLanding
                 bookmarks={bookmarks}
                 chooseBookmark={chooseBookmark}
-                dashboards={dashboards}
+                dashboards={dashboardComponents}
                 chooseDashboard={chooseDashboard}
               />
             ) : (

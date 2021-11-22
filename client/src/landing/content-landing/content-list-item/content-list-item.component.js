@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
  */
 export const ContentListItem = ({ item, onClick }) => {
   const styles = useStyles();
-  const title = item?.title ?? item?.name,
+  const title = item?.title,
     date = item?.created && format(new Date(item?.created), DATE_FORMAT);
   return (
     <Card className={styles.card}>
