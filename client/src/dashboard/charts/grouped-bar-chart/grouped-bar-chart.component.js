@@ -4,6 +4,7 @@ import { VictoryBar, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 import { BaseChart } from '../base-chart/base-chart.component';
+import { GroupedWidthCalculator } from '../utils/width-calculators';
 
 /**
  * @param {{
@@ -16,8 +17,8 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
   const chartTheme = useChartTheme();
 
   const renderGroupedBarChart = width => {
-    const barWidth = width / 30,
-      offset = width / barWidth;
+    const { barWidth, offset } = GroupedWidthCalculator(data, width);
+
     return (
       <VictoryGroup offset={offset}>
         {data?.map((arr, i) => (
