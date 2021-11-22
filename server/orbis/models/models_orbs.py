@@ -96,6 +96,14 @@ def orb_terms_document_path(instance, filename):
     return f"orbs/{instance_name}/terms/{filename}"
 
 
+def validate_default_orb_state(value):
+    """
+    A simple validator that ensures orb.default_orb_state is an object of objects
+    """
+    default_orb_state_schema = {"type": "object", "patternProperties": { "^.*": { "type": "object"}}}
+    return validate_schema(value, default_orb_state_schema)
+
+
 def validate_orb_features(value):
     """
     A simple validator that ensures orb.features is a list of strings
@@ -269,38 +277,65 @@ class Orb(models.Model):
     is_active = models.BooleanField(default=True)
     is_default = models.BooleanField(
         default=False,
-        help_text="Licences to default Orbs are automatically granted upon registration."
+        help_text="Licences to default Orbs are automatically granted upon registration.",
     )
     is_hidden = models.BooleanField(
         default=False,
-        help_text="Licences to a hidden Orb are not shown to CustomerUsers."
+        help_text="Licences to a hidden Orb are not shown to CustomerUsers.",
     )
     is_exclusive = models.BooleanField(
         default=False,
-        help_text="Licences to exclusive Orbs are automatically removed when licences to other orbs are assigned; they cannot co-exist."
+        help_text="Licences to exclusive Orbs are automatically removed when licences to other orbs are assigned; they cannot co-exist.",
     )
     can_purchase = models.BooleanField(
         default=True,
-        help_text="Only Licences to purchasable Orbs can be ordered."
+        help_text="Only Licences to purchasable Orbs can be ordered.",
+    )
+
+    default_orb_state = models.JSONField(
+        blank=True,
+        default=dict,
+        validators=[validate_default_orb_state],
+        help_text="State to be passed to a user when they are assigned a licence to this Orb.",
     )
 
     features = models.JSONField(
         blank=True,
         default=list,
         validators=[validate_orb_features],
-        help_text="List of features that this orb supports."
+        help_text="List of features that this orb supports.",
     )
 
-
     licence_cost = models.FloatField(
-        default=0, help_text="The cost of a single licence to this Orb."
+        default=0, help_text="The cost of a single licence to this Orb.",
     )
 
     def __str__(self):
         return self.name
 
+    def add_state(self, user, override=False):
+        """
+        Adds default_orb_state to a user (as a result of a licence being assigned to that user).
+        """
+        orbis_user_profile = user.orbis_profile
+        for k, v in self.default_orb_state.items():
+            if override or k not in orbis_user_profile.orb_state:
+                orbis_user_profile.orb_state[k] = v
+        orbis_user_profile.save()
+
+    def remove_state(self, user):
+        """
+        Removes default_orb_state from a user (as a result of a licence being removed from that user).
+        """
+
+        orbis_user_profile = user.orbis_profile
+        for k, v in self.default_orb_state.items():
+            orbis_user_profile.orb_state.pop(k, None)
+        orbis_user_profile.save()
+
     def natural_key(self):
         return (self.name, )
+
 
 class OrbImage(models.Model):
     """
@@ -439,3 +474,32 @@ class Licence(AccessModel):
                 raise ValidationError(
                     f"The licence user must belong to {self.customer}."
                 )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # track changes to customer_user (see below)
+        self._initial_customer_user = self.customer_user
+
+    def save(self, *args, **kwargs):
+        """
+        If licence.customer_user has changed, then update the corresponding user_profile.orb_state
+        """
+        if self.customer_user is not None:
+            self.orb.add_state(self.customer_user.user, override=False)
+            if self._initial_customer_user is not None and self._initial_customer_user != self.customer_user:
+                self.orb.remove_state(self._initial_customer_user.user)
+
+        else:
+            if self._initial_customer_user is not None:
+                self.orb.remove_state(self._initial_customer_user.user)
+
+        return super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        """
+        If licence.customer_user has changed, then update the corresponding user_profile.orb_state
+        """
+        if self.customer_user is not None:
+            self.orb.remove_state(self.customer_user.user)
+
+        return super().delete(*args, **kwargs)

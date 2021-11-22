@@ -8,7 +8,7 @@ from django.forms import CheckboxSelectMultiple, IntegerField, ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
 
-from astrosat.admin import get_clickable_m2m_list_display
+from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
 from astrosat_users.models import Customer, User
 
 from orbis.models import Orb, OrbImage, LicencedCustomer, Licence, DataScope, Access
@@ -67,7 +67,7 @@ class OrbAdminForm(ModelForm):
         self.fields["short_description"].widget.attrs.update({
             "cols": 80, "class": "vLargeTextField"
         })
-
+        self.fields["default_orb_state"].widget = JSONAdminWidget()
 
 ###########
 # inlines #
