@@ -29,6 +29,8 @@ export const fetchChartData = (
   dispatch(setChartData({ source_id, datasetName, data: result.default }));
 };
 
+export const updateTargets = () => async dispatch => {};
+
 export const { setChartData } = dashboardSlice.actions;
 
 /** @param {import('typings').RootState} state */

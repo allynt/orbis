@@ -16,3 +16,28 @@ export const walthamApiMetadata = [
     url: './mock-data/waltham-forest/mock_total_housing_delivery',
   },
 ];
+
+export const targetSelectOptions = {
+  totalHousing:
+    'Total Housing Test Target For Each of The Last 5 Financial Years',
+  marketHousing:
+    'Market Housing Targets For Each of The Previous 10 Financial Years',
+  affordableHousing:
+    'Affordable Housing % Delivery Target For The Previous 10 Financial Years',
+  intermediateDelivery:
+    'Intermediate % Delivery Target For the Previous 10 Financial Years',
+  sociallyRented:
+    'Socially Rented % Delivery Target For The Previous 10 Financial Years',
+  privateRental:
+    'Private Rental Sector % Delivery Target For The Previous 10 Financial Years',
+};
+
+export const targetFields = {
+  totalHousing: [
+    '2016 - 2017',
+    '2017 - 2018',
+    '2018 - 2019',
+    '2019 - 2020',
+    '2020 - 2021',
+  ],
+};
