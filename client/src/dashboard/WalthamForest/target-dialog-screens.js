@@ -9,12 +9,21 @@ import {
   Input,
 } from '@astrosat/astrosat-ui';
 
-import { targetSelectOptions } from './waltham.constants';
+import { targetInputFields, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(() => ({
   wrapper: {
     minHeight: '20rem',
     minWidth: '40rem',
+  },
+  buttons: {
+    marginTop: '2.5rem',
+    gap: '1rem',
+  },
+  inputFields: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    gridGap: '1rem',
   },
 }));
 
@@ -34,9 +43,11 @@ const Wrapper = ({ children }) => {
 };
 
 const SelectScreen = ({ onNextClick }) => {
-  const [selectedDataset, setSelectedDataset] = useState(
-    'Select Type of Target',
-  );
+  const styles = useStyles({});
+
+  // TODO: need to deal with placeholder
+  const defaultText = 'This is a placeholder';
+  const [selectedDataset, setSelectedDataset] = useState(defaultText);
   return (
     <Wrapper>
       <Grid
@@ -45,17 +56,17 @@ const SelectScreen = ({ onNextClick }) => {
         component={Select}
         value={selectedDataset}
         inputProps={{ 'aria-label': 'Dataset' }}
-        onChange={e => setSelectedDataset(e.target.value)}
+        onChange={({ target: { value } }) => setSelectedDataset(value)}
       >
-        {Object.entries(targetSelectOptions).map(([key, value]) => (
+        {Object.entries(targetDatasets).map(([key, value]) => (
           <MenuItem key={key} value={key}>
             {value}
           </MenuItem>
         ))}
       </Grid>
-      <Grid item container justifyContent="space-evenly">
+      <Grid item container justifyContent="flex-end" className={styles.buttons}>
         <Button
-          disabled={!selectedDataset}
+          disabled={selectedDataset === defaultText}
           onClick={() => onNextClick(selectedDataset)}
         >
           Next
@@ -65,27 +76,35 @@ const SelectScreen = ({ onNextClick }) => {
   );
 };
 
-const TargetScreen = ({ datasetName, fields, onAddTargetsClick }) => {
-  // will have to be form
-  const targets = {
-    datasetName: {
-      '2016 - 2017': 10,
-      '2017 - 2018': 20,
-      '2018 - 2019': 30,
-    },
-  };
-  const onResetClick = () => {};
-  const disabled = false;
+// TODO: filter out empty string values
+const TargetScreen = ({ onAddTargetsClick }) => {
+  const styles = useStyles({});
+  const [targetData, setTargetData] = useState({});
+  const isDirty = Object.values(targetData).some(v => !!v);
   return (
-    <Grid item container wrap="wrap">
-      {fields?.map(field => (
-        <Input key={field} placeholder={`${field}`} />
-      ))}
-      <Grid item container>
-        <Button color="secondary" onClick={onResetClick}>
+    <Grid
+      item
+      container
+      component="form"
+      onSubmit={() => onAddTargetsClick(targetData)}
+    >
+      <Grid item container className={styles.inputFields}>
+        {targetInputFields?.map(field => (
+          <Input
+            key={field}
+            value={targetData[field] ?? ''}
+            placeholder={field}
+            onChange={({ target: { value } }) =>
+              setTargetData({ ...targetData, [field]: value })
+            }
+          />
+        ))}
+      </Grid>
+      <Grid item container justifyContent="flex-end" className={styles.buttons}>
+        <Button color="secondary" onClick={() => setTargetData({})}>
           Reset
         </Button>
-        <Button disabled={disabled} onClick={() => onAddTargetsClick(targets)}>
+        <Button disabled={!isDirty} type="submit">
           Add Target
         </Button>
       </Grid>

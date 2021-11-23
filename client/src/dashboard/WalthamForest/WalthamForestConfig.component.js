@@ -26,7 +26,7 @@ import * as progressData from '../mock-data/waltham-forest/mock_target_progress'
 import { useChartTheme } from '../useChartTheme';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { walthamApiMetadata, targetInputFields } from './waltham.constants';
+import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   dashboard: {
@@ -61,7 +61,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
-  const closeDialog = () => setTargetDialogVisible(false);
+  const closeDialog = () => {
+    setSelectedDataset(undefined);
+    setTargetDialogVisible(false);
+  };
 
   const handleAddTargetsClick = targets => {
     dispatch(updateTargets(sourceId, targets));
@@ -202,13 +205,15 @@ const WalthamForestDashboard = ({ sourceId }) => {
         onClose={closeDialog}
         aria-labelledby="waltham-forest-targets-dialog"
       >
-        <DialogTitle onClose={closeDialog}>Add Targets</DialogTitle>
+        <DialogTitle onClose={closeDialog}>
+          {targetDatasets[selectedDataset] ?? 'Add Targets'}
+        </DialogTitle>
         <DialogContent>
           {!!selectedDataset ? (
             <TargetScreen
-              datasetName={selectedDataset}
-              fields={targetInputFields[selectedDataset]}
-              onAddTargetsClick={handleAddTargetsClick}
+              onAddTargetsClick={targets =>
+                handleAddTargetsClick({ [selectedDataset]: targets })
+              }
             />
           ) : (
             <SelectScreen

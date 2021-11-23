@@ -17,7 +17,7 @@ export const walthamApiMetadata = [
   },
 ];
 
-export const targetSelectOptions = {
+export const targetDatasets = {
   totalHousing:
     'Total Housing Test Target For Each of The Last 5 Financial Years',
   marketHousing:
@@ -32,12 +32,15 @@ export const targetSelectOptions = {
     'Private Rental Sector % Delivery Target For The Previous 10 Financial Years',
 };
 
-export const targetInputFields = {
-  totalHousing: [
-    '2016 - 2017',
-    '2017 - 2018',
-    '2018 - 2019',
-    '2019 - 2020',
-    '2020 - 2021',
-  ],
-};
+export const targetInputFields = [
+  '2011 - 2012',
+  '2012 - 2013',
+  '2013 - 2014',
+  '2014 - 2015',
+  '2015 - 2016',
+  '2016 - 2017',
+  '2017 - 2018',
+  '2018 - 2019',
+  '2019 - 2020',
+  '2020 - 2021',
+];
