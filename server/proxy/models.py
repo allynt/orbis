@@ -1,9 +1,11 @@
+from typing import Any, Optional
 import requests
 
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext as _
+from django.http import QueryDict
 
 from rest_framework import status
 
@@ -71,6 +73,10 @@ class ProxyDataSource(models.Model):
                 name="unique_proxy_data_source_id",
             )
         ]
+
+    class ProxyRequestStrategy(models.TextChoices):
+        STORED_PARAMS_ONLY = "STORED_PARAMS_ONLY"
+        REQUEST_ONLY = "REQUEST_ONLY"
 
     ProxyMethodType = models.TextChoices("MethodType", ["GET", "POST"])
 
@@ -151,6 +157,13 @@ class ProxyDataSource(models.Model):
         )
     )
 
+    request_strategy = models.TextField(
+        blank=False,
+        null=False,
+        choices=ProxyRequestStrategy.choices,
+        default=ProxyRequestStrategy.STORED_PARAMS_ONLY,
+    )
+
     adapter_name = models.CharField(
         max_length=64,
         blank=False,
@@ -174,27 +187,42 @@ class ProxyDataSource(models.Model):
     def natural_key(self):
         return (self.source_id, )
 
-    def get_data(self):
+    def get_data(
+        self,
+        request_query_params: QueryDict,
+        request_body_data: Any,
+    ):
         """
         Requests data from the proxied API
         """
+
+        upstream_query_params = None
+        upstream_body_data = None
+
+        # Use the request strategy to determine what query params & body to send upstream
+        if self.request_strategy == self.ProxyRequestStrategy.STORED_PARAMS_ONLY:
+
+            if self.proxy_method == "POST":
+                upstream_query_params = None
+                upstream_body_data = self.proxy_params
+
+            else:
+                upstream_query_params = self.proxy_params
+                upstream_body_data = None
+
+        elif self.request_strategy == self.ProxyRequestStrategy.REQUEST_ONLY:
+            upstream_query_params = request_query_params
+            upstream_body_data = request_body_data
+
         # TODO: REMOTE PAGINATION
-        if self.proxy_method == self.ProxyMethodType.POST:
-            response = requests.request(
-                self.proxy_method,
-                self.proxy_url,
-                auth=ProxyAuthentication(self),
-                headers=self.proxy_headers,
-                json=self.proxy_params,
-            )
-        else:
-            response = requests.request(
-                self.proxy_method,
-                self.proxy_url,
-                auth=ProxyAuthentication(self),
-                headers=self.proxy_headers,
-                params=self.proxy_params,
-            )
+        response = requests.request(
+            self.proxy_method,
+            self.proxy_url,
+            auth=ProxyAuthentication(self),
+            headers=self.proxy_headers,
+            params=upstream_query_params,
+            json=upstream_body_data,
+        )
 
         response.raise_for_status()
         return response.json()

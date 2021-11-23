@@ -5,6 +5,7 @@ from django.urls import resolve
 from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -80,7 +81,7 @@ class ProxyDataSourceView(APIView):
                 )
         }
     )
-    def get(self, request, **kwargs):
+    def get(self, request: Request, **kwargs):
 
         proxy_data_source = get_object_or_404(
             ProxyDataSource.objects.active(), **self.kwargs
@@ -92,7 +93,10 @@ class ProxyDataSourceView(APIView):
             processed_data = PROXY_CACHE.get(cache_key)
             if not processed_data:
                 processed_data = proxy_data_source.process_data(
-                    proxy_data_source.get_data()
+                    proxy_data_source.get_data(
+                        request_query_params=request.query_params,
+                        request_body_data=request.data
+                    )
                 )
                 PROXY_CACHE.set(
                     cache_key,
