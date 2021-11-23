@@ -29,7 +29,13 @@ export const fetchChartData = (
   dispatch(setChartData({ source_id, datasetName, data: result.default }));
 };
 
-export const updateTargets = () => async dispatch => {};
+export const updateTargets = (source_id, targets) => async dispatch => {
+  const data = {
+    [source_id]: targets,
+  };
+
+  // sets targets on user object
+};
 
 export const { setChartData } = dashboardSlice.actions;
 

@@ -32,7 +32,7 @@ export const targetSelectOptions = {
     'Private Rental Sector % Delivery Target For The Previous 10 Financial Years',
 };
 
-export const targetFields = {
+export const targetInputFields = {
   totalHousing: [
     '2016 - 2017',
     '2017 - 2018',

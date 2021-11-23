@@ -36,7 +36,7 @@ const Dashboard = () => {
   const source = useSelector(dataSourceByIdSelector(sourceId));
 
   const dashboardComponentDefinition =
-    source.metadata.application.orbis.dashboard_component;
+    source?.metadata?.application?.orbis?.dashboard_component;
 
   const handleProfileClose = () => setProfileOpen(false);
 

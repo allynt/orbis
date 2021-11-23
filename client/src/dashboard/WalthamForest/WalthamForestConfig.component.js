@@ -17,12 +17,16 @@ import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.c
 import { LineChart } from '../charts/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
-import { chartDataSelector, fetchChartData } from '../dashboard.slice';
+import {
+  chartDataSelector,
+  fetchChartData,
+  updateTargets,
+} from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { walthamApiMetadata } from './waltham.constants';
+import { walthamApiMetadata, targetInputFields } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   dashboard: {
@@ -57,14 +61,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
-  // This can go too
-  const [userTargetData, setUserTargetData] = useState();
-
   const closeDialog = () => setTargetDialogVisible(false);
 
-  //this will be redux
-  const updateTargets = ({ datasetName, data }) =>
-    setUserTargetData({ ...userTargetData, [datasetName]: data });
+  const handleAddTargetsClick = targets => {
+    dispatch(updateTargets(sourceId, targets));
+    closeDialog();
+  };
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -203,10 +205,14 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <DialogTitle onClose={closeDialog}>Add Targets</DialogTitle>
         <DialogContent>
           {!!selectedDataset ? (
-            <TargetScreen />
+            <TargetScreen
+              datasetName={selectedDataset}
+              fields={targetInputFields[selectedDataset]}
+              onAddTargetsClick={handleAddTargetsClick}
+            />
           ) : (
             <SelectScreen
-              onNextClick={selected => setSelectedDataset(selected)}
+              onNextClick={dataset => setSelectedDataset(dataset)}
             />
           )}
         </DialogContent>

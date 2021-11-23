@@ -33,30 +33,31 @@ const Wrapper = ({ children }) => {
   );
 };
 
-const SelectScreen = ({ onDoneClick, onNextClick }) => {
-  const [selected, setSelected] = useState(undefined);
-  // console.log('selected: ', selected);
+const SelectScreen = ({ onNextClick }) => {
+  const [selectedDataset, setSelectedDataset] = useState(
+    'Select Type of Target',
+  );
   return (
     <Wrapper>
       <Grid
         item
         container
         component={Select}
-        value={selected}
-        onChange={e => {
-          console.log('e: ', e);
-          setSelected(e.target.value);
-        }}
+        value={selectedDataset}
+        inputProps={{ 'aria-label': 'Dataset' }}
+        onChange={e => setSelectedDataset(e.target.value)}
       >
         {Object.entries(targetSelectOptions).map(([key, value]) => (
-          <MenuItem key={key}>{value}</MenuItem>
+          <MenuItem key={key} value={key}>
+            {value}
+          </MenuItem>
         ))}
       </Grid>
       <Grid item container justifyContent="space-evenly">
-        <Button color="secondary" onClick={onDoneClick}>
-          Done
-        </Button>
-        <Button disabled={!selected} onClick={onNextClick}>
+        <Button
+          disabled={!selectedDataset}
+          onClick={() => onNextClick(selectedDataset)}
+        >
           Next
         </Button>
       </Grid>
@@ -64,21 +65,27 @@ const SelectScreen = ({ onDoneClick, onNextClick }) => {
   );
 };
 
-const TargetScreen = ({ fields, onAddTargetClick }) => {
+const TargetScreen = ({ datasetName, fields, onAddTargetsClick }) => {
   // will have to be form
-
+  const targets = {
+    datasetName: {
+      '2016 - 2017': 10,
+      '2017 - 2018': 20,
+      '2018 - 2019': 30,
+    },
+  };
   const onResetClick = () => {};
   const disabled = false;
   return (
     <Grid item container wrap="wrap">
-      {fields.map(field => (
+      {fields?.map(field => (
         <Input key={field} placeholder={`${field}`} />
       ))}
       <Grid item container>
         <Button color="secondary" onClick={onResetClick}>
           Reset
         </Button>
-        <Button disabled={disabled} onClick={onAddTargetClick}>
+        <Button disabled={disabled} onClick={() => onAddTargetsClick(targets)}>
           Add Target
         </Button>
       </Grid>
