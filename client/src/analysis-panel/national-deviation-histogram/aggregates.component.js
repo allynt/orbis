@@ -26,8 +26,6 @@ export const Aggregates = ({ aggregates, aggregationLabel }) => {
   const [selectedAggregateArea, setSelectedAggregateArea] = useState('GB');
   const styles = useStyles();
 
-  const onChange = e => setSelectedAggregateArea(e.target.value);
-
   return (
     <>
       <Grid item>
@@ -44,7 +42,7 @@ export const Aggregates = ({ aggregates, aggregationLabel }) => {
           fullWidth={false}
           inputProps={{ 'aria-label': 'Aggregation Area' }}
           value={selectedAggregateArea}
-          onChange={onChange}
+          onChange={e => setSelectedAggregateArea(e.target.value)}
         >
           {Object.keys(aggregates).map(area => (
             <MenuItem key={area} value={area}>
