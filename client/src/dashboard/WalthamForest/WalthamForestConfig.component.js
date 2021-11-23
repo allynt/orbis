@@ -1,6 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import { makeStyles } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  Grid,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,9 +23,13 @@ import { useChartTheme } from '../useChartTheme';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
 import { walthamApiMetadata } from './waltham.constants';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   dashboard: {
     overflowY: 'scroll',
+  },
+  header: {
+    padding: '2rem',
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
   progressIndicators: {
     display: 'flex',
@@ -40,6 +52,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
   const chartTheme = useChartTheme();
   const dispatch = useDispatch();
+
+  const [targetDialogVisible, setTargetDialogVisible] = useState(false);
+  const closeDialog = () => setTargetDialogVisible(false);
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -81,6 +96,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   return (
     <div className={styles.dashboard}>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        className={styles.header}
+      >
+        <Typography variant="h2">IMO / PO Dashboard</Typography>
+        <Button size="small" onClick={() => setTargetDialogVisible(true)}>
+          Add Targets
+        </Button>
+      </Grid>
+
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         {progressData.properties.map((property, i) => (
@@ -156,6 +183,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper>
       </div>
+
+      <Dialog
+        maxWidth="md"
+        open={targetDialogVisible}
+        onClose={closeDialog}
+        aria-labelledby="waltham-forest-targets-dialog"
+      >
+        <DialogTitle onClose={closeDialog}>Add Targets</DialogTitle>
+        <DialogContent>
+          <div>CONTENT</div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
