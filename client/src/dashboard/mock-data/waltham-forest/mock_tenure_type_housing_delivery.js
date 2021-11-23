@@ -51,7 +51,7 @@ module.exports = {
           'Private Rented Sector': 433,
         },
         {
-          Year: '2018-2019',
+          Year: '2019-2020',
           'Affordable Rent': 416,
           Intermediate: 85,
           Market: 203,

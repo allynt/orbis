@@ -39,11 +39,13 @@ const StackedBarChart = ({
     );
   };
 
+  if (!data) return null;
+
   return (
     <BaseChart
       xLabel={xLabel}
       yLabel={yLabel}
-      renderWidget={renderStackedBarChart}
+      renderChart={renderStackedBarChart}
     />
   );
 };

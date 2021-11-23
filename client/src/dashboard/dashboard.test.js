@@ -5,7 +5,7 @@ import fetchMock from 'jest-fetch-mock';
 import { setData } from 'map/orbs/layers.slice';
 import { render, screen, waitFor } from 'test/test-utils';
 
-import { Dashboards } from './dashboards.component';
+import { Dashboard } from './dashboard.component';
 
 fetchMock.enableMocks();
 
@@ -30,11 +30,11 @@ const defaultRenderOptions = {
   },
 };
 
-describe('<Dashboards />', () => {
+describe('<Dashboard />', () => {
   it('Fetches the data for the source if it does not exist in state', async () => {
     const data = { test: 'data' };
     fetchMock.once(JSON.stringify(data));
-    const { store } = render(<Dashboards />, defaultRenderOptions);
+    const { store } = render(<Dashboard />, defaultRenderOptions);
     await waitFor(() =>
       expect(store.getActions()).toContainEqual(
         expect.objectContaining(setData({ data, key: 'some/test/source/1' })),
@@ -44,7 +44,7 @@ describe('<Dashboards />', () => {
 
   it('renders the dashboard specified in metadata', async () => {
     fetchMock.once(JSON.stringify({ test: 'data' }));
-    render(<Dashboards />, defaultRenderOptions);
+    render(<Dashboard />, defaultRenderOptions);
     await waitFor(() =>
       expect(screen.getByTestId('test-dashboard')).toBeInTheDocument(),
     );

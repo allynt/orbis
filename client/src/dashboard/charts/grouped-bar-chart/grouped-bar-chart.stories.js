@@ -5,7 +5,7 @@ import { groupedDataTransformer } from '../../WalthamForest/utils';
 import { GroupedBarChart } from './grouped-bar-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/Grouped Bar Chart',
+  title: 'Dashboard/Charts/Grouped Bar Chart',
 };
 
 const Template = args => {

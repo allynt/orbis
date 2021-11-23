@@ -3,7 +3,7 @@ import React from 'react';
 import { BaseChart } from './base-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/Base Chart',
+  title: 'Dashboard/Charts/Base Chart',
 };
 
 const Template = args => {
@@ -14,5 +14,5 @@ export const Default = Template.bind({});
 Default.args = {
   xLabel: 'Financial Year',
   yLabel: 'Affordable Housing %age',
-  renderWidget: () => {},
+  renderChart: () => {},
 };

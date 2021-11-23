@@ -34,11 +34,13 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
     );
   };
 
+  if (!data) return null;
+
   return (
     <BaseChart
       xLabel={xLabel}
       yLabel={yLabel}
-      renderWidget={renderGroupedBarChart}
+      renderChart={renderGroupedBarChart}
     />
   );
 };
