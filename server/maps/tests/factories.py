@@ -19,8 +19,6 @@ fake = Faker()
 FactoryFaker.add_provider(GeometryProvider)
 FactoryFaker.add_provider(PrettyLoremProvider)
 
-TEST_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-
 test_annotations = {
     "type":
         "FeatureCollection",
@@ -71,28 +69,12 @@ class AoiFactory(factory.django.DjangoModelFactory):
 
     owner = factory.SubFactory(UserFactory)
 
-    # geometry = FactoryFaker("point")
-
-    thumbnail = SimpleUploadedFile(
-        name="test_thumbnail.png",
-        content=open(os.path.join(TEST_DATA_DIR, "test_thumbnail.png"),
-                     'rb').read(),
-        content_type='image/png'
-    )
-
     geometry = FactoryFaker("point")
 
-    # TODO: HOW TO RETURN FAKER VALUE
-    # @factory.lazy_attribute
-    # def geometry(self):
-    #     # randomly select a point/ploygon/etc
-    #     geometry_type = random.choice([
-    #         "line_string",
-    #         "multi_polygon",
-    #         "point",
-    #         "polygon",
-    #     ])
-
-    #     import pdb
-    #     pdb.set_trace()
-    #     return FactoryFaker(geometry_type).generate()
+    @factory.lazy_attribute
+    def thumbnail(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}",
+            content=b"I am a fake image",  # Fake binary content.
+            content_type="image/png"
+        )
