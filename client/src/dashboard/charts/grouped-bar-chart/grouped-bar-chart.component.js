@@ -3,8 +3,8 @@ import React from 'react';
 import { VictoryBar, VictoryGroup } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
+import { GroupedWidthCalculator } from '../../utils';
 import { BaseChart } from '../base-chart/base-chart.component';
-import { GroupedWidthCalculator } from '../utils/width-calculators';
 
 /**
  * @param {{

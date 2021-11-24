@@ -12,7 +12,7 @@ import { ChartWrapper } from './chart-wrapper.component';
 import { LineChart } from './line-chart/line-chart.component';
 
 export default {
-  title: 'Dashboards/Widgets/ChartWrapper',
+  title: 'Dashboard/Charts/ChartWrapper',
 };
 
 const Template = args => {

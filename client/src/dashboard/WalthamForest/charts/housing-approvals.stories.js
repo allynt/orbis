@@ -2,31 +2,28 @@ import React, { useState } from 'react';
 
 import { Grid, ToggleButtonGroup, ToggleButton } from '@astrosat/astrosat-ui';
 
-import { VictoryLegend, VictoryChart } from 'victory';
+import { VictoryLegend } from 'victory';
 
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
+import { ChartWrapper } from '../../charts/chart-wrapper.component';
+import { LineChart } from '../../charts/line-chart/line-chart.component';
 import * as data from '../../mock-data/waltham-forest/mock_approvals_granted';
 import { useChartTheme } from '../../useChartTheme';
-import { ChartWrapper } from '../../widgets/chart-wrapper.component';
-import { LineChart } from '../../widgets/line-chart/line-chart.component';
 
 export default {
-  title: 'Dashboards/WalthamForest/Widgets/HousingApprovals',
+  title: 'Dashboard/WalthamForest/Charts/HousingApprovals',
 };
 
 const Template = args => {
+  console.log('args', args);
   const chartTheme = useChartTheme();
   let chartNames = args.ranges;
-  const [showing, setShowing] = useState('monthly');
-  const [args2, setArgs2] = useState(args);
-  console.log('lookup', args.data.find(p => p.name === showing).data);
+  const [showing, setShowing] = useState('Monthly');
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
     setShowing(newValue);
-    console.log('args', args);
-    console.log('lookup', args.data.find(p => p.name === showing).data);
   };
 
   return (
@@ -80,7 +77,7 @@ const Template = args => {
         <Grid item xs={12}>
           <LineChart
             {...args}
-            data={args?.data?.find(p => p.name === showing)?.data}
+            data={args.data?.find(p => p.name === showing)?.data}
           />
         </Grid>
       </Grid>
