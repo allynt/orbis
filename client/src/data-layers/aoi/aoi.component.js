@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -9,6 +9,11 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { useSelector } from 'react-redux';
+
+import { useMap } from 'MapContext';
+
+import { aoiListSelector } from './aoi.slice';
 import SaveAoiForm from './save-aoi-form/save-aoi-form.component';
 import AoiToolbox from './toolbox/aoi-toolbox.component';
 
@@ -24,14 +29,32 @@ const useStyles = makeStyles({
   dialogTitle: { position: 'relative' },
 });
 
-const Aoi = ({ onDrawAoiClick, onSubmit, aoiDrawMode, setAoiDrawMode }) => {
+const Aoi = ({
+  onDrawAoiClick,
+  onSubmit,
+  aoiDrawMode,
+  setAoiDrawMode,
+  fetchAois,
+  selectAoi,
+  editAoi,
+  deleteAoi,
+}) => {
   const styles = useStyles();
+  const { createScreenshot } = useMap();
 
   const [saveAoiFormOpen, setSaveAoiFormOpen] = useState(false);
 
+  const aois = useSelector(aoiListSelector);
+
+  useEffect(() => {
+    if (!aois) {
+      fetchAois();
+    }
+  }, [aois, fetchAois]);
+
   const handleSaveAoiSubmit = values => {
     setSaveAoiFormOpen(false);
-    onSubmit(values);
+    createScreenshot(thumbnail => onSubmit({ ...values, thumbnail }));
   };
 
   return (
@@ -47,7 +70,9 @@ const Aoi = ({ onDrawAoiClick, onSubmit, aoiDrawMode, setAoiDrawMode }) => {
       <AoiToolbox
         onToolSelect={tool => {
           setAoiDrawMode(tool);
-          onDrawAoiClick();
+          if (tool !== 'ModifyMode') {
+            onDrawAoiClick();
+          }
         }}
         selectedTool={aoiDrawMode}
       />

@@ -18,6 +18,10 @@ import {
   startDrawingAoi,
   visiblePanelSelector,
   saveAoi,
+  fetchAois,
+  selectAoi,
+  updateAoi,
+  deleteAoi,
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
@@ -99,6 +103,10 @@ const DataLayersToolbar = ({
             onSubmit={form => dispatch(saveAoi(form))}
             aoiDrawMode={aoiDrawMode}
             setAoiDrawMode={setAoiDrawMode}
+            fetchAois={() => dispatch(fetchAois())}
+            selectAoi={aoi => dispatch(selectAoi(aoi))}
+            editAoi={aoi => dispatch(updateAoi(aoi))}
+            deleteAoi={aoi => dispatch(deleteAoi(aoi))}
           />
         )}
       </div>
