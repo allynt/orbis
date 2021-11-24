@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import {
   LayersIcon,
   makeStyles,
-  ResultsIcon,
+  AoiIcon,
   Tab,
   Tabs,
 } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
+
+import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 
 import AoiView from './aoi/aoi.component';
 import {
@@ -51,6 +53,7 @@ const DataLayersToolbar = ({
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
+  const hasAoiFeatureAccess = useOrbFeatureAccess('aoi');
 
   const visiblePanel = useSelector(visiblePanelSelector);
 
@@ -71,11 +74,13 @@ const DataLayersToolbar = ({
           icon={<LayersIcon titleAccess="Data Layers" />}
           value={Panels.DATA_LAYERS}
         />
-        <Tab
-          className={styles.tab}
-          icon={<ResultsIcon titleAccess="Draw AOI" />}
-          value={Panels.AOI}
-        />
+        {hasAoiFeatureAccess && (
+          <Tab
+            className={styles.tab}
+            icon={<AoiIcon titleAccess="Draw AOI" />}
+            value={Panels.AOI}
+          />
+        )}
       </Tabs>
 
       <div className={styles.container}>

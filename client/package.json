@@ -23,7 +23,7 @@
     "chromatic": "chromatic --project-token ee7d59d7c137"
   },
   "dependencies": {
-    "@astrosat/astrosat-ui": "^2.7.0",
+    "@astrosat/astrosat-ui": "^2.8.0",
     "@deck.gl/aggregation-layers": "^8.4.10",
     "@deck.gl/core": "^8.3.6",
     "@deck.gl/extensions": "^8.3.6",
