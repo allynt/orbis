@@ -42,11 +42,14 @@ const Wrapper = ({ children }) => {
   );
 };
 
+/**
+ * @param {{
+ *  onNextClick: (dataset: string) => void
+ * }} props
+ */
 const SelectScreen = ({ onNextClick }) => {
   const styles = useStyles({});
-
-  // TODO: need to deal with placeholder
-  const defaultText = 'This is a placeholder';
+  const defaultText = 'Select Type of Target';
   const [selectedDataset, setSelectedDataset] = useState(defaultText);
   return (
     <Wrapper>
@@ -55,9 +58,12 @@ const SelectScreen = ({ onNextClick }) => {
         container
         component={Select}
         value={selectedDataset}
-        inputProps={{ 'aria-label': 'Dataset' }}
+        inputProps={{ 'aria-label': 'Waltham Forest datasets' }}
         onChange={({ target: { value } }) => setSelectedDataset(value)}
       >
+        <MenuItem value={defaultText} disabled>
+          {defaultText}
+        </MenuItem>
         {Object.entries(targetDatasets).map(([key, value]) => (
           <MenuItem key={key} value={key}>
             {value}
@@ -77,6 +83,12 @@ const SelectScreen = ({ onNextClick }) => {
 };
 
 // TODO: filter out empty string values
+
+/**
+ * @param {{
+ *  onAddTargetsClick: (targets: object) => void
+ * }} props
+ */
 const TargetScreen = ({ onAddTargetsClick }) => {
   const styles = useStyles({});
   const [targetData, setTargetData] = useState({});

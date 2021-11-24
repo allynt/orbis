@@ -66,6 +66,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     setTargetDialogVisible(false);
   };
 
+  /**
+   * @param {object} targets
+   */
   const handleAddTargetsClick = targets => {
     dispatch(updateTargets(sourceId, targets));
     closeDialog();
@@ -108,6 +111,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
       () => tenureHousingDelivery?.properties[0].data,
       [tenureHousingDelivery],
     );
+
+  // selectors for target data go here, to be used in wheels
+  // and in layered line charts
 
   return (
     <div className={styles.dashboard}>
