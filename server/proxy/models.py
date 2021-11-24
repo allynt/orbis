@@ -222,6 +222,7 @@ class ProxyDataSource(models.Model):
             headers=self.proxy_headers,
             params=upstream_query_params,
             json=upstream_body_data,
+            verify=False,  ## FIXME ## Remove once IR API supports real SSL cert
         )
 
         response.raise_for_status()
