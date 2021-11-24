@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { inputErrorMessage } from '../waltham.constants';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
-// TODO: some of these are broken
+// TODO: some of these are still broken
 
 describe('Target Dialog Screens', () => {
   describe('SelectScreen', () => {
@@ -26,8 +26,9 @@ describe('Target Dialog Screens', () => {
 
       userEvent.click(getByText(defaultValue));
 
-      expect(getByText(datasetName)).toBeInTheDocument();
-      userEvent.click(getByText(datasetName));
+      const option = getByText(datasetName);
+      expect(option).toBeInTheDocument();
+      userEvent.click(option);
 
       expect(button).not.toBeDisabled();
     });
@@ -76,6 +77,21 @@ describe('Target Dialog Screens', () => {
 
       userEvent.click(getByRole('button', { name: 'Add Target' }));
       expect(onAddTargetsClick).toHaveBeenCalledWith(expected);
+    });
+
+    it('clears all values when `Reset` button is clicked', () => {
+      const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
+
+      const input1 = getByPlaceholderText('2011 - 2012'),
+        input2 = getByPlaceholderText('2012 - 2013');
+
+      userEvent.type(input1, '123');
+      userEvent.type(input2, '456');
+
+      userEvent.click(getByRole('button', { name: 'Reset' }));
+
+      expect(input1).toHaveValue('');
+      expect(input2).toHaveValue('');
     });
   });
 
