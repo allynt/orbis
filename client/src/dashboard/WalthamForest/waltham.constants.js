@@ -1,3 +1,5 @@
+export const inputErrorMessage = 'Only number values are permitted.';
+
 export const walthamApiMetadata = [
   {
     datasetName: 'ApprovalsGranted',

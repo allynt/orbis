@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Grid,
@@ -28,6 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
   error: {
     color: theme.palette.error.main,
+    width: '100%',
+    textAlign: 'center',
   },
 }));
 
@@ -43,26 +45,6 @@ const Wrapper = ({ children }) => {
     >
       {children}
     </Grid>
-  );
-};
-
-const TargetInput = ({ field, targetData, setTargetData }) => {
-  const styles = useStyles({});
-  const [error, setError] = useState(undefined);
-  const handleChange = (field, value) => {
-    setError(validate(value));
-    setTargetData({ ...targetData, [field]: value.trim() });
-  };
-  return (
-    <div>
-      <Input
-        key={field}
-        value={targetData[field] ?? ''}
-        placeholder={field}
-        onChange={({ target: { value } }) => handleChange(field, value)}
-      />
-      {!!error ? <span className={styles.error}>{error}</span> : null}
-    </div>
   );
 };
 
@@ -117,7 +99,19 @@ const SelectScreen = ({ onNextClick }) => {
 const TargetScreen = ({ onAddTargetsClick }) => {
   const styles = useStyles({});
   const [targetData, setTargetData] = useState({});
+  const [error, setError] = useState(undefined);
   const isDirty = Object.values(targetData).some(v => !!v);
+
+  useEffect(() => {
+    if (Object.keys(targetData).length) {
+      setError(validate(targetData));
+    }
+  }, [targetData]);
+
+  const handleChange = (field, value) => {
+    setError(validate(value));
+    setTargetData({ ...targetData, [field]: value.trim() });
+  };
   return (
     <Grid
       item
@@ -125,12 +119,14 @@ const TargetScreen = ({ onAddTargetsClick }) => {
       component="form"
       onSubmit={() => onAddTargetsClick(targetData)}
     >
+      {!!error ? <span className={styles.error}>{error}</span> : null}
       <Grid item container className={styles.inputFields}>
         {targetInputFields?.map(field => (
-          <TargetInput
-            field={field}
-            targetData={targetData}
-            setTargetData={setTargetData}
+          <Input
+            key={field}
+            value={targetData[field] ?? ''}
+            placeholder={field}
+            onChange={({ target: { value } }) => handleChange(field, value)}
           />
         ))}
       </Grid>
@@ -138,7 +134,7 @@ const TargetScreen = ({ onAddTargetsClick }) => {
         <Button color="secondary" onClick={() => setTargetData({})}>
           Reset
         </Button>
-        <Button disabled={!isDirty} type="submit">
+        <Button disabled={!isDirty || !!error} type="submit">
           Add Target
         </Button>
       </Grid>

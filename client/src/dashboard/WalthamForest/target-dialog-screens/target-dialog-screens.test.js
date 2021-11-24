@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { inputErrorMessage } from '../waltham.constants';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
 // TODO: some of these are broken
@@ -79,33 +80,32 @@ describe('Target Dialog Screens', () => {
   });
 
   describe('validation', () => {
-    const ERROR_MESSAGE = 'Number is required';
     it('allows numbers', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
-      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('allows decimals', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2011 - 2012'), '123.456');
-      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('does not allow letters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), 'text');
-      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+      userEvent.type(getByPlaceholderText('2011 - 2012'), 'abc');
+      expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
     it('does not allow special characters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2011 - 2012'), ';,%');
-      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+      expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
     it('removes error message when restricted characters removed', () => {
@@ -116,10 +116,26 @@ describe('Target Dialog Screens', () => {
       const input = getByPlaceholderText('2011 - 2012');
 
       userEvent.type(input, ';,%');
-      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+      expect(getByText(inputErrorMessage)).toBeInTheDocument();
 
       userEvent.clear(input);
-      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
+    });
+
+    it('disables `Add Targets` button if a single field fails validation', () => {
+      const { getByText, getByRole, getByPlaceholderText } = render(
+        <TargetScreen />,
+      );
+
+      const input1 = getByPlaceholderText('2011 - 2012'),
+        input2 = getByPlaceholderText('2012 - 2013');
+
+      userEvent.type(input1, '123');
+      userEvent.type(input2, 'abc');
+      userEvent.clear(input1);
+
+      expect(getByText(inputErrorMessage)).toBeInTheDocument();
+      expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
     });
   });
 });

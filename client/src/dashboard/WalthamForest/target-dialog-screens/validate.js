@@ -1,9 +1,14 @@
-export const validate = input => {
+import { inputErrorMessage } from '../waltham.constants';
+export const validate = targets => {
   let error = undefined;
-  if (!input) return error;
+  const values = Object.values(targets);
 
-  if (isNaN(Number(input))) {
-    error = 'Number is required';
+  if (values.every(v => !v)) {
+    return error;
   }
-  return error;
+
+  if (values.some(v => isNaN(Number(v)))) {
+    error = inputErrorMessage;
+    return error;
+  }
 };
