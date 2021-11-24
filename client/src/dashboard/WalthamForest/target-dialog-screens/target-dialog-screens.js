@@ -89,7 +89,6 @@ const SelectScreen = ({ onNextClick }) => {
 };
 
 // TODO: filter out empty string values
-// TODO: trim entries
 
 /**
  * @param {{

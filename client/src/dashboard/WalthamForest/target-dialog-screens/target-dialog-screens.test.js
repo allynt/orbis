@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { inputErrorMessage } from '../waltham.constants';
@@ -21,26 +21,27 @@ describe('Target Dialog Screens', () => {
     it('disables `Next` button until changes have been made', () => {
       const { getByRole, getByText } = render(<SelectScreen />);
 
-      const button = getByRole('button', { name: 'Next' });
-      expect(button).toBeDisabled();
+      expect(getByRole('button', { name: 'Next' })).toBeDisabled();
 
       userEvent.click(getByText(defaultValue));
 
-      const option = getByText(datasetName);
-      expect(option).toBeInTheDocument();
-      userEvent.click(option);
+      expect(getByText(datasetName)).toBeInTheDocument();
+      userEvent.click(getByText(datasetName));
 
-      expect(button).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Next' })).not.toBeDisabled();
     });
 
     it('fires callback when changes have been made and `Next` button is clicked', () => {
       const onNextClick = jest.fn(),
         expected = 'totalHousing';
 
-      const { getByText } = render(<SelectScreen onNextClick={onNextClick} />);
+      const { getByText, getByRole } = render(
+        <SelectScreen onNextClick={onNextClick} />,
+      );
 
       userEvent.click(getByText(defaultValue));
       userEvent.click(getByText(datasetName));
+      userEvent.click(getByRole('button', { name: 'Next' }));
       expect(onNextClick).toHaveBeenCalledWith(expected);
     });
   });
@@ -54,11 +55,9 @@ describe('Target Dialog Screens', () => {
     it('disables `Add Target` button until changes have been made', () => {
       const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
 
-      const button = getByRole('button', { name: 'Add Target' });
-
-      expect(button).toBeDisabled();
+      expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
       userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
-      expect(button).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Add Target' })).not.toBeDisabled();
     });
 
     it('fires callback when changes have been made and `Add Target` button is clicked', () => {
