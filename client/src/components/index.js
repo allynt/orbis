@@ -24,3 +24,4 @@ export * from './sidebar';
 export { Skeleton } from './skeleton/skeleton.component';
 export { WrappingChartLabel } from './wrapping-chart-label.component';
 export { ErrorFallback } from './error-fallback/error-fallback.component';
+export { OptionsMenu } from './options-menu/options-menu.component';
