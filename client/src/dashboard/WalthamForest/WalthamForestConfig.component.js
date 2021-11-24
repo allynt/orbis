@@ -24,7 +24,10 @@ import {
 } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
-import { SelectScreen, TargetScreen } from './target-dialog-screens';
+import {
+  SelectScreen,
+  TargetScreen,
+} from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 

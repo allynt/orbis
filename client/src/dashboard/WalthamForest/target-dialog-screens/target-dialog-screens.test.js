@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event';
 
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
+// TODO: some of these are broken
+
 describe('Target Dialog Screens', () => {
   describe('SelectScreen', () => {
     const defaultValue = 'Select Type of Target',

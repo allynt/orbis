@@ -9,7 +9,7 @@ import {
   Input,
 } from '@astrosat/astrosat-ui';
 
-import { targetInputFields, targetDatasets } from './waltham.constants';
+import { targetInputFields, targetDatasets } from '../waltham.constants';
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -107,7 +107,7 @@ const TargetScreen = ({ onAddTargetsClick }) => {
             value={targetData[field] ?? ''}
             placeholder={field}
             onChange={({ target: { value } }) =>
-              setTargetData({ ...targetData, [field]: value })
+              setTargetData({ ...targetData, [field]: value.trim() })
             }
           />
         ))}
