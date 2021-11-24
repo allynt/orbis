@@ -10,8 +10,9 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { targetInputFields, targetDatasets } from '../waltham.constants';
+import { validate } from './validate';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   wrapper: {
     minHeight: '20rem',
     minWidth: '40rem',
@@ -24,6 +25,9 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr 1fr 1fr',
     gridGap: '1rem',
+  },
+  error: {
+    color: theme.palette.error.main,
   },
 }));
 
@@ -39,6 +43,26 @@ const Wrapper = ({ children }) => {
     >
       {children}
     </Grid>
+  );
+};
+
+const TargetInput = ({ field, targetData, setTargetData }) => {
+  const styles = useStyles({});
+  const [error, setError] = useState(undefined);
+  const handleChange = (field, value) => {
+    setError(validate(value));
+    setTargetData({ ...targetData, [field]: value.trim() });
+  };
+  return (
+    <div>
+      <Input
+        key={field}
+        value={targetData[field] ?? ''}
+        placeholder={field}
+        onChange={({ target: { value } }) => handleChange(field, value)}
+      />
+      {!!error ? <span className={styles.error}>{error}</span> : null}
+    </div>
   );
 };
 
@@ -83,6 +107,7 @@ const SelectScreen = ({ onNextClick }) => {
 };
 
 // TODO: filter out empty string values
+// TODO: trim entries
 
 /**
  * @param {{
@@ -102,13 +127,10 @@ const TargetScreen = ({ onAddTargetsClick }) => {
     >
       <Grid item container className={styles.inputFields}>
         {targetInputFields?.map(field => (
-          <Input
-            key={field}
-            value={targetData[field] ?? ''}
-            placeholder={field}
-            onChange={({ target: { value } }) =>
-              setTargetData({ ...targetData, [field]: value.trim() })
-            }
+          <TargetInput
+            field={field}
+            targetData={targetData}
+            setTargetData={setTargetData}
           />
         ))}
       </Grid>

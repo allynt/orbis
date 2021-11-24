@@ -77,4 +77,49 @@ describe('Target Dialog Screens', () => {
       expect(onAddTargetsClick).toHaveBeenCalledWith(expected);
     });
   });
+
+  describe('validation', () => {
+    const ERROR_MESSAGE = 'Number is required';
+    it('allows numbers', () => {
+      const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
+
+      userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
+      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+    });
+
+    it('allows decimals', () => {
+      const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
+
+      userEvent.type(getByPlaceholderText('2011 - 2012'), '123.456');
+      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+    });
+
+    it('does not allow letters', () => {
+      const { getByText, getByPlaceholderText } = render(<TargetScreen />);
+
+      userEvent.type(getByPlaceholderText('2011 - 2012'), 'text');
+      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+    });
+
+    it('does not allow special characters', () => {
+      const { getByText, getByPlaceholderText } = render(<TargetScreen />);
+
+      userEvent.type(getByPlaceholderText('2011 - 2012'), ';,%');
+      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+    });
+
+    it('removes error message when restricted characters removed', () => {
+      const { getByText, queryByText, getByPlaceholderText } = render(
+        <TargetScreen />,
+      );
+
+      const input = getByPlaceholderText('2011 - 2012');
+
+      userEvent.type(input, ';,%');
+      expect(getByText(ERROR_MESSAGE)).toBeInTheDocument();
+
+      userEvent.clear(input);
+      expect(queryByText(ERROR_MESSAGE)).not.toBeInTheDocument();
+    });
+  });
 });

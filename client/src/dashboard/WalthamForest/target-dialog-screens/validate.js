@@ -1,8 +1,9 @@
 export const validate = input => {
-  let error;
+  let error = undefined;
+  if (!input) return error;
+
   if (isNaN(Number(input))) {
-    console.log('not a number');
-    error = 'must be number';
+    error = 'Number is required';
   }
-  return { error };
+  return error;
 };
