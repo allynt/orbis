@@ -21,6 +21,7 @@ import {
   chartDataSelector,
   fetchChartData,
   updateTargets,
+  userTargetSelector,
 } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
@@ -76,6 +77,15 @@ const WalthamForestDashboard = ({ sourceId }) => {
     dispatch(updateTargets(sourceId, targets));
     closeDialog();
   };
+
+  const userOrbState = useSelector(
+    userTargetSelector(sourceId, 'totalHousing'),
+  );
+
+  const progressChartData = progressData.properties.map(p => ({
+    ...p,
+    ...userOrbState,
+  }));
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(

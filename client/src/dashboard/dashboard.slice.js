@@ -1,5 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
+import { userSelector } from 'accounts/accounts.selectors';
+
 export const initialState = {
   isLoading: false,
   error: null,
@@ -45,10 +47,17 @@ const baseSelector = state => state?.dashboard;
 
 /** @param {import('typings').Source['source_id']} source_id */
 /** @param {string} datasetName */
-export const chartDataSelector = (source_id, datasetName) => {
-  return createSelector(baseSelector, state => {
-    return state?.[source_id]?.[datasetName];
-  });
-};
+export const chartDataSelector = (source_id, datasetName) =>
+  createSelector(baseSelector, state => state?.[source_id]?.[datasetName]);
+
+/** @param {import('typings').Source['source_id']} source_id */
+/** @param {string} datasetName */
+export const userTargetSelector = (source_id, datasetName) =>
+  createSelector(
+    userSelector,
+    user =>
+      user?.profiles?.orbis_profile?.orb_state?.[source_id]?.[datasetName] ??
+      {},
+  );
 
 export default dashboardSlice.reducer;

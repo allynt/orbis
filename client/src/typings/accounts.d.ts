@@ -6,6 +6,8 @@ type CustomerUserStatus = 'ACTIVE' | 'PENDING';
 
 type FeatureKey = 'satellites';
 
+// TODO: add 'profiles' to user type
+
 type User = {
   accepted_terms: boolean;
   avatar?: string;
