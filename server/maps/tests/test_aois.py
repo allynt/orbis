@@ -489,7 +489,7 @@ class TestAoiViewSet:
 
         aoi_data = {
             "name": new_name,
-            "description": aoi.description,
+            "description": aoi.description or "",
             "geometry": GEOSGeometry(new_geometry).geojson,
         }
 
