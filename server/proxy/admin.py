@@ -107,4 +107,10 @@ class ProxyDataSourceAdmin(admin.ModelAdmin):
                 msg = _("URL-PARAM Authentication requires parameters.")
                 self.message_user(request, msg, level=messages.WARNING)
 
+        elif authentication_type == ProxyAuthentication.AuthenticationTypes.PASSTHROUGH:
+            msg = _(
+                "PASSTHROUGH Authentication can potentially expose sensitive credentials to 3rd party applications."
+            )
+            self.message_user(request, msg, level=messages.WARNING)
+
         return super().save_model(request, obj, form, change)

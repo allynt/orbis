@@ -82,6 +82,8 @@ class ProxyDataSource(models.Model):
 
     objects = ProxyDataSourceManager.from_queryset(ProxyDataSourceQuerySet)()
 
+    _request = None  # (not a field, just an attribute w/ getters/setters below)
+
     authority = models.CharField(max_length=128)
     namespace = models.CharField(max_length=128)
     name = models.CharField(max_length=128)
@@ -175,6 +177,14 @@ class ProxyDataSource(models.Model):
 
     def __str__(self):
         return self.source_id
+
+    @property
+    def request(self):
+        return self._request
+
+    @request.setter
+    def request(self, value):
+        self._request = value
 
     @property
     def adapter(self):
