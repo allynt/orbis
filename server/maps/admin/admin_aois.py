@@ -6,7 +6,7 @@ from maps.models.models_aois import Aoi
 
 @admin.register(Aoi)
 class AoiAdmin(GeoModelAdmin):
-    list_display = ("name", "description", "created", "owner")
+    list_display = ("name", "created", "owner")
     list_filter = (
         "name",
         "created",
