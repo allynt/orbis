@@ -82,6 +82,8 @@ class ProxyDataSource(models.Model):
 
     objects = ProxyDataSourceManager.from_queryset(ProxyDataSourceQuerySet)()
 
+    _request = None  # (not a field, just an attribute w/ getters/setters below)
+
     authority = models.CharField(max_length=128)
     namespace = models.CharField(max_length=128)
     name = models.CharField(max_length=128)
@@ -177,6 +179,14 @@ class ProxyDataSource(models.Model):
         return self.source_id
 
     @property
+    def request(self):
+        return self._request
+
+    @request.setter
+    def request(self, value):
+        self._request = value
+
+    @property
     def adapter(self):
         return PROXY_DATA_ADAPTER_REGISTRY[self.adapter_name]
 
@@ -222,6 +232,7 @@ class ProxyDataSource(models.Model):
             headers=self.proxy_headers,
             params=upstream_query_params,
             json=upstream_body_data,
+            verify=False,  ## FIXME ## Remove once IR API supports real SSL cert
         )
 
         response.raise_for_status()

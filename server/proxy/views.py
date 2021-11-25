@@ -86,9 +86,9 @@ class ProxyDataSourceView(APIView):
         proxy_data_source = get_object_or_404(
             ProxyDataSource.objects.active(), **self.kwargs
         )
+        proxy_data_source.request = request
 
         try:
-
             cache_key = "-".join(self.kwargs.values())
             processed_data = PROXY_CACHE.get(cache_key)
             if not processed_data:
