@@ -7,7 +7,7 @@ import AoiListItem from './aoi-list-item.component';
 describe('<AoiListItem />', () => {
   let aoi = null;
   let selectAoi = null;
-  let editAoi = null;
+  let editAoiDetails = null;
   let deleteAoi = null;
 
   beforeEach(() => {
@@ -15,11 +15,10 @@ describe('<AoiListItem />', () => {
       id: 1,
       name: 'Test Name',
       description: 'This is a test description',
-      info: 'This is a test info',
     };
 
     selectAoi = jest.fn();
-    editAoi = jest.fn();
+    editAoiDetails = jest.fn();
     deleteAoi = jest.fn();
   });
 
@@ -28,7 +27,7 @@ describe('<AoiListItem />', () => {
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
@@ -44,7 +43,6 @@ describe('<AoiListItem />', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByText(aoi.name)).toBeInTheDocument();
-    expect(screen.getByText(aoi.description)).toBeInTheDocument();
   });
 
   it('should call selectAoi with the aoi when the `Explore Area` button is clicked', () => {
@@ -52,7 +50,7 @@ describe('<AoiListItem />', () => {
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
@@ -67,14 +65,14 @@ describe('<AoiListItem />', () => {
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
 
     userEvent.click(screen.getByRole('button', { name: /info/i }));
 
-    expect(screen.getByText(aoi.info)).toBeInTheDocument();
+    expect(screen.getByText(aoi.description)).toBeInTheDocument();
   });
 
   it('should display context menu when the `options` button is clicked', () => {
@@ -82,7 +80,7 @@ describe('<AoiListItem />', () => {
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
@@ -95,12 +93,12 @@ describe('<AoiListItem />', () => {
     ).toBeInTheDocument();
   });
 
-  it('should call editAoi with the aoi when the edit button is clicked', () => {
+  it('should call editAoiDetails with the aoi when the edit button is clicked', () => {
     render(
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
@@ -108,7 +106,7 @@ describe('<AoiListItem />', () => {
     userEvent.click(screen.getByRole('button', { name: /options/i }));
     userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
 
-    expect(editAoi).toHaveBeenCalledWith(aoi);
+    expect(editAoiDetails).toHaveBeenCalledWith(aoi);
   });
 
   it('should call deleteAoi with the aoi when the delete button is clicked', () => {
@@ -116,7 +114,7 @@ describe('<AoiListItem />', () => {
       <AoiListItem
         aoi={aoi}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
