@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store';
 
 import { Panels } from './satellite.constants';
 import {
-  endDrawingAoi,
+  endDrawingSatelliteAoi,
   selectScene,
   setHoveredScene,
 } from './satellites.slice';
@@ -37,39 +37,43 @@ const renderHook = (state = {}) => {
 };
 
 describe('useSatellitesLayers', () => {
-  describe('drawAoiLayer', () => {
-    it("is not returned when isDrawingAoi is false and there's no feature", () => {
+  describe('drawSatelliteAoiLayer', () => {
+    it("is not returned when isDrawingSatelliteAoi is false and there's no feature", () => {
       const { result } = renderHook();
-      expect(result.current.drawAoiLayer).toBeUndefined();
+      expect(result.current.drawSatelliteAoiLayer).toBeUndefined();
     });
 
-    it("is returned when isDrawingAoi is true but there's no feature", () => {
-      const { result } = renderHook({ isDrawingAoi: true });
-      expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
+    it("is returned when isDrawingSatelliteAoi is true but there's no feature", () => {
+      const { result } = renderHook({ isDrawingSatelliteAoi: true });
+      expect(result.current.drawSatelliteAoiLayer).toBeInstanceOf(
+        EditableGeoJsonLayer,
+      );
     });
 
-    it("is returned when isDrawingAoi is false but there's a feature", () => {
+    it("is returned when isDrawingSatelliteAoi is false but there's a feature", () => {
       const { result } = renderHook({
         aoi: Array(4).fill([0, 0]),
       });
-      expect(result.current.drawAoiLayer).toBeInstanceOf(EditableGeoJsonLayer);
+      expect(result.current.drawSatelliteAoiLayer).toBeInstanceOf(
+        EditableGeoJsonLayer,
+      );
     });
 
     it('is not visible when the visualisation panel is visible', () => {
       const { result } = renderHook({
-        isDrawingAoi: true,
+        isDrawingSatelliteAoi: true,
         visiblePanel: Panels.VISUALISATION,
       });
-      expect(result.current.drawAoiLayer.props.visible).toBe(false);
+      expect(result.current.drawSatelliteAoiLayer.props.visible).toBe(false);
     });
 
     describe('onEdit', () => {
       it('Returns if editType is not addFeature', () => {
         const { result, store } = renderHook({
-          isDrawingAoi: true,
+          isDrawingSatelliteAoi: true,
         });
         act(() =>
-          result.current.drawAoiLayer.props.onEdit({
+          result.current.drawSatelliteAoiLayer.props.onEdit({
             editType: 'somethingElse',
           }),
         );
@@ -78,15 +82,17 @@ describe('useSatellitesLayers', () => {
 
       it('sets the aoi', () => {
         const { result, store } = renderHook({
-          isDrawingAoi: true,
+          isDrawingSatelliteAoi: true,
         });
-        result.current.drawAoiLayer.props.onEdit({
+        result.current.drawSatelliteAoiLayer.props.onEdit({
           editType: 'addFeature',
           updatedData: {
             features: [{ id: '123', geometry: { coordinates: [[123, 123]] } }],
           },
         });
-        expect(store.getActions()).toContainEqual(endDrawingAoi([123, 123]));
+        expect(store.getActions()).toContainEqual(
+          endDrawingSatelliteAoi([123, 123]),
+        );
       });
     });
   });

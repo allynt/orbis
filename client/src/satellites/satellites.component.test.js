@@ -16,7 +16,7 @@ import {
   setHoveredScene,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
-  startDrawingAoi,
+  startDrawingSatelliteAoi,
 } from './satellites.slice';
 
 /** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
@@ -127,7 +127,7 @@ describe('Satellites', () => {
       });
 
       userEvent.click(screen.getByRole('button', { name: /Draw your AOI/i }));
-      expect(store.getActions()).toContainEqual(startDrawingAoi());
+      expect(store.getActions()).toContainEqual(startDrawingSatelliteAoi());
     });
 
     it('Performs a search when the search button is clicked', async () => {

@@ -13,11 +13,11 @@ import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import { Panels } from './satellite.constants';
 import {
-  aoiSelector,
+  satelliteAoiSelector,
   cloudCoverPercentageSelector,
-  endDrawingAoi,
+  endDrawingSatelliteAoi,
   hoveredSceneSelector,
-  isDrawingAoiSelector,
+  isDrawingSatelliteAoiSelector,
   scenesSelector,
   selectedSceneLayerVisibleSelector,
   selectedSceneSelector,
@@ -35,13 +35,13 @@ export const useSatellitesLayers = () => {
   const hoveredScene = useSelector(hoveredSceneSelector);
   const selectedScene = useSelector(selectedSceneSelector);
   const visualisationId = useSelector(visualisationIdSelector);
-  const isDrawingAoi = useSelector(isDrawingAoiSelector);
+  const isDrawingAoi = useSelector(isDrawingSatelliteAoiSelector);
   const cloudCoverPercentage = useSelector(cloudCoverPercentageSelector);
   const selectedSceneLayerVisible = useSelector(
     selectedSceneLayerVisibleSelector,
   );
   const visiblePanel = useSelector(visiblePanelSelector);
-  const aoi = useSelector(aoiSelector);
+  const aoi = useSelector(satelliteAoiSelector);
 
   useEffect(() => {
     const update = async () => {
@@ -61,7 +61,9 @@ export const useSatellitesLayers = () => {
 
   const onEdit = ({ editType, updatedData }) => {
     if (editType !== 'addFeature') return;
-    dispatch(endDrawingAoi(updatedData.features[0].geometry.coordinates[0]));
+    dispatch(
+      endDrawingSatelliteAoi(updatedData.features[0].geometry.coordinates[0]),
+    );
   };
 
   const getFillColor = [0, 0, 0, 0];
@@ -69,7 +71,7 @@ export const useSatellitesLayers = () => {
 
   // @ts-ignore
   const drawAoiLayer = new EditableGeoJsonLayer({
-    id: 'draw-aoi-layer',
+    id: 'draw-satellite-aoi-layer',
     data: featureCollection(aoi ? [feature(geometry('Polygon', [aoi]))] : []),
     visible: visiblePanel === Panels.SEARCH || visiblePanel === Panels.RESULTS,
     mode: isDrawingAoi ? DrawRectangleMode : ViewMode,
@@ -133,7 +135,7 @@ export const useSatellitesLayers = () => {
   );
 
   return {
-    drawAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
+    drawSatelliteAoiLayer: isDrawingAoi || !!aoi ? drawAoiLayer : undefined,
     scenesLayer,
     selectedSceneLayer,
   };

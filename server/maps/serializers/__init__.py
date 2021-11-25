@@ -1,1 +1,2 @@
+from .serializers_aois import AoiUpdateSerializer, AoiCreateSerializer
 from .serializers_bookmarks import BookmarkSerializer

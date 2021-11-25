@@ -7,11 +7,11 @@ import {
   TriangleIcon,
 } from '@astrosat/astrosat-ui';
 
+import { OptionsMenu } from 'components/options-menu/options-menu.component';
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
-import { OptionsMenu } from '../options-menu.component';
 
 const USER_LABELS = {
   standard: 'Standard',
