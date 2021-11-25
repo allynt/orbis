@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
-import { feature, featureCollection, geometry } from '@turf/turf';
+import { featureCollection } from '@turf/turf';
 import { get } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,7 +10,6 @@ import { COLOR_PRIMARY_ARRAY } from 'utils/color';
 
 import {
   aoiSelector,
-  endDrawingAoi,
   setAoiFeatures,
   isDrawingAoiSelector,
   visiblePanelSelector,
