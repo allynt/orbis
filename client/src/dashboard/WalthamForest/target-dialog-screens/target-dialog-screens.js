@@ -107,10 +107,9 @@ const TargetScreen = ({ onAddTargetsClick }) => {
     }
   }, [targetData]);
 
-  const handleChange = (field, value) => {
-    setError(validate(value));
+  const handleChange = (field, value) =>
     setTargetData({ ...targetData, [field]: value.trim() });
-  };
+
   return (
     <Grid
       item

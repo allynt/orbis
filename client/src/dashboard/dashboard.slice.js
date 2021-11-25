@@ -1,6 +1,9 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import { updateUser } from 'accounts/accounts.slice';
+
+const name = 'dashboard';
 
 export const initialState = {
   isLoading: false,
@@ -8,7 +11,7 @@ export const initialState = {
 };
 
 const dashboardSlice = createSlice({
-  name: 'dashboard',
+  name,
   initialState,
   reducers: {
     setChartData: (state, { payload }) => {
@@ -31,13 +34,27 @@ export const fetchChartData = (
   dispatch(setChartData({ source_id, datasetName, data: result.default }));
 };
 
-export const updateTargets = (source_id, addedTargets) => async dispatch => {
-  const data = {
-    [source_id]: addedTargets,
+export const updateTargets = (
+  source_id,
+  addedTargets,
+  user,
+) => async dispatch => {
+  // adds targets to existing 'profiles' property on user
+  const profiles = {
+    orbis_profile: {
+      ...user.profiles.orbis_profile,
+      orb_state: {
+        ...user.profiles.orbis_profile.orb_state,
+        [source_id]: {
+          ...(user.profiles.orbis_profile.orb_state?.[source_id] || {}),
+          ...addedTargets,
+        },
+      },
+    },
   };
 
-  console.log('Data to be dispatched: ', data);
-  // sets addedTargets on user object
+  // combines new 'profiles' property with rest of user
+  dispatch(updateUser(profiles));
 };
 
 export const { setChartData } = dashboardSlice.actions;
@@ -51,13 +68,10 @@ export const chartDataSelector = (source_id, datasetName) =>
   createSelector(baseSelector, state => state?.[source_id]?.[datasetName]);
 
 /** @param {import('typings').Source['source_id']} source_id */
-/** @param {string} datasetName */
-export const userTargetSelector = (source_id, datasetName) =>
+export const userOrbStateSelector = source_id =>
   createSelector(
     userSelector,
-    user =>
-      user?.profiles?.orbis_profile?.orb_state?.[source_id]?.[datasetName] ??
-      {},
+    user => user?.profiles?.orbis_profile?.orb_state?.[source_id] ?? {},
   );
 
 export default dashboardSlice.reducer;

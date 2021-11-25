@@ -12,6 +12,8 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { userSelector } from 'accounts/accounts.selectors';
+
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
 import { LineChart } from '../charts/line-chart/line-chart.component';
@@ -21,7 +23,7 @@ import {
   chartDataSelector,
   fetchChartData,
   updateTargets,
-  userTargetSelector,
+  userOrbStateSelector,
 } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
@@ -65,27 +67,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
-  const closeDialog = () => {
-    setSelectedDataset(undefined);
-    setTargetDialogVisible(false);
-  };
+  const user = useSelector(userSelector);
 
-  /**
-   * @param {object} targets
-   */
-  const handleAddTargetsClick = targets => {
-    dispatch(updateTargets(sourceId, targets));
-    closeDialog();
-  };
-
-  const userOrbState = useSelector(
-    userTargetSelector(sourceId, 'totalHousing'),
-  );
-
-  const progressChartData = progressData.properties.map(p => ({
-    ...p,
-    ...userOrbState,
-  }));
+  const userOrbState = useSelector(userOrbStateSelector(sourceId));
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -107,6 +91,19 @@ const WalthamForestDashboard = ({ sourceId }) => {
     );
   }, [sourceId, dispatch]);
 
+  const closeDialog = () => {
+    setSelectedDataset(undefined);
+    setTargetDialogVisible(false);
+  };
+
+  /**
+   * @param {object} targets
+   */
+  const handleAddTargetsClick = targets => {
+    dispatch(updateTargets(sourceId, targets, user));
+    closeDialog();
+  };
+
   // only arrays of chart data, transformed where needed and cached
   const totalHousingDeliveryChartData = useMemo(
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
@@ -124,9 +121,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
       () => tenureHousingDelivery?.properties[0].data,
       [tenureHousingDelivery],
     );
-
-  // selectors for target data go here, to be used in wheels
-  // and in layered line charts
 
   return (
     <div className={styles.dashboard}>
