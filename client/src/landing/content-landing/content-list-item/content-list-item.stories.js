@@ -17,6 +17,7 @@ export default {
 const Template = args => <ContentListItem {...args} />;
 
 export const NoBookmark = Template.bind({});
+export const NoDashboard = Template.bind({});
 
 /** @type {import('typings').Bookmark} */
 const bookmark = {
@@ -26,7 +27,19 @@ const bookmark = {
   created: faker.date.past(undefined, new Date(2077, 10, 24)).toISOString(),
 };
 
+/** @type {import('typings').Dashboard} */
+const dashboard = {
+  id: faker.random.uuid(),
+  title: faker.commerce.product(),
+  thumbnail: isChromatic() ? undefined : faker.image.image(),
+};
+
 export const Bookmark = Template.bind({});
 Bookmark.args = {
   bookmark,
+};
+
+export const Dashboard = Template.bind({});
+Dashboard.args = {
+  dashboard,
 };

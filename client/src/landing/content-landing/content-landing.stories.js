@@ -18,6 +18,12 @@ const makeBookmark = () => ({
   created: faker.date.past(undefined, new Date(2077, 10, 24)).toISOString(),
 });
 
+const makeDashboard = () => ({
+  id: faker.random.uuid(),
+  title: faker.commerce.product(),
+  thumbnail: isChromatic() ? undefined : faker.image.image(),
+});
+
 const Template = args => (
   <Router history={createBrowserHistory()}>
     <ContentLanding {...args} />
@@ -38,4 +44,18 @@ LotsOBookmarks.args = {
   bookmarks: Array(faker.random.number(29) + 1)
     .fill()
     .map(makeBookmark),
+};
+
+export const WithDashboards = Template.bind({});
+WithDashboards.args = {
+  dashboards: Array(faker.random.number(3) + 1)
+    .fill(undefined)
+    .map(makeDashboard),
+};
+
+export const LotsODashboards = Template.bind({});
+LotsODashboards.args = {
+  dashboards: Array(faker.random.number(27) + 1)
+    .fill()
+    .map(makeDashboard),
 };
