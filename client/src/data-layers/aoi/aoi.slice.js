@@ -51,13 +51,17 @@ export const saveAoi = createAsyncThunk(
   },
 );
 
-export const updateAoi = createAsyncThunk(
+export const updateAoiDetails = createAsyncThunk(
   `${name}/updateAoi`,
-  async (params, { getState, rejectWithValue }) => {
-    const geometry = getState().aois.aoi?.geometry;
+  async (params, { rejectWithValue }) => {
+    const updatedParams = {
+      id: params.id,
+      name: params.name,
+      description: params.description,
+    };
 
     try {
-      const aoi = await apiClient.aois.updateAoi({ ...params, geometry });
+      const aoi = await apiClient.aois.updateAoi({ ...updatedParams });
       NotificationManager.success(`Successfully updated AOI '${aoi.name}'`);
       return aoi;
     } catch (responseError) {
@@ -137,6 +141,7 @@ const aoiSlice = createSlice({
       if ('type' in payload) {
         state.aoi = payload.features[0];
       }
+      state.isDrawingAoi = false;
     },
     setAoiFeatures: (state, { payload }) => {
       'type' in payload

@@ -11,9 +11,10 @@ const validationSchema = yup.object({
   description: yup.string(),
 });
 
-const SaveAoiForm = ({ onSubmit }) => {
+const SaveAoiForm = ({ aoi, onSubmit }) => {
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(validationSchema),
+    defaultValues: { ...aoi },
   });
 
   return (

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   Grid,
   makeStyles,
+  styled,
   Typography,
 } from '@astrosat/astrosat-ui';
 
@@ -14,7 +17,8 @@ import { useSelector } from 'react-redux';
 
 import { useMap } from 'MapContext';
 
-import { aoiListSelector } from './aoi.slice';
+import AoiList from './aoi-list/aoi-list.component';
+import { aoiSelector, aoiListSelector } from './aoi.slice';
 import SaveAoiForm from './save-aoi-form/save-aoi-form.component';
 import AoiToolbox from './toolbox/aoi-toolbox.component';
 
@@ -23,8 +27,16 @@ const useStyles = makeStyles({
     margin: '0 auto',
     marginTop: '1rem',
   },
+  buttons: {
+    margin: '0 auto',
+  },
   dialogTitle: { position: 'relative' },
 });
+
+const PrimaryDivider = styled(Divider)(({ theme }) => ({
+  backgroundColor: theme.palette.primary.main,
+  marginTop: '0.5rem',
+}));
 
 const Aoi = ({
   onDrawAoiClick,
@@ -33,15 +45,17 @@ const Aoi = ({
   setAoiDrawMode,
   fetchAois,
   selectAoi,
-  editAoi,
+  editAoiDetails,
   deleteAoi,
 }) => {
   const styles = useStyles();
-  const { createScreenshot } = useMap();
+  const { createScreenshot, viewState, setViewState } = useMap();
 
   const [saveAoiFormOpen, setSaveAoiFormOpen] = useState(false);
+  const [aoi, setAoi] = useState(null);
 
   const aois = useSelector(aoiListSelector);
+  const isAoiVisible = useSelector(aoiSelector);
 
   useEffect(() => {
     if (!aois) {
@@ -51,7 +65,9 @@ const Aoi = ({
 
   const handleSaveAoiSubmit = values => {
     setSaveAoiFormOpen(false);
-    createScreenshot(thumbnail => onSubmit({ ...values, thumbnail }));
+    aoi
+      ? editAoiDetails({ ...aoi, ...values })
+      : createScreenshot(thumbnail => onSubmit({ ...values, thumbnail }));
   };
 
   const handleToolSelect = tool => {
@@ -73,13 +89,32 @@ const Aoi = ({
 
       <AoiToolbox onToolSelect={handleToolSelect} selectedTool={aoiDrawMode} />
 
-      <Button
-        color="secondary"
-        onClick={() => setSaveAoiFormOpen(true)}
-        className={styles.button}
-      >
-        Save
-      </Button>
+      <div className={styles.buttons}>
+        <Button
+          color="secondary"
+          onClick={() => {
+            setAoi(null);
+            setSaveAoiFormOpen(true);
+          }}
+          className={styles.button}
+          disabled={!isAoiVisible}
+        >
+          Save
+        </Button>
+      </div>
+
+      <PrimaryDivider />
+      <Box py={3} px={1}>
+        <AoiList
+          aois={aois}
+          selectAoi={aoi => selectAoi({ aoi, viewState, setViewState })}
+          editAoiDetails={aoi => {
+            setAoi(aoi);
+            setSaveAoiFormOpen(true);
+          }}
+          deleteAoi={aoi => deleteAoi(aoi)}
+        />
+      </Box>
 
       <Dialog
         open={saveAoiFormOpen}
@@ -94,7 +129,7 @@ const Aoi = ({
           Name Your Aoi
         </DialogTitle>
         <DialogContent>
-          <SaveAoiForm onSubmit={handleSaveAoiSubmit} />
+          <SaveAoiForm aoi={aoi} onSubmit={handleSaveAoiSubmit} />
         </DialogContent>
       </Dialog>
     </Grid>
