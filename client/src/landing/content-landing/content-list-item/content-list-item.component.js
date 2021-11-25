@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   item: (import('typings').Bookmark|object)
- *   onClick?: (item: import('typings').Bookmark|import('typings').Source['source_id']) => void
+ *   onClick?: (item: import('typings').Bookmark|object) => void
  * }} props
  */
 export const ContentListItem = ({ item, onClick }) => {
