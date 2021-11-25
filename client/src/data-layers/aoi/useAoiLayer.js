@@ -48,7 +48,7 @@ export const useAoiLayer = ({
     setSelectedFeatureIndexes([index]);
   };
 
-  const getFillColor = [128, 128, 128, 1];
+  const getFillColor = [128, 128, 128, 100];
   const getLineColor = COLOR_PRIMARY_ARRAY;
 
   const drawAoiLayer = new EditableGeoJsonLayer({
@@ -60,9 +60,14 @@ export const useAoiLayer = ({
     onEdit,
     onClick,
     getFillColor,
-    getTentativeFillColor: getFillColor,
     getLineColor,
-    getTentativeLineColor: getLineColor,
+    getTentativeFillColor: [0, 85, 0, 100],
+    getTentativeLineColor: [0, 85, 0, 255],
+    _subLayerProps: {
+      tooltips: {
+        getColor: [255, 255, 255, 255],
+      },
+    },
   });
 
   return {
