@@ -1,23 +1,46 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import { makeStyles } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  Grid,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
+
+import { userSelector } from 'accounts/accounts.selectors';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
 import { LineChart } from '../charts/line-chart/line-chart.component';
 import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
-import { chartDataSelector, fetchChartData } from '../dashboard.slice';
+import {
+  chartDataSelector,
+  fetchChartData,
+  updateTargets,
+  userOrbStateSelector,
+} from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
+import {
+  SelectScreen,
+  TargetScreen,
+} from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { walthamApiMetadata } from './waltham.constants';
+import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   dashboard: {
     overflowY: 'scroll',
+  },
+  header: {
+    padding: '2rem',
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
   progressIndicators: {
     display: 'flex',
@@ -41,6 +64,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const chartTheme = useChartTheme();
   const dispatch = useDispatch();
 
+  const [targetDialogVisible, setTargetDialogVisible] = useState(false);
+  const [selectedDataset, setSelectedDataset] = useState(undefined);
+
+  const user = useSelector(userSelector),
+    userOrbState = useSelector(userOrbStateSelector);
+
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
       chartDataSelector(sourceId, 'ApprovalsGranted'),
@@ -60,6 +89,19 @@ const WalthamForestDashboard = ({ sourceId }) => {
       dispatch(fetchChartData(sourceId, datasetName, url)),
     );
   }, [sourceId, dispatch]);
+
+  const closeDialog = () => {
+    setSelectedDataset(undefined);
+    setTargetDialogVisible(false);
+  };
+
+  /**
+   * @param {object} targets
+   */
+  const handleAddTargetsClick = targets => {
+    dispatch(updateTargets(sourceId, targets, user));
+    closeDialog();
+  };
 
   // only arrays of chart data, transformed where needed and cached
   const totalHousingDeliveryChartData = useMemo(
@@ -81,6 +123,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   return (
     <div className={styles.dashboard}>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        className={styles.header}
+      >
+        <Typography variant="h2">IMO / PO Dashboard</Typography>
+        <Button size="small" onClick={() => setTargetDialogVisible(true)}>
+          Add Targets
+        </Button>
+      </Grid>
+
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         {progressData.properties.map((property, i) => (
@@ -156,6 +210,30 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper>
       </div>
+
+      <Dialog
+        maxWidth="md"
+        open={targetDialogVisible}
+        onClose={closeDialog}
+        aria-labelledby="waltham-forest-targets-dialog"
+      >
+        <DialogTitle onClose={closeDialog}>
+          {targetDatasets[selectedDataset] ?? 'Add Targets'}
+        </DialogTitle>
+        <DialogContent>
+          {!!selectedDataset ? (
+            <TargetScreen
+              onAddTargetsClick={targets =>
+                handleAddTargetsClick({ [selectedDataset]: targets })
+              }
+            />
+          ) : (
+            <SelectScreen
+              onNextClick={dataset => setSelectedDataset(dataset)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
