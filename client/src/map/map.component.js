@@ -9,7 +9,7 @@ import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmar
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useMap } from 'MapContext';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import { isDrawingAoiSelector } from 'satellites/satellites.slice';
+import { isDrawingSatelliteAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
 import { BottomMap } from './bottom-map.component';
@@ -95,6 +95,8 @@ const Map = ({
   setDrawingToolsEnabled,
   drawMode,
   setDrawMode,
+  isDrawingAoi,
+  drawAoiLayer,
 }) => {
   const {
     topMapRef,
@@ -116,12 +118,13 @@ const Map = ({
   const selectedMapStyle = useSelector(selectedMapStyleSelector);
   const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
+
   const {
-    drawAoiLayer,
+    drawSatelliteAoiLayer,
     scenesLayer,
     selectedSceneLayer,
   } = useSatellitesLayers();
-  const isDrawingAoi = useSelector(isDrawingAoiSelector);
+  const isDrawingSatelliteAoi = useSelector(isDrawingSatelliteAoiSelector);
 
   const handleExtrusionScaleChange = useCallback(
     value => dispatch(setExtrusionScale(value)),
@@ -144,13 +147,26 @@ const Map = ({
     cursorState => {
       if (drawingToolsEnabled && editableLayer?.state?.cursor)
         return editableLayer?.state?.cursor;
-      if (drawAoiLayer) return drawAoiLayer?.state?.cursor;
+      if (isDrawingAoi && drawAoiLayer?.state?.cursor) {
+        return drawAoiLayer?.state?.cursor;
+      }
+      if (drawSatelliteAoiLayer) {
+        return drawSatelliteAoiLayer?.state?.cursor;
+      }
       return getBottomMapCursor(cursorState);
     },
-    [drawAoiLayer, drawingToolsEnabled, editableLayer, getBottomMapCursor],
+    [
+      isDrawingAoi,
+      drawAoiLayer,
+      drawSatelliteAoiLayer,
+      drawingToolsEnabled,
+      editableLayer,
+      getBottomMapCursor,
+    ],
   );
 
-  const topMapIsController = drawingToolsEnabled || isDrawingAoi;
+  const topMapIsController =
+    drawingToolsEnabled || isDrawingSatelliteAoi || isDrawingAoi;
 
   return (
     <div className={styles.map}>
@@ -204,6 +220,7 @@ const Map = ({
         mapboxApiAccessToken={accessToken}
         editableLayer={editableLayer}
         drawAoiLayer={drawAoiLayer}
+        drawSatelliteAoiLayer={drawSatelliteAoiLayer}
       />
     </div>
   );

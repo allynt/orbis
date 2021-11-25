@@ -4,10 +4,10 @@ import { Button, makeStyles, MenuItem } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
+import { OptionsMenu } from 'components/options-menu/options-menu.component';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
-import { OptionsMenu } from '../options-menu.component';
 
 const DATE_FORMAT = 'k:mm d MMMM yyyy';
 

@@ -32,8 +32,8 @@ const MissionControl = React.lazy(() =>
   ),
 );
 
-const Dashboards = React.lazy(() =>
-  import(/* webpackChunkName: "Dashboards" */ 'dashboards'),
+const Dashboard = React.lazy(() =>
+  import(/* webpackChunkName: "Dashboard" */ 'dashboard'),
 );
 
 const App = () => {
@@ -84,11 +84,7 @@ const App = () => {
             <PrivateRoute exact path="/" user={user} component={LandingView} />
             <Route path="/accounts" component={Accounts} />
             <PrivateRoute path="/map" user={user} component={MapLayout} />
-            <PrivateRoute
-              path="/dashboard"
-              user={user}
-              component={Dashboards}
-            />
+            <PrivateRoute path="/dashboard" user={user} component={Dashboard} />
           </Switch>
           {backgroundLocation && (
             <Switch>

@@ -36,9 +36,9 @@ import {
   setSelectedSceneLayerVisible,
   visiblePanelSelector,
   setVisiblePanel,
-  aoiSelector,
-  startDrawingAoi,
-  onUnmount,
+  satelliteAoiSelector,
+  startDrawingSatelliteAoi,
+  onSatelliteUnmount,
   requestsSelector,
 } from './satellites.slice';
 import Search from './search/search.component';
@@ -64,7 +64,7 @@ const SearchView = () => {
   const dispatch = useDispatch();
   const appConfig = useSelector(configSelector);
   const satellites = useSelector(satellitesSelector);
-  const aoi = useSelector(aoiSelector);
+  const aoi = useSelector(satelliteAoiSelector);
   const currentSearchQuery = useSelector(currentSearchQuerySelector);
   const [selectedMoreInfo, setSelectedMoreInfo] = useState({
     type: null,
@@ -94,7 +94,7 @@ const SearchView = () => {
         aoi={aoi}
         aoiTooLarge={aoiTooLarge}
         currentSearch={currentSearchQuery}
-        onDrawAoiClick={() => dispatch(startDrawingAoi())}
+        onDrawAoiClick={() => dispatch(startDrawingSatelliteAoi())}
         onSearch={search => {
           dispatch(searchSatelliteScenes(search));
         }}
@@ -187,7 +187,7 @@ const Satellites = () => {
   useEffect(() => {
     dispatch(setVisiblePanel(Panels.SEARCH));
     return () => {
-      dispatch(onUnmount());
+      dispatch(onSatelliteUnmount());
     };
   }, [dispatch]);
 

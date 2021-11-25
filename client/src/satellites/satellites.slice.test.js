@@ -18,18 +18,18 @@ import reducer, {
   setHoveredScene,
   hoveredSceneSelector,
   saveImage,
-  aoiSelector,
+  satelliteAoiSelector,
   cloudCoverPercentageSelector,
   visiblePanelSelector,
-  isDrawingAoiSelector,
+  isDrawingSatelliteAoiSelector,
   selectedSceneLayerVisibleSelector,
   setCloudCoverPercentage,
   setSelectedSceneLayerVisible,
   setVisiblePanel,
   setVisualisationId,
-  startDrawingAoi,
-  endDrawingAoi,
-  onUnmount,
+  startDrawingSatelliteAoi,
+  endDrawingSatelliteAoi,
+  onSatelliteUnmount,
 } from './satellites.slice';
 
 fetch.enableMocks();
@@ -352,15 +352,15 @@ describe('Satellites Slice', () => {
       });
     });
 
-    describe('startDrawingAoi', () => {
+    describe('startDrawingSatelliteAoi', () => {
       let result;
 
       beforeEach(() => {
-        result = reducer({ aoi: [[123, 345]] }, startDrawingAoi());
+        result = reducer({ aoi: [[123, 345]] }, startDrawingSatelliteAoi());
       });
 
-      it('Sets isDrawingAoi to true', () => {
-        expect(result.isDrawingAoi).toBe(true);
+      it('Sets isDrawingSatelliteAoi to true', () => {
+        expect(result.isDrawingSatelliteAoi).toBe(true);
       });
 
       it('Clears any existing aoi', () => {
@@ -368,15 +368,18 @@ describe('Satellites Slice', () => {
       });
     });
 
-    describe('endDrawingAoi', () => {
+    describe('endDrawingSatelliteAoi', () => {
       let result;
 
       beforeEach(() => {
-        result = reducer({ isDrawingAoi: true }, endDrawingAoi([[123, 123]]));
+        result = reducer(
+          { isDrawingSatelliteAoi: true },
+          endDrawingSatelliteAoi([[123, 123]]),
+        );
       });
 
-      it('Sets isDrawingAoi to true', () => {
-        expect(result.isDrawingAoi).toBe(false);
+      it('Sets isDrawingSatelliteAoi to true', () => {
+        expect(result.isDrawingSatelliteAoi).toBe(false);
       });
 
       it('Clears any existing aoi', () => {
@@ -416,16 +419,16 @@ describe('Satellites Slice', () => {
       });
     });
 
-    describe('onUnmount', () => {
+    describe('onSatelliteUnmount', () => {
       let result;
       beforeAll(() => {
         result = reducer(
-          { isDrawingAoi: true, visiblePanel: Panels.SEARCH },
-          onUnmount(),
+          { isDrawingSatelliteAoi: true, visiblePanel: Panels.SEARCH },
+          onSatelliteUnmount(),
         );
       });
-      it('sets isDrawingAoi to false', () => {
-        expect(result.isDrawingAoi).toBe(false);
+      it('sets isDrawingSatelliteAoi to false', () => {
+        expect(result.isDrawingSatelliteAoi).toBe(false);
       });
 
       it('sets visiblePanel to None', () => {
@@ -480,10 +483,10 @@ describe('Satellites Slice', () => {
       ${selectedSceneSelector}             | ${'selectedScene'}
       ${currentSearchQuerySelector}        | ${'currentSearchQuery'}
       ${visualisationIdSelector}           | ${'visualisationId'}
-      ${aoiSelector}                       | ${'aoi'}
+      ${satelliteAoiSelector}              | ${'aoi'}
       ${cloudCoverPercentageSelector}      | ${'cloudCoverPercentage'}
       ${visiblePanelSelector}              | ${'visiblePanel'}
-      ${isDrawingAoiSelector}              | ${'isDrawingAoi'}
+      ${isDrawingSatelliteAoiSelector}     | ${'isDrawingSatelliteAoi'}
       ${selectedSceneLayerVisibleSelector} | ${'selectedSceneLayerVisible'}
     `('$selector', ({ selector, key }) => {
       it.each`

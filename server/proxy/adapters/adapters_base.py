@@ -1,4 +1,7 @@
+from typing import Any, Optional, Tuple
+
 from django.core.exceptions import ImproperlyConfigured
+from django.http import QueryDict
 
 ##################
 # error-handling #
@@ -33,7 +36,7 @@ class ProxyDataAdapterRegistry(dict):
             f"No Adapter has been registered w/ the key '{key}'."
         )
 
-    def __getitem__(self, obj):
+    def __getitem__(self, obj) -> 'BaseProxyDataAdapter':
         # you can either access the registry w/ an object
         # (which has a key attribute), or the key itself
         key = getattr(obj, self.key, obj)
