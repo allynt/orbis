@@ -33,7 +33,6 @@ describe('AoisClient', () => {
           ],
         },
       }),
-      // thumbnail: 10,
     };
     const responseAoi = { ...newAoi, id: 123 };
     fetch.once(JSON.stringify(responseAoi));
@@ -61,7 +60,6 @@ describe('AoisClient', () => {
           ],
         },
       }),
-      // thumbnail: 10,
     };
     fetch.once(JSON.stringify(updatedAoi));
 
