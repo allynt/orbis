@@ -23,8 +23,8 @@ class GEOSGeometryField(serializers.Field):
         return GEOSGeometry(data)
 
 
-class AoiSerializer(serializers.ModelSerializer):
-    """ Serializer for an Aoi. """
+class AoiUpdateSerializer(serializers.ModelSerializer):
+    """ Serializer for actions on an existing Aoi. """
     class Meta:
         model = Aoi
         fields = (
@@ -51,4 +51,30 @@ class AoiSerializer(serializers.ModelSerializer):
         slug_field="uuid"
     )
 
-    geometry = GEOSGeometryField()
+    geometry = GEOSGeometryField(required=False)
+    thumbnail = serializers.FileField(required=False)
+
+
+class AoiCreateSerializer(AoiUpdateSerializer):
+    """ Serializer for create action on an Aoi only. """
+    class Meta:
+        model = Aoi
+        fields = (
+            "id",
+            "owner",
+            "name",
+            "description",
+            "created",
+            "modified",
+            "geometry",
+            "thumbnail",
+        )
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Aoi.objects.all(),
+                fields=['name', 'owner'],
+            )
+        ]
+
+    geometry = GEOSGeometryField(required=True)
+    thumbnail = serializers.FileField(required=True)
