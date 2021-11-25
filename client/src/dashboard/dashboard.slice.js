@@ -54,7 +54,7 @@ export const updateTargets = (
   };
 
   // combines new 'profiles' property with rest of user
-  dispatch(updateUser(profiles));
+  dispatch(updateUser({ profiles }));
 };
 
 export const { setChartData } = dashboardSlice.actions;
@@ -67,11 +67,9 @@ const baseSelector = state => state?.dashboard;
 export const chartDataSelector = (source_id, datasetName) =>
   createSelector(baseSelector, state => state?.[source_id]?.[datasetName]);
 
-/** @param {import('typings').Source['source_id']} source_id */
-export const userOrbStateSelector = source_id =>
-  createSelector(
-    userSelector,
-    user => user?.profiles?.orbis_profile?.orb_state?.[source_id] ?? {},
-  );
+export const userOrbStateSelector = createSelector(
+  userSelector,
+  user => user?.profiles?.orbis_profile?.orb_state,
+);
 
 export default dashboardSlice.reducer;

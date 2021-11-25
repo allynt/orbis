@@ -67,9 +67,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
-  const user = useSelector(userSelector);
-
-  const userOrbState = useSelector(userOrbStateSelector(sourceId));
+  const user = useSelector(userSelector),
+    userOrbState = useSelector(userOrbStateSelector);
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
