@@ -110,11 +110,6 @@ export const ContentLanding = ({
       gridRef.current.scrollTo(0, 0);
   }, [viewAllContent]);
 
-  const newDashboards = dashboards.map(d => ({
-    ...d,
-    thumbnail: import(`../../dashboards/${d.name}/${d.thumbnail}`),
-  }));
-  console.log('newdashboard', newDashboards);
   return (
     <>
       {!!bookmarks ? (
@@ -129,7 +124,7 @@ export const ContentLanding = ({
       ) : null}
       {!!dashboards ? (
         <ExpandableItemList
-          data={newDashboards}
+          data={dashboards}
           contentType={CONTENT_TYPES.dashboards}
           viewAllContent={viewAllContent[CONTENT_TYPES.dashboards]}
           gridRef={gridRef}

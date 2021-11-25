@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
+import NatureScotThumb from 'dashboard/NatureScot/nature-scot.png';
+import WalthamForestThumb from 'dashboard/WalthamForest/waltham-forest.png';
 import {
   dataSourcesSelector,
   fetchSources,
@@ -31,6 +33,11 @@ import { ContentLanding } from './content-landing/content-landing.component';
 import backgroundImagePlaceholder from './landing-image-placeholder.png';
 import backgroundImage from './landing-image.png';
 import { NoContentLanding } from './no-content-landing/no-content-landing.component';
+
+const images = {
+  WalthamForest: WalthamForestThumb,
+  NatureScot: NatureScotThumb,
+};
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -81,15 +88,10 @@ const Landing = () => {
   // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
-  const dashboards = useSelector(dashboardSourcesSelector);
+  const dashboardSources = useSelector(dashboardSourcesSelector);
   const sources = useSelector(dataSourcesSelector);
 
-  const hasContent = bookmarks?.length > 0 || dashboards?.length > 0,
-    dashboardComponents = dashboards.map(d => ({
-      ...d.metadata.application.orbis.dashboard_component,
-      source_id: d.source_id,
-    }));
-
+  const hasContent = bookmarks?.length > 0 || dashboardSources?.length > 0;
   const styles = useStyles({ hasContent });
   const { setViewState, viewState } = useMap();
 
@@ -114,6 +116,15 @@ const Landing = () => {
       dispatch(fetchSources());
     }
   }, [dispatch, sources]);
+
+  const dashboards = dashboardSources.map(d => {
+    const dc = d?.metadata?.application?.orbis?.dashboard_component;
+    return {
+      source_id: d?.source_id,
+      title: dc?.title,
+      thumbnail: images[dc?.name],
+    };
+  });
 
   return (
     <ThemeProvider theme={hasContent ? 'light' : 'dark'}>
@@ -144,7 +155,7 @@ const Landing = () => {
               <ContentLanding
                 bookmarks={bookmarks}
                 chooseBookmark={chooseBookmark}
-                dashboards={dashboardComponents}
+                dashboards={dashboards}
                 chooseDashboard={chooseDashboard}
               />
             ) : (

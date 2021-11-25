@@ -38,31 +38,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// TODO: is this OR in item type correct?
-
 /**
  * @param {{
- *   item: (import('typings').Bookmark|import('typings').Source)
- *   onClick?: (item: import('typings').Bookmark|import('typings').Source) => void
+ *   item: (import('typings').Bookmark|object)
+ *   onClick?: (item: import('typings').Bookmark|import('typings').Source['source_id']) => void
  * }} props
  */
 export const ContentListItem = ({ item, onClick }) => {
   const styles = useStyles();
-  const title = item?.title,
-    date = item?.created && format(new Date(item?.created), DATE_FORMAT);
+  const date = item?.created && format(new Date(item?.created), DATE_FORMAT);
+
   return (
     <Card className={styles.card}>
       <CardMedia
         role="button"
         tabIndex={0}
+        component="img"
         className={styles.media}
         image={item?.thumbnail}
         onClick={() => onClick(item)}
         onKeyUp={() => onClick(item)}
-        title={title}
+        title={item?.title}
       />
       <CardContent>
-        <Typography variant="h2">{title}</Typography>
+        <Typography variant="h2">{item?.title}</Typography>
         {!!date ? (
           <Typography
             variant="subtitle1"
