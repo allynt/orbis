@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Grid,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -18,10 +19,6 @@ import SaveAoiForm from './save-aoi-form/save-aoi-form.component';
 import AoiToolbox from './toolbox/aoi-toolbox.component';
 
 const useStyles = makeStyles({
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
   button: {
     margin: '0 auto',
     marginTop: '1rem',
@@ -57,8 +54,15 @@ const Aoi = ({
     createScreenshot(thumbnail => onSubmit({ ...values, thumbnail }));
   };
 
+  const handleToolSelect = tool => {
+    setAoiDrawMode(tool);
+    if (tool !== 'ModifyMode') {
+      onDrawAoiClick();
+    }
+  };
+
   return (
-    <div className={styles.wrapper}>
+    <Grid container direction="column">
       <Typography variant="h3" component="h1">
         Search
       </Typography>
@@ -67,15 +71,7 @@ const Aoi = ({
         data.
       </Typography>
 
-      <AoiToolbox
-        onToolSelect={tool => {
-          setAoiDrawMode(tool);
-          if (tool !== 'ModifyMode') {
-            onDrawAoiClick();
-          }
-        }}
-        selectedTool={aoiDrawMode}
-      />
+      <AoiToolbox onToolSelect={handleToolSelect} selectedTool={aoiDrawMode} />
 
       <Button
         color="secondary"
@@ -101,7 +97,7 @@ const Aoi = ({
           <SaveAoiForm onSubmit={handleSaveAoiSubmit} />
         </DialogContent>
       </Dialog>
-    </div>
+    </Grid>
   );
 };
 
