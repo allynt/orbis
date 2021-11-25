@@ -22,14 +22,14 @@ const AOIS = [
 describe('Bookmark List Component', () => {
   let aois = null;
   let selectAoi = null;
-  let editAoi = null;
+  let editAoiDetails = null;
   let deleteAoi = null;
 
   beforeEach(() => {
     aois = AOIS;
 
     selectAoi = jest.fn();
-    editAoi = jest.fn();
+    editAoiDetails = jest.fn();
     deleteAoi = jest.fn();
   });
 
@@ -38,7 +38,7 @@ describe('Bookmark List Component', () => {
       <AoiList
         aois={[]}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );
@@ -51,7 +51,7 @@ describe('Bookmark List Component', () => {
       <AoiList
         aois={aois}
         selectAoi={selectAoi}
-        editAoi={editAoi}
+        editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
     );

@@ -7,14 +7,45 @@ import Aoi from './aoi.component';
 describe('AOI Component', () => {
   let onDrawAoiClick = null;
   let onSubmit = null;
+  let aoiDrawMode = null;
+  let setAoiDrawMode = null;
+  let fetchAois = null;
+  let selectAoi = null;
+  let editAoiDetails = null;
+  let deleteAoi = null;
+
+  let state = null;
 
   beforeEach(() => {
     onDrawAoiClick = jest.fn();
     onSubmit = jest.fn();
+    aoiDrawMode = false;
+    setAoiDrawMode = jest.fn();
+    fetchAois = jest.fn();
+    selectAoi = jest.fn();
+    editAoiDetails = jest.fn();
+    deleteAoi = jest.fn();
+
+    state = {
+      aois: {
+        aoi: {},
+      },
+    };
   });
 
   it('should display the panel', () => {
-    render(<Aoi />);
+    render(
+      <Aoi
+        onDrawAoiClick={onDrawAoiClick}
+        onSubmit={onSubmit}
+        aoiDrawMode={aoiDrawMode}
+        setAoiDrawMode={setAoiDrawMode}
+        fetchAois={fetchAois}
+        selectAoi={selectAoi}
+        editAoiDetails={editAoiDetails}
+        deleteAoi={deleteAoi}
+      />,
+    );
 
     expect(screen.getByRole('heading', { name: 'Search' })).toBeInTheDocument();
     expect(
@@ -30,37 +61,45 @@ describe('AOI Component', () => {
   });
 
   it('should call `onDrawAoiClick` function when `AOI Mode` button clicked', () => {
-    render(<Aoi onDrawAoiClick={onDrawAoiClick} />);
+    render(
+      <Aoi
+        onDrawAoiClick={onDrawAoiClick}
+        onSubmit={onSubmit}
+        aoiDrawMode={aoiDrawMode}
+        setAoiDrawMode={setAoiDrawMode}
+        fetchAois={fetchAois}
+        selectAoi={selectAoi}
+        editAoiDetails={editAoiDetails}
+        deleteAoi={deleteAoi}
+      />,
+    );
 
     userEvent.click(screen.getByRole('button', { name: 'Circle' }));
 
     expect(onDrawAoiClick).toHaveBeenCalled();
   });
 
-  it('should call `onSubmit` function when dialog `Save AOI` button clicked', async () => {
-    render(<Aoi onSubmit={onSubmit} />);
+  it('should show dialog when `Save` button clicked', async () => {
+    render(
+      <Aoi
+        onDrawAoiClick={onDrawAoiClick}
+        onSubmit={onSubmit}
+        aoiDrawMode={aoiDrawMode}
+        setAoiDrawMode={setAoiDrawMode}
+        fetchAois={fetchAois}
+        selectAoi={selectAoi}
+        editAoiDetails={editAoiDetails}
+        deleteAoi={deleteAoi}
+      />,
+      { state: state },
+    );
 
     userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
-    expect(
-      screen.getByRole('heading', { name: 'Name Your Aoi' }),
-    ).toBeInTheDocument();
-
-    const name = 'Test AOI';
-    userEvent.type(
-      screen.getByRole('textbox', { name: 'Add Name' }),
-      'Test AOI',
-    );
-    const description = 'Test Description';
-    userEvent.type(
-      screen.getByRole('textbox', { name: 'Add Description' }),
-      'Test Description',
-    );
-
-    userEvent.click(screen.getByRole('button', { name: 'Save AOI' }));
-
     await waitFor(() =>
-      expect(onSubmit).toHaveBeenCalledWith({ name, description }),
+      expect(
+        screen.getByRole('heading', { name: 'Name Your Aoi' }),
+      ).toBeInTheDocument(),
     );
   });
 });
