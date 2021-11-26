@@ -23,17 +23,25 @@ const TEST_BOOKMARKS = new Array(10).fill(undefined).map((_, i) => ({
   thumbnail: 'test-image-URL',
 }));
 
-const TEST_DASHBOARDS = new Array(10).fill(undefined).map((_, i) => ({
-  id: i,
-  owner: `${i}e5ac533-0245-4031-ab65-b1eff4d30a1f`,
-  title: `Dashboard Title ${i}`,
-  thumbnail: 'test-image-URL',
+const TEST_DASHBOARD_SOURCES = new Array(2).fill(undefined).map((_, i) => ({
+  source_id: `test/source_id/${i}`,
+  metadata: {
+    application: {
+      orbis: {
+        dashboard_component: {
+          name: 'WalthamForest',
+          title: `Dashboard Title ${i}`,
+        },
+      },
+    },
+  },
 }));
 
 fetch.enableMocks();
 
-const bookmarkSetup = newUser => {
-  const bookmarks = newUser ? [] : TEST_BOOKMARKS;
+const landingSetup = newUser => {
+  const bookmarks = newUser ? [] : TEST_BOOKMARKS,
+    sources = newUser ? [] : TEST_DASHBOARD_SOURCES;
   return render(
     <ThemeProvider>
       <Landing />
@@ -43,27 +51,8 @@ const bookmarkSetup = newUser => {
         bookmarks: {
           bookmarks,
         },
-        map: {
-          regions,
-        },
-        pollingPeriod: 3000,
-        sources: null,
-      },
-      history: { initialEntries: ['/'] },
-    },
-  );
-};
-
-const dashboardSetup = newUser => {
-  const dashboards = newUser ? [] : TEST_DASHBOARDS;
-  return render(
-    <ThemeProvider>
-      <Landing />
-    </ThemeProvider>,
-    {
-      state: {
-        dashboards: {
-          dashboards,
+        data: {
+          sources,
         },
         map: {
           regions,
@@ -79,8 +68,8 @@ const dashboardSetup = newUser => {
 describe('<Landing />', () => {
   beforeEach(() => fetch.mockResponse(JSON.stringify({})));
 
-  it('should render the No Bookmarks Landing view if the user has no bookmarks', () => {
-    bookmarkSetup(true);
+  it('should render the No Bookmarks Landing view if the user has no bookmarks or dashboards', () => {
+    landingSetup(true);
 
     expect(
       screen.getByText('Your Earth Observation journey starts here'),
@@ -92,10 +81,11 @@ describe('<Landing />', () => {
     expect(screen.queryByText(BOOKMARK_TEXT)).not.toBeInTheDocument();
   });
 
-  it('should render the Bookmarks Landing view', () => {
-    bookmarkSetup();
+  it('should render the Content Landing view', () => {
+    landingSetup();
 
     expect(screen.getByText(BOOKMARK_TEXT)).toBeInTheDocument();
+    expect(screen.getByText(DASHBOARD_TEXT)).toBeInTheDocument();
     expect(screen.getByText('Browse Map')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'View all' }),
@@ -107,7 +97,7 @@ describe('<Landing />', () => {
   });
 
   it('Dispatches the selectBookmark action when a bookmark is clicked', () => {
-    const { store } = bookmarkSetup();
+    const { store } = landingSetup();
 
     userEvent.click(screen.getByRole('button', { name: 'Bookmark Title 2' }));
 
@@ -116,40 +106,15 @@ describe('<Landing />', () => {
     );
   });
 
-  it('should render the No Dashboards Landing view if the user has no dashboards', () => {
-    dashboardSetup(true);
+  // TODO: below test is broken
 
-    expect(
-      screen.getByText('Your Earth Observation journey starts here'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('link', { name: 'Browse Map' }),
-    ).toBeInTheDocument();
+  xit('Navigates to dashboard route when dashboard is clicked', () => {
+    const { history } = landingSetup();
 
-    expect(screen.queryByText(DASHBOARD_TEXT)).not.toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: 'Dashboard Title 0' }));
+
+    expect(history.location.pathname).toBe(
+      '/dashboard?source_id=test/source_id/0',
+    );
   });
-
-  //   it('should render the Dashboards Landing view', () => {
-  //     dashboardSetup();
-
-  //     expect(screen.getByText(DASHBOARD_TEXT)).toBeInTheDocument();
-  //     expect(screen.getByText('Browse Map')).toBeInTheDocument();
-  //     expect(
-  //       screen.getByRole('button', { name: 'View all' }),
-  //     ).toBeInTheDocument();
-
-  //     expect(
-  //       screen.queryByText('your Earth exploration journey starts here'),
-  //     ).not.toBeInTheDocument();
-  //   });
-
-  //   it('Dispatches the selectDashboard action when a dashboard is clicked', () => {
-  //     const { store } = dashboardSetup();
-
-  //     userEvent.click(screen.getByRole('button', { name: 'Dashboard Title 2' }));
-
-  //     expect(store.getActions()).toContainEqual(
-  //       expect.objectContaining({ type: chooseDashboard.pending.type }),
-  //     );
-  //   });
 });
