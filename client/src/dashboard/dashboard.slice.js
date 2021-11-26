@@ -42,12 +42,17 @@ export const fetchChartData = (
 
 export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
-  async (props, { rejectWithValue }) => {
+  async (props, { getState, rejectWithValue }) => {
     console.log('props: ', props);
     // @ts-ignore
     const { source_id, datasetName, url } = props;
+    const {
+      data: { token },
+    } = getState();
     try {
-      const result = await apiClient.dashboard.getDashboardData(url);
+      const result = await apiClient.dashboard.getDashboardData(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       console.log(`${datasetName} API DATA: `, result);
     } catch (error) {

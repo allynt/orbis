@@ -24,23 +24,23 @@ export const inputErrorMessage = 'Only number values are permitted.';
 export const walthamApiMetadata = [
   {
     datasetName: 'TargetProgress',
-    url: 'proxy/wfc/mock/target_progress/v1/',
+    url: 'proxy/data/wfc/mock/target_progress/v1/',
   },
   {
     datasetName: 'ApprovalsGranted',
-    url: 'proxy/wfc/mock/approvals_granted/v1/',
+    url: 'proxy/data/wfc/mock/approvals_granted/v1/',
   },
   {
     datasetName: 'ProgressionVsPlanning',
-    url: 'proxy/wfc/mock/progression_vs_planning_schedule/v1/',
+    url: 'proxy/data/wfc/mock/progression_vs_planning_schedule/v1/',
   },
   {
     datasetName: 'TenureHousingDelivery',
-    url: 'proxy/wfc/mock/tenure_type_housing_delivery/v1/',
+    url: 'proxy/data/wfc/mock/tenure_type_housing_delivery/v1/',
   },
   {
     datasetName: 'TotalHousingDelivery',
-    url: 'proxy/wfc/mock/total_housing_delivery/v1/',
+    url: 'proxy/data/wfc/mock/total_housing_delivery/v1/',
   },
 ];
 

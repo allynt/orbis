@@ -17,8 +17,8 @@ export class DashboardClient extends SubClient {
    * @returns {Promise<any>}
    * @throws {ResponseError}
    */
-  async getDashboardData(url) {
-    const response = await this.makeAuthenticatedRequest(url);
+  async getDashboardData(url, options) {
+    const response = await this.makeAuthenticatedRequest(url, options);
     return response.json();
   }
 }
