@@ -289,6 +289,14 @@ export const dataSourcesSelector = createSelector(
   state => state?.sources ?? [],
 );
 
+export const dashboardSourcesSelector = createSelector(
+  dataSourcesSelector,
+  state =>
+    state?.filter(
+      source => !!source?.metadata?.application?.orbis?.dashboard_component,
+    ),
+);
+
 export const orbsSelector = createSelector(baseSelector, state => state?.orbs);
 
 export const selectPollingPeriod = createSelector(

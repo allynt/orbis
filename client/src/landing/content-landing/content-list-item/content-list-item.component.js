@@ -40,31 +40,34 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   bookmark: import('typings').Bookmark
- *   onClick?: (bookmark: import('typings').Bookmark) => void
+ *   item: (import('typings').Bookmark|object)
+ *   onClick?: (item: import('typings').Bookmark|object) => void
  * }} props
  */
-export const BookmarksListItem = ({ bookmark, onClick }) => {
+export const ContentListItem = ({ item, onClick }) => {
   const styles = useStyles();
-  const date = !!bookmark && format(new Date(bookmark?.created), DATE_FORMAT);
+  const date = item?.created && format(new Date(item?.created), DATE_FORMAT);
 
   return (
     <Card className={styles.card}>
       <CardMedia
         role="button"
         tabIndex={0}
+        component="img"
         className={styles.media}
-        image={bookmark?.thumbnail}
-        onClick={() => onClick(bookmark)}
-        onKeyUp={() => onClick(bookmark)}
-        title={bookmark?.title}
+        image={item?.thumbnail}
+        onClick={() => onClick(item)}
+        onKeyUp={() => onClick(item)}
+        title={item?.title}
       />
       <CardContent>
-        <Typography variant="h2">{bookmark?.title}</Typography>
-        <Typography
-          variant="subtitle1"
-          className={styles.subtitle}
-        >{`Created ${date}`}</Typography>
+        <Typography variant="h2">{item?.title}</Typography>
+        {!!date ? (
+          <Typography
+            variant="subtitle1"
+            className={styles.subtitle}
+          >{`Created ${date}`}</Typography>
+        ) : null}
       </CardContent>
     </Card>
   );

@@ -5,11 +5,11 @@ import faker from 'faker/locale/en_GB';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 
-import { BookmarksLanding } from './bookmarks-landing.component';
+import { ContentLanding } from './content-landing.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default { title: 'Landing/Bookmarks Landing' };
+export default { title: 'Landing/Content Landing' };
 
 const makeBookmark = () => ({
   id: faker.random.uuid(),
@@ -18,9 +18,15 @@ const makeBookmark = () => ({
   created: faker.date.past(undefined, new Date(2077, 10, 24)).toISOString(),
 });
 
+const makeDashboard = () => ({
+  id: faker.random.uuid(),
+  title: faker.commerce.product(),
+  thumbnail: isChromatic() ? undefined : faker.image.image(),
+});
+
 const Template = args => (
   <Router history={createBrowserHistory()}>
-    <BookmarksLanding {...args} />
+    <ContentLanding {...args} />
   </Router>
 );
 
@@ -38,4 +44,18 @@ LotsOBookmarks.args = {
   bookmarks: Array(faker.random.number(29) + 1)
     .fill()
     .map(makeBookmark),
+};
+
+export const WithDashboards = Template.bind({});
+WithDashboards.args = {
+  dashboards: Array(faker.random.number(3) + 1)
+    .fill(undefined)
+    .map(makeDashboard),
+};
+
+export const LotsODashboards = Template.bind({});
+LotsODashboards.args = {
+  dashboards: Array(faker.random.number(27) + 1)
+    .fill()
+    .map(makeDashboard),
 };

@@ -9,14 +9,18 @@ import {
   useMediaQuery,
 } from '@astrosat/astrosat-ui';
 
+import { push } from 'connected-react-router';
 import ProgressiveImage from 'react-progressive-image-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
+import NatureScotThumb from 'dashboard/NatureScot/nature-scot.png';
+import WalthamForestThumb from 'dashboard/WalthamForest/waltham-forest.png';
 import {
   dataSourcesSelector,
   fetchSources,
+  dashboardSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 
@@ -25,10 +29,15 @@ import {
   fetchBookmarks,
   selectBookmark,
 } from '../bookmarks/bookmarks.slice';
-import { BookmarksLanding } from './bookmarks-landing/bookmarks-landing.component';
+import { ContentLanding } from './content-landing/content-landing.component';
 import backgroundImagePlaceholder from './landing-image-placeholder.png';
 import backgroundImage from './landing-image.png';
-import { NoBookmarksLanding } from './no-bookmarks-landing/no-bookmarks-landing.component';
+import { NoContentLanding } from './no-content-landing/no-content-landing.component';
+
+const images = {
+  WalthamForest: WalthamForestThumb,
+  NatureScot: NatureScotThumb,
+};
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -36,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
     overflow: 'hidden',
     backgroundColor: props =>
-      props.hasBookmarks ? theme.palette.common.white : 'transparent',
+      props.hasContent ? theme.palette.common.white : 'transparent',
   },
   background: {
     position: 'absolute',
@@ -56,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
   },
   content: {
-    width: props => (props.hasBookmarks ? '100%' : 'max-content'),
+    width: props => (props.hasContent ? '100%' : 'max-content'),
     justifySelf: 'end',
     alignSelf: 'center',
     display: 'flex',
@@ -79,9 +88,11 @@ const Landing = () => {
   // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
+  const dashboardSources = useSelector(dashboardSourcesSelector);
   const sources = useSelector(dataSourcesSelector);
-  const hasBookmarks = bookmarks?.length > 0;
-  const styles = useStyles({ hasBookmarks });
+
+  const hasContent = bookmarks?.length > 0 || dashboardSources?.length > 0;
+  const styles = useStyles({ hasContent });
   const { setViewState, viewState } = useMap();
 
   /**
@@ -90,6 +101,9 @@ const Landing = () => {
   const chooseBookmark = bookmark => {
     dispatch(selectBookmark({ bookmark, setViewState, viewState }));
   };
+
+  const chooseDashboard = dashboard =>
+    dispatch(push(`/dashboard?source_id=${dashboard.source_id}`));
 
   useEffect(() => {
     if (!bookmarks) {
@@ -103,14 +117,23 @@ const Landing = () => {
     }
   }, [dispatch, sources]);
 
+  const dashboards = dashboardSources.map(d => {
+    const dc = d?.metadata?.application?.orbis?.dashboard_component;
+    return {
+      source_id: d?.source_id,
+      title: dc?.title,
+      thumbnail: images[dc?.name],
+    };
+  });
+
   return (
-    <ThemeProvider theme={hasBookmarks ? 'light' : 'dark'}>
+    <ThemeProvider theme={hasContent ? 'light' : 'dark'}>
       <div className={styles.page}>
         <ProgressiveImage
           preview={backgroundImagePlaceholder}
           src={backgroundImage}
           render={(src, style) => (
-            <Fade in={!hasBookmarks}>
+            <Fade in={!hasContent}>
               <div
                 className={styles.background}
                 style={{
@@ -128,29 +151,19 @@ const Landing = () => {
         >
           <OrbisLogo className={styles.logo} titleAccess="Orbis Logo" />
           <div className={styles.content}>
-            {hasBookmarks ? (
-              <BookmarksLanding
+            {hasContent ? (
+              <ContentLanding
                 bookmarks={bookmarks}
                 chooseBookmark={chooseBookmark}
+                dashboards={dashboards}
+                chooseDashboard={chooseDashboard}
               />
             ) : (
-              <NoBookmarksLanding />
+              <NoContentLanding />
             )}
 
             <RouterLink className={styles.link} to="/map">
               <Button color="secondary">Browse Map</Button>
-            </RouterLink>
-            <RouterLink
-              className={styles.link}
-              to="/dashboard?source_id=astrosat/demo/rice_vector/v3"
-            >
-              <Button color="secondary">Waltham Forest Dashboard</Button>
-            </RouterLink>
-            <RouterLink
-              className={styles.link}
-              to="/dashboard?source_id=astrosat/demo/air_pollution/v2"
-            >
-              <Button color="secondary">Nature Scotland Dashboard</Button>
             </RouterLink>
           </div>
         </Container>

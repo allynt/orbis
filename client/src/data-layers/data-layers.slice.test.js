@@ -8,6 +8,7 @@ import reducer, {
   fetchSources,
   selectDomainList,
   activeDataSourcesSelector,
+  dashboardSourcesSelector,
   dataSourcesSelector,
   selectPollingPeriod,
   selectDataToken,
@@ -458,6 +459,47 @@ describe('Data Slice', () => {
         };
         const result = selectPollingPeriod(state);
         expect(result).toBeUndefined();
+      });
+    });
+
+    describe('dashBoardSourcesSelector', () => {
+      it('should return the list of data sources', () => {
+        const sourceWithDashboard = {
+            metadata: {
+              application: {
+                orbis: {
+                  dashboard_component: {
+                    name: 'dashboard 1',
+                  },
+                },
+              },
+            },
+          },
+          state = {
+            data: {
+              sources: [
+                { metadata: {} },
+                { metadata: {} },
+                sourceWithDashboard,
+              ],
+            },
+          };
+        const result = dashboardSourcesSelector(state);
+        expect(result).toEqual([sourceWithDashboard]);
+      });
+      it('should return an empty array if no data state is present', () => {
+        const state = {
+          data: {
+            sources: [{ metadata: {} }, { metadata: {} }, { metadata: {} }],
+          },
+        };
+        const result = dashboardSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+      it('should return an empty array if no sources are present', () => {
+        const state = { data: { sources: null } };
+        const result = dashboardSourcesSelector(state);
+        expect(result).toEqual([]);
       });
     });
 
