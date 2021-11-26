@@ -17,7 +17,6 @@ import { userSelector } from 'accounts/accounts.selectors';
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
 import { LineChart } from '../charts/line-chart/line-chart.component';
-import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progress-indicator-chart.component';
 import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
 import {
   chartDataSelector,
@@ -32,6 +31,7 @@ import {
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
+import { WalthamProgressIndicators } from './waltham-progress-indicators/waltham-progress-indicators.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
@@ -140,22 +140,14 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
-        {targetProgress?.properties.map((property, i) => (
-          <ChartWrapper
-            key={property.name}
-            title={property.title}
-            info="This is a test description"
-          >
-            <ProgressIndicatorChart
-              property={property}
-              color={chartTheme.colors[i]}
-            />
-          </ChartWrapper>
-        ))}
+        <WalthamProgressIndicators
+          data={totalHousingDelivery}
+          userOrbState={userOrbState}
+        />
       </div>
 
       {/* stacked/grouped bar charts */}
-      <div className={styles.barCharts}>
+      {/* <div className={styles.barCharts}>
         <ChartWrapper
           title="Progression of Units Relating to Planning Schedule"
           info="This is a test description"
@@ -196,7 +188,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             data={tenureHousingDeliveryChartData}
           />
         </ChartWrapper>
-      </div>
+      </div> */}
 
       {/* line chart */}
       <div className={styles.lineCharts}>

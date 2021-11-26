@@ -24,6 +24,8 @@ export const walthamApiMetadata = [
 ];
 
 export const targetDatasets = {
+  totalHousing:
+    'Total Housing Test Target For Each of The Last 5 Financial Years',
   marketHousing:
     'Market Housing Targets For Each of The Previous 10 Financial Years',
   affordableHousing:
