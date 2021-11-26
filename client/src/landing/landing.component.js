@@ -15,8 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
-import NatureScotThumb from 'dashboard/NatureScot/nature-scot.png';
-import WalthamForestThumb from 'dashboard/WalthamForest/waltham-forest.png';
 import {
   dataSourcesSelector,
   fetchSources,
@@ -33,11 +31,6 @@ import { ContentLanding } from './content-landing/content-landing.component';
 import backgroundImagePlaceholder from './landing-image-placeholder.png';
 import backgroundImage from './landing-image.png';
 import { NoContentLanding } from './no-content-landing/no-content-landing.component';
-
-const images = {
-  WalthamForest: WalthamForestThumb,
-  NatureScot: NatureScotThumb,
-};
 
 const useStyles = makeStyles(theme => ({
   page: {
@@ -124,7 +117,7 @@ const Landing = () => {
         return {
           source_id: source?.source_id,
           title: metadata?.title,
-          thumbnail: images[metadata?.name],
+          thumbnail: `/images/dashboard/${dc.name}.png`,
         };
       })
     : null;
