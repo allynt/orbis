@@ -117,15 +117,16 @@ const Landing = () => {
     }
   }, [dispatch, sources]);
 
-  const dashboards = dashboardSources.map(d => {
-    const dc = d?.metadata?.application?.orbis?.dashboard_component;
-    return {
-      source_id: d?.source_id,
-      title: dc?.title,
-      thumbnail: images[dc?.name],
-    };
-  });
-
+  const dashboards = dashboardSources.length
+    ? dashboardSources.map(d => {
+        const dc = d?.metadata?.application?.orbis?.dashboard_component;
+        return {
+          source_id: d?.source_id,
+          title: dc?.title,
+          thumbnail: images[dc?.name],
+        };
+      })
+    : null;
   return (
     <ThemeProvider theme={hasContent ? 'light' : 'dark'}>
       <div className={styles.page}>
