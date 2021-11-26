@@ -56,7 +56,7 @@ const Template = args => {
             />
           </div>
           <Grid item xs={4}>
-            <DateRangeFilter />
+            {/* <DateRangeFilter /> */}
           </Grid>
           <Grid item xs={4}>
             <ToggleButtonGroup
