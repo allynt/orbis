@@ -14,23 +14,28 @@ export const WalthamProgressIndicators = ({ data, userOrbState }) => {
   //   return { Year, totals: totals(Object.values(rest)) };
   // });
 
+  const last5Years = [
+    '2016-2017',
+    '2017-2018',
+    '2018-2019',
+    '2019-2020',
+    '2020-2021',
+  ];
+
+  const userTotals = obj =>
+    obj ? Object.values(obj).reduce((a, c) => (a += +c), 0) : undefined;
+
   const dataArray = data?.properties?.[0]?.data;
 
   // 'Gross' values tallied up for last 5 years, like ticket asks
   const past5YearsTotal = useMemo(
       () =>
-        [
-          '2016-2017',
-          '2017-2018',
-          '2018-2019',
-          '2019-2020',
-          '2020-2021',
-        ].reduce(
+        last5Years.reduce(
           (acc, cur) =>
-            (acc += dataArray?.find(d => d.Year === cur)?.['Total Gross']),
+            (acc += +dataArray?.find(d => d.Year === cur)?.['Total Gross']),
           0,
         ),
-      [dataArray],
+      [dataArray, last5Years],
     ),
     currentYearTotal = dataArray?.find(a => a.Year === '2020-2021')?.[
       'Total Gross'
@@ -43,7 +48,9 @@ export const WalthamProgressIndicators = ({ data, userOrbState }) => {
         '% of Houses Delivered So Far out of Previous 5 Financial Years Target.',
       info: 'Some info',
       name: 'Housing Delivery',
-      target: userOrbState?.totalHousing,
+      target: useMemo(() => userTotals(userOrbState?.totalHousing), [
+        userOrbState,
+      ]),
       progress: past5YearsTotal,
     },
     {

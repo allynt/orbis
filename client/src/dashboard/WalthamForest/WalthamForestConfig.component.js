@@ -50,7 +50,6 @@ const useStyles = makeStyles(theme => ({
   barCharts: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'stretch',
     padding: '2rem',
     gap: '1rem',
   },
@@ -161,7 +160,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper>
         <ChartWrapper
-          title="Total Housing Delivery 2016-2021"
+          title="Total Housing Delivery"
           info="This is a test description"
         >
           <GroupedBarChart
@@ -171,7 +170,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper>
         <ChartWrapper
-          title="Housing Delivery by Tenure Type 2016-2021"
+          title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
           <StackedBarChart
