@@ -21,40 +21,40 @@ const dashboardSlice = createSlice({
   initialState,
   reducers: {
     setChartData: (state, { payload }) => {
-      const { source_id, datasetName, data } = payload;
+      const { sourceId, datasetName, data } = payload;
 
-      state[source_id] = {
-        ...state[source_id],
+      state[sourceId] = {
+        ...state[sourceId],
         [datasetName]: data,
       };
     },
   },
 });
 
-export const fetchChartData = (
-  source_id,
-  datasetName,
-  url,
-) => async dispatch => {
-  const result = await import(`${url}.js`);
-  dispatch(setChartData({ source_id, datasetName, data: result.default }));
-};
+// export const fetchChartData = (
+//   source_id,
+//   datasetName,
+//   url,
+// ) => async dispatch => {
+//   const result = await import(`${url}.js`);
+//   dispatch(setChartData({ source_id, datasetName, data: result.default }));
+// };
 
 export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
-  async (props, { getState, rejectWithValue }) => {
-    console.log('props: ', props);
+  async (props, { getState, rejectWithValue, dispatch }) => {
     // @ts-ignore
-    const { source_id, datasetName, url } = props;
+    const { sourceId, datasetName, url } = props;
     const {
       data: { token },
     } = getState();
+
     try {
-      const result = await apiClient.dashboard.getDashboardData(url, {
+      const data = await apiClient.dashboard.getDashboardData(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(`${datasetName} API DATA: `, result);
+      dispatch(setChartData({ sourceId, datasetName, data }));
     } catch (error) {
       /** @type {import('api-client').ResponseError} */
       const { message, status } = error;
@@ -69,20 +69,20 @@ export const fetchDashboardData = createAsyncThunk(
   },
 );
 
-export const updateTargets = (
-  source_id,
-  addedTargets,
+export const updateTargets = ({
+  sourceId,
+  targets,
   user,
-) => async dispatch => {
+}) => async dispatch => {
   // adds targets to existing 'profiles' property on user
   const profiles = {
     orbis_profile: {
       ...user.profiles.orbis_profile,
       orb_state: {
         ...user.profiles.orbis_profile.orb_state,
-        [source_id]: {
-          ...(user.profiles.orbis_profile.orb_state?.[source_id] || {}),
-          ...addedTargets,
+        [sourceId]: {
+          ...(user.profiles.orbis_profile.orb_state?.[sourceId] || {}),
+          ...targets,
         },
       },
     },
@@ -97,14 +97,16 @@ export const { setChartData } = dashboardSlice.actions;
 /** @param {import('typings').RootState} state */
 const baseSelector = state => state?.dashboard;
 
-/** @param {import('typings').Source['source_id']} source_id */
+/** @param {import('typings').Source['source_id']} sourceId */
 /** @param {string} datasetName */
-export const chartDataSelector = (source_id, datasetName) =>
-  createSelector(baseSelector, state => state?.[source_id]?.[datasetName]);
+export const chartDataSelector = (sourceId, datasetName) =>
+  createSelector(baseSelector, state => state?.[sourceId]?.[datasetName]);
 
-export const userOrbStateSelector = createSelector(
-  userSelector,
-  user => user?.profiles?.orbis_profile?.orb_state,
-);
+/** @param {import('typings').Source['source_id']} sourceId */
+export const userOrbStateSelector = sourceId =>
+  createSelector(
+    userSelector,
+    user => user?.profiles?.orbis_profile?.orb_state?.[sourceId],
+  );
 
 export default dashboardSlice.reducer;

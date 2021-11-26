@@ -1,26 +1,5 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
-// old local-file data
-// export const walthamApiMetadata = [
-//   {
-//     datasetName: 'ApprovalsGranted',
-//     url: './mock-data/waltham-forest/mock_approvals_granted',
-//   },
-//   {
-//     datasetName: 'ProgressionVsPlanning',
-//     url: './mock-data/waltham-forest/mock_progression_vs_planning_schedule',
-//   },
-//   {
-//     datasetName: 'TenureHousingDelivery',
-//     url: './mock-data/waltham-forest/mock_tenure_type_housing_delivery',
-//   },
-//   {
-//     datasetName: 'TotalHousingDelivery',
-//     url: './mock-data/waltham-forest/mock_total_housing_delivery',
-//   },
-// ];
-
-// new proxy data
 export const walthamApiMetadata = [
   {
     datasetName: 'TargetProgress',
@@ -45,8 +24,6 @@ export const walthamApiMetadata = [
 ];
 
 export const targetDatasets = {
-  totalHousing:
-    'Total Housing Test Target For Each of The Last 5 Financial Years',
   marketHousing:
     'Market Housing Targets For Each of The Previous 10 Financial Years',
   affordableHousing:

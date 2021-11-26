@@ -68,9 +68,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
   const user = useSelector(userSelector),
-    userOrbState = useSelector(userOrbStateSelector);
-
-  // orbstate targets to be combined with data below
+    userOrbState = useSelector(userOrbStateSelector(sourceId));
 
   // all data, including 'name', 'version', etc
   const targetProgress = useSelector(
