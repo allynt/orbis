@@ -15,6 +15,7 @@ import {
 
 import { useSelector } from 'react-redux';
 
+import { dashboardSourcesSelector } from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
 
 import AoiList from './aoi-list/aoi-list.component';
@@ -38,6 +39,8 @@ const PrimaryDivider = styled(Divider)(({ theme }) => ({
   marginTop: '0.5rem',
 }));
 
+const NATURE_SCOTLAND_NAMESPACE = 'nature-scotland';
+
 const Aoi = ({
   onDrawAoiClick,
   onSubmit,
@@ -57,6 +60,11 @@ const Aoi = ({
   const aois = useSelector(aoiListSelector);
   const isAoiVisible = useSelector(aoiSelector);
 
+  const dashboardDataSources = useSelector(dashboardSourcesSelector);
+  const natureScotlandSource = dashboardDataSources.find(
+    source => source.namespace === NATURE_SCOTLAND_NAMESPACE,
+  );
+
   useEffect(() => {
     if (!aois) {
       fetchAois();
@@ -67,7 +75,13 @@ const Aoi = ({
     setSaveAoiFormOpen(false);
     aoi
       ? editAoiDetails({ ...aoi, ...values })
-      : createScreenshot(thumbnail => onSubmit({ ...values, thumbnail }));
+      : createScreenshot(thumbnail =>
+          onSubmit({
+            ...values,
+            thumbnail,
+            data_source: natureScotlandSource.source_id,
+          }),
+        );
   };
 
   const handleToolSelect = tool => {
