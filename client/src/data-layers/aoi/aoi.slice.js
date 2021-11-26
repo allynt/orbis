@@ -4,6 +4,7 @@ import {
   createSelector,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
 
 import apiClient from 'api-client';
@@ -53,7 +54,7 @@ export const saveAoi = createAsyncThunk(
 
 export const updateAoiDetails = createAsyncThunk(
   `${name}/updateAoi`,
-  async (params, { rejectWithValue }) => {
+  async (params, { dispatch, rejectWithValue }) => {
     const updatedParams = {
       id: params.id,
       name: params.name,
@@ -63,6 +64,7 @@ export const updateAoiDetails = createAsyncThunk(
     try {
       const aoi = await apiClient.aois.updateAoi({ ...updatedParams });
       NotificationManager.success(`Successfully updated AOI '${aoi.name}'`);
+      dispatch(updateAoi(aoi));
       return aoi;
     } catch (responseError) {
       const message = await responseError.getErrors();
@@ -104,24 +106,18 @@ export const deleteAoi = createAsyncThunk(
 
 export const selectAoi = createAsyncThunk(
   `${name}/selectAoi`,
-  async ({ aoi, setViewState, viewState }, { dispatch, getState }) => {
-    const {
-      center: [longitude, latitude],
-      zoom,
-    } = aoi;
+  async ({ aoi }, { dispatch }) => {
+    console.log('USING AOI: ', aoi);
+    dispatch(setSelectedAoi(aoi));
 
-    setViewState({
-      ...viewState,
-      longitude,
-      latitude,
-      zoom,
-      transitionDuration: 2000,
-      transitionInterpolator: new FlyToInterpolator(),
-    });
+    if (aoi.data_source) {
+      dispatch(push(`dashboard?source_id=${aoi.data_source}`));
+    }
   },
 );
 
 const initialState = {
+  selectedAoi: null,
   aois: null,
   error: null,
   isLoading: false,
@@ -153,6 +149,14 @@ const aoiSlice = createSlice({
     },
     setVisiblePanel: (state, { payload }) => {
       state.visiblePanel = payload;
+    },
+    setSelectedAoi: (state, { payload }) => {
+      state.selectedAoi = payload;
+    },
+    updateAoi: (state, { payload }) => {
+      state.aois = state.aois.map(aoi =>
+        aoi.id !== payload.id ? aoi : payload,
+      );
     },
   },
   extraReducers: builder => {
@@ -197,6 +201,8 @@ export const {
   setAoiFeatures,
   onUnmount,
   setVisiblePanel,
+  setSelectedAoi,
+  updateAoi,
 } = aoiSlice.actions;
 
 const baseSelector = state => state?.aois;
@@ -216,6 +222,11 @@ export const isDrawingAoiSelector = createSelector(
 export const visiblePanelSelector = createSelector(
   baseSelector,
   state => state?.visiblePanel,
+);
+
+export const selectedAoiSelector = createSelector(
+  baseSelector,
+  state => state?.selectedAoi,
 );
 
 export default aoiSlice.reducer;
