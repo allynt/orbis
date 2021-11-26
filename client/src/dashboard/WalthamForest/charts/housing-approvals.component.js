@@ -4,12 +4,11 @@ import { Grid, ToggleButtonGroup, ToggleButton } from '@astrosat/astrosat-ui';
 
 import { VictoryLegend } from 'victory';
 
-import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
-
 import { ChartWrapper } from '../../charts/chart-wrapper.component';
 import { LineChart } from '../../charts/line-chart/line-chart.component';
 import * as dataInput from '../../mock-data/waltham-forest/mock_approvals_granted';
 import { useChartTheme } from '../../useChartTheme';
+import { constants } from '../waltham.constants';
 
 const HousingApprovalsComponent = ({
   data = dataInput.properties,
@@ -21,13 +20,13 @@ const HousingApprovalsComponent = ({
   console.log('Data', data);
   const chartTheme = useChartTheme();
   let chartNames = ranges;
-  const [showing, setShowing] = useState('monthly');
-  console.log('lookup', data.find(p => p.name === showing).data);
+  const [showing, setShowing] = useState(
+    constants.housing_approvals.data_label_1,
+  );
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
     setShowing(newValue);
-    console.log('lookup', data.find(p => p.name === showing).data);
   };
 
   return (
@@ -59,9 +58,7 @@ const HousingApprovalsComponent = ({
               ]}
             />
           </div>
-          <Grid item xs={4}>
-            <DateRangeFilter />
-          </Grid>
+          <Grid item xs={4}></Grid>
           <Grid item xs={4}>
             <ToggleButtonGroup
               size="small"
@@ -69,10 +66,16 @@ const HousingApprovalsComponent = ({
               orientation="horizontal"
               onChange={handleToggleClick}
             >
-              <ToggleButton key="monthly" value="Monthly">
+              <ToggleButton
+                key={constants.housing_approvals.data_label_1}
+                value={constants.housing_approvals.data_label_1}
+              >
                 Monthly
               </ToggleButton>
-              <ToggleButton key="cumulative" value="Cumulative">
+              <ToggleButton
+                key={constants.housing_approvals.data_label_2}
+                value={constants.housing_approvals.data_label_2}
+              >
                 Cumulative
               </ToggleButton>
             </ToggleButtonGroup>

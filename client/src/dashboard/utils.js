@@ -1,7 +1,12 @@
 /**
- * Genericized version.
+ * Generic Group Tranformer for Grouped Bar charts.
+ * Reshapes data into the form expected by GroupedBarChart component.
+ * Brought in to allow me to test bar chart width functionality for 2,3,4 and more groups
+ * Similar to the groupedDataTransformer in functionality, except that you don't need
+ * to declare properties
+ * Generic in the sense that it supports all properties (or just some)
  * @param {*} data
- * @param {string} groupColumn - name of column used for grouping
+ * @param {string} groupColumn - name of column used for grouping (e.g. Year)
  * @param {array[string]} columns - list of columns we want to add (miss out to use all)
  * @returns
  */
@@ -9,14 +14,14 @@
 export const GroupedDataTransformer = (
   data,
   groupColumn = 'Year',
-  columns = null,
+  requiredColumns = null,
 ) => {
-  let transformedData = [];
-  let datum = data[0];
-  if (!columns) {
-    columns = Object.keys(datum);
-  }
-  for (const column of columns) {
+  const transformedData = [];
+  const datum = data[0];
+
+  const columns = requiredColumns ? requiredColumns : Object.keys(datum);
+
+  columns.forEach(column => {
     if (column !== groupColumn) {
       let series = data.map(cur => {
         return {
@@ -26,7 +31,8 @@ export const GroupedDataTransformer = (
       });
       transformedData.push(series);
     }
-  }
+  });
+
   return transformedData;
 };
 
@@ -36,14 +42,19 @@ export const GroupedDataTransformer = (
  * For grouped charts, where groups appear side-by-side on x axis, use GroupedWidthCalculator
  * @param {*} data
  */
-export const BaseWidthCalculator = (data, width) => {
-  return {
-    width: width,
-    barWidth: 100.0 / data.length,
-    offset: 0,
-  };
-};
+export const BaseWidthCalculator = (data, width) => ({
+  barWidth: 100.0 / data.length,
+  offset: 0,
+});
 
+/**
+ * Work out bar widths for Grouped Bar charts.
+ * Introduced to allow us to avoid using magic numbers for formatting, and allowing us
+ * to anticipate and test for having >2 groups in future
+ * @param {*} data
+ * @param {*} width
+ * @returns {*} - object with suggested barWidth and offset values
+ */
 export const GroupedWidthCalculator = (data, width) => {
   // magic numbers, tweak to change feel
   const barGapMultiplier = 1.44; // gap between bars, where 1 = bar width
@@ -56,7 +67,6 @@ export const GroupedWidthCalculator = (data, width) => {
   const barWidth = minBarWidth + zoneWidth / (groupCount * thinness);
   const offset = barWidth * barGapMultiplier;
   return {
-    width,
     barWidth,
     offset,
   };
