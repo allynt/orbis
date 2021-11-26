@@ -1,3 +1,4 @@
+import { AoiClient } from './AoisClient';
 import { AppClient } from './AppClient';
 import { AuthenticationClient } from './AuthenticationClient';
 import { BookmarksClient } from './BookmarksClient';
@@ -20,6 +21,7 @@ export class ApiClient {
   satellites;
   users;
   storage;
+  aois;
   /** @private */
   subClients = [
     'app',
@@ -32,6 +34,7 @@ export class ApiClient {
     'satellites',
     'users',
     'storage',
+    'aois',
   ];
 
   constructor() {
@@ -45,6 +48,7 @@ export class ApiClient {
     this.satellites = new SatellitesClient();
     this.users = new UsersClient();
     this.storage = new StorageClient();
+    this.aois = new AoiClient();
     this.apiHost =
       process.env.NODE_ENV === 'development'
         ? process.env.REACT_APP_API_HOST

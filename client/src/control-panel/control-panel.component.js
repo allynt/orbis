@@ -115,9 +115,16 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   sidebarComponents: Record<string, JSX.Element | JSX.Element[]>
  *   drawingToolsEnabled: import('drawing-tools/types').DrawingToolsProps['drawingToolsEnabled']
+ *   aoiDrawMode: boolean
+ *   setAoiDrawMode: () => void
  * }} props
  */
-const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
+const ControlPanel = ({
+  sidebarComponents,
+  drawingToolsEnabled,
+  aoiDrawMode,
+  setAoiDrawMode,
+}) => {
   const [{ heading, strapline, open, panel }, dispatch] = useReducer(
     controlPanelReducer,
     defaultState,
@@ -159,6 +166,8 @@ const ControlPanel = ({ sidebarComponents, drawingToolsEnabled }) => {
               <DataLayers
                 sidebarComponents={sidebarComponents}
                 drawingToolsEnabled={drawingToolsEnabled}
+                aoiDrawMode={aoiDrawMode}
+                setAoiDrawMode={setAoiDrawMode}
               />
             )}
             {panel === SATELLITE_LAYERS && <Satellites />}

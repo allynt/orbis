@@ -6,9 +6,14 @@ from django.db.models import TextChoices
 
 class ProxyAuthentication(AuthBase):
     AuthenticationTypes = TextChoices(
-        # TODO: ADD OTHER TYPES
         "AuthenticationTypes",
-        ["BASIC", "BEARER", "APIKEY", "URL_PARAM"]
+        [
+            "BASIC",
+            "BEARER",
+            "APIKEY",
+            "URL_PARAM",
+            "PASSTHROUGH",
+        ]
     )
 
     def __init__(self, proxy_data_source):
@@ -37,6 +42,11 @@ class ProxyAuthentication(AuthBase):
             request.headers[
                 "Authorization"
             ] = "api-key " + self.proxy_data_source.proxy_authentication_token
+
+        elif proxy_authentication_type == self.AuthenticationTypes.PASSTHROUGH:
+            request.headers[
+                "Authorization"
+            ] = self.proxy_data_source.request.headers.get("Authorization")
 
         else:
             raise NotImplementedError(proxy_authentication_type)

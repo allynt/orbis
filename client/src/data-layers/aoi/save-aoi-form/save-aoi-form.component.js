@@ -1,0 +1,60 @@
+import React from 'react';
+
+import { Button, Grid, TextField } from '@astrosat/astrosat-ui';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+  name: yup.string().required('Name is required'),
+  description: yup.string(),
+});
+
+const SaveAoiForm = ({ aoi, onSubmit }) => {
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: { ...aoi },
+  });
+
+  return (
+    <Grid
+      component="form"
+      noValidate
+      container
+      spacing={2}
+      direction="column"
+      onSubmit={handleSubmit(v => onSubmit(v))}
+    >
+      <Grid item>
+        <TextField
+          id="name"
+          name="name"
+          label="Add Name"
+          required
+          inputRef={register}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+          autoFocus
+        />
+      </Grid>
+      <Grid item>
+        <TextField
+          id="description"
+          name="description"
+          label="Add Description"
+          multiline
+          rows={3}
+          inputRef={register}
+        />
+      </Grid>
+      <Grid item container direction="column" alignItems="center">
+        <Button type="submit" color="secondary">
+          Save
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default SaveAoiForm;

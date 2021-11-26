@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AnalysisPanel } from 'analysis-panel/analysis-panel.component';
 import { ErrorFallback, LoadMaskFallback } from 'components';
 import { ToolbarFallback } from 'control-panel/toolbar-fallback.component';
+import { useAoiLayer } from 'data-layers/aoi/useAoiLayer';
 import {
   fetchSources,
   selectPollingPeriod,
@@ -30,6 +31,7 @@ const MapLayout = () => {
   const dispatch = useDispatch();
   const { layers, mapComponents, sidebarComponents } = useOrbs();
   const drawingToolsProps = useDrawingTools();
+  const aoiProps = useAoiLayer();
   const pollingPeriod = useSelector(selectPollingPeriod);
   const sources = useSelector(dataSourcesSelector);
 
@@ -59,6 +61,7 @@ const MapLayout = () => {
         <ControlPanel
           sidebarComponents={sidebarComponents}
           drawingToolsEnabled={drawingToolsProps.drawingToolsEnabled}
+          {...aoiProps}
         />
       </React.Suspense>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -67,6 +70,7 @@ const MapLayout = () => {
             layers={layers}
             mapComponents={mapComponents}
             {...drawingToolsProps}
+            {...aoiProps}
           />
         </React.Suspense>
       </ErrorBoundary>
