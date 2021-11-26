@@ -11,7 +11,14 @@ export class DashboardClient extends SubClient {
       method: 'POST',
       body: JSON.stringify(aoi),
     });
+  }
 
+  /**
+   * @returns {Promise<any>}
+   * @throws {ResponseError}
+   */
+  async getDashboardData(url) {
+    const response = await this.makeAuthenticatedRequest(url);
     return response.json();
   }
 }

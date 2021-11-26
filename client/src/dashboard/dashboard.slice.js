@@ -1,7 +1,13 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
+import { NotificationManager } from 'react-notifications';
 
 import { userSelector } from 'accounts/accounts.selectors';
 import { updateUser } from 'accounts/accounts.slice';
+import apiClient from 'api-client';
 
 const name = 'dashboard';
 
@@ -33,6 +39,30 @@ export const fetchChartData = (
   const result = await import(`${url}.js`);
   dispatch(setChartData({ source_id, datasetName, data: result.default }));
 };
+
+export const fetchDashboardData = createAsyncThunk(
+  `${name}/fetchDashboardData`,
+  async (props, { rejectWithValue }) => {
+    console.log('props: ', props);
+    // @ts-ignore
+    const { source_id, datasetName, url } = props;
+    try {
+      const result = await apiClient.dashboard.getDashboardData(url);
+
+      console.log(`${datasetName} API DATA: `, result);
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      NotificationManager.error(
+        `${status} ${message}`,
+        `Fetching Dashboard Data Error - ${message}`,
+        50000,
+        () => {},
+      );
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+);
 
 export const updateTargets = (
   source_id,

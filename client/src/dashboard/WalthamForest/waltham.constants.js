@@ -1,21 +1,46 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
+// old local-file data
+// export const walthamApiMetadata = [
+//   {
+//     datasetName: 'ApprovalsGranted',
+//     url: './mock-data/waltham-forest/mock_approvals_granted',
+//   },
+//   {
+//     datasetName: 'ProgressionVsPlanning',
+//     url: './mock-data/waltham-forest/mock_progression_vs_planning_schedule',
+//   },
+//   {
+//     datasetName: 'TenureHousingDelivery',
+//     url: './mock-data/waltham-forest/mock_tenure_type_housing_delivery',
+//   },
+//   {
+//     datasetName: 'TotalHousingDelivery',
+//     url: './mock-data/waltham-forest/mock_total_housing_delivery',
+//   },
+// ];
+
+// new proxy data
 export const walthamApiMetadata = [
   {
+    datasetName: 'TargetProgress',
+    url: 'proxy/wfc/mock/target_progress/v1/',
+  },
+  {
     datasetName: 'ApprovalsGranted',
-    url: './mock-data/waltham-forest/mock_approvals_granted',
+    url: 'proxy/wfc/mock/approvals_granted/v1/',
   },
   {
     datasetName: 'ProgressionVsPlanning',
-    url: './mock-data/waltham-forest/mock_progression_vs_planning_schedule',
+    url: 'proxy/wfc/mock/progression_vs_planning_schedule/v1/',
   },
   {
     datasetName: 'TenureHousingDelivery',
-    url: './mock-data/waltham-forest/mock_tenure_type_housing_delivery',
+    url: 'proxy/wfc/mock/tenure_type_housing_delivery/v1/',
   },
   {
     datasetName: 'TotalHousingDelivery',
-    url: './mock-data/waltham-forest/mock_total_housing_delivery',
+    url: 'proxy/wfc/mock/total_housing_delivery/v1/',
   },
 ];
 

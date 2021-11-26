@@ -21,11 +21,10 @@ import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progr
 import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
 import {
   chartDataSelector,
-  fetchChartData,
+  fetchDashboardData,
   updateTargets,
   userOrbStateSelector,
 } from '../dashboard.slice';
-import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
 import { HousingApprovalsComponent } from './charts/housing-approvals.component';
 import {
@@ -71,8 +70,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const user = useSelector(userSelector),
     userOrbState = useSelector(userOrbStateSelector);
 
+  // orbstate targets to be combined with data below
+
   // all data, including 'name', 'version', etc
-  const approvalsGranted = useSelector(
+  const targetProgress = useSelector(
+      chartDataSelector(sourceId, 'TargetProgress'),
+    ),
+    approvalsGranted = useSelector(
       chartDataSelector(sourceId, 'ApprovalsGranted'),
     ),
     progressionVsPlanning = useSelector(
@@ -87,7 +91,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url }) =>
-      dispatch(fetchChartData(sourceId, datasetName, url)),
+      dispatch(fetchDashboardData({ sourceId, datasetName, url })),
     );
   }, [sourceId, dispatch]);
 
@@ -100,7 +104,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
    * @param {object} targets
    */
   const handleAddTargetsClick = targets => {
-    dispatch(updateTargets(sourceId, targets, user));
+    dispatch(updateTargets({ sourceId, targets, user }));
     closeDialog();
   };
 
@@ -138,7 +142,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
-        {progressData.properties.map((property, i) => (
+        {targetProgress?.properties.map((property, i) => (
           <ChartWrapper
             key={property.name}
             title={property.title}
