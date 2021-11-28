@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { ToggleButton, ToggleButtonGroup } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@astrosat/astrosat-ui';
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    backgroundColor: '#333f48',
+    '&.Mui-selected': {
+      backgroundColor: '#f6be00',
+    },
+  },
+}));
 
 const ProtectedFeatureButtonGroup = ({ buttons, onSubmit }) => {
-  const handleChange = (event, value) => onSubmit(value);
+  const styles = useStyles();
+
+  const [selected, setSelected] = useState(buttons[0].label);
+
+  const handleChange = (event, value) => {
+    setSelected(value);
+    onSubmit(value);
+  };
 
   return (
     <ToggleButtonGroup exclusive onChange={handleChange}>
       {buttons.map(({ label }) => {
         return (
-          <ToggleButton key={label} value={label}>
+          <ToggleButton
+            key={label}
+            value={label}
+            className={styles.button}
+            selected={selected === label}
+          >
             {label}
           </ToggleButton>
         );
