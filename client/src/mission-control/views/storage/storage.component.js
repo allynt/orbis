@@ -15,7 +15,7 @@ import { useSortBy } from 'react-table';
 import apiClient from 'api-client';
 import { OptionsMenu } from 'components/options-menu/options-menu.component';
 import { fetchSources } from 'data-layers/data-layers.slice';
-import { Table } from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'components/table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { DeleteFileForm } from './forms/delete-file-form.component';
