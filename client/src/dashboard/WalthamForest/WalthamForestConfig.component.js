@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from 'accounts/accounts.selectors';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
+import { CustomBaseChart } from '../charts/custom-base-chart/custom-base-chart.component';
 import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
 import { LineChart } from '../charts/line-chart/line-chart.component';
 import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
@@ -31,12 +32,13 @@ import {
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { WalthamProgressIndicators } from './waltham-progress-indicators/waltham-progress-indicators.component';
+import { WalthamHousingDelivery } from './waltham-housing-delivery/waltham-housing-delivery.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   dashboard: {
     overflowY: 'scroll',
+    width: '100%',
   },
   header: {
     padding: '2rem',
@@ -88,6 +90,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url }) =>
+      // @ts-ignore
       dispatch(fetchDashboardData({ sourceId, datasetName, url })),
     );
   }, [sourceId, dispatch]);
@@ -138,56 +141,31 @@ const WalthamForestDashboard = ({ sourceId }) => {
       </Grid>
 
       {/* progress indicator charts */}
-      <div className={styles.progressIndicators}>
+      {/* <div className={styles.progressIndicators}>
         <WalthamProgressIndicators
           data={totalHousingDelivery}
           userOrbState={userOrbState}
         />
-      </div>
+      </div> */}
 
       {/* stacked/grouped bar charts */}
-      {/* <div className={styles.barCharts}>
+      <div className={styles.barCharts}>
         <ChartWrapper
           title="Progression of Units Relating to Planning Schedule"
           info="This is a test description"
         >
           <StackedBarChart
             x="Year"
-            xLabel="Financial Year"
-            yLabel="Number of Units"
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
             data={progressionVsPlanningChartData}
           />
         </ChartWrapper>
-        <ChartWrapper
-          title="Total Housing Delivery"
-          info="This is a test description"
-        >
-          <GroupedBarChart
-            xLabel="Year"
-            yLabel="Housing Delivery in Units"
-            data={totalHousingDeliveryChartData}
-          />
-        </ChartWrapper>
-        <ChartWrapper
-          title="Housing Delivery by Tenure Type"
-          info="This is a test description"
-        >
-          <StackedBarChart
-            x="Year"
-            xLabel="Financial Year"
-            yLabel="Housing Delivery in Units"
-            ranges={[
-              'Affordable Rent',
-              'Intermediate',
-              'Market',
-              'Social Rented',
-              'Private Rented Sector',
-            ]}
-            data={tenureHousingDeliveryChartData}
-          />
-        </ChartWrapper>
-      </div> */}
+
+        <WalthamHousingDelivery
+          totalHousingDeliveryChartData={totalHousingDeliveryChartData}
+          tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+        />
+      </div>
 
       {/* line chart */}
       <div className={styles.lineCharts}>

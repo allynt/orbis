@@ -2,51 +2,32 @@ import React from 'react';
 
 import { VictoryBar, VictoryStack } from 'victory';
 
-import { BaseChart } from '../base-chart/base-chart.component';
-
 /**
  * @param {{
  *  x: string
  *  ranges: string[]
- *  xLabel?: string
- *  yLabel?: string
  *  data: any[]
+ *  width: number
  * }} props
  */
-const StackedBarChart = ({
-  x = 'x',
-  ranges = ['y'],
-  xLabel = '',
-  yLabel = '',
-  data,
-}) => {
-  const renderStackedBarChart = width => {
-    const barWidth = width / 20;
-    return (
-      <VictoryStack>
-        {ranges?.map(range => (
-          <VictoryBar
-            key={range}
-            data={data}
-            x={x}
-            y={range}
-            style={{
-              data: { width: barWidth },
-            }}
-          />
-        ))}
-      </VictoryStack>
-    );
-  };
-
+const StackedBarChart = ({ x = 'x', ranges = ['y'], data, width }) => {
   if (!data) return null;
 
+  const barWidth = width / 20;
   return (
-    <BaseChart
-      xLabel={xLabel}
-      yLabel={yLabel}
-      renderChart={renderStackedBarChart}
-    />
+    <VictoryStack>
+      {ranges?.map(range => (
+        <VictoryBar
+          key={range}
+          data={data}
+          x={x}
+          y={range}
+          style={{
+            data: { width: barWidth },
+          }}
+        />
+      ))}
+    </VictoryStack>
   );
 };
 

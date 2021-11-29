@@ -1,5 +1,13 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
+export const housingTenureTypes = [
+  'All Tenure Types',
+  'Affordable Rent',
+  'Market Rent',
+  'Intermediate',
+  'Private Rented Sector',
+];
+
 export const walthamApiMetadata = [
   {
     datasetName: 'TargetProgress',
