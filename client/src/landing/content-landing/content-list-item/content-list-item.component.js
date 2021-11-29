@@ -25,6 +25,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     opacity: 0.7,
     transition: theme.transitions.create('opacity'),
+    objectFit: 'contain',
     '&:hover, &:focus': {
       opacity: 1,
       outline: 'none',
