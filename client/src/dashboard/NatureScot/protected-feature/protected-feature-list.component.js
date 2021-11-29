@@ -102,54 +102,53 @@ const ProtectedFeatureList = ({ features }) => {
           console.log('FEATURE: ', { id, icon, title, description, type });
           const status = STATUSES.find(status => status.type === type);
 
-          return (
-            <ListItem
-              key={id}
-              className={styles.listItem}
-              onClick={() =>
-                console.log('List item clicked: ', {
-                  id,
-                  icon,
-                  title,
-                  description,
-                  type,
-                })
-              }
-            >
-              <div className={styles.leftSide}>
-                <ListItemAvatar>
-                  <Avatar src={icon} alt={title} />
-                </ListItemAvatar>
+        return (
+          <ListItem
+            key={id}
+            className={styles.listItem}
+            onClick={() =>
+              console.log('List item clicked: ', {
+                id,
+                icon,
+                title,
+                description,
+                type,
+              })
+            }
+          >
+            <div className={styles.leftSide}>
+              <ListItemAvatar>
+                <Avatar src={icon} alt={title} />
+              </ListItemAvatar>
 
-                <ListItemText
-                  primaryTypographyProps={{ variant: 'h4', component: 'span' }}
-                  primary={title}
-                  secondary={
-                    <div className={styles.strapline}>
-                      <Typography className={styles.straplineLabel}>
-                        Protection Type:
-                      </Typography>
-                      <Typography variant="h4">{description}</Typography>
-                    </div>
-                  }
-                />
-              </div>
+              <ListItemText
+                primaryTypographyProps={{ variant: 'h4', component: 'span' }}
+                primary={title}
+                secondary={
+                  <div className={styles.strapline}>
+                    <Typography className={styles.straplineLabel}>
+                      Protection Type:
+                    </Typography>
+                    <Typography variant="h4">{description}</Typography>
+                  </div>
+                }
+              />
+            </div>
 
-              <div className={styles.status}>
-                <ListItemAvatar>
-                  <Avatar src={status.icon} className={styles[status.type]} />
-                </ListItemAvatar>
+            <div className={styles.status}>
+              <ListItemAvatar>
+                <Avatar src={status.icon} className={styles[status.type]} />
+              </ListItemAvatar>
 
-                <ListItemText
-                  primary={status.label}
-                  className={styles[status.type]}
-                />
-              </div>
-            </ListItem>
-          );
-        })}
-      </List>
-    </>
+              <ListItemText
+                primary={status.label}
+                className={styles[status.type]}
+              />
+            </div>
+          </ListItem>
+        );
+      })}
+    </List>
   );
 };
 
