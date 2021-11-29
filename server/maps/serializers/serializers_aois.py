@@ -52,9 +52,9 @@ class AoiUpdateSerializer(serializers.ModelSerializer):
         slug_field="uuid"
     )
 
-    geometry = GEOSGeometryField(required=False)
-    thumbnail = serializers.FileField(required=False)
-    data_source = serializers.CharField(required=False)
+    geometry = GEOSGeometryField(read_only=True)
+    thumbnail = serializers.FileField(read_only=True)
+    data_source = serializers.CharField(read_only=True)
 
 
 class AoiCreateSerializer(AoiUpdateSerializer):

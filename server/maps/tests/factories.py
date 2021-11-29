@@ -72,6 +72,10 @@ class AoiFactory(factory.django.DjangoModelFactory):
     geometry = FactoryFaker("point")
 
     @factory.lazy_attribute
+    def data_source(self):
+        return f"astrosat/{fake.word()}/{fake.word()}/latest"
+
+    @factory.lazy_attribute
     def thumbnail(self):
         return SimpleUploadedFile(
             name=f"{self.name}",
