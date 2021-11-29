@@ -11,7 +11,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { COLORS } from '../nature-scotland.constants';
-// console.log('COLORS: ', COLORS);
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -41,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   warning: {
-    // color: COLORS[0],
+    // color: COLORS[0], //FIXME: Why isn't this working
     color: '#f67971',
   },
   'not-good': {
@@ -92,15 +91,11 @@ const STATUSES = [
 
 const ProtectedFeatureList = ({ features }) => {
   const styles = useStyles();
-  console.log('FEATURES: ', features);
-  console.log('COLORS AGAIN: ', COLORS);
 
   return (
-    <>
-      <List>
-        {features.map(({ id, icon, title, description, type }) => {
-          console.log('FEATURE: ', { id, icon, title, description, type });
-          const status = STATUSES.find(status => status.type === type);
+    <List>
+      {features.map(({ id, icon, title, description, type }) => {
+        const status = STATUSES.find(status => status.type === type);
 
         return (
           <ListItem
