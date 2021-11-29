@@ -8,7 +8,7 @@ import { NotificationManager } from 'react-notifications';
 import { useSortBy } from 'react-table';
 
 import apiClient from 'api-client';
-import { Table } from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'components/table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 // @ts-ignore

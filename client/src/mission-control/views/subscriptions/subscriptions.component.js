@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { selectLicenceInformation } from 'mission-control/mission-control.slice';
-import { Table } from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'components/table';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
