@@ -5,12 +5,10 @@ import { useSortBy } from 'react-table';
 import { Table } from 'mission-control/shared-components/mission-control-table';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
-import * as data from '../mock-data/NatureScot/mock-nearest-protected-areas';
 
 export default { title: 'Dashboard/NatureScot/NearestProtectedAreas' };
 
-const Template = args => {
-  console.log(args.data);
+const NearestProtectedAreas = args => {
   const columns = useMemo(
     () => [
       {
@@ -55,7 +53,4 @@ const Template = args => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  data: data,
-};
+export { NearestProtectedAreas };
