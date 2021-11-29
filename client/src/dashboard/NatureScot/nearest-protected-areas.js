@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 
-import { Button } from '@astrosat/astrosat-ui';
+// import { Button } from '@astrosat/astrosat-ui';
 
 import { useSortBy } from 'react-table';
 
-import { Table } from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'components/table/table.component';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 
 export default { title: 'Dashboard/NatureScot/NearestProtectedAreas' };
 
-const NearestProtectedAreas = args => {
+const NearestProtectedAreas = ({ data }) => {
   const columns = useMemo(
     () => [
       {
@@ -33,18 +33,16 @@ const NearestProtectedAreas = args => {
       //   Header: '',
       //   accessor: 'null',
       //   id: 'button',
-      //   Cell: ({ value }) => {
-      //     return (
-      //       <Button
-      //         size="small"
-      //         href={value}
-      //         target="_blank"
-      //         rel="noreferrer noopener"
-      //       >
-      //         More Details
-      //       </Button>
-      //     );
-      //   },
+      //   Cell: ({ value }) => (
+      //     <Button
+      //       size="small"
+      //       href={value}
+      //       target="_blank"
+      //       rel="noreferrer noopener"
+      //     >
+      //       More Details
+      //     </Button>
+      //   ),
       // },
     ],
     [],
@@ -55,7 +53,7 @@ const NearestProtectedAreas = args => {
       info="These are the nearest protected areas to the AOI, in increasing order of distance"
     >
       <Table
-        data={args.data}
+        data={data}
         columns={columns}
         noDataMessage="No data passed to component"
         pluginHooks={[useSortBy]}
