@@ -117,7 +117,7 @@ const Landing = () => {
         return {
           source_id: source?.source_id,
           title: metadata?.title,
-          thumbnail: `/images/dashboard/${dc.name}.png`,
+          thumbnail: `/images/dashboard/${metadata.name}.png`,
         };
       })
     : null;
