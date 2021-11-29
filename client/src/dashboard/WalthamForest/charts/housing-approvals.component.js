@@ -8,7 +8,7 @@ import { ChartWrapper } from '../../charts/chart-wrapper.component';
 import { LineChart } from '../../charts/line-chart/line-chart.component';
 import * as dataInput from '../../mock-data/waltham-forest/mock_approvals_granted';
 import { useChartTheme } from '../../useChartTheme';
-import { constants } from '../waltham.constants';
+import { HOUSING_APPROVAL_BUTTON_LABELS } from '../waltham.constants';
 
 const HousingApprovalsComponent = ({
   data = dataInput.properties,
@@ -17,11 +17,10 @@ const HousingApprovalsComponent = ({
   xLabel = 'Year',
   yLabel = 'Data Property Name / Unit',
 }) => {
-  console.log('Data', data);
   const chartTheme = useChartTheme();
   let chartNames = ranges;
   const [showing, setShowing] = useState(
-    constants.housing_approvals.data_label_1,
+    HOUSING_APPROVAL_BUTTON_LABELS[0].label,
   );
 
   const handleToggleClick = (_, newValue) => {
@@ -67,14 +66,14 @@ const HousingApprovalsComponent = ({
               onChange={handleToggleClick}
             >
               <ToggleButton
-                key={constants.housing_approvals.data_label_1}
-                value={constants.housing_approvals.data_label_1}
+                key={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
+                value={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
               >
                 Monthly
               </ToggleButton>
               <ToggleButton
-                key={constants.housing_approvals.data_label_2}
-                value={constants.housing_approvals.data_label_2}
+                key={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
+                value={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
               >
                 Cumulative
               </ToggleButton>

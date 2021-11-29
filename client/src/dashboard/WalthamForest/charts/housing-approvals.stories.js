@@ -17,5 +17,5 @@ Default.args = {
   x: 'Month',
   ranges: ['2019', '2020'],
   xLabel: 'Year',
-  yLabel: 'Data Property Name / Unit',
+  yLabel: 'No. Housing Approvals Granted',
 };

@@ -201,7 +201,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <HousingApprovalsComponent
           x="Month"
           xLabel="Year"
-          yLabel="Data Property Name / Unit"
+          yLabel="No. Housing Approvals Granted"
           ranges={['2019', '2020', '2021']}
           data={approvalsGrantedChartData}
         />
