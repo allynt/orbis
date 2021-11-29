@@ -69,13 +69,13 @@ const HousingApprovalsComponent = ({
                 key={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
                 value={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
               >
-                Monthly
+                {HOUSING_APPROVAL_BUTTON_LABELS[0].label}
               </ToggleButton>
               <ToggleButton
                 key={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
                 value={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
               >
-                Cumulative
+                {HOUSING_APPROVAL_BUTTON_LABELS[1].label}
               </ToggleButton>
             </ToggleButtonGroup>
           </Grid>
