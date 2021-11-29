@@ -29,23 +29,23 @@ const NearestProtectedAreas = args => {
         id: 'distance',
         Cell: ({ value }) => `${value}km`,
       },
-      {
-        Header: '',
-        accessor: 'null',
-        id: 'button',
-        Cell: ({ value }) => {
-          return (
-            <Button
-              size="small"
-              href={value}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              More Details
-            </Button>
-          );
-        },
-      },
+      // {
+      //   Header: '',
+      //   accessor: 'null',
+      //   id: 'button',
+      //   Cell: ({ value }) => {
+      //     return (
+      //       <Button
+      //         size="small"
+      //         href={value}
+      //         target="_blank"
+      //         rel="noreferrer noopener"
+      //       >
+      //         More Details
+      //       </Button>
+      //     );
+      //   },
+      // },
     ],
     [],
   );
