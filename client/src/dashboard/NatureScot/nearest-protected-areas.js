@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 
+import { Button } from '@astrosat/astrosat-ui';
+
 import { useSortBy } from 'react-table';
 
 import { Table } from 'mission-control/shared-components/mission-control-table';
@@ -14,15 +16,35 @@ const NearestProtectedAreas = args => {
       {
         Header: 'Name',
         accessor: 'name',
+        id: 'name',
       },
       {
         Header: 'Type',
         accessor: 'type',
+        id: 'type',
       },
       {
         Header: 'Distance',
         accessor: 'distance',
+        id: 'distance',
         Cell: ({ value }) => `${value}km`,
+      },
+      {
+        Header: '',
+        accessor: 'null',
+        id: 'button',
+        Cell: ({ value }) => {
+          return (
+            <Button
+              size="small"
+              href={value}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              More Details
+            </Button>
+          );
+        },
       },
     ],
     [],
@@ -37,6 +59,9 @@ const NearestProtectedAreas = args => {
         columns={columns}
         noDataMessage="No data passed to component"
         pluginHooks={[useSortBy]}
+        getCellProps={cell => ({
+          width: cell.column.id === 'button' ? '10%' : '30%',
+        })}
         tableOptions={{
           initialState: {
             sortBy: [
