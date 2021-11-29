@@ -13,6 +13,7 @@ import { CustomBaseChart } from '../../charts/custom-base-chart/custom-base-char
 import { GroupedBarChart } from '../../charts/grouped-bar-chart/grouped-bar-chart.component';
 import { StackedBarChart } from '../../charts/stacked-bar-chart/stacked-bar-chart.component';
 import { housingTenureTypes } from '../waltham.constants';
+import { HousingTenureMultiChart } from './housing-tenure-multi-chart/housing-tenure-multi-chart.component';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -41,9 +42,15 @@ const useStyles = makeStyles(theme => ({
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
+  approvalsGrantedChartData,
+  userOrbState,
 }) => {
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState('All Tenure Types');
+
+  let userTargetData = Object.entries(
+    userOrbState?.totalHousing,
+  ).map(([key, value]) => ({ x: key, y: value }));
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -63,7 +70,7 @@ export const WalthamHousingDelivery = ({
       </Grid>
 
       <Grid item className={styles.charts}>
-        <ChartWrapper
+        {/* <ChartWrapper
           title="Total Housing Delivery"
           info="This is a test description"
         >
@@ -77,29 +84,15 @@ export const WalthamHousingDelivery = ({
               />
             )}
           />
-        </ChartWrapper>
+        </ChartWrapper> */}
 
         <ChartWrapper
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
-          <CustomBaseChart
-            xLabel="Year"
-            yLabel="Housing Delivery in Units"
-            renderChart={width => (
-              <StackedBarChart
-                x="Year"
-                ranges={[
-                  'Affordable Rent',
-                  'Intermediate',
-                  'Market',
-                  'Social Rented',
-                  'Private Rented Sector',
-                ]}
-                data={tenureHousingDeliveryChartData}
-                width={width}
-              />
-            )}
+          <HousingTenureMultiChart
+            apiData={tenureHousingDeliveryChartData}
+            userTargetData={userTargetData}
           />
         </ChartWrapper>
       </Grid>

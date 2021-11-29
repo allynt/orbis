@@ -24,22 +24,24 @@ const CustomBaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
 
   return (
     <ParentSize>
-      {({ width }) => (
-        <VictoryChart
-          theme={chartTheme}
-          width={width}
-          height={width / 1.778}
-          domainPadding={{ x: width * 0.1 }}
-        >
-          <VictoryAxis label={xLabel} />
-          <VictoryAxis
-            dependentAxis
-            label={yLabel}
-            tickFormat={getTickFormat}
-          />
-          {renderChart(width)}
-        </VictoryChart>
-      )}
+      {({ width }) => {
+        return (
+          <VictoryChart
+            theme={chartTheme}
+            width={width}
+            height={width / 1.778}
+            domainPadding={{ x: width * 0.1 }}
+          >
+            <VictoryAxis label={xLabel} />
+            <VictoryAxis
+              dependentAxis
+              label={yLabel}
+              tickFormat={getTickFormat}
+            />
+            {renderChart(width)}
+          </VictoryChart>
+        );
+      }}
     </ParentSize>
   );
 };

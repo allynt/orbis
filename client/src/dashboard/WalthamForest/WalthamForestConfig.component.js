@@ -33,6 +33,7 @@ import {
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
 import { WalthamHousingDelivery } from './waltham-housing-delivery/waltham-housing-delivery.component';
+import { WalthamProgressIndicators } from './waltham-progress-indicators/waltham-progress-indicators.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
@@ -141,16 +142,16 @@ const WalthamForestDashboard = ({ sourceId }) => {
       </Grid>
 
       {/* progress indicator charts */}
-      {/* <div className={styles.progressIndicators}>
+      <div className={styles.progressIndicators}>
         <WalthamProgressIndicators
           data={totalHousingDelivery}
           userOrbState={userOrbState}
         />
-      </div> */}
+      </div>
 
       {/* stacked/grouped bar charts */}
       <div className={styles.barCharts}>
-        <ChartWrapper
+        {/* <ChartWrapper
           title="Progression of Units Relating to Planning Schedule"
           info="This is a test description"
         >
@@ -159,11 +160,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
             data={progressionVsPlanningChartData}
           />
-        </ChartWrapper>
+        </ChartWrapper> */}
 
         <WalthamHousingDelivery
           totalHousingDeliveryChartData={totalHousingDeliveryChartData}
           tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+          approvalsGrantedChartData={approvalsGrantedChartData}
+          userOrbState={userOrbState}
         />
       </div>
 
