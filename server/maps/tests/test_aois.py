@@ -2,7 +2,10 @@
 import json
 
 import pytest
-from factory.faker import Faker as FactoryFaker  # note I use FactoryBoy's wrapper of Faker when defining factory fields
+from factory.faker import (
+    Faker as FactoryFaker
+)  # note I use FactoryBoy's wrapper of Faker when defining factory fields
+
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -175,11 +178,13 @@ class TestAoiSerializer:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description,
+            "data_source": aoi.data_source,
             "owner": aoi.owner.uuid,
             "geometry": aoi.geometry.geojson,
+            "thumbnail": aoi.thumbnail,
         }
 
-        serializer = AoiUpdateSerializer(data=aoi_data)
+        serializer = AoiCreateSerializer(data=aoi_data)
         assert serializer.is_valid()
 
         serialized_geometry = serializer.validated_data["geometry"]
@@ -203,11 +208,13 @@ class TestAoiSerializer:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description,
+            "data_source": aoi.data_source,
             "owner": aoi.owner.uuid,
             "geometry": aoi.geometry.geojson,
+            "thumbnail": aoi.thumbnail,
         }
 
-        serializer = AoiUpdateSerializer(data=aoi_data)
+        serializer = AoiCreateSerializer(data=aoi_data)
         assert serializer.is_valid()
 
         serialized_geometry = serializer.validated_data["geometry"]
@@ -286,6 +293,7 @@ class TestAoiViewSet:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description or "",
+            "data_source": aoi.data_source,
             "geometry": GEOSGeometry(aoi.geometry).geojson,
             "thumbnail": thumbnail(),
         }
@@ -314,6 +322,7 @@ class TestAoiViewSet:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description or "",
+            "data_source": aoi.data_source,
             "geometry": GEOSGeometry(aoi.geometry).geojson,
             "thumbnail": thumbnail(),
         }
@@ -348,6 +357,7 @@ class TestAoiViewSet:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description or "",
+            "data_source": aoi.data_source,
             "geometry": GEOSGeometry(aoi.geometry).geojson,
             "thumbnail": thumbnail(),
         }
@@ -377,6 +387,7 @@ class TestAoiViewSet:
         aoi_data = {
             "name": aoi.name,
             "description": aoi.description or "",
+            "data_source": aoi.data_source,
             "geometry": GEOSGeometry(aoi.geometry).geojson,
             "thumbnail": thumbnail(),
         }
@@ -438,3 +449,41 @@ class TestAoiViewSet:
         aoi.refresh_from_db()
 
         assert aoi.name == new_name
+
+    def test_cannot_update_all_fields(self, thumbnail, mock_storage):
+        """
+        Tests that some fields (geometry, data_source, thumbnail) cannot be updated
+        """
+        user = UserFactory()
+        _, key = create_auth_token(user)
+
+        real_geometry, test_geometry = [Point(1, 2), Point(3, 4)]
+        real_data_source, test_data_source = ["authority/namespace/name/version", "test/test/test/test"]
+        real_thumbnail, test_thumbnail = [thumbnail(name="thumbnail"), thumbnail(name="test")]
+
+        aoi = AoiFactory.create(
+            owner=user,
+            geometry=real_geometry,
+            data_source=real_data_source,
+            thumbnail=real_thumbnail,
+        )
+
+        aoi_data = {
+            "name": aoi.name,
+            "geometry": test_geometry.geojson,
+            "data_source": test_data_source,
+            "thumbnail": test_thumbnail,
+        }
+
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
+
+        url = reverse("aoi-detail", kwargs={"pk": aoi.pk})
+        response = client.put(url, aoi_data, format="multipart")
+        assert status.is_success(response.status_code)
+
+        aoi.refresh_from_db()
+
+        assert aoi.geometry.coords != test_geometry.coords
+        assert aoi.data_source != test_data_source
+        assert aoi.thumbnail.file.name != f"{test_thumbnail}.png"

@@ -36,6 +36,7 @@ class AoiUpdateSerializer(serializers.ModelSerializer):
             "modified",
             "geometry",
             "thumbnail",
+            "data_source"
         )
         validators = [
             UniqueTogetherValidator(
@@ -51,8 +52,9 @@ class AoiUpdateSerializer(serializers.ModelSerializer):
         slug_field="uuid"
     )
 
-    geometry = GEOSGeometryField(required=False)
-    thumbnail = serializers.FileField(required=False)
+    geometry = GEOSGeometryField(read_only=True)
+    thumbnail = serializers.FileField(read_only=True)
+    data_source = serializers.CharField(read_only=True)
 
 
 class AoiCreateSerializer(AoiUpdateSerializer):
@@ -68,6 +70,7 @@ class AoiCreateSerializer(AoiUpdateSerializer):
             "modified",
             "geometry",
             "thumbnail",
+            "data_source"
         )
         validators = [
             UniqueTogetherValidator(
@@ -78,3 +81,4 @@ class AoiCreateSerializer(AoiUpdateSerializer):
 
     geometry = GEOSGeometryField(required=True)
     thumbnail = serializers.FileField(required=True)
+    data_source = serializers.CharField(required=True)
