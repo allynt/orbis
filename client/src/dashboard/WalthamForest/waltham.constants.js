@@ -46,3 +46,8 @@ export const targetInputFields = [
   '2019 - 2020',
   '2020 - 2021',
 ];
+
+export const HOUSING_APPROVAL_BUTTON_LABELS = [
+  { label: 'Monthly' },
+  { label: 'Cumulative' },
+];
