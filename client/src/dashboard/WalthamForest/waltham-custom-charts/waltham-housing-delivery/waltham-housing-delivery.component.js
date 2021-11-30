@@ -11,7 +11,8 @@ import {
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 import { housingTenureTypes } from '../../waltham.constants';
-import { TenureHousingMultiChart } from './housing-tenure-multi-chart/housing-tenure-multi-chart.component';
+import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
+import { TotalHousingMultiChart } from './total-housing-multi-chart/total-housing-multi-chart.component';
 
 const useStyles = makeStyles(theme => ({
   container: {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TenureHousingMultiChart } from './housing-tenure-multi-chart.component';
+import { TenureHousingMultiChart } from './tenure-housing-multi-chart.component';
 
 export default {
   title: 'Dashboard/Waltham Forest/Charts/TenureHousingMultiChart',
@@ -24,10 +24,8 @@ const stackedData = [
   { Year: '2020-2021', Intermediate: 490, Market: 200 },
 ];
 
-const Template = () => {
-  return (
-    <TenureHousingMultiChart apiData={stackedData} userTargetData={lineData} />
-  );
-};
+const Template = () => (
+  <TenureHousingMultiChart apiData={stackedData} userTargetData={lineData} />
+);
 
 export const Default = Template.bind({});
