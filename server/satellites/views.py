@@ -340,7 +340,7 @@ class SatelliteDataSourceViewSet(
 
     @swagger_fake(SatelliteDataSource.objects.none())
     def get_queryset(self):
-        return self.customer_user.satelite_data_sources.all()
+        return self.customer_user.satellite_data_sources.all()
 
     def get_serializer_class(self):
         if self.action == "create":
