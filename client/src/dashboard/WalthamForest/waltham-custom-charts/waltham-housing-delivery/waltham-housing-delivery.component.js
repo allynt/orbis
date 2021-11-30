@@ -11,7 +11,7 @@ import {
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 import { housingTenureTypes } from '../../waltham.constants';
-import { HousingTenureMultiChart } from './housing-tenure-multi-chart/housing-tenure-multi-chart.component';
+import { TenureHousingMultiChart } from './housing-tenure-multi-chart/housing-tenure-multi-chart.component';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -72,7 +72,7 @@ export const WalthamHousingDelivery = ({
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
-          <HousingTenureMultiChart
+          <TenureHousingMultiChart
             apiData={tenureHousingDeliveryChartData}
             userTargetData={userTargetData}
           />

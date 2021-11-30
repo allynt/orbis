@@ -15,15 +15,16 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 
 /**
  * @param {{
- *  data: any[]
+ *  apiData: any[]
+ *  userTargetData: any[]
  * }} props
  */
-const HousingTenureMultiChart = ({ data }) => {
+const TenureHousingMultiChart = ({ apiData, userTargetData }) => {
   const chartTheme = useChartTheme();
 
-  if (!data) return null;
+  if (!apiData) return null;
 
-  const renderHousingTenureMultiChart = width => {
+  const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
     // BREAKS WITH MISSING RANGE VALUES
@@ -32,52 +33,55 @@ const HousingTenureMultiChart = ({ data }) => {
     const color = chartTheme.colors[5],
       scatterWidth = width / 2,
       props = {
-        data,
-        x: 'Year',
-        y: 'Target',
+        data: userTargetData,
+        x: 'x',
+        y: 'y',
       };
-
-    console.log('data: ', data);
 
     return (
       <VictoryGroup>
-        <VictoryStack>
-          {ranges?.map(range => (
-            <VictoryBar
-              key={range}
-              data={data}
-              x="Year"
-              y={range}
-              style={{
-                data: { width: barWidth },
-              }}
-            />
-          ))}
-        </VictoryStack>
+        {/* data from API fetch */}
+        <VictoryGroup>
+          <VictoryStack>
+            {ranges?.map(range => (
+              <VictoryBar
+                key={range}
+                data={apiData}
+                x="Year"
+                y={range}
+                style={{
+                  data: { width: barWidth },
+                }}
+              />
+            ))}
+          </VictoryStack>
+        </VictoryGroup>
 
-        <VictoryLine {...props} style={{ data: { stroke: color } }} />
-
-        <VictoryScatter
-          {...props}
-          style={{
-            data: {
-              stroke: darken(color, 0.2),
-              width: scatterWidth,
-              fill: color,
-            },
-          }}
-        />
+        {/* user uploaded target data */}
+        <VictoryGroup>
+          <VictoryScatter
+            {...props}
+            style={{
+              data: {
+                stroke: darken(color, 0.2),
+                width: scatterWidth,
+                fill: color,
+              },
+            }}
+          />
+          <VictoryLine {...props} style={{ data: { stroke: color } }} />
+        </VictoryGroup>
       </VictoryGroup>
     );
   };
 
   return (
     <BaseChart
-      yLabel="Test Y Label"
-      xLabel="Test X Label"
-      renderChart={renderHousingTenureMultiChart}
+      yLabel="Housing Delivery in Units"
+      xLabel="Year"
+      renderChart={renderTenureHousingMultiChart}
     />
   );
 };
 
-export { HousingTenureMultiChart };
+export { TenureHousingMultiChart };
