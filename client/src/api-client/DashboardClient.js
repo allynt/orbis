@@ -6,7 +6,7 @@ export class DashboardClient extends SubClient {
   }
 
   async getNatureScotlandIRDashboardData(aoi, options = {}) {
-    const response = await this.makeAuthenticatedRequestJWT(
+    const response = await this.makeJWTAuthenticatedRequest(
       '/astrosat/nature-scotland/search-api/dev/',
       {
         ...options,
