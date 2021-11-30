@@ -37,7 +37,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
             label={yLabel}
             tickFormat={getTickFormat}
           />
-          {renderChart(width)}
+          {!!width ? renderChart(width) : null}
         </VictoryChart>
       )}
     </ParentSize>

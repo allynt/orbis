@@ -4,11 +4,12 @@ import { Grid, ToggleButtonGroup, ToggleButton } from '@astrosat/astrosat-ui';
 
 import { VictoryLegend } from 'victory';
 
-import { ChartWrapper } from '../../charts/chart-wrapper.component';
-import { LineChart } from '../../charts/line-chart/line-chart.component';
-import * as dataInput from '../../mock-data/waltham-forest/mock_approvals_granted';
-import { useChartTheme } from '../../useChartTheme';
-import { HOUSING_APPROVAL_BUTTON_LABELS } from '../waltham.constants';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
+import * as dataInput from 'dashboard/mock-data/waltham-forest/mock_approvals_granted';
+import { useChartTheme } from 'dashboard/useChartTheme';
+
+import { HOUSING_APPROVAL_BUTTON_LABELS } from '../../waltham.constants';
 
 const HousingApprovalsComponent = ({
   data = dataInput.properties,

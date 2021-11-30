@@ -8,11 +8,9 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-import { ChartWrapper } from '../../charts/chart-wrapper.component';
-import { CustomBaseChart } from '../../charts/custom-base-chart/custom-base-chart.component';
-import { GroupedBarChart } from '../../charts/grouped-bar-chart/grouped-bar-chart.component';
-import { StackedBarChart } from '../../charts/stacked-bar-chart/stacked-bar-chart.component';
-import { housingTenureTypes } from '../waltham.constants';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+
+import { housingTenureTypes } from '../../waltham.constants';
 import { HousingTenureMultiChart } from './housing-tenure-multi-chart/housing-tenure-multi-chart.component';
 
 const useStyles = makeStyles(theme => ({
@@ -70,22 +68,6 @@ export const WalthamHousingDelivery = ({
       </Grid>
 
       <Grid item className={styles.charts}>
-        {/* <ChartWrapper
-          title="Total Housing Delivery"
-          info="This is a test description"
-        >
-          <CustomBaseChart
-            xLabel="Year"
-            yLabel="Housing Delivery in Units"
-            renderChart={width => (
-              <GroupedBarChart
-                data={totalHousingDeliveryChartData}
-                width={width}
-              />
-            )}
-          />
-        </ChartWrapper> */}
-
         <ChartWrapper
           title="Housing Delivery by Tenure Type"
           info="This is a test description"

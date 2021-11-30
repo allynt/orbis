@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { ChartWrapper } from '../../charts/chart-wrapper.component';
-import { ProgressIndicatorChart } from '../../charts/progress-indicator-chart/progress-indicator-chart.component';
-import { useChartTheme } from '../../useChartTheme';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
+import { useChartTheme } from 'dashboard/useChartTheme';
 
-export const WalthamProgressIndicators = ({ data, userOrbState }) => {
+const ProgressIndicators = ({ data, userOrbState }) => {
   const chartTheme = useChartTheme();
 
   // const totals = n => n.reduce((a, c) => (a += c), 0);
@@ -94,3 +94,5 @@ export const WalthamProgressIndicators = ({ data, userOrbState }) => {
     </>
   );
 };
+
+export { ProgressIndicators };

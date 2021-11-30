@@ -14,11 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
 
-import { ChartWrapper } from '../charts/chart-wrapper.component';
-import { CustomBaseChart } from '../charts/custom-base-chart/custom-base-chart.component';
-import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
-import { LineChart } from '../charts/line-chart/line-chart.component';
-import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
 import {
   chartDataSelector,
   fetchDashboardData,
@@ -26,14 +21,14 @@ import {
   userOrbStateSelector,
 } from '../dashboard.slice';
 import { useChartTheme } from '../useChartTheme';
-import { HousingApprovalsComponent } from './charts/housing-approvals.component';
 import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
-import { WalthamHousingDelivery } from './waltham-housing-delivery/waltham-housing-delivery.component';
-import { WalthamProgressIndicators } from './waltham-progress-indicators/waltham-progress-indicators.component';
+import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
+import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
+import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
@@ -143,7 +138,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
-        <WalthamProgressIndicators
+        <ProgressIndicators
           data={totalHousingDelivery}
           userOrbState={userOrbState}
         />
@@ -162,6 +157,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper> */}
 
+        {/* group/line and stack/line charts */}
         <WalthamHousingDelivery
           totalHousingDeliveryChartData={totalHousingDeliveryChartData}
           tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
@@ -170,7 +166,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         />
       </div>
 
-      {/* line chart */}
+      {/* big multi-line chart */}
       <div className={styles.lineCharts}>
         <HousingApprovalsComponent
           x="Month"

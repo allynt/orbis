@@ -9,12 +9,20 @@ import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
+ *  xLabel?: string
+ *  yLabel?: string
  *  x: string
  *  ranges: string[]
  *  data: any[]
  * }} props
  */
-const LineChart = ({ x = 'x', ranges = ['y'], data }) => {
+const LineChart = ({
+  xLabel = '',
+  yLabel = '',
+  x = 'x',
+  ranges = ['y'],
+  data,
+}) => {
   const chartTheme = useChartTheme();
 
   const renderLineChart = width => {
@@ -45,11 +53,7 @@ const LineChart = ({ x = 'x', ranges = ['y'], data }) => {
   };
 
   return (
-    <BaseChart
-      xLabel="X Label"
-      yLabel="Y Label"
-      renderChart={renderLineChart}
-    />
+    <BaseChart xLabel={xLabel} yLabel={yLabel} renderChart={renderLineChart} />
   );
 };
 
