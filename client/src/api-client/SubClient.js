@@ -93,6 +93,16 @@ export class SubClient {
     });
   }
 
+  async makeAuthenticatedRequestJWT(url, options = {}) {
+    return this.makeRequest(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        // Authorization: `Bearer ${this.userKey}`,
+      },
+    });
+  }
+
   /**
    * @template T
    * @param {RequestInfo} url

@@ -32,6 +32,7 @@ const ProtectedFeatureButtonGroup = ({ buttons, onSubmit }) => {
           <ToggleButton
             key={label}
             value={label}
+            size="small"
             className={styles.button}
             selected={selected === label}
           >

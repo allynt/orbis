@@ -20,6 +20,18 @@ const useStyles = makeStyles(theme => ({
     borderCollapse: 'separate',
     borderSpacing: theme.spacing(0, 2),
   },
+  tableCell: {
+    backgroundColor: theme.palette.background.default,
+    '&:first-of-type': {
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderBottomLeftRadius: theme.shape.borderRadius,
+    },
+    '&:last-of-type': {
+      borderTopRightRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius,
+    },
+    border: 'none',
+  },
 }));
 
 const ExpandableTable = ({
@@ -66,7 +78,10 @@ const ExpandableTable = ({
                   // eslint-disable-next-line react/jsx-key
                   return (
                     // eslint-disable-next-line react/jsx-key
-                    <TableCell {...column.getHeaderProps()}>
+                    <TableCell
+                      {...column.getHeaderProps()}
+                      className={styles.tableCell}
+                    >
                       {column.canSort ? (
                         <TableSortLabel
                           {...column.getSortByToggleProps({

@@ -39,12 +39,12 @@ const ProtectedFeature = ({ buttons, features, onSubmit }) => {
       info="The description for this panel"
     >
       <div className={styles.wrapper}>
-        <div className={styles.chart}>
+        {/* <div className={styles.chart}>
           <Typography variant="h3" className={styles.heading}>
             General EcoHealth of Selected Area
           </Typography>
           <GaugeChart />
-        </div>
+        </div> */}
 
         <div className={styles.features}>
           <ProtectedFeatureButtonGroup buttons={buttons} onSubmit={onSubmit} />
