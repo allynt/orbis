@@ -29,7 +29,7 @@ const useCellStyles = makeStyles(theme => ({
 /**
  * @param {import('@material-ui/core').TableCellProps} props
  */
-export const MissionControlTableCell = ({ classes, ...props }) => {
+export const OrbisTableCell = ({ classes, ...props }) => {
   const styles = useCellStyles();
   return <TableCell classes={{ ...styles, ...classes }} {...props} />;
 };
