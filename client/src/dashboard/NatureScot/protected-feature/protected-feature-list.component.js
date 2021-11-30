@@ -15,6 +15,7 @@ import { COLORS } from '../nature-scotland.constants';
 const useStyles = makeStyles(theme => ({
   listItem: {
     backgroundColor: '#333f48',
+    justifyContent: 'space-between',
     color: '#ffffff',
     '& p': {
       color: '#ffffff',
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   leftSide: {
     display: 'flex',
     alignItems: 'center',
-    minWidth: '50rem',
+    // minWidth: '50rem',
   },
   strapline: {
     display: 'flex',
@@ -38,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   status: {
     display: 'flex',
     alignItems: 'center',
+    width: '125px',
   },
   warning: {
     // color: COLORS[0], //FIXME: Why isn't this working
