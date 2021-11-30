@@ -41,15 +41,16 @@ const useStyles = makeStyles(theme => ({
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
-  approvalsGrantedChartData,
   userOrbState,
 }) => {
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState('All Tenure Types');
 
-  let userTargetData = Object.entries(
+  let userTotalHousingTarget = Object.entries(
     userOrbState?.totalHousing,
   ).map(([key, value]) => ({ x: key, y: value }));
+
+  console.log('userTotalHousingTarget: ', userTotalHousingTarget);
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -75,7 +76,17 @@ export const WalthamHousingDelivery = ({
         >
           <TenureHousingMultiChart
             apiData={tenureHousingDeliveryChartData}
-            userTargetData={userTargetData}
+            userTargetData={userOrbState?.marketHousing}
+          />
+        </ChartWrapper>
+
+        <ChartWrapper
+          title="Total Housing Delivery"
+          info="This is a test description"
+        >
+          <TotalHousingMultiChart
+            apiData={totalHousingDeliveryChartData}
+            userTargetData={userTotalHousingTarget}
           />
         </ChartWrapper>
       </Grid>

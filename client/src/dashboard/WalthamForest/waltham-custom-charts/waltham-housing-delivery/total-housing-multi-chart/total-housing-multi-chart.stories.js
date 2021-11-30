@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { groupedDataTransformer } from 'dashboard/WalthamForest/utils';
+
 import { TotalHousingMultiChart } from './total-housing-multi-chart.component';
 
 export default {
@@ -54,7 +56,10 @@ const groupedData = [
 ];
 
 const Template = () => (
-  <TotalHousingMultiChart apiData={groupedData} userTargetData={lineData} />
+  <TotalHousingMultiChart
+    apiData={groupedDataTransformer(groupedData)}
+    userTargetData={lineData}
+  />
 );
 
 export const Default = Template.bind({});

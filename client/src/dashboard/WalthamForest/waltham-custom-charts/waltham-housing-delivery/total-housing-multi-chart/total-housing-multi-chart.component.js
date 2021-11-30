@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -7,12 +7,11 @@ import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
-import { groupedDataTransformer } from 'dashboard/WalthamForest/utils';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const chartTheme = useChartTheme();
 
-  const groupedData = useMemo(() => groupedDataTransformer(apiData), [apiData]);
+  if (!apiData) return null;
 
   const renderTotalHousingMultiChart = width => {
     const { barWidth, offset } = GroupedWidthCalculator(apiData, width);
@@ -20,7 +19,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
     const color = chartTheme.colors[5],
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: userTargetData ?? [],
         x: 'x',
         y: 'y',
       };
@@ -28,7 +27,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup offset={offset}>
-          {groupedData?.map((arr, i) => (
+          {apiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
               key={`dataset-${i}`}

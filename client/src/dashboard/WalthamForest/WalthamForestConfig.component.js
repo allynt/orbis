@@ -161,7 +161,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <WalthamHousingDelivery
           totalHousingDeliveryChartData={totalHousingDeliveryChartData}
           tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
-          approvalsGrantedChartData={approvalsGrantedChartData}
           userOrbState={userOrbState}
         />
       </div>
