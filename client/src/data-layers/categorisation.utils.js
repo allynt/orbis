@@ -188,6 +188,9 @@ export const createOrbsWithCategorisedSources = (
      * @param {OrbWithCategorisedSources[]} categorisedOrbs
      */
     (categorisedOrbs, source) => {
+      if ('dashboard_component' in source.metadata.application.orbis) {
+        return categorisedOrbs;
+      }
       const metadata = orbisMetadataSelector(source);
       let newOrbs = [...categorisedOrbs];
       let orbs = metadata.orbs;
