@@ -87,16 +87,7 @@ export class SubClient {
     return this.makeRequest(url, {
       ...options,
       headers: {
-        ...options.headers,
         Authorization: `Token ${this.userKey}`,
-      },
-    });
-  }
-
-  async makeJWTAuthenticatedRequest(url, options = {}) {
-    return this.makeRequest(url, {
-      ...options,
-      headers: {
         ...options.headers,
       },
     });
