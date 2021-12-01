@@ -11,7 +11,10 @@ import { useSortBy } from 'react-table';
 import apiClient from 'api-client';
 import ExpandableTable from 'components/table/expandable/expandable-table.component';
 import { selectedAoiSelector } from 'data-layers/aoi/aoi.slice';
-import { selectDataToken } from 'data-layers/data-layers.slice';
+import {
+  dataSourceByIdSelector,
+  selectDataToken,
+} from 'data-layers/data-layers.slice';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import { NearestProtectedAreas } from './nearest-protected-areas';
@@ -75,7 +78,7 @@ const COLUMNS = [
   },
 ];
 
-const NatureScotDashboard = () => {
+const NatureScotDashboard = ({ sourceId }) => {
   const styles = useStyles();
 
   const [nearestProtectedAreas, setNearestProtectedAreas] = useState([]);
@@ -83,14 +86,18 @@ const NatureScotDashboard = () => {
   const [protectedFeatures, setProtectedFeatures] = useState([]);
   const [contactDetails, setContactDetails] = useState({});
   const authToken = useSelector(selectDataToken);
-
   const selectedAoi = useSelector(selectedAoiSelector);
+  const source = useSelector(dataSourceByIdSelector(sourceId));
+
+  const proxyUrl =
+    source?.metadata?.application?.orbis?.dashboard_component?.proxyUrl;
 
   useEffect(() => {
     // Fetch data from IR API.
     const queryApi = async () => {
       try {
         const response = await apiClient.dashboard.getNatureScotlandIRDashboardData(
+          proxyUrl,
           selectedAoi.geometry,
           {
             headers: {
