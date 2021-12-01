@@ -1,4 +1,7 @@
+import json
 from datetime import datetime
+
+from django.contrib.gis.geos import GEOSGeometry, Point, Polygon
 
 from .adapters_base import BaseProxyDataAdapter
 
@@ -18,7 +21,19 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             "protected_features": [],
         }
 
+        aoi = GEOSGeometry(
+            json.dumps(raw_data["geometry"])
+        ) if "geometry" in raw_data else None
+
         for suggestion in raw_data.get("suggestions", []):
+
+            # FIXME: IR SHOULD RETURN bbox AS A LIST OF LISTS
+            # suggestion_bbox = Polygon(
+            #     suggestion["bbox"]
+            # ) if "bbox" in suggestion else None
+            suggestion_center = Point(
+                suggestion["center"]
+            ) if "center" in suggestion else None
 
             #contact_details...
             for contact in suggestion.get("natureScotOffices", []):
@@ -64,7 +79,11 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                 "type":
                     suggestion.get("designation", {}).get("description", None),
                 "area":
-                    suggestion.get("area", None)
+                    suggestion.get("area", None),
+                "distance":
+                    # TODO: THIS SHOULD PROBABLY USE suggestion_bbox INSTEAD OF suggestion_center
+                    aoi.distance(suggestion_center)
+                    if aoi and suggestion_center else None
             })
 
             # protected_features...
