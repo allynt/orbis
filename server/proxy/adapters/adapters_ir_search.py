@@ -2,10 +2,27 @@ import json
 from datetime import datetime
 
 from django.contrib.gis.geos import GEOSGeometry, Point, Polygon
+from rest_framework.utils import encoders
 
 from .adapters_base import BaseProxyDataAdapter
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+
+
+def remove_duplicate_dicts_from_list(list_of_dicts):
+    # a bit convoluted b/c the dicts can be arbitrarily complex
+    # TODO: MAY WANT TO REPLACE W/ A LIBRARY TO COMPARE DICTS AS PER:
+    #  https://miguendes.me/the-best-way-to-compare-two-dictionaries-in-python#heading-using-the-right-tool-for-the-job
+    #  https://github.com/seperman/deepdiff#deep-hash
+    return [
+        json.loads(x)
+        for x in set(
+            [
+                json.dumps(x, cls=encoders.JSONEncoder, sort_keys=True)
+                for x in list_of_dicts
+            ]
+        )
+    ]  # yapf: disable
 
 
 class IRSearchAdapter(BaseProxyDataAdapter):
@@ -35,7 +52,7 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                 suggestion["center"]
             ) if "center" in suggestion else None
 
-            #contact_details...
+            # extract contact_details...
             for contact in suggestion.get("natureScotOffices", []):
                 processed_data["contact_details"].append({
                     "area_name":
@@ -57,7 +74,7 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                         contact.get("office", {}).get("email", None),
                 })
 
-            # casework...
+            # extract casework...
             for casework in suggestion.get("casework", []):
                 processed_data["casework"].append({
                     "name":
@@ -72,7 +89,7 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     "details": {},
                 })
 
-            # protected_areas...
+            # extract protected_areas...
             processed_data["protected_areas"].append({
                 "name":
                     suggestion.get("title", None),
@@ -86,7 +103,7 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     if aoi and suggestion_center else None
             })
 
-            # protected_features...
+            # extract protected_features...
             for feature in raw_data.get("features", []):
                 processed_data["protected_features"].append({
                     "name": feature.get("name", None),
@@ -98,5 +115,12 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                         "history": feature.get("history", []),
                     },
                 })
+
+        # remove duplicates...
+        keys = list(processed_data.keys())
+        for key in keys:
+            processed_data[key] = remove_duplicate_dicts_from_list(
+                processed_data.pop(key)
+            )
 
         return processed_data
