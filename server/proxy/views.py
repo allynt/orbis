@@ -44,16 +44,24 @@ _paginated_geojson_schema = {
     ]
 }  # yapf: disable
 
-_source_id_params = [
-    openapi.Parameter("authority", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
-    openapi.Parameter("namespace", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
-    openapi.Parameter("name", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
-    openapi.Parameter("version", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
-    openapi.Parameter("page", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
-    openapi.Parameter("page_size", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
 
-]  # yapf: disable
-
+auto_schema_kwargs = {
+    "manual_parameters": [
+        openapi.Parameter("authority", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
+        openapi.Parameter("namespace", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
+        openapi.Parameter("name", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
+        openapi.Parameter("version", openapi.IN_PATH, required=True, type=openapi.TYPE_STRING),
+        openapi.Parameter("page", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
+        openapi.Parameter("page_size", openapi.IN_QUERY, required=False, type=openapi.TYPE_INTEGER),
+    ],
+    "responses": {
+        status.HTTP_200_OK:
+            openapi.Response(
+                "GeoJSON",
+                examples={"application/json": _paginated_geojson_schema}
+            )
+    },
+}  # yapf: disable,
 
 class ProxyDataSourceView(APIView):
 
@@ -70,18 +78,7 @@ class ProxyDataSourceView(APIView):
         )
     ]
 
-    @swagger_auto_schema(
-        # manually defining swagger stuff b/c I don't use DRF serializers
-        manual_parameters=_source_id_params,
-        responses={
-            status.HTTP_200_OK:
-                openapi.Response(
-                    "GeoJSON",
-                    examples={"application/json": _paginated_geojson_schema}
-                )
-        }
-    )
-    def get(self, request: Request, **kwargs):
+    def run(self, request: Request, **kwargs):
 
         proxy_data_source = get_object_or_404(
             ProxyDataSource.objects.active(), **self.kwargs
@@ -113,3 +110,11 @@ class ProxyDataSourceView(APIView):
 
         except Exception as e:
             raise APIException(e)
+
+    @swagger_auto_schema(**auto_schema_kwargs)
+    def get(self, request: Request, **kwargs):
+        return self.run(request, **kwargs)
+
+    @swagger_auto_schema(**auto_schema_kwargs)
+    def post(self, request: Request, **kwargs):
+        return self.run(request, **kwargs)
