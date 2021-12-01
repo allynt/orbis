@@ -109,7 +109,7 @@ const NatureScotDashboard = () => {
         const { message, status } = error;
         NotificationManager.error(
           `${status} ${message}`,
-          `Fetching Bookmark Error - ${message}`,
+          `Fetching Dashboard Data Error - ${message}`,
           50000,
           () => {},
         );
