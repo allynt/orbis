@@ -28,7 +28,13 @@ const TenureHousingMultiChart = ({ apiData, userTargetData }) => {
     const barWidth = width / 20;
 
     // BREAKS WITH MISSING RANGE VALUES
-    const ranges = ['Intermediate', 'Market'];
+    const ranges = [
+      'Affordable Rent',
+      'Intermediate',
+      'Market',
+      'Social Rented',
+      'Private Rented Sector',
+    ];
 
     const color = chartTheme.colors[5],
       scatterWidth = width / 2,
