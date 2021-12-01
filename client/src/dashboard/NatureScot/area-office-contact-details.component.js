@@ -4,74 +4,62 @@ import { makeStyles, Grid, Link, Typography } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-const useStyles = makeStyles(theme => ({
-  label: {
-    fontWeight: 600,
-    fontSize: '0.8rem',
-  },
-  value: {
-    fontWeight: 100,
-    width: '100%',
-    display: 'block',
-    fontSize: '0.8rem',
-  },
-}));
+const useStyles = makeStyles(theme => ({}));
 
 const AreaOfficeContactDetails = ({ contactDetails }) => {
   const styles = useStyles();
-  const address = contactDetails[0];
   return (
     <ChartWrapper title="Area Office Contact Details">
       <Grid container justifyContent="space-between" spacing={1}>
         <Grid item xs={6}>
-          <Typography className={styles.label}>Area Office :</Typography>
+          <Typography variant="h4">Area Office :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.value}>{address.areaOffice}</Typography>
+          <Typography variant="p">{contactDetails.areaOffice}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.label}>Area Name :</Typography>
+          <Typography variant="h4">Area Name :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.value}>{address.areaName}</Typography>
+          <Typography variant="p">{contactDetails.areaName}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.label}>Telephone Number :</Typography>
+          <Typography variant="h4">Telephone Number :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.value}>
-            {address.telephoneNumber}
-          </Typography>
+          <Typography variant="p">{contactDetails.telephoneNumber}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.label}>
-            Area Office Address :
-          </Typography>
+          <Typography variant="h4">Area Office Address :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Grid container direction="row" className={styles.value}>
-            {address.areaOfficeAddress.map(item => (
-              <Typography key={item}>{item}</Typography>
+          <Grid container direction="column">
+            {contactDetails.areaOfficeAddress.map(item => (
+              <Grid key={item} item>
+                <Typography variant="p" key={item}>
+                  {item}
+                </Typography>
+              </Grid>
             ))}
           </Grid>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.label}>Postcode :</Typography>
+          <Typography variant="h4">Postcode :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.value}>{address.postCode}</Typography>
+          <Typography variant="p">{contactDetails.postCode}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.label}>Email :</Typography>
+          <Typography variant="h4">Email :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography className={styles.value}>
+          <Typography variant="p" className={styles.value}>
             <Link
               target="_blank"
-              href={`mailto:${address.email}`}
+              href={`mailto:${contactDetails.email}`}
               rel="noopener noreferrer"
             >
-              {address.email}
+              {contactDetails.email}
             </Link>
           </Typography>
         </Grid>

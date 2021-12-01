@@ -5,7 +5,7 @@ import AreaOfficeContactDetails from './area-office-contact-details.component';
 
 export default {
   title: 'DashBoard/Nature Scotland/AreaOfficeContactDetails',
-  args: { contactDetails: data },
+  args: { contactDetails: data[0] },
 };
 
 const Template = args => {
