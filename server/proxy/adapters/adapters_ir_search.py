@@ -10,11 +10,14 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 def remove_duplicate_dicts_from_list(list_of_dicts):
     # a bit convoluted b/c the dicts can be arbitrarily complex
+    # TODO: MAY WANT TO REPLACE W/ A LIBRARY TO COMPARE DICTS AS PER:
+    #  https://miguendes.me/the-best-way-to-compare-two-dictionaries-in-python#heading-using-the-right-tool-for-the-job
+    #  https://github.com/seperman/deepdiff#deep-hash
     return [
         json.loads(x)
         for x in set(
             [
-                json.dumps(x, cls=encoders.JSONEncoder)
+                json.dumps(x, cls=encoders.JSONEncoder, sort_keys=True)
                 for x in list_of_dicts
             ]
         )
