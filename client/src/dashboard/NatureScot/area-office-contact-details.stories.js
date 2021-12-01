@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import * as data from '../mock-data/NatureScot/mock-area-office-contact';
 import AreaOfficeContactDetails from './area-office-contact-details.component';
 
 export default {
-  title: 'DashBoard/NatureScot/AreaOfficeContactDetails',
+  title: 'DashBoard/Nature Scotland/AreaOfficeContactDetails',
   args: { data: data },
 };
 
