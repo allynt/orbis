@@ -6,6 +6,7 @@ export { DateRangePicker } from './date-range-picker/date-range-picker.component
 export { default as FeatureDetail } from './feature-detail/feature-detail.component';
 export { FeatureDialog } from './feature-dialog/feature-dialog.component';
 export { default as Form } from './form/form.component';
+export { default as ExpandableTable } from './table/expandable/expandable-table.component';
 export { ImageListItem } from './image-list/image-list-item/image-list-item.component';
 export { ImageList } from './image-list/image-list.component';
 export { InfoButtonTooltip } from './info-button-tooltip/info-button-tooltip.component';
@@ -25,3 +26,4 @@ export { Skeleton } from './skeleton/skeleton.component';
 export { WrappingChartLabel } from './wrapping-chart-label.component';
 export { ErrorFallback } from './error-fallback/error-fallback.component';
 export { OptionsMenu } from './options-menu/options-menu.component';
+export { Table } from './table/table.component';

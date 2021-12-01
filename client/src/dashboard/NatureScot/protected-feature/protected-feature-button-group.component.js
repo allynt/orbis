@@ -27,18 +27,17 @@ const ProtectedFeatureButtonGroup = ({ buttons, onSubmit }) => {
 
   return (
     <ToggleButtonGroup exclusive onChange={handleChange}>
-      {buttons.map(({ label }) => {
-        return (
-          <ToggleButton
-            key={label}
-            value={label}
-            className={styles.button}
-            selected={selected === label}
-          >
-            {label}
-          </ToggleButton>
-        );
-      })}
+      {buttons.map(({ label }) => (
+        <ToggleButton
+          key={label}
+          value={label}
+          size="small"
+          className={styles.button}
+          selected={selected === label}
+        >
+          {label}
+        </ToggleButton>
+      ))}
     </ToggleButtonGroup>
   );
 };

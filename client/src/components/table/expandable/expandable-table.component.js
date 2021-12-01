@@ -4,7 +4,6 @@ import {
   makeStyles,
   Table as MuiTable,
   TableBody,
-  TableCell,
   TableHead,
   TableRow,
   TableSortLabel,
@@ -13,12 +12,26 @@ import {
 import { ArrowDropDown } from '@material-ui/icons';
 import { useTable, useExpanded, usePagination } from 'react-table';
 
+import { OrbisTableCell } from 'components/table/table-cell.component';
+
 import { TablePaginationFooter } from '../table.pagination-footer.component';
 
 const useStyles = makeStyles(theme => ({
   table: {
     borderCollapse: 'separate',
     borderSpacing: theme.spacing(0, 2),
+  },
+  OrbisTableCell: {
+    backgroundColor: theme.palette.background.default,
+    '&:first-of-type': {
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderBottomLeftRadius: theme.shape.borderRadius,
+    },
+    '&:last-of-type': {
+      borderTopRightRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius,
+    },
+    border: 'none',
   },
 }));
 
@@ -52,48 +65,43 @@ const ExpandableTable = ({
     useExpanded,
     usePagination,
   );
-  console.log('DATA: ', data);
 
   return (
     <>
       <MuiTable {...getTableProps({ className: styles.table })}>
         <TableHead>
-          {headerGroups.map(headerGroup => {
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => {
-                  // eslint-disable-next-line react/jsx-key
-                  return (
-                    // eslint-disable-next-line react/jsx-key
-                    <TableCell {...column.getHeaderProps()}>
-                      {column.canSort ? (
-                        <TableSortLabel
-                          {...column.getSortByToggleProps({
-                            IconComponent: ArrowDropDown,
-                            active: column.isSorted,
-                            direction: column.isSortedDesc ? 'desc' : 'asc',
-                          })}
-                        >
-                          {column.render('Header')}
-                        </TableSortLabel>
-                      ) : (
-                        column.render('Header')
-                      )}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
+          {headerGroups.map(headerGroup => (
+            // eslint-disable-next-line react/jsx-key
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                // eslint-disable-next-line react/jsx-key
+                <OrbisTableCell
+                  {...column.getHeaderProps()}
+                  className={styles.OrbisTableCell}
+                >
+                  {column.canSort ? (
+                    <TableSortLabel
+                      {...column.getSortByToggleProps({
+                        IconComponent: ArrowDropDown,
+                        active: column.isSorted,
+                        direction: column.isSortedDesc ? 'desc' : 'asc',
+                      })}
+                    >
+                      {column.render('Header')}
+                    </TableSortLabel>
+                  ) : (
+                    column.render('Header')
+                  )}
+                </OrbisTableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableHead>
 
         <TableBody {...getTableBodyProps()}>
           {page.length ? (
             page.map(row => {
-              console.log('FIRST Row log: ', row);
               prepareRow(row);
-              console.log('Another Row log: ', row);
 
               return (
                 // eslint-disable-next-line react/jsx-key
@@ -102,9 +110,9 @@ const ExpandableTable = ({
                     {row.cells.map(cell => {
                       return (
                         // eslint-disable-next-line react/jsx-key
-                        <TableCell {...cell.getCellProps()}>
+                        <OrbisTableCell {...cell.getCellProps()}>
                           {cell.render('Cell')}
-                        </TableCell>
+                        </OrbisTableCell>
                       );
                     })}
                   </TableRow>
@@ -115,7 +123,7 @@ const ExpandableTable = ({
                   */}
                   {row.isExpanded ? (
                     <TableRow>
-                      <TableCell colSpan={visibleColumns.length}>
+                      <OrbisTableCell colSpan={visibleColumns.length}>
                         {/*
                           Inside it, call our renderRowSubComponent function. In reality,
                           you could pass whatever you want as props to
@@ -129,7 +137,7 @@ const ExpandableTable = ({
                           console.log('PASSING DATA ROW: ', row);
                           return renderRowSubComponent({ row });
                         }} */}
-                      </TableCell>
+                      </OrbisTableCell>
                     </TableRow>
                   ) : null}
                 </React.Fragment>
@@ -137,9 +145,9 @@ const ExpandableTable = ({
             })
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} align="center">
+              <OrbisTableCell colSpan={columns.length} align="center">
                 {noDataMessage}
-              </TableCell>
+              </OrbisTableCell>
             </TableRow>
           )}
         </TableBody>

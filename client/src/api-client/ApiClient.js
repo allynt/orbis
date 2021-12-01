@@ -3,6 +3,7 @@ import { AppClient } from './AppClient';
 import { AuthenticationClient } from './AuthenticationClient';
 import { BookmarksClient } from './BookmarksClient';
 import { CustomersClient } from './CustomersClient';
+import { DashboardClient } from './DashboardClient';
 import { DataClient } from './DataClient';
 import { DocumentsClient } from './DocumentsClient';
 import { OrbsClient } from './OrbsClient';
@@ -15,6 +16,7 @@ export class ApiClient {
   authentication;
   bookmarks;
   customers;
+  dashboard;
   data;
   documents;
   orbs;
@@ -29,6 +31,7 @@ export class ApiClient {
     'bookmarks',
     'customers',
     'data',
+    'dashboard',
     'documents',
     'orbs',
     'satellites',
@@ -43,6 +46,7 @@ export class ApiClient {
     this.bookmarks = new BookmarksClient();
     this.customers = new CustomersClient();
     this.data = new DataClient();
+    this.dashboard = new DashboardClient();
     this.documents = new DocumentsClient();
     this.orbs = new OrbsClient();
     this.satellites = new SatellitesClient();

@@ -13,7 +13,7 @@ import { ArrowDropDown } from '@material-ui/icons';
 // @ts-ignore
 import { usePagination, useTable } from 'react-table';
 
-import { MissionControlTableCell } from './table-cell.component';
+import { OrbisTableCell } from './table-cell.component';
 import { TablePaginationFooter } from './table.pagination-footer.component';
 
 const useStyles = makeStyles(theme => ({
@@ -75,7 +75,7 @@ export const Table = ({
           <TableRow>
             {headers.map(column => (
               // eslint-disable-next-line react/jsx-key
-              <MissionControlTableCell
+              <OrbisTableCell
                 {...column.getHeaderProps([{}, getHeaderProps(column)])}
               >
                 {column.canSort ? (
@@ -91,7 +91,7 @@ export const Table = ({
                 ) : (
                   column.render('Header')
                 )}
-              </MissionControlTableCell>
+              </OrbisTableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -104,20 +104,20 @@ export const Table = ({
                 <TableRow {...row.getRowProps()}>
                   {row.cells.map(cell => (
                     // eslint-disable-next-line react/jsx-key
-                    <MissionControlTableCell
+                    <OrbisTableCell
                       {...cell.getCellProps([{}, getCellProps(cell)])}
                     >
                       {cell.render('Cell')}
-                    </MissionControlTableCell>
+                    </OrbisTableCell>
                   ))}
                 </TableRow>
               );
             })
           ) : (
             <TableRow>
-              <MissionControlTableCell colSpan={columns.length} align="center">
+              <OrbisTableCell colSpan={columns.length} align="center">
                 {noDataMessage}
-              </MissionControlTableCell>
+              </OrbisTableCell>
             </TableRow>
           )}
         </TableBody>

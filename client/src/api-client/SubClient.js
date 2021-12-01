@@ -87,8 +87,8 @@ export class SubClient {
     return this.makeRequest(url, {
       ...options,
       headers: {
-        ...options.headers,
         Authorization: `Token ${this.userKey}`,
+        ...options.headers,
       },
     });
   }

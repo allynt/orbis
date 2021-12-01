@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { GaugeChart } from 'dashboard/charts/gauge/gauge.component';
@@ -16,10 +16,8 @@ const useStyles = makeStyles(theme => ({
   features: {
     display: 'flex',
     flexDirection: 'column',
-    // width: '30%',
   },
   chart: {
-    // width: '500px',
     paddingRight: '1rem',
   },
   heading: {
@@ -38,19 +36,19 @@ const ProtectedFeature = ({ buttons, features, onSubmit }) => {
       title="Protected Features"
       info="The description for this panel"
     >
-      <div className={styles.wrapper}>
-        <div className={styles.chart}>
+      <Grid container>
+        <Grid item xs={4}>
           <Typography variant="h3" className={styles.heading}>
             General EcoHealth of Selected Area
           </Typography>
           <GaugeChart />
-        </div>
+        </Grid>
 
-        <div className={styles.features}>
+        <Grid item xs={8}>
           <ProtectedFeatureButtonGroup buttons={buttons} onSubmit={onSubmit} />
           <ProtectedFeatureList features={features} />
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </ChartWrapper>
   );
 };
