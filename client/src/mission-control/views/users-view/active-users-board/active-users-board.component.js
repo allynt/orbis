@@ -9,7 +9,7 @@ import {
 
 import { OptionsMenu } from 'components/options-menu/options-menu.component';
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
-import { Table } from 'mission-control/shared-components/mission-control-table';
+import { Table } from 'components/table';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 

@@ -16,6 +16,10 @@ import {
 } from './aoi.slice';
 import { DRAW_MODE_MAP } from './toolbox/aoi-toolbox.constants';
 
+const TENTATIVE_FILL_COLOR = [100, 100, 100, 100];
+const TENTATIVE_LINE_COLOR = [100, 100, 100, 255];
+const FILL_COLOR = [246, 190, 0, 100];
+
 export const useAoiLayer = ({
   defaultSelectedFeatureIndexes = [],
   defaultAoiDrawMode = 'ViewMode',
@@ -40,7 +44,7 @@ export const useAoiLayer = ({
 
   const onEdit = ({ updatedData }) => dispatch(setAoiFeatures(updatedData));
 
-  const onClick = ({ index }) => {
+  const onClick = ({ index, ...rest }) => {
     if (!isDrawingAoi) {
       return;
     }
@@ -48,8 +52,10 @@ export const useAoiLayer = ({
     setSelectedFeatureIndexes([index]);
   };
 
-  const getFillColor = [128, 128, 128, 100];
+  const getFillColor = FILL_COLOR;
   const getLineColor = COLOR_PRIMARY_ARRAY;
+  const getTentativeFillColor = TENTATIVE_FILL_COLOR;
+  const getTentativeLineColor = TENTATIVE_LINE_COLOR;
 
   const drawAoiLayer = new EditableGeoJsonLayer({
     id: 'draw-aoi-layer',
@@ -61,13 +67,8 @@ export const useAoiLayer = ({
     onClick,
     getFillColor,
     getLineColor,
-    getTentativeFillColor: [0, 85, 0, 100],
-    getTentativeLineColor: [0, 85, 0, 255],
-    _subLayerProps: {
-      tooltips: {
-        getColor: [255, 255, 255, 255],
-      },
-    },
+    getTentativeFillColor,
+    getTentativeLineColor,
   });
 
   return {

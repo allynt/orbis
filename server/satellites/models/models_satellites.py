@@ -374,7 +374,7 @@ class SatelliteDataSource(models.Model):
         blank=False,
         null=False,
         on_delete=models.CASCADE,
-        related_name="satelite_data_sources"
+        related_name="satellite_data_sources"
     )
 
     name = models.CharField(max_length=128, blank=False, null=False)

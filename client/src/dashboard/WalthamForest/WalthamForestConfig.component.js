@@ -27,6 +27,7 @@ import {
 } from '../dashboard.slice';
 import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
 import { useChartTheme } from '../useChartTheme';
+import { HousingApprovalsComponent } from './charts/housing-approvals.component';
 import {
   SelectScreen,
   TargetScreen,
@@ -197,18 +198,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* line chart */}
       <div className={styles.lineCharts}>
-        <ChartWrapper
-          title="No. of Housing Approvals Granted Over Time"
-          info="This is a test description"
-        >
-          <LineChart
-            x="Month"
-            xLabel="Year"
-            yLabel="Data Property Name / Unit"
-            ranges={['2019', '2020', '2021']}
-            data={approvalsGrantedChartData}
-          />
-        </ChartWrapper>
+        <HousingApprovalsComponent
+          x="Month"
+          xLabel="Year"
+          yLabel="No. Housing Approvals Granted"
+          ranges={['2019', '2020', '2021']}
+          data={approvalsGrantedChartData}
+        />
       </div>
 
       <Dialog

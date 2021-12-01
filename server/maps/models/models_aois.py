@@ -65,6 +65,14 @@ class Aoi(gis_models.Model):
 
     geometry = gis_models.GeometryField(blank=False)
 
+    data_source = models.CharField(
+        max_length=128,
+        blank=False,
+        null=False,
+        help_text="DataSource AOI instance is associated with",
+        default="",
+    )
+
     def __str__(self):
         return self.name
 

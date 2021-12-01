@@ -27,6 +27,15 @@ const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  exploreButton: {
+    padding: '0.2rem',
+  },
+  listItem: {
+    padding: '0px',
+    alignItems: 'flex-start',
+    margin: '1rem 0',
   },
 }));
 
@@ -36,7 +45,7 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
   const { name, description, thumbnail } = aoi;
 
   return (
-    <ListItem>
+    <ListItem className={styles.listItem}>
       <ListItemAvatar>
         <Avatar
           className={styles.avatar}
@@ -49,18 +58,22 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
       </ListItemAvatar>
 
       <Grid container direction="column" spacing={1}>
-        <Grid item xs={8}>
+        <Grid item>
           <Typography variant="h4">{name}</Typography>
         </Grid>
 
-        <Grid item xs={4}>
-          <Button size="small" onClick={() => selectAoi(aoi)}>
+        <Grid item>
+          <Button
+            size="small"
+            className={styles.exploreButton}
+            onClick={() => selectAoi(aoi)}
+          >
             Explore Area
           </Button>
         </Grid>
       </Grid>
 
-      <Grid container className={styles.buttons}>
+      <Grid className={styles.buttons}>
         <InfoButtonTooltip
           iconButtonClassName={styles.info}
           tooltipContent={<div>{description || 'No description given'}</div>}
