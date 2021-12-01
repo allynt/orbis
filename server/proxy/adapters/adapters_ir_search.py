@@ -42,7 +42,12 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             json.dumps(raw_data["geometry"])
         ) if "geometry" in raw_data else None
 
-        for suggestion in raw_data.get("suggestions", []):
+        # FIXME: IR SHOULD ALWAYS RETURN A 1-D LIST
+        suggestions = raw_data.get("suggestions", [])
+        if len(suggestions) == 1 and isinstance(suggestions[0], list):
+            suggestions = suggestions[0]
+
+        for suggestion in suggestions:
 
             # FIXME: IR SHOULD RETURN bbox AS A LIST OF LISTS
             # suggestion_bbox = Polygon(
@@ -104,7 +109,7 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             })
 
             # extract protected_features...
-            for feature in raw_data.get("features", []):
+            for feature in suggestion.get("features", []):
                 processed_data["protected_features"].append({
                     "name": feature.get("name", None),
                     "category": feature.get("category", None),
