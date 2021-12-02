@@ -114,9 +114,9 @@ const ProtectedFeatureList = ({ features }) => {
             }
           >
             <div className={styles.leftSide}>
-              <ListItemAvatar>
+              {/* <ListItemAvatar>
                 <Avatar src={icon} alt={title} />
-              </ListItemAvatar>
+              </ListItemAvatar> */}
 
               <ListItemText
                 primaryTypographyProps={{ variant: 'h4', component: 'span' }}
@@ -133,9 +133,9 @@ const ProtectedFeatureList = ({ features }) => {
             </div>
 
             <div className={styles.status}>
-              <ListItemAvatar>
+              {/* <ListItemAvatar>
                 <Avatar src={status.icon} className={styles[status.type]} />
-              </ListItemAvatar>
+              </ListItemAvatar> */}
 
               <ListItemText
                 primary={status.label}

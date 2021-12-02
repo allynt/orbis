@@ -55,7 +55,7 @@ const NearestProtectedAreas = ({ data }) => {
       <Table
         data={data}
         columns={columns}
-        noDataMessage="No data passed to component"
+        noDataMessage="No Data"
         pluginHooks={[useSortBy]}
         getCellProps={cell => ({
           width: cell.column.id === 'button' ? '10%' : '30%',

@@ -12,7 +12,7 @@ export default {
   title: 'Dashboard/Nature Scotland/Protected Feature List',
   argTypes: { onSubmit: { action: 'onSubmit' } },
   args: {
-    features: Array(5)
+    features: Array(30)
       .fill()
       .map((_, i) => {
         return {
