@@ -1,3 +1,6 @@
+import json
+from copy import deepcopy
+
 from django.core.cache import cache, caches
 from django.shortcuts import get_object_or_404
 from django.urls import resolve
@@ -85,14 +88,40 @@ class ProxyDataSourceView(APIView):
         )
         proxy_data_source.request = request
 
+        sample_data = {
+            "feature": {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [[-4.428775637613243, 56.34850203970021],
+                        [-4.434500096483564, 56.43826212321123],
+                        [-4.272456086275587, 56.441336730726405],
+                        [-4.267111790055154, 56.351566274449105],
+                        [-4.428775637613243, 56.34850203970021]
+                    ]]
+                },
+                "properties": {}
+            }
+        }  # yapf: disable
+
         try:
+
+            # FIXME: SHAPE FROM CLIENT SHOULD BE CORRECT
+            # FIXME: SHOULDN'T HAVE TO UN-STRINGIFY "geometry"
+            request_data = deepcopy(request.data)
+            request_data["feature"]["geometry"] = json.loads(
+                request_data["feature"].pop("geometry", {})
+            )
             cache_key = "-".join(self.kwargs.values())
             processed_data = PROXY_CACHE.get(cache_key)
             if not processed_data:
                 processed_data = proxy_data_source.process_data(
                     proxy_data_source.get_data(
                         request_query_params=request.query_params,
-                        request_body_data=request.data
+                        # request_body_data=request.data
+                        # request_body_data=sample_data
+                        request_body_data=request_data
                     )
                 )
                 PROXY_CACHE.set(
