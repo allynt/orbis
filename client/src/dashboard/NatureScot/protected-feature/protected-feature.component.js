@@ -12,10 +12,19 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
   },
+  container: {
+    gap: '1rem',
+  },
   gauge: {},
   features: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  leftPanel: {
+    width: 'calc(33.3% - 0.5rem)',
+  },
+  rightPanel: {
+    width: 'calc(66.6% - 0.5rem)',
   },
   chart: {
     paddingRight: '1rem',
@@ -36,15 +45,19 @@ const ProtectedFeature = ({ buttons, features, onSubmit }) => {
       title="Protected Features"
       info="The description for this panel"
     >
-      <Grid container justifyContent="space-between">
-        <Grid item xs={4}>
-          <Typography variant="h3" className={styles.heading}>
+      <Grid
+        container
+        justifyContent="space-between"
+        className={styles.container}
+      >
+        <Grid item className={styles.leftPanel}>
+          <Typography variant="h5" className={styles.heading}>
             General EcoHealth of Selected Area
           </Typography>
           <GaugeChart />
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item className={styles.rightPanel}>
           <ProtectedFeatureButtonGroup buttons={buttons} onSubmit={onSubmit} />
           <ProtectedFeatureList features={features} />
         </Grid>
