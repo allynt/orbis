@@ -124,7 +124,7 @@ const ProtectedFeatureList = ({ features }) => {
                 secondary={
                   <div className={styles.strapline}>
                     <Typography className={styles.straplineLabel}>
-                      Protection Type:
+                      Description:
                     </Typography>
                     <Typography variant="h4">{description}</Typography>
                   </div>

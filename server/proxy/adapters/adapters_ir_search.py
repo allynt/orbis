@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime
 
 from django.contrib.gis.geos import GEOSGeometry, Point, Polygon
@@ -7,6 +8,14 @@ from rest_framework.utils import encoders
 from .adapters_base import BaseProxyDataAdapter
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+
+PROTECTED_FEATURE_TYPES = [
+    "warning",
+    "not-good",
+    "neutral",
+    "good",
+    "very-good",
+]
 
 
 def remove_duplicate_dicts_from_list(list_of_dicts):
@@ -118,7 +127,10 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     "details": {
                         "pressures": feature.get("pressures", []),
                         "history": feature.get("history", []),
-                    },
+                    },  # FIXME: IMPROVE THESE NEXT 3 FIELDS
+                    "title": feature.get("subcategory", None),
+                    "description": feature.get("name", None),
+                    "type": random.choice(PROTECTED_FEATURE_TYPES),
                 })
 
         # remove duplicates...
