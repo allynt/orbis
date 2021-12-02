@@ -121,8 +121,8 @@ const NatureScotDashboard = ({ sourceId }) => {
         setNearestProtectedAreas(response.protected_areas);
         setCaseworks(response.casework);
         setContactDetails(response.contact_details?.[0]);
-        // setProtectedFeatures(response.protected_features);
-        setProtectedFeatures(PROTECTED_FEATURES);
+        setProtectedFeatures(response.protected_features);
+        // setProtectedFeatures(PROTECTED_FEATURES);
       } catch (error) {
         const { message, status } = error;
         NotificationManager.error(

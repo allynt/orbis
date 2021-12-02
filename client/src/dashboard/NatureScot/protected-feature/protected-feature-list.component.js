@@ -94,9 +94,13 @@ const STATUSES = [
 const ProtectedFeatureList = ({ features }) => {
   const styles = useStyles();
 
+  if (!features) return null;
+
+  console.log('features: ', features);
+
   return (
     <List>
-      {features.map(({ id, icon, title, description, type }) => {
+      {features?.map(({ id, icon, title, description, type }) => {
         const status = STATUSES.find(status => status.type === type);
 
         return (
