@@ -19,8 +19,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
     const color = chartTheme.colors[5],
       scatterWidth = width / 2,
       props = {
-        // this needed?
-        data: userTargetData ?? [],
+        data: userTargetData,
         x: 'x',
         y: 'y',
       };

@@ -46,11 +46,8 @@ export const WalthamHousingDelivery = ({
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState('All Tenure Types');
 
-  let userTotalHousingTarget = Object.entries(
-    userOrbState?.totalHousing,
-  ).map(([key, value]) => ({ x: key, y: value }));
-
-  console.log('userTotalHousingTarget: ', userTotalHousingTarget);
+  const convertStringsToNumbers = obj =>
+    Object.entries(obj).map(([k, v]) => ({ x: k, y: +v }));
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -76,7 +73,9 @@ export const WalthamHousingDelivery = ({
         >
           <TenureHousingMultiChart
             apiData={tenureHousingDeliveryChartData}
-            userTargetData={userOrbState?.marketHousing}
+            userTargetData={convertStringsToNumbers(
+              userOrbState?.marketHousing,
+            )}
           />
         </ChartWrapper>
 
@@ -86,7 +85,7 @@ export const WalthamHousingDelivery = ({
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
-            userTargetData={userTotalHousingTarget}
+            userTargetData={convertStringsToNumbers(userOrbState?.totalHousing)}
           />
         </ChartWrapper>
       </Grid>
