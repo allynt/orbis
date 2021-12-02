@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#34414a',
     color: '#fff',
     fontWeight: 600,
-    padding: '2rem 0 0 1rem',
+    padding: '1rem',
   },
 }));
 
@@ -36,7 +36,7 @@ const ProtectedFeature = ({ buttons, features, onSubmit }) => {
       title="Protected Features"
       info="The description for this panel"
     >
-      <Grid container>
+      <Grid container justifyContent="space-between">
         <Grid item xs={4}>
           <Typography variant="h3" className={styles.heading}>
             General EcoHealth of Selected Area

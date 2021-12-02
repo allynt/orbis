@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     '& p': {
       color: '#ffffff',
     },
-    margin: '0.5rem',
+    margin: '0.5rem 0',
     borderRadius: '0.3rem',
   },
   leftSide: {
