@@ -51,17 +51,11 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             json.dumps(raw_data["geometry"])
         ) if "geometry" in raw_data else None
 
-        # FIXME: IR SHOULD ALWAYS RETURN A 1-D LIST
-        suggestions = raw_data.get("suggestions", [])
-        if len(suggestions) == 1 and isinstance(suggestions[0], list):
-            suggestions = suggestions[0]
+        for suggestion in raw_data.get("suggestions", []):
 
-        for suggestion in suggestions:
-
-            # FIXME: IR SHOULD RETURN bbox AS A LIST OF LISTS
-            # suggestion_bbox = Polygon(
-            #     suggestion["bbox"]
-            # ) if "bbox" in suggestion else None
+            suggestion_bbox = Polygon.from_bbox(
+                suggestion["bbox"]
+            ) if "bbox" in suggestion else None
             suggestion_center = Point(
                 suggestion["center"]
             ) if "center" in suggestion else None
@@ -93,6 +87,8 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                 processed_data["casework"].append({
                     "name":
                         f"Case {casework.get('code', 'NA')}",
+                    "site_name":
+                        suggestion.get("title", None),
                     "date":
                         datetime.strptime(
                             casework.get("received").strip("\""),
@@ -113,8 +109,8 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     suggestion.get("area", None),
                 "distance":
                     # TODO: THIS SHOULD PROBABLY USE suggestion_bbox INSTEAD OF suggestion_center
-                    aoi.distance(suggestion_center)
-                    if aoi and suggestion_center else None
+                    round(aoi.distance(suggestion_bbox), 2)
+                    if aoi and suggestion_bbox else None
             })
 
             # extract protected_features...
