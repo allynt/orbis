@@ -72,7 +72,7 @@ describe('Waltham Forest Data Transformers', () => {
   });
 
   describe('stringToNumberTransformer', () => {
-    it.only('converts string values to numbers', () => {
+    it('converts string values to numbers', () => {
       const input = [
         {
           x: 'key-1',
@@ -103,7 +103,7 @@ describe('Waltham Forest Data Transformers', () => {
         expected = [
           {
             x: 'key-1',
-            y: '123',
+            y: 123,
           },
           {
             x: 'key-2',
