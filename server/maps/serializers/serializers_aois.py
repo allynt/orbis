@@ -1,26 +1,12 @@
 from django.contrib.auth import get_user_model
 
-from django.contrib.gis.geos import GEOSGeometry
-
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from rest_framework_gis.serializers import GeometryField
 
 from astrosat.views import SwaggerCurrentUserDefault
 
 from maps.models import Aoi
-
-
-class GEOSGeometryField(serializers.Field):
-    """
-    Convert GeoJSON feature to/from WKT.
-    """
-    def to_representation(self, value):
-        """ Convert Geometry to GeoJSON feature. """
-        return GEOSGeometry(value).geojson
-
-    def to_internal_value(self, data):
-        """ Convert GeoJSON feature to Geometry. """
-        return GEOSGeometry(data)
 
 
 class AoiUpdateSerializer(serializers.ModelSerializer):
@@ -52,7 +38,11 @@ class AoiUpdateSerializer(serializers.ModelSerializer):
         slug_field="uuid"
     )
 
-    geometry = GEOSGeometryField(read_only=True)
+    geometry = GeometryField(
+        precision=Aoi.PRECISION,
+        remove_duplicates=True,
+        read_only=True,
+    )
     thumbnail = serializers.FileField(read_only=True)
     data_source = serializers.CharField(read_only=True)
 
@@ -79,6 +69,10 @@ class AoiCreateSerializer(AoiUpdateSerializer):
             )
         ]
 
-    geometry = GEOSGeometryField(required=True)
+    geometry = GeometryField(
+        precision=Aoi.PRECISION,
+        remove_duplicates=True,
+        required=True,
+    )
     thumbnail = serializers.FileField(required=True)
     data_source = serializers.CharField(required=True)
