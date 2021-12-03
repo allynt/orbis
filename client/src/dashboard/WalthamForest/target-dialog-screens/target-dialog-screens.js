@@ -88,11 +88,6 @@ const SelectScreen = ({ onNextClick }) => {
   );
 };
 
-// TODO: filter out empty string values
-// TODO: populate fields with data if exists
-// TODO: save new non-spaced data for user
-// TODO: verify error states
-
 /**
  * @param {{
  *  onAddTargetsClick: (targets: object) => void

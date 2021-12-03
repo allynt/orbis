@@ -7,13 +7,6 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 const ProgressIndicators = ({ data, userOrbState }) => {
   const chartTheme = useChartTheme();
 
-  // const totals = n => n.reduce((a, c) => (a += c), 0);
-
-  // const getTotals = data?.map(obj => {
-  //   const { Year, ...rest } = obj;
-  //   return { Year, totals: totals(Object.values(rest)) };
-  // });
-
   const last5Years = [
     '2016-2017',
     '2017-2018',
