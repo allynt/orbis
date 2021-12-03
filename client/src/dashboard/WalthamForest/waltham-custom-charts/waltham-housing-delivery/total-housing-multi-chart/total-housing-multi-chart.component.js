@@ -40,19 +40,21 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        <VictoryGroup>
-          <VictoryScatter
-            {...props}
-            style={{
-              data: {
-                stroke: darken(color, 0.2),
-                width: scatterWidth,
-                fill: color,
-              },
-            }}
-          />
-          <VictoryLine {...props} style={{ data: { stroke: color } }} />
-        </VictoryGroup>
+        {!!userTargetData ? (
+          <VictoryGroup>
+            <VictoryScatter
+              {...props}
+              style={{
+                data: {
+                  stroke: darken(color, 0.2),
+                  width: scatterWidth,
+                  fill: color,
+                },
+              }}
+            />
+            <VictoryLine {...props} style={{ data: { stroke: color } }} />
+          </VictoryGroup>
+        ) : null}
       </VictoryGroup>
     );
   };
