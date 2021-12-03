@@ -13,6 +13,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { StackedBarChart } from 'dashboard/charts/stacked-bar-chart/stacked-bar-chart.component';
 
 import {
   chartDataSelector,
@@ -20,7 +22,6 @@ import {
   updateTargets,
   userOrbStateSelector,
 } from '../dashboard.slice';
-import { useChartTheme } from '../useChartTheme';
 import {
   SelectScreen,
   TargetScreen,
@@ -58,7 +59,6 @@ const useStyles = makeStyles(theme => ({
 
 const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
-  const chartTheme = useChartTheme();
   const dispatch = useDispatch();
 
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
@@ -68,10 +68,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
     userOrbState = useSelector(userOrbStateSelector(sourceId));
 
   // all data, including 'name', 'version', etc
-  const targetProgress = useSelector(
-      chartDataSelector(sourceId, 'TargetProgress'),
-    ),
-    approvalsGranted = useSelector(
+  const approvalsGranted = useSelector(
       chartDataSelector(sourceId, 'ApprovalsGranted'),
     ),
     progressionVsPlanning = useSelector(
@@ -146,16 +143,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* stacked/grouped bar charts */}
       <div className={styles.barCharts}>
-        {/* <ChartWrapper
+        <ChartWrapper
           title="Progression of Units Relating to Planning Schedule"
           info="This is a test description"
         >
           <StackedBarChart
+            xLabel="Number Of Units"
+            yLabel="Financial Year"
             x="Year"
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
             data={progressionVsPlanningChartData}
           />
-        </ChartWrapper> */}
+        </ChartWrapper>
 
         {/* group/line and stack/line charts */}
         <WalthamHousingDelivery

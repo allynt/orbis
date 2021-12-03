@@ -17,7 +17,7 @@ import { TotalHousingMultiChart } from './total-housing-multi-chart/total-housin
 
 const useStyles = makeStyles(theme => ({
   container: {
-    backgroundColor: '#000',
+    backgroundColor: '#1b2227',
     borderRadius: theme.shape.borderRadius,
     paddingBottom: '1rem',
     height: 'fit-content',
@@ -39,27 +39,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const ALL_TENURE_TYPES = 'All Tenure Types';
+
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
   userOrbState,
 }) => {
   const styles = useStyles({});
-  const [tenureType, setTenureType] = useState('All Tenure Types');
+  const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
 
   /**
    * @param {object[]} data
    */
-  const getTenureType = data => {
-    if (tenureType === 'All Tenure Types') {
-      return data;
-    } else {
-      return data?.map(d => ({
-        Year: d.Year,
-        [tenureType]: d[tenureType],
-      }));
-    }
-  };
+  const getTenureType = data =>
+    tenureType === ALL_TENURE_TYPES
+      ? data
+      : data?.map(d => ({
+          Year: d.Year,
+          [tenureType]: d[tenureType],
+        }));
 
   return (
     <Grid container direction="column" className={styles.container}>

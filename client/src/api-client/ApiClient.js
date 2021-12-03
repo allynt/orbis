@@ -38,7 +38,6 @@ export class ApiClient {
     'users',
     'storage',
     'aois',
-    'dashboard',
   ];
 
   constructor() {
