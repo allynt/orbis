@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import { feature } from '@turf/turf';
 import { format } from 'date-fns';
 import { NotificationManager } from 'react-notifications';
 import { useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ import {
 } from 'data-layers/data-layers.slice';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
+import AreaOfficeContactDetails from './area-office-contact-details.component';
 import { NearestProtectedAreas } from './nearest-protected-areas';
 import ProtectedFeature from './protected-feature/protected-feature.component';
 
@@ -26,10 +28,14 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   dashboard: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     padding: '2rem',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
     overflowY: 'scroll',
+    gap: '1rem',
+  },
+  item: {
+    width: 'calc(50% - 1rem)',
   },
 }));
 
@@ -89,6 +95,8 @@ const NatureScotDashboard = ({ sourceId }) => {
   const selectedAoi = useSelector(selectedAoiSelector);
   const source = useSelector(dataSourceByIdSelector(sourceId));
 
+  console.log('protectedFeatures: ', protectedFeatures);
+
   const proxyUrl =
     source?.metadata?.application?.orbis?.dashboard_component?.proxyUrl;
 
@@ -96,9 +104,12 @@ const NatureScotDashboard = ({ sourceId }) => {
     // Fetch data from IR API.
     const queryApi = async () => {
       try {
+        const body = {
+          feature: feature(selectedAoi.geometry),
+        };
         const response = await apiClient.dashboard.getNatureScotlandIRDashboardData(
           proxyUrl,
-          selectedAoi.geometry,
+          body,
           {
             headers: {
               Authorization: `Bearer ${authToken}`,
@@ -109,9 +120,9 @@ const NatureScotDashboard = ({ sourceId }) => {
 
         setNearestProtectedAreas(response.protected_areas);
         setCaseworks(response.casework);
-        setContactDetails(response.contact_details);
-        // setProtectedFeatures(response.protected_features);
-        setProtectedFeatures(PROTECTED_FEATURES);
+        setContactDetails(response.contact_details?.[0]);
+        setProtectedFeatures(response.protected_features);
+        // setProtectedFeatures(PROTECTED_FEATURES);
       } catch (error) {
         const { message, status } = error;
         NotificationManager.error(
@@ -162,14 +173,14 @@ const NatureScotDashboard = ({ sourceId }) => {
     <Grid
       container
       className={styles.dashboard}
-      rowSpacing={1}
-      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      // rowSpacing={1}
+      // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
     >
-      <Grid item xs={6}>
+      <Grid item className={styles.item}>
         <NearestProtectedAreas data={nearestProtectedAreas} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item className={styles.item}>
         <ChartWrapper
           title="List of Casework"
           info="An expandable table of each relevant casework."
@@ -183,7 +194,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         </ChartWrapper>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item className={styles.item}>
         <ProtectedFeature
           buttons={BUTTONS}
           features={protectedFeatures}
@@ -191,10 +202,8 @@ const NatureScotDashboard = ({ sourceId }) => {
         />
       </Grid>
 
-      <Grid item xs={6}>
-        <ChartWrapper title="Area Office Contact Details">
-          <div>Contact Details</div>
-        </ChartWrapper>
+      <Grid item className={styles.item}>
+        <AreaOfficeContactDetails contactDetails={contactDetails} />
       </Grid>
     </Grid>
   );

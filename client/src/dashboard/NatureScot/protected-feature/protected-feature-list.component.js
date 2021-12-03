@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     '& p': {
       color: '#ffffff',
     },
-    margin: '0.5rem',
+    margin: '0.5rem 0',
     borderRadius: '0.3rem',
   },
   leftSide: {
@@ -94,9 +94,13 @@ const STATUSES = [
 const ProtectedFeatureList = ({ features }) => {
   const styles = useStyles();
 
+  if (!features) return null;
+
+  console.log('features: ', features);
+
   return (
     <List>
-      {features.map(({ id, icon, title, description, type }) => {
+      {features?.map(({ id, icon, title, description, type }) => {
         const status = STATUSES.find(status => status.type === type);
 
         return (
@@ -114,9 +118,9 @@ const ProtectedFeatureList = ({ features }) => {
             }
           >
             <div className={styles.leftSide}>
-              <ListItemAvatar>
+              {/* <ListItemAvatar>
                 <Avatar src={icon} alt={title} />
-              </ListItemAvatar>
+              </ListItemAvatar> */}
 
               <ListItemText
                 primaryTypographyProps={{ variant: 'h4', component: 'span' }}
@@ -133,9 +137,9 @@ const ProtectedFeatureList = ({ features }) => {
             </div>
 
             <div className={styles.status}>
-              <ListItemAvatar>
+              {/* <ListItemAvatar>
                 <Avatar src={status.icon} className={styles[status.type]} />
-              </ListItemAvatar>
+              </ListItemAvatar> */}
 
               <ListItemText
                 primary={status.label}
