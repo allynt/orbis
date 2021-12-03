@@ -108,7 +108,6 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                 "area":
                     suggestion.get("area", None),
                 "distance":
-                    # TODO: THIS SHOULD PROBABLY USE suggestion_bbox INSTEAD OF suggestion_center
                     round(aoi.distance(suggestion_bbox), 2)
                     if aoi and suggestion_bbox else None
             })
