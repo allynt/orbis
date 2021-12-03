@@ -47,6 +47,26 @@ export const WalthamHousingDelivery = ({
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState('All Tenure Types');
 
+  /**
+   * @param {object[]} data
+   */
+  const getTenureType = data => {
+    if (tenureType === 'All Tenure Types') {
+      return data;
+    } else {
+      const result = data.map(datum => {
+        console.log('tenureType: ', tenureType);
+        console.log('datum: ', datum);
+        return {
+          Year: datum.Year,
+          [tenureType]: datum[tenureType],
+        };
+      });
+      console.log('result: ', result);
+      return result;
+    }
+  };
+
   return (
     <Grid container direction="column" className={styles.container}>
       <Grid item className={styles.header}>
@@ -70,7 +90,7 @@ export const WalthamHousingDelivery = ({
           info="This is a test description"
         >
           <TenureHousingMultiChart
-            apiData={tenureHousingDeliveryChartData}
+            apiData={getTenureType(tenureHousingDeliveryChartData)}
             userTargetData={stringToNumberTransformer(
               userOrbState?.marketHousing,
             )}
