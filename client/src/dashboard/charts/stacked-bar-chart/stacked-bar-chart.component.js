@@ -6,20 +6,22 @@ import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
+ * xLabel?: string
+ * yLabel?: string
  *  x: string
  *  ranges: string[]
- *  xLabel?: string
- *  yLabel?: string
  *  data: any[]
  * }} props
  */
 const StackedBarChart = ({
-  x = 'x',
-  ranges = ['y'],
   xLabel = '',
   yLabel = '',
+  x = 'x',
+  ranges = ['y'],
   data,
 }) => {
+  if (!data) return null;
+
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
     return (
@@ -38,8 +40,6 @@ const StackedBarChart = ({
       </VictoryStack>
     );
   };
-
-  if (!data) return null;
 
   return (
     <BaseChart

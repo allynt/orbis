@@ -33,6 +33,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const DEFAULT_TEXT = 'Select Type of Target';
+
 const Wrapper = ({ children }) => {
   const styles = useStyles({});
   return (
@@ -55,8 +57,7 @@ const Wrapper = ({ children }) => {
  */
 const SelectScreen = ({ onNextClick }) => {
   const styles = useStyles({});
-  const defaultText = 'Select Type of Target';
-  const [selectedDataset, setSelectedDataset] = useState(defaultText);
+  const [selectedDataset, setSelectedDataset] = useState(DEFAULT_TEXT);
   return (
     <Wrapper>
       <Grid
@@ -67,8 +68,8 @@ const SelectScreen = ({ onNextClick }) => {
         inputProps={{ 'aria-label': 'Waltham Forest datasets' }}
         onChange={({ target: { value } }) => setSelectedDataset(value)}
       >
-        <MenuItem value={defaultText} disabled>
-          {defaultText}
+        <MenuItem value={DEFAULT_TEXT} disabled>
+          {DEFAULT_TEXT}
         </MenuItem>
         {Object.entries(targetDatasets).map(([key, value]) => (
           <MenuItem key={key} value={key}>
@@ -78,7 +79,7 @@ const SelectScreen = ({ onNextClick }) => {
       </Grid>
       <Grid item container justifyContent="flex-end" className={styles.buttons}>
         <Button
-          disabled={selectedDataset === defaultText}
+          disabled={selectedDataset === DEFAULT_TEXT}
           onClick={() => onNextClick(selectedDataset)}
         >
           Next
@@ -87,8 +88,6 @@ const SelectScreen = ({ onNextClick }) => {
     </Wrapper>
   );
 };
-
-// TODO: filter out empty string values
 
 /**
  * @param {{

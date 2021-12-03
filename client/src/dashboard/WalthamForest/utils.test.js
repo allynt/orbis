@@ -1,4 +1,8 @@
-import { groupedDataTransformer, lineDataTransformer } from './utils';
+import {
+  groupedDataTransformer,
+  lineDataTransformer,
+  stringToNumberTransformer,
+} from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
   describe('groupedDataTransformer', () => {
@@ -64,6 +68,56 @@ describe('Waltham Forest Data Transformers', () => {
 
       const result = lineDataTransformer(data);
       expect(result).toEqual(data);
+    });
+  });
+
+  describe('stringToNumberTransformer', () => {
+    it('converts string values to numbers', () => {
+      const input = [
+        {
+          x: 'key-1',
+          y: '123',
+        },
+      ];
+
+      const result = stringToNumberTransformer(input);
+      expect(result).toEqual([
+        {
+          x: 'key-1',
+          y: 123,
+        },
+      ]);
+    });
+
+    it('does not affect values that are already numbers', () => {
+      const input = [
+          {
+            x: 'key-1',
+            y: '123',
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ],
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = stringToNumberTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is not present', () => {
+      const result = stringToNumberTransformer(undefined);
+      expect(result).toBeUndefined();
     });
   });
 });

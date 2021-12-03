@@ -16,6 +16,8 @@ import { BaseChart } from '../base-chart/base-chart.component';
 const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
   const chartTheme = useChartTheme();
 
+  if (!data) return null;
+
   const renderGroupedBarChart = width => {
     const { barWidth, offset } = GroupedWidthCalculator(data, width);
 
@@ -34,8 +36,6 @@ const GroupedBarChart = ({ xLabel = '', yLabel = '', data }) => {
       </VictoryGroup>
     );
   };
-
-  if (!data) return null;
 
   return (
     <BaseChart

@@ -84,6 +84,7 @@ export class SubClient {
    * @param {RequestInit} options
    */
   async makeAuthenticatedRequest(url, options = {}) {
+    // TODO: 'Authorization' and '...options.headers' switched, make sure this doesn't break other usages of this
     return this.makeRequest(url, {
       ...options,
       headers: {

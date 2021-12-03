@@ -1,21 +1,33 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
+export const housingTenureTypes = [
+  'All Tenure Types',
+  'Affordable Rent',
+  'Market',
+  'Intermediate',
+  'Private Rented Sector',
+];
+
 export const walthamApiMetadata = [
   {
+    datasetName: 'TargetProgress',
+    url: '/wfc/mock/target_progress/v1/',
+  },
+  {
     datasetName: 'ApprovalsGranted',
-    url: './mock-data/waltham-forest/mock_approvals_granted',
+    url: '/wfc/mock/approvals_granted/v1/',
   },
   {
     datasetName: 'ProgressionVsPlanning',
-    url: './mock-data/waltham-forest/mock_progression_vs_planning_schedule',
+    url: '/wfc/mock/progression_vs_planning_schedule/v1/',
   },
   {
     datasetName: 'TenureHousingDelivery',
-    url: './mock-data/waltham-forest/mock_tenure_type_housing_delivery',
+    url: '/wfc/mock/tenure_type_housing_delivery/v1/',
   },
   {
     datasetName: 'TotalHousingDelivery',
-    url: './mock-data/waltham-forest/mock_total_housing_delivery',
+    url: '/wfc/mock/total_housing_delivery/v1/',
   },
 ];
 
@@ -35,16 +47,16 @@ export const targetDatasets = {
 };
 
 export const targetInputFields = [
-  '2011 - 2012',
-  '2012 - 2013',
-  '2013 - 2014',
-  '2014 - 2015',
-  '2015 - 2016',
-  '2016 - 2017',
-  '2017 - 2018',
-  '2018 - 2019',
-  '2019 - 2020',
-  '2020 - 2021',
+  '2011-2012',
+  '2012-2013',
+  '2013-2014',
+  '2014-2015',
+  '2015-2016',
+  '2016-2017',
+  '2017-2018',
+  '2018-2019',
+  '2019-2020',
+  '2020-2021',
 ];
 
 export const HOUSING_APPROVAL_BUTTON_LABELS = [

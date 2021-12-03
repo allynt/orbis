@@ -13,31 +13,29 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { StackedBarChart } from 'dashboard/charts/stacked-bar-chart/stacked-bar-chart.component';
 
-import { ChartWrapper } from '../charts/chart-wrapper.component';
-import { GroupedBarChart } from '../charts/grouped-bar-chart/grouped-bar-chart.component';
-import { LineChart } from '../charts/line-chart/line-chart.component';
-import { ProgressIndicatorChart } from '../charts/progress-indicator-chart/progress-indicator-chart.component';
-import { StackedBarChart } from '../charts/stacked-bar-chart/stacked-bar-chart.component';
 import {
   chartDataSelector,
-  fetchChartData,
+  fetchDashboardData,
   updateTargets,
   userOrbStateSelector,
 } from '../dashboard.slice';
-import * as progressData from '../mock-data/waltham-forest/mock_target_progress';
-import { useChartTheme } from '../useChartTheme';
-import { HousingApprovalsComponent } from './charts/housing-approvals.component';
 import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer, lineDataTransformer } from './utils';
+import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
+import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
+import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   dashboard: {
     overflowY: 'scroll',
+    width: '100%',
   },
   header: {
     padding: '2rem',
@@ -51,7 +49,6 @@ const useStyles = makeStyles(theme => ({
   barCharts: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'stretch',
     padding: '2rem',
     gap: '1rem',
   },
@@ -62,14 +59,13 @@ const useStyles = makeStyles(theme => ({
 
 const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
-  const chartTheme = useChartTheme();
   const dispatch = useDispatch();
 
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
   const user = useSelector(userSelector),
-    userOrbState = useSelector(userOrbStateSelector);
+    userOrbState = useSelector(userOrbStateSelector(sourceId));
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -87,7 +83,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url }) =>
-      dispatch(fetchChartData(sourceId, datasetName, url)),
+      // @ts-ignore
+      dispatch(fetchDashboardData({ sourceId, datasetName, url })),
     );
   }, [sourceId, dispatch]);
 
@@ -100,7 +97,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
    * @param {object} targets
    */
   const handleAddTargetsClick = targets => {
-    dispatch(updateTargets(sourceId, targets, user));
+    dispatch(updateTargets({ sourceId, targets, user }));
     closeDialog();
   };
 
@@ -138,18 +135,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
-        {progressData.properties.map((property, i) => (
-          <ChartWrapper
-            key={property.name}
-            title={property.title}
-            info="This is a test description"
-          >
-            <ProgressIndicatorChart
-              property={property}
-              color={chartTheme.colors[i]}
-            />
-          </ChartWrapper>
-        ))}
+        <ProgressIndicators
+          data={totalHousingDelivery}
+          userOrbState={userOrbState}
+        />
       </div>
 
       {/* stacked/grouped bar charts */}
@@ -159,44 +148,23 @@ const WalthamForestDashboard = ({ sourceId }) => {
           info="This is a test description"
         >
           <StackedBarChart
+            xLabel="Number Of Units"
+            yLabel="Financial Year"
             x="Year"
-            xLabel="Financial Year"
-            yLabel="Number of Units"
             ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
             data={progressionVsPlanningChartData}
           />
         </ChartWrapper>
-        <ChartWrapper
-          title="Total Housing Delivery 2016-2021"
-          info="This is a test description"
-        >
-          <GroupedBarChart
-            xLabel="Year"
-            yLabel="Housing Delivery in Units"
-            data={totalHousingDeliveryChartData}
-          />
-        </ChartWrapper>
-        <ChartWrapper
-          title="Housing Delivery by Tenure Type 2016-2021"
-          info="This is a test description"
-        >
-          <StackedBarChart
-            x="Year"
-            xLabel="Financial Year"
-            yLabel="Housing Delivery in Units"
-            ranges={[
-              'Affordable Rent',
-              'Intermediate',
-              'Market',
-              'Social Rented',
-              'Private Rented Sector',
-            ]}
-            data={tenureHousingDeliveryChartData}
-          />
-        </ChartWrapper>
+
+        {/* group/line and stack/line charts */}
+        <WalthamHousingDelivery
+          totalHousingDeliveryChartData={totalHousingDeliveryChartData}
+          tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+          userOrbState={userOrbState}
+        />
       </div>
 
-      {/* line chart */}
+      {/* big multi-line chart */}
       <div className={styles.lineCharts}>
         <HousingApprovalsComponent
           x="Month"

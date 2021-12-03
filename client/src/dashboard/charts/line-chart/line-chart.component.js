@@ -9,18 +9,18 @@ import { BaseChart } from '../base-chart/base-chart.component';
 
 /**
  * @param {{
- *  x: string
- *  ranges: string[]
  *  xLabel?: string
  *  yLabel?: string
+ *  x: string
+ *  ranges: string[]
  *  data: any[]
  * }} props
  */
 const LineChart = ({
-  x = 'x',
-  ranges = ['y'],
   xLabel = '',
   yLabel = '',
+  x = 'x',
+  ranges = ['y'],
   data,
 }) => {
   const chartTheme = useChartTheme();
@@ -34,7 +34,6 @@ const LineChart = ({
           x,
           y: range,
         };
-
       return (
         <VictoryGroup key={range}>
           <VictoryLine {...props} style={{ data: { stroke: color } }} />
@@ -52,8 +51,6 @@ const LineChart = ({
       );
     });
   };
-
-  if (!data) return null;
 
   return (
     <BaseChart xLabel={xLabel} yLabel={yLabel} renderChart={renderLineChart} />

@@ -1,14 +1,15 @@
 import React from 'react';
 
-import * as data from '../../mock-data/waltham-forest/mock_approvals_granted';
+import * as data from 'dashboard/mock-data/waltham-forest/mock_approvals_granted';
+
 import { HousingApprovalsComponent } from './housing-approvals.component';
 
 export default {
-  title: 'Dashboard/WalthamForest/Charts/HousingApprovals',
+  title: 'Dashboard/Waltham Forest/Charts/Housing Approvals',
 };
 
-const Template = args => {
-  return <HousingApprovalsComponent {...args} data={args.data} />;
+const Template = ({ data, ...props }) => {
+  return <HousingApprovalsComponent {...props} data={data} />;
 };
 
 export const Default = Template.bind({});

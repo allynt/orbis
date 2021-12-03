@@ -42,3 +42,16 @@ export const lineDataTransformer = data => {
     uniqueKeys.reduce((acc, cur) => ({ ...acc, [cur]: obj[cur] ?? null }), {}),
   );
 };
+
+/**
+ * This function converts any 'y' values from strings to numbers,
+ * as Victory can only render number values, and will break with strings.
+ * @param {{x: string, y: string|number}[]} data
+ */
+export const stringToNumberTransformer = data => {
+  if (!data) return;
+
+  return data.map(obj =>
+    typeof obj.y === 'number' ? obj : { ...obj, y: +obj.y },
+  );
+};
