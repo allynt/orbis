@@ -1,6 +1,4 @@
 """ Test AOIs. """
-import json
-
 import pytest
 from factory.faker import (
     Faker as FactoryFaker
@@ -111,7 +109,7 @@ class TestAoiSerializer:
         )
 
         serializer = AoiCreateSerializer(instance=aoi)
-        serialized_geometry = json.loads(serializer.data["geometry"])
+        serialized_geometry = serializer.data["geometry"]
 
         assert serialized_geometry["type"] == "Point"
 
@@ -127,7 +125,7 @@ class TestAoiSerializer:
         )
 
         serializer = AoiCreateSerializer(instance=aoi)
-        serialized_geometry = json.loads(serializer.data["geometry"])
+        serialized_geometry = serializer.data["geometry"]
 
         assert serialized_geometry["type"] == "Point"
 
@@ -143,7 +141,7 @@ class TestAoiSerializer:
         )
 
         serializer = AoiCreateSerializer(instance=aoi)
-        serialized_geometry = json.loads(serializer.data["geometry"])
+        serialized_geometry = serializer.data["geometry"]
 
         assert serialized_geometry["type"] == "Polygon"
 
@@ -163,7 +161,7 @@ class TestAoiSerializer:
         )
 
         serializer = AoiCreateSerializer(instance=aoi)
-        serialized_geometry = json.loads(serializer.data["geometry"])
+        serialized_geometry = serializer.data["geometry"]
 
         assert serialized_geometry["type"] == "Polygon"
 
@@ -255,14 +253,10 @@ class TestAoiViewSet:
         assert status.is_success(response.status_code)
         assert len(content) == 10
 
-        points = [
-            aoi
-            for aoi in content if json.loads(aoi["geometry"])["type"] == "Point"
-        ]
+        points = [aoi for aoi in content if aoi["geometry"]["type"] == "Point"]
         assert len(points) == 5
         polygons = [
-            aoi for aoi in content
-            if json.loads(aoi["geometry"])["type"] == "Polygon"
+            aoi for aoi in content if aoi["geometry"]["type"] == "Polygon"
         ]
         assert len(polygons) == 5
 
