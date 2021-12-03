@@ -30,6 +30,8 @@ class Aoi(gis_models.Model):
             )
         ]
 
+    PRECISION = 12
+
     objects = AoiQuerySet.as_manager()
 
     name = models.CharField(
