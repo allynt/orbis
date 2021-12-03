@@ -54,7 +54,6 @@ export class ApiClient {
     this.users = new UsersClient();
     this.storage = new StorageClient();
     this.aois = new AoiClient();
-    this.dashboard = new DashboardClient();
     this.apiHost =
       process.env.NODE_ENV === 'development'
         ? process.env.REACT_APP_API_HOST
