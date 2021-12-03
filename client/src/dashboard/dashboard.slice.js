@@ -31,15 +31,6 @@ const dashboardSlice = createSlice({
   },
 });
 
-// export const fetchChartData = (
-//   source_id,
-//   datasetName,
-//   url,
-// ) => async dispatch => {
-//   const result = await import(`${url}.js`);
-//   dispatch(setChartData({ source_id, datasetName, data: result.default }));
-// };
-
 export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
   async (props, { getState, rejectWithValue, dispatch }) => {

@@ -11,23 +11,23 @@ export const housingTenureTypes = [
 export const walthamApiMetadata = [
   {
     datasetName: 'TargetProgress',
-    url: 'proxy/data/wfc/mock/target_progress/v1/',
+    url: '/wfc/mock/target_progress/v1/',
   },
   {
     datasetName: 'ApprovalsGranted',
-    url: 'proxy/data/wfc/mock/approvals_granted/v1/',
+    url: '/wfc/mock/approvals_granted/v1/',
   },
   {
     datasetName: 'ProgressionVsPlanning',
-    url: 'proxy/data/wfc/mock/progression_vs_planning_schedule/v1/',
+    url: '/wfc/mock/progression_vs_planning_schedule/v1/',
   },
   {
     datasetName: 'TenureHousingDelivery',
-    url: 'proxy/data/wfc/mock/tenure_type_housing_delivery/v1/',
+    url: '/wfc/mock/tenure_type_housing_delivery/v1/',
   },
   {
     datasetName: 'TotalHousingDelivery',
-    url: 'proxy/data/wfc/mock/total_housing_delivery/v1/',
+    url: '/wfc/mock/total_housing_delivery/v1/',
   },
 ];
 

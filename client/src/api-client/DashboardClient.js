@@ -11,6 +11,7 @@ export class DashboardClient extends SubClient {
       method: 'POST',
       body: JSON.stringify(aoi),
     });
+    return response.json();
   }
 
   /**
