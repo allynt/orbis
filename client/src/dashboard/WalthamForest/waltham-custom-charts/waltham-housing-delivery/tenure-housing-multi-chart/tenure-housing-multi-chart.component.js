@@ -22,8 +22,6 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 const TenureHousingMultiChart = ({ apiData, userTargetData }) => {
   const chartTheme = useChartTheme();
 
-  // TODO: "No Data" default component, or just not render?
-
   if (!apiData) return null;
 
   const renderTenureHousingMultiChart = width => {

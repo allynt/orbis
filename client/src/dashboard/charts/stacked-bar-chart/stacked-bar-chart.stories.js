@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { BaseChart } from '../base-chart/base-chart.component';
 import { StackedBarChart } from './stacked-bar-chart.component';
 
 const data = [
