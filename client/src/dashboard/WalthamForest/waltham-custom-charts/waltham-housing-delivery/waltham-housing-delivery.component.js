@@ -54,16 +54,10 @@ export const WalthamHousingDelivery = ({
     if (tenureType === 'All Tenure Types') {
       return data;
     } else {
-      const result = data.map(datum => {
-        console.log('tenureType: ', tenureType);
-        console.log('datum: ', datum);
-        return {
-          Year: datum.Year,
-          [tenureType]: datum[tenureType],
-        };
-      });
-      console.log('result: ', result);
-      return result;
+      return data?.map(d => ({
+        Year: d.Year,
+        [tenureType]: d[tenureType],
+      }));
     }
   };
 
@@ -94,6 +88,9 @@ export const WalthamHousingDelivery = ({
             userTargetData={stringToNumberTransformer(
               userOrbState?.marketHousing,
             )}
+            tenureType={
+              tenureType !== 'All Tenure Types' ? tenureType : undefined
+            }
           />
         </ChartWrapper>
 

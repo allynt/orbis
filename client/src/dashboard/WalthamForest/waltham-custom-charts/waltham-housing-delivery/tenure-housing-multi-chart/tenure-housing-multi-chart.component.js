@@ -17,9 +17,10 @@ import { useChartTheme } from 'dashboard/useChartTheme';
  * @param {{
  *  apiData: any[]
  *  userTargetData: any[]
+ *  tenureType: string
  * }} props
  */
-const TenureHousingMultiChart = ({ apiData, userTargetData }) => {
+const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const chartTheme = useChartTheme();
 
   if (!apiData) return null;
@@ -27,14 +28,15 @@ const TenureHousingMultiChart = ({ apiData, userTargetData }) => {
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    // BREAKS WITH MISSING RANGE VALUES
-    const ranges = [
-      'Affordable Rent',
-      'Intermediate',
-      'Market',
-      'Social Rented',
-      'Private Rented Sector',
-    ];
+    const ranges = !!tenureType
+      ? [tenureType]
+      : [
+          'Affordable Rent',
+          'Intermediate',
+          'Market',
+          'Social Rented',
+          'Private Rented Sector',
+        ];
 
     const color = chartTheme.colors[5],
       scatterWidth = width / 2,
