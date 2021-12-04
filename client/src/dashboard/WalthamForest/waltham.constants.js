@@ -10,10 +10,6 @@ export const housingTenureTypes = [
 
 export const walthamApiMetadata = [
   {
-    datasetName: 'TargetProgress',
-    url: '/wfc/mock/target_progress/v1/',
-  },
-  {
     datasetName: 'ApprovalsGranted',
     url: '/wfc/mock/approvals_granted/v1/',
   },
@@ -59,7 +55,7 @@ export const targetInputFields = [
   '2020-2021',
 ];
 
-export const HOUSING_APPROVAL_BUTTON_LABELS = [
-  { label: 'Monthly' },
-  { label: 'Cumulative' },
-];
+export const HOUSING_APPROVAL_DATA_TYPES = {
+  monthly: 'Monthly',
+  cumulative: 'Cumulative',
+};

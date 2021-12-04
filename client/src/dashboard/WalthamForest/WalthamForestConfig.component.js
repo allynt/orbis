@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   barCharts: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
     padding: '2rem',
     gap: '1rem',
   },
@@ -102,13 +102,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   // only arrays of chart data, transformed where needed and cached
+  // TODO: MOVE THESE?
   const totalHousingDeliveryChartData = useMemo(
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
       [totalHousingDelivery],
-    ),
-    approvalsGrantedChartData = useMemo(
-      () => lineDataTransformer(approvalsGranted?.properties[0].data),
-      [approvalsGranted],
     ),
     progressionVsPlanningChartData = useMemo(
       () => progressionVsPlanning?.properties[0].data,
@@ -171,7 +168,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           xLabel="Year"
           yLabel="No. Housing Approvals Granted"
           ranges={['2019', '2020', '2021']}
-          data={approvalsGrantedChartData}
+          data={approvalsGranted?.properties}
         />
       </div>
 

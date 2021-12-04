@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Grid, ToggleButtonGroup, ToggleButton } from '@astrosat/astrosat-ui';
 
@@ -6,28 +6,29 @@ import { VictoryLegend } from 'victory';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
-import * as dataInput from 'dashboard/mock-data/waltham-forest/mock_approvals_granted';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-import { HOUSING_APPROVAL_BUTTON_LABELS } from '../../waltham.constants';
+import { lineDataTransformer } from '../../utils';
+import { HOUSING_APPROVAL_DATA_TYPES } from '../../waltham.constants';
 
 const HousingApprovalsComponent = ({
-  data = dataInput.properties,
-  x = 'Month',
-  ranges = ['2019', '2020'],
-  xLabel = 'Year',
-  yLabel = 'Data Property Name / Unit',
+  data,
+  x = 'x',
+  ranges = ['y'],
+  xLabel = '',
+  yLabel = '',
 }) => {
   const chartTheme = useChartTheme();
-  let chartNames = ranges;
-  const [showing, setShowing] = useState(
-    HOUSING_APPROVAL_BUTTON_LABELS[0].label,
-  );
+  const [showing, setShowing] = useState(HOUSING_APPROVAL_DATA_TYPES.monthly);
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
     setShowing(newValue);
   };
+  const dataByType = useMemo(
+    () => lineDataTransformer(data?.find(p => p.name === showing)?.data),
+    [data, showing],
+  );
 
   return (
     <ChartWrapper
@@ -35,7 +36,7 @@ const HousingApprovalsComponent = ({
       info="This shows the number of housing approvals granted over time"
     >
       <Grid container spacing={1}>
-        <Grid container spacing={1}>
+        <Grid item container spacing={1}>
           <div style={{ display: 'flex', width: '33%', height: '5rem' }}>
             <VictoryLegend
               x={50}
@@ -48,17 +49,17 @@ const HousingApprovalsComponent = ({
               }}
               data={[
                 {
-                  name: chartNames[0],
+                  name: ranges[0],
                   symbol: { fill: chartTheme.colors[0], type: 'line' },
                 },
                 {
-                  name: chartNames[1],
+                  name: ranges[1],
                   symbol: { fill: chartTheme.colors[1], type: 'line' },
                 },
               ]}
             />
           </div>
-          <Grid item xs={4}></Grid>
+
           <Grid item xs={4}>
             <ToggleButtonGroup
               size="small"
@@ -66,28 +67,23 @@ const HousingApprovalsComponent = ({
               orientation="horizontal"
               onChange={handleToggleClick}
             >
-              <ToggleButton
-                key={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
-                value={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
-              >
-                {HOUSING_APPROVAL_BUTTON_LABELS[0].label}
+              <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.monthly}>
+                {HOUSING_APPROVAL_DATA_TYPES.monthly}
               </ToggleButton>
-              <ToggleButton
-                key={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
-                value={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
-              >
-                {HOUSING_APPROVAL_BUTTON_LABELS[1].label}
+              <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.cumulative}>
+                {HOUSING_APPROVAL_DATA_TYPES.cumulative}
               </ToggleButton>
             </ToggleButtonGroup>
           </Grid>
         </Grid>
+
         <Grid item xs={12}>
           <LineChart
             x={x}
             ranges={ranges}
             xLabel={xLabel}
             yLabel={yLabel}
-            data={data?.find(p => p.name === showing)?.data}
+            data={dataByType}
           />
         </Grid>
       </Grid>

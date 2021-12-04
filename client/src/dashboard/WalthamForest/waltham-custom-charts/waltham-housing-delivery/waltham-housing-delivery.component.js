@@ -9,7 +9,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import { stringToNumberTransformer } from 'dashboard/WalthamForest/utils';
+import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 
 import { housingTenureTypes } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
@@ -84,9 +84,7 @@ export const WalthamHousingDelivery = ({
         >
           <TenureHousingMultiChart
             apiData={getTenureType(tenureHousingDeliveryChartData)}
-            userTargetData={stringToNumberTransformer(
-              userOrbState?.marketHousing,
-            )}
+            userTargetData={userTargetTransformer(userOrbState?.marketHousing)}
             tenureType={
               tenureType !== 'All Tenure Types' ? tenureType : undefined
             }
@@ -99,9 +97,7 @@ export const WalthamHousingDelivery = ({
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
-            userTargetData={stringToNumberTransformer(
-              userOrbState?.totalHousing,
-            )}
+            userTargetData={userTargetTransformer(userOrbState?.totalHousing)}
           />
         </ChartWrapper>
       </Grid>
