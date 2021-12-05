@@ -6,9 +6,9 @@ import {
   MenuItem,
   Typography,
   makeStyles,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
-
-import { VictoryLegend } from 'victory';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
@@ -39,9 +39,18 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     gap: '1rem',
   },
+  buttons: {
+    width: '40%',
+    marginLeft: '60%',
+    marginBottom: '1rem',
+  },
 }));
 
-const ALL_TENURE_TYPES = 'All Tenure Types';
+const ALL_TENURE_TYPES = 'All Tenure Types',
+  DATA_TYPES = {
+    gross: 'Gross',
+    net: 'Net',
+  };
 
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
@@ -50,6 +59,12 @@ export const WalthamHousingDelivery = ({
 }) => {
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
+  const [selectedDataType, setSelectedDataType] = useState(DATA_TYPES.net);
+
+  const handleToggleClick = (_, type) => {
+    if (!type) return;
+    setSelectedDataType(type);
+  };
 
   /**
    * @param {object[]} data
@@ -94,8 +109,24 @@ export const WalthamHousingDelivery = ({
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
+          <ToggleButtonGroup
+            size="small"
+            value={selectedDataType}
+            orientation="horizontal"
+            onChange={handleToggleClick}
+            className={styles.buttons}
+          >
+            <ToggleButton value={DATA_TYPES.gross}>
+              {DATA_TYPES.gross}
+            </ToggleButton>
+            <ToggleButton value={DATA_TYPES.net}>{DATA_TYPES.net}</ToggleButton>
+          </ToggleButtonGroup>
           <TenureHousingMultiChart
-            apiData={getTenureType(tenureHousingDeliveryChartData)}
+            apiData={getTenureType(
+              tenureHousingDeliveryChartData?.find(
+                d => d.name === selectedDataType,
+              )?.data,
+            )}
             userTargetData={userTargetTransformer(userOrbState?.marketHousing)}
             tenureType={
               tenureType !== 'All Tenure Types' ? tenureType : undefined

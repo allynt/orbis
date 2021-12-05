@@ -1,28 +1,67 @@
 import React from 'react';
 
-import { VictoryLegend } from 'victory';
+import { Grid, makeStyles } from '@astrosat/astrosat-ui';
+
+const useStyles = makeStyles(theme => ({
+  apiLegend: {
+    width: 'fit-content',
+    maxHeight: '5rem',
+  },
+  userTarget: {
+    width: 'fit-content',
+  },
+}));
+
+// TODO: use width for responsive sizing
 
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
+  const styles = useStyles({});
   return (
-    <div style={{ display: 'flex', width: '100%', height: '5rem' }}>
-      <VictoryLegend
-        orientation="vertical"
-        data={apiLegendData}
-        style={{
-          labels: { fontSize: width / 10, fill: '#fff' },
-        }}
-      />
+    <Grid container justifyContent="space-between" alignItems="flex-start">
+      <Grid
+        item
+        container
+        direction="column"
+        wrap="wrap"
+        className={styles.apiLegend}
+      >
+        {apiLegendData?.map(({ name, color }) => {
+          return (
+            <Grid item container alignItems="center">
+              {/* creates square with correct color */}
+              <div
+                style={{
+                  width: '1rem',
+                  height: '1rem',
+                  backgroundColor: `${color}`,
+                  marginRight: '1rem',
+                }}
+              />
+              <span
+                style={{
+                  marginRight: '1rem',
+                }}
+              >
+                {name}
+              </span>
+            </Grid>
+          );
+        })}
+      </Grid>
 
-      {!!targetLegendData ? (
-        <VictoryLegend
-          orientation="vertical"
-          data={targetLegendData}
+      <Grid item container alignItems="center" className={styles.userTarget}>
+        {/* creates line with correct color */}
+        <div
           style={{
-            labels: { fontSize: width / 10, fill: '#fff' },
+            width: '3rem',
+            height: '0.125rem',
+            backgroundColor: `${targetLegendData.color}`,
+            marginRight: '1rem',
           }}
         />
-      ) : null}
-    </div>
+        <span>{targetLegendData.name}</span>
+      </Grid>
+    </Grid>
   );
 };
 

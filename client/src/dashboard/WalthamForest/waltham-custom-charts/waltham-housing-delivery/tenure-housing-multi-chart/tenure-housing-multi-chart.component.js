@@ -12,6 +12,7 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 
 /**
  * @param {{
@@ -21,9 +22,46 @@ import { useChartTheme } from 'dashboard/useChartTheme';
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  const chartTheme = useChartTheme();
+  // const chartTheme = useChartTheme();
 
   if (!apiData) return null;
+
+  const apiLegendData = [
+      {
+        name: 'Affordable Rent',
+        color: '#37e5d8',
+      },
+      {
+        name: 'Intermediate',
+        color: '#75b7b2',
+      },
+      {
+        name: 'Market',
+        color: '#adeab0',
+      },
+      {
+        name: 'Social Rented',
+        color: '#05c3ff',
+      },
+      {
+        name: 'Private Rented Sector',
+        color: '#d6ea69',
+      },
+    ],
+    targetLegendData = {
+      name: 'Housing Requirement',
+      color: '#d13aff',
+    };
+
+  const renderTenureHousingLegend = width => {
+    return (
+      <WalthamCustomLegend
+        apiLegendData={apiLegendData}
+        targetLegendData={!!userTargetData ? targetLegendData : null}
+        width={width}
+      />
+    );
+  };
 
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
@@ -38,7 +76,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
           'Private Rented Sector',
         ];
 
-    const color = chartTheme.colors[5],
+    const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
         data: userTargetData,
@@ -90,6 +128,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       yLabel="Housing Delivery in Units"
       xLabel="Year"
       renderChart={renderTenureHousingMultiChart}
+      renderLegend={renderTenureHousingLegend}
     />
   );
 };

@@ -17,19 +17,17 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const apiLegendData = [
       {
         name: 'Total Gross',
-        symbol: { fill: '#37e5d8', type: 'square' },
+        color: '#37e5d8',
       },
       {
         name: 'Total Net',
-        symbol: { fill: '#8189f3', type: 'square' },
+        color: '#8189f3',
       },
     ],
-    targetLegendData = [
-      {
-        name: 'Total Net',
-        symbol: { fill: '#d13aff', type: 'minus' },
-      },
-    ];
+    targetLegendData = {
+      name: 'Housing Requirement',
+      color: '#d13aff',
+    };
 
   const renderTotalHousingLegend = width => {
     return (

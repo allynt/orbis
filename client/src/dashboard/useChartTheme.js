@@ -96,7 +96,8 @@ export const useChartTheme = () => {
       padding: { left: 80, top: 20, bottom: 60, right: 10 },
     }),
     stack: {
-      colorScale: colors,
+      // changed this from 'colors', so that colors match legend
+      colorScale: ['#37e5d8', '#75b7b2', '#adeab0', '#05c3ff', '#d6ea69'],
     },
     legend: {
       colorScale: colors,
