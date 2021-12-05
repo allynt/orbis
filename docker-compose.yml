@@ -29,7 +29,7 @@ services:
       - "8000:8000"
 
   client:
-    image: node:16.13.1
+    image: node:12.13.1
     tty: true
     environment:
       REACT_APP_API_HOST: http://localhost:8000
