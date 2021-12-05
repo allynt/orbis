@@ -6,14 +6,14 @@ import deepmerge from 'deepmerge';
 // * Colors
 // *
 const colors = [
-  '#f6be00',
-  '#37e5d8',
-  '#05c3ff',
-  '#75b7b2',
-  '#d6ea69',
-  '#8189f3',
-  '#d76781',
-  '#ffa048',
+  '#f6be00', // gold
+  '#37e5d8', // cyan
+  '#05c3ff', // blue
+  '#75b7b2', // surf green
+  '#d6ea69', // yellow
+  '#8189f3', // purple
+  '#d76781', // red
+  '#ffa048', // orange
 ];
 
 const baseProps = {

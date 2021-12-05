@@ -19,15 +19,19 @@ const HousingApprovalsComponent = ({
   yLabel = '',
 }) => {
   const chartTheme = useChartTheme();
-  const [showing, setShowing] = useState(HOUSING_APPROVAL_DATA_TYPES.monthly);
+  const [selectedDataType, setSelectedDataType] = useState(
+    HOUSING_APPROVAL_DATA_TYPES.monthly,
+  );
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
-    setShowing(newValue);
+    setSelectedDataType(newValue);
   };
+
   const dataByType = useMemo(
-    () => lineDataTransformer(data?.find(p => p.name === showing)?.data),
-    [data, showing],
+    () =>
+      lineDataTransformer(data?.find(p => p.name === selectedDataType)?.data),
+    [data, selectedDataType],
   );
 
   return (
@@ -63,7 +67,7 @@ const HousingApprovalsComponent = ({
           <Grid item xs={4}>
             <ToggleButtonGroup
               size="small"
-              value={showing}
+              value={selectedDataType}
               orientation="horizontal"
               onChange={handleToggleClick}
             >

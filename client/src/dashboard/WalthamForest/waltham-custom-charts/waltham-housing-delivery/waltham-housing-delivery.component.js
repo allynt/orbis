@@ -8,6 +8,8 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { VictoryLegend } from 'victory';
+
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 
@@ -79,6 +81,16 @@ export const WalthamHousingDelivery = ({
 
       <Grid item className={styles.charts}>
         <ChartWrapper
+          title="Total Housing Delivery"
+          info="This is a test description"
+        >
+          <TotalHousingMultiChart
+            apiData={totalHousingDeliveryChartData}
+            userTargetData={userTargetTransformer(userOrbState?.totalHousing)}
+          />
+        </ChartWrapper>
+
+        <ChartWrapper
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
@@ -88,16 +100,6 @@ export const WalthamHousingDelivery = ({
             tenureType={
               tenureType !== 'All Tenure Types' ? tenureType : undefined
             }
-          />
-        </ChartWrapper>
-
-        <ChartWrapper
-          title="Total Housing Delivery"
-          info="This is a test description"
-        >
-          <TotalHousingMultiChart
-            apiData={totalHousingDeliveryChartData}
-            userTargetData={userTargetTransformer(userOrbState?.totalHousing)}
           />
         </ChartWrapper>
       </Grid>

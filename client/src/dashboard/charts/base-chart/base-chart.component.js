@@ -11,9 +11,10 @@ import { useChartTheme } from '../../useChartTheme';
  *  xLabel?: string
  *  yLabel?: string
  *  renderChart: (width: number) => React.ReactNode
+ *  renderLegend?: (width: number) => React.ReactNode
  * }} props
  */
-const BaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
+const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
   const chartTheme = useChartTheme();
 
   const getTickFormat = t => {
@@ -25,20 +26,23 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
   return (
     <ParentSize>
       {({ width }) => (
-        <VictoryChart
-          theme={chartTheme}
-          width={width}
-          height={width / 1.778}
-          domainPadding={{ x: width * 0.1 }}
-        >
-          <VictoryAxis label={xLabel} />
-          <VictoryAxis
-            dependentAxis
-            label={yLabel}
-            tickFormat={getTickFormat}
-          />
-          {!!width ? renderChart(width) : null}
-        </VictoryChart>
+        <>
+          {!!renderLegend ? renderLegend(width) : null}
+          <VictoryChart
+            theme={chartTheme}
+            width={width}
+            height={width / 1.778}
+            domainPadding={{ x: width * 0.1 }}
+          >
+            <VictoryAxis label={xLabel} />
+            <VictoryAxis
+              dependentAxis
+              label={yLabel}
+              tickFormat={getTickFormat}
+            />
+            {!!width ? renderChart(width) : null}
+          </VictoryChart>
+        </>
       )}
     </ParentSize>
   );
