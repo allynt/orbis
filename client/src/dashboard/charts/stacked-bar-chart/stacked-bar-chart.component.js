@@ -24,12 +24,15 @@ const StackedBarChart = ({
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
+    const mappedData = data.map(item => {
+      return { ...item, Year: item.Year.toString() };
+    });
     return (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
             key={range}
-            data={data}
+            data={mappedData}
             x={x}
             y={range}
             style={{
