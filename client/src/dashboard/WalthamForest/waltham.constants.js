@@ -1,18 +1,24 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
 export const housingTenureTypes = [
-  'All Tenure Types',
   'Affordable Rent',
-  'Market',
   'Intermediate',
+  'Market',
+  'Social Rented',
   'Private Rented Sector',
 ];
 
+export const TENURE_DATA_TYPES = {
+  gross: 'Gross',
+  net: 'Net',
+};
+
+export const TARGET_LEGEND_DATA = {
+  name: 'Housing Requirement',
+  color: '#d13aff',
+};
+
 export const walthamApiMetadata = [
-  {
-    datasetName: 'TargetProgress',
-    url: '/wfc/mock/target_progress/v1/',
-  },
   {
     datasetName: 'ApprovalsGranted',
     url: '/wfc/mock/approvals_granted/v1/',
@@ -59,7 +65,7 @@ export const targetInputFields = [
   '2020-2021',
 ];
 
-export const HOUSING_APPROVAL_BUTTON_LABELS = [
-  { label: 'Monthly' },
-  { label: 'Cumulative' },
-];
+export const HOUSING_APPROVAL_DATA_TYPES = {
+  monthly: 'Monthly',
+  cumulative: 'Cumulative',
+};

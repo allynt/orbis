@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
-import { VictoryAxis, VictoryChart } from 'victory';
+import { VictoryAxis, VictoryChart, VictoryLabel } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 
@@ -11,34 +11,35 @@ import { useChartTheme } from '../../useChartTheme';
  *  xLabel?: string
  *  yLabel?: string
  *  renderChart: (width: number) => React.ReactNode
+ *  renderLegend?: (width: number) => React.ReactNode
  * }} props
  */
-const BaseChart = ({ xLabel = '', yLabel = '', renderChart }) => {
+const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
   const chartTheme = useChartTheme();
 
-  const getTickFormat = t => {
-    return numeral(Number(t).toLocaleString()).format(
-      `${t > 1000 ? '0.0' : '0'} a`,
-    );
-  };
+  const getYTickFormat = t =>
+    numeral(Number(t).toLocaleString()).format(`${t > 1000 ? '0.0' : '0'} a`);
 
   return (
     <ParentSize>
       {({ width }) => (
-        <VictoryChart
-          theme={chartTheme}
-          width={width}
-          height={width / 1.778}
-          domainPadding={{ x: width * 0.1 }}
-        >
-          <VictoryAxis label={xLabel} />
-          <VictoryAxis
-            dependentAxis
-            label={yLabel}
-            tickFormat={getTickFormat}
-          />
-          {!!width ? renderChart(width) : null}
-        </VictoryChart>
+        <>
+          {!!renderLegend ? renderLegend(width) : null}
+          <VictoryChart
+            theme={chartTheme}
+            width={width}
+            height={width / 1.778}
+            domainPadding={{ x: width * 0.1 }}
+          >
+            <VictoryAxis label={xLabel} />
+            <VictoryAxis
+              dependentAxis
+              label={yLabel}
+              tickFormat={getYTickFormat}
+            />
+            {!!width ? renderChart(width) : null}
+          </VictoryChart>
+        </>
       )}
     </ParentSize>
   );

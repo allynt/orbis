@@ -6,15 +6,21 @@ import deepmerge from 'deepmerge';
 // * Colors
 // *
 const colors = [
-  '#f6be00',
-  '#37e5d8',
-  '#05c3ff',
-  '#75b7b2',
-  '#d6ea69',
-  '#8189f3',
-  '#d76781',
-  '#ffa048',
+  '#f6be00', // gold
+  '#37e5d8', // cyan
+  '#05c3ff', // blue
+  '#75b7b2', // surf green
+  '#d6ea69', // yellow
+  '#8189f3', // purple
+  '#d76781', // red
+  '#ffa048', // orange
 ];
+
+const walthamChartColors = {
+  totalHousing: ['#37e5d8', '#8189f3'],
+  tenureHousing: ['#37e5d8', '#75b7b2', '#adeab0', '#05c3ff', '#d6ea69'],
+  housingApproval: ['#f6be00', '#37e5d8'],
+};
 
 const baseProps = {
   colorScale: colors,
@@ -24,7 +30,9 @@ const baseProps = {
 const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
-/** @returns {import('victory').VictoryThemeDefinition & {colors: string[], fontSize: number}} */
+/**
+ * @returns {import('victory').VictoryThemeDefinition & {colors: string[], walthamChartColors: object, fontSize: number}}
+ */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
 
@@ -71,6 +79,7 @@ export const useChartTheme = () => {
 
   return {
     colors,
+    walthamChartColors,
     fontSize: 14,
     independentAxis: deepmerge(baseAxisStyles, {
       style: {
@@ -96,7 +105,8 @@ export const useChartTheme = () => {
       padding: { left: 80, top: 20, bottom: 60, right: 10 },
     }),
     stack: {
-      colorScale: colors,
+      // changed this from 'colors', so that colors match legend
+      colorScale: walthamChartColors.tenureHousing,
     },
     legend: {
       colorScale: colors,

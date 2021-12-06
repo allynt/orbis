@@ -7,16 +7,36 @@ import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import {
+  TENURE_DATA_TYPES,
+  TARGET_LEGEND_DATA,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
-  const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
+
+  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
+    name: type,
+    color: walthamChartColors.totalHousing[i],
+  }));
+
+  const renderTotalHousingLegend = width => {
+    return (
+      <WalthamCustomLegend
+        apiLegendData={apiLegendData}
+        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+        width={width}
+      />
+    );
+  };
 
   const renderTotalHousingMultiChart = width => {
     const { barWidth, offset } = GroupedWidthCalculator(apiData, width);
 
-    const color = chartTheme.colors[5],
+    const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
         data: userTargetData,
@@ -33,7 +53,10 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
               key={`dataset-${i}`}
               data={arr}
               style={{
-                data: { fill: chartTheme.colors[i], width: barWidth },
+                data: {
+                  fill: walthamChartColors.totalHousing[i],
+                  width: barWidth,
+                },
               }}
             />
           ))}
@@ -64,6 +87,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       yLabel="Housing Delivery in Units"
       xLabel="Year"
       renderChart={renderTotalHousingMultiChart}
+      renderLegend={renderTotalHousingLegend}
     />
   );
 };

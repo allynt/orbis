@@ -1,96 +1,95 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import { Grid, ToggleButtonGroup, ToggleButton } from '@astrosat/astrosat-ui';
-
-import { VictoryLegend } from 'victory';
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+  makeStyles,
+} from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
-import * as dataInput from 'dashboard/mock-data/waltham-forest/mock_approvals_granted';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.constants';
 
-import { HOUSING_APPROVAL_BUTTON_LABELS } from '../../waltham.constants';
+import { lineDataTransformer } from '../../utils';
+const useStyles = makeStyles(theme => ({
+  legendAndButtons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  buttons: {
+    width: '40%',
+  },
+}));
 
 const HousingApprovalsComponent = ({
-  data = dataInput.properties,
-  x = 'Month',
-  ranges = ['2019', '2020'],
-  xLabel = 'Year',
-  yLabel = 'Data Property Name / Unit',
+  data,
+  x = 'x',
+  ranges = ['y'],
+  xLabel = '',
+  yLabel = '',
 }) => {
-  const chartTheme = useChartTheme();
-  let chartNames = ranges;
-  const [showing, setShowing] = useState(
-    HOUSING_APPROVAL_BUTTON_LABELS[0].label,
+  const { walthamChartColors } = useChartTheme();
+  const styles = useStyles({});
+  const [selectedDataType, setSelectedDataType] = useState(
+    HOUSING_APPROVAL_DATA_TYPES.monthly,
   );
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
-    setShowing(newValue);
+    setSelectedDataType(newValue);
   };
+
+  const dataByType = useMemo(
+    () =>
+      lineDataTransformer(data?.find(p => p.name === selectedDataType)?.data),
+    [data, selectedDataType],
+  );
+
+  const apiLegendData = [
+    {
+      name: '2019',
+      color: walthamChartColors.housingApproval[0],
+    },
+    {
+      name: '2020',
+      color: walthamChartColors.housingApproval[1],
+    },
+  ];
 
   return (
     <ChartWrapper
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
     >
-      <Grid container spacing={1}>
-        <Grid container spacing={1}>
-          <div style={{ display: 'flex', width: '33%', height: '5rem' }}>
-            <VictoryLegend
-              x={50}
-              y={50}
-              centerTitle
-              orientation="horizontal"
-              gutter={40}
-              style={{
-                labels: { fontSize: 60 },
-              }}
-              data={[
-                {
-                  name: chartNames[0],
-                  symbol: { fill: chartTheme.colors[0], type: 'line' },
-                },
-                {
-                  name: chartNames[1],
-                  symbol: { fill: chartTheme.colors[1], type: 'line' },
-                },
-              ]}
-            />
-          </div>
-          <Grid item xs={4}></Grid>
-          <Grid item xs={4}>
-            <ToggleButtonGroup
-              size="small"
-              value={showing}
-              orientation="horizontal"
-              onChange={handleToggleClick}
-            >
-              <ToggleButton
-                key={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
-                value={HOUSING_APPROVAL_BUTTON_LABELS[0].label}
-              >
-                {HOUSING_APPROVAL_BUTTON_LABELS[0].label}
-              </ToggleButton>
-              <ToggleButton
-                key={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
-                value={HOUSING_APPROVAL_BUTTON_LABELS[1].label}
-              >
-                {HOUSING_APPROVAL_BUTTON_LABELS[1].label}
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <LineChart
-            x={x}
-            ranges={ranges}
-            xLabel={xLabel}
-            yLabel={yLabel}
-            data={data?.find(p => p.name === showing)?.data}
-          />
-        </Grid>
-      </Grid>
+      <div className={styles.legendAndButtons}>
+        <WalthamCustomLegend apiLegendData={apiLegendData} />
+
+        <ToggleButtonGroup
+          size="small"
+          value={selectedDataType}
+          orientation="horizontal"
+          onChange={handleToggleClick}
+          className={styles.buttons}
+        >
+          <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.monthly}>
+            {HOUSING_APPROVAL_DATA_TYPES.monthly}
+          </ToggleButton>
+          <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.cumulative}>
+            {HOUSING_APPROVAL_DATA_TYPES.cumulative}
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+
+      <LineChart
+        x={x}
+        ranges={ranges}
+        xLabel={xLabel}
+        yLabel={yLabel}
+        data={dataByType}
+      />
     </ChartWrapper>
   );
 };

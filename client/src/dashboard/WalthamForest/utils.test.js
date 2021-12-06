@@ -1,7 +1,7 @@
 import {
   groupedDataTransformer,
   lineDataTransformer,
-  stringToNumberTransformer,
+  userTargetTransformer,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -71,35 +71,12 @@ describe('Waltham Forest Data Transformers', () => {
     });
   });
 
-  describe('stringToNumberTransformer', () => {
-    it('converts string values to numbers', () => {
-      const input = [
-        {
-          x: 'key-1',
-          y: '123',
+  describe('userTargetTransformer', () => {
+    it('transforms data and converts string values to numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': '456',
         },
-      ];
-
-      const result = stringToNumberTransformer(input);
-      expect(result).toEqual([
-        {
-          x: 'key-1',
-          y: 123,
-        },
-      ]);
-    });
-
-    it('does not affect values that are already numbers', () => {
-      const input = [
-          {
-            x: 'key-1',
-            y: '123',
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ],
         expected = [
           {
             x: 'key-1',
@@ -111,12 +88,32 @@ describe('Waltham Forest Data Transformers', () => {
           },
         ];
 
-      const result = stringToNumberTransformer(input);
+      const result = userTargetTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('does not affect values that are already numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': 456,
+        },
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = userTargetTransformer(input);
       expect(result).toEqual(expected);
     });
 
     it('returns undefined if data is not present', () => {
-      const result = stringToNumberTransformer(undefined);
+      const result = userTargetTransformer(undefined);
       expect(result).toBeUndefined();
     });
   });

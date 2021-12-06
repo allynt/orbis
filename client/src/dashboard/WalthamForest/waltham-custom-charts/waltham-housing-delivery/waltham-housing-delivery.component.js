@@ -6,12 +6,14 @@ import {
   MenuItem,
   Typography,
   makeStyles,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import { stringToNumberTransformer } from 'dashboard/WalthamForest/utils';
+import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 
-import { housingTenureTypes } from '../../waltham.constants';
+import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
 import { TotalHousingMultiChart } from './total-housing-multi-chart/total-housing-multi-chart.component';
 
@@ -37,6 +39,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     gap: '1rem',
   },
+  buttons: {
+    width: '40%',
+    marginLeft: '60%',
+    marginBottom: '1rem',
+  },
 }));
 
 const ALL_TENURE_TYPES = 'All Tenure Types';
@@ -48,6 +55,14 @@ export const WalthamHousingDelivery = ({
 }) => {
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
+  const [selectedDataType, setSelectedDataType] = useState(
+    TENURE_DATA_TYPES.net,
+  );
+
+  const handleToggleClick = (_, type) => {
+    if (!type) return;
+    setSelectedDataType(type);
+  };
 
   /**
    * @param {object[]} data
@@ -69,6 +84,7 @@ export const WalthamHousingDelivery = ({
           onChange={({ target: { value } }) => setTenureType(value)}
           className={styles.select}
         >
+          <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
           {housingTenureTypes.map(type => (
             <MenuItem key={type} value={type}>
               {type}
@@ -79,29 +95,44 @@ export const WalthamHousingDelivery = ({
 
       <Grid item className={styles.charts}>
         <ChartWrapper
-          title="Housing Delivery by Tenure Type"
-          info="This is a test description"
-        >
-          <TenureHousingMultiChart
-            apiData={getTenureType(tenureHousingDeliveryChartData)}
-            userTargetData={stringToNumberTransformer(
-              userOrbState?.marketHousing,
-            )}
-            tenureType={
-              tenureType !== 'All Tenure Types' ? tenureType : undefined
-            }
-          />
-        </ChartWrapper>
-
-        <ChartWrapper
           title="Total Housing Delivery"
           info="This is a test description"
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
-            userTargetData={stringToNumberTransformer(
-              userOrbState?.totalHousing,
+            userTargetData={userTargetTransformer(userOrbState?.totalHousing)}
+          />
+        </ChartWrapper>
+
+        <ChartWrapper
+          title="Housing Delivery by Tenure Type"
+          info="This is a test description"
+        >
+          <ToggleButtonGroup
+            size="small"
+            value={selectedDataType}
+            orientation="horizontal"
+            onChange={handleToggleClick}
+            className={styles.buttons}
+          >
+            <ToggleButton value={TENURE_DATA_TYPES.gross}>
+              {TENURE_DATA_TYPES.gross}
+            </ToggleButton>
+            <ToggleButton value={TENURE_DATA_TYPES.net}>
+              {TENURE_DATA_TYPES.net}
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+          <TenureHousingMultiChart
+            apiData={getTenureType(
+              tenureHousingDeliveryChartData?.find(
+                d => d.name === selectedDataType,
+              )?.data,
             )}
+            userTargetData={userTargetTransformer(userOrbState?.marketHousing)}
+            tenureType={
+              tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
+            }
           />
         </ChartWrapper>
       </Grid>

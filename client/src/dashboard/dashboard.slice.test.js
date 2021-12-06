@@ -20,10 +20,10 @@ describe('Dashboard Slice', () => {
     });
 
     describe('setChartData', () => {
-      it("builds chart data by source_id and dataset name if it doesn't exist", () => {
+      it("builds chart data by sourceId and dataset name if it doesn't exist", () => {
         const state = {},
           chartData = {
-            source_id: 'test-source',
+            sourceId: 'test-source',
             datasetName: 'test-dataset-name',
             data: { name: 'this is some test data' },
           },
@@ -45,7 +45,7 @@ describe('Dashboard Slice', () => {
           },
         },
         chartData = {
-          source_id: 'test-source',
+          sourceId: 'test-source',
           datasetName: 'test-dataset-name',
           data: { name: 'this is the new test data' },
         },
