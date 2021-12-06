@@ -112,7 +112,7 @@ export const ContentLanding = ({
 
   return (
     <>
-      {!!bookmarks ? (
+      {!!bookmarks?.length ? (
         <ExpandableItemList
           data={bookmarks}
           contentType={CONTENT_TYPES.maps}
@@ -122,7 +122,7 @@ export const ContentLanding = ({
           toggle={toggle}
         />
       ) : null}
-      {!!dashboards ? (
+      {!!dashboards?.length ? (
         <ExpandableItemList
           data={dashboards}
           contentType={CONTENT_TYPES.dashboards}
