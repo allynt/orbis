@@ -2,6 +2,15 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
+const RATIOS = {
+  legendContainer: 0.14,
+  squareIconSize: 0.03,
+  fontSize: 0.025,
+  lineIconWidth: 0.06,
+  lineIconHeight: 0.005,
+  iconSpacing: 0.015,
+};
+
 const useStyles = makeStyles(theme => ({
   apiLegend: {
     width: 'fit-content',
@@ -20,7 +29,7 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
-  const maxHeight = width * 0.14;
+  const maxHeight = width * RATIOS.legendContainer;
   const styles = useStyles({ maxHeight });
 
   return (
@@ -38,15 +47,15 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
               {/* creates square with correct color */}
               <div
                 style={{
-                  width: width * 0.03,
-                  height: width * 0.03,
+                  width: width * RATIOS.squareIconSize,
+                  height: width * RATIOS.squareIconSize,
                   backgroundColor: `${color}`,
-                  marginRight: width * 0.03,
+                  marginRight: width * RATIOS.iconSpacing,
                 }}
               />
               <span
                 style={{
-                  fontSize: width * 0.025,
+                  fontSize: width * RATIOS.fontSize,
                 }}
               >
                 {name}
@@ -61,15 +70,15 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
           {/* creates line with correct color */}
           <div
             style={{
-              width: width * 0.06,
-              height: width * 0.005,
+              width: width * RATIOS.lineIconWidth,
+              height: width * RATIOS.lineIconHeight,
               backgroundColor: `${targetLegendData.color}`,
-              marginRight: width * 0.015,
+              marginRight: width * RATIOS.iconSpacing,
             }}
           />
           <span
             style={{
-              fontSize: width * 0.025,
+              fontSize: width * RATIOS.fontSize,
             }}
           >
             {targetLegendData.name}
