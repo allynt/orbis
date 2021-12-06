@@ -121,6 +121,7 @@ export const WalthamHousingDelivery = ({
             </ToggleButton>
             <ToggleButton value={DATA_TYPES.net}>{DATA_TYPES.net}</ToggleButton>
           </ToggleButtonGroup>
+
           <TenureHousingMultiChart
             apiData={getTenureType(
               tenureHousingDeliveryChartData?.find(

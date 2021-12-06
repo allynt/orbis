@@ -14,6 +14,13 @@ const useStyles = makeStyles(theme => ({
 
 // TODO: use width for responsive sizing
 
+/**
+ * @param {{
+ *  apiLegendData: { name: string, color: string }[]
+ *  targetLegendData?: { name: string, color: string }
+ *  width: number
+ * }} props
+ */
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
   const styles = useStyles({});
   return (
@@ -49,18 +56,20 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
         })}
       </Grid>
 
-      <Grid item container alignItems="center" className={styles.userTarget}>
-        {/* creates line with correct color */}
-        <div
-          style={{
-            width: '3rem',
-            height: '0.125rem',
-            backgroundColor: `${targetLegendData.color}`,
-            marginRight: '1rem',
-          }}
-        />
-        <span>{targetLegendData.name}</span>
-      </Grid>
+      {!!targetLegendData ? (
+        <Grid item container alignItems="center" className={styles.userTarget}>
+          {/* creates line with correct color */}
+          <div
+            style={{
+              width: '3rem',
+              height: '0.125rem',
+              backgroundColor: `${targetLegendData.color}`,
+              marginRight: '1rem',
+            }}
+          />
+          <span>{targetLegendData.name}</span>
+        </Grid>
+      ) : null}
     </Grid>
   );
 };

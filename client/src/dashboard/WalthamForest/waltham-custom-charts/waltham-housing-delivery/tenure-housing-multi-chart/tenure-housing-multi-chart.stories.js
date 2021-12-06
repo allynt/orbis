@@ -22,18 +22,18 @@ const Template = args => <TenureHousingMultiChart {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  apiData: stackedApiData,
+  apiData: stackedApiData[0].data,
   userTargetData,
 };
 
 export const NoTargetData = Template.bind({});
 NoTargetData.args = {
-  apiData: stackedApiData,
+  apiData: stackedApiData[0].data,
 };
 
 export const BigDataRange = Template.bind({});
 BigDataRange.args = {
-  apiData: stackedApiData,
+  apiData: stackedApiData[0].data,
   userTargetData: [
     { x: '2014-2015', y: 3620 },
     { x: '2015-2016', y: 3460 },
@@ -47,7 +47,7 @@ BigDataRange.args = {
 
 export const MissingValues = Template.bind({});
 MissingValues.args = {
-  apiData: stackedApiData,
+  apiData: stackedApiData[0].data,
   userTargetData: [
     { x: '2014-2015', y: 620 },
     { x: '2016-2017', y: 490 },

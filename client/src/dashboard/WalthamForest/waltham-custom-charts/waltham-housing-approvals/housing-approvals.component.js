@@ -7,6 +7,7 @@ import { VictoryLegend } from 'victory';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 
 import { lineDataTransformer } from '../../utils';
 import { HOUSING_APPROVAL_DATA_TYPES } from '../../waltham.constants';
@@ -34,37 +35,29 @@ const HousingApprovalsComponent = ({
     [data, selectedDataType],
   );
 
+  const apiLegendData = [
+    {
+      name: '2019',
+      color: chartTheme.colors[0],
+    },
+    {
+      name: '2020',
+      color: chartTheme.colors[1],
+    },
+  ];
+
   return (
     <ChartWrapper
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
     >
       <Grid container spacing={1}>
-        <Grid item container spacing={1}>
-          <div style={{ display: 'flex', width: '33%', height: '5rem' }}>
-            <VictoryLegend
-              x={50}
-              y={50}
-              centerTitle
-              orientation="horizontal"
-              gutter={40}
-              style={{
-                labels: { fontSize: 60 },
-              }}
-              data={[
-                {
-                  name: ranges[0],
-                  symbol: { fill: chartTheme.colors[0], type: 'line' },
-                },
-                {
-                  name: ranges[1],
-                  symbol: { fill: chartTheme.colors[1], type: 'line' },
-                },
-              ]}
-            />
-          </div>
+        <Grid item container justifyContent="space-between">
+          <Grid item>
+            <WalthamCustomLegend apiLegendData={apiLegendData} />
+          </Grid>
 
-          <Grid item xs={4}>
+          <Grid item>
             <ToggleButtonGroup
               size="small"
               value={selectedDataType}
