@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
-import { VictoryAxis, VictoryChart } from 'victory';
+import { VictoryAxis, VictoryChart, VictoryLabel } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
 
@@ -17,11 +17,8 @@ import { useChartTheme } from '../../useChartTheme';
 const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
   const chartTheme = useChartTheme();
 
-  const getTickFormat = t => {
-    return numeral(Number(t).toLocaleString()).format(
-      `${t > 1000 ? '0.0' : '0'} a`,
-    );
-  };
+  const getYTickFormat = t =>
+    numeral(Number(t).toLocaleString()).format(`${t > 1000 ? '0.0' : '0'} a`);
 
   return (
     <ParentSize>
@@ -38,7 +35,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
             <VictoryAxis
               dependentAxis
               label={yLabel}
-              tickFormat={getTickFormat}
+              tickFormat={getYTickFormat}
             />
             {!!width ? renderChart(width) : null}
           </VictoryChart>

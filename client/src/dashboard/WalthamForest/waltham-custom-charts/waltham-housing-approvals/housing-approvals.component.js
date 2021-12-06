@@ -10,10 +10,9 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.constants';
 
 import { lineDataTransformer } from '../../utils';
-import { HOUSING_APPROVAL_DATA_TYPES } from '../../waltham.constants';
-
 const useStyles = makeStyles(theme => ({
   legendAndButtons: {
     display: 'flex',
@@ -32,7 +31,7 @@ const HousingApprovalsComponent = ({
   xLabel = '',
   yLabel = '',
 }) => {
-  const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
   const [selectedDataType, setSelectedDataType] = useState(
     HOUSING_APPROVAL_DATA_TYPES.monthly,
@@ -52,11 +51,11 @@ const HousingApprovalsComponent = ({
   const apiLegendData = [
     {
       name: '2019',
-      color: chartTheme.colors[0],
+      color: walthamChartColors.housingApproval[0],
     },
     {
       name: '2020',
-      color: chartTheme.colors[1],
+      color: walthamChartColors.housingApproval[1],
     },
   ];
 

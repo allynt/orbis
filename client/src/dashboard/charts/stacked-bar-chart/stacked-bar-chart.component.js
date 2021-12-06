@@ -46,6 +46,7 @@ const StackedBarChart = ({
       xLabel={xLabel}
       yLabel={yLabel}
       renderChart={renderStackedBarChart}
+      xFormat={data.map(m => m.Year)}
     />
   );
 };

@@ -8,6 +8,16 @@ export const housingTenureTypes = [
   'Private Rented Sector',
 ];
 
+export const TENURE_DATA_TYPES = {
+  gross: 'Gross',
+  net: 'Net',
+};
+
+export const TARGET_LEGEND_DATA = {
+  name: 'Housing Requirement',
+  color: '#d13aff',
+};
+
 export const walthamApiMetadata = [
   {
     datasetName: 'ApprovalsGranted',

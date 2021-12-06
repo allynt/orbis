@@ -13,7 +13,7 @@ import {
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 
-import { housingTenureTypes } from '../../waltham.constants';
+import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
 import { TotalHousingMultiChart } from './total-housing-multi-chart/total-housing-multi-chart.component';
 
@@ -46,11 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ALL_TENURE_TYPES = 'All Tenure Types',
-  DATA_TYPES = {
-    gross: 'Gross',
-    net: 'Net',
-  };
+const ALL_TENURE_TYPES = 'All Tenure Types';
 
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
@@ -59,7 +55,9 @@ export const WalthamHousingDelivery = ({
 }) => {
   const styles = useStyles({});
   const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
-  const [selectedDataType, setSelectedDataType] = useState(DATA_TYPES.net);
+  const [selectedDataType, setSelectedDataType] = useState(
+    TENURE_DATA_TYPES.net,
+  );
 
   const handleToggleClick = (_, type) => {
     if (!type) return;
@@ -116,10 +114,12 @@ export const WalthamHousingDelivery = ({
             onChange={handleToggleClick}
             className={styles.buttons}
           >
-            <ToggleButton value={DATA_TYPES.gross}>
-              {DATA_TYPES.gross}
+            <ToggleButton value={TENURE_DATA_TYPES.gross}>
+              {TENURE_DATA_TYPES.gross}
             </ToggleButton>
-            <ToggleButton value={DATA_TYPES.net}>{DATA_TYPES.net}</ToggleButton>
+            <ToggleButton value={TENURE_DATA_TYPES.net}>
+              {TENURE_DATA_TYPES.net}
+            </ToggleButton>
           </ToggleButtonGroup>
 
           <TenureHousingMultiChart

@@ -128,7 +128,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           Add Targets
         </Button>
       </Grid>
-
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         <ProgressIndicators
@@ -136,7 +135,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           userOrbState={userOrbState}
         />
       </div>
-
       {/* stacked/grouped bar charts */}
       <div className={styles.barCharts}>
         <ChartWrapper
@@ -159,7 +157,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           userOrbState={userOrbState}
         />
       </div>
-
       {/* big multi-line chart */}
       <div className={styles.lineCharts}>
         <HousingApprovalsComponent
@@ -170,7 +167,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           data={approvalsGranted?.properties}
         />
       </div>
-
       <Dialog
         maxWidth="md"
         open={targetDialogVisible}
@@ -193,7 +189,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog>{' '}
+      */}
     </div>
   );
 };

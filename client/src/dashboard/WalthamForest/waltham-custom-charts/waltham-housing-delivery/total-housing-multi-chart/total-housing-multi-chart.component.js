@@ -8,32 +8,26 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import {
+  TENURE_DATA_TYPES,
+  TARGET_LEGEND_DATA,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
-  // const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
 
-  const apiLegendData = [
-      {
-        name: 'Total Gross',
-        color: '#37e5d8',
-      },
-      {
-        name: 'Total Net',
-        color: '#8189f3',
-      },
-    ],
-    targetLegendData = {
-      name: 'Housing Requirement',
-      color: '#d13aff',
-    };
+  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
+    name: type,
+    color: walthamChartColors.totalHousing[i],
+  }));
 
   const renderTotalHousingLegend = width => {
     return (
       <WalthamCustomLegend
         apiLegendData={apiLegendData}
-        targetLegendData={!!userTargetData ? targetLegendData : null}
+        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
         width={width}
       />
     );
@@ -53,19 +47,19 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup offset={offset}>
-          {apiData?.map((arr, i) => {
-            const colors = ['#37e5d8', '#8189f3'];
-            return (
-              <VictoryBar
-                // eslint-disable-next-line react/no-array-index-key
-                key={`dataset-${i}`}
-                data={arr}
-                style={{
-                  data: { fill: colors[i], width: barWidth },
-                }}
-              />
-            );
-          })}
+          {apiData?.map((arr, i) => (
+            <VictoryBar
+              // eslint-disable-next-line react/no-array-index-key
+              key={`dataset-${i}`}
+              data={arr}
+              style={{
+                data: {
+                  fill: walthamChartColors.totalHousing[i],
+                  width: barWidth,
+                },
+              }}
+            />
+          ))}
         </VictoryGroup>
 
         {/* user uploaded target data */}

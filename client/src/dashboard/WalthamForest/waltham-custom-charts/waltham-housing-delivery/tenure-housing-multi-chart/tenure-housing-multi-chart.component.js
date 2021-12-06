@@ -13,6 +13,7 @@ import {
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import { TARGET_LEGEND_DATA } from 'dashboard/WalthamForest/waltham.constants';
 
 /**
  * @param {{
@@ -22,42 +23,28 @@ import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-lege
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  // const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
 
-  const apiLegendData = [
-      {
-        name: 'Affordable Rent',
-        color: '#37e5d8',
-      },
-      {
-        name: 'Intermediate',
-        color: '#75b7b2',
-      },
-      {
-        name: 'Market',
-        color: '#adeab0',
-      },
-      {
-        name: 'Social Rented',
-        color: '#05c3ff',
-      },
-      {
-        name: 'Private Rented Sector',
-        color: '#d6ea69',
-      },
-    ],
-    targetLegendData = {
-      name: 'Housing Requirement',
-      color: '#d13aff',
-    };
+  const allTenureTypes = [
+    'Affordable Rent',
+    'Intermediate',
+    'Market',
+    'Social Rented',
+    'Private Rented Sector',
+  ];
+
+  const apiLegendData = allTenureTypes.map((range, i) => ({
+    name: range,
+    color: walthamChartColors.tenureHousing[i],
+  }));
 
   const renderTenureHousingLegend = width => {
     return (
       <WalthamCustomLegend
         apiLegendData={apiLegendData}
-        targetLegendData={!!userTargetData ? targetLegendData : null}
+        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
         width={width}
       />
     );
@@ -66,15 +53,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType
-      ? [tenureType]
-      : [
-          'Affordable Rent',
-          'Intermediate',
-          'Market',
-          'Social Rented',
-          'Private Rented Sector',
-        ];
+    const ranges = !!tenureType ? [tenureType] : allTenureTypes;
 
     const color = '#d13aff',
       scatterWidth = width / 2,

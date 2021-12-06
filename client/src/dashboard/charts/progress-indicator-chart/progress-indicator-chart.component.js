@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     fill: theme.palette.text.primary,
     '&$value': { fontSize: theme.typography.pxToRem(48) },
     '&$target': { fontSize: theme.typography.pxToRem(14) },
-    '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
+    // '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
   },
   value: {},
   target: {},
@@ -40,6 +40,8 @@ const ProgressIndicatorChart = ({ property, color }) => {
       { x: 1, y: percentage },
       { x: 2, y: 100 - percentage },
     ];
+
+  // TODO: magic numbers in <Text /> components
 
   return (
     <ParentSize className={styles.parentSize}>
@@ -88,7 +90,10 @@ const ProgressIndicatorChart = ({ property, color }) => {
                       x={radius}
                       y={radius}
                       dy={-8}
-                      className={clsx(styles.text, styles.value)}
+                      style={{
+                        fill: '#fff',
+                        fontSize: `${width / 150}rem`,
+                      }}
                     >
                       {`${Math.round(Number(newProps.percentage))}%`}
                     </Text>
@@ -99,7 +104,10 @@ const ProgressIndicatorChart = ({ property, color }) => {
                       x={radius}
                       y={radius}
                       dy={8}
-                      className={clsx(styles.text, styles.target)}
+                      style={{
+                        fill: '#fff',
+                        fontSize: `${width / 400}rem`,
+                      }}
                     >
                       {`Target ${target} Units`}
                     </Text>
@@ -111,7 +119,10 @@ const ProgressIndicatorChart = ({ property, color }) => {
                     verticalAnchor="middle"
                     x={radius}
                     y={radius}
-                    className={clsx(styles.text, styles.noTarget)}
+                    style={{
+                      fill: '#fff',
+                      fontSize: `${width / 250}rem`,
+                    }}
                   >
                     {`${name} Target Required`}
                   </Text>
