@@ -1,10 +1,10 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
 export const housingTenureTypes = [
-  'All Tenure Types',
   'Affordable Rent',
-  'Market',
   'Intermediate',
+  'Market',
+  'Social Rented',
   'Private Rented Sector',
 ];
 

@@ -84,6 +84,7 @@ export const WalthamHousingDelivery = ({
           onChange={({ target: { value } }) => setTenureType(value)}
           className={styles.select}
         >
+          <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
           {housingTenureTypes.map(type => (
             <MenuItem key={type} value={type}>
               {type}
@@ -130,7 +131,7 @@ export const WalthamHousingDelivery = ({
             )}
             userTargetData={userTargetTransformer(userOrbState?.marketHousing)}
             tenureType={
-              tenureType !== 'All Tenure Types' ? tenureType : undefined
+              tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }
           />
         </ChartWrapper>

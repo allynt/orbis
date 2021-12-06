@@ -189,8 +189,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           )}
         </DialogContent>
-      </Dialog>{' '}
-      */}
+      </Dialog>
     </div>
   );
 };

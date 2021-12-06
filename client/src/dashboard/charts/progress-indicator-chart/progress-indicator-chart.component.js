@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     fill: theme.palette.text.primary,
     '&$value': { fontSize: theme.typography.pxToRem(48) },
     '&$target': { fontSize: theme.typography.pxToRem(14) },
-    // '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
+    '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
   },
   value: {},
   target: {},

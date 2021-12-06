@@ -13,7 +13,10 @@ import {
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
-import { TARGET_LEGEND_DATA } from 'dashboard/WalthamForest/waltham.constants';
+import {
+  TARGET_LEGEND_DATA,
+  housingTenureTypes,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 /**
  * @param {{
@@ -27,15 +30,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
 
   if (!apiData) return null;
 
-  const allTenureTypes = [
-    'Affordable Rent',
-    'Intermediate',
-    'Market',
-    'Social Rented',
-    'Private Rented Sector',
-  ];
-
-  const apiLegendData = allTenureTypes.map((range, i) => ({
+  const apiLegendData = housingTenureTypes.map((range, i) => ({
     name: range,
     color: walthamChartColors.tenureHousing[i],
   }));
@@ -53,7 +48,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType ? [tenureType] : allTenureTypes;
+    const ranges = !!tenureType ? [tenureType] : housingTenureTypes;
 
     const color = '#d13aff',
       scatterWidth = width / 2,
