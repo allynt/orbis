@@ -22,6 +22,8 @@ import AreaOfficeContactDetails from './area-office-contact-details.component';
 import { NearestProtectedAreas } from './nearest-protected-areas';
 import ProtectedFeature from './protected-feature/protected-feature.component';
 
+import { AOI_BUFFER } from './nature-scotland.constants';
+
 const useStyles = makeStyles(theme => ({
   subRow: {
     justifyContent: 'space-between',
@@ -102,9 +104,12 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   useEffect(() => {
     // Fetch data from IR API.
+
     const queryApi = async () => {
+
       try {
         const body = {
+          buffer: AOI_BUFFER,
           feature: feature(selectedAoi.geometry),
         };
         const response = await apiClient.dashboard.getNatureScotlandIRDashboardData(
@@ -140,24 +145,24 @@ const NatureScotDashboard = ({ sourceId }) => {
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <Grid className={styles.subRow} container>
-        <Grid item xs={3}>
-          <Typography variant="h4">Caseword Title:</Typography>
+        {/* <Grid item xs={3}>
+          <Typography variant="h4">Casework Title:</Typography>
         </Grid>
         <Grid item xs={9}>
           <Typography>{row.original.name}</Typography>
-        </Grid>
+        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Site Name:</Typography>
         </Grid>
         <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
+          <Typography>{row.original.site_name}</Typography>
         </Grid>
-        <Grid item xs={3}>
+        {/* <Grid item xs={3}>
           <Typography variant="h4">Site Type:</Typography>
         </Grid>
         <Grid item xs={9}>
           <Typography>{row.original.name}</Typography>
-        </Grid>
+        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Casework Decision:</Typography>
         </Grid>
