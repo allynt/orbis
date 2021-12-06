@@ -92,11 +92,12 @@ const SelectScreen = ({ onNextClick }) => {
 /**
  * @param {{
  *  onAddTargetsClick: (targets: object) => void
+ * targets: array
  * }} props
  */
-const TargetScreen = ({ onAddTargetsClick }) => {
+const TargetScreen = ({ onAddTargetsClick, targets }) => {
   const styles = useStyles({});
-  const [targetData, setTargetData] = useState({});
+  const [targetData, setTargetData] = useState(targets || {});
   const [error, setError] = useState(undefined);
   const isDirty = Object.values(targetData).some(v => !!v);
 

@@ -67,6 +67,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const user = useSelector(userSelector),
     userOrbState = useSelector(userOrbStateSelector(sourceId));
 
+  const existingTargets = userOrbState[selectedDataset];
+
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
       chartDataSelector(sourceId, 'ApprovalsGranted'),
@@ -182,6 +184,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               onAddTargetsClick={targets =>
                 handleAddTargetsClick({ [selectedDataset]: targets })
               }
+              targets={existingTargets}
             />
           ) : (
             <SelectScreen
