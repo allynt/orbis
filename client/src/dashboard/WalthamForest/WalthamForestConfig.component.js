@@ -102,7 +102,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   // only arrays of chart data, transformed where needed and cached
-  // TODO: MOVE THESE INTO THE COMPONENTS THAT USE THEM?
   const totalHousingDeliveryChartData = useMemo(
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
       [totalHousingDelivery],
