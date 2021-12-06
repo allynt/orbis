@@ -17,8 +17,18 @@ import { useChartTheme } from '../../useChartTheme';
 const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
   const chartTheme = useChartTheme();
 
-  const getYTickFormat = t =>
-    numeral(Number(t).toLocaleString()).format(`${t > 1000 ? '0.0' : '0'} a`);
+  const getXTickFormat = tick => {
+    if (tick.toString().includes('-')) {
+      const split = tick.split(/-/);
+      return [`${split[0]}-`, split[1]];
+    }
+    return tick;
+  };
+
+  const getYTickFormat = tick =>
+    numeral(Number(tick).toLocaleString()).format(
+      `${tick > 1000 ? '0.0' : '0'} a`,
+    );
 
   return (
     <ParentSize>
@@ -31,7 +41,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
             height={width / 1.778}
             domainPadding={{ x: width * 0.1 }}
           >
-            <VictoryAxis label={xLabel} />
+            <VictoryAxis label={xLabel} tickFormat={getXTickFormat} />
             <VictoryAxis
               dependentAxis
               label={yLabel}
