@@ -12,6 +12,11 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import {
+  TARGET_LEGEND_DATA,
+  housingTenureTypes,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 /**
  * @param {{
@@ -21,24 +26,31 @@ import { useChartTheme } from 'dashboard/useChartTheme';
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
+
+  const apiLegendData = housingTenureTypes.map((range, i) => ({
+    name: range,
+    color: walthamChartColors.tenureHousing[i],
+  }));
+
+  const renderTenureHousingLegend = width => {
+    return (
+      <WalthamCustomLegend
+        apiLegendData={apiLegendData}
+        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+        width={width}
+      />
+    );
+  };
 
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType
-      ? [tenureType]
-      : [
-          'Affordable Rent',
-          'Intermediate',
-          'Market',
-          'Social Rented',
-          'Private Rented Sector',
-        ];
+    const ranges = !!tenureType ? [tenureType] : housingTenureTypes;
 
-    const color = chartTheme.colors[5],
+    const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
         data: userTargetData,
@@ -90,6 +102,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       yLabel="Housing Delivery in Units"
       xLabel="Year"
       renderChart={renderTenureHousingMultiChart}
+      renderLegend={renderTenureHousingLegend}
     />
   );
 };

@@ -47,8 +47,8 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   barCharts: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
     padding: '2rem',
     gap: '1rem',
   },
@@ -106,16 +106,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
       [totalHousingDelivery],
     ),
-    approvalsGrantedChartData = useMemo(
-      () => lineDataTransformer(approvalsGranted?.properties[0].data),
-      [approvalsGranted],
-    ),
     progressionVsPlanningChartData = useMemo(
       () => progressionVsPlanning?.properties[0].data,
       [progressionVsPlanning],
     ),
     tenureHousingDeliveryChartData = useMemo(
-      () => tenureHousingDelivery?.properties[0].data,
+      () => tenureHousingDelivery?.properties,
       [tenureHousingDelivery],
     );
 
@@ -132,7 +128,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           Add Targets
         </Button>
       </Grid>
-
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         <ProgressIndicators
@@ -140,7 +135,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           userOrbState={userOrbState}
         />
       </div>
-
       {/* stacked/grouped bar charts */}
       <div className={styles.barCharts}>
         <ChartWrapper
@@ -163,7 +157,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
           userOrbState={userOrbState}
         />
       </div>
-
       {/* big multi-line chart */}
       <div className={styles.lineCharts}>
         <HousingApprovalsComponent
@@ -171,10 +164,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
           xLabel="Year"
           yLabel="No. Housing Approvals Granted"
           ranges={['2019', '2020', '2021']}
-          data={approvalsGrantedChartData}
+          data={approvalsGranted?.properties}
         />
       </div>
-
       <Dialog
         maxWidth="md"
         open={targetDialogVisible}
