@@ -36,13 +36,13 @@ const useStyles = makeStyles(theme => ({
   charts: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'stretch',
     gap: '1rem',
   },
   buttons: {
     width: '40%',
     marginLeft: '60%',
-    marginBottom: '1rem',
+    marginBottom: '-1rem',
   },
 }));
 
