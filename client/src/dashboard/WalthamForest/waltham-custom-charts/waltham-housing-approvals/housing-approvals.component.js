@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-import { VictoryGroup, VictoryLine } from 'victory';
+import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -16,10 +16,15 @@ import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.con
 
 import { lineDataTransformer } from '../../utils';
 const useStyles = makeStyles(theme => ({
-  legendAndButtons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  toggleButtonGroup: {
+    width: '40%',
+    marginLeft: '60%',
+    marginBottom: '-1rem',
+  },
+  legend: {
+    fontSize: '0.4rem',
+    maxWidth: '1rem',
+    marginBottom: '-3rem',
   },
   buttons: {
     width: '40%',
@@ -82,6 +87,7 @@ const HousingApprovalsComponent = ({
       return (
         <VictoryGroup key={range}>
           <VictoryLine {...props} style={{ data: { stroke: color } }} />
+          <VictoryScatter {...props} style={{ data: { stroke: color } }} />
         </VictoryGroup>
       );
     });
@@ -92,24 +98,22 @@ const HousingApprovalsComponent = ({
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
     >
-      <div className={styles.legendAndButtons}>
-        <WalthamCustomLegend apiLegendData={apiLegendData} width={10} />
+      <WalthamCustomLegend apiLegendData={apiLegendData} width={1} />
 
-        <ToggleButtonGroup
-          size="small"
-          value={selectedDataType}
-          orientation="horizontal"
-          onChange={handleToggleClick}
-          className={styles.buttons}
-        >
-          <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.monthly}>
-            {HOUSING_APPROVAL_DATA_TYPES.monthly}
-          </ToggleButton>
-          <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.cumulative}>
-            {HOUSING_APPROVAL_DATA_TYPES.cumulative}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </div>
+      <ToggleButtonGroup
+        size="small"
+        value={selectedDataType}
+        orientation="horizontal"
+        onChange={handleToggleClick}
+        className={styles.toggleButtonGroup}
+      >
+        <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.monthly}>
+          {HOUSING_APPROVAL_DATA_TYPES.monthly}
+        </ToggleButton>
+        <ToggleButton value={HOUSING_APPROVAL_DATA_TYPES.cumulative}>
+          {HOUSING_APPROVAL_DATA_TYPES.cumulative}
+        </ToggleButton>
+      </ToggleButtonGroup>
 
       <BaseChart
         xLabel={xLabel}

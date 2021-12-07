@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
+const MAX_FONT_SIZE = 16;
+
 const RATIOS = {
   legendContainer: 0.14,
   squareIconSize: 0.03,
@@ -30,6 +32,7 @@ const useStyles = makeStyles(theme => ({
  */
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
   const maxHeight = width * RATIOS.legendContainer;
+  const fontSize = width * RATIOS.fontSize;
   const styles = useStyles({ maxHeight });
 
   return (
@@ -55,7 +58,7 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
               />
               <span
                 style={{
-                  fontSize: width * RATIOS.fontSize,
+                  fontSize: fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
                 }}
               >
                 {name}

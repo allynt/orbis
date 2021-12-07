@@ -2,10 +2,8 @@ import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
-import { VictoryGroup, VictoryLine } from 'victory';
-
-import { StackedBarChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { StackedBarChart } from 'dashboard/charts/stacked-bar-chart/stacked-bar-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 
