@@ -41,9 +41,14 @@ const useStyles = makeStyles(theme => ({
     padding: '2rem',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
   },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    padding: '2rem',
+  },
   progressIndicators: {
     display: 'flex',
-    padding: '2rem',
     gap: '1rem',
   },
   planningProgression: {
@@ -52,7 +57,6 @@ const useStyles = makeStyles(theme => ({
   barCharts: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
-    padding: '2rem',
     gap: '1rem',
   },
   housingDelivery: {
@@ -136,45 +140,47 @@ const WalthamForestDashboard = ({ sourceId }) => {
         </Button>
       </Grid>
 
-      {/* progress indicator charts */}
-      <div className={styles.progressIndicators}>
-        <ProgressIndicators
-          data={totalHousingDelivery}
-          userOrbState={userOrbState}
-        />
-      </div>
-
-      <div className={styles.barCharts}>
-        {/* standalone stacked bar chart */}
-        <ChartWrapper
-          title="Progression of Units Relating to Planning Schedule"
-          info="This is a test description"
-          className={styles.planningProgression}
-        >
-          <StackedBarChart
-            xLabel="Number Of Units"
-            yLabel="Financial Year"
-            x="Year"
-            ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
-            data={progressionVsPlanningChartData}
-          />
-        </ChartWrapper>
-
-        <div className={styles.housingDelivery}>
-          {/* group/line and stack/line charts */}
-          <WalthamHousingDelivery
-            totalHousingDeliveryChartData={totalHousingDeliveryChartData}
-            tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+      <div className={styles.content}>
+        {/* progress indicator charts */}
+        <div className={styles.progressIndicators}>
+          <ProgressIndicators
+            data={totalHousingDelivery}
             userOrbState={userOrbState}
           />
-          {/* big multi-line chart */}
-          <HousingApprovalsComponent
-            x="Month"
-            xLabel="Year"
-            yLabel="No. Housing Approvals Granted"
-            ranges={['2019', '2020', '2021']}
-            data={approvalsGranted?.properties}
-          />
+        </div>
+
+        <div className={styles.barCharts}>
+          {/* standalone stacked bar chart */}
+          <ChartWrapper
+            title="Progression of Units Relating to Planning Schedule"
+            info="This is a test description"
+            className={styles.planningProgression}
+          >
+            <StackedBarChart
+              xLabel="Number Of Units"
+              yLabel="Financial Year"
+              x="Year"
+              ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
+              data={progressionVsPlanningChartData}
+            />
+          </ChartWrapper>
+
+          <div className={styles.housingDelivery}>
+            {/* group/line and stack/line charts */}
+            <WalthamHousingDelivery
+              totalHousingDeliveryChartData={totalHousingDeliveryChartData}
+              tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+              userOrbState={userOrbState}
+            />
+            {/* big multi-line chart */}
+            <HousingApprovalsComponent
+              x="Month"
+              xLabel="Year"
+              yLabel="No. Housing Approvals Granted"
+              ranges={['2019', '2020', '2021']}
+              data={approvalsGranted?.properties}
+            />
+          </div>
         </div>
       </div>
 
