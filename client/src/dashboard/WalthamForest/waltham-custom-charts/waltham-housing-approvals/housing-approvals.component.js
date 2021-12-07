@@ -21,9 +21,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '60%',
     marginBottom: '-1rem',
   },
-  buttons: {
-    width: '40%',
-  },
 }));
 
 const HousingApprovalsComponent = ({
