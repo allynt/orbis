@@ -54,6 +54,8 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
                   height: width * RATIOS.squareIconSize,
                   backgroundColor: `${color}`,
                   marginRight: width * RATIOS.iconSpacing,
+                  maxWidth: '1rem',
+                  maxHeight: '1rem',
                 }}
               />
               <span
