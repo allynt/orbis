@@ -72,20 +72,22 @@ const HousingApprovalsComponent = ({
   };
 
   const renderLineChart = width => {
-    return ranges?.map((range, i) => {
-      const color = walthamChartColors.housingApproval[i],
-        props = {
-          data: dataByType,
-          x,
-          y: range,
-        };
-      return (
-        <VictoryGroup key={range}>
-          <VictoryLine {...props} style={{ data: { stroke: color } }} />
-          <VictoryScatter {...props} style={{ data: { stroke: color } }} />
-        </VictoryGroup>
-      );
-    });
+    return !!dataByType
+      ? ranges?.map((range, i) => {
+          const color = walthamChartColors.housingApproval[i],
+            props = {
+              data: dataByType,
+              x,
+              y: range,
+            };
+          return (
+            <VictoryGroup key={range}>
+              <VictoryLine {...props} style={{ data: { stroke: color } }} />
+              <VictoryScatter {...props} style={{ data: { stroke: color } }} />
+            </VictoryGroup>
+          );
+        })
+      : null;
   };
 
   return (
