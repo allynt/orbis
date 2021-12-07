@@ -68,8 +68,8 @@ const HousingApprovalsComponent = ({
     );
   };
 
-  const renderLineChart = width => {
-    return !!dataByType
+  const renderLineChart = width =>
+    !!dataByType
       ? ranges?.map((range, i) => {
           const color = walthamChartColors.housingApproval[i],
             props = {
@@ -85,7 +85,6 @@ const HousingApprovalsComponent = ({
           );
         })
       : null;
-  };
 
   return (
     <ChartWrapper
