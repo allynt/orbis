@@ -1,10 +1,21 @@
 import React from 'react';
 
+import { makeStyles } from '@astrosat/astrosat-ui';
+
 import { ParentSize } from '@visx/responsive';
 import numeral from 'numeral';
-import { VictoryAxis, VictoryChart, VictoryLabel } from 'victory';
+import { VictoryAxis, VictoryChart } from 'victory';
 
 import { useChartTheme } from '../../useChartTheme';
+
+const useStyles = makeStyles(theme => ({
+  parentSize: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 'inherit !important',
+  },
+}));
 
 /**
  * @param {{
@@ -16,6 +27,7 @@ import { useChartTheme } from '../../useChartTheme';
  */
 const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
   const chartTheme = useChartTheme();
+  const styles = useStyles({});
 
   const getXTickFormat = tick => {
     if (tick.toString().includes('-')) {
@@ -31,7 +43,7 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
     );
 
   return (
-    <ParentSize>
+    <ParentSize className={styles.parentSize}>
       {({ width }) => (
         <>
           {!!renderLegend ? renderLegend(width) : null}

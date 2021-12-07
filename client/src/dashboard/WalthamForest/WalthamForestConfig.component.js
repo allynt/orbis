@@ -26,7 +26,7 @@ import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
-import { groupedDataTransformer, lineDataTransformer } from './utils';
+import { groupedDataTransformer } from './utils';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -46,14 +46,19 @@ const useStyles = makeStyles(theme => ({
     padding: '2rem',
     gap: '1rem',
   },
+  planningProgression: {
+    height: 'fit-content',
+  },
   barCharts: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     padding: '2rem',
     gap: '1rem',
   },
-  lineCharts: {
-    padding: '2rem',
+  housingDelivery: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2rem',
   },
 }));
 
@@ -130,6 +135,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           Add Targets
         </Button>
       </Grid>
+
       {/* progress indicator charts */}
       <div className={styles.progressIndicators}>
         <ProgressIndicators
@@ -137,11 +143,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
           userOrbState={userOrbState}
         />
       </div>
-      {/* stacked/grouped bar charts */}
+
       <div className={styles.barCharts}>
+        {/* standalone stacked bar chart */}
         <ChartWrapper
           title="Progression of Units Relating to Planning Schedule"
           info="This is a test description"
+          className={styles.planningProgression}
         >
           <StackedBarChart
             xLabel="Number Of Units"
@@ -152,23 +160,24 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </ChartWrapper>
 
-        {/* group/line and stack/line charts */}
-        <WalthamHousingDelivery
-          totalHousingDeliveryChartData={totalHousingDeliveryChartData}
-          tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
-          userOrbState={userOrbState}
-        />
+        <div className={styles.housingDelivery}>
+          {/* group/line and stack/line charts */}
+          <WalthamHousingDelivery
+            totalHousingDeliveryChartData={totalHousingDeliveryChartData}
+            tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+            userOrbState={userOrbState}
+          />
+          {/* big multi-line chart */}
+          <HousingApprovalsComponent
+            x="Month"
+            xLabel="Year"
+            yLabel="No. Housing Approvals Granted"
+            ranges={['2019', '2020', '2021']}
+            data={approvalsGranted?.properties}
+          />
+        </div>
       </div>
-      {/* big multi-line chart */}
-      <div className={styles.lineCharts}>
-        <HousingApprovalsComponent
-          x="Month"
-          xLabel="Year"
-          yLabel="No. Housing Approvals Granted"
-          ranges={['2019', '2020', '2021']}
-          data={approvalsGranted?.properties}
-        />
-      </div>
+
       <Dialog
         maxWidth="md"
         open={targetDialogVisible}

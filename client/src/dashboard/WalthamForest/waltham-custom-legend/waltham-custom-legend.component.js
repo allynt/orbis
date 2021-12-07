@@ -33,7 +33,7 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
   const styles = useStyles({ maxHeight });
 
   return (
-    <Grid container justifyContent="space-between" alignItems="flex-start">
+    <Grid container justifyContent="space-between" alignItems="flex-end">
       <Grid
         item
         container
