@@ -9,6 +9,7 @@ import {
   Input,
 } from '@astrosat/astrosat-ui';
 
+import { filterEmptyStrings } from '../utils';
 import { targetInputFields, targetDatasets } from '../waltham.constants';
 import { validate } from './validate';
 
@@ -115,7 +116,7 @@ const TargetScreen = ({ onAddTargetsClick, targets }) => {
       item
       container
       component="form"
-      onSubmit={() => onAddTargetsClick(targetData)}
+      onSubmit={() => onAddTargetsClick(filterEmptyStrings(targetData))}
     >
       {!!error ? <span className={styles.error}>{error}</span> : null}
       <Grid item container className={styles.inputFields}>
