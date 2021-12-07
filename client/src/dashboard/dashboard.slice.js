@@ -97,7 +97,7 @@ export const chartDataSelector = (sourceId, datasetName) =>
 export const userOrbStateSelector = sourceId =>
   createSelector(
     userSelector,
-    user => user?.profiles?.orbis_profile?.orb_state?.[sourceId],
+    user => user?.profiles?.orbis_profile?.orb_state?.[sourceId] ?? {},
   );
 
 export default dashboardSlice.reducer;
