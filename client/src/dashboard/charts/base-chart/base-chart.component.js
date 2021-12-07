@@ -58,6 +58,9 @@ const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
               dependentAxis
               label={yLabel}
               tickFormat={getYTickFormat}
+              style={{
+                axisLabel: { padding: 50 },
+              }}
             />
             {!!width ? renderChart(width) : null}
           </VictoryChart>
