@@ -13,8 +13,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import { StackedBarChart } from 'dashboard/charts/stacked-bar-chart/stacked-bar-chart.component';
 
 import {
   chartDataSelector,
@@ -30,6 +28,7 @@ import { groupedDataTransformer } from './utils';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
+import ProgressionVsPlanningSchedule from './waltham-custom-charts/waltham-progression-of-units/progression-vs-planning-schedule.component';
 import { walthamApiMetadata, targetDatasets } from './waltham.constants';
 
 const useStyles = makeStyles(theme => ({
@@ -57,6 +56,11 @@ const useStyles = makeStyles(theme => ({
   barCharts: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
+    gap: '1rem',
+  },
+  progression: {
+    display: 'flex',
+    flexDirection: 'column',
     gap: '1rem',
   },
   housingDelivery: {
@@ -117,10 +121,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
       () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
       [totalHousingDelivery],
     ),
-    progressionVsPlanningChartData = useMemo(
-      () => progressionVsPlanning?.properties[0].data,
-      [progressionVsPlanning],
-    ),
     tenureHousingDeliveryChartData = useMemo(
       () => tenureHousingDelivery?.properties,
       [tenureHousingDelivery],
@@ -150,20 +150,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
         </div>
 
         <div className={styles.barCharts}>
-          {/* standalone stacked bar chart */}
-          <ChartWrapper
-            title="Progression of Units Relating to Planning Schedule"
-            info="This is a test description"
-            className={styles.planningProgression}
-          >
-            <StackedBarChart
-              xLabel="Number Of Units"
-              yLabel="Financial Year"
-              x="Year"
-              ranges={['Ahead of Schedule', 'Behind Schedule', 'On Track']}
-              data={progressionVsPlanningChartData}
-            />
-          </ChartWrapper>
+          <div className={styles.progression}>
+            <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+          </div>
 
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}

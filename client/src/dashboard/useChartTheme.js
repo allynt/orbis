@@ -20,6 +20,7 @@ const walthamChartColors = {
   totalHousing: ['#37e5d8', '#8189f3'],
   tenureHousing: ['#37e5d8', '#75b7b2', '#adeab0', '#05c3ff', '#d6ea69'],
   housingApproval: ['#f6be00', '#af31d6'],
+  progressionVsPlanning: ['#37e5d8', '#d6ea69', '#05c3ff'],
 };
 
 const baseProps = {
