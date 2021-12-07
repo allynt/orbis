@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   housingDelivery: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2rem',
+    gap: '1rem',
   },
 }));
 
