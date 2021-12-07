@@ -6,8 +6,10 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { VictoryGroup, VictoryLine } from 'victory';
+
+import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import { LineChart } from 'dashboard/charts/line-chart/line-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.constants';
@@ -50,14 +52,40 @@ const HousingApprovalsComponent = ({
 
   const apiLegendData = [
     {
-      name: '2019',
+      name: 'Actual 2019',
       color: walthamChartColors.housingApproval[0],
     },
     {
-      name: '2020',
+      name: 'Actual 2020',
       color: walthamChartColors.housingApproval[1],
     },
   ];
+
+  const renderHousingApprovalsLegend = width => {
+    return (
+      <WalthamCustomLegend
+        apiLegendData={apiLegendData}
+        targetLegendData={null}
+        width={width}
+      />
+    );
+  };
+
+  const renderLineChart = width => {
+    return ranges?.map((range, i) => {
+      const color = walthamChartColors.housingApproval[i],
+        props = {
+          data: dataByType,
+          x,
+          y: range,
+        };
+      return (
+        <VictoryGroup key={range}>
+          <VictoryLine {...props} style={{ data: { stroke: color } }} />
+        </VictoryGroup>
+      );
+    });
+  };
 
   return (
     <ChartWrapper
@@ -65,7 +93,7 @@ const HousingApprovalsComponent = ({
       info="This shows the number of housing approvals granted over time"
     >
       <div className={styles.legendAndButtons}>
-        <WalthamCustomLegend apiLegendData={apiLegendData} />
+        <WalthamCustomLegend apiLegendData={apiLegendData} width={10} />
 
         <ToggleButtonGroup
           size="small"
@@ -83,12 +111,11 @@ const HousingApprovalsComponent = ({
         </ToggleButtonGroup>
       </div>
 
-      <LineChart
-        x={x}
-        ranges={ranges}
+      <BaseChart
         xLabel={xLabel}
         yLabel={yLabel}
-        data={dataByType}
+        renderChart={renderLineChart}
+        renderLegend={renderHousingApprovalsLegend}
       />
     </ChartWrapper>
   );
