@@ -50,6 +50,8 @@ export const useAoiLayer = ({
     }
 
     setSelectedFeatureIndexes([index]);
+
+    setAoiDrawMode('ViewMode');
   };
 
   const getFillColor = FILL_COLOR;
