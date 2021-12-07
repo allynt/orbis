@@ -21,11 +21,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '60%',
     marginBottom: '-1rem',
   },
-  legend: {
-    fontSize: '0.4rem',
-    maxWidth: '1rem',
-    marginBottom: '-3rem',
-  },
   buttons: {
     width: '40%',
   },
@@ -98,8 +93,6 @@ const HousingApprovalsComponent = ({
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
     >
-      <WalthamCustomLegend apiLegendData={apiLegendData} width={1} />
-
       <ToggleButtonGroup
         size="small"
         value={selectedDataType}

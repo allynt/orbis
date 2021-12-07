@@ -2,16 +2,15 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
-const MAX_FONT_SIZE = 16;
-
 const RATIOS = {
-  legendContainer: 0.14,
-  squareIconSize: 0.03,
-  fontSize: 0.025,
-  lineIconWidth: 0.06,
-  lineIconHeight: 0.005,
-  iconSpacing: 0.015,
-};
+    legendContainer: 0.14,
+    squareIconSize: 0.03,
+    fontSize: 0.025,
+    lineIconWidth: 0.06,
+    lineIconHeight: 0.005,
+    iconSpacing: 0.015,
+  },
+  MAX_FONT_SIZE = 16;
 
 const useStyles = makeStyles(theme => ({
   apiLegend: {
@@ -31,9 +30,9 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
-  const maxHeight = width * RATIOS.legendContainer;
-  const fontSize = width * RATIOS.fontSize;
-  const styles = useStyles({ maxHeight });
+  const maxHeight = width * RATIOS.legendContainer,
+    fontSize = width * RATIOS.fontSize,
+    styles = useStyles({ maxHeight });
 
   return (
     <Grid container justifyContent="space-between" alignItems="flex-end">
