@@ -57,3 +57,18 @@ export const userTargetTransformer = data => {
     [],
   );
 };
+
+/**
+ * This is here because typing into a field and then deleting the input
+ * results in an empty string being saved, which is then converted into
+ * a number on the frontend, which JavaScript type conversion reads as zero.
+ * @param {object} data
+ */
+export const filterEmptyStrings = data => {
+  if (!data) return;
+
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
+    {},
+  );
+};
