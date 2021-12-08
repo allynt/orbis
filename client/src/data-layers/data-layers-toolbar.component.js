@@ -20,7 +20,7 @@ import {
   saveAoi,
   fetchAois,
   selectAoi,
-  updateAoiDetails,
+  updateAoi,
   deleteAoi,
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
@@ -105,7 +105,7 @@ const DataLayersToolbar = ({
             setAoiDrawMode={setAoiDrawMode}
             fetchAois={() => dispatch(fetchAois())}
             selectAoi={aoi => dispatch(selectAoi(aoi))}
-            editAoiDetails={aoi => dispatch(updateAoiDetails(aoi))}
+            editAoiDetails={aoi => dispatch(updateAoi(aoi))}
             deleteAoi={aoi => dispatch(deleteAoi(aoi))}
           />
         )}
