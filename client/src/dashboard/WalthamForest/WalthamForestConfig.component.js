@@ -177,7 +177,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               x="Month"
               xLabel="Year"
               yLabel="No. Housing Approvals Granted"
-              ranges={['2019', '2020', '2021']}
+              ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
             />
           </div>
