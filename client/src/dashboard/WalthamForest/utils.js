@@ -72,3 +72,7 @@ export const filterEmptyStrings = data => {
     {},
   );
 };
+
+export const getTargetTotals = data => {
+  if (!data) return;
+};

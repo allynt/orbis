@@ -54,12 +54,25 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     );
   };
 
+  const stackColors = {
+    affordableHousing: 'red',
+    intermediateDelivery: 'blue',
+    marketHousing: 'green',
+    sociallyRented: 'orange',
+    privateRental: 'purple',
+  };
+
+  console.log('group: ', Object.values(stackColors));
+  console.log('single: ', stackColors[tenureType]);
+  console.log('tenureType: ', tenureType);
+
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType
-      ? [housingTenureTypes[tenureType]]
-      : tenureTypes;
+    const ranges = !!tenureType ? [tenureType] : housingTenureTypes,
+      colorScale = !!tenureType
+        ? stackColors[tenureType]
+        : Object.values(stackColors);
 
     const color = '#d13aff',
       scatterWidth = width / 2,
@@ -73,7 +86,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup>
-          <VictoryStack>
+          <VictoryStack colorScale={colorScale}>
             {ranges?.map(range => (
               <VictoryBar
                 key={range}
@@ -81,7 +94,9 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                 x="Year"
                 y={range}
                 style={{
-                  data: { width: barWidth },
+                  data: {
+                    width: barWidth,
+                  },
                 }}
               />
             ))}
