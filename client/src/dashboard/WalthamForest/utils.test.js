@@ -153,7 +153,7 @@ describe('Waltham Forest Data Transformers', () => {
     });
   });
 
-  describe.only('getTargetTotals', () => {
+  describe('getTargetTotals', () => {
     it('totals up all of the values by year', () => {
       const data = {
           dataset1: {
