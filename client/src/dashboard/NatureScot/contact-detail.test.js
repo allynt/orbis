@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen } from 'test/test-utils';
+import { render, screen, within } from 'test/test-utils';
 
 import AreaOfficeContactDetail from './area-office-contact-details.component';
 
@@ -23,7 +23,10 @@ describe('<AreaOfficeContactDetail />', () => {
 
   it('should render the `No Data` message', () => {
     render(<AreaOfficeContactDetail contactDetails={[]} />);
-    expect(screen.getByText('No Data')).toBeInTheDocument();
+    const callResponses = screen.getAllByText('No Data');
+    callResponses.forEach(callResponse => {
+      expect(within(callResponse).getByText('No Data')).toBeInTheDocument();
+    });
   });
 
   it('should render the contact detail data', () => {
