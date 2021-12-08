@@ -16,6 +16,7 @@ import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
+  TENURE_STACK_COLORS,
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
 
@@ -54,25 +55,16 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     );
   };
 
-  const stackColors = {
-    affordableHousing: 'red',
-    intermediateDelivery: 'blue',
-    marketHousing: 'green',
-    sociallyRented: 'orange',
-    privateRental: 'purple',
-  };
-
-  console.log('group: ', Object.values(stackColors));
-  console.log('single: ', stackColors[tenureType]);
-  console.log('tenureType: ', tenureType);
-
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType ? [tenureType] : housingTenureTypes,
-      colorScale = !!tenureType
-        ? stackColors[tenureType]
-        : Object.values(stackColors);
+    const ranges = !!tenureType
+      ? [housingTenureTypes[tenureType]]
+      : tenureTypes;
+
+    const colorScale = !!tenureType
+      ? [TENURE_STACK_COLORS[tenureType]]
+      : Object.values(TENURE_STACK_COLORS);
 
     const color = '#d13aff',
       scatterWidth = width / 2,
