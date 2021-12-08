@@ -40,7 +40,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     const ranges = ['Ahead of Schedule', 'Behind Schedule', 'On Track'];
     const x = 'Year';
 
-    return (
+    return !!progressionVsPlanningChartData ? (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
@@ -56,7 +56,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
           />
         ))}
       </VictoryStack>
-    );
+    ) : null;
   };
 
   return (
