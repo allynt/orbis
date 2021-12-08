@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -12,6 +12,7 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
@@ -28,9 +29,18 @@ import {
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const { walthamChartColors } = useChartTheme();
 
+  const tenureTypes = Object.values(housingTenureTypes);
+
+  const targets = useMemo(() => {
+    if (!tenureType) {
+      return userTargetTransformer(userTargetData.marketHousing);
+    }
+    return userTargetTransformer(userTargetData?.[tenureType]);
+  }, [tenureType, userTargetData]);
+
   if (!apiData) return null;
 
-  const apiLegendData = housingTenureTypes.map((range, i) => ({
+  const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,
     color: walthamChartColors.tenureHousing[i],
   }));
@@ -48,12 +58,14 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType ? [tenureType] : housingTenureTypes;
+    const ranges = !!tenureType
+      ? [housingTenureTypes[tenureType]]
+      : tenureTypes;
 
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: targets,
         x: 'x',
         y: 'y',
       };
@@ -78,7 +90,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData ? (
+        {!!userTargetData && !!targets ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
