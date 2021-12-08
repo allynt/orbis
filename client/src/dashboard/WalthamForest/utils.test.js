@@ -3,6 +3,7 @@ import {
   lineDataTransformer,
   userTargetTransformer,
   filterEmptyStrings,
+  getTargetTotals,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -148,6 +149,73 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = filterEmptyStrings(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe.only('getTargetTotals', () => {
+    it('totals up all of the values by year', () => {
+      const data = {
+          dataset1: {
+            '2015-2016': '100',
+            '2016-2017': '200',
+            '2018-2019': '300',
+          },
+          dataset2: {
+            '2015-2016': '400',
+            '2016-2017': '500',
+            '2018-2019': '600',
+          },
+          dataset3: {
+            '2015-2016': '700',
+            '2016-2017': '800',
+            '2018-2019': '900',
+          },
+        },
+        expected = {
+          '2015-2016': 1200,
+          '2016-2017': 1500,
+          '2018-2019': 1800,
+        };
+
+      const result = getTargetTotals(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('works with uneven data', () => {
+      const data = {
+          dataset1: {
+            '2015-2016': '100',
+            '2016-2017': '50',
+          },
+          dataset2: {
+            '2015-2016': '400',
+            '2016-2017': '0',
+            '2017-2018': '600',
+            '2018-2019': '200',
+          },
+          dataset3: {
+            '2014-2015': '200',
+            '2016-2017': '800',
+            '2018-2019': '900',
+            '2019-2020': '700',
+          },
+        },
+        expected = {
+          '2014-2015': 200,
+          '2015-2016': 500,
+          '2016-2017': 850,
+          '2017-2018': 600,
+          '2018-2019': 1100,
+          '2019-2020': 700,
+        };
+
+      const result = getTargetTotals(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is not present', () => {
+      const result = getTargetTotals(undefined);
       expect(result).toBeUndefined();
     });
   });

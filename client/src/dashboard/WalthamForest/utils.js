@@ -9,7 +9,7 @@
  *  y: number
  * }[][]}
  */
-export const groupedDataTransformer = data => {
+const groupedDataTransformer = data => {
   if (!data) return;
 
   return Object.values(
@@ -31,7 +31,7 @@ export const groupedDataTransformer = data => {
  * @param {Object[]} data
  * @returns {Object[]}
  */
-export const lineDataTransformer = data => {
+const lineDataTransformer = data => {
   if (!data) return;
 
   const uniqueKeys = [
@@ -49,7 +49,7 @@ export const lineDataTransformer = data => {
  * Victory can only render number values, and will break with strings.
  * @param {object} data
  */
-export const userTargetTransformer = data => {
+const userTargetTransformer = data => {
   if (!data) return;
 
   return Object.entries(data).reduce(
@@ -64,11 +64,36 @@ export const userTargetTransformer = data => {
  * a number on the frontend, which JavaScript type conversion reads as zero.
  * @param {object} data
  */
-export const filterEmptyStrings = data => {
+const filterEmptyStrings = data => {
   if (!data) return;
 
   return Object.entries(data).reduce(
     (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
     {},
   );
+};
+
+const getTargetTotals = data => {
+  if (!data) return;
+
+  return Object.values(data).reduce(
+    (acc, targets) => ({
+      ...acc,
+      ...Object.entries(targets)
+        .map(([year, target]) => {
+          let number = +target;
+          return { [year]: (number += acc[year] ?? 0) };
+        })
+        .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
+    }),
+    {},
+  );
+};
+
+export {
+  groupedDataTransformer,
+  lineDataTransformer,
+  userTargetTransformer,
+  filterEmptyStrings,
+  getTargetTotals,
 };
