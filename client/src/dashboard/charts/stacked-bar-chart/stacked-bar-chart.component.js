@@ -11,7 +11,9 @@ import { BaseChart } from '../base-chart/base-chart.component';
  *  x: string
  *  ranges: string[]
  *  data: any[]
- * }} props
+ *  renderLegend?: (width: number) => React.ReactNode
+ * }}
+ * props
  */
 const StackedBarChart = ({
   xLabel = '',
@@ -19,6 +21,7 @@ const StackedBarChart = ({
   x = 'x',
   ranges = ['y'],
   data,
+  renderLegend,
 }) => {
   if (!data) return null;
 
@@ -26,6 +29,7 @@ const StackedBarChart = ({
     const barWidth = width / 20;
     return (
       <VictoryStack>
+        {!!renderLegend ? renderLegend(width) : null}
         {ranges?.map(range => (
           <VictoryBar
             key={range}
@@ -46,6 +50,7 @@ const StackedBarChart = ({
       xLabel={xLabel}
       yLabel={yLabel}
       renderChart={renderStackedBarChart}
+      renderLegend={renderLegend}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -12,6 +12,12 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
+import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import {
+  TARGET_LEGEND_DATA,
+  housingTenureTypes,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 /**
  * @param {{
@@ -21,27 +27,44 @@ import { useChartTheme } from 'dashboard/useChartTheme';
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  const chartTheme = useChartTheme();
+  const { walthamChartColors } = useChartTheme();
+
+  const tenureTypes = Object.values(housingTenureTypes);
+
+  const targets = useMemo(() => {
+    return !tenureType
+      ? userTargetTransformer(userTargetData.marketHousing)
+      : userTargetTransformer(userTargetData?.[tenureType]);
+  }, [tenureType, userTargetData]);
 
   if (!apiData) return null;
+
+  const apiLegendData = tenureTypes.map((range, i) => ({
+    name: range,
+    color: walthamChartColors.tenureHousing[i],
+  }));
+
+  const renderTenureHousingLegend = width => {
+    return (
+      <WalthamCustomLegend
+        apiLegendData={apiLegendData}
+        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+        width={width}
+      />
+    );
+  };
 
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
     const ranges = !!tenureType
-      ? [tenureType]
-      : [
-          'Affordable Rent',
-          'Intermediate',
-          'Market',
-          'Social Rented',
-          'Private Rented Sector',
-        ];
+      ? [housingTenureTypes[tenureType]]
+      : tenureTypes;
 
-    const color = chartTheme.colors[5],
+    const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: targets,
         x: 'x',
         y: 'y',
       };
@@ -66,7 +89,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData ? (
+        {!!userTargetData && !!targets ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
@@ -90,6 +113,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       yLabel="Housing Delivery in Units"
       xLabel="Year"
       renderChart={renderTenureHousingMultiChart}
+      renderLegend={renderTenureHousingLegend}
     />
   );
 };
