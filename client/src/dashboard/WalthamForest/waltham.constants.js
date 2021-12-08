@@ -8,6 +8,12 @@ export const housingTenureTypes = [
   'Private Rented Sector',
 ];
 
+export const progressionVsPlanningTypes = [
+  'Units Ahead of Schedule',
+  'Units Behind Schedule',
+  'Units on Schedule',
+];
+
 export const TENURE_DATA_TYPES = {
   gross: 'Gross',
   net: 'Net',

@@ -23,10 +23,18 @@ const useStyles = makeStyles(theme => ({
  *  yLabel?: string
  *  renderChart: (width: number) => React.ReactNode
  *  renderLegend?: (width: number) => React.ReactNode
+ * theme?: object
  * }} props
  */
-const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend }) => {
-  const chartTheme = useChartTheme();
+const BaseChart = ({
+  xLabel = '',
+  yLabel = '',
+  renderChart,
+  renderLegend,
+  theme = {},
+}) => {
+  const chartTheme = { ...useChartTheme(), ...theme };
+
   const styles = useStyles({});
 
   const getXTickFormat = tick => {
