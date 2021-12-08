@@ -32,10 +32,9 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const tenureTypes = Object.values(housingTenureTypes);
 
   const targets = useMemo(() => {
-    if (!tenureType) {
-      return userTargetTransformer(userTargetData.marketHousing);
-    }
-    return userTargetTransformer(userTargetData?.[tenureType]);
+    return !tenureType
+      ? userTargetTransformer(userTargetData.marketHousing)
+      : userTargetTransformer(userTargetData?.[tenureType]);
   }, [tenureType, userTargetData]);
 
   if (!apiData) return null;
