@@ -86,9 +86,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                 x="Year"
                 y={range}
                 style={{
-                  data: {
-                    width: barWidth,
-                  },
+                  data: { width: barWidth },
                 }}
               />
             ))}

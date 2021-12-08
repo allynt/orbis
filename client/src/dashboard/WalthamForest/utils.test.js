@@ -2,8 +2,6 @@ import {
   groupedDataTransformer,
   lineDataTransformer,
   userTargetTransformer,
-  filterEmptyStrings,
-  getTargetTotals,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -117,64 +115,6 @@ describe('Waltham Forest Data Transformers', () => {
     it('returns undefined if data is not present', () => {
       const result = userTargetTransformer(undefined);
       expect(result).toBeUndefined();
-    });
-  });
-
-  describe.only('filterEmptyStrings', () => {
-    it('filters out empty string values from object', () => {
-      const data = {
-          'key-1': 123,
-          'key-2': '',
-          'key-3': 456,
-        },
-        expected = {
-          'key-1': 123,
-          'key-3': 456,
-        };
-
-      const result = filterEmptyStrings(data);
-      expect(result).toEqual(expected);
-    });
-
-    it('does not filter 0 values', () => {
-      const data = {
-        'key-1': 123,
-        'key-2': 0,
-        'key-3': 456,
-      };
-
-      const result = filterEmptyStrings(data);
-      expect(result).toEqual(data);
-    });
-
-    it('returns undefined if data is not present', () => {
-      const result = filterEmptyStrings(undefined);
-      expect(result).toBeUndefined();
-    });
-  });
-
-  describe('getTargetTotals', () => {
-    it('totals up all of the values by year', () => {
-      const data = {
-          dataset1: {
-            '2015-2016': 100,
-            '2016-2017': 100,
-            '2018-2019': 100,
-          },
-          dataset2: {
-            '2015-2016': 200,
-            '2016-2017': 200,
-            '2018-2019': 200,
-          },
-        },
-        expected = {
-          '2015-2016': 300,
-          '2016-2017': 300,
-          '2018-2019': 300,
-        };
-
-      const result = getTargetTotals(data);
-      expect(result).toEqual(expected);
     });
   });
 });
