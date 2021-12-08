@@ -16,7 +16,6 @@ import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
-  TENURE_STACK_COLORS,
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
 
@@ -28,9 +27,10 @@ import {
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  const { walthamChartColors } = useChartTheme();
+  const { tenureStackColors } = useChartTheme();
 
-  const tenureTypes = Object.values(housingTenureTypes);
+  const tenureTypes = Object.values(housingTenureTypes),
+    stackColors = Object.values(tenureStackColors);
 
   const targets = useMemo(() => {
     return !tenureType
@@ -42,7 +42,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
 
   const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,
-    color: walthamChartColors.tenureHousing[i],
+    color: stackColors[i],
   }));
 
   const renderTenureHousingLegend = width => {
@@ -63,8 +63,8 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       : tenureTypes;
 
     const colorScale = !!tenureType
-      ? [TENURE_STACK_COLORS[tenureType]]
-      : Object.values(TENURE_STACK_COLORS);
+      ? [tenureStackColors[tenureType]]
+      : stackColors;
 
     const color = '#d13aff',
       scatterWidth = width / 2,

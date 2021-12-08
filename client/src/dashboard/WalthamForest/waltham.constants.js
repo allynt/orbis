@@ -75,11 +75,3 @@ export const HOUSING_APPROVAL_DATA_TYPES = {
   monthly: 'Monthly',
   cumulative: 'Cumulative',
 };
-
-export const TENURE_STACK_COLORS = {
-  affordableHousing: '#37e5d8',
-  intermediateDelivery: '#75b7b2',
-  marketHousing: '#adeab0',
-  sociallyRented: '#05c3ff',
-  privateRental: '#d6ea69',
-};
