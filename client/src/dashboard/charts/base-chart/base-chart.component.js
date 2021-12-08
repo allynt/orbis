@@ -26,11 +26,14 @@ const useStyles = makeStyles(theme => ({
  * theme?: object
  * }} props
  */
-const BaseChart = ({ xLabel = '', yLabel = '', renderChart, renderLegend, theme = null }) => {
-  let chartTheme = useChartTheme();
-  if (theme) {
-    chartTheme = { ...theme };
-  }
+const BaseChart = ({
+  xLabel = '',
+  yLabel = '',
+  renderChart,
+  renderLegend,
+  theme = {},
+}) => {
+  const chartTheme = { ...useChartTheme(), ...theme };
 
   const styles = useStyles({});
 
