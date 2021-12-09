@@ -39,7 +39,7 @@ const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
 /**
- * @returns {import('victory').VictoryThemeDefinition & {colors: string[], walthamChartColors: object, tenureStackColors: Object, fontSize: number}}
+ * @returns {import('victory').VictoryThemeDefinition & {colors: string[], walthamChartColors: object, tenureStackColors: object, fontSize: number}}
  */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
