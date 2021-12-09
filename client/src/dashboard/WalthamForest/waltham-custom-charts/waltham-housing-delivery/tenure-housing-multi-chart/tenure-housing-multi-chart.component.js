@@ -12,7 +12,10 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
-import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
+import {
+  userTargetTransformer,
+  getTargetTotals,
+} from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
@@ -32,11 +35,13 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const tenureTypes = Object.values(housingTenureTypes),
     stackColors = Object.values(tenureStackColors);
 
-  const targets = useMemo(() => {
-    return !tenureType
-      ? userTargetTransformer(userTargetData.marketHousing)
-      : userTargetTransformer(userTargetData?.[tenureType]);
-  }, [tenureType, userTargetData]);
+  const targets = useMemo(
+    () =>
+      !tenureType
+        ? userTargetTransformer(getTargetTotals(userTargetData))
+        : userTargetTransformer(userTargetData?.[tenureType]),
+    [tenureType, userTargetData],
+  );
 
   if (!apiData) return null;
 
