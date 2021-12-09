@@ -73,6 +73,11 @@ const filterEmptyStrings = data => {
   );
 };
 
+/**
+ * This is here to reduce the totals for every year across multiple tenure types
+ * into a single object consisting of year ranges and total number values.
+ * @param {object} data
+ */
 const getTargetTotals = data => {
   if (!data) return;
 
@@ -81,8 +86,8 @@ const getTargetTotals = data => {
       ...acc,
       ...Object.entries(targets)
         .map(([year, target]) => {
-          let number = +target;
-          return { [year]: (number += acc[year] ?? 0) };
+          let num = +target;
+          return { [year]: (num += acc[year] ?? 0) };
         })
         .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
     }),

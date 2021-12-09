@@ -156,17 +156,17 @@ describe('Waltham Forest Data Transformers', () => {
   describe('getTargetTotals', () => {
     it('totals up all of the values by year', () => {
       const data = {
-          dataset1: {
+          tenureType1: {
             '2015-2016': '100',
             '2016-2017': '200',
             '2018-2019': '300',
           },
-          dataset2: {
+          tenureType2: {
             '2015-2016': '400',
             '2016-2017': '500',
             '2018-2019': '600',
           },
-          dataset3: {
+          tenureType3: {
             '2015-2016': '700',
             '2016-2017': '800',
             '2018-2019': '900',
@@ -184,22 +184,23 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('works with uneven data', () => {
       const data = {
-          dataset1: {
+          tenureType1: {
             '2015-2016': '100',
             '2016-2017': '50',
           },
-          dataset2: {
+          tenureType2: {
             '2015-2016': '400',
             '2016-2017': '0',
             '2017-2018': '600',
             '2018-2019': '200',
           },
-          dataset3: {
+          tenureType3: {
             '2014-2015': '200',
             '2016-2017': '800',
             '2018-2019': '900',
             '2019-2020': '700',
           },
+          tenureType4: {},
         },
         expected = {
           '2014-2015': 200,
