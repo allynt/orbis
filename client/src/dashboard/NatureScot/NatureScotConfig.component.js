@@ -22,7 +22,7 @@ import AreaOfficeContactDetails from './area-office-contact-details.component';
 import { NearestProtectedAreas } from './nearest-protected-areas';
 import ProtectedFeature from './protected-feature/protected-feature.component';
 
-import { AOI_BUFFER } from './nature-scotland.constants';
+import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from './nature-scotland.constants';
 
 const useStyles = makeStyles(theme => ({
   subRow: {
@@ -110,6 +110,7 @@ const NatureScotDashboard = ({ sourceId }) => {
       try {
         const body = {
           buffer: AOI_BUFFER,
+          limit: QUERY_RESPONSE_LIMIT,
           feature: feature(selectedAoi.geometry),
         };
         const response = await apiClient.dashboard.getNatureScotlandIRDashboardData(
