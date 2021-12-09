@@ -38,7 +38,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const targets = useMemo(
     () =>
       !tenureType
-        ? getTargetTotals(userTargetData)
+        ? userTargetTransformer(getTargetTotals(userTargetData))
         : userTargetTransformer(userTargetData?.[tenureType]),
     [tenureType, userTargetData],
   );
