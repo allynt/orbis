@@ -1,4 +1,3 @@
-import { FlyToInterpolator } from '@deck.gl/core';
 import {
   createSlice,
   createSelector,
@@ -33,7 +32,7 @@ export const fetchAois = createAsyncThunk(
 
 export const saveAoi = createAsyncThunk(
   `${name}/saveAoi`,
-  async (params, { getState, dispatch, rejectWithValue }) => {
+  async (params, { getState, rejectWithValue }) => {
     const geometry = getState().aois.aoi?.geometry;
 
     try {
@@ -41,20 +40,23 @@ export const saveAoi = createAsyncThunk(
       NotificationManager.success(`Successfully saved AOI '${aoi.name}'`);
 
       return aoi;
-    } catch (responseError) {
-      const message = await responseError.getErrors();
+    } catch (error) {
+      const { message, status } = error;
       NotificationManager.error(
-        `Error saving AOI: ${message} Please try again`,
+        `${status} ${message}`,
+        `Error fetching AOI: ${message} Please try again`,
+        50000,
+        () => {},
       );
 
-      return rejectWithValue({ message });
+      return rejectWithValue({ message: `${status} ${message}` });
     }
   },
 );
 
-export const updateAoiDetails = createAsyncThunk(
+export const updateAoi = createAsyncThunk(
   `${name}/updateAoi`,
-  async (params, { dispatch, rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     const updatedParams = {
       id: params.id,
       name: params.name,
@@ -64,14 +66,14 @@ export const updateAoiDetails = createAsyncThunk(
     try {
       const aoi = await apiClient.aois.updateAoi({ ...updatedParams });
       NotificationManager.success(`Successfully updated AOI '${aoi.name}'`);
-      dispatch(updateAoi(aoi));
       return aoi;
-    } catch (responseError) {
-      const message = await responseError.getErrors();
+    } catch (error) {
+      const { message, status } = error;
       NotificationManager.error(
         `Error updating AOI: ${message} Please try again`,
       );
-      return rejectWithValue({ message });
+
+      return rejectWithValue({ message: `${status} ${message}` });
     }
   },
 );
@@ -107,7 +109,6 @@ export const deleteAoi = createAsyncThunk(
 export const selectAoi = createAsyncThunk(
   `${name}/selectAoi`,
   async ({ aoi }, { dispatch }) => {
-    console.log('USING AOI: ', aoi);
     dispatch(setSelectedAoi(aoi));
 
     if (aoi.data_source) {
@@ -140,9 +141,9 @@ const aoiSlice = createSlice({
       state.isDrawingAoi = false;
     },
     setAoiFeatures: (state, { payload }) => {
-      'type' in payload
-        ? (state.aoi = payload.features[0])
-        : (state.aoi = payload);
+      if ('type' in payload) {
+        state.aoi = payload.features[0];
+      }
     },
     onUnmount: state => {
       state.isDrawingAoi = false;
@@ -152,11 +153,6 @@ const aoiSlice = createSlice({
     },
     setSelectedAoi: (state, { payload }) => {
       state.selectedAoi = payload;
-    },
-    updateAoi: (state, { payload }) => {
-      state.aois = state.aois.map(aoi =>
-        aoi.id !== payload.id ? aoi : payload,
-      );
     },
   },
   extraReducers: builder => {
@@ -172,6 +168,15 @@ const aoiSlice = createSlice({
       state.error = null;
     });
     builder.addCase(saveAoi.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
+    builder.addCase(updateAoi.fulfilled, (state, { payload }) => {
+      state.aois = state.aois.map(aoi =>
+        aoi.id !== payload.id ? aoi : payload,
+      );
+      state.error = null;
+    });
+    builder.addCase(updateAoi.rejected, (state, { payload }) => {
       state.error = payload;
     });
     builder.addCase(deleteAoi.fulfilled, (state, { payload }) => {
@@ -202,7 +207,6 @@ export const {
   onUnmount,
   setVisiblePanel,
   setSelectedAoi,
-  updateAoi,
 } = aoiSlice.actions;
 
 const baseSelector = state => state?.aois;
