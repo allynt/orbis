@@ -1,4 +1,3 @@
-import { FlyToInterpolator } from '@deck.gl/core';
 import {
   createSlice,
   createSelector,
@@ -33,7 +32,7 @@ export const fetchAois = createAsyncThunk(
 
 export const saveAoi = createAsyncThunk(
   `${name}/saveAoi`,
-  async (params, { getState, dispatch, rejectWithValue }) => {
+  async (params, { getState, rejectWithValue }) => {
     const geometry = getState().aois.aoi?.geometry;
 
     try {
@@ -57,7 +56,7 @@ export const saveAoi = createAsyncThunk(
 
 export const updateAoi = createAsyncThunk(
   `${name}/updateAoi`,
-  async (params, { dispatch, rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     const updatedParams = {
       id: params.id,
       name: params.name,
@@ -67,7 +66,6 @@ export const updateAoi = createAsyncThunk(
     try {
       const aoi = await apiClient.aois.updateAoi({ ...updatedParams });
       NotificationManager.success(`Successfully updated AOI '${aoi.name}'`);
-      // dispatch(updateAoi(aoi));
       return aoi;
     } catch (error) {
       const { message, status } = error;
@@ -111,7 +109,6 @@ export const deleteAoi = createAsyncThunk(
 export const selectAoi = createAsyncThunk(
   `${name}/selectAoi`,
   async ({ aoi }, { dispatch }) => {
-    console.log('USING AOI: ', aoi);
     dispatch(setSelectedAoi(aoi));
 
     if (aoi.data_source) {
@@ -210,7 +207,6 @@ export const {
   onUnmount,
   setVisiblePanel,
   setSelectedAoi,
-  // updateAoi,
 } = aoiSlice.actions;
 
 const baseSelector = state => state?.aois;
