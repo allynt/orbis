@@ -54,23 +54,23 @@ describe('Target Dialog Screens', () => {
       const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
 
       expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
-      userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
+      userEvent.type(getByPlaceholderText('2011-2012'), '123');
       expect(getByRole('button', { name: 'Add Target' })).not.toBeDisabled();
     });
 
     it('fires callback when changes have been made and `Add Target` button is clicked', () => {
       const onAddTargetsClick = jest.fn(),
         expected = {
-          '2011 - 2012': '123',
-          '2012 - 2013': '456',
+          '2011-2012': '123',
+          '2012-2013': '456',
         };
 
       const { getByRole, getByPlaceholderText } = render(
         <TargetScreen onAddTargetsClick={onAddTargetsClick} />,
       );
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
-      userEvent.type(getByPlaceholderText('2012 - 2013'), '456');
+      userEvent.type(getByPlaceholderText('2011-2012'), '123');
+      userEvent.type(getByPlaceholderText('2012-2013'), '456');
 
       userEvent.click(getByRole('button', { name: 'Add Target' }));
       expect(onAddTargetsClick).toHaveBeenCalledWith(expected);
@@ -79,8 +79,8 @@ describe('Target Dialog Screens', () => {
     it('clears all values when `Reset` button is clicked', () => {
       const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
 
-      const input1 = getByPlaceholderText('2011 - 2012'),
-        input2 = getByPlaceholderText('2012 - 2013');
+      const input1 = getByPlaceholderText('2011-2012'),
+        input2 = getByPlaceholderText('2012-2013');
 
       userEvent.type(input1, '123');
       userEvent.type(input2, '456');
@@ -96,28 +96,28 @@ describe('Target Dialog Screens', () => {
     it('allows numbers', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), '123');
+      userEvent.type(getByPlaceholderText('2011-2012'), '123');
       expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('allows decimals', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), '123.456');
+      userEvent.type(getByPlaceholderText('2011-2012'), '123.456');
       expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('does not allow letters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), 'abc');
+      userEvent.type(getByPlaceholderText('2011-2012'), 'abc');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
     it('does not allow special characters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011 - 2012'), ';,%');
+      userEvent.type(getByPlaceholderText('2011-2012'), ';,%');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
@@ -126,7 +126,7 @@ describe('Target Dialog Screens', () => {
         <TargetScreen />,
       );
 
-      const input = getByPlaceholderText('2011 - 2012');
+      const input = getByPlaceholderText('2011-2012');
 
       userEvent.type(input, ';,%');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
@@ -140,8 +140,8 @@ describe('Target Dialog Screens', () => {
         <TargetScreen />,
       );
 
-      const input1 = getByPlaceholderText('2011 - 2012'),
-        input2 = getByPlaceholderText('2012 - 2013');
+      const input1 = getByPlaceholderText('2011-2012'),
+        input2 = getByPlaceholderText('2012-2013');
 
       userEvent.type(input1, '123');
       userEvent.type(input2, 'abc');

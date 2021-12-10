@@ -44,14 +44,31 @@ export const lineDataTransformer = data => {
 };
 
 /**
- * This function converts any 'y' values from strings to numbers,
- * as Victory can only render number values, and will break with strings.
- * @param {{x: string, y: string|number}[]} data
+ * This function transforms a key/value object into X/Y data to be rendered
+ * on a line chart, and converts any 'y' values from strings to numbers, as
+ * Victory can only render number values, and will break with strings.
+ * @param {object} data
  */
-export const stringToNumberTransformer = data => {
+export const userTargetTransformer = data => {
   if (!data) return;
 
-  return data.map(obj =>
-    typeof obj.y === 'number' ? obj : { ...obj, y: +obj.y },
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => [...acc, { x: key, y: +value }],
+    [],
+  );
+};
+
+/**
+ * This is here because typing into a field and then deleting the input
+ * results in an empty string being saved, which is then converted into
+ * a number on the frontend, which JavaScript type conversion reads as zero.
+ * @param {object} data
+ */
+export const filterEmptyStrings = data => {
+  if (!data) return;
+
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
+    {},
   );
 };

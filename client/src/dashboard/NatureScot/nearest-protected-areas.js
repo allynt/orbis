@@ -27,7 +27,7 @@ const NearestProtectedAreas = ({ data }) => {
         Header: 'Distance',
         accessor: 'distance',
         id: 'distance',
-        Cell: ({ value }) => `${value}km`,
+        Cell: ({ value }) => `${value} km`,
       },
       // {
       //   Header: '',
