@@ -215,6 +215,30 @@ describe('Waltham Forest Data Transformers', () => {
       expect(result).toEqual(expected);
     });
 
+    it('excludes totalHousing values', () => {
+      const data = {
+          tenureType1: {
+            '2015-2016': '100',
+            '2016-2017': '200',
+          },
+          tenureType2: {
+            '2015-2016': '400',
+            '2016-2017': '200',
+          },
+          totalHousing: {
+            '2015-2016': '2000',
+            '2016-2017': '3000',
+          },
+        },
+        expected = {
+          '2015-2016': 500,
+          '2016-2017': 400,
+        };
+
+      const result = getTargetTotals(data);
+      expect(result).toEqual(expected);
+    });
+
     it('returns undefined if data is not present', () => {
       const result = getTargetTotals(undefined);
       expect(result).toBeUndefined();

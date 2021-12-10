@@ -81,8 +81,11 @@ const filterEmptyStrings = data => {
 const getTargetTotals = data => {
   if (!data) return;
 
+  // filter totalHousing, as it skews tenureType totals
+  const { totalHousing, ...rest } = data;
+
   // extract year/value objects, eg: [{ '2016-2017': 123 }, { 2016-2017': 456 }]
-  return Object.values(data).reduce(
+  return Object.values(rest).reduce(
     (acc, targets) => ({
       ...acc,
       // create array of new objects with accumulated totals for values
