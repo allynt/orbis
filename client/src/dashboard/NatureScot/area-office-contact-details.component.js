@@ -31,25 +31,19 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
           <Typography variant="h4">Area Office :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="p" role="data">
-            {area_office ?? NO_DATA}
-          </Typography>
+          <Typography variant="p">{area_office ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Name :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="p" role="data">
-            {area_name ?? NO_DATA}
-          </Typography>
+          <Typography variant="p">{area_name ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Telephone Number :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="p" role="data">
-            {telephone_number ?? NO_DATA}
-          </Typography>
+          <Typography variant="p">{telephone_number ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Office Address :</Typography>
@@ -58,7 +52,7 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
           <Grid container direction="column">
             {area_office_address?.map(item => (
               <Grid key={item} item>
-                <Typography variant="p" key={item} role="data">
+                <Typography variant="p" key={item}>
                   {item}
                 </Typography>
               </Grid>
@@ -69,15 +63,13 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
           <Typography variant="h4">Postcode :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="p" role="data">
-            {postcode ?? NO_DATA}
-          </Typography>
+          <Typography variant="p">{postcode ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Email :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="p" className={styles.value} role="data">
+          <Typography variant="p" className={styles.value}>
             {!!email ? (
               <Link
                 target="_blank"
