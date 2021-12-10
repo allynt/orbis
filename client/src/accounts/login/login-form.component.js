@@ -146,7 +146,7 @@ const LoginForm = ({
         <Box ml="auto">
           <Link
             // @ts-ignore
-            to={PASSWORD_RESET_REQUEST}
+            to={`/accounts${PASSWORD_RESET_REQUEST}`}
             component={RouterLink}
           >
             Forgot password?
@@ -174,7 +174,7 @@ const LoginForm = ({
             <Link
               // @ts-ignore
               component={RouterLink}
-              to={REGISTER}
+              to={`/accounts${REGISTER}`}
             >
               Sign Up
             </Link>

@@ -7,7 +7,8 @@ import {
   useTheme,
 } from '@astrosat/astrosat-ui';
 
-import { Wrapper } from '../../../shared-components/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
+
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
 
 /**
@@ -65,6 +66,7 @@ export const getBorderRadiuses = (
  */
 export const Orbs = ({ orbs = [], isLoading = false }) => {
   const theme = useTheme();
+
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
   const xsDown = useMediaQuery(theme.breakpoints.down('xs'));
 

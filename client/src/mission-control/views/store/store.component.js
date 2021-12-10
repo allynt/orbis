@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { push } from 'connected-react-router';
 import { find } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { errorSelector, isLoadingSelector } from 'accounts/accounts.selectors';
@@ -21,14 +20,12 @@ import { OrbDetails } from './orb-details/orb-details.component';
 import { Orbs } from './orbs/orbs.component';
 
 /**
- * @param {{
- *  match: import('react-router-dom').match
- *  location: import('history').Location
- * }} props
  * @returns
  */
-export const Store = ({ match, location }) => {
-  const { path, url } = match;
+export const Store = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const orbs = useSelector(orbsSelector);
   const fetchOrbsPending = useSelector(
     state => state?.data?.requests?.fetchOrbs === 'pending',
@@ -63,8 +60,9 @@ export const Store = ({ match, location }) => {
       /* whenever licences are purchased, I should re-fetch sources */
       dispatch(fetchSources());
       // @ts-ignore
-      if (result.type === placeOrder.fulfilled.type)
-        dispatch(push(`${url}/completion/?orbId=${orbId}&users=${users}`));
+      if (result.type === placeOrder.fulfilled.type) {
+        navigate(`/mission-control/store/completion/${orbId}/${users}`);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -74,38 +72,28 @@ export const Store = ({ match, location }) => {
     <TransitionGroup style={{ position: 'relative' }}>
       <CSSTransition {...fadeTransitionProps}>
         <div style={{ position: 'absolute', width: '100%' }}>
-          <Switch location={location}>
+          <Routes>
             <Route
-              exact
-              path={path}
-              render={() => <Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
+              path="/"
+              element={<Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
             />
+            <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
             <Route
-              path={`${path}/checkout`}
-              render={routerProps => (
+              path="/checkout/:orbId/:users"
+              element={
                 <Checkout
                   orbs={orbs}
                   isLoading={placeOrderPending}
                   errors={accountsErrors}
                   onConfirmClick={handleConfirmClick}
-                  {...routerProps}
                 />
-              )}
+              }
             />
             <Route
-              path={`${path}/completion`}
-              render={routerProps => (
-                <Completion orbs={orbs} {...routerProps} />
-              )}
+              path="/completion/:orbId/:users"
+              element={<Completion orbs={orbs} />}
             />
-            <Route
-              exact
-              path={`${path}/:orbId`}
-              render={routerProps => (
-                <OrbDetails orbs={orbs} {...routerProps} />
-              )}
-            />
-          </Switch>
+          </Routes>
         </div>
       </CSSTransition>
     </TransitionGroup>

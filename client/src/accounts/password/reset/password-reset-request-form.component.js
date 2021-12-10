@@ -101,7 +101,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
         Do you have an account?&nbsp;
         <Link
           // @ts-ignore
-          to={LOGIN}
+          to={`/accounts${LOGIN}`}
           component={RouterLink}
         >
           Login

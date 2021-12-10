@@ -277,97 +277,93 @@ export const createCustomerUser = fields => async (dispatch, getState) => {
 /**
  * @param {import('typings').CustomerUser} customerUser
  */
-export const updateCustomerUser = customerUser => async (
-  dispatch,
-  getState,
-) => {
-  const currentCustomer = selectCurrentCustomer(getState());
-  const currentUser = userSelector(getState());
+export const updateCustomerUser =
+  customerUser => async (dispatch, getState) => {
+    const currentCustomer = selectCurrentCustomer(getState());
+    const currentUser = userSelector(getState());
 
-  dispatch(updateCustomerUserRequested());
+    dispatch(updateCustomerUserRequested());
 
-  try {
-    const updatedCustomerUser = await apiClient.customers.updateCustomerUser(
-      currentCustomer.id,
-      customerUser,
-    );
-    const updatedCustomer = await apiClient.customers.getCustomer(
-      currentCustomer.id,
-    );
-    if (updatedCustomerUser.user.id === currentUser.id) {
-      const updatedUser = await apiClient.users.getCurrentUser();
-      dispatch(setUser(updatedUser));
-      const hasUpdatedLicences =
-        updatedUser.orbs?.length !== currentUser.orbs?.length ||
-        updatedUser.orbs?.some(
-          updatedOrb =>
-            !currentUser.orbs.find(
-              currentOrb => currentOrb.name === updatedOrb.name,
-            ),
-        );
-      if (hasUpdatedLicences) {
-        dispatch(fetchSources());
+    try {
+      const updatedCustomerUser = await apiClient.customers.updateCustomerUser(
+        currentCustomer.id,
+        customerUser,
+      );
+      const updatedCustomer = await apiClient.customers.getCustomer(
+        currentCustomer.id,
+      );
+      if (updatedCustomerUser.user.id === currentUser.id) {
+        const updatedUser = await apiClient.users.getCurrentUser();
+        dispatch(setUser(updatedUser));
+        const hasUpdatedLicences =
+          updatedUser.orbs?.length !== currentUser.orbs?.length ||
+          updatedUser.orbs?.some(
+            updatedOrb =>
+              !currentUser.orbs.find(
+                currentOrb => currentOrb.name === updatedOrb.name,
+              ),
+          );
+        if (hasUpdatedLicences) {
+          dispatch(fetchSources());
+        }
       }
+      return dispatch(
+        updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
+      );
+    } catch (responseError) {
+      return handleFailure(
+        responseError.response,
+        'Update Customer User Error',
+        updateCustomerUserFailure,
+        dispatch,
+      );
     }
-    return dispatch(
-      updateCustomerUserSuccess({ updatedCustomerUser, updatedCustomer }),
-    );
-  } catch (responseError) {
-    return handleFailure(
-      responseError.response,
-      'Update Customer User Error',
-      updateCustomerUserFailure,
-      dispatch,
-    );
-  }
-};
+  };
 
-export const deleteCustomerUser = customerUser => async (
-  dispatch,
-  getState,
-) => {
-  dispatch(deleteCustomerUserRequested());
-  const currentCustomer = selectCurrentCustomer(getState());
-  try {
-    await apiClient.customers.deleteCustomerUser(
-      currentCustomer.id,
-      customerUser.user.id,
-    );
-    const customer = await apiClient.customers.getCustomer(currentCustomer.id);
-    return dispatch(
-      deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
-    );
-  } catch (responseError) {
-    return handleFailure(
-      responseError.response,
-      'Deleting Customer User Error',
-      deleteCustomerUserFailure,
-      dispatch,
-    );
-  }
-};
+export const deleteCustomerUser =
+  customerUser => async (dispatch, getState) => {
+    dispatch(deleteCustomerUserRequested());
+    const currentCustomer = selectCurrentCustomer(getState());
+    try {
+      await apiClient.customers.deleteCustomerUser(
+        currentCustomer.id,
+        customerUser.user.id,
+      );
+      const customer = await apiClient.customers.getCustomer(
+        currentCustomer.id,
+      );
+      return dispatch(
+        deleteCustomerUserSuccess({ deletedUser: customerUser, customer }),
+      );
+    } catch (responseError) {
+      return handleFailure(
+        responseError.response,
+        'Deleting Customer User Error',
+        deleteCustomerUserFailure,
+        dispatch,
+      );
+    }
+  };
 
-export const inviteCustomerUser = customerUser => async (
-  dispatch,
-  getState,
-) => {
-  dispatch(inviteCustomerUserRequested());
-  const currentCustomer = selectCurrentCustomer(getState());
-  try {
-    const invitedCustomerUser = await apiClient.customers.inviteCustomerUser(
-      currentCustomer.id,
-      customerUser,
-    );
-    return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
-  } catch (responseError) {
-    return handleFailure(
-      responseError.response,
-      'Invite Customer User Error',
-      inviteCustomerUserFailure,
-      dispatch,
-    );
-  }
-};
+export const inviteCustomerUser =
+  customerUser => async (dispatch, getState) => {
+    dispatch(inviteCustomerUserRequested());
+    const currentCustomer = selectCurrentCustomer(getState());
+    try {
+      const invitedCustomerUser = await apiClient.customers.inviteCustomerUser(
+        currentCustomer.id,
+        customerUser,
+      );
+      return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
+    } catch (responseError) {
+      return handleFailure(
+        responseError.response,
+        'Invite Customer User Error',
+        inviteCustomerUserFailure,
+        dispatch,
+      );
+    }
+  };
 
 /* === Selectors === */
 const baseSelector = state => state.missionControl || {};

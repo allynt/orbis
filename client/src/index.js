@@ -2,18 +2,17 @@ import React, { StrictMode } from 'react';
 
 import { CssBaseline, ThemeProvider } from '@astrosat/astrosat-ui';
 
-import { ConnectedRouter } from 'connected-react-router';
 import ReactDOM from 'react-dom';
 import { NotificationContainer } from 'react-notifications';
 import { Provider } from 'react-redux';
+import { HistoryRouter } from 'redux-first-history/rr6';
 import { PersistGate } from 'redux-persist/integration/react';
 import 'react-notifications/lib/notifications.css';
 
 import { MapProvider } from 'MapContext';
 
 import installDevTools from './dev-tools/load';
-import { history } from './root.reducer';
-import store, { persistor } from './store';
+import store, { history, persistor } from './store';
 
 import './polyfills/flat-map';
 import './polyfills/object-fromEntries';
@@ -23,7 +22,7 @@ const render = () => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
+      <HistoryRouter history={history}>
         <NotificationContainer />
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
           <StrictMode>
@@ -35,7 +34,7 @@ const render = () => {
             </MapProvider>
           </StrictMode>
         </PersistGate>
-      </ConnectedRouter>
+      </HistoryRouter>
     </Provider>,
     document.getElementById('root'),
   );

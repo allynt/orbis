@@ -47,19 +47,19 @@ const BUTTONS = [
   { label: 'Habitat' },
 ];
 
-const TYPES = ['warning', 'not-good', 'neutral', 'good', 'very-good'];
+// const TYPES = ['warning', 'not-good', 'neutral', 'good', 'very-good'];
 
-const PROTECTED_FEATURES = Array(5)
-  .fill()
-  .map((_, i) => {
-    return {
-      id: i,
-      // icon: faker.image.imageUrl(),
-      title: `Title ${i}`,
-      description: `Description ${i}`,
-      type: TYPES[Math.floor(Math.random() * TYPES.length)],
-    };
-  });
+// const PROTECTED_FEATURES = Array(5)
+//   .fill()
+//   .map((_, i) => {
+//     return {
+//       id: i,
+//       // icon: faker.image.imageUrl(),
+//       title: `Title ${i}`,
+//       description: `Description ${i}`,
+//       type: TYPES[Math.floor(Math.random() * TYPES.length)],
+//     };
+//   });
 
 const COLUMNS = [
   {
@@ -106,23 +106,23 @@ const NatureScotDashboard = ({ sourceId }) => {
     // Fetch data from IR API.
 
     const queryApi = async () => {
-
       try {
         const body = {
           buffer: AOI_BUFFER,
           limit: QUERY_RESPONSE_LIMIT,
           feature: feature(selectedAoi.geometry),
         };
-        const response = await apiClient.dashboard.getNatureScotlandIRDashboardData(
-          proxyUrl,
-          body,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-              'Content-Type': 'application/json',
+        const response =
+          await apiClient.dashboard.getNatureScotlandIRDashboardData(
+            proxyUrl,
+            body,
+            {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+                'Content-Type': 'application/json',
+              },
             },
-          },
-        );
+          );
 
         setNearestProtectedAreas(response.protected_areas);
         setCaseworks(response.casework);
@@ -141,7 +141,7 @@ const NatureScotDashboard = ({ sourceId }) => {
     };
 
     queryApi();
-  }, []);
+  }, [authToken, proxyUrl, selectedAoi]);
 
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (

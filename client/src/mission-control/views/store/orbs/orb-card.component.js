@@ -10,7 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
  * @param {{orb: import('typings').Orb, style?: React.CSSProperties}} props
  */
 export const OrbCard = ({ orb, style }) => {
-  const { url } = useRouteMatch();
   const styles = useStyles();
   const { id, name, short_description: shortDescription, logo } = orb;
 
@@ -82,7 +81,7 @@ export const OrbCard = ({ orb, style }) => {
           className={styles.link}
           // @ts-ignore
           component={RouterLink}
-          to={`${url}/${id}`}
+          to={`${id}`}
         >
           Learn more about this Orb
         </Link>

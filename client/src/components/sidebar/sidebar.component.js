@@ -2,7 +2,7 @@ import React from 'react';
 
 import { List, styled, makeStyles } from '@astrosat/astrosat-ui';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as OrbisLogo } from './orbis-light.svg';
 
@@ -54,12 +54,13 @@ const useLogoStyles = makeStyles({
 
 const DefaultLogo = React.memo(function Logo() {
   const styles = useLogoStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
+
   return (
     <OrbisLogo
       title="Orbis Logo"
       className={styles.logo}
-      onClick={() => history.push('/')}
+      onClick={() => navigate('/')}
     />
   );
 });

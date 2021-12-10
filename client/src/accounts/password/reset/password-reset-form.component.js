@@ -10,7 +10,7 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
 import { LOGIN } from 'accounts/accounts.constants';
@@ -45,12 +45,13 @@ const validationSchema = yupObject({
 const PasswordResetForm = ({
   confirmResetPassword,
   resetStatus,
-  match,
+  // match,
   error,
   passwordMinLength,
   passwordMaxLength,
   passwordStrength,
 }) => {
+  const params = useParams();
   const { register, handleSubmit, errors, watch } = useForm({
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
@@ -61,7 +62,8 @@ const PasswordResetForm = ({
   }
 
   const onSubmit = submission => {
-    confirmResetPassword(submission, match.params);
+    confirmResetPassword(submission, params);
+    // confirmResetPassword(submission, match.params);
   };
 
   return (

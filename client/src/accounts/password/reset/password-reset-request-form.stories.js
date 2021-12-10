@@ -3,7 +3,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 
 import { status } from 'accounts/accounts.slice';
-import { history } from 'root.reducer';
+import { history } from 'store';
 
 import PasswordResetRequestForm from './password-reset-request-form.component';
 

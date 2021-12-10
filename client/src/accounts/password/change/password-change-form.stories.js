@@ -1,40 +1,43 @@
 import React from 'react';
 
-import { Router } from 'react-router-dom';
+import { HistoryRouter } from 'redux-first-history/rr6';
 
 import Wrapper from 'accounts/wrapper.component';
+import { history } from 'store';
 
-import { history } from '../../../root.reducer';
 import { status } from '../../accounts.slice';
 import PasswordChangeForm from './password-change-form.component';
 
-export default {
+const PasswordChange = {
   title: 'Accounts/Password/Change/PasswordChangeForm',
   args: { passwordMinLength: 2, passwordMaxLength: 50, passwordStrength: 2 },
+  decorators: [
+    Story => (
+      <HistoryRouter history={history}>
+        <Story />
+      </HistoryRouter>
+    ),
+  ],
 };
 
-export const Form = args => (
-  <Router history={history}>
-    <PasswordChangeForm {...args} />
-  </Router>
-);
+export default PasswordChange;
 
-export const Success = args => (
-  <Router history={history}>
-    <PasswordChangeForm changeStatus={status.PENDING} {...args} />
-  </Router>
-);
+const Template = args => <PasswordChangeForm {...args} />;
 
-export const Errors = args => (
-  <Router history={history}>
-    <PasswordChangeForm error={["There's a server error"]} {...args} />
-  </Router>
-);
+export const Default = Template.bind({});
+
+export const Success = Template.bind({});
+Success.args = {
+  changeStatus: status.PENDING,
+};
+
+export const Errors = Template.bind({});
+Errors.args = {
+  error: ["There's a server error"],
+};
 
 export const InWrapper = args => (
-  <Router history={history}>
-    <Wrapper>
-      <PasswordChangeForm {...args} />
-    </Wrapper>
-  </Router>
+  <Wrapper>
+    <PasswordChangeForm {...args} />
+  </Wrapper>
 );

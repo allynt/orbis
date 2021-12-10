@@ -13,9 +13,9 @@ import {
 
 import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 
-import { Wrapper } from '../../../shared-components/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 const MIN_USERS = 3;
 const MAX_USERS = 30;
@@ -88,33 +88,36 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  history: import('history').History
- *  match: import('react-router-dom').match<{orbId: string}>
  * }} props
  */
-export const OrbDetails = ({ orbs, history, match }) => {
-  const [numberOfUsers, setNumberOfUsers] = useState(10);
+export const OrbDetails = ({ orbs }) => {
+  const navigate = useNavigate();
+  const { orbId } = useParams();
   const styles = useStyles();
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-  const { orbId } = match.params;
+
+  const [numberOfUsers, setNumberOfUsers] = useState(10);
   const orb = find(orbs, { id: +orbId });
 
   if (!orb) return null;
 
   const { images, name, description, can_purchase } = orb;
 
+  const goBack = () => navigate(-1);
+
   return (
     <Wrapper className={styles.wrapper}>
       <Button
         // @ts-ignore
         role="link"
-        classes={{ root: styles.back, startIcon: styles.icon }}
+        classes={{ root: styles.back }}
+        // classes={{ root: styles.back, startIcon: styles.icon }}
         startIcon={<PlayArrow />}
         variant="text"
         size="small"
         color="default"
-        onClick={() => history.goBack()}
+        onClick={() => goBack()}
       >
         Back
       </Button>
@@ -141,10 +144,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
           </div>
           <RouterLink
             className={styles.link}
-            to={`${match.url?.replace(
-              `/${orbId}`,
-              '',
-            )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
+            to={`/mission-control/store/checkout/${orbId}/${numberOfUsers}`}
           >
             <Button>Get Access</Button>
           </RouterLink>

@@ -14,8 +14,8 @@ import { useSortBy } from 'react-table';
 
 import apiClient from 'api-client';
 import { OptionsMenu } from 'components/options-menu/options-menu.component';
-import { fetchSources } from 'data-layers/data-layers.slice';
 import { Table } from 'components/table';
+import { fetchSources } from 'data-layers/data-layers.slice';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 import { DeleteFileForm } from './forms/delete-file-form.component';
@@ -107,7 +107,7 @@ export const Storage = ({ files, setFiles }) => {
   );
 };
 
-export default () => {
+const StorageWrapper = () => {
   const [files, setFiles] = useState(null);
 
   useEffect(() => {
@@ -134,3 +134,5 @@ export default () => {
 
   return <Storage files={files} setFiles={setFiles} />;
 };
+
+export default StorageWrapper;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { push } from 'connected-react-router';
 import fetch from 'jest-fetch-mock';
+import { push } from 'redux-first-history';
 
 import {
   render,

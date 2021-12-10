@@ -10,13 +10,12 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import apiClient from 'api-client';
 import { setBackgroundLocation } from 'app.slice';
 import { useOrbFeatureAccess } from 'hooks/useOrbFeatureAccess';
 import useUserRoleAuthorization from 'hooks/useUserRoleAuthorization';
-import { history } from 'root.reducer';
 
 import featureToggles from '../feature-toggles';
 import { ReactComponent as GuideIcon } from './guide.svg';
@@ -59,6 +58,7 @@ const conditionallyAddItemOrItems = (condition, itemOrItems) => {
  */
 export const useToolbarItems = ({ dispatch }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const reduxDispatch = useDispatch();
   const userHasUserRole = useUserRoleAuthorization(['UserRole']);
   const hasSatellitesFeatureAccess = useOrbFeatureAccess('satellites');
@@ -139,7 +139,7 @@ export const useToolbarItems = ({ dispatch }) => {
         tooltip: 'Mission Control',
         onClick: () => {
           reduxDispatch(setBackgroundLocation(location));
-          history.push('/mission-control');
+          navigate('/mission-control');
         },
       }),
       {

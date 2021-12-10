@@ -1,5 +1,5 @@
-import { push } from 'connected-react-router';
 import fetch from 'jest-fetch-mock';
+import { push } from 'redux-first-history';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 

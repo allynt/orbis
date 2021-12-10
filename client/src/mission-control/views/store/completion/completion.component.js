@@ -10,9 +10,9 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { find } from 'lodash';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-import { Wrapper } from '../../../shared-components/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,14 +35,13 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  location: import('history').Location
  * }} props
  */
-export const Completion = ({ orbs, location }) => {
+export const Completion = ({ orbs }) => {
   const styles = useStyles();
-  const searchParams = new URLSearchParams(location.search);
-  const orb = find(orbs, { id: +searchParams.get('orbId') });
-  const users = +searchParams.get('users');
+  const { orbId, users } = useParams();
+
+  const orb = find(orbs, { id: +orbId });
 
   return (
     <Wrapper title="Your Order">
@@ -54,7 +53,7 @@ export const Completion = ({ orbs, location }) => {
           <Grid item sm={8} className={styles.textGrid}>
             <Typography variant="h2" component="h1" gutterBottom>
               Your order for {orb.name} was successful for {users}{' '}
-              {users === 1 ? 'User' : 'Users'}!
+              {+users === 1 ? 'User' : 'Users'}!
             </Typography>
             <Typography paragraph>
               Now You can create and invite your Users by clicking the “Take me

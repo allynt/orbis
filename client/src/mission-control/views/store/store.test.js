@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { push } from 'connected-react-router';
 import fetchMock from 'jest-fetch-mock';
+import { push } from 'redux-first-history';
 
 import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs } from 'data-layers/data-layers.slice';

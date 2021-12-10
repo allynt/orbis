@@ -79,7 +79,7 @@ export const SavedDocuments = ({ documents }) => {
   );
 };
 
-export default () => {
+const SavedDocumentsWrapper = () => {
   const [documents, setDocuments] = useState(null);
 
   useEffect(() => {
@@ -106,3 +106,5 @@ export default () => {
 
   return <SavedDocuments documents={documents} />;
 };
+
+export default SavedDocumentsWrapper;

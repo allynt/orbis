@@ -12,7 +12,7 @@ import {
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Profile from 'accounts/profile/profile.component';
 import { setBackgroundLocation } from 'app.slice';
@@ -25,11 +25,13 @@ import {
 } from 'components';
 import { ReactComponent as MissionControlIcon } from 'control-panel/mission-control.svg';
 import { dataSourceByIdSelector } from 'data-layers/data-layers.slice';
-import { history } from 'root.reducer';
 
 const Dashboard = () => {
   const location = useLocation();
+  console.log('DASHBOARD LOCATION: ', location)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [profileOpen, setProfileOpen] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const sourceId = searchParams.get('source_id');
@@ -55,7 +57,7 @@ const Dashboard = () => {
           <SidebarItem
             tooltip="Go to Map"
             onClick={() => {
-              history.push('/map');
+              navigate('/map');
             }}
             icon={<MapIcon />}
           />
@@ -65,7 +67,7 @@ const Dashboard = () => {
               selected={location.pathname.includes('/mission-control')}
               onClick={() => {
                 dispatch(setBackgroundLocation(location));
-                history.push('/mission-control');
+                navigate('/mission-control');
               }}
               icon={
                 <SvgIcon>

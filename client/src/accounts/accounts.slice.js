@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
+import { push } from 'redux-first-history';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
@@ -260,7 +260,9 @@ export const logout = createAsyncThunk(
       apiClient.userKey = '';
       return;
     } catch (error) {
-      const errors = await /** @type {import('api-client').ResponseError} */ (error).getErrors();
+      const errors = await /** @type {import('api-client').ResponseError} */ (
+        error
+      ).getErrors();
       return rejectWithValue(errors);
     }
   },

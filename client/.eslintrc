@@ -17,7 +17,7 @@
   },
   "rules": {
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": ["builtin", "external", "internal", ["parent", "sibling"]],
         "pathGroups": [
@@ -40,8 +40,10 @@
         }
       }
     ],
+    "import/export": "warn",
+    "import/namespace": "warn",
     "no-template-curly-in-string": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": [
       "warn",
@@ -50,8 +52,8 @@
       }
     ],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/exhaustive-deps": "warn",
     "react/jsx-key": "error",
-    "react/no-array-index-key": "error"
+    "react/no-array-index-key": "warn"
   }
 }
