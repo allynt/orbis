@@ -40,10 +40,11 @@ function validateCsv(parsedCsv) {
 export default async function validate(file) {
   try {
     const loader = await selectLoader(file);
-    const parsedFile = await parse(file, PARSE_OPTIONS);
+    const parsedFile = await parse(file, loader, PARSE_OPTIONS);
     notEmpty(parsedFile);
+
     switch (loader.name) {
-      case CSVLoader.name:
+      case 'CSV':
       default:
         validateCsv(parsedFile);
     }
