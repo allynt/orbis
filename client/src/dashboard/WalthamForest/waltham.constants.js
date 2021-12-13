@@ -1,11 +1,17 @@
 export const inputErrorMessage = 'Only number values are permitted.';
 
-export const housingTenureTypes = [
-  'Affordable Rent',
-  'Intermediate',
-  'Market',
-  'Social Rented',
-  'Private Rented Sector',
+export const housingTenureTypes = {
+  affordableHousing: 'Affordable Rent',
+  intermediateDelivery: 'Intermediate',
+  marketHousing: 'Market',
+  sociallyRented: 'Social Rented',
+  privateRental: 'Private Rented Sector',
+};
+
+export const progressionVsPlanningTypes = [
+  'Units Ahead of Schedule',
+  'Units Behind Schedule',
+  'Units on Schedule',
 ];
 
 export const TENURE_DATA_TYPES = {

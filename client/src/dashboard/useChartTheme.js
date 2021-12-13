@@ -18,8 +18,16 @@ const colors = [
 
 const walthamChartColors = {
   totalHousing: ['#37e5d8', '#8189f3'],
-  tenureHousing: ['#37e5d8', '#75b7b2', '#adeab0', '#05c3ff', '#d6ea69'],
   housingApproval: ['#f6be00', '#af31d6'],
+  progressionVsPlanning: ['#37e5d8', '#d6ea69', '#05c3ff'],
+};
+
+const tenureStackColors = {
+  affordableHousing: '#37e5d8',
+  intermediateDelivery: '#75b7b2',
+  marketHousing: '#adeab0',
+  sociallyRented: '#05c3ff',
+  privateRental: '#d6ea69',
 };
 
 const baseProps = {
@@ -31,7 +39,7 @@ const strokeLinecap = 'round';
 const strokeLinejoin = 'round';
 
 /**
- * @returns {import('victory').VictoryThemeDefinition & {colors: string[], walthamChartColors: object, fontSize: number}}
+ * @returns {import('victory').VictoryThemeDefinition & {colors: string[], walthamChartColors: object, tenureStackColors: object, fontSize: number}}
  */
 export const useChartTheme = () => {
   const astrosatUiTheme = useTheme();
@@ -80,6 +88,7 @@ export const useChartTheme = () => {
   return {
     colors,
     walthamChartColors,
+    tenureStackColors,
     fontSize: 14,
     independentAxis: deepmerge(baseAxisStyles, {
       style: {

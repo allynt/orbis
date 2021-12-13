@@ -51,6 +51,10 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             json.dumps(raw_data["geometry"])
         ) if "geometry" in raw_data else None
 
+        aoi_buffered = GEOSGeometry(
+            json.dumps(raw_data["buffered"])
+        ) if "buffered" in raw_data else None
+
         for suggestion in raw_data.get("suggestions", []):
 
             suggestion_bbox = Polygon.from_bbox(
@@ -107,6 +111,12 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     suggestion.get("designation", {}).get("description", None),
                 "area":
                     suggestion.get("area", None),
+                "in_aoi":
+                    aoi.intersects(suggestion_bbox)
+                    if aoi and suggestion_bbox else None,
+                "in_aoi_buffered":
+                    aoi_buffered.intersects(suggestion_bbox)
+                    if aoi_buffered and suggestion_bbox else None,
                 "distance":
                     round(aoi.distance(suggestion_bbox), 2)
                     if aoi and suggestion_bbox else None

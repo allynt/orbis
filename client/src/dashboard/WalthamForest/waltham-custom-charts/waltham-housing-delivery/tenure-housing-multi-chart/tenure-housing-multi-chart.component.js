@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -12,6 +12,10 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import {
+  userTargetTransformer,
+  getTargetTotals,
+} from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
@@ -26,13 +30,24 @@ import {
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  const { walthamChartColors } = useChartTheme();
+  const { tenureStackColors } = useChartTheme();
+
+  const tenureTypes = Object.values(housingTenureTypes),
+    stackColors = Object.values(tenureStackColors);
+
+  const targets = useMemo(
+    () =>
+      !tenureType
+        ? userTargetTransformer(getTargetTotals(userTargetData))
+        : userTargetTransformer(userTargetData?.[tenureType]),
+    [tenureType, userTargetData],
+  );
 
   if (!apiData) return null;
 
-  const apiLegendData = housingTenureTypes.map((range, i) => ({
+  const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,
-    color: walthamChartColors.tenureHousing[i],
+    color: stackColors[i],
   }));
 
   const renderTenureHousingLegend = width => {
@@ -48,12 +63,18 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
-    const ranges = !!tenureType ? [tenureType] : housingTenureTypes;
+    const ranges = !!tenureType
+      ? [housingTenureTypes[tenureType]]
+      : tenureTypes;
+
+    const colorScale = !!tenureType
+      ? [tenureStackColors[tenureType]]
+      : stackColors;
 
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: targets,
         x: 'x',
         y: 'y',
       };
@@ -62,7 +83,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup>
-          <VictoryStack>
+          <VictoryStack colorScale={colorScale}>
             {ranges?.map(range => (
               <VictoryBar
                 key={range}
@@ -78,7 +99,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData ? (
+        {!!userTargetData && !!targets ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
