@@ -36,13 +36,13 @@ const useStyles = makeStyles(theme => ({
   charts: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'stretch',
     gap: '1rem',
   },
   buttons: {
     width: '40%',
     marginLeft: '60%',
-    marginBottom: '1rem',
+    marginBottom: '-1rem',
   },
 }));
 
@@ -67,13 +67,15 @@ export const WalthamHousingDelivery = ({
   /**
    * @param {object[]} data
    */
-  const getTenureType = data =>
-    tenureType === ALL_TENURE_TYPES
+  const getTenureType = data => {
+    const type = housingTenureTypes[tenureType];
+    return tenureType === ALL_TENURE_TYPES
       ? data
-      : data?.map(d => ({
-          Year: d.Year,
-          [tenureType]: d[tenureType],
+      : data?.map(datum => ({
+          Year: datum.Year,
+          [type]: datum[type],
         }));
+  };
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -85,9 +87,9 @@ export const WalthamHousingDelivery = ({
           className={styles.select}
         >
           <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
-          {housingTenureTypes.map(type => (
-            <MenuItem key={type} value={type}>
-              {type}
+          {Object.entries(housingTenureTypes).map(([key, value]) => (
+            <MenuItem key={key} value={key}>
+              {value}
             </MenuItem>
           ))}
         </Select>
@@ -129,7 +131,7 @@ export const WalthamHousingDelivery = ({
                 d => d.name === selectedDataType,
               )?.data,
             )}
-            userTargetData={userTargetTransformer(userOrbState?.marketHousing)}
+            userTargetData={userOrbState}
             tenureType={
               tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }

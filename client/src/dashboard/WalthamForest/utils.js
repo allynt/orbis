@@ -9,7 +9,7 @@
  *  y: number
  * }[][]}
  */
-export const groupedDataTransformer = data => {
+const groupedDataTransformer = data => {
   if (!data) return;
 
   return Object.values(
@@ -31,7 +31,7 @@ export const groupedDataTransformer = data => {
  * @param {Object[]} data
  * @returns {Object[]}
  */
-export const lineDataTransformer = data => {
+const lineDataTransformer = data => {
   if (!data) return;
 
   const uniqueKeys = [
@@ -49,11 +49,59 @@ export const lineDataTransformer = data => {
  * Victory can only render number values, and will break with strings.
  * @param {object} data
  */
-export const userTargetTransformer = data => {
+const userTargetTransformer = data => {
   if (!data) return;
 
   return Object.entries(data).reduce(
     (acc, [key, value]) => [...acc, { x: key, y: +value }],
     [],
   );
+};
+
+/**
+ * This is here because typing into a field and then deleting the input
+ * results in an empty string being saved, which is then converted into
+ * a number on the frontend, which JavaScript type conversion reads as zero.
+ * @param {object} data
+ */
+const filterEmptyStrings = data => {
+  if (!data) return;
+
+  return Object.entries(data).reduce(
+    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
+    {},
+  );
+};
+
+/**
+ * This is here to reduce the totals for every year across multiple tenure types
+ * into a single object consisting of year ranges and total number values.
+ * @param {object} data
+ */
+const getTargetTotals = data => {
+  if (!data) return;
+
+  // extract year/value objects, eg: [{ '2016-2017': 123 }, { 2016-2017': 456 }]
+  return Object.values(data).reduce(
+    (acc, targets) => ({
+      ...acc,
+      // create array of new objects with accumulated totals for values
+      ...Object.entries(targets)
+        .map(([year, target]) => {
+          let num = +target;
+          return { [year]: (num += acc[year] ?? 0) };
+        })
+        // reduce array of totals objects into a single object
+        .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
+    }),
+    {},
+  );
+};
+
+export {
+  groupedDataTransformer,
+  lineDataTransformer,
+  userTargetTransformer,
+  filterEmptyStrings,
+  getTargetTotals,
 };

@@ -2,17 +2,25 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
+const RATIOS = {
+    legendContainer: 0.14,
+    squareIconSize: 0.03,
+    fontSize: 0.025,
+    lineIconWidth: 0.06,
+    lineIconHeight: 0.005,
+    iconSpacing: 0.015,
+  },
+  MAX_FONT_SIZE = 16;
+
 const useStyles = makeStyles(theme => ({
   apiLegend: {
     width: 'fit-content',
-    maxHeight: '5rem',
+    maxHeight: props => props.maxHeight,
   },
   userTarget: {
     width: 'fit-content',
   },
 }));
-
-// TODO: use width for responsive sizing
 
 /**
  * @param {{
@@ -22,9 +30,12 @@ const useStyles = makeStyles(theme => ({
  * }} props
  */
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
-  const styles = useStyles({});
+  const maxHeight = width * RATIOS.legendContainer,
+    fontSize = width * RATIOS.fontSize,
+    styles = useStyles({ maxHeight });
+
   return (
-    <Grid container justifyContent="space-between" alignItems="flex-start">
+    <Grid container justifyContent="space-between" alignItems="flex-end">
       <Grid
         item
         container
@@ -34,19 +45,21 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
       >
         {apiLegendData?.map(({ name, color }) => {
           return (
-            <Grid item container alignItems="center">
+            <Grid key={name} item container alignItems="center">
               {/* creates square with correct color */}
               <div
                 style={{
-                  width: '1rem',
-                  height: '1rem',
+                  width: width * RATIOS.squareIconSize,
+                  height: width * RATIOS.squareIconSize,
                   backgroundColor: `${color}`,
-                  marginRight: '1rem',
+                  marginRight: width * RATIOS.iconSpacing,
+                  maxWidth: '1rem',
+                  maxHeight: '1rem',
                 }}
               />
               <span
                 style={{
-                  marginRight: '1rem',
+                  fontSize: fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
                 }}
               >
                 {name}
@@ -61,13 +74,19 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
           {/* creates line with correct color */}
           <div
             style={{
-              width: '3rem',
-              height: '0.125rem',
+              width: width * RATIOS.lineIconWidth,
+              height: width * RATIOS.lineIconHeight,
               backgroundColor: `${targetLegendData.color}`,
-              marginRight: '1rem',
+              marginRight: width * RATIOS.iconSpacing,
             }}
           />
-          <span>{targetLegendData.name}</span>
+          <span
+            style={{
+              fontSize: width * RATIOS.fontSize,
+            }}
+          >
+            {targetLegendData.name}
+          </span>
         </Grid>
       ) : null}
     </Grid>

@@ -10,7 +10,7 @@ import {
 
 import { UserUpload } from './user-upload.component';
 
-describe('User Upload', () => {
+xdescribe('User Upload', () => {
   it('Can carry out the user upload journey', async () => {
     const onComplete = jest.fn();
     render(<UserUpload onComplete={onComplete} />);

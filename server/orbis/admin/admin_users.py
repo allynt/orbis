@@ -27,6 +27,7 @@ class OrbisUserFeedbackRecordInline(admin.TabularInline):
 class OrbisUserProfileAdmin(CannotAddModelAdminBase, admin.ModelAdmin):
     formfield_overrides = {models.JSONField: {"widget": JSONAdminWidget}}
     inlines = (OrbisUserFeedbackRecordInline, )
+    search_fields = ("user__username", )
 
 
 class DocumentAgreementInlineForm(forms.ModelForm):

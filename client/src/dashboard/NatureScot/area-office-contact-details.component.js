@@ -27,12 +27,12 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
   return (
     <ChartWrapper title="Area Office Contact Details">
       <Grid container justifyContent="space-between" spacing={1}>
-        {/* <Grid item xs={6}>
+        <Grid item xs={6}>
           <Typography variant="h4">Area Office :</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="p">{area_office ?? NO_DATA}</Typography>
-        </Grid> */}
+        </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Name :</Typography>
         </Grid>
