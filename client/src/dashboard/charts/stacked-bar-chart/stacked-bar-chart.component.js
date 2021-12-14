@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { makeStyles } from '@astrosat/astrosat-ui';
+
 import { VictoryBar, VictoryStack } from 'victory';
 
 import { BaseChart } from '../base-chart/base-chart.component';
+
+const useStyles = makeStyles(theme => ({}));
 
 /**
  * @param {{
@@ -12,8 +16,7 @@ import { BaseChart } from '../base-chart/base-chart.component';
  *  ranges: string[]
  *  data: any[]
  *  renderLegend?: (width: number) => React.ReactNode
- * }}
- * props
+ * }} props
  */
 const StackedBarChart = ({
   xLabel = '',
@@ -23,8 +26,8 @@ const StackedBarChart = ({
   data,
   renderLegend,
 }) => {
+  const styles = useStyles({});
   if (!data) return null;
-
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
     const mappedData = data.map(item => {
