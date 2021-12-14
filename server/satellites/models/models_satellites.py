@@ -1,5 +1,3 @@
-import uuid
-
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.core.exceptions import ValidationError
@@ -10,9 +8,6 @@ from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema, validate_reserved_words
-
-from astrosat_users.models import CustomerUser
-# from orbis.models import DataStorage
 
 from satellites.adapters import SATELLITE_ADAPTER_REGISTRY
 from satellites.utils import project_geometry
@@ -79,14 +74,6 @@ class SatelliteVisualisationQuerySet(models.QuerySet):
         calls the custom delete method defined below.
         """
         [obj.delete() for obj in self]
-
-
-class SatelliteDataSourceQuerySet(models.QuerySet):
-    def active(self):
-        return self.filter(is_active=True)
-
-    def filter_by_user(self, user):
-        return self.filter(customer_user__in=user.customer_users.all())
 
 
 ##########
@@ -345,124 +332,3 @@ class SatelliteResult(gis_models.Model):
         return url_template.format(
             settings.OLSP_URL, self.satellite.satellite_id, self.scene_id
         )
-
-
-class SatelliteDataSource(models.Model):
-    class Meta:
-        app_label = "satellites"
-        verbose_name = "Satellite DataSource"
-        verbose_name_plural = "Satellite DataSources"
-        ordering = ["created"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["name", "customer_user"],
-                name="unique_name_per_customer_user",
-            )
-        ]
-
-    objects = SatelliteDataSourceQuerySet.as_manager()
-
-    DEFAULT_STORAGE_SIZE = 0.1
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    created = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-
-    customer_user = models.ForeignKey(
-        CustomerUser,
-        blank=False,
-        null=False,
-        on_delete=models.CASCADE,
-        related_name="satellite_data_sources"
-    )
-
-    name = models.CharField(max_length=128, blank=False, null=False)
-    description = models.TextField(blank=True, null=True)
-
-    satellite_id = models.SlugField(
-        blank=False,
-        null=False,
-        max_length=128,
-    )
-    scene_id = models.SlugField(
-        blank=False,
-        null=False,
-        max_length=512,
-    )
-    visualisation_id = models.SlugField(
-        blank=False,
-        null=False,
-        max_length=128,
-    )
-
-    data_storage = models.OneToOneField(
-        "orbis.DataStorage",
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="satellite_source",
-    )
-
-    @property
-    def categories(self):
-        return {"name": "Satellite Images"}
-
-    @property
-    def orb_name(self):
-        return "My Data"
-
-    @property
-    def orb_description(self):
-        return f"Saved data for {self.customer_user.user}."
-
-    @property
-    def tile_url(self):
-        return f"{settings.OLSP_URL}/{self.satellite_id}/{self.scene_id}/{self.visualisation_id}/tile/{{z}}/{{x}}/{{y}}"
-
-    @property
-    def layer_details(self):
-        return {
-            "name": "TileLayer", "props": {
-                "config": "satelliteImageConfig"
-            }
-        }
-
-    @property
-    def map_component_details(self):
-        return {}
-
-    @property
-    def sidebar_component_details(self):
-        return [{"name": "LayerVisibilityButton", "props": {}}]
-
-    @property
-    def metadata(self):
-        metadata = {
-            "label": self.name,
-            "description": self.description,
-            "domain": self.orb_name,
-            "url": self.tile_url,
-            "application": {
-                "orbis": {
-                    "layer": self.layer_details,
-                    "map_component": self.map_component_details,
-                    "sidebar_component": self.sidebar_component_details,
-                    "categories": self.categories,
-                    "orbs": [{
-                        "name": self.orb_name,
-                        "description": self.orb_description,
-                    }]
-                }
-            }
-        }  # yapf: disable
-        return metadata
-
-    @property
-    def source_id(self):
-        # the frontend just needs a unique string as the "source_id"
-        # (no need to bother w/ "<authority/<namespace>/<name>/<version>")
-        return str(self.id)
-
-    @property
-    def type(self):
-        return "raster"
