@@ -35,11 +35,9 @@ describe('<AreaOfficeContactDetail />', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(contactDetails.postcode)).toBeInTheDocument();
     expect(screen.getByText(contactDetails.email)).toBeInTheDocument();
-    const office_address = screen.queryAllByText(
-      contactDetails.area_office_address,
-    );
-    office_address.forEach((address, index) => {
-      expect(within(address).getByText(address[index])).toBeInTheDocument();
+
+    contactDetails.area_office_address.forEach(address => {
+      expect(screen.getByText(address)).toBeInTheDocument();
     });
     expect(screen.queryAllByText(noDataMessage).length).toBe(
       NO_OF_NO_DATA_FIELDS,
