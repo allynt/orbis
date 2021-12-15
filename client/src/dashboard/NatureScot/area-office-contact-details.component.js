@@ -7,7 +7,7 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 const NO_DATA = 'No Data';
 
 const useStyles = makeStyles(theme => ({
-  gridBackground: {
+  grid: {
     backgroundColor: theme.palette.background.default,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(2),
@@ -36,7 +36,7 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
         container
         justifyContent="space-between"
         spacing={1}
-        className={styles.gridBackground}
+        className={styles.grid}
       >
         <Grid item xs={6}>
           <Typography variant="h4">Area Office :</Typography>
