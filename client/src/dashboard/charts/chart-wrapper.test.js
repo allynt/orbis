@@ -1,17 +1,27 @@
 import React from 'react';
 
-import { render, screen } from 'test/test-utils';
+import { render, screen, userEvent } from 'test/test-utils';
 
-import * as data from '../mock-data/waltham-forest/mock_approvals_granted';
 import { ChartWrapper } from './chart-wrapper.component';
 
-console.log(data);
-const title = 'Hello';
-const info = 'There is an info message';
-// const children = 'There is some info';
+const title = 'Test Title';
+const info = 'It is a test info message';
 describe('< ChartWrapper/>', () => {
-  it('should render the proper name of column header ', () => {
-    render(<ChartWrapper title={title} info={info} children={children} />);
-    expect(screen.getByRole('button', { name: 'Info' }));
+  it('the info icon should be visible if exist', () => {
+    render(<ChartWrapper title={title} info={info} children={[]} />);
+    expect(screen.getByRole('img', { name: 'Info' })).toBeInTheDocument();
+  });
+
+  it('should render the info icon message when user clicks on it', () => {
+    render(<ChartWrapper title={title} info={info} children={[]} />);
+    userEvent.click(screen.getByRole('button', { name: 'Info' }));
+    expect(screen.getByText(info)).toBeInTheDocument();
+    console.log(info);
+  });
+
+  it('should render the info icon message when user clicks on it', () => {
+    render(<ChartWrapper title={title} info={info} children={[]} />);
+    userEvent.click(screen.getByRole('button', { name: 'Info' }));
+    expect(screen.getByText(info)).toBeInTheDocument();
   });
 });
