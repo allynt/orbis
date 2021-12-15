@@ -42,7 +42,11 @@ const BaseChart = ({
       const split = tick.split(/-/);
       return [`${split[0]}-`, split[1]];
     }
-    return tick;
+    if (isNaN(Number(tick))) {
+      return tick.toString();
+    } else {
+      return tick;
+    }
   };
 
   const getYTickFormat = tick =>
