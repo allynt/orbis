@@ -6,7 +6,13 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 const NO_DATA = 'No Data';
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+  grid: {
+    backgroundColor: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(2),
+  },
+}));
 
 const AreaOfficeContactDetails = ({ contactDetails }) => {
   const styles = useStyles();
@@ -26,13 +32,18 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
 
   return (
     <ChartWrapper title="Area Office Contact Details">
-      <Grid container justifyContent="space-between" spacing={1}>
-        {/* <Grid item xs={6}>
+      <Grid
+        container
+        justifyContent="space-between"
+        spacing={1}
+        className={styles.grid}
+      >
+        <Grid item xs={6}>
           <Typography variant="h4">Area Office :</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="p">{area_office ?? NO_DATA}</Typography>
-        </Grid> */}
+        </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Name :</Typography>
         </Grid>

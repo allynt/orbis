@@ -3,15 +3,17 @@ import React from 'react';
 import { stackedApiData } from '../story-data';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart.component';
 
-const userTargetData = [
-  { x: '2014-2015', y: 510 },
-  { x: '2015-2016', y: 390 },
-  { x: '2016-2017', y: 490 },
-  { x: '2017-2018', y: 275 },
-  { x: '2018-2019', y: 560 },
-  { x: '2019-2020', y: 452 },
-  { x: '2020-2021', y: 120 },
-];
+const userTargetData = {
+  totalHousing: {
+    '2014-2015': '510',
+    '2015-2016': '390',
+    '2016-2017': '490',
+    '2017-2018': '275',
+    '2018-2019': '560',
+    '2019-2020': '452',
+    '2020-2021': '120',
+  },
+};
 
 export default {
   title:

@@ -13,7 +13,7 @@ from astrosat.tests.utils import shuffle_string
 from astrosat_users.tests.utils import *
 from orbis.tests.factories import OrbFactory, CustomerFactory
 
-from satellites.serializers import SimplifiedGeometryField
+from satellites.serializers.serializers_satellites import SimplifiedGeometryField
 
 from .factories import *
 

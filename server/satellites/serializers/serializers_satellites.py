@@ -1,7 +1,6 @@
 import json
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Polygon, MultiPolygon, GEOSGeometry
 
 from rest_framework import serializers
@@ -9,20 +8,12 @@ from rest_framework_gis.serializers import GeometryField
 
 from drf_yasg2 import openapi
 
-from astrosat.serializers import ConsolidatedErrorsSerializerMixin, ContextVariableDefault
-
-from astrosat.serializers import ContextVariableDefault
-from astrosat_users.models import CustomerUser
-
 from satellites.models import (
     Satellite,
     SatelliteVisualisation,
     SatelliteSearch,
     SatelliteResult,
-    SatelliteDataSource,
 )
-
-from orbis.models import DataStorage
 
 from satellites.utils import project_geometry
 
@@ -199,69 +190,6 @@ class SatelliteSearchSerializer(serializers.ModelSerializer):
         if (projected_aoi.area * .000001) > settings.MAXIMUM_AOI_AREA:
             raise serializers.ValidationError(
                 f"The area of the aoi must be less than or equal to {settings.MAXIMUM_AOI_AREA}."
-            )
-
-        return data
-
-
-#########################
-# satellite datasources #
-#########################
-
-
-class SatelliteDataSourceSerializer(
-    ConsolidatedErrorsSerializerMixin, serializers.ModelSerializer
-):
-    class Meta:
-        model = SatelliteDataSource
-        fields = (
-            "source_id",
-            "created",
-            "name",
-            "description",
-            "metadata",
-            "type",
-        )
-
-
-class SatelliteDataSourceCreateSerializer(SatelliteDataSourceSerializer):
-    class Meta:
-        model = SatelliteDataSource
-        fields = SatelliteDataSourceSerializer.Meta.fields + (
-            "customer_user",
-            "satellite_id",
-            "scene_id",
-            "visualisation_id",
-            "data_storage",
-        )
-
-    customer_user = serializers.PrimaryKeyRelatedField(
-        default=ContextVariableDefault("customer_user", raise_error=True),
-        queryset=CustomerUser.objects.all(),
-        write_only=True,
-    )
-
-    satellite_id = serializers.SlugField(write_only=True)
-    scene_id = serializers.SlugField(write_only=True)
-    visualisation_id = serializers.SlugField(write_only=True)
-
-    data_storage = serializers.HyperlinkedRelatedField(
-        many=False,
-        write_only=True,
-        default=ContextVariableDefault("storage"),
-        view_name="storage-detail",
-        queryset=DataStorage.objects.all()
-    )
-
-    def validate(self, data):
-
-        name = data.get("name")
-        customer_user = data.get("customer_user")
-        if SatelliteDataSource.objects.filter(
-            name=name, customer_user=customer_user
-        ).exists():
-            raise serializers.ValidationError(
-                f"An image named '{name}' already exists for user '{customer_user.user}'."
             )
 
         return data

@@ -3,6 +3,6 @@ from .models_satellites import (
     SatelliteVisualisation,
     SatelliteSearch,
     SatelliteResult,
-    SatelliteDataSource,
 )
+from .models_satellitedatasources import SatelliteDataSource
 from .models_settings import SatelliteSettings
