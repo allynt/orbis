@@ -87,7 +87,12 @@ class TestTokens:
 
         data_scope = DataScopeFactory(applications=[test_application_name])
         orb = OrbFactory(data_scopes=[data_scope])
-        LicenceFactory(customer=customer, orb=orb, customer_user=customer_user)
+        LicenceFactory(
+            customer=customer,
+            orb=orb,
+            customer_user=customer_user,
+            access=Access.READ,
+        )
 
         payload = validate_data_token(generate_data_token(user))
         payload_data_scopes = payload["scopes"]["data"]
@@ -101,8 +106,9 @@ class TestTokens:
         payload = validate_data_token(generate_data_token(user))
         payload_data_scopes = payload["scopes"]["data"]
 
-        assert [data_scope.source_id_pattern
-               ] == payload_data_scopes[test_application_data_scope_access]
+        assert test_application_data_scope_access in payload_data_scopes
+        assert data_scope.source_id_pattern in payload_data_scopes[
+            test_application_data_scope_access]
 
     def test_generate_token_correct_data_access(
         self, user, api_client, mock_storage

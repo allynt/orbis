@@ -31,11 +31,22 @@ def generate_data_token(user):
     ).select_related("orb")
 
     restricted_data_scopes = {
-        "read": DataScope.objects.filter(orbs__in=licences.can_read().values_list("orb", flat=True)).distinct(),
-        "create": DataScope.objects.filter(orbs__in=licences.can_create().values_list("orb", flat=True)).distinct(),
-        "delete": DataScope.objects.filter(orbs__in=licences.can_delete().values_list("orb", flat=True)).distinct(),
-        "update": DataScope.objects.filter(orbs__in=licences.can_update().values_list("orb", flat=True)).distinct(),
-
+        "read":
+            DataScope.objects.filter(
+                orbs__in=licences.can_read().values_list("orb", flat=True)
+            ).distinct(),
+        "create":
+            DataScope.objects.filter(
+                orbs__in=licences.can_create().values_list("orb", flat=True)
+            ).distinct(),
+        "delete":
+            DataScope.objects.filter(
+                orbs__in=licences.can_delete().values_list("orb", flat=True)
+            ).distinct(),
+        "update":
+            DataScope.objects.filter(
+                orbs__in=licences.can_update().values_list("orb", flat=True)
+            ).distinct(),
     }
 
     # clever way of combining default_data_scopes & restricted_data_scopes
@@ -44,9 +55,10 @@ def generate_data_token(user):
     for access, scopes in chain.from_iterable(
         map(lambda x: x.items(), (default_data_scopes, restricted_data_scopes))
     ):
-        data_scopes[access].extend([str(scope)for scope in scopes])
+        data_scopes[access].extend([str(scope) for scope in scopes])
 
     # application-specific scopes go here...
+    # yapf: disable
 
     # any customer MANAGER w/ access to "A4H" data can also download that data
     a4h_data_scopes = functools.reduce(
