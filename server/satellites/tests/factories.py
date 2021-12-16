@@ -121,3 +121,15 @@ class SatelliteDataSourceFactory(factory.django.DjangoModelFactory):
     satellite_id = factory.Sequence(lambda n: f"satellite-{n}")
     scene_id = factory.Sequence(lambda n: f"scene-{n}")
     visualisation_id = factory.Sequence(lambda n: f"visualisation-{n}")
+
+    @factory.lazy_attribute
+    def orbs(self):
+        return [{"name": "My Data"}]
+
+    @factory.lazy_attribute
+    def categories(self):
+        return {"name": "Satellite Images"}
+
+    @factory.lazy_attribute
+    def type(self):
+        return SatelliteDataSource.TypeChoices.RASTER

@@ -1,12 +1,9 @@
-import jwt
 import requests
 from collections import OrderedDict, defaultdict
-from datetime import datetime, timedelta
 from functools import reduce
 from urllib.parse import urljoin
 
 from django.conf import settings
-from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Prefetch
 
 from rest_framework import status
@@ -21,10 +18,8 @@ from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.models import DataScope, Orb
+from orbis.serializers import StoredDataSourceSerializer
 from orbis.utils import generate_data_token, validate_data_token
-
-from satellites.models import SatelliteDataSource
-from satellites.serializers import SatelliteDataSourceSerializer
 
 
 class IsAuthenticatedOrAdmin(BasePermission):
@@ -145,7 +140,6 @@ class DataSourceView(APIView):
             settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
         )
         headers = {"Authorization": f"Bearer {data_token}"}
-
         try:
 
             response = requests.get(
@@ -210,15 +204,15 @@ class DataSourceView(APIView):
                 lambda orb1, orb2: orb1 + orb2, matching_orbs
             )
 
-        # add "My Data" to the sources...
-        # TODO: RESTRICT THIS BY orb.features
-        satellite_data_sources = SatelliteDataSource.objects.filter_by_user(
-            user
-        ).active()
-        satellite_data_source_serializer = SatelliteDataSourceSerializer(
-            satellite_data_sources, many=True
+        # add StoredDataSources to the sources...
+        stored_data_sources = [
+            storage.data_source
+            for storage in user.storage.active().has_data_source()
+        ]
+        stored_data_source_serializer = StoredDataSourceSerializer(
+            stored_data_sources, many=True
         )
-        sources += satellite_data_source_serializer.data
+        sources += stored_data_source_serializer.data
 
         return Response({
             "token": data_token,

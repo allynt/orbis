@@ -115,7 +115,7 @@ export const useChartTheme = () => {
     }),
     stack: {
       // changed this from 'colors', so that colors match legend
-      colorScale: walthamChartColors.tenureHousing,
+      colorScale: colors,
     },
     legend: {
       colorScale: colors,
