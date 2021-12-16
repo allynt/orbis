@@ -1,3 +1,5 @@
+import { LAST_5_YEARS } from './waltham.constants';
+
 /**
  * This function is necessary because the data does not match what Victory
  * expects. Specifically, the 'gross' and 'net' values must be split into
@@ -101,10 +103,25 @@ const getTargetTotals = data => {
   );
 };
 
+/**
+ * This tallies up the user's 'total housing' target data for the last 5 years,
+ * to be used in the progress wheels.
+ * @param {object} obj
+ */
+const getUser5YearTotals = obj => {
+  if (!obj) return;
+
+  return LAST_5_YEARS.reduce(
+    (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),
+    0,
+  );
+};
+
 export {
   groupedDataTransformer,
   lineDataTransformer,
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getUser5YearTotals,
 };

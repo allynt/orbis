@@ -4,6 +4,7 @@ import {
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getUser5YearTotals,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -241,6 +242,55 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = getTargetTotals(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getUser5YearTotals', () => {
+    it('totals up data for last 5 years', () => {
+      const data = {
+          '2016-2017': '10',
+          '2017-2018': '20',
+          '2018-2019': '30',
+          '2019-2020': '40',
+          '2020-2021': '50',
+        },
+        expected = 150;
+
+      const result = getUser5YearTotals(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('filters values outside of last 5 years', () => {
+      const data = {
+          '2014-2015': '1000',
+          '2015-2016': '2000',
+          '2016-2017': '10',
+          '2017-2018': '20',
+          '2018-2019': '30',
+          '2019-2020': '40',
+          '2020-2021': '50',
+        },
+        expected = 150;
+
+      const result = getUser5YearTotals(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('works if not all 5 years have values', () => {
+      const data = {
+          '2016-2017': '10',
+          '2017-2018': '20',
+          '2018-2019': '30',
+        },
+        expected = 60;
+
+      const result = getUser5YearTotals(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is not present', () => {
+      const result = getUser5YearTotals(undefined);
       expect(result).toBeUndefined();
     });
   });
