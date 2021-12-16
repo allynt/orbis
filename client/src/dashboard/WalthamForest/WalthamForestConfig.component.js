@@ -144,7 +144,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
         {/* progress indicator charts */}
         <div className={styles.progressIndicators}>
           <ProgressIndicators
-            data={totalHousingDelivery}
+            totalData={totalHousingDelivery}
+            tenureData={tenureHousingDeliveryChartData}
             userOrbState={userOrbState}
           />
         </div>

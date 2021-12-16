@@ -1,3 +1,5 @@
+import { LAST_5_YEARS } from './waltham.constants';
+
 /**
  * This function is necessary because the data does not match what Victory
  * expects. Specifically, the 'gross' and 'net' values must be split into
@@ -82,19 +84,36 @@ const getTargetTotals = data => {
   if (!data) return;
 
   // extract year/value objects, eg: [{ '2016-2017': 123 }, { 2016-2017': 456 }]
-  return Object.values(data).reduce(
-    (acc, targets) => ({
-      ...acc,
-      // create array of new objects with accumulated totals for values
-      ...Object.entries(targets)
-        .map(([year, target]) => {
-          let num = +target;
-          return { [year]: (num += acc[year] ?? 0) };
-        })
-        // reduce array of totals objects into a single object
-        .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
-    }),
+  return Object.entries(data).reduce(
+    (acc, [key, targets]) =>
+      key === 'totalHousing'
+        ? acc
+        : {
+            ...acc,
+            // create array of new objects with accumulated totals for values
+            ...Object.entries(targets)
+              .map(([year, target]) => {
+                let num = +target;
+                return { [year]: (num += acc[year] ?? 0) };
+              })
+              // reduce array of totals objects into a single object
+              .reduce((acc, cur) => ({ ...acc, ...cur }), {}),
+          },
     {},
+  );
+};
+
+/**
+ * This tallies up the user's 'total housing' target data for the last 5 years,
+ * to be used in the progress wheels.
+ * @param {object} obj
+ */
+const getUser5YearTotals = obj => {
+  if (!obj) return;
+
+  return LAST_5_YEARS.reduce(
+    (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),
+    0,
   );
 };
 
@@ -104,4 +123,5 @@ export {
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getUser5YearTotals,
 };

@@ -23,15 +23,13 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
     color: walthamChartColors.totalHousing[i],
   }));
 
-  const renderTotalHousingLegend = width => {
-    return (
-      <WalthamCustomLegend
-        apiLegendData={apiLegendData}
-        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
-        width={width}
-      />
-    );
-  };
+  const renderTotalHousingLegend = width => (
+    <WalthamCustomLegend
+      apiLegendData={apiLegendData}
+      targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+      width={width}
+    />
+  );
 
   const renderTotalHousingMultiChart = width => {
     const { barWidth, offset } = GroupedWidthCalculator(apiData, width);
