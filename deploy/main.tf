@@ -19,7 +19,7 @@ locals {
 }
 
 module "app_deploy" {
-  source = "git::https://github.com/astrosat/application-deployment-components.git//terraform/modules/application-deploy?ref=v1.0.2"
+  source = "git::https://github.com/astrosat/application-deployment-components.git//terraform/modules/application-deploy?ref=v1.0.5"
 
   providers = {
     aws.common = aws.common
@@ -45,5 +45,5 @@ module "app_deploy" {
   use_redis     = true
   use_tracking  = true
   use_geocoding = false
-  use_logstash  = true
+  use_logstash  = false
 }

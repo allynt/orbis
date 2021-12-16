@@ -44,8 +44,6 @@ EMAIL_PORT = env("DJANGO_EMAIL_PORT")
 EMAIL_HOST_USER = env("DJANGO_EMAIL_USER")
 EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_PASSWORD")
 
-LOGSTASH_ENDPOINT = env("DJANGO_LOGSTASH_ENDPOINT")
-
 ###########
 # Logging #
 ###########
@@ -81,17 +79,6 @@ LOGGING = {
         "db": {
             "class": "astrosat.utils.DatabaseLogHandler",
         },
-        "analytics": {
-            "level": "INFO",
-            "class": "astrosat.utils.AstrosatAppTCPLogstashLogHandler",
-            "host": LOGSTASH_ENDPOINT,
-            "port": 5959,
-            # app/instance/environment/stream are used by logstash to route messages into indexes
-            "app": DEPLOYMENT_APP,
-            "instance": DEPLOYMENT_INSTANCE,
-            "environment": DEPLOYMENT_ENVIRONMENT,
-            "stream": "application",
-        },
     },
     "root": {
         "handlers": ["default"], "level": "INFO"
@@ -103,7 +90,7 @@ LOGGING = {
             "propagate": False,
         },
         "db": {
-            "handlers": ["db", "analytics"],
+            "handlers": ["db", ],
             "level": "DEBUG",
         },
         # This metrics logger is seperate from the db logger because it mostly
@@ -111,9 +98,8 @@ LOGGING = {
         # not much point storing it in the database again. Also it has the
         # potential to be a lot of data.
         "metrics": {
-            "handlers": ["analytics"],
+            "handlers": ["default"],
             "level": "INFO",
-
         },
     },
 }
