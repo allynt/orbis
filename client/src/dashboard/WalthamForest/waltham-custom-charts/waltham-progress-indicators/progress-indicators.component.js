@@ -5,15 +5,16 @@ import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-char
 import { useChartTheme } from 'dashboard/useChartTheme';
 
 import { getUser5YearTotals } from '../../utils';
-import { LAST_5_YEARS } from '../../waltham.constants';
+import { LAST_5_YEARS, PROGRESS_CHART_DATA } from '../../waltham.constants';
 
 const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
   const chartTheme = useChartTheme();
 
-  const totalDataArray = totalData?.properties?.[0]?.data,
-    tenureCurrentYear = tenureData?.[0]?.data?.find(
-      d => d.Year === '2020-2021',
-    );
+  const totalDataArray = totalData?.properties?.[0]?.data;
+
+  const tenureCurrentYear = tenureData?.[0]?.data?.find(
+    obj => obj.Year === '2020-2021',
+  );
 
   // 'Gross' values tallied up for last 5 years, like ticket asks
   const past5YearsTotal = useMemo(
@@ -30,32 +31,22 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
   const targetData = useMemo(
     () => [
       {
-        title:
-          '% of Houses Delivered So Far out of Previous 5 Financial Years Target.',
-        info: 'Some info',
-        name: 'Housing Delivery',
+        ...PROGRESS_CHART_DATA.totalHousing,
         target: getUser5YearTotals(userOrbState?.totalHousing),
         progress: past5YearsTotal,
       },
       {
-        title:
-          '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-        info: 'Some info',
-        name: 'Intermediate Delivery',
+        ...PROGRESS_CHART_DATA.intermediate,
         target: userOrbState?.intermediateDelivery?.['2020-2021'],
         progress: tenureCurrentYear?.['Intermediate'],
       },
       {
-        title: '% Market Houses Delivered so Far Out of Current Financial Year',
-        info: 'Some info',
-        name: 'Market Housing',
+        ...PROGRESS_CHART_DATA.marketHousing,
         target: userOrbState?.marketHousing?.['2020-2021'],
         progress: tenureCurrentYear?.['Market'],
       },
       {
-        title: '% Social Rented Houses Delivered so Far Out of Yearly Target',
-        info: 'Some info',
-        name: 'Socially Rented',
+        ...PROGRESS_CHART_DATA.socialRented,
         target: userOrbState?.sociallyRented?.['2020-2021'],
         progress: tenureCurrentYear?.['Social Rented'],
       },

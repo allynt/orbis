@@ -83,3 +83,28 @@ export const LAST_5_YEARS = [
   '2019-2020',
   '2020-2021',
 ];
+
+export const PROGRESS_CHART_DATA = {
+  totalHousing: {
+    title:
+      '% of Houses Delivered So Far out of Previous 5 Financial Years Target.',
+    info: 'Some info',
+    name: 'Housing Delivery',
+  },
+  intermediate: {
+    title:
+      '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
+    info: 'Some info',
+    name: 'Intermediate Delivery',
+  },
+  marketHousing: {
+    title: '% Market Houses Delivered so Far Out of Current Financial Year',
+    info: 'Some info',
+    name: 'Market Housing',
+  },
+  socialRented: {
+    title: '% Social Rented Houses Delivered so Far Out of Yearly Target',
+    info: 'Some info',
+    name: 'Socially Rented',
+  },
+};
