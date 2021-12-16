@@ -65,18 +65,20 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
 
   return (
     <>
-      {targetData?.map((property, i) => (
-        <ChartWrapper
-          key={property.name}
-          title={property.title}
-          info="This is a test description"
-        >
-          <ProgressIndicatorChart
-            property={property}
-            color={chartTheme.colors[i]}
-          />
-        </ChartWrapper>
-      ))}
+      {!!targetData
+        ? targetData.map((property, i) => (
+            <ChartWrapper
+              key={property.name}
+              title={property.title}
+              info="This is a test description"
+            >
+              <ProgressIndicatorChart
+                property={property}
+                color={chartTheme.colors[i]}
+              />
+            </ChartWrapper>
+          ))
+        : null}
     </>
   );
 };
