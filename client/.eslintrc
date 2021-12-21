@@ -4,9 +4,10 @@
     "plugin:cypress/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:jest-dom/recommended"
   ],
-  "plugins": ["react-hooks", "cypress", "import", "prettier"],
+  "plugins": ["react-hooks", "cypress", "import", "prettier", "jest-dom"],
   "settings": {
     "import/resolver": {
       "node": {
