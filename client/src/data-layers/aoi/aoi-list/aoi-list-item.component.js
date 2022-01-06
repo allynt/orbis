@@ -16,8 +16,9 @@ import { InfoButtonTooltip, OptionsMenu } from 'components';
 
 const useStyles = makeStyles(theme => ({
   avatar: {
-    width: 58,
-    height: 58,
+    width: '4rem',
+    height: '4rem',
+    marginTop: '2px',
     marginRight: theme.spacing(2),
     boxShadow: theme.shadows['2'],
   },
@@ -25,9 +26,9 @@ const useStyles = makeStyles(theme => ({
     // padding: theme.typography.pxToRem(10),
   },
   options: {
-    // TODO: NOT SURE WHAT TO PUT HERE ?!?
-    // height: 1,
-    // width: 1,
+    '& svg': {
+      fontSize: '0.8rem',
+    },
   },
   buttons: {
     display: 'flex',
@@ -65,9 +66,7 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
       <Grid container direction="column" spacing={1}>
         <Grid item>
           <Typography variant="h4">{name}</Typography>
-          <Typography variant="h5">
-            Distance Range 10 km
-          </Typography>
+          <Typography variant="h5">Distance Range 10 km</Typography>
         </Grid>
 
         <Grid item>
@@ -86,9 +85,7 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
           iconButtonClassName={styles.info}
           tooltipContent={<div>{description || 'No description given'}</div>}
         />
-        <OptionsMenu
-          optionsButtonClassName={styles.options}
-        >
+        <OptionsMenu optionsButtonClassName={styles.options}>
           <MenuItem onClick={() => editAoiDetails(aoi)}>Edit Details</MenuItem>
           <MenuItem onClick={() => deleteAoi(aoi)}>Delete</MenuItem>
         </OptionsMenu>

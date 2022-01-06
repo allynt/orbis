@@ -1,6 +1,11 @@
 import * as React from 'react';
 
-import { IconButton, makeStyles, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
+import {
+  IconButton,
+  makeStyles,
+  Menu,
+  OptionsIcon,
+} from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 
@@ -36,15 +41,12 @@ export const OptionsMenu = ({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const styles = useStyles();
 
-  console.log("foobar");
-  console.log(optionsButtonClassName);
   /**
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
    */
   const handleButtonClick = e => setAnchorEl(e.currentTarget);
 
   const handleClose = () => setAnchorEl(null);
-
 
   return (
     <>

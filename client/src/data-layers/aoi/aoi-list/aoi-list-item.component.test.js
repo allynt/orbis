@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { render, screen, userEvent } from 'test/test-utils';
+import { act } from '@testing-library/react-hooks';
+
+import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
 import AoiListItem from './aoi-list-item.component';
 
@@ -22,7 +24,7 @@ describe('<AoiListItem />', () => {
     deleteAoi = jest.fn();
   });
 
-  it('should display a single list item', () => {
+  it('should display a single list item', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -32,20 +34,24 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    expect(screen.getByRole('img', { name: /info/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: aoi.name })).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /explore\sarea/i }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /info/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /options/i }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('img', { name: /info/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: aoi.name }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /explore\sarea/i }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /info/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /options/i }),
+      ).toBeInTheDocument();
 
-    expect(screen.getByText(aoi.name)).toBeInTheDocument();
+      expect(screen.getByText(aoi.name)).toBeInTheDocument();
+    });
   });
 
-  it('should call selectAoi with the aoi when the `Explore Area` button is clicked', () => {
+  it('should call selectAoi with the aoi when the `Explore Area` button is clicked', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -55,12 +61,15 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('button', { name: /explore\sarea/i }));
-
-    expect(selectAoi).toHaveBeenCalledWith(aoi);
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /explore\sarea/i }));
+    });
+    await waitFor(() => {
+      expect(selectAoi).toHaveBeenCalledWith(aoi);
+    });
   });
 
-  it('should display info content when the `info` button is clicked', () => {
+  it('should display info content when the `info` button is clicked', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -70,12 +79,13 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('button', { name: /info/i }));
-
-    expect(screen.getByText(aoi.description)).toBeInTheDocument();
+    act(() => userEvent.click(screen.getByRole('button', { name: /info/i })));
+    await waitFor(() => {
+      expect(screen.getByText(aoi.description)).toBeInTheDocument();
+    });
   });
 
-  it('should display context menu when the `options` button is clicked', () => {
+  it('should display context menu when the `options` button is clicked', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -85,15 +95,21 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('button', { name: /options/i }));
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /options/i }));
+    });
 
-    expect(screen.getByRole('menuitem', { name: /edit/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole('menuitem', { name: /delete/i }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole('menuitem', { name: /edit/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('menuitem', { name: /delete/i }),
+      ).toBeInTheDocument();
+    });
   });
 
-  it('should call editAoiDetails with the aoi when the edit button is clicked', () => {
+  it('should call editAoiDetails with the aoi when the edit button is clicked', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -103,13 +119,17 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('button', { name: /options/i }));
-    userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /options/i }));
+      userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+    });
 
-    expect(editAoiDetails).toHaveBeenCalledWith(aoi);
+    await waitFor(() => {
+      expect(editAoiDetails).toHaveBeenCalledWith(aoi);
+    });
   });
 
-  it('should call deleteAoi with the aoi when the delete button is clicked', () => {
+  it('should call deleteAoi with the aoi when the delete button is clicked', async () => {
     render(
       <AoiListItem
         aoi={aoi}
@@ -119,9 +139,13 @@ describe('<AoiListItem />', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('button', { name: /options/i }));
-    userEvent.click(screen.getByRole('menuitem', { name: /delete/i }));
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /options/i }));
+      userEvent.click(screen.getByRole('menuitem', { name: /delete/i }));
+    });
 
-    expect(deleteAoi).toHaveBeenCalledWith(aoi);
+    await waitFor(() => {
+      expect(deleteAoi).toHaveBeenCalledWith(aoi);
+    });
   });
 });
