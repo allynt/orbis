@@ -22,9 +22,6 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
     boxShadow: theme.shadows['2'],
   },
-  info: {
-    // padding: theme.typography.pxToRem(10),
-  },
   options: {
     '& svg': {
       fontSize: '0.8rem',
@@ -82,7 +79,6 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
 
       <Grid className={styles.buttons}>
         <InfoButtonTooltip
-          iconButtonClassName={styles.info}
           tooltipContent={<div>{description || 'No description given'}</div>}
         />
         <OptionsMenu optionsButtonClassName={styles.options}>
