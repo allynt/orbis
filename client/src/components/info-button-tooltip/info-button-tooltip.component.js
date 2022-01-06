@@ -70,7 +70,7 @@ export const InfoButtonTooltip = ({
       >
         <IconButton
           color="inherit"
-          className={clsx(iconButtonClassName, styles.infoButton)}
+          className={clsx(styles.infoButton, iconButtonClassName)}
           aria-label="Info"
           onClick={handleIconClick}
         >

@@ -1,6 +1,15 @@
 import * as React from 'react';
 
-import { IconButton, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
+import { IconButton, makeStyles, Menu, OptionsIcon } from '@astrosat/astrosat-ui';
+
+import clsx from 'clsx';
+
+const useStyles = makeStyles(theme => ({
+  optionsButton: {
+    height: 'min-content',
+    width: 'min-content',
+  },
+}));
 
 const DefaultButton = ({ active, ...rest }) => (
   <IconButton
@@ -17,6 +26,7 @@ export const OptionsMenu = ({
   closeOnClick = true,
   Button = DefaultButton,
   id = 'options-menu',
+  optionsButtonClassName,
   transformOrigin = {
     vertical: -35,
     horizontal: 'right',
@@ -24,7 +34,10 @@ export const OptionsMenu = ({
   ...rest
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const styles = useStyles();
 
+  console.log("foobar");
+  console.log(optionsButtonClassName);
   /**
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
    */
@@ -32,11 +45,13 @@ export const OptionsMenu = ({
 
   const handleClose = () => setAnchorEl(null);
 
+
   return (
     <>
       <Button
         aria-controls={id}
         active={!!anchorEl}
+        className={clsx(styles.optionsButton, optionsButtonClassName)}
         onClick={handleButtonClick}
       />
       <Menu

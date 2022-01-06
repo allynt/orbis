@@ -22,7 +22,12 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows['2'],
   },
   info: {
-    padding: theme.typography.pxToRem(10),
+    // padding: theme.typography.pxToRem(10),
+  },
+  options: {
+    // TODO: NOT SURE WHAT TO PUT HERE ?!?
+    // height: 1,
+    // width: 1,
   },
   buttons: {
     display: 'flex',
@@ -60,6 +65,9 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
       <Grid container direction="column" spacing={1}>
         <Grid item>
           <Typography variant="h4">{name}</Typography>
+          <Typography variant="h5">
+            Distance Range 10 km
+          </Typography>
         </Grid>
 
         <Grid item>
@@ -78,7 +86,9 @@ const AoiListItem = ({ aoi, selectAoi, editAoiDetails, deleteAoi }) => {
           iconButtonClassName={styles.info}
           tooltipContent={<div>{description || 'No description given'}</div>}
         />
-        <OptionsMenu>
+        <OptionsMenu
+          optionsButtonClassName={styles.options}
+        >
           <MenuItem onClick={() => editAoiDetails(aoi)}>Edit Details</MenuItem>
           <MenuItem onClick={() => deleteAoi(aoi)}>Delete</MenuItem>
         </OptionsMenu>
