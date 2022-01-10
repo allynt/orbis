@@ -1,8 +1,8 @@
 import { rest } from 'msw';
-import { server } from 'mocks/server';
-
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { server } from 'mocks/server';
 
 import reducer, {
   fetchAppConfig,
@@ -48,7 +48,6 @@ describe('App Slice', () => {
 
       await store.dispatch(fetchAppConfig());
 
-      console.log('STORE ACTIONS: ', store.getActions());
       expect(store.getActions()).toEqual(expectedActions);
     });
 
