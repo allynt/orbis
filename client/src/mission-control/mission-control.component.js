@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Dialog,
@@ -15,7 +15,6 @@ import {
   Routes,
   useLocation,
   useNavigate,
-  useMatch,
 } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -71,6 +70,7 @@ const useStyles = makeStyles(theme => ({
 export const MissionControl = React.memo(() => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const fadeTransitionProps = useFadeTransitionProps(location.key);
   const dispatch = useDispatch();
   const styles = useStyles();
