@@ -48,6 +48,12 @@ if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./app.component', render);
 }
 
+// Don't use MSW when docker running, only during local development.
+if (process.env.REACT_APP_MSW) {
+  const { worker } = require('mocks/browser');
+  worker.start();
+}
+
 if (window.Cypress) {
   window.store = store;
 }

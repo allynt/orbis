@@ -1,6 +1,8 @@
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { server } from 'mocks/server';
 import { waitFor } from 'test/test-utils';
 
 import { Panels } from '../data-layers.constants';
@@ -44,15 +46,16 @@ const FEATURE_COLLECTION = {
 
 describe('AOIs Slice', () => {
   describe('AOI Thunks', () => {
-    beforeEach(() => {
-      fetch.resetMocks();
-    });
-
     describe('Fetching AOIs', () => {
       describe('fulfilled', () => {
         it(`should dispatch the ${fetchAois.fulfilled.type} action on successful request`, async () => {
           const data = [{ id: 1 }, { id: 2 }];
-          fetch.once(JSON.stringify(data));
+
+          server.use(
+            rest.get('*/api/aois/', (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(data));
+            }),
+          );
 
           const store = mockStore({
             accounts: {
@@ -80,16 +83,12 @@ describe('AOIs Slice', () => {
 
       describe('rejected', () => {
         it(`should dispatch the ${fetchAois.rejected.type} action on rejected request`, async () => {
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
+          server.use(
+            rest.get('*/api/aois/', (req, res, ctx) => {
+              return res(ctx.status(401, 'Test Error'));
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -119,12 +118,19 @@ describe('AOIs Slice', () => {
       describe('fulfilled', () => {
         it(`should dispatch the ${saveAoi.fulfilled.type}`, async () => {
           const data = { name: 'Test name', description: 'Test description' };
-          fetch.once(
-            JSON.stringify({
-              id: 1,
-              ...data,
+
+          server.use(
+            rest.post('*/api/aois/', (req, res, ctx) => {
+              return res(
+                ctx.status(200),
+                ctx.json({
+                  id: 1,
+                  ...data,
+                }),
+              );
             }),
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -151,16 +157,12 @@ describe('AOIs Slice', () => {
 
       describe('rejected', () => {
         it(`should dispatch the ${saveAoi.rejected.type} action on rejected request`, async () => {
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
+          server.use(
+            rest.post('*/api/aois/', (req, res, ctx) => {
+              return res(ctx.status(401, 'Test Error'));
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -196,11 +198,13 @@ describe('AOIs Slice', () => {
             name: 'Test name',
             description: 'Test description',
           };
-          fetch.once(
-            JSON.stringify({
-              ...data,
+
+          server.use(
+            rest.put('*/api/aois/:aoiId/', (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(data));
             }),
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -234,16 +238,12 @@ describe('AOIs Slice', () => {
 
       describe('rejected', () => {
         it(`should dispatch the ${updateAoi.rejected.type} action on rejected request`, async () => {
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
+          server.use(
+            rest.put('*/api/aois/:aoiId/', (req, res, ctx) => {
+              return res(ctx.status(401, 'Test Error'));
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -294,12 +294,19 @@ describe('AOIs Slice', () => {
             name: 'Test name',
             description: 'Test description',
           };
-          fetch.once(
-            JSON.stringify({
-              id: 1,
-              ...data,
+
+          server.use(
+            rest.delete('*/api/aois/:aoiId/', (req, res, ctx) => {
+              return res(
+                ctx.status(200),
+                ctx.json({
+                  id: 1,
+                  ...data,
+                }),
+              );
             }),
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -326,16 +333,12 @@ describe('AOIs Slice', () => {
 
       describe('rejected', () => {
         it(`should dispatch the ${deleteAoi.rejected.type} action on rejected request`, async () => {
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
+          server.use(
+            rest.delete('*/api/aois/:aoiId/', (req, res, ctx) => {
+              return res(ctx.status(401, 'Test Error'));
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
           );
+
           const store = mockStore({
             accounts: {
               user: {

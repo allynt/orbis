@@ -1,8 +1,11 @@
 import React from 'react';
 
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 
 import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
+import { server } from 'mocks/server';
+// import fetch from 'jest-fetch-mock';
+
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import DataDownloadButton, {
@@ -10,7 +13,7 @@ import DataDownloadButton, {
 } from './DataDownloadButton';
 
 jest.mock('file-saver');
-fetch.enableMocks();
+// fetch.enableMocks();
 
 const setup = ({
   url = 'http://test.com/download',
@@ -71,11 +74,22 @@ describe('<DataDownloadButton />', () => {
   });
 
   it('fetches the file when the button is clicked', async () => {
+    server.use(
+      rest.get('*/download', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    );
+
+    const origFetch = global.fetch;
+    const fetchMock = jest.spyOn(window, 'fetch');
+
     setup();
 
     userEvent.click(screen.getByRole('button'));
 
-    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+
+    global.fetch = origFetch;
   });
 
   describe('getFilenameFromHeader', () => {

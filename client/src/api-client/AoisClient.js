@@ -43,7 +43,7 @@ export class AoiClient extends SubClient {
   }
 
   async deleteAoi(aoiId) {
-    await this.makeAuthenticatedRequest(`/${aoiId}/`, {
+    return await this.makeAuthenticatedRequest(`/${aoiId}/`, {
       method: 'DELETE',
     });
   }

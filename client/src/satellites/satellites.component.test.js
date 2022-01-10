@@ -1,7 +1,3 @@
-import React from 'react';
-
-import fetch from 'jest-fetch-mock';
-
 import { fireEvent, render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { Panels } from './satellite.constants';
@@ -26,8 +22,6 @@ const RESULTS_TAB = ['tab', { name: 'Results' }];
 /** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
 const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
 
-fetch.enableMocks();
-
 describe('Satellites', () => {
   let state;
 
@@ -37,8 +31,6 @@ describe('Satellites', () => {
       app: { config: { maximumAoiArea: 20 } },
       satellites: { satellites, scenes },
     };
-
-    fetch.mockResponse(JSON.stringify([], { status: 200 }));
   });
 
   it.each`
@@ -77,7 +69,7 @@ describe('Satellites', () => {
         },
       });
 
-      expect(screen.getByRole(...RESULTS_TAB)).not.toBeDisabled();
+      expect(screen.getByRole(...RESULTS_TAB)).toBeEnabled();
       expect(screen.getByRole(...VISUALISATION_TAB)).toBeDisabled();
     });
 
@@ -89,8 +81,8 @@ describe('Satellites', () => {
         },
       });
 
-      expect(screen.getByRole(...RESULTS_TAB)).not.toBeDisabled();
-      expect(screen.getByRole(...VISUALISATION_TAB)).not.toBeDisabled();
+      expect(screen.getByRole(...RESULTS_TAB)).toBeEnabled();
+      expect(screen.getByRole(...VISUALISATION_TAB)).toBeEnabled();
     });
 
     it.each`

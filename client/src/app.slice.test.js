@@ -1,4 +1,6 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
+import { server } from 'mocks/server';
+
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -14,8 +16,6 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
-fetch.enableMocks();
-
 describe('App Slice', () => {
   describe('App Actions', () => {
     let store = null;
@@ -27,8 +27,6 @@ describe('App Slice', () => {
     ];
 
     beforeEach(() => {
-      fetch.resetMocks();
-
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
         app: {
@@ -38,15 +36,10 @@ describe('App Slice', () => {
     });
 
     it('should dispatch fetch app config failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api/app/config', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = [
@@ -55,6 +48,7 @@ describe('App Slice', () => {
 
       await store.dispatch(fetchAppConfig());
 
+      console.log('STORE ACTIONS: ', store.getActions());
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -76,7 +70,11 @@ describe('App Slice', () => {
         ],
       };
 
-      fetch.mockResponse(JSON.stringify(config));
+      server.use(
+        rest.get('*/api/app/config', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(config));
+        }),
+      );
 
       const expectedActions = [
         { type: appConfigSuccess.type, payload: config },
@@ -88,7 +86,11 @@ describe('App Slice', () => {
     });
 
     it('should dispatch logUserTracking action.', async () => {
-      fetch.mockResponse(JSON.stringify(trackingQueue));
+      server.use(
+        rest.post('*/api/logs/tracking', (req, res, ctx) => {
+          return res(ctx.status(200));
+        }),
+      );
 
       const expectedActions = [
         { type: removeLogItems.type, payload: trackingQueue },

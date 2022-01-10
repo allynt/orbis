@@ -102,9 +102,12 @@ export class CustomersClient extends SubClient {
    * @param {import('typings').User['id']} userId
    */
   async deleteCustomerUser(customerId, userId) {
-    await this.makeAuthenticatedRequest(`/${customerId}/users/${userId}/`, {
-      method: 'DELETE',
-    });
+    return await this.makeAuthenticatedRequest(
+      `/${customerId}/users/${userId}/`,
+      {
+        method: 'DELETE',
+      },
+    );
   }
 
   /**

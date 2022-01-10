@@ -1,68 +1,66 @@
-import fetch from 'jest-fetch-mock';
-
 import { SatellitesClient } from './SatellitesClient';
 
-fetch.enableMocks();
+import { satellites, satelliteScenes } from 'mocks/fixtures/satellites';
 
 describe('SatellitesClient', () => {
   /** @type {SatellitesClient} */
   let client;
-  const responseBody = [{ id: 1 }, { id: 2 }];
 
   beforeEach(() => {
-    fetch.resetMocks();
     client = new SatellitesClient();
   });
 
   describe('getSatellites', () => {
     it('Returns the fetchSatellites response', async () => {
-      fetch.once(JSON.stringify(responseBody));
       const response = await client.getSatellites();
-      expect(response).toEqual(responseBody);
+
+      expect(response).toEqual(satellites);
     });
   });
 
   describe('runQuery', () => {
     it('Returns the search results', async () => {
-      fetch.once(JSON.stringify(responseBody));
-      const response = await client.runQuery({
-        satellites: ['sat1', 'sat2'],
-        start_date: new Date(2000, 0, 1).toISOString(),
-        end_date: new Date(2001, 0, 1).toISOString(),
-      });
-      expect(response).toEqual(responseBody);
+      const query = {
+        tiers: ['free'],
+        satellites: ['sentinel-2'],
+        start_date: '2021-11-22T00:00:00.000Z',
+        end_date: '2021-12-22T23:59:59.999Z',
+        aoi: [
+          [-3.2167700195311553, 55.95040607448359],
+          [-3.2167700195311553, 55.87651938767596],
+          [-3.073947753906312, 55.87651938767596],
+          [-3.073947753906312, 55.95040607448359],
+          [-3.2167700195311553, 55.95040607448359],
+        ],
+      };
+
+      const response = await client.runQuery(query);
+
+      expect(response).toEqual(satelliteScenes);
     });
   });
 
   describe('saveImage', () => {
     it('Returns the response from the post', async () => {
-      const responseBody = { source_id: 'id-123' };
-      const requestBody = {
-        userId: 'user-id-123',
-        customerId: 'customer-id-123',
-        name: 'Test Name',
-        description: 'Test description',
-        satelliteId: 'sentinel-2',
-        sceneId: 'scene-id-123',
-        visualisationId: 'true-color',
+      const data = {
+        satellite_id: 'sentinel-2',
+        scene_id:
+          'S2A_MSIL2A_20211220T112501_N0301_R037_T30VVH_20211220T142010',
+        visualisation_id: 'TCI',
+        name: 'Test Image',
+        description: 'Test Description',
       };
-      fetch.once(JSON.stringify(responseBody));
-      const response = await client.saveImage(requestBody);
-      expect(fetch).toBeCalledWith(
-        expect.stringContaining(
-          `/${requestBody.customerId}/${requestBody.userId}/`,
-        ),
-        expect.objectContaining({
-          body: JSON.stringify({
-            name: requestBody.name,
-            description: requestBody.description,
-            satellite_id: requestBody.satelliteId,
-            scene_id: requestBody.sceneId,
-            visualisation_id: requestBody.visualisationId,
+
+      const response = await client.saveImage(data);
+
+      expect(response).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Test Image',
+            description: 'Test Description',
           }),
-        }),
+        ]),
       );
-      expect(response).toEqual(responseBody);
     });
   });
 });

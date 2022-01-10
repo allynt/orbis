@@ -1,15 +1,14 @@
 import React from 'react';
 
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 
+import { server } from 'mocks/server';
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { setData } from '../layers.slice.js';
 import ActionForHelpMapComponent from './ActionForHelpMapComponent';
 
 jest.mock('react-map-gl', () => ({ Popup: ({ children }) => <>{children}</> }));
-
-fetch.enableMocks();
 
 const sourceId = 'test/layer';
 const feature = {
@@ -29,13 +28,17 @@ const state = {
 };
 
 describe('<ActionForHelpMapComponent />', () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
   describe('updateNoteOrStatus', () => {
     it('Makes the update response with the new note or status', () => {
-      fetch.once(JSON.stringify({}));
+      server.use(
+        rest.put('*/:id/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
+      const origFetch = global.fetch;
+      const fetchMock = jest.spyOn(window, 'fetch');
+
       const note = 'Test note';
       render(<ActionForHelpMapComponent source={{ source_id: sourceId }} />, {
         state,
@@ -44,18 +47,26 @@ describe('<ActionForHelpMapComponent />', () => {
       userEvent.type(screen.getByRole('textbox', { name: 'Popup Note' }), note);
       userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
-      expect(fetch).toHaveBeenCalledWith(
+      expect(fetchMock).toHaveBeenCalledWith(
         expect.stringContaining(`/${feature.properties.pk}`),
         expect.objectContaining({ body: JSON.stringify({ notes: note }) }),
       );
+
+      global.fetch = origFetch;
     });
 
     it('Dispatches the setData action with the updated data from the response', async () => {
       const note = 'Test note';
-      fetch.once(
-        JSON.stringify({
-          ...feature.properties,
-          notes: note,
+
+      server.use(
+        rest.put('*/:id/', (req, res, ctx) => {
+          return res(
+            ctx.status(200),
+            ctx.json({
+              ...feature.properties,
+              notes: note,
+            }),
+          );
         }),
       );
 

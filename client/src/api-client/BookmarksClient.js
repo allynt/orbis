@@ -39,6 +39,7 @@ export class BookmarksClient extends SubClient {
       },
       body: formData,
     });
+
     return response.json();
   }
 
@@ -47,8 +48,10 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await this.makeAuthenticatedRequest(`/${bookmarkId}/`, {
+    const response = await this.makeAuthenticatedRequest(`/${bookmarkId}/`, {
       method: 'DELETE',
     });
+
+    return response.json();
   }
 }

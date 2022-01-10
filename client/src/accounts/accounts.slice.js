@@ -73,7 +73,7 @@ export const registerUser = createAsyncThunk(
   async (form, { dispatch, rejectWithValue }) => {
     try {
       const user = await apiClient.authentication.registerUser(form);
-      dispatch(push(RESEND));
+      dispatch(push(`/accounts${RESEND}`));
       return user;
     } catch (responseError) {
       const errors = await responseError.getErrors();
@@ -235,7 +235,8 @@ export const login = createAsyncThunk(
       /** @type {import('api-client').ResponseError<{user?: import('typings').PartialUser}>} */
       const responseError = error;
       const responseBody = await responseError.getBody();
-      if (responseBody.user?.is_verified === false) dispatch(push(RESEND));
+      if (responseBody.user?.is_verified === false)
+        dispatch(push(`/accounts${RESEND}`));
       const errors = await responseError.getErrors();
       return rejectWithValue({
         user: responseBody.user,

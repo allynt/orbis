@@ -1,8 +1,9 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { addLogItem } from 'app.slice';
+import { server } from 'mocks/server';
 
 import reducer, {
   fetchSources,
@@ -27,15 +28,11 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
-fetch.enableMocks();
-
 describe('Data Slice', () => {
   describe('thunks', () => {
     let store = null;
     describe('fetchSources', () => {
       beforeEach(() => {
-        fetch.resetMocks();
-
         store = mockStore({
           accounts: {
             user: {
@@ -61,15 +58,10 @@ describe('Data Slice', () => {
       });
 
       it('should dispatch fetch sources failure action.', async () => {
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
+        server.use(
+          rest.get('*/api/data/sources/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
 
         await store.dispatch(fetchSources());
@@ -102,7 +94,11 @@ describe('Data Slice', () => {
           ],
         };
 
-        fetch.mockResponse(JSON.stringify(data));
+        server.use(
+          rest.get('*/api/data/sources/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(data));
+          }),
+        );
 
         await store.dispatch(fetchSources());
 
@@ -199,21 +195,16 @@ describe('Data Slice', () => {
 
     describe('fetchOrbs', () => {
       beforeEach(() => {
-        fetch.resetMocks();
         store = mockStore({ data: {} });
       });
 
       it(`Dispatches the ${fetchOrbs.rejected.type} action on failed request`, async () => {
-        fetch.once(
-          JSON.stringify({
-            message: 'Test error message',
+        server.use(
+          rest.get('*/api/orbs/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
+
         await store.dispatch(fetchOrbs());
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
@@ -227,7 +218,13 @@ describe('Data Slice', () => {
 
       it(`Dispatches the ${fetchOrbs.fulfilled.type} action on a successful request`, async () => {
         const orbs = [{ id: 1 }, { id: 2 }];
-        fetch.once(JSON.stringify(orbs));
+
+        server.use(
+          rest.get('*/api/orbs/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(orbs));
+          }),
+        );
+
         await store.dispatch(fetchOrbs());
         expect(store.getActions()).toEqual(
           expect.arrayContaining([

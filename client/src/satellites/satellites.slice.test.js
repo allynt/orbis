@@ -1,9 +1,10 @@
 import { waitFor } from '@testing-library/dom';
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { addSource } from 'data-layers/data-layers.slice';
+import { server } from 'mocks/server';
 
 import { Panels } from './satellite.constants';
 import reducer, {
@@ -32,15 +33,9 @@ import reducer, {
   onSatelliteUnmount,
 } from './satellites.slice';
 
-fetch.enableMocks();
-
 const mockStore = configureMockStore([thunk]);
 
 describe('Satellites Slice', () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
   describe('thunks', () => {
     describe('searchSatelliteScenes', () => {
       describe('pending', () => {
@@ -155,7 +150,18 @@ describe('Satellites Slice', () => {
 
       describe('fulfilled', () => {
         it(`dispatches the ${saveImage.fulfilled.type} and adds the source to sources array`, async () => {
-          fetch.once(JSON.stringify({ source_id: 'source-id-123' }));
+          server.use(
+            rest.post(
+              '*/api/satellites/datasources/:customerId/:userId/',
+              (req, res, ctx) => {
+                return res(
+                  ctx.status(200),
+                  ctx.json({ source_id: 'source-id-123' }),
+                );
+              },
+            ),
+          );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -199,16 +205,15 @@ describe('Satellites Slice', () => {
 
       describe('rejected', () => {
         it(`dispatches the ${saveImage.rejected.type} action on rejected request`, async () => {
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
-            }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
+          server.use(
+            rest.post(
+              '*/api/satellites/datasources/:customerId/:userId/',
+              (req, res, ctx) => {
+                return res(ctx.status(401, 'Test Error'));
+              },
+            ),
           );
+
           const store = mockStore({
             accounts: {
               user: {
@@ -286,15 +291,10 @@ describe('Satellites Slice', () => {
     });
 
     it('should dispatch fetch satellites failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api/satellites/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = expect.arrayContaining([
@@ -324,7 +324,12 @@ describe('Satellites Slice', () => {
           id: 4,
         },
       ];
-      fetch.mockResponse(JSON.stringify(satellites));
+
+      server.use(
+        rest.get('*/api/satellites/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(satellites));
+        }),
+      );
 
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({

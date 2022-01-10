@@ -1,3 +1,6 @@
+import { rest } from 'msw';
+import { server } from 'mocks/server';
+
 import { AoiClient } from './AoisClient';
 
 describe('AoisClient', () => {
@@ -9,7 +12,12 @@ describe('AoisClient', () => {
 
   it('should return AOIs from the response', async () => {
     const aois = [{ id: 1 }, { id: 2 }];
-    fetch.once(JSON.stringify(aois));
+
+    server.use(
+      rest.get('*/api/aois/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(aois));
+      }),
+    );
 
     const client = new AoiClient();
     const responseAois = await client.getAois();
@@ -35,7 +43,12 @@ describe('AoisClient', () => {
       }),
     };
     const responseAoi = { ...newAoi, id: 123 };
-    fetch.once(JSON.stringify(responseAoi));
+
+    server.use(
+      rest.post('*/api/aois/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(responseAoi));
+      }),
+    );
 
     const aoi = await client.saveAoi(newAoi);
 
@@ -61,24 +74,29 @@ describe('AoisClient', () => {
         },
       }),
     };
-    fetch.once(JSON.stringify(updatedAoi));
+
+    server.use(
+      rest.put('*/api/aois/:id/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(updatedAoi));
+      }),
+    );
 
     const client = new AoiClient();
-    await client.updateAoi(updatedAoi);
+    const response = await client.updateAoi(updatedAoi);
 
-    expect(fetch).toBeCalledWith(
-      expect.stringContaining('/api/aois/1/'),
-      expect.objectContaining({ method: 'PUT' }),
-    );
+    expect(response).toEqual(updatedAoi);
   });
 
   it('should delete the AOI', async () => {
-    const client = new AoiClient();
-    await client.deleteAoi(1);
-
-    expect(fetch).toBeCalledWith(
-      expect.stringContaining('/api/aois/1'),
-      expect.objectContaining({ method: 'DELETE' }),
+    server.use(
+      rest.delete('*/api/aois/:id/', (req, res, ctx) => {
+        return res(ctx.status(200));
+      }),
     );
+
+    const client = new AoiClient();
+    const response = await client.deleteAoi(1);
+
+    expect(response.ok).toBe(true);
   });
 });

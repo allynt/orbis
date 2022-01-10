@@ -1,4 +1,4 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import { push } from 'redux-first-history';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import { fetchSources, updateLayers } from 'data-layers/data-layers.slice';
 import { setFeatures as setDrawingToolsFeatures } from 'drawing-tools/drawing-tools.slice';
 import { setState as setLayersState } from 'map/orbs/layers.slice';
+import { server } from 'mocks/server';
 
 import reducer, {
   addBookmark,
@@ -17,28 +18,19 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
-fetch.enableMocks();
-
 describe('Bookmark Slice', () => {
   describe('Bookmark Actions', () => {
     let store = null;
 
     beforeEach(() => {
-      fetch.resetMocks();
-
       store = mockStore();
     });
 
     it('should dispatch fetch bookmarks failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api/bookmarks/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = expect.arrayContaining([
@@ -68,7 +60,12 @@ describe('Bookmark Slice', () => {
           id: 4,
         },
       ];
-      fetch.mockResponse(JSON.stringify(bookmarks));
+
+      server.use(
+        rest.get('*/api/bookmarks/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(bookmarks));
+        }),
+      );
 
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({
@@ -83,15 +80,10 @@ describe('Bookmark Slice', () => {
     });
 
     it('should dispatch add bookmark failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.post('*/api/bookmarks/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = expect.arrayContaining([
@@ -113,7 +105,11 @@ describe('Bookmark Slice', () => {
       const bookmark = {
         id: 5,
       };
-      fetch.mockResponse(JSON.stringify(bookmark));
+      server.use(
+        rest.post('*/api/bookmarks/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(bookmark));
+        }),
+      );
 
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({
@@ -128,15 +124,10 @@ describe('Bookmark Slice', () => {
     });
 
     it('should dispatch delete bookmark failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.delete('*/api/bookmarks/:bookmarkId/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = expect.arrayContaining([
@@ -158,7 +149,12 @@ describe('Bookmark Slice', () => {
       const bookmark = {
         id: 5,
       };
-      fetch.mockResponse(JSON.stringify(bookmark));
+
+      server.use(
+        rest.delete('*/api/bookmarks/:bookmarkId/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(bookmark));
+        }),
+      );
 
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({
@@ -183,10 +179,15 @@ describe('Bookmark Slice', () => {
           orbs: { layers: 'test-123' },
           drawn_feature_collection: 'test-feature-collection',
         };
-        fetch.once(JSON.stringify(sources));
+
+        server.use(
+          rest.get('*/api/data/sources/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(sources));
+          }),
+        );
+
         const store = mockStore({ data: {} });
         await store.dispatch(
-          // @ts-ignore
           selectBookmark({
             bookmark,
             setViewState,

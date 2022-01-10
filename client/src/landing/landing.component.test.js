@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { ThemeProvider } from '@astrosat/astrosat-ui';
 
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 
 import { selectBookmark } from 'bookmarks/bookmarks.slice';
+import { server } from 'mocks/server';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import { regions } from '../map/map.constants';
@@ -37,8 +36,6 @@ const TEST_DASHBOARD_SOURCES = new Array(2).fill(undefined).map((_, i) => ({
   },
 }));
 
-fetch.enableMocks();
-
 const landingSetup = newUser => {
   const bookmarks = newUser ? [] : TEST_BOOKMARKS,
     sources = newUser ? [] : TEST_DASHBOARD_SOURCES;
@@ -66,7 +63,13 @@ const landingSetup = newUser => {
 };
 
 describe('<Landing />', () => {
-  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
+  beforeEach(() =>
+    server.use(
+      rest.get('*/api/data/sources', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    ),
+  );
 
   it('should render the No Bookmarks Landing view if the user has no bookmarks or dashboards', () => {
     landingSetup(true);
