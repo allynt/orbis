@@ -36,7 +36,7 @@ describe('<Checkout />', () => {
     const { getByRole } = renderComponent();
     expect(getByRole('button', { name: /confirm/i })).toBeDisabled();
     userEvent.click(getByRole('checkbox'));
-    expect(getByRole('button', { name: /confirm/i })).not.toBeDisabled();
+    expect(getByRole('button', { name: /confirm/i })).toBeEnabled();
   });
 
   it('Calls onConfirmClick when the confirm button is clicked', () => {

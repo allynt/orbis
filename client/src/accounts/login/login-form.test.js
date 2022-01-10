@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
@@ -16,12 +15,11 @@ const WORK_EMAIL = /work\semail\saddress/i;
 const I_AGREE_TEXT =
   'I agree with the Terms & Conditions and the Privacy Policy';
 
-/** @type {jest.Mock} */
-let login;
-
-beforeEach(() => (login = jest.fn()));
-
 describe('Login Form Component', () => {
+  let login;
+
+  beforeEach(() => (login = jest.fn()));
+
   it('should render a form', () => {
     render(<LoginForm />);
 
@@ -63,10 +61,10 @@ describe('Login Form Component', () => {
 
     expect(
       screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
-    ).not.toBeDisabled();
+    ).toBeEnabled();
   });
 
-  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
+  it('should disable `login`button when form is invalid', () => {
     render(<LoginForm login={login} />);
 
     const loginButton = screen.getByRole('button', { name: LOGIN_BUTTON_TEXT });
@@ -76,11 +74,7 @@ describe('Login Form Component', () => {
       EMAIL_TEXT,
     );
 
-    userEvent.tab();
-
-    userEvent.click(loginButton);
-
-    expect(login).not.toHaveBeenCalled();
+    expect(loginButton).toBeDisabled();
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
@@ -143,7 +137,6 @@ describe('Login Form Component', () => {
   });
 
   describe('activateAccount', () => {
-    /** @type {jest.Mock} */
     let activateAccount;
     const match = { params: { key: '123' } };
 

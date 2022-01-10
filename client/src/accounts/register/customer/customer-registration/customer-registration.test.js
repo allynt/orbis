@@ -47,7 +47,7 @@ describe('<CustomerRegistration />', () => {
     const { getByRole } = renderComponent();
     userEvent.type(getByRole('textbox', { name: NAME }), 'testname');
     await waitFor(() =>
-      expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled(),
+      expect(getByRole('button', { name: SUBMIT })).toBeEnabled(),
     );
   });
 
@@ -55,8 +55,8 @@ describe('<CustomerRegistration />', () => {
     const { getByRole } = renderComponent();
     const submitButton = getByRole('button', { name: SUBMIT });
     userEvent.type(getByRole('textbox', { name: OFFICIAL_NAME }), 'wrong');
-    userEvent.click(submitButton);
-    await waitFor(() => expect(submitButton).toBeDisabled());
+
+    expect(submitButton).toBeDisabled();
   });
 
   it('calls the onSubmit function with the form values', async () => {

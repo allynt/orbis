@@ -40,7 +40,7 @@ describe('<OrderForm />', () => {
     const { getByRole } = renderComponent();
     expect(getByRole('button', { name: SUBMIT })).toBeDisabled();
     userEvent.click(getByRole('checkbox', { name: CONFIRMATION }));
-    expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled();
+    expect(getByRole('button', { name: SUBMIT })).toBeEnabled();
   });
 
   it('calls onSubmit with the form values when the form is submitted', async () => {
