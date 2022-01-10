@@ -68,6 +68,8 @@ export const Store = () => {
     }
   };
 
+  const goBack = () => navigate(-1);
+
   return (
     <TransitionGroup style={{ position: 'relative' }}>
       <CSSTransition {...fadeTransitionProps}>
@@ -77,7 +79,10 @@ export const Store = () => {
               path="/"
               element={<Orbs orbs={orbs} isLoading={fetchOrbsPending} />}
             />
-            <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+            <Route
+              path="/:orbId"
+              element={<OrbDetails orbs={orbs} goBack={goBack} />}
+            />
             <Route
               path="/checkout/:orbId/:users"
               element={

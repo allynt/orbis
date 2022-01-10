@@ -13,7 +13,7 @@ import {
 
 import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
@@ -88,10 +88,10 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
+ *  goBack: function
  * }} props
  */
-export const OrbDetails = ({ orbs }) => {
-  const navigate = useNavigate();
+export const OrbDetails = ({ orbs, goBack }) => {
   const { orbId } = useParams();
   const styles = useStyles();
   const theme = useTheme();
@@ -103,8 +103,6 @@ export const OrbDetails = ({ orbs }) => {
   if (!orb) return null;
 
   const { images, name, description, can_purchase } = orb;
-
-  const goBack = () => navigate(-1);
 
   return (
     <Wrapper className={styles.wrapper}>
