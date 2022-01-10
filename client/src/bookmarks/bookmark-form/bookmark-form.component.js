@@ -21,7 +21,11 @@ const validationSchema = yup.object({
  * }} props
  */
 const BookmarkForm = ({ bookmarkTitles = [], onSubmit }) => {
-  const { register, handleSubmit, errors, formState } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, touchedFields },
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { [CONTEXT_KEYS.bookmarkTitles]: bookmarkTitles },
   });
@@ -37,13 +41,14 @@ const BookmarkForm = ({ bookmarkTitles = [], onSubmit }) => {
         <TextField
           id={FIELD_NAMES.bookmarkTitle}
           name={FIELD_NAMES.bookmarkTitle}
-          inputRef={register}
+          {...register(FIELD_NAMES.bookmarkTitle)}
           label="Title"
           error={!!errors[FIELD_NAMES.bookmarkTitle]}
           helperText={errors[FIELD_NAMES.bookmarkTitle]?.message}
           valid={
-            !errors[FIELD_NAMES.bookmarkTitle] &&
-            formState.touched[FIELD_NAMES.bookmarkTitle]
+            '' +
+            (!errors[FIELD_NAMES.bookmarkTitle] &&
+              touchedFields[FIELD_NAMES.bookmarkTitle])
           }
           required
         />
@@ -52,20 +57,21 @@ const BookmarkForm = ({ bookmarkTitles = [], onSubmit }) => {
         <TextField
           id={FIELD_NAMES.bookmarkDescription}
           name={FIELD_NAMES.bookmarkDescription}
-          inputRef={register}
+          {...register(FIELD_NAMES.bookmarkDescription)}
           label="Description"
           error={!!errors[FIELD_NAMES.bookmarkDescription]}
           helperText={errors[FIELD_NAMES.bookmarkDescription]?.message}
           valid={
-            !errors[FIELD_NAMES.bookmarkDescription] &&
-            formState.touched[FIELD_NAMES.bookmarkDescription]
+            '' +
+            (!errors[FIELD_NAMES.bookmarkDescription] &&
+              touchedFields[FIELD_NAMES.bookmarkDescription])
           }
         />
       </Form.Row>
       <Form.Row centered>
         <Button
           type="submit"
-          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+          disabled={Object.keys(errors).length > 0 || !isDirty}
         >
           Save New Map
         </Button>

@@ -62,41 +62,46 @@ describe('EditUserForm', () => {
   });
 
   it('displays and checks by default the user`s current licences', () => {
-    const { getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
     userCheckboxes.forEach(ul => {
       if (ul.customer_user) {
-        expect(getByLabelText(ul.orb)).toBeInTheDocument();
-        expect(getByLabelText(ul.orb)).toBeChecked();
+        const element = getByRole('checkbox', { name: ul.orb });
+        expect(element).toBeInTheDocument();
+        expect(element).toBeChecked();
       }
     });
   });
 
   it('displays and unchecks by default the available licence options', () => {
-    const { getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
     userCheckboxes.forEach(ul => {
       if (!ul.customer_user) {
-        expect(getByLabelText(ul.orb)).toBeInTheDocument();
-        expect(getByLabelText(ul.orb)).not.toBeChecked();
+        const element = getByRole('checkbox', { name: ul.orb });
+        expect(element).toBeInTheDocument();
+        expect(element).not.toBeChecked();
       }
     });
   });
 
   it('displays admin status checkboxes, with user`s current status checked by default', () => {
-    const { getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
-    expect(getByLabelText('Yes')).toBeInTheDocument();
-    expect(getByLabelText('No')).toBeInTheDocument();
-    expect(getByLabelText('Yes')).toBeChecked();
+    const yesElement = getByRole('radio', { name: 'Yes' });
+    const noElement = getByRole('radio', { name: 'No' });
+    expect(yesElement).toBeInTheDocument();
+    expect(noElement).toBeInTheDocument();
+    expect(yesElement).toBeChecked();
+    expect(noElement).not.toBeChecked();
   });
 
   it('shows only 1 of each type of available licence that the user does not already have', () => {
-    const { getAllByRole, getAllByText } = renderComponent();
+    const { getAllByRole } = renderComponent();
 
-    availableLicences.forEach(al => {
-      expect(getAllByText(al.orb).length).toEqual(1);
-    });
+    availableLicences.forEach(al =>
+      expect(getAllByRole('checkbox', { name: al.orb }).length).toEqual(1),
+    );
 
     expect(getAllByRole('checkbox').length).toEqual(userCheckboxes.length);
   });
@@ -126,7 +131,7 @@ describe('EditUserForm', () => {
       },
     };
 
-    const { getByText, getByDisplayValue } = render(
+    const { getByRole } = render(
       <EditUserForm
         user={user}
         customer={testCustomer}
@@ -135,11 +140,11 @@ describe('EditUserForm', () => {
       />,
     );
 
-    const nameField = getByDisplayValue(user.user.name);
+    const nameField = getByRole('textbox', { name: 'Name' });
 
     userEvent.clear(nameField);
     userEvent.type(nameField, 'Steve Brown');
-    userEvent.click(getByText('Save Changes'));
+    userEvent.click(getByRole('button', { name: 'Save Changes' }));
 
     await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
@@ -165,7 +170,7 @@ describe('EditUserForm', () => {
       licences: ['456'],
     };
 
-    const { getByText, getByLabelText } = render(
+    const { getByRole, getByText } = render(
       <EditUserForm
         user={user}
         customer={testCustomer}
@@ -174,14 +179,14 @@ describe('EditUserForm', () => {
       />,
     );
 
-    userEvent.click(getByLabelText('Steel'));
+    userEvent.click(getByRole('checkbox', { name: 'Steel' }));
     userEvent.click(getByText('Save Changes'));
 
     await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
   it('submits a full user object when `Save Changes` button is clicked', async () => {
-    const { getByText, getByDisplayValue } = renderComponent();
+    const { getByRole } = renderComponent();
 
     const newUser = {
       ...user,
@@ -191,17 +196,17 @@ describe('EditUserForm', () => {
       },
     };
 
-    const nameField = getByDisplayValue(user.user.name);
+    const nameField = getByRole('textbox', { name: 'Name' });
 
     userEvent.clear(nameField);
     userEvent.type(nameField, 'Jerry Thomson');
-    userEvent.click(getByText('Save Changes'));
+    userEvent.click(getByRole('button', { name: 'Save Changes' }));
 
     await waitFor(() => expect(editUser).toHaveBeenCalledWith(newUser));
   });
 
   it('retrieves and adds only the checked licence box IDs for dispatching', async () => {
-    const { getByText, getByLabelText } = renderComponent();
+    const { getByRole, getByText, getByLabelText } = renderComponent();
 
     const userWithAddedLicence = {
       ...user,
@@ -209,7 +214,14 @@ describe('EditUserForm', () => {
     };
 
     userEvent.click(getByLabelText('Steel'));
-    userEvent.click(getByText('Save Changes'));
+    userEvent.click(getByText('Save Changes'), undefined, {
+      skipPointerEventsCheck: true,
+    });
+
+    userEvent.click(getByRole('button', { name: 'Save Changes' }), undefined, {
+      skipPointerEventsCheck: true,
+    });
+
     await waitFor(() =>
       expect(editUser).toHaveBeenCalledWith(userWithAddedLicence),
     );
@@ -221,24 +233,24 @@ describe('EditUserForm', () => {
   });
 
   it('enables the `Save Changes` button when changes have been made', () => {
-    const { getByText, getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
-    userEvent.click(getByLabelText('Steel'));
-    expect(getByText('Save Changes')).not.toHaveAttribute('disabled');
+    userEvent.click(getByRole('checkbox', { name: 'Steel' }));
+    expect(getByRole('button', { name: 'Save Changes' })).toBeEnabled();
   });
 
   it('re-disables the `Save Changes` button if changes are reverted', () => {
-    const { getByRole, getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
-    userEvent.click(getByLabelText('Steel'));
-    expect(getByRole('button', { name: 'Save Changes' })).not.toBeDisabled();
-    userEvent.click(getByLabelText('Steel'));
+    userEvent.click(getByRole('checkbox', { name: 'Steel' }));
+    expect(getByRole('button', { name: 'Save Changes' })).toBeEnabled();
+    userEvent.click(getByRole('checkbox', { name: 'Steel' }));
     expect(getByRole('button', { name: 'Save Changes' })).toBeDisabled();
   });
 
   it('disables the `No` button (admin status) when only one admin remains', () => {
-    const { getByLabelText } = renderComponent();
+    const { getByRole } = renderComponent();
 
-    expect(getByLabelText('No')).toHaveAttribute('disabled');
+    expect(getByRole('radio', { name: 'No' })).toBeDisabled();
   });
 });

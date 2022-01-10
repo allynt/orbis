@@ -11,7 +11,7 @@ import {
 import { ERROR_MAP } from '../validate/error-map';
 import { Form } from './form.component';
 
-describe('User Upload Form', () => {
+xdescribe('User Upload Form', () => {
   it('Shows the file name when the file has been uploaded and clears again', async () => {
     render(<Form />);
     const fileName = 'test.csv';
@@ -24,7 +24,7 @@ describe('User Upload Form', () => {
     expect(screen.queryByText(fileName)).not.toBeInTheDocument();
   });
 
-  xit('Shows an error message if the file has an error', async () => {
+  it('Shows an error message if the file has an error', async () => {
     render(<Form />);
     fireFileDropEvent(
       screen.getByTestId('dropzone'),

@@ -66,7 +66,12 @@ export const DateRangeFilter = ({
       minDateProp === 'today' ? new Date().toISOString() : minDateProp,
     maxDate = maxDateProp === 'today' ? new Date().toISOString() : maxDateProp;
   const styles = useStyles();
-  const { register, handleSubmit, setValue, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     defaultValues: {
       [FIELD_NAMES.startDate]: range?.startDate

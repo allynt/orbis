@@ -56,13 +56,16 @@ const validationSchema = object({
 });
 
 const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
-  const { register, handleSubmit, getValues, formState, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isDirty },
+  } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = data => {
-    resetPassword(data);
-  };
+  const onSubmit = data => resetPassword(data);
 
   if (resetStatus === status.PENDING)
     return (
@@ -80,7 +83,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           label="Email"
           autoFocus
           error={!!errors[FIELD_NAMES.email]}
@@ -91,7 +94,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
       <Form.Row centered>
         <Button
           type="submit"
-          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+          disabled={Object.keys(errors).length > 0 || !isDirty}
         >
           Reset Password
         </Button>
@@ -99,11 +102,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link
-          // @ts-ignore
-          to={`/accounts${LOGIN}`}
-          component={RouterLink}
-        >
+        <Link to={`/accounts${LOGIN}`} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

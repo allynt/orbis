@@ -36,7 +36,12 @@ const useStyles = makeStyles({
  */
 const UpdateUserForm = ({ user, updateUser }) => {
   const styles = useStyles();
-  const { handleSubmit, register, formState, reset, errors } = useForm({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, dirtyFields },
+    reset,
+  } = useForm({
     resolver: yupResolver(updateUserFormSchema),
     defaultValues: { ...user },
   });
@@ -69,7 +74,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <TextField
             id={FIELD_NAMES.email}
             name={FIELD_NAMES.email}
-            inputRef={register}
+            {...register(FIELD_NAMES.email)}
             label="Email"
             InputProps={{ readOnly: true }}
           />
@@ -78,7 +83,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
           <TextField
             id={FIELD_NAMES.name}
             name={FIELD_NAMES.name}
-            inputRef={register}
+            {...register(FIELD_NAMES.name)}
             error={!!errors[FIELD_NAMES.name]}
             helperText={errors[FIELD_NAMES.name]?.message}
             label="Name"
@@ -89,9 +94,7 @@ const UpdateUserForm = ({ user, updateUser }) => {
         <Button
           fullWidth
           type="submit"
-          disabled={
-            Object.keys(errors).length > 0 || !formState.dirtyFields.name
-          }
+          disabled={Object.keys(errors).length > 0 || !dirtyFields.name}
         >
           Update Account
         </Button>
