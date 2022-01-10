@@ -88,7 +88,7 @@ const JourneySelection = ({
   const handleClick = () => {
     switch (selection) {
       case 'customer':
-        navigate(REGISTER_CUSTOMER_USER);
+        navigate(`/accounts${REGISTER_CUSTOMER_USER}`);
         break;
       case 'individual':
       default:
