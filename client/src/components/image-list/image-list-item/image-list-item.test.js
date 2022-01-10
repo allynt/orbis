@@ -30,7 +30,9 @@ describe('<ImageListItem />', () => {
     const { getByRole } = render(
       <ImageListItem text="test item" value="test" onChange={onChange} />,
     );
-    userEvent.click(getByRole('radio', { name: 'test item' }));
+    userEvent.click(getByRole('radio', { name: 'test item' }), undefined, {
+      skipPointerEventsCheck: true,
+    });
     expect(onChange).toBeCalledWith('test');
   });
 });
