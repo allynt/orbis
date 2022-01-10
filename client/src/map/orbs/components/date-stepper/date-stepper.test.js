@@ -38,17 +38,22 @@ describe('<DateStepper />', () => {
   });
 
   it('Calls on change with the next value while playing', () => {
+    jest.useFakeTimers();
     const { getByRole, onChange } = renderComponent(TODAY);
+
     userEvent.click(getByRole('button', { name: 'play' }));
-    jest.runAllTimers();
+    jest.runOnlyPendingTimers();
 
     expect(onChange).toHaveBeenCalledWith(undefined, TOMORROW);
   });
 
   it('Calls on change with the first value while playing if it reaches the end', () => {
+    jest.useFakeTimers();
     const { getByRole, onChange } = renderComponent(TOMORROW);
+
     userEvent.click(getByRole('button', { name: 'play' }));
-    jest.runAllTimers();
+    jest.runOnlyPendingTimers();
+
     expect(onChange).toHaveBeenCalledWith(undefined, TODAY);
   });
 });
