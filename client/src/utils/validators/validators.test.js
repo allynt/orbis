@@ -174,11 +174,14 @@ describe('field validators', () => {
           [FIELD_NAMES.newPasswordConfirm]: newPasswordConfirm,
         });
         await expect(
-          schema.validate({
-            oldPassword: 'absolutegarbagesecurity',
-            newPassword: 'absolutegarbagesecurity',
-            newPasswordConfirm: 'absolutegarbagesecurity',
-          }),
+          schema.validate(
+            {
+              oldPassword: 'absolutegarbagesecurity',
+              newPassword: 'absolutegarbagesecurity',
+              newPasswordConfirm: 'absolutegarbagesecurity',
+            },
+            { context },
+          ),
         ).rejects.toThrow(MESSAGES.newPasswordConfirm.notOneOf);
       });
     });
