@@ -100,7 +100,7 @@ export class SubClient {
    * @param {any} body
    * @returns {Promise<T>}
    */
-  async makeAuthenticatedPostRequest(url, body) {
+  async makeAuthenticatedPostRequest(url, body = {}) {
     const response = await this.makeAuthenticatedRequest(url, {
       ...JSON_POST_REQUEST_OPTIONS,
       body: JSON.stringify(body),

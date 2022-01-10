@@ -1,4 +1,5 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
+import { server } from 'mocks/server';
 
 import reducer, {
   setSelectedResult,
@@ -9,8 +10,6 @@ import reducer, {
   setVisibility,
   visibilitySelector,
 } from './crowdless.slice';
-
-fetch.enableMocks();
 
 describe('crowdless slice', () => {
   describe('actions', () => {
@@ -122,9 +121,15 @@ describe('crowdless slice', () => {
 
       it('calls fulfilled with the response', async () => {
         const result = { features: [{ id: 1 }, { id: 2 }] };
-        fetch.once(JSON.stringify(result));
+
+        server.use(
+          rest.get('/api', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(result));
+          }),
+        );
+
         await fetchResults({
-          url: '',
+          url: '/api',
           source: { source_id: '', metadata: { api_key: '' } },
         })(dispatch, undefined, undefined);
         expect(dispatch).toHaveBeenCalledWith(
@@ -136,8 +141,13 @@ describe('crowdless slice', () => {
       });
 
       it('calls rejected if the fetch fails', async () => {
-        fetch.mockReject(new Error());
-        await fetchResults('')(dispatch, undefined, undefined);
+        server.use(
+          rest.get('/api', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
+        await fetchResults('/api')(dispatch, undefined, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({ type: fetchResults.rejected.type }),
         );

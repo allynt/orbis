@@ -1,14 +1,12 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
+import { server } from 'mocks/server';
 
 import { SubClient } from './SubClient';
-
-fetch.enableMocks();
 
 describe('SubClient', () => {
   /** @type {SubClient} */
   let subClient;
   beforeEach(() => {
-    fetch.resetMocks();
     subClient = new SubClient();
   });
 
@@ -35,48 +33,47 @@ describe('SubClient', () => {
   });
 
   describe('makeRequest', () => {
-    it('Calls fetch with apiHost prepended to the provided url', () => {
-      subClient.apiHost = 'test-host.com';
-      subClient.makeRequest('/test/endpoint');
-      expect(fetch).toBeCalledWith(
-        'test-host.com/api/test/endpoint',
-        expect.anything(),
+    it('Calls fetch with apiHost prepended to the provided url', async () => {
+      server.use(
+        rest.get('*/test/endpoint', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
       );
+
+      subClient.apiHost = 'test-host.com';
+      const response = await subClient.makeRequest('/test/endpoint');
+      expect(response.ok).toBe(true);
     });
 
     it('Handles errors when response is not ok', () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
+
       expect(subClient.makeRequest('/api')).rejects.toThrow();
     });
   });
 
   describe('makeAuthenticatedRequest', () => {
-    it('Calls fetch with authentication header containing userKey', () => {
+    it('Calls fetch with authentication header containing userKey', async () => {
+      server.use(
+        rest.delete('*/api', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
       const testOptions = {
         method: 'DELETE',
         headers: { Accept: 'everything' },
       };
       subClient.userKey = 'test-key-123';
-      subClient.makeAuthenticatedRequest(null, testOptions);
-      expect(fetch).toBeCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          ...testOptions,
-          headers: {
-            ...testOptions.headers,
-            Authorization: 'Token test-key-123',
-          },
-        }),
+      const response = await subClient.makeAuthenticatedRequest(
+        '/api',
+        testOptions,
       );
+      expect(response.ok).toBe(true);
     });
   });
 
@@ -91,34 +88,45 @@ describe('SubClient', () => {
       test: 'yes',
     };
 
-    it('Calls fetch with json headers', () => {
-      fetch.once(JSON.stringify({}));
-      subClient[fn]('/some/url', body);
-      expect(fetch).toBeCalledWith(
-        expect.stringContaining('/some/url'),
-        expect.objectContaining({
-          method,
-          headers: expect.objectContaining({
-            'Content-Type': 'application/json',
-          }),
+    it('Calls fetch with json headers', async () => {
+      server.use(
+        rest.post('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.put('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
         }),
       );
+
+      const response = await subClient[fn]('/some/url', body);
+      expect(response).toStrictEqual({});
     });
 
-    it('Includes the stringified body', () => {
-      fetch.once(JSON.stringify({}));
-      subClient[fn]('/some/url', body);
-      expect(fetch).toBeCalledWith(
-        expect.stringContaining('/some/url'),
-        expect.objectContaining({
-          body: JSON.stringify(body),
+    it('Includes the stringified body', async () => {
+      server.use(
+        rest.post('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.put('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
         }),
       );
+
+      const response = await subClient[fn]('/some/url', body);
+      expect(response).toStrictEqual({});
     });
 
     it('Returns the response body', () => {
       const response = { this: 'was returned' };
-      fetch.once(JSON.stringify(response));
+      server.use(
+        rest.post('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(response));
+        }),
+        rest.put('*/some/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(response));
+        }),
+      );
+
       expect(subClient[fn]('/some/url', body)).resolves.toEqual(response);
     });
   });

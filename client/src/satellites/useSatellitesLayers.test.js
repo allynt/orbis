@@ -1,11 +1,11 @@
-import React from 'react';
-
 import { BitmapLayer } from '@deck.gl/layers';
 import { EditableGeoJsonLayer } from '@nebula.gl/layers';
 import { act, renderHook as tlRenderHook } from '@testing-library/react-hooks';
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
+
+import { server } from 'mocks/server';
 
 import { Panels } from './satellite.constants';
 import {
@@ -16,8 +16,6 @@ import {
 import { useSatellitesLayers } from './useSatellitesLayers';
 
 const mockStore = configureMockStore();
-
-fetch.enableMocks();
 
 /**
  * @param {import('./satellites.slice').SatellitesState
@@ -190,7 +188,12 @@ describe('useSatellitesLayers', () => {
 
   describe('selectedSceneLayer', () => {
     it('uses the selected scene tiles as data', async () => {
-      fetch.once(JSON.stringify({ tiles: ['test-url'] }));
+      server.use(
+        rest.get('*/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({ tiles: ['test-url'] }));
+        }),
+      );
+
       const { result, waitForNextUpdate } = renderHook({
         selectedScene: { id: '123', tile_url: '' },
       });

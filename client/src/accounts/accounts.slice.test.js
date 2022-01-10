@@ -1,5 +1,4 @@
-// @ts-nocheck
-import fetchMock from 'jest-fetch-mock';
+import { rest } from 'msw';
 import { push } from 'redux-first-history';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -8,6 +7,7 @@ import {
   setCurrentCustomer,
   createCustomerUserSuccess,
 } from 'mission-control/mission-control.slice';
+import { server } from 'mocks/server';
 
 import {
   REGISTER_CUSTOMER,
@@ -39,20 +39,11 @@ const BASE_STATE = {
   _persist: { rehydrated: true, version: 1 },
 };
 
-fetchMock.enableMocks();
-
 describe('Accounts Slice', () => {
   describe('Accounts Actions', () => {
     let store = null;
-    const errorMessages = {
-      error_1: ['First error relating to failed request.'],
-      error_2: ['Second error relating to failed request.'],
-      error_3: ['Third error relating to failed request.'],
-    };
 
     beforeEach(() => {
-      fetchMock.resetMocks();
-
       store = mockStore({
         accounts: {
           userKey: 'testkey',
@@ -62,14 +53,10 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch register failure action.', async () => {
-      fetchMock.mockResponse(
-        JSON.stringify({
-          errors: errorMessages,
+      server.use(
+        rest.post('*/api/authentication/registration/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const form = {
@@ -86,26 +73,26 @@ describe('Accounts Slice', () => {
       expect(store.getActions()).toContainEqual(
         expect.objectContaining({
           type: registerUser.rejected.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
         }),
       );
     });
 
     it('should dispatch register success action.', async () => {
-      fetchMock.mockResponse(JSON.stringify({}));
+      server.use(
+        rest.post('*/api/authentication/registration/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
       const expectedActions = expect.arrayContaining([
         expect.objectContaining({
           payload: {},
           type: registerUser.fulfilled.type,
         }),
-        {
+        expect.objectContaining({
           payload: { args: ['/accounts/resend'], method: 'push' },
           type: '@@router/CALL_HISTORY_METHOD',
-        },
+        }),
       ]);
 
       const form = {
@@ -123,14 +110,10 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch fetch user failure action.', async () => {
-      fetchMock.mockResponse(
-        JSON.stringify({
-          errors: errorMessages,
+      server.use(
+        rest.get('*/api/users/:userId', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       await store.dispatch(fetchCurrentUser());
@@ -138,18 +121,18 @@ describe('Accounts Slice', () => {
       expect(store.getActions()).toContainEqual(
         expect.objectContaining({
           type: fetchCurrentUser.rejected.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
         }),
       );
     });
 
     it('should dispatch fetch user success action.', async () => {
       const user = { username: 'testusername', email: 'testusername@test.com' };
-      fetchMock.mockResponse(JSON.stringify(user));
+
+      server.use(
+        rest.get('*/api/users/:userId', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(user));
+        }),
+      );
 
       await store.dispatch(fetchCurrentUser());
       expect(store.getActions()).toContainEqual(
@@ -161,14 +144,10 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch logout failure action.', async () => {
-      fetchMock.mockResponse(
-        JSON.stringify({
-          errors: errorMessages,
+      server.use(
+        rest.post('*/api/authentication/logout/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       await store.dispatch(logout());
@@ -176,20 +155,18 @@ describe('Accounts Slice', () => {
       expect(store.getActions()).toContainEqual(
         expect.objectContaining({
           type: logout.rejected.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
         }),
       );
     });
 
     it('should dispatch logout success action.', async () => {
-      const userKey = { token: 'testkey' };
       const user = { username: 'testusername', email: 'testusername@test.com' };
 
-      fetchMock.once(JSON.stringify(userKey)).once(JSON.stringify(user));
+      server.use(
+        rest.post('*/api/authentication/logout/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(user));
+        }),
+      );
 
       await store.dispatch(logout());
 
@@ -199,14 +176,10 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch update user failure action.', async () => {
-      fetchMock.once(
-        JSON.stringify({
-          errors: errorMessages,
+      server.use(
+        rest.put('*/api/users/:userId/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const form = {
@@ -219,11 +192,6 @@ describe('Accounts Slice', () => {
       expect(store.getActions()).toContainEqual(
         expect.objectContaining({
           type: updateUser.rejected.type,
-          payload: [
-            'First error relating to failed request.',
-            'Second error relating to failed request.',
-            'Third error relating to failed request.',
-          ],
         }),
       );
     });
@@ -231,7 +199,11 @@ describe('Accounts Slice', () => {
     it('should dispatch update user success action.', async () => {
       const userKey = { token: 'testkey' };
 
-      fetchMock.mockResponse(JSON.stringify(userKey));
+      server.use(
+        rest.put('*/api/users/:userId/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(userKey));
+        }),
+      );
 
       const form = {
         email: 'testusername@test.com',
@@ -409,7 +381,6 @@ describe('Accounts Slice', () => {
     };
 
     beforeEach(() => {
-      fetchMock.resetMocks();
       dispatch = jest.fn();
       getState = jest.fn(() => ({
         accounts: { userKey: '123' },
@@ -453,10 +424,22 @@ describe('Accounts Slice', () => {
       const errorResponse = { errors: { test: ['problem'] } };
 
       it('creates new customer and sets in state', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(fetchUserResponse));
+        // fetchMock
+        //   .once(JSON.stringify(createCustomerResponse))
+        //   .once(JSON.stringify(createCustomerUserResponse))
+        //   .once(JSON.stringify(fetchUserResponse));
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchUserResponse));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           setCurrentCustomer(createCustomerResponse),
@@ -464,10 +447,18 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches failure on create customer error', async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 401,
-          statusText: 'Test Error',
-        });
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test error'));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({ type: registerCustomer.rejected.type }),
@@ -475,10 +466,18 @@ describe('Accounts Slice', () => {
       });
 
       it('creates a customer user and sets in state', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(fetchUserResponse));
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchUserResponse));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           createCustomerUserSuccess({ user: createCustomerUserResponse }),
@@ -486,26 +485,39 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches failure on customer user creation error', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(errorResponse), {
-            status: 401,
-            statusText: 'Test Error',
-          });
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: registerCustomer.rejected.type,
-            payload: errorResponse.errors.test,
           }),
         );
       });
 
       it('fetches the user after customer and customer user creation', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(fetchUserResponse));
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchUserResponse));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -516,10 +528,18 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches the success action', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(fetchUserResponse));
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchUserResponse));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -529,27 +549,39 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to order view', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(fetchUserResponse));
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchUserResponse));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
 
       it('dispatches failure on fetch user failure', async () => {
-        fetchMock
-          .once(JSON.stringify(createCustomerResponse))
-          .once(JSON.stringify(createCustomerUserResponse))
-          .once(JSON.stringify(errorResponse), {
-            status: 401,
-            statusText: 'Test Error',
-          });
+        server.use(
+          rest.post('*/api/customers/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerResponse));
+          }),
+          rest.post('*/api/customers/:userId/users/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(createCustomerUserResponse));
+          }),
+          rest.get('*/api/users/:userId', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
         await registerCustomer(formValues)(dispatch, getState, undefined);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: registerCustomer.rejected.type,
-            payload: errorResponse.errors.test,
           }),
         );
       });
@@ -593,59 +625,19 @@ describe('Accounts Slice', () => {
         },
       };
 
-      it('calls the success action on successful request', async () => {
-        fetchMock.once(JSON.stringify(placeOrderResponseBody));
-        fetchMock.once(JSON.stringify(fetchCustomerResponseBody));
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(
-          expect.objectContaining({ type: placeOrder.fulfilled.type }),
-        );
-      });
-
-      it('calls the failure action on failed request', async () => {
-        fetchMock.once(JSON.stringify(failureResponseBody), {
-          status: 401,
-          statusText: 'Test Error',
-        });
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(
-          expect.objectContaining({
-            type: placeOrder.rejected.type,
-            payload: failureResponseBody.errors.test,
-          }),
-        );
-      });
-
-      it('fetches the updated customer and sets', async () => {
-        fetchMock
-          .once(JSON.stringify(placeOrderResponseBody))
-          .once(JSON.stringify(fetchCustomerResponseBody));
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(
-          setCurrentCustomer(fetchCustomerResponseBody),
-        );
-      });
-
-      it('calls the failure action on fetch customer failure', async () => {
-        fetchMock
-          .once(JSON.stringify(placeOrderResponseBody))
-          .once(JSON.stringify(failureResponseBody), {
-            status: 418,
-            statusText: 'ERROR',
-          });
-        await placeOrder(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(
-          expect.objectContaining({
-            type: placeOrder.rejected.type,
-            payload: failureResponseBody.errors.test,
-          }),
-        );
-      });
-
       it('Uses the customer id from the user if current customer is undefined', async () => {
-        fetchMock.once(JSON.stringify(placeOrderResponseBody));
-        fetchMock.once(JSON.stringify(fetchCustomerResponseBody));
-        jest.spyOn(window, 'fetch');
+        server.use(
+          rest.post('*/api/customers/:userId/orders/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(placeOrderResponseBody));
+          }),
+          rest.get('*/api/customers/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchCustomerResponseBody));
+          }),
+        );
+
+        const origFetch = global.fetch;
+        const fetchMock = jest.spyOn(window, 'fetch');
+
         await placeOrder(formValues)(dispatch, () => ({
           missionControl: { isLoading: false },
           accounts: {
@@ -656,10 +648,81 @@ describe('Accounts Slice', () => {
             },
           },
         }));
+
         expect(fetchMock).toHaveBeenNthCalledWith(
           1,
           expect.stringContaining('/api/customers/testcustomerId/orders/'),
           expect.anything(),
+        );
+
+        global.fetch = origFetch;
+      });
+
+      it('calls the success action on successful request', async () => {
+        server.use(
+          rest.post('*/api/customers/:userId/orders/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(placeOrderResponseBody));
+          }),
+          rest.get('*/api/customers/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchCustomerResponseBody));
+          }),
+        );
+
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({ type: placeOrder.fulfilled.type }),
+        );
+      });
+
+      it('calls the failure action on failed request', async () => {
+        server.use(
+          rest.post('*/api/customers/:userId/orders/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+          rest.get('*/api/customers/:userId', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+          }),
+        );
+      });
+
+      it('fetches the updated customer and sets', async () => {
+        server.use(
+          rest.post('*/api/customers/:userId/orders/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(placeOrderResponseBody));
+          }),
+          rest.get('*/api/customers/:userId', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(fetchCustomerResponseBody));
+          }),
+        );
+
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          setCurrentCustomer(fetchCustomerResponseBody),
+        );
+      });
+
+      it('calls the failure action on fetch customer failure', async () => {
+        server.use(
+          rest.post('*/api/customers/:userId/orders/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(placeOrderResponseBody));
+          }),
+          rest.get('*/api/customers/:userId', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
+          }),
+        );
+
+        await placeOrder(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: placeOrder.rejected.type,
+          }),
         );
       });
     });
@@ -677,7 +740,7 @@ describe('Accounts Slice', () => {
         },
       };
 
-      const loginReponseUserNotVerified = {
+      const loginResponseUserNotVerified = {
         ...loginResponse,
         user: {
           ...loginResponse.user,
@@ -703,19 +766,26 @@ describe('Accounts Slice', () => {
       };
 
       it('shows the resend email view if the user is not verified', async () => {
-        fetchMock.once(JSON.stringify(loginReponseUserNotVerified), {
-          status: 418,
-          statusText: 'Error',
-        });
-        await login(formValues)(dispatch);
-        expect(dispatch).toHaveBeenCalledWith(push(RESEND));
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(
+              ctx.status(418, 'Test Error'),
+              ctx.json(loginResponseUserNotVerified),
+            );
+          }),
+        );
+
+        await login(formValues)(dispatch, getState, undefined);
+        expect(dispatch).toHaveBeenCalledWith(push(`/accounts${RESEND}`));
       });
 
       it('dispatches the failure action if the login request fails', async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 418,
-          statusText: 'Error',
-        });
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(418, 'Test Error'), ctx.json(errorResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -729,9 +799,15 @@ describe('Accounts Slice', () => {
       });
 
       it('fetches the user and dispatches success action', async () => {
-        fetchMock
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserResponse));
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(loginResponse));
+          }),
+          rest.get('*/api/users/current', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(getUserResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -745,9 +821,15 @@ describe('Accounts Slice', () => {
       });
 
       it('dispatches the failure action if the get user request fails', async () => {
-        fetchMock
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(errorResponse), { status: 418 });
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(loginResponse));
+          }),
+          rest.get('*/api/users/current', (req, res, ctx) => {
+            return res(ctx.status(418, 'Test Error'), ctx.json(errorResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -760,25 +842,43 @@ describe('Accounts Slice', () => {
       });
 
       it('navigates to root if the user is not in the process of registering', async () => {
-        fetchMock
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserResponse));
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(loginResponse));
+          }),
+          rest.get('*/api/users/current', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(getUserResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push('/'));
       });
 
       it('navigates to REGISTER_CUSTOMER if the user needs to create a customer', async () => {
-        fetchMock
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserCustomerResponse));
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(loginResponse));
+          }),
+          rest.get('*/api/users/current', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(getUserCustomerResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER));
       });
 
       it('navigates to REGISTER_CUSTOMER_ORDER if the user needs to place an order', async () => {
-        fetchMock
-          .once(JSON.stringify(loginResponse))
-          .once(JSON.stringify(getUserOrderResponse));
+        server.use(
+          rest.post('*/api/authentication/login/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(loginResponse));
+          }),
+          rest.get('*/api/users/current', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(getUserOrderResponse));
+          }),
+        );
+
         await login(formValues)(dispatch);
         expect(dispatch).toHaveBeenCalledWith(push(REGISTER_CUSTOMER_ORDER));
       });
@@ -786,14 +886,22 @@ describe('Accounts Slice', () => {
 
     describe('activateAccount', () => {
       it(`dispatches ${activateAccount.rejected.type} if the response is not ok`, async () => {
-        fetchMock.once(
-          JSON.stringify({
-            errors: {
-              test: ['¿problema?'],
+        server.use(
+          rest.post(
+            '*/api/authentication/registration/verify-email/',
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401, 'Test Error'),
+                ctx.json({
+                  errors: {
+                    test: ['¿problema?'],
+                  },
+                }),
+              );
             },
-          }),
-          { status: 401, statusText: 'Test Error' },
+          ),
         );
+
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -805,7 +913,15 @@ describe('Accounts Slice', () => {
 
       it(`dispatches ${activateAccount.fulfilled.type} on successful activation`, async () => {
         const user = { name: 'Test User' };
-        fetchMock.once(JSON.stringify({ user }));
+        server.use(
+          rest.post(
+            '*/api/authentication/registration/verify-email/',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json({ user }));
+            },
+          ),
+        );
+
         await activateAccount({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -818,10 +934,18 @@ describe('Accounts Slice', () => {
 
     describe('resendVerificationEmail', () => {
       it(`dispatches ${resendVerificationEmail.rejected.type} on failed request`, async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 401,
-          statusText: 'Wrong',
-        });
+        server.use(
+          rest.post(
+            '*/api/authentication/send-email-verification/',
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401, 'Test Error'),
+                ctx.json(errorResponse),
+              );
+            },
+          ),
+        );
+
         await resendVerificationEmail('')(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -832,7 +956,15 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resendVerificationEmail.fulfilled.type} on success`, async () => {
-        fetchMock.once(JSON.stringify({}));
+        server.use(
+          rest.post(
+            '*/api/authentication/send-email-verification/',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json({}));
+            },
+          ),
+        );
+
         await resendVerificationEmail('')(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({
@@ -844,10 +976,18 @@ describe('Accounts Slice', () => {
 
     describe('changePassword', () => {
       it(`dispatches ${changePassword.rejected.type} on failed request`, async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 401,
-          statusText: 'Wrong',
-        });
+        server.use(
+          rest.post(
+            '*/api/authentication/password/change/',
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401, 'Test Error'),
+                ctx.json(errorResponse),
+              );
+            },
+          ),
+        );
+
         await changePassword({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -858,7 +998,15 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${changePassword.fulfilled.type} on success`, async () => {
-        fetchMock.once(JSON.stringify({}));
+        server.use(
+          rest.post(
+            '*/api/authentication/password/change/',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json({}));
+            },
+          ),
+        );
+
         await changePassword({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({ type: changePassword.fulfilled.type }),
@@ -868,10 +1016,18 @@ describe('Accounts Slice', () => {
 
     describe('resetPasswordConfirm', () => {
       it(`dispatches ${resetPasswordConfirm.rejected.type} on failed request`, async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 401,
-          statusText: 'Wrong',
-        });
+        server.use(
+          rest.post(
+            '*/api/authentication/password/verify-reset/',
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401, 'Test Error'),
+                ctx.json(errorResponse),
+              );
+            },
+          ),
+        );
+
         await resetPasswordConfirm({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -883,7 +1039,15 @@ describe('Accounts Slice', () => {
 
       it(`dispatches ${resetPasswordConfirm.fulfilled.type} with user on success`, async () => {
         const user = { name: 'Test user' };
-        fetchMock.once(JSON.stringify({ user }));
+        server.use(
+          rest.post(
+            '*/api/authentication/password/verify-reset/',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json({ user }));
+            },
+          ),
+        );
+
         await resetPasswordConfirm({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -896,10 +1060,12 @@ describe('Accounts Slice', () => {
 
     describe('resetPasswordRequest', () => {
       it(`dispatches ${resetPasswordRequest.rejected.type} on failed request`, async () => {
-        fetchMock.once(JSON.stringify(errorResponse), {
-          status: 401,
-          statusText: 'Wrong',
-        });
+        server.use(
+          rest.post('*/api/authentication/password/reset/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'), ctx.json(errorResponse));
+          }),
+        );
+
         await resetPasswordRequest({})(dispatch, getState);
         expect(dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -910,7 +1076,12 @@ describe('Accounts Slice', () => {
       });
 
       it(`dispatches ${resetPasswordRequest.fulfilled.type} on success`, async () => {
-        fetchMock.once(JSON.stringify({}));
+        server.use(
+          rest.post('*/api/authentication/password/reset/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json({}));
+          }),
+        );
+
         await resetPasswordRequest({})(dispatch, getState);
         expect(dispatch).toBeCalledWith(
           expect.objectContaining({
