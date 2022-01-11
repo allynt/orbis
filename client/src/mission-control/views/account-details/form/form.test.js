@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import { Form } from './form.component';
 
@@ -12,17 +11,37 @@ describe('Form', () => {
       vat_number = '987654321',
       address = '123 Silly street, Faketon, Biscuitshire';
     const onSubmit = jest.fn();
-    const { getByRole } = render(<Form onSubmit={onSubmit} />);
-    userEvent.type(getByRole('textbox', { name: /organisation name/i }), name);
-    userEvent.click(getByRole('button', { name: /type of organisation/i }));
-    userEvent.click(getByRole('option', { name: /charity/i }));
+
+    render(<Form onSubmit={onSubmit} />);
+
     userEvent.type(
-      getByRole('textbox', { name: /registered number/i }),
+      screen.getByRole('textbox', { name: /organisation name/i }),
+      name,
+    );
+    expect(
+      screen.getByRole('textbox', { name: /organisation name/i }),
+    ).toHaveValue(name);
+    userEvent.click(
+      screen.getByRole('button', { name: /type of organisation/i }),
+    );
+    userEvent.click(screen.getByRole('option', { name: /charity/i }));
+    userEvent.type(
+      screen.getByRole('textbox', { name: /registered number/i }),
       registered_id,
     );
-    userEvent.type(getByRole('textbox', { name: /vat number/i }), vat_number);
-    userEvent.type(getByRole('textbox', { name: /billing address/i }), address);
-    userEvent.click(getByRole('button', { name: /save/i }));
+    userEvent.type(
+      screen.getByRole('textbox', { name: /vat number/i }),
+      vat_number,
+    );
+    userEvent.type(
+      screen.getByRole('textbox', { name: /billing address/i }),
+      address,
+    );
+
+    userEvent.click(screen.getByRole('button', { name: /save/i }), undefined, {
+      skipPointerEventsCheck: true,
+    });
+
     await waitFor(() =>
       expect(onSubmit).toBeCalledWith({
         name: name,
@@ -41,28 +60,34 @@ describe('Form', () => {
       registered_id: '123456789',
       company_type: 'CHARITY',
     };
-    const { getByRole } = render(<Form customer={customer} />);
-    expect(getByRole('textbox', { name: /organisation name/i })).toHaveValue(
-      customer.name,
-    );
+
+    render(<Form customer={customer} />);
+    screen.debug();
+
     expect(
-      getByRole('button', { name: /type of organisation/i }),
+      screen.getByRole('textbox', { name: /organisation name/i }),
+    ).toHaveValue(customer.name);
+    expect(
+      screen.getByRole('button', { name: /type of organisation/i }),
     ).toHaveTextContent('Charity');
-    expect(getByRole('textbox', { name: /registered number/i })).toHaveValue(
-      customer.registered_id,
-    );
-    expect(getByRole('textbox', { name: /billing address/i })).toHaveValue(
-      customer.address,
-    );
+    expect(
+      screen.getByRole('textbox', { name: /registered number/i }),
+    ).toHaveValue(customer.registered_id);
+    expect(
+      screen.getByRole('textbox', { name: /billing address/i }),
+    ).toHaveValue(customer.address);
   });
 
   it('Only enables the submit button if dirty', () => {
-    const { getByRole } = render(<Form />);
-    expect(getByRole('button', { name: /save/i })).toBeDisabled();
+    render(<Form />);
+
+    expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+
     userEvent.type(
-      getByRole('textbox', { name: /organisation name/i }),
+      screen.getByRole('textbox', { name: /organisation name/i }),
       'Test org',
     );
-    expect(getByRole('button', { name: /save/i })).not.toBeDisabled();
+
+    expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
   });
 });
