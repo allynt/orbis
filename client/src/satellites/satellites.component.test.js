@@ -29,7 +29,7 @@ describe('Satellites', () => {
     state = {
       accounts: {},
       app: { config: { maximumAoiArea: 20 } },
-      satellites: { satellites, scenes },
+      satellites: { satellites, scenes, visiblePanel: Panels.SEARCH },
     };
   });
 
@@ -37,7 +37,9 @@ describe('Satellites', () => {
     thing           | action
     ${'satellites'} | ${fetchSatellites.fulfilled}
   `('fetches $thing if there are none', async ({ action }) => {
-    const { store } = render(<Satellites />, { state: {} });
+    const { store } = render(<Satellites />, {
+      state: { satellites: { visiblePanel: Panels.SEARCH } },
+    });
 
     await waitFor(() =>
       expect(store.getActions()).toEqual(
@@ -51,7 +53,9 @@ describe('Satellites', () => {
   describe('top navigation', () => {
     describe('has results and visualisation disabled when no search has been made', () => {
       it('results', () => {
-        render(<Satellites />, { state: {} });
+        render(<Satellites />, {
+          state: { satellites: { visiblePanel: Panels.SEARCH } },
+        });
         expect(screen.getByRole(...RESULTS_TAB)).toBeDisabled();
       });
 
@@ -65,7 +69,11 @@ describe('Satellites', () => {
       render(<Satellites />, {
         state: {
           ...state,
-          satellites: { scenes, selectedScene: null },
+          satellites: {
+            scenes,
+            selectedScene: null,
+            visiblePanel: Panels.SEARCH,
+          },
         },
       });
 
@@ -77,7 +85,12 @@ describe('Satellites', () => {
       render(<Satellites />, {
         state: {
           ...state,
-          satellites: { satellites, scenes, selectedScene: scenes[0] },
+          satellites: {
+            satellites,
+            scenes,
+            selectedScene: scenes[0],
+            visiblePanel: Panels.SEARCH,
+          },
         },
       });
 
@@ -96,7 +109,12 @@ describe('Satellites', () => {
         const { store } = render(<Satellites />, {
           state: {
             ...state,
-            satellites: { satellites, scenes, selectedScene: scenes[0] },
+            satellites: {
+              satellites,
+              scenes,
+              selectedScene: scenes[0],
+              visiblePanel: Panels.SEARCH,
+            },
           },
         });
 
