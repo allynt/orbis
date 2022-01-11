@@ -4,10 +4,12 @@ import { Grid } from '@astrosat/astrosat-ui';
 
 import { DisplayTypeToggleButtons } from './display-type-toggle-buttons.component';
 
-export default {
+const Index = {
   title: 'Orbs/Isolation Plus/Property Radio Group/Display Type Toggle Buttons',
   argTypes: { onChange: { action: true } },
 };
+
+export default Index;
 
 const Template = args => (
   <Grid container spacing={2}>

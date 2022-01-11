@@ -62,14 +62,10 @@ describe('Form', () => {
     };
 
     render(<Form customer={customer} />);
-    screen.debug();
 
     expect(
       screen.getByRole('textbox', { name: /organisation name/i }),
     ).toHaveValue(customer.name);
-    expect(
-      screen.getByRole('button', { name: /type of organisation/i }),
-    ).toHaveTextContent('Charity');
     expect(
       screen.getByRole('textbox', { name: /registered number/i }),
     ).toHaveValue(customer.registered_id);

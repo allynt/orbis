@@ -16,7 +16,7 @@ const DEFAULT_COLUMN = 'rgb',
   DEFAULT_DATE = 1583971200000;
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, orbState, activeSources, dispatch }) => {
+const Config = ({ id, orbState, activeSources, dispatch }) => {
   const extruded = extrudedModeSelector(orbState);
   const elevationScale = extrusionScaleSelector(orbState);
   const visible = visibilitySelector(id)(orbState);
@@ -78,3 +78,5 @@ export default ({ id, orbState, activeSources, dispatch }) => {
     },
   };
 };
+
+export default Config;

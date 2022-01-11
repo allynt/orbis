@@ -6,7 +6,7 @@ import faker from 'faker/locale/en_GB';
 
 import { SelectedPropertyControls } from './selected-property-controls.component';
 
-export default {
+const Index = {
   title: 'Orbs/Isolation Plus/Property Radio Group/Selected Property Controls',
   argTypes: {
     onDateChange: { action: true },
@@ -14,6 +14,8 @@ export default {
     onClipRangeChange: { action: true },
   },
 };
+
+export default Index;
 
 const Template = args => (
   <Box p={2} width="100%">

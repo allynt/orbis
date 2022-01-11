@@ -39,7 +39,7 @@ const useStyles = makeStyles({
  *  adminOnly?: boolean
  * }>}
  */
-export default ({
+const DataDownloadButton = ({
   url,
   fileName: defaultFileName = 'orbis-download',
   fileExtension: defaultFileExtension = 'csv',
@@ -94,3 +94,5 @@ export default ({
     </Button>
   );
 };
+
+export default DataDownloadButton;

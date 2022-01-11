@@ -1,10 +1,10 @@
 import appHandlers from './app';
 import authHandlers from './auth';
 import bookmarkHandlers from './bookmarks';
+import documentHandlers from './mission-control/documents';
+import storageHandlers from './mission-control/storage';
 import orbHandlers from './orbs';
 import satelliteHandlers from './satellites';
-import storageHandlers from './mission-control/storage';
-import documentHandlers from './mission-control/documents';
 
 const handlers = [
   ...appHandlers,

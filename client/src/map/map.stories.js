@@ -9,10 +9,12 @@ import { MapProvider } from 'MapContext';
 import Map from './map.component';
 import { initialState } from './map.slice';
 
-export default {
+const Index = {
   title: 'Map/Map',
   parameters: { chromatic: { disable: true } },
 };
+
+export default Index;
 
 const MAPBOX_TOKEN =
   'pk.eyJ1IjoidGhlcm1jZXJ0IiwiYSI6ImNqbmN5N2F6NzBnODYza3A2anVqYWExOW8ifQ.10y0sH8cDQp9AfZNg1-M3Q';

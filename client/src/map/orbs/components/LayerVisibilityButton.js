@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { visibilitySelector, setVisibility } from '../layers.slice';
 
 /** @type {import("typings/orbis").SidebarComponent} */
-export default ({ selectedLayer }) => {
+const LayerVisibilityButton = ({ selectedLayer }) => {
   const dispatch = useDispatch();
   const visible = useSelector(state =>
     visibilitySelector(selectedLayer.source_id)(state?.orbs),
@@ -36,3 +36,5 @@ export default ({ selectedLayer }) => {
     </Button>
   );
 };
+
+export default LayerVisibilityButton;

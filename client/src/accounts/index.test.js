@@ -48,8 +48,6 @@ const setup = (initialEntries = [''], state) => {
   });
 };
 
-// fetchMock.enableMocks();
-
 describe('Accounts index', () => {
   it(`Shows journey selection when route is ${REGISTER}`, async () => {
     setup([REGISTER]);

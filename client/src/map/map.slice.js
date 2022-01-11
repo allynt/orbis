@@ -54,12 +54,8 @@ const mapSlice = createSlice({
   },
 });
 
-export const {
-  selectMapStyle,
-  toggleCompareMode,
-  saveMap,
-  setIsLoading,
-} = mapSlice.actions;
+export const { selectMapStyle, toggleCompareMode, saveMap, setIsLoading } =
+  mapSlice.actions;
 
 /**
  * @param {import('typings').RootState} state

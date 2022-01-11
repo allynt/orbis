@@ -123,7 +123,6 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
               {...identifiers[FIELD_NAMES.customerType]}
               {...register(FIELD_NAMES.customerType)}
               label="Type of Organisation"
-              value={value[FIELD_NAMES.customerType]}
               select
             >
               {ORGANISATION_TYPES.map(({ name, value }) => (

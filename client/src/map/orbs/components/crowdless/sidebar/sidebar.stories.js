@@ -8,7 +8,7 @@ import { CrowdlessSidebarComponent } from './sidebar.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default {
+const Index = {
   title: 'Orbs/Crowdless/CrowdlessSidebarComponent',
   args: {
     visible: true,
@@ -17,6 +17,8 @@ export default {
     onPageClick: { action: true },
   },
 };
+
+export default Index;
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
 

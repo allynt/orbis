@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { AisShippingSidebarComponent } from './sidebar.component';
 
-export default {
+const Index = {
   title: 'Orbs/AIS Shipping/AisShippingSidebarComponent',
   args: {
     visible: true,
@@ -11,6 +11,8 @@ export default {
     onPageClick: { action: true },
   },
 };
+
+export default Index;
 
 const Template = args => <AisShippingSidebarComponent {...args} />;
 

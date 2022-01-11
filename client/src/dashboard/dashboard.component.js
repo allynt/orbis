@@ -28,7 +28,6 @@ import { dataSourceByIdSelector } from 'data-layers/data-layers.slice';
 
 const Dashboard = () => {
   const location = useLocation();
-  console.log('DASHBOARD LOCATION: ', location)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

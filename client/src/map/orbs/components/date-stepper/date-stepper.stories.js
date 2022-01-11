@@ -2,10 +2,12 @@ import React from 'react';
 
 import { DateStepper } from './date-stepper.component';
 
-export default {
+const Index = {
   title: 'Sidebar Components/Date Stepper',
   argType: { onChange: { action: true } },
 };
+
+export default Index;
 
 const Template = args => <DateStepper {...args} />;
 

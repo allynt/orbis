@@ -13,7 +13,7 @@ import { RadioGroup } from './radio-group/radio-group.component';
  *  valueKey? :string
  * }>}
  */
-export default ({
+const Group = ({
   selectedLayer,
   options,
   defaultValue,
@@ -46,3 +46,5 @@ export default ({
     />
   );
 };
+
+export default Group;

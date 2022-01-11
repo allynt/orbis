@@ -2,7 +2,9 @@ import React from 'react';
 
 import MySupplyLynkFeatureDetail from './mysupplylynk-feature-detail.component';
 
-export default { title: 'Orbs/MySupplyLynk/Feature Detail' };
+const Index = { title: 'Orbs/MySupplyLynk/Feature Detail' };
+
+export default Index;
 
 const supplier1 = {
   Name: 'Test Supplier',

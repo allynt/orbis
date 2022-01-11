@@ -31,14 +31,12 @@ export const STORIES = [
           {
             id: 'cowgate',
             type: 'vector',
-            url:
-              'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'cowgate-infrastructure',
             type: 'geojson',
-            url:
-              'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
           },
         ],
       },
@@ -69,14 +67,12 @@ export const STORIES = [
           {
             id: 'easterrd',
             type: 'vector',
-            url:
-              'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
+            url: 'https://staticdata.testing.or3is.com/astrosat/test/stoke-on-trent/v1/metadata.json',
           },
           {
             id: 'easterrd-infrastructure',
             type: 'geojson',
-            url:
-              'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
+            url: 'https://staticdata.testing.or3is.com/astrosat/core/hospitals-uk/2019-12-17/hospitals_uk.geojson',
           },
         ],
         onLeave: [],

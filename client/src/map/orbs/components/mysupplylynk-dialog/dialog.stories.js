@@ -4,7 +4,9 @@ import { action } from '@storybook/addon-actions';
 
 import { MySupplyLynkDialog } from './dialog.component';
 
-export default { title: 'Orbs/MySupplyLynk/Dialog' };
+const Index = { title: 'Orbs/MySupplyLynk/Dialog' };
+
+export default Index;
 
 export const Suppler = () => (
   <MySupplyLynkDialog

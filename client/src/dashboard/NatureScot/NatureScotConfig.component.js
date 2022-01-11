@@ -19,10 +19,9 @@ import {
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import AreaOfficeContactDetails from './area-office-contact-details.component';
+import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from './nature-scotland.constants';
 import { NearestProtectedAreas } from './nearest-protected-areas';
 import ProtectedFeature from './protected-feature/protected-feature.component';
-
-import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from './nature-scotland.constants';
 
 const useStyles = makeStyles(theme => ({
   subRow: {

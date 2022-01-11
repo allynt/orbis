@@ -111,9 +111,10 @@ const useAccordionStyles = makeStyles(theme => ({
 const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   const styles = useAccordionStyles({ level });
   const [open, setOpen] = useState(false);
-  const allSourceIds = useMemo(() => collectSourceIds(source.sources), [
-    source,
-  ]);
+  const allSourceIds = useMemo(
+    () => collectSourceIds(source.sources),
+    [source],
+  );
   const notYetSelected = useMemo(
     () => difference(allSourceIds, selectedSources),
     [allSourceIds, selectedSources],

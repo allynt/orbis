@@ -15,7 +15,7 @@ import {
  *  defaultDate: string
  * }>}
  */
-export default ({
+const Config = ({
   id,
   activeSources,
   authToken,
@@ -47,3 +47,5 @@ export default ({
     },
   };
 };
+
+export default Config;

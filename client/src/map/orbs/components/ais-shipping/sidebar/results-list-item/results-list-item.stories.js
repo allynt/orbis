@@ -2,12 +2,14 @@ import * as React from 'react';
 
 import ResultsListItem from './results-list-item.component';
 
-export default {
+const Index = {
   title: 'Orbs/AIS Shipping/ResultsListItem',
   argTypes: {
     onClick: { action: 'onClick' },
   },
 };
+
+export default Index;
 
 const Template = args => <ResultsListItem {...args} />;
 

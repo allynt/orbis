@@ -66,6 +66,6 @@ export const useSelectionTools = ({ defaultIsTriggerKeyHeld = false } = {}) => {
         );
     },
   });
-  // return { selectionLayer };
+
   return { selectionLayer: isTriggerKeyHeld && selectionLayer };
 };
