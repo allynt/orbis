@@ -24,7 +24,7 @@ describe('User Upload Form', () => {
     expect(screen.queryByText(fileName)).not.toBeInTheDocument();
   });
 
-  xit('Shows an error message if the file has an error', async () => {
+  it('Shows an error message if the file has an error', async () => {
     render(<Form />);
     fireFileDropEvent(
       screen.getByTestId('dropzone'),

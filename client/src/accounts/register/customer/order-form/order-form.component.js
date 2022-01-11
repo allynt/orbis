@@ -85,7 +85,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       <ErrorWell errors={serverErrors} />
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register('subscription')}
           label="Selected Licence Subscription"
           id="subscription"
           name="subscription"
@@ -94,7 +94,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       </Form.Row>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register('paymentType')}
           label="Payment Type"
           id="paymentType"
           name="paymentType"
@@ -103,7 +103,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       </Form.Row>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register('amount')}
           label="Amount to be paid"
           id="amount"
           name="amount"
@@ -112,7 +112,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       </Form.Row>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register('licences')}
           label="Number of Licences"
           id="licences"
           name="licences"
@@ -121,7 +121,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       </Form.Row>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register('period')}
           label="Subscription Period Ends"
           id="period"
           name="period"
@@ -136,7 +136,7 @@ const OrderForm = ({ serverErrors, isLoading, onSubmit }) => {
       <Form.Row centered>
         <FormControlLabel
           label="I confirm the information above is correct"
-          control={<Checkbox ref={register} name="confirm" />}
+          control={<Checkbox {...register('confirm')} name="confirm" />}
         />
       </Form.Row>
       <Form.Row centered>

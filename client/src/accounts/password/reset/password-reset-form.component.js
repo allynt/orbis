@@ -45,14 +45,18 @@ const validationSchema = yupObject({
 const PasswordResetForm = ({
   confirmResetPassword,
   resetStatus,
-  // match,
   error,
   passwordMinLength,
   passwordMaxLength,
   passwordStrength,
 }) => {
   const params = useParams();
-  const { register, handleSubmit, errors, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -61,10 +65,7 @@ const PasswordResetForm = ({
     return <PasswordResetSuccessView />;
   }
 
-  const onSubmit = submission => {
-    confirmResetPassword(submission, params);
-    // confirmResetPassword(submission, match.params);
-  };
+  const onSubmit = submission => confirmResetPassword(submission, params);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -72,7 +73,7 @@ const PasswordResetForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.newPassword)}
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
           label="New Password"
@@ -87,7 +88,7 @@ const PasswordResetForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.newPasswordConfirm)}
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
           label="New Password Confirmation"
@@ -105,11 +106,7 @@ const PasswordResetForm = ({
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link
-          // @ts-ignore
-          to={LOGIN}
-          component={RouterLink}
-        >
+        <Link to={LOGIN} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

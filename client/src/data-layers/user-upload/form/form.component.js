@@ -46,7 +46,13 @@ const schema = yup.object({
  * }} props
  */
 export const Form = ({ onBackClick, onSubmit }) => {
-  const { register, handleSubmit, control, errors, setValue } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm({
     defaultValues: { file: null, name: '', description: '' },
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -65,8 +71,13 @@ export const Form = ({ onBackClick, onSubmit }) => {
       <Controller
         name="file"
         control={control}
-        render={props => (
-          <Dropzone error={errors.file} onClear={handleFileClear} {...props} />
+        render={({ field: { onChange, value } }) => (
+          <Dropzone
+            error={errors.file}
+            onClear={handleFileClear}
+            onChange={onChange}
+            value={value}
+          />
         )}
       />
       <TextField
@@ -74,7 +85,7 @@ export const Form = ({ onBackClick, onSubmit }) => {
         name="name"
         label="Name Your Data"
         required
-        inputRef={register}
+        {...register('name')}
         error={!!errors.name}
         helperText={errors.name?.message}
       />
@@ -82,7 +93,7 @@ export const Form = ({ onBackClick, onSubmit }) => {
         id="description"
         name="description"
         label="Add a Description for Your Data"
-        inputRef={register}
+        {...register('description')}
       />
       <Dots className="dots" activeIndex={1} />
       <Buttons>

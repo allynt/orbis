@@ -66,7 +66,11 @@ const LoginForm = ({
       activateAccount({ ...match.params });
   }, [activateAccount, match, user]);
 
-  const { register, handleSubmit, formState, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+  } = useForm({
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
@@ -84,7 +88,7 @@ const LoginForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
           type="email"
           name={FIELD_NAMES.email}
@@ -98,7 +102,7 @@ const LoginForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.password)}
           label="Password"
           id={FIELD_NAMES.password}
           name={FIELD_NAMES.password}
@@ -159,7 +163,7 @@ const LoginForm = ({
           type="submit"
           disabled={
             Object.keys(errors).length > 0 ||
-            !formState.isDirty ||
+            !isDirty ||
             (isOnboardingTeamMember && !termsAgreed)
           }
         >
@@ -171,11 +175,7 @@ const LoginForm = ({
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
-            <Link
-              // @ts-ignore
-              component={RouterLink}
-              to={`/accounts${REGISTER}`}
-            >
+            <Link component={RouterLink} to={`/accounts${REGISTER}`}>
               Sign Up
             </Link>
           </Typography>
