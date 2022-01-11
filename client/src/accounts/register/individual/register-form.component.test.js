@@ -49,16 +49,16 @@ describe('Register Form Component', () => {
     expect(signUpButton).toBeInTheDocument();
     // Check link to login view
     expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(signUpButton).toHaveAttribute('disabled');
+    expect(signUpButton).toBeDisabled();
   });
 
   it('should disable `Sign Up` button when form is invalid and show text', () => {
     render(<RegisterForm {...testAppConfig} />);
 
     const email = screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT });
-    expect(email.value).toEqual('');
+    expect(email).toHaveValue('');
     userEvent.type(email, EMAIL_TEXT);
-    expect(email.value).toEqual(EMAIL_TEXT);
+    expect(email).toHaveValue(EMAIL_TEXT);
 
     expect(
       screen.getByRole('button', { name: SIGN_UP_BUTTON_TEXT }),
@@ -87,7 +87,7 @@ describe('Register Form Component', () => {
     userEvent.click(screen.getByRole('checkbox', { name: I_AGREE_TEXT }));
     expect(
       screen.getByRole('button', { name: SIGN_UP_BUTTON_TEXT }),
-    ).not.toBeDisabled();
+    ).toBeEnabled();
   });
 
   it('should keep `Sign Up` button disabled when registration is disabled', () => {

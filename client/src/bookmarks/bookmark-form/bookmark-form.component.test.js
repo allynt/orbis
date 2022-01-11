@@ -41,7 +41,7 @@ describe('<BookmarkForm />', () => {
       'New Bookmark Description',
     );
     await waitFor(() =>
-      expect(getByRole('button', { name: SUBMIT })).not.toBeDisabled(),
+      expect(getByRole('button', { name: SUBMIT })).toBeEnabled(),
     );
   });
 

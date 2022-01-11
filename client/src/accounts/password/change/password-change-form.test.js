@@ -38,7 +38,7 @@ describe('Password Change Form Component', () => {
     expect(changePasswordButton).toBeInTheDocument();
     // Check link to login view
     expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(changePasswordButton).toHaveAttribute('disabled');
+    expect(changePasswordButton).toBeDisabled();
   });
 
   it('should disable `Change Password` button when form is invalid', async () => {
@@ -103,7 +103,7 @@ describe('Password Change Form Component', () => {
 
     expect(
       screen.getByRole('button', { name: CHANGE_PASSWORD_BUTTON_LABEL }),
-    ).not.toBeDisabled();
+    ).toBeEnabled();
   });
 
   it('should call `changePassword` function when form is valid and `Change Password` button clicked', async () => {

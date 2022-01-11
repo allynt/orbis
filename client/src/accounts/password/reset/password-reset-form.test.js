@@ -59,7 +59,7 @@ describe('Password Reset Form Component', () => {
     await waitFor(() =>
       expect(
         screen.getByRole('button', { name: RESET_BUTTON_TEXT }),
-      ).not.toBeDisabled(),
+      ).toBeEnabled(),
     );
   });
 
@@ -83,12 +83,6 @@ describe('Password Reset Form Component', () => {
         passwordMinLength={2}
         passwordMaxLength={30}
         passwordStrength={0}
-        match={{
-          params: {
-            uid: 'Test UID',
-            token: 'Test Token',
-          },
-        }}
       />,
     );
 
@@ -103,15 +97,15 @@ describe('Password Reset Form Component', () => {
 
     userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(confirmResetPassword).toHaveBeenCalledWith(
         {
           [FIELD_NAMES.newPassword]: PASSWORD_TEXT,
           [FIELD_NAMES.newPasswordConfirm]: PASSWORD_TEXT,
         },
-        { token: 'Test Token', uid: 'Test UID' },
-      ),
-    );
+        {},
+      );
+    });
   });
 
   it('should display error well if password reset is unsuccessful', () => {

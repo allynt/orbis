@@ -217,7 +217,7 @@ describe('<SearchForm />', () => {
         ]}
       />,
     );
-    expect(getByRole('button', { name: 'Search' })).not.toBeDisabled();
+    expect(getByRole('button', { name: 'Search' })).toBeEnabled();
   });
 
   it('Calls onInfoClick when an info button is clicked', () => {

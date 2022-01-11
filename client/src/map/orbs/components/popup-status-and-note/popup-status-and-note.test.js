@@ -51,7 +51,7 @@ describe('Popup Status And Note', () => {
   });
 
   it('defaults to empty text field if no note is present', () => {
-    const { getByRole } = renderComponent({});
+    const { getByRole } = renderComponent({ note: '' });
 
     expect(getByRole('textbox', { name: 'Popup Note' })).toHaveDisplayValue('');
   });
@@ -59,13 +59,13 @@ describe('Popup Status And Note', () => {
   it('displays the status if status is present', () => {
     const { getByRole } = renderComponent({ status: 'COMPLETE' });
 
-    expect(getByRole('radio', { name: 'Complete' })).toHaveAttribute('checked');
+    expect(getByRole('radio', { name: 'Complete' })).toBeChecked();
   });
 
   it('Defaults to `New` if no status is present', () => {
     const { getByRole } = renderComponent({ id: 123, status: null });
 
-    expect(getByRole('radio', { name: 'New' })).toHaveAttribute('checked');
+    expect(getByRole('radio', { name: 'New' })).toBeChecked();
   });
 
   it('displays character count of the note if present', () => {
@@ -77,11 +77,11 @@ describe('Popup Status And Note', () => {
   it('enables text area when edit button is clicked', () => {
     const { getByRole } = renderComponent({});
 
-    expect(getByRole('textbox', { name: 'Popup Note' })).not.toBeDisabled();
+    expect(getByRole('textbox', { name: 'Popup Note' })).toBeEnabled();
 
     userEvent.click(getByRole('button', { name: 'Edit' }));
 
-    expect(getByRole('textbox', { name: 'Popup Note' })).not.toBeDisabled();
+    expect(getByRole('textbox', { name: 'Popup Note' })).toBeEnabled();
   });
 
   it('displays error message if character count exceeds limit', () => {
@@ -97,12 +97,12 @@ describe('Popup Status And Note', () => {
       note: longBodyNote,
     });
 
-    expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Save' })).toBeDisabled();
   });
 
   it('disables save button if no changes have been made', () => {
     const { getByRole } = renderComponent({});
-    expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Save' })).toBeDisabled();
   });
 
   it('disables save button if no data and no changes have been made', () => {
@@ -112,7 +112,7 @@ describe('Popup Status And Note', () => {
       status: null,
     });
 
-    expect(getByRole('button', { name: 'Save' })).toHaveAttribute('disabled');
+    expect(getByRole('button', { name: 'Save' })).toBeDisabled();
   });
 
   it('enables save button if status has been changed', () => {
@@ -120,7 +120,7 @@ describe('Popup Status And Note', () => {
 
     userEvent.click(getByRole('radio', { name: 'Followup' }));
 
-    expect(getByRole('button', { name: 'Save' })).not.toBeDisabled();
+    expect(getByRole('button', { name: 'Save' })).toBeEnabled();
   });
 
   it('enables save button if text area has been changed', () => {
@@ -129,7 +129,7 @@ describe('Popup Status And Note', () => {
     userEvent.click(getByRole('button', { name: 'Edit' }));
     userEvent.type(getByRole('textbox', { name: 'Popup Note' }), 'some text');
 
-    expect(getByRole('button', { name: 'Save' })).not.toBeDisabled();
+    expect(getByRole('button', { name: 'Save' })).toBeEnabled();
   });
 
   it('calls save handler when save button is clicked', () => {
