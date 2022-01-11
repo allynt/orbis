@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
+ *  params: object
  * }} props
  */
 export const Completion = ({ orbs }) => {
