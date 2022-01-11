@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render } from 'test/test-utils';
 
 import { Sidebar } from '.';
 
@@ -12,6 +12,7 @@ describe('Sidebar', () => {
 
   it('Shows a header if one is given', () => {
     const { getByText } = render(<Sidebar header={<div>Header</div>} />);
+
     expect(getByText('Header')).toBeInTheDocument();
   });
 

@@ -56,7 +56,13 @@ describe('Compare Pins Component', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('checkbox', { name: 'Compare' }));
+    userEvent.click(
+      screen.getByRole('checkbox', { name: 'Compare' }),
+      undefined,
+      {
+        skipPointerEventsCheck: true,
+      },
+    );
     expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 

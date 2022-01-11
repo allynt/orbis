@@ -20,7 +20,9 @@ const renderComponent = value => {
 describe('<ImageList />', () => {
   it('Calls onChange with the clicked value', () => {
     const { getByRole, onChange } = renderComponent();
-    userEvent.click(getByRole('radio', { name: 'Two' }));
+    userEvent.click(getByRole('radio', { name: 'Two' }), undefined, {
+      skipPointerEventsCheck: true,
+    });
     expect(onChange).toBeCalledWith('two');
   });
 

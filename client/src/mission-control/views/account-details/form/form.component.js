@@ -75,61 +75,103 @@ const transform = {
  */
 export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
   const styles = useStyles();
-  const { register, handleSubmit, reset, control, formState } = useForm({
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isDirty, isSubmitSuccessful },
+  } = useForm({
     defaultValues: transform.in(customer),
   });
 
   useEffect(() => {
-    if (formState.isSubmitSuccessful) {
+    if (isSubmitSuccessful) {
       reset(transform.in(customer));
     }
-  }, [formState.isSubmitSuccessful, reset, customer]);
+  }, [isSubmitSuccessful, reset, customer]);
 
   return (
     <Wrapper className={styles.wrapper} title="Account Details">
       <form
         className={styles.form}
-        onSubmit={handleSubmit(v => onSubmit?.(transform.out(v)))}
+        onSubmit={handleSubmit(v => onSubmit(transform.out(v)))}
       >
         <TextField
           label="Work Email Address"
           value={userEmail}
           InputProps={{ readOnly: true }}
         />
-        <TextField
-          {...identifiers[FIELD_NAMES.customerName]}
-          label="Organisation Name"
-          inputRef={register}
-        />
+
         <Controller
-          {...identifiers[FIELD_NAMES.customerType]}
           control={control}
-          as={
-            <TextField label="Type of Organisation" select>
+          {...identifiers[FIELD_NAMES.customerName]}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              {...identifiers[FIELD_NAMES.customerName]}
+              label="Organisation Name"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          render={({ field: { value } }) => (
+            <TextField
+              {...identifiers[FIELD_NAMES.customerType]}
+              {...register(FIELD_NAMES.customerType)}
+              label="Type of Organisation"
+              value={value[FIELD_NAMES.customerType]}
+              select
+            >
               {ORGANISATION_TYPES.map(({ name, value }) => (
                 <MenuItem key={value} value={value}>
                   {name}
                 </MenuItem>
               ))}
             </TextField>
-          }
+          )}
         />
-        <TextField
+
+        <Controller
           {...identifiers[FIELD_NAMES.registeredNumber]}
-          label="Registered Number"
-          inputRef={register}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              {...identifiers[FIELD_NAMES.registeredNumber]}
+              label="Registered Number"
+            />
+          )}
         />
-        <TextField
+
+        <Controller
           {...identifiers[FIELD_NAMES.vatNumber]}
-          label="VAT Number"
-          inputRef={register}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              {...identifiers[FIELD_NAMES.vatNumber]}
+              label="VAT Number"
+            />
+          )}
         />
-        <TextField
+
+        <Controller
           {...identifiers[FIELD_NAMES.address]}
-          label="Billing Address"
-          inputRef={register}
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              {...identifiers[FIELD_NAMES.address]}
+              label="Billing Address"
+            />
+          )}
         />
-        <Button type="submit" disabled={!formState.isDirty}>
+
+        <Button type="submit" disabled={!isDirty}>
           Save
         </Button>
       </form>
