@@ -71,8 +71,13 @@ export const Form = ({ onBackClick, onSubmit }) => {
       <Controller
         name="file"
         control={control}
-        render={props => (
-          <Dropzone error={errors.file} onClear={handleFileClear} {...props} />
+        render={({ field: { onChange, value } }) => (
+          <Dropzone
+            error={errors.file}
+            onClear={handleFileClear}
+            onChange={onChange}
+            value={value}
+          />
         )}
       />
       <TextField

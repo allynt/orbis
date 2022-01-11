@@ -11,7 +11,7 @@ import {
 import { ERROR_MAP } from '../validate/error-map';
 import { Form } from './form.component';
 
-xdescribe('User Upload Form', () => {
+describe('User Upload Form', () => {
   it('Shows the file name when the file has been uploaded and clears again', async () => {
     render(<Form />);
     const fileName = 'test.csv';
