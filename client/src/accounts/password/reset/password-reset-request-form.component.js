@@ -38,7 +38,7 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
 
     <Box display="flex" flexDirection="column" alignItems="center">
       <Box mb={2}>
-        <Button onClick={() => onSubmit(email)}>Resend email</Button>
+        <Button onClick={() => onSubmit({ email })}>Resend email</Button>
       </Box>
       <Link
         // @ts-ignore
