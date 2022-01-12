@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
@@ -37,7 +37,7 @@ const ChangePasswordSuccessView = () => (
     </Typography>
 
     <Box mt={2} width="100%" display="flex" justifyContent="center">
-      <Button to={LOGIN} component={RouterLink}>
+      <Button to={LOGIN_URL} component={RouterLink}>
         Continue
       </Button>
     </Box>
@@ -151,7 +151,7 @@ const PasswordChangeForm = ({
       <Form.Row centered>
         <Typography>
           Do you have an account?&nbsp;
-          <Link to={LOGIN} component={RouterLink}>
+          <Link to={LOGIN_URL} component={RouterLink}>
             Login
           </Link>
         </Typography>

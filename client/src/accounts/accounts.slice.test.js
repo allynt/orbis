@@ -12,7 +12,7 @@ import { server } from 'mocks/server';
 import {
   REGISTER_CUSTOMER,
   REGISTER_CUSTOMER_ORDER,
-  RESEND,
+  RESEND_URL,
 } from './accounts.constants';
 import reducer, {
   activateAccount,
@@ -776,7 +776,7 @@ describe('Accounts Slice', () => {
         );
 
         await login(formValues)(dispatch, getState, undefined);
-        expect(dispatch).toHaveBeenCalledWith(push(`/accounts${RESEND}`));
+        expect(dispatch).toHaveBeenCalledWith(push(RESEND_URL));
       });
 
       it('dispatches the failure action if the login request fails', async () => {
