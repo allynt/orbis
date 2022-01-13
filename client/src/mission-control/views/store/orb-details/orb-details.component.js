@@ -58,7 +58,6 @@ const useStyles = makeStyles(theme => ({
     width: 'fit-content',
     '& svg': { transform: 'rotate(180deg)' },
   },
-  icon: { transform: 'rotate(180deg)' },
   image: {
     aspectRatio: '16/9',
     width: '100%',
