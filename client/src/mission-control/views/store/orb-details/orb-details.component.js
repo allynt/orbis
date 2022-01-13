@@ -109,8 +109,7 @@ export const OrbDetails = ({ orbs, goBack }) => {
       <Button
         // @ts-ignore
         role="link"
-        classes={{ root: styles.back }}
-        // classes={{ root: styles.back, startIcon: styles.icon }}
+        classes={{ root: styles.back, startIcon: styles.icon }}
         startIcon={<PlayArrow />}
         variant="text"
         size="small"
