@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Route, Routes } from 'react-router-dom';
+
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import LoginForm from './login-form.component';
@@ -138,34 +140,55 @@ describe('Login Form Component', () => {
 
   describe('activateAccount', () => {
     let activateAccount;
-    const match = { params: { key: '123' } };
 
     beforeEach(() => (activateAccount = jest.fn()));
 
     it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
       render(
-        <LoginForm
-          user={{ is_verified: false }}
-          match={match}
-          activateAccount={activateAccount}
-        />,
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={
+              <LoginForm
+                user={{ is_verified: false }}
+                activateAccount={activateAccount}
+              />
+            }
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
       );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activateAccount if is_verified is a false string and the url has a key', () => {
       render(
-        <LoginForm
-          user={{ is_verified: 'False' }}
-          match={match}
-          activateAccount={activateAccount}
-        />,
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={
+              <LoginForm
+                user={{ is_verified: 'False' }}
+                activateAccount={activateAccount}
+              />
+            }
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
       );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activate account if user is undefined and the url has a key', () => {
-      render(<LoginForm match={match} activateAccount={activateAccount} />);
+      render(
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={<LoginForm activateAccount={activateAccount} />}
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
+      );
       expect(activateAccount).toBeCalled();
     });
   });
