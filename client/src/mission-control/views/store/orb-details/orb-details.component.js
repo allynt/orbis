@@ -53,8 +53,11 @@ const useStyles = makeStyles(theme => ({
       gridArea: 'description',
     },
   },
-  back: { padding: '4px 5px', width: 'fit-content' },
-  icon: { transform: 'rotate(180deg)' },
+  back: {
+    padding: '4px 5px',
+    width: 'fit-content',
+    '& svg': { transform: 'rotate(180deg)' },
+  },
   image: {
     aspectRatio: '16/9',
     width: '100%',
@@ -110,7 +113,6 @@ export const OrbDetails = ({ orbs, goBack }) => {
         // @ts-ignore
         role="link"
         classes={{ root: styles.back }}
-        // classes={{ root: styles.back, startIcon: styles.icon }}
         startIcon={<PlayArrow />}
         variant="text"
         size="small"
