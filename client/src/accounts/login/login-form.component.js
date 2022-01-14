@@ -13,7 +13,7 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
@@ -44,7 +44,6 @@ const loginSchema = yup.object({
  */
 const LoginForm = ({
   isLoading = false,
-  match,
   passwordMinLength,
   passwordMaxLength,
   serverErrors,
@@ -52,6 +51,7 @@ const LoginForm = ({
   activateAccount,
   login,
 }) => {
+  const params = useParams();
   const isRegisteringCustomer = user?.registration_stage;
   const isOnboardingTeamMember = user?.accepted_terms === false;
 
@@ -59,12 +59,12 @@ const LoginForm = ({
 
   useEffect(() => {
     if (
-      match?.params?.key &&
+      params?.key &&
       activateAccount &&
       (!user?.is_verified || user?.is_verified === 'False')
     )
-      activateAccount({ ...match.params });
-  }, [activateAccount, match, user]);
+      activateAccount({ ...params });
+  }, [activateAccount, params, user]);
 
   const {
     register,
