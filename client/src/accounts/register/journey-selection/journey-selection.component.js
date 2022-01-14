@@ -15,7 +15,10 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 
-import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import {
+  REGISTER_CUSTOMER_USER_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import apiClient from 'api-client';
 import { Form } from 'components';
 
@@ -88,11 +91,11 @@ const JourneySelection = ({
   const handleClick = () => {
     switch (selection) {
       case 'customer':
-        navigate(`/accounts${REGISTER_CUSTOMER_USER}`);
+        navigate(REGISTER_CUSTOMER_USER_URL);
         break;
       case 'individual':
       default:
-        navigate(REGISTER);
+        navigate(REGISTER_URL);
         break;
     }
   };

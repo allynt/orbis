@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object as objectSchema } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
 import {
@@ -155,7 +155,7 @@ const RegisterForm = ({
       </Form.Row>
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link to={LOGIN} component={RouterLink}>
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

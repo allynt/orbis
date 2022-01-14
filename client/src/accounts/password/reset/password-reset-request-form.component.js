@@ -17,7 +17,7 @@ import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
 import { FIELD_NAMES, email } from 'utils/validators';
 
-import { LOGIN } from '../../accounts.constants';
+import { LOGIN_URL } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
 
 const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
@@ -42,7 +42,7 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
       </Box>
       <Link
         // @ts-ignore
-        to={LOGIN}
+        to={LOGIN_URL}
         component={RouterLink}
       >
         Return to login
@@ -102,7 +102,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link to={`/accounts${LOGIN}`} component={RouterLink}>
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

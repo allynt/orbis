@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import {
+  REGISTER_CUSTOMER_USER_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import JourneySelection from './journey-selection.component';
@@ -60,7 +63,7 @@ describe('<JourneySelection />', () => {
     userEvent.click(screen.getByRole('radio', { name: INDIVIDUAL_REGEX }));
     userEvent.click(screen.getByRole('button', { name: CONTINUE_REGEX }));
 
-    expect(history.location.pathname).toBe(REGISTER);
+    expect(history.location.pathname).toBe(REGISTER_URL);
   });
 
   it('navigates to customer registration when Team is selected and Continue is clicked', () => {
@@ -69,9 +72,7 @@ describe('<JourneySelection />', () => {
     userEvent.click(screen.getByRole('radio', { name: TEAM_REGEX }));
     userEvent.click(screen.getByRole('button', { name: CONTINUE_REGEX }));
 
-    expect(history.location.pathname).toBe(
-      `/accounts${REGISTER_CUSTOMER_USER}`,
-    );
+    expect(history.location.pathname).toBe(REGISTER_CUSTOMER_USER_URL);
   });
 
   it('Has a terms and conditions link', () => {

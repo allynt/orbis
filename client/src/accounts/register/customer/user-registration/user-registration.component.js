@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
 import { Form } from 'components';
@@ -219,7 +219,7 @@ const UserRegistration = ({
       </Form.Row>
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link to={LOGIN} component={RouterLink}>
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

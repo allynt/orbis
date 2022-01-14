@@ -16,7 +16,10 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
+import {
+  PASSWORD_RESET_REQUEST_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
 import { Form } from 'components';
@@ -150,7 +153,7 @@ const LoginForm = ({
         <Box ml="auto">
           <Link
             // @ts-ignore
-            to={`/accounts${PASSWORD_RESET_REQUEST}`}
+            to={PASSWORD_RESET_REQUEST_URL}
             component={RouterLink}
           >
             Forgot password?
@@ -175,7 +178,7 @@ const LoginForm = ({
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
-            <Link component={RouterLink} to={`/accounts${REGISTER}`}>
+            <Link component={RouterLink} to={REGISTER_URL}>
               Sign Up
             </Link>
           </Typography>

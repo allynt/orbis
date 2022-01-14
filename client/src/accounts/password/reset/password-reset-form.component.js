@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
@@ -28,7 +28,7 @@ const PasswordResetSuccessView = () => (
     <Form.Row centered>
       <Button
         // @ts-ignore
-        to={LOGIN}
+        to={LOGIN_URL}
         component={RouterLink}
       >
         Continue
@@ -106,7 +106,7 @@ const PasswordResetForm = ({
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link to={LOGIN} component={RouterLink}>
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>
