@@ -89,3 +89,18 @@ class TestCustomerUserViews:
         orbs = Orb.objects.filter(licences__in=licences)
         assert licences.count() == 1
         assert exclusive_orb not in orbs and normal_orb in orbs
+
+
+ def test_add_customer_user_removes_exclusive_default_licence(
+        self, user, api_client, mock_storage
+    ):
+        # tests that adding a non-exclusive licence to a nwe user via the API
+        # correctly removes any exlusive licences that were added b/c they were default from that user
+
+        exclusive_default_orb = OrbFactory(is_exclusive=True, is_default=True)
+        normal_orb = OrbFactory(is_exclusive=False)
+
+        customer = CustomerFactory(logo=None)
+
+        # TODO: I AM HERE
+        pass
