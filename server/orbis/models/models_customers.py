@@ -36,6 +36,7 @@ class LicencedCustomer(AstrosatUsersCustomer):
         self, orb, customer_users, add_missing=True, ignore_existing=True
     ):
         licences = []
+
         for customer_user in customer_users:
             existing_licences = self.licences.filter(orb=orb)
             assigned_licences = existing_licences.filter(
@@ -55,8 +56,15 @@ class LicencedCustomer(AstrosatUsersCustomer):
                 licence.save()
 
             self.remove_exclusive_licences([customer_user])
+            try:
+                licence.refresh_from_db()
+            except Licence.DoesNotExist:
+                # the licence no longer exists b/c it was deleted in remove_exclusive_licences above
+                continue
 
-            licences.append(Licence.objects.get(pk=licence.pk))  # re-fetch licence to force __init__ to re-run
+            licences.append(
+                Licence.objects.get(pk=licence.pk)
+            )  # re-fetch licence to force __init__ to re-run
 
         return licences
 
