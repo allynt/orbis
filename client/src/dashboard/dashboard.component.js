@@ -70,7 +70,7 @@ const Dashboard = () => {
               }}
               icon={
                 <SvgIcon>
-                  <MissionControlIcon titleAccess="Mission Control" />
+                  <MissionControlIcon titleaccess="Mission Control" />
                 </SvgIcon>
               }
             />
@@ -78,7 +78,7 @@ const Dashboard = () => {
               tooltip="Profile"
               onClick={() => setProfileOpen(true)}
               selected={profileOpen}
-              icon={<ProfileIcon titleAccess="Profile" />}
+              icon={<ProfileIcon titleaccess="Profile" />}
             />
           </SidebarBottomItems>
         </Sidebar>
