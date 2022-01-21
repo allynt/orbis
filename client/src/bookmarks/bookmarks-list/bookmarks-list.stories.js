@@ -1,7 +1,7 @@
 import * as React from 'react';
 
+import faker from '@faker-js/faker/locale/en_GB';
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
 
 import BookmarkList from './bookmarks-list.component';
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IconButton, DeleteIcon, List } from '@astrosat/astrosat-ui';
 
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import SceneListItem, {
   SceneListItemSkeleton,

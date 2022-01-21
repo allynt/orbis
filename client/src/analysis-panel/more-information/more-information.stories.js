@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import { MoreInformation } from './more-information.component';
 

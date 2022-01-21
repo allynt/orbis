@@ -1,6 +1,6 @@
 import React from 'react';
 
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 import { MemoryRouter } from 'react-router-dom';
 
 import { OrbCard, OrbCardSkeleton } from './orb-card.component';
