@@ -288,6 +288,13 @@ const configuration = ({
     getLineWidth,
     lineWidthUnits: 'pixels',
     getFillColor,
+    loadOptions: {
+      fetch: {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    },
     ...typedProps,
   };
 };
