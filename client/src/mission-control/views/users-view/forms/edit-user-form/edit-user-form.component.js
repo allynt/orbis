@@ -97,45 +97,6 @@ export const EditUserForm = ({
     editUser(editedUser);
   };
 
-  const checkboxes = (loggedInUser, selectedUser) => {
-    if (loggedInUser.id === selectedUser.user.id) {
-      // cant change own settings
-      return (
-        <RadioGroup row>
-          <FormControlLabel
-            label="Yes"
-            value={ADMIN_STATUS.manager}
-            checked={user.type === ADMIN_STATUS.manager}
-            disabled={true}
-            control={<Radio />}
-          />
-          <FormControlLabel
-            label="No"
-            value={ADMIN_STATUS.member}
-            checked={user.type === ADMIN_STATUS.member}
-            disabled={true}
-            control={<Radio />}
-          />
-        </RadioGroup>
-      );
-    } else {
-      return (
-        <RadioGroup row>
-          <FormControlLabel
-            label="Yes"
-            value={ADMIN_STATUS.manager}
-            control={<Radio />}
-          />
-          <FormControlLabel
-            label="No"
-            value={ADMIN_STATUS.member}
-            control={<Radio />}
-          />
-        </RadioGroup>
-      );
-    }
-  };
-
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Row>
@@ -195,25 +156,22 @@ export const EditUserForm = ({
           <Controller
             name="type"
             control={control}
-            render={({ field: { value } }) => (
+            defaultValue={getDefaults().type}
+            render={({ field }) => (
               <RadioGroup row>
                 <FormControlLabel
+                  {...field}
                   label="Yes"
                   value={ADMIN_STATUS.manager}
-                  // checked={
-                  //   user.type === ADMIN_STATUS.manager &&
-                  //   currentUser?.id !== user.user.id
-                  // }
+                  checked={field.value === ADMIN_STATUS.manager}
                   disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
                 <FormControlLabel
+                  {...field}
                   label="No"
                   value={ADMIN_STATUS.member}
-                  // checked={
-                  //   user.type === ADMIN_STATUS.member ||
-                  //   value === ADMIN_STATUS.member
-                  // }
+                  checked={field.value === ADMIN_STATUS.member}
                   disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
