@@ -156,21 +156,23 @@ export const EditUserForm = ({
           <Controller
             name="type"
             control={control}
-            render={({ field: { value } }) => (
+            defaultValue={getDefaults().type}
+            render={({ field }) => (
               <RadioGroup row>
                 <FormControlLabel
+                  {...field}
                   label="Yes"
                   value={ADMIN_STATUS.manager}
-                  checked={value === ADMIN_STATUS.manager}
+                  checked={field.value === ADMIN_STATUS.manager}
+                  disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
                 <FormControlLabel
+                  {...field}
                   label="No"
                   value={ADMIN_STATUS.member}
-                  checked={value === ADMIN_STATUS.member}
-                  disabled={
-                    oneAdminRemaining || currentUser?.id === user.user.id
-                  }
+                  checked={field.value === ADMIN_STATUS.member}
+                  disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
               </RadioGroup>
