@@ -86,7 +86,6 @@ export const MissionControl = React.memo(() => {
   const [open, setOpen] = useState(
     location.pathname.includes('/mission-control'),
   );
-
   useEffect(() => {
     if (!currentCustomer) {
       dispatch(fetchCustomer(user));

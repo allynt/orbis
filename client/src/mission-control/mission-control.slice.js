@@ -76,7 +76,7 @@ export const updateCustomer = createAsyncThunk(
 export const fetchCustomerUsers = createAsyncThunk(
   `${name}/fetchCustomerUsers`,
   async (customer, { rejectWithValue, dispatch }) => {
-    dispatch(fetchCustomerUsersRequested());
+    await dispatch(fetchCustomerUsersRequested());
     try {
       const users = await apiClient.customers.getCustomerUsers(customer.id);
       return dispatch(fetchCustomerUsersSuccess(users));
@@ -240,7 +240,6 @@ const missionControlSlice = createSlice({
       state.isLoading = true;
     },
     fetchCustomerSuccess: (state, { payload }) => {
-      console.log('Called fetch Customer Success');
       state.currentCustomer = payload;
       state.customerUsers = null;
       state.isLoading = false;
@@ -393,29 +392,6 @@ const handleFailure = (response, title, action, dispatch) => {
   );
   return dispatch(action({ message }));
 };
-
-// export const inviteCustomerUser = customerUser => async (
-//   dispatch,
-//   getState,
-// ) => {
-//   dispatch(inviteCustomerUserRequested());
-//   const currentCustomer = selectCurrentCustomer(getState());
-//   try {
-//     const invitedCustomerUser = await apiClient.customers.inviteCustomerUser(
-//       currentCustomer.id,
-//       customerUser,
-//     );
-//     return dispatch(inviteCustomerUserSuccess({ invitedCustomerUser }));
-//   } catch (responseError) {
-//     return handleFailure(
-//       responseError.response,
-//       'Invite Customer User Error',
-//       inviteCustomerUserFailure,
-//       dispatch,
-//     );
-//   }
-// };
-
 /* === Selectors === */
 const baseSelector = state => state.missionControl || {};
 export const selectIsMissionControlDialogVisible = createSelector(

@@ -35,6 +35,13 @@ const initialState = {
   requests: {},
 };
 
+/**
+ * @type {import('@reduxjs/toolkit').AsyncThunk<
+ *  import('typings').Orb[],
+ *  undefined,
+ *  {rejectValue: {message: string}, state: import('typings').RootState}
+ * >}
+ */
 export const fetchOrbs = createAsyncThunk(
   `${name}/fetchOrbs`,
   async (_, { rejectWithValue }) => {
@@ -63,6 +70,17 @@ export const fetchOrbs = createAsyncThunk(
 
 export const fetchSources = createAsyncThunk(
   `${name}/fetchSources`,
+  /**
+   * @type {import('@reduxjs/toolkit').AsyncThunkPayloadCreator<
+   *  {
+   *    sources: import('typings').Source[];
+   *    token: string;
+   *    timeout: number;
+   *  },
+   *  never,
+   *  { rejectValue: {message: string}, state: import('react-redux').DefaultRootState }
+   * >}
+   */
   async (_, { rejectWithValue }) => {
     try {
       const sources = await apiClient.data.getSources();
@@ -91,9 +109,7 @@ export const setLayers = createAsyncThunk(
       const activeLayers = activeLayersSelector(getState());
       const dataSources = dataSourcesSelector(getState());
       const sourceIdsToLog = sourceIds.filter(
-        sourceId =>
-          //!activeLayers.includes(sourceId) ||
-          !activeLayers.includes(sourceId.source_id), //@TODO find out proper data shape...?
+        sourceId => !activeLayers.includes(sourceId.source_id), // TODO: find out proper data shape...?
       );
 
       sourceIdsToLog.forEach(sourceId => {

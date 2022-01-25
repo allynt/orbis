@@ -272,7 +272,6 @@ describe('Data Slice', () => {
       });
     });
 
-    //@TODO we're missing coverage of the remaining thunks so add these in when I get back
     describe('setLayers', () => {
       beforeEach(() => {
         store = mockStore({
