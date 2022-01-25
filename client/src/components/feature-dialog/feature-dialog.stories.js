@@ -1,7 +1,7 @@
 import React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import { FeatureDialog } from './feature-dialog.component';
 
