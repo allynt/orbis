@@ -36,13 +36,15 @@ describe('MapStyle Switcher Component', () => {
   });
 
   it('should render with the `Light` Map Style selected', () => {
-    expect(testee.getByLabelText('Light').checked).toEqual(true);
+    expect(testee.getByLabelText('Light')).toBeChecked();
   });
 
   it('should call the selectMapStyle with the `Dark` Map Style is selected', () => {
-    expect(testee.getByLabelText('Dark').checked).toEqual(false);
+    expect(testee.getByLabelText('Dark')).not.toBeChecked();
 
-    userEvent.click(testee.getByLabelText('Dark'));
+    userEvent.click(testee.getByLabelText('Dark'), undefined, {
+      skipPointerEventsCheck: true,
+    });
 
     expect(selectMapStyle).toHaveBeenCalledWith(Object.keys(MAP_STYLE_DATA)[2]);
     expect(selectMapStyle).not.toHaveBeenCalledWith(

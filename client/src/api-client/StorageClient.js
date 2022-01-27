@@ -17,8 +17,10 @@ export class StorageClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteFile(fileId) {
-    await this.makeAuthenticatedRequest(`/${fileId}/`, {
+    const response = await this.makeAuthenticatedRequest(`/${fileId}/`, {
       method: 'DELETE',
     });
+
+    return response.json();
   }
 }

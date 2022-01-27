@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Route, Routes } from 'react-router-dom';
+
 import { render, screen, userEvent } from 'test/test-utils';
 
 import { OrbDetails } from './orb-details.component';
@@ -23,21 +25,37 @@ const orbs = [
 
 describe('<OrbDetails />', () => {
   it('Shows the name of the orb from the route', () => {
-    render(<OrbDetails orbs={orbs} match={{ params: { orbId: '1' } }} />);
+    const { history } = render(
+      <Routes>
+        <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
+    );
 
     expect(
       screen.getByRole('heading', { name: orbs[0].name }),
     ).toBeInTheDocument();
+    expect(history.location.pathname).toEqual('/1');
   });
 
   it('Shows the description of the orb from the route', () => {
-    render(<OrbDetails orbs={orbs} match={{ params: { orbId: '1' } }} />);
+    render(
+      <Routes>
+        <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
+    );
 
     expect(screen.getByText(orbs[0].description)).toBeInTheDocument();
   });
 
   it('Shows the product images', () => {
-    render(<OrbDetails orbs={orbs} match={{ params: { orbId: '1' } }} />);
+    render(
+      <Routes>
+        <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
+    );
 
     expect(
       screen.getByRole('img', { name: 'Orb 1 Name Example' }),
@@ -45,21 +63,28 @@ describe('<OrbDetails />', () => {
   });
 
   it('Goes back when the back button is clicked', () => {
-    const history = { goBack: jest.fn() };
+    const goBack = jest.fn();
     render(
-      <OrbDetails
-        orbs={orbs}
-        match={{ params: { orbId: '1' } }}
-        history={history}
-      />,
+      <Routes>
+        <Route
+          path="/:orbId"
+          element={<OrbDetails orbs={orbs} goBack={goBack} />}
+        />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
     );
 
     userEvent.click(screen.getByRole('link', { name: 'Back' }));
-    expect(history.goBack).toBeCalled();
+    expect(goBack).toBeCalled();
   });
 
   it('Has a minimum users of 3 and maximum of 30', () => {
-    render(<OrbDetails orbs={orbs} match={{ params: { orbId: '1' } }} />);
+    render(
+      <Routes>
+        <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
+    );
 
     userEvent.click(screen.getByRole('button', { name: /Number of Users/i }));
     expect(screen.getByRole('option', { name: /^3$/ })).toBeInTheDocument();
@@ -74,14 +99,24 @@ describe('<OrbDetails />', () => {
 
   it('Navigates to the checkout view with the orb and number of seats as params', () => {
     const { history } = render(
-      <OrbDetails orbs={orbs} match={{ params: { orbId: '1' } }} />,
+      <Routes>
+        <Route path="/:orbId" element={<OrbDetails orbs={orbs} />} />
+        <Route
+          path="/mission-control/store/checkout/:orbId/:users"
+          element={<div />}
+        />
+      </Routes>,
+      {
+        history: {
+          initialEntries: ['/1'],
+        },
+      },
     );
 
     userEvent.click(screen.getByRole('button', { name: /Number of Users/i }));
     userEvent.click(screen.getByRole('option', { name: '5' }));
     userEvent.click(screen.getByRole('link', { name: /get access/i }));
-    expect(history.location.pathname).toContain('/checkout');
-    expect(history.location.search).toBe('?orbId=1&users=5');
+    expect(history.location.pathname).toContain('/checkout/1/5');
   });
 
   it('Hides the access link if the orb cannot be purchased', () => {
@@ -91,7 +126,13 @@ describe('<OrbDetails />', () => {
     }));
 
     render(
-      <OrbDetails orbs={unpurchaseableOrbs} match={{ params: { orbId: 1 } }} />,
+      <Routes>
+        <Route
+          path="/:orbId"
+          element={<OrbDetails orbs={unpurchaseableOrbs} />}
+        />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
     );
 
     expect(
@@ -106,10 +147,13 @@ describe('<OrbDetails />', () => {
     }));
 
     render(
-      <OrbDetails
-        orbs={unpurchaseableOrbs}
-        match={{ params: { orbId: '1' } }}
-      />,
+      <Routes>
+        <Route
+          path="/:orbId"
+          element={<OrbDetails orbs={unpurchaseableOrbs} />}
+        />
+      </Routes>,
+      { history: { initialEntries: ['/1'] } },
     );
 
     expect(

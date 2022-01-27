@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import { Description } from './description.component';
 import { CrowdlessSidebarComponent } from './sidebar.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default {
+const Index = {
   title: 'Orbs/Crowdless/CrowdlessSidebarComponent',
   args: {
     visible: true,
@@ -17,6 +17,8 @@ export default {
     onPageClick: { action: true },
   },
 };
+
+export default Index;
 
 const Template = args => <CrowdlessSidebarComponent {...args} />;
 

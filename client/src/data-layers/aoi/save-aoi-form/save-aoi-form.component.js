@@ -12,7 +12,11 @@ const validationSchema = yup.object({
 });
 
 const SaveAoiForm = ({ aoi, onSubmit }) => {
-  const { register, handleSubmit, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: { ...aoi },
   });
@@ -32,7 +36,7 @@ const SaveAoiForm = ({ aoi, onSubmit }) => {
           name="name"
           label="Add Name"
           required
-          inputRef={register}
+          {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
           autoFocus
@@ -45,7 +49,7 @@ const SaveAoiForm = ({ aoi, onSubmit }) => {
           label="Add Description"
           multiline
           rows={3}
-          inputRef={register}
+          {...register('description')}
         />
       </Grid>
       <Grid item container direction="column" alignItems="center">

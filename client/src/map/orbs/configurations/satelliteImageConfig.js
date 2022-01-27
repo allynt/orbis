@@ -23,9 +23,11 @@ export const baseSatelliteImageConfig = ({ id, data, visible }) => {
 };
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, orbState, ...rest }) => {
+const Config = ({ id, orbState, ...rest }) => {
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
 
   return baseSatelliteImageConfig({ id, data, orbState, visible, ...rest });
 };
+
+export default Config;

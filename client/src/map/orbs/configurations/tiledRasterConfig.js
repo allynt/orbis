@@ -1,4 +1,3 @@
-import { TileLayer } from '@deck.gl/geo-layers';
 import { BitmapLayer } from '@deck.gl/layers';
 
 import { dataSelector, visibilitySelector } from '../layers.slice';
@@ -24,7 +23,6 @@ export const baseSatelliteImageConfig = ({
         bbox: { west, south, east, north },
       } = props.tile;
       return new BitmapLayer(props, {
-        // return new TileLayer(props, {
         data: null,
         image: props.data,
         bounds: [west, south, east, north],
@@ -41,7 +39,7 @@ export const baseSatelliteImageConfig = ({
 };
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, activeSources, orbState, authToken, ...rest }) => {
+const Config = ({ id, activeSources, orbState, authToken, ...rest }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
@@ -57,3 +55,5 @@ export default ({ id, activeSources, orbState, authToken, ...rest }) => {
     ...rest,
   });
 };
+
+export default Config;

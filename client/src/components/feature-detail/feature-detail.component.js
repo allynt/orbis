@@ -213,7 +213,7 @@ const FeatureDetail = ({
             if (propertiesToPick)
               properties = pick(properties, propertiesToPick);
             return (
-              <List key={feature?.id} className={styles.list}>
+              <List key={feature?.pk} className={styles.list}>
                 {mapObject(properties, labelMapping)}
                 {postFeatureComponent ? postFeatureComponent(feature) : null}
                 {footer && (

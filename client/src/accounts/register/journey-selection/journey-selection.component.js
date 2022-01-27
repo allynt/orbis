@@ -13,9 +13,12 @@ import {
   Well,
 } from '@astrosat/astrosat-ui';
 
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import {
+  REGISTER_CUSTOMER_USER_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import apiClient from 'api-client';
 import { Form } from 'components';
 
@@ -75,7 +78,7 @@ const JourneySelection = ({
 }) => {
   /** @type {[string, React.Dispatch<string>]} */
   const [selection, setSelection] = useState();
-  const history = useHistory();
+  const navigate = useNavigate();
   const styles = useStyles();
 
   /**
@@ -88,11 +91,11 @@ const JourneySelection = ({
   const handleClick = () => {
     switch (selection) {
       case 'customer':
-        history.push(REGISTER_CUSTOMER_USER);
+        navigate(REGISTER_CUSTOMER_USER_URL);
         break;
       case 'individual':
       default:
-        history.push(REGISTER);
+        navigate(REGISTER_URL);
         break;
     }
   };

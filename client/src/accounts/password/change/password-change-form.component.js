@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
@@ -37,11 +37,7 @@ const ChangePasswordSuccessView = () => (
     </Typography>
 
     <Box mt={2} width="100%" display="flex" justifyContent="center">
-      <Button
-        // @ts-ignore
-        to={LOGIN}
-        component={RouterLink}
-      >
+      <Button to={LOGIN_URL} component={RouterLink}>
         Continue
       </Button>
     </Box>
@@ -64,7 +60,12 @@ const PasswordChangeForm = ({
 }) => {
   const [termsAgreed, setTermsAgreed] = useState(false);
 
-  const { register, handleSubmit, errors, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -86,7 +87,7 @@ const PasswordChangeForm = ({
           type="password"
           id={FIELD_NAMES.oldPassword}
           name={FIELD_NAMES.oldPassword}
-          inputRef={register}
+          {...register(FIELD_NAMES.oldPassword)}
           label="Old Password"
           error={!!errors[FIELD_NAMES.oldPassword]}
           helperText={errors[FIELD_NAMES.oldPassword]?.message}
@@ -98,7 +99,7 @@ const PasswordChangeForm = ({
           type="password"
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
-          inputRef={register}
+          {...register(FIELD_NAMES.newPassword)}
           label="New Password"
           error={!!errors[FIELD_NAMES.newPassword]}
           helperText={errors[FIELD_NAMES.newPassword]?.message}
@@ -110,7 +111,7 @@ const PasswordChangeForm = ({
           type="password"
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
-          inputRef={register}
+          {...register(FIELD_NAMES.newPasswordConfirm)}
           label="New Password Confirmation"
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
           helperText={errors[FIELD_NAMES.newPasswordConfirm]?.message}
@@ -150,11 +151,7 @@ const PasswordChangeForm = ({
       <Form.Row centered>
         <Typography>
           Do you have an account?&nbsp;
-          <Link
-            // @ts-ignore
-            to={LOGIN}
-            component={RouterLink}
-          >
+          <Link to={LOGIN_URL} component={RouterLink}>
             Login
           </Link>
         </Typography>

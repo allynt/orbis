@@ -24,6 +24,30 @@ const renderComponent = ({
 };
 
 describe('<DateRangeFilter />', () => {
+  it('Calls onSubmit when dates are selected using the picker and apply is clicked', async () => {
+    const { getByRole, getAllByRole, onSubmit } = renderComponent({
+      range: {
+        startDate: new Date(2020, 0, 1).toISOString(),
+        endDate: new Date(2020, 0, 31).toISOString(),
+      },
+    });
+    const today = startOfDay(new Date(2020, 0, 2));
+    userEvent.click(getByRole('button', { name: 'Show date picker' }));
+    userEvent.click(
+      getAllByRole('button', { name: today.getDate().toString() })[0],
+    );
+    userEvent.click(
+      getAllByRole('button', { name: (today.getDate() + 1).toString() })[0],
+    );
+    userEvent.click(getByRole('button', { name: 'Apply' }));
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({
+        endDate: endOfDay(addDays(today, 1)).toISOString(),
+        startDate: today.toISOString(),
+      }),
+    );
+  });
+
   it('Calls onSubmit when startDate changes and is valid', async () => {
     const { onSubmit, getByRole } = renderComponent();
     userEvent.type(getByRole('textbox', { name: 'Start Date' }), '01/01/2020');
@@ -109,30 +133,6 @@ describe('<DateRangeFilter />', () => {
       expect(
         getByText(`Date must not be after ${format(today, 'dd/MM/yyyy')}`),
       ).toBeInTheDocument(),
-    );
-  });
-
-  it('Calls onSubmit when dates are selected using the picker and apply is clicked', async () => {
-    const { getByRole, getAllByRole, onSubmit } = renderComponent({
-      range: {
-        startDate: new Date(2020, 0, 1).toISOString(),
-        endDate: new Date(2020, 0, 31).toISOString(),
-      },
-    });
-    const today = startOfDay(new Date(2020, 0, 2));
-    userEvent.click(getByRole('button', { name: 'Show date picker' }));
-    userEvent.click(
-      getAllByRole('button', { name: today.getDate().toString() })[0],
-    );
-    userEvent.click(
-      getAllByRole('button', { name: (today.getDate() + 1).toString() })[0],
-    );
-    userEvent.click(getByRole('button', { name: 'Apply' }));
-    await waitFor(() =>
-      expect(onSubmit).toHaveBeenCalledWith({
-        endDate: endOfDay(addDays(today, 1)).toISOString(),
-        startDate: today.toISOString(),
-      }),
     );
   });
 

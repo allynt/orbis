@@ -10,7 +10,7 @@ import {
 
 import { Link as RouterLink } from 'react-router-dom';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 
 /**
  * @param {{
@@ -48,7 +48,7 @@ const ResendVerificationEmail = ({ email, isLoading = false, onResend }) => (
     <Grid item xs={12} container justifyContent="center">
       <Link
         // @ts-ignore
-        to={LOGIN}
+        to={LOGIN_URL}
         component={RouterLink}
       >
         Return to login

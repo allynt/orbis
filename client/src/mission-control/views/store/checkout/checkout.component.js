@@ -12,11 +12,12 @@ import {
 
 import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { LoadingButton } from 'components';
 import { TextField } from 'mission-control/shared-components/text-field.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
-import { Wrapper } from '../../../shared-components/wrapper.component';
 import { orderText } from './order-text';
 
 const useStyles = makeStyles(theme => ({
@@ -53,31 +54,30 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  location: import('history').Location
  *  errors: string[]
  *  isLoading?: boolean
  *  onConfirmClick: (values: {orbId: import('typings').Orb['id'], users: number}) => void
- *  history: import('history').History
  * }} props
  */
 export const Checkout = ({
   orbs,
-  location,
   errors,
   isLoading = false,
   onConfirmClick,
-  history,
 }) => {
   const styles = useStyles();
+  const navigate = useNavigate();
+  const { orbId, users } = useParams();
+
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const searchParams = new URLSearchParams(location.search);
-  const users = +searchParams.get('users');
-  const orbId = +searchParams.get('orbId');
-  const orb = find(orbs, { id: orbId });
+
+  const orb = find(orbs, { id: +orbId });
 
   const handleConfirmClick = () => {
-    onConfirmClick({ orbId, users });
+    onConfirmClick({ orbId: +orbId, users: +users });
   };
+
+  const goBack = () => navigate(-1);
 
   return (
     <Wrapper className={styles.wrapper}>
@@ -90,7 +90,7 @@ export const Checkout = ({
           variant="text"
           size="small"
           color="default"
-          onClick={() => history.goBack()}
+          onClick={() => goBack()}
         >
           Back
         </Button>

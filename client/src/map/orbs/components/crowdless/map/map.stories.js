@@ -1,15 +1,17 @@
 import * as React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import CrowdlessMapComponent from './map.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default {
+const Index = {
   title: 'Orbs/Crowdless/CrowdlessMapComponent',
 };
+
+export default Index;
 
 const Template = args => (
   <CrowdlessMapComponent

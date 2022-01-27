@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { configSelector, passwordConfigSelector } from 'app.slice';
-import PrivateRoute from 'utils/private-route.component';
 
 import {
   CONFIRM_EMAIL,
@@ -48,7 +47,7 @@ import JourneySelection from './register/journey-selection/journey-selection.com
 import ResendVerificationEmail from './resend-verification-email/resend-verification-email.component';
 import Wrapper from './wrapper.component';
 
-export default () => {
+const Index = () => {
   const dispatch = useDispatch();
   const error = useSelector(errorSelector);
   const accountsRequests = useSelector(requestsSelector);
@@ -61,61 +60,56 @@ export default () => {
 
   return (
     <Wrapper>
-      <Switch>
+      <Routes>
         <Route
-          exact
           path={REGISTER}
-          render={() => (
+          element={
             <JourneySelection
               customerRegistrationIsOpen={appConfig.isRegistrationOpen}
               individualRegistrationIsOpen={false}
             />
-          )}
+          }
         />
         <Route
-          exact
           path={REGISTER_CUSTOMER}
-          render={() => (
+          element={
             <CustomerRegistration
               email={user?.email}
               serverErrors={error}
               isLoading={accountsRequests.registerCustomer === 'pending'}
               onSubmit={values => dispatch(registerCustomer(values))}
             />
-          )}
+          }
         />
         <Route
-          exact
           path={REGISTER_CUSTOMER_USER}
-          render={() => (
+          element={
             <UserRegistration
               serverErrors={error}
               isLoading={accountsRequests.registerUser === 'pending'}
               onSubmit={values => dispatch(registerUser(values))}
               {...passwordConfig}
             />
-          )}
+          }
         />
         <Route
-          exact
           path={REGISTER_CUSTOMER_ORDER}
-          render={() => (
+          element={
             <OrderForm
               serverErrors={error}
               isLoading={accountsRequests.placeOrder === 'pending'}
               onSubmit={values => dispatch(placeOrder(values))}
             />
-          )}
+          }
         />
         <Route
-          exact
-          path={[LOGIN, CONFIRM_EMAIL]}
-          render={props =>
+          path={LOGIN}
+          element={
             isLoggedIn &&
             user.is_verified &&
             user.is_verified !== 'False' &&
             !user.registration_stage ? (
-              <Redirect to="/" />
+              <Navigate to="/" />
             ) : (
               <LoginForm
                 user={user}
@@ -126,60 +120,81 @@ export default () => {
                   accountsRequests.login === 'pending' ||
                   accountsRequests.activateAccount === 'pending'
                 }
-                {...props}
                 {...passwordConfig}
               />
             )
           }
         />
-        <PrivateRoute
-          exact
-          path={PASSWORD_CHANGE}
-          user={user}
-          component={PasswordChangeForm}
-          changePassword={form => dispatch(changePassword(form))}
-          changeStatus={changeStatus}
-          error={error}
-          {...passwordConfig}
+        <Route
+          path={CONFIRM_EMAIL}
+          element={
+            isLoggedIn &&
+            user.is_verified &&
+            user.is_verified !== 'False' &&
+            !user.registration_stage ? (
+              <Navigate to="/" />
+            ) : (
+              <LoginForm
+                user={user}
+                login={values => dispatch(login(values))}
+                serverErrors={error}
+                activateAccount={form => dispatch(activateAccount(form))}
+                isLoading={
+                  accountsRequests.login === 'pending' ||
+                  accountsRequests.activateAccount === 'pending'
+                }
+                {...passwordConfig}
+              />
+            )
+          }
         />
         <Route
-          exact
+          path={PASSWORD_CHANGE}
+          element={
+            <PasswordChangeForm
+              changePassword={form => dispatch(changePassword(form))}
+              changeStatus={changeStatus}
+              error={error}
+              {...passwordConfig}
+            />
+          }
+        />
+        <Route
           path={PASSWORD_RESET_REQUEST}
-          user={user}
-          render={() => (
+          element={
             <PasswordResetRequestForm
               resetPassword={values => dispatch(resetPasswordRequest(values))}
               resetStatus={resetStatus}
               error={error}
             />
-          )}
+          }
         />
         <Route
           path={PASSWORD_RESET}
-          render={props => (
+          element={
             <PasswordResetForm
               confirmResetPassword={(form, params) =>
                 dispatch(resetPasswordConfirm({ ...form, ...params }))
               }
               resetStatus={resetStatus}
-              match={props.match}
               error={error}
               {...passwordConfig}
             />
-          )}
+          }
         />
         <Route
-          exact
           path={RESEND}
-          render={() => (
+          element={
             <ResendVerificationEmail
               email={user?.email}
               onResend={() => dispatch(resendVerificationEmail(user?.email))}
               isLoading={accountsRequests.resendVerificationEmail === 'pending'}
             />
-          )}
+          }
         />
-      </Switch>
+      </Routes>
     </Wrapper>
   );
 };
+
+export default Index;

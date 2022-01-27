@@ -17,7 +17,7 @@ import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
 import { FIELD_NAMES, email } from 'utils/validators';
 
-import { LOGIN } from '../../accounts.constants';
+import { LOGIN_URL } from '../../accounts.constants';
 import { status } from '../../accounts.slice';
 
 const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
@@ -38,11 +38,11 @@ const PasswordResetRequestSuccessView = ({ email, onSubmit }) => (
 
     <Box display="flex" flexDirection="column" alignItems="center">
       <Box mb={2}>
-        <Button onClick={() => onSubmit(email)}>Resend email</Button>
+        <Button onClick={() => onSubmit({ email })}>Resend email</Button>
       </Box>
       <Link
         // @ts-ignore
-        to={LOGIN}
+        to={LOGIN_URL}
         component={RouterLink}
       >
         Return to login
@@ -56,13 +56,16 @@ const validationSchema = object({
 });
 
 const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
-  const { register, handleSubmit, getValues, formState, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isDirty },
+  } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = data => {
-    resetPassword(data);
-  };
+  const onSubmit = data => resetPassword(data);
 
   if (resetStatus === status.PENDING)
     return (
@@ -80,7 +83,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
         <TextField
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           label="Email"
           autoFocus
           error={!!errors[FIELD_NAMES.email]}
@@ -91,7 +94,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
       <Form.Row centered>
         <Button
           type="submit"
-          disabled={Object.keys(errors).length > 0 || !formState.isDirty}
+          disabled={Object.keys(errors).length > 0 || !isDirty}
         >
           Reset Password
         </Button>
@@ -99,11 +102,7 @@ const PasswordResetRequestForm = ({ resetPassword, resetStatus, error }) => {
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link
-          // @ts-ignore
-          to={LOGIN}
-          component={RouterLink}
-        >
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

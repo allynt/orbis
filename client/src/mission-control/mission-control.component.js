@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Dialog,
@@ -7,20 +7,20 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-import { push } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Redirect,
+  Navigate,
   Route,
-  Switch,
+  Routes,
   useLocation,
-  useRouteMatch,
+  useNavigate,
 } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { backgroundLocationSelector, setBackgroundLocation } from 'app.slice';
 import { ErrorFallback } from 'components';
+import RequiresAdmin from 'utils/requires-admin.component';
 
 import { userSelector } from '../accounts/accounts.selectors';
 import {
@@ -69,22 +69,23 @@ const useStyles = makeStyles(theme => ({
 
 export const MissionControl = React.memo(() => {
   const location = useLocation();
-  const match = useRouteMatch();
+  const navigate = useNavigate();
+
   const fadeTransitionProps = useFadeTransitionProps(location.key);
   const dispatch = useDispatch();
+  const styles = useStyles();
+
   const user = useSelector(userSelector);
   const currentCustomer = useSelector(selectCurrentCustomer);
   const customerUsers = useSelector(selectCustomerUsers);
   const backgroundLocation = useSelector(backgroundLocationSelector);
+
   const userIsAdmin = user?.customers.some(
     customer => customer.type === 'MANAGER',
   );
   const [open, setOpen] = useState(
     location.pathname.includes('/mission-control'),
   );
-
-  const styles = useStyles({});
-
   useEffect(() => {
     if (!currentCustomer) {
       dispatch(fetchCustomer(user));
@@ -97,15 +98,9 @@ export const MissionControl = React.memo(() => {
     }
   }, [currentCustomer, customerUsers, dispatch, userIsAdmin]);
 
-  const renderAdminOnly = useCallback(
-    Component => routeProps =>
-      userIsAdmin ? (
-        <Component {...routeProps} />
-      ) : (
-        <Redirect to="/mission-control" />
-      ),
-    [userIsAdmin],
-  );
+  if (location.pathname === '/mission-control') {
+    return <Navigate to="/mission-control/support" />;
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -123,10 +118,8 @@ export const MissionControl = React.memo(() => {
       keepMounted={false}
       TransitionProps={{
         onExited: () => {
-          dispatch(
-            push(
-              `${backgroundLocation?.pathname}${backgroundLocation?.search}`,
-            ),
+          navigate(
+            `${backgroundLocation?.pathname}${backgroundLocation?.search}`,
           );
           dispatch(setBackgroundLocation(null));
         },
@@ -141,33 +134,46 @@ export const MissionControl = React.memo(() => {
           <CSSTransition {...fadeTransitionProps}>
             <div className={`${styles.main} ${styles.inner}`}>
               <ErrorBoundary FallbackComponent={ErrorFallback}>
-                <Switch>
+                <Routes>
                   <Route
-                    path={`${match.path}/store`}
-                    render={renderAdminOnly(Store)}
+                    path="/store/*"
+                    element={
+                      <RequiresAdmin user={user} redirectTo="/mission-control">
+                        <Store />
+                      </RequiresAdmin>
+                    }
                   />
                   <Route
-                    path={`${match.path}/users`}
-                    render={renderAdminOnly(UsersView)}
+                    path="/users"
+                    element={
+                      <RequiresAdmin user={user} redirectTo="/mission-control">
+                        <UsersView />
+                      </RequiresAdmin>
+                    }
                   />
                   <Route
-                    path={`${match.path}/subscriptions`}
-                    render={renderAdminOnly(ConnectedSubscriptions)}
+                    path="/subscriptions"
+                    element={
+                      <RequiresAdmin user={user} redirectTo="/mission-control">
+                        <ConnectedSubscriptions />
+                      </RequiresAdmin>
+                    }
                   />
                   <Route
-                    path={`${match.path}/saved-documents`}
-                    component={SavedDocumentsView}
+                    path="/saved-documents"
+                    element={<SavedDocumentsView />}
                   />
-                  <Route path={`${match.path}/support`} component={Support} />
+                  <Route path="/support" element={<Support />} />
                   <Route
-                    path={`${match.path}/account-details`}
-                    render={renderAdminOnly(AccountDetails)}
+                    path="/account-details"
+                    element={
+                      <RequiresAdmin user={user} redirectTo="/mission-control">
+                        <AccountDetails />
+                      </RequiresAdmin>
+                    }
                   />
-                  <Route path={`${match.path}/storage`} component={Storage} />
-                  <Route exact path="/mission-control">
-                    <Redirect to={`${match.path}/support`} />
-                  </Route>
-                </Switch>
+                  <Route path="/storage" element={<Storage />} />
+                </Routes>
               </ErrorBoundary>
             </div>
           </CSSTransition>

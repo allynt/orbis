@@ -13,7 +13,7 @@ import { otherSelector } from '../layers.slice';
  *  propertyStateKey?: string
  * }>}
  */
-export default ({
+const PropertyColorMap = ({
   selectedLayer,
   stateKey = selectedLayer.source_id,
   propertyStateKey = 'property',
@@ -40,3 +40,5 @@ export default ({
     />
   );
 };
+
+export default PropertyColorMap;

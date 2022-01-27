@@ -8,10 +8,12 @@ import { CheckboxFilters } from './checkbox-filters.component';
 
 const mockStore = configureMockStore([thunk]);
 
-export default {
+const Index = {
   title: 'Sidebar Components/Checkbox Filters',
   argTypes: { dispatch: { action: 'dispatch' } },
 };
+
+export default Index;
 
 const Template = ({ state = {}, ...args }) => (
   <Provider store={mockStore({ orbs: { layers: state } })}>

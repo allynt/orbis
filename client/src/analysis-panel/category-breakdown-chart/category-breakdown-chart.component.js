@@ -19,7 +19,9 @@ export const CategoryBreakdownChart = ({
   info,
   selectedProperty: selectedPropertyProp,
 }) => {
-  const selectedProperty = /** @type {import('typings').DiscreteProperty} */ (selectedPropertyProp);
+  const selectedProperty = /** @type {import('typings').DiscreteProperty} */ (
+    selectedPropertyProp
+  );
   /** @type {[{category: string, count:number} | undefined, React.Dispatch<{category:string, count:number} | undefined>]} */
   const [selectedDatum, setSelectedDatum] = useState();
 

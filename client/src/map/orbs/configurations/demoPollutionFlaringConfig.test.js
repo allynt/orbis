@@ -27,8 +27,7 @@ describe('demoPollutionFlaringConfig', () => {
     it('returns feature.geometry.coordinates', () => {
       const { getPosition } = configFn({});
       expect(getPosition({ geometry: { coordinates: [1, 2] } })).toEqual([
-        1,
-        2,
+        1, 2,
       ]);
     });
   });

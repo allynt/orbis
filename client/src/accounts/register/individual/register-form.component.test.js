@@ -1,7 +1,3 @@
-import React from 'react';
-
-import fetchMock from 'jest-fetch-mock';
-
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 import { FIELD_NAMES } from 'utils/validators';
 
@@ -53,16 +49,16 @@ describe('Register Form Component', () => {
     expect(signUpButton).toBeInTheDocument();
     // Check link to login view
     expect(screen.getByText('Login')).toBeInTheDocument();
-    expect(signUpButton).toHaveAttribute('disabled');
+    expect(signUpButton).toBeDisabled();
   });
 
   it('should disable `Sign Up` button when form is invalid and show text', () => {
     render(<RegisterForm {...testAppConfig} />);
 
     const email = screen.getByRole('textbox', { name: EMAIL_PLACEHOLDER_TEXT });
-    expect(email.value).toEqual('');
+    expect(email).toHaveValue('');
     userEvent.type(email, EMAIL_TEXT);
-    expect(email.value).toEqual(EMAIL_TEXT);
+    expect(email).toHaveValue(EMAIL_TEXT);
 
     expect(
       screen.getByRole('button', { name: SIGN_UP_BUTTON_TEXT }),
@@ -91,7 +87,7 @@ describe('Register Form Component', () => {
     userEvent.click(screen.getByRole('checkbox', { name: I_AGREE_TEXT }));
     expect(
       screen.getByRole('button', { name: SIGN_UP_BUTTON_TEXT }),
-    ).not.toBeDisabled();
+    ).toBeEnabled();
   });
 
   it('should keep `Sign Up` button disabled when registration is disabled', () => {
@@ -121,9 +117,7 @@ describe('Register Form Component', () => {
   });
 
   it('should not call register function when form is invalid and `Sign Up` button clicked', () => {
-    fetchMock.enableMocks();
     const registerUser = jest.fn();
-    fetchMock.mockResponse(JSON.stringify({}, { status: 200 }));
 
     render(<RegisterForm {...testAppConfig} registerUser={registerUser} />);
 

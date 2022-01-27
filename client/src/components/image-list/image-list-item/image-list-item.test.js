@@ -2,9 +2,9 @@ import React from 'react';
 
 import { CloseIcon } from '@astrosat/astrosat-ui';
 
+import faker from '@faker-js/faker/locale/en_GB';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import faker from 'faker/locale/en_GB';
 
 import { ImageListItem } from './image-list-item.component';
 
@@ -30,7 +30,9 @@ describe('<ImageListItem />', () => {
     const { getByRole } = render(
       <ImageListItem text="test item" value="test" onChange={onChange} />,
     );
-    userEvent.click(getByRole('radio', { name: 'test item' }));
+    userEvent.click(getByRole('radio', { name: 'test item' }), undefined, {
+      skipPointerEventsCheck: true,
+    });
     expect(onChange).toBeCalledWith('test');
   });
 });

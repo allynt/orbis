@@ -856,9 +856,11 @@ const state = {
   },
 };
 
-export default {
+const Index = {
   title: 'Orbs/Isolation Plus/Property Radio Group',
 };
+
+export default Index;
 
 const Template = args => (
   <Provider store={mockStore(state)}>

@@ -79,16 +79,14 @@ describe('Mission Control Slice', () => {
           },
         );
 
-        const expectedActions = [
-          { type: updateCustomerRequested.type },
-          {
-            type: updateCustomerFailure.type,
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: updateCustomer.rejected.type,
             payload: { message: '401 Test Error' },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(updateCustomer(customer));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -99,16 +97,14 @@ describe('Mission Control Slice', () => {
 
         fetch.mockResponse(JSON.stringify(updatedCustomer));
 
-        const expectedActions = [
-          { type: updateCustomerRequested.type },
-          {
-            type: updateCustomerSuccess.type,
-            payload: updatedCustomer,
-          },
-        ];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: 'missionControl/updateCustomerSuccess',
+            payload: { name: 'test_customer' },
+          }),
+        ]);
 
         await store.dispatch(updateCustomer(updatedCustomer));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -130,16 +126,14 @@ describe('Mission Control Slice', () => {
           },
         );
 
-        const expectedActions = [
-          { type: fetchCustomerUsersRequested.type },
-          {
-            type: fetchCustomerUsersFailure.type,
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: fetchCustomerUsers.rejected.type,
             payload: { message: '401 Test Error' },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(fetchCustomerUsers(customer));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -159,13 +153,17 @@ describe('Mission Control Slice', () => {
 
         fetch.mockResponse(JSON.stringify(users));
 
-        const expectedActions = [
-          { type: fetchCustomerUsersRequested.type },
-          { type: fetchCustomerUsersSuccess.type, payload: users },
-        ];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: fetchCustomerUsersRequested.type,
+          }),
+          expect.objectContaining({
+            type: fetchCustomerUsersSuccess.type,
+            payload: users,
+          }),
+        ]);
 
         await store.dispatch(fetchCustomerUsers(customer));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -184,20 +182,21 @@ describe('Mission Control Slice', () => {
             },
           );
 
-          const expectedActions = [
-            { type: createCustomerUserRequested.type },
-            {
-              type: createCustomerUserFailure.type,
+          const expectedActions = expect.arrayContaining([
+            expect.objectContaining({
+              type: createCustomerUserRequested.type,
+            }),
+            expect.objectContaining({
+              type: createCustomerUser.rejected.type,
               payload: { message: '401 Test Error' },
-            },
-          ];
+            }),
+          ]);
 
           const user = {
             name: 'Test User',
             licences: [],
           };
           await store.dispatch(createCustomerUser(user));
-
           expect(store.getActions()).toEqual(expectedActions);
         });
 
@@ -214,20 +213,21 @@ describe('Mission Control Slice', () => {
             },
           );
 
-          const expectedActions = [
-            { type: createCustomerUserRequested.type },
-            {
-              type: createCustomerUserFailure.type,
+          const expectedActions = expect.arrayContaining([
+            expect.objectContaining({
+              type: createCustomerUserRequested.type,
+            }),
+            expect.objectContaining({
+              type: createCustomerUser.rejected.type,
               payload: { message: '401 Test Error' },
-            },
-          ];
+            }),
+          ]);
 
           const user = {
             name: 'Test User',
             licences: [],
           };
           await store.dispatch(createCustomerUser(user));
-
           expect(store.getActions()).toEqual(expectedActions);
         });
       });
@@ -243,13 +243,14 @@ describe('Mission Control Slice', () => {
 
         fetch.once(JSON.stringify(user)).once(JSON.stringify(customer));
 
-        const expectedActions = [
-          { type: createCustomerUserRequested.type },
-          { type: createCustomerUserSuccess.type, payload: { user, customer } },
-        ];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: 'missionControl/createCustomerUserSuccess',
+            payload: { user, customer },
+          }),
+        ]);
 
         await store.dispatch(createCustomerUser(user));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -285,7 +286,7 @@ describe('Mission Control Slice', () => {
         };
         fetch.mockResponse(JSON.stringify(expectedCustomerUser));
         const response = await store.dispatch(createCustomerUser(request));
-        expect(response.payload.user).toEqual(expectedCustomerUser);
+        expect(response.payload.payload.user).toEqual(expectedCustomerUser); //@TODO reshaped data!
       });
     });
 
@@ -328,13 +329,15 @@ describe('Mission Control Slice', () => {
           },
         );
 
-        const expectedActions = [
-          { type: updateCustomerUserRequested.type },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: updateCustomerUserRequested.type,
+          }),
+          expect.objectContaining({
             type: updateCustomerUserFailure.type,
             payload: { message: '401 Test Error' },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(updateCustomerUser(customerUser, data));
 
@@ -362,19 +365,20 @@ describe('Mission Control Slice', () => {
           .once(JSON.stringify(updatedCustomerUser))
           .once(JSON.stringify(updatedCustomer));
 
-        const expectedActions = [
-          { type: updateCustomerUserRequested.type },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: updateCustomerUserRequested.type,
+          }),
+          expect.objectContaining({
             type: updateCustomerUserSuccess.type,
             payload: {
               updatedCustomerUser,
               updatedCustomer,
             },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -482,16 +486,17 @@ describe('Mission Control Slice', () => {
           },
         );
 
-        const expectedActions = [
-          { type: inviteCustomerUserRequested.type },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: inviteCustomerUserRequested.type,
+          }),
+          expect.objectContaining({
             type: inviteCustomerUserFailure.type,
             payload: { message: '401 Test Error' },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(inviteCustomerUser(customerUser));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -510,15 +515,17 @@ describe('Mission Control Slice', () => {
 
         fetch.once(JSON.stringify(invitedCustomerUser));
 
-        const expectedActions = [
-          { type: inviteCustomerUserRequested.type },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: inviteCustomerUserRequested.type,
+          }),
+          expect.objectContaining({
             type: inviteCustomerUserSuccess.type,
             payload: {
               invitedCustomerUser,
             },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(inviteCustomerUser(invitedCustomerUser));
 
@@ -551,16 +558,17 @@ describe('Mission Control Slice', () => {
           },
         );
 
-        const expectedActions = [
-          { type: deleteCustomerUserRequested.type },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: deleteCustomerUserRequested.type,
+          }),
+          expect.objectContaining({
             type: deleteCustomerUserFailure.type,
             payload: { message: '401 Test Error' },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(deleteCustomerUser(customerUser));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -586,16 +594,18 @@ describe('Mission Control Slice', () => {
         fetch.once(JSON.stringify(user));
         fetch.once(JSON.stringify(customer));
 
-        const expectedActions = [
-          { type: deleteCustomerUserRequested.type, payload: undefined },
-          {
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: deleteCustomerUserRequested.type,
+            payload: undefined,
+          }),
+          expect.objectContaining({
             type: deleteCustomerUserSuccess.type,
             payload: { deletedUser: customerUser, customer },
-          },
-        ];
+          }),
+        ]);
 
         await store.dispatch(deleteCustomerUser(customerUser));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
     });

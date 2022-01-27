@@ -3,45 +3,52 @@ import React from 'react';
 import { ProfileIcon } from '@astrosat/astrosat-ui';
 
 import { action } from '@storybook/addon-actions';
-import { boolean } from '@storybook/addon-knobs';
 
 import { SidebarItem } from './sidebar-item.component';
 
-export default { title: 'Components/Sidebar/SidebarItem' };
+const Index = {
+  title: 'Components/Sidebar/SidebarItem',
+  component: SidebarItem,
+};
+export default Index;
 
-export const Icon = () => (
+const IconTemplate = ({ selected }) => (
   <>
     <SidebarItem
       icon={<ProfileIcon />}
-      selected={boolean('Selected', false)}
+      selected={selected}
       tooltip="only icon"
       onClick={action('onClick')}
     />
   </>
 );
+export const Icon = IconTemplate.bind({});
+Icon.args = { selected: false };
 
-export const Label = () => (
+const LabelTemplate = ({ selected }) => (
+  <SidebarItem selected={selected} onClick={action('onClick')}>
+    Item Label
+  </SidebarItem>
+);
+export const Label = LabelTemplate.bind({});
+Label.args = { selected: false };
+
+const IconAndLabelTemplate = ({ selected }) => (
   <SidebarItem
-    selected={boolean('Selected', false)}
+    icon={<ProfileIcon />}
+    selected={selected}
     onClick={action('onClick')}
   >
     Item Label
   </SidebarItem>
 );
+export const IconAndLabel = IconAndLabelTemplate.bind({});
+IconAndLabel.args = { selected: false };
 
-export const IconAndLabel = () => (
+export const LinkItemTemplate = ({ selected }) => (
   <SidebarItem
     icon={<ProfileIcon />}
-    selected={boolean('Selected', false)}
-    onClick={action('onClick')}
-  >
-    Item Label
-  </SidebarItem>
-);
-
-export const LinkItem = () => (
-  <SidebarItem
-    icon={<ProfileIcon />}
+    selected={selected}
     href="https://www.google.com"
     rel="noopener noreferrer"
     target="_blank"
@@ -49,3 +56,5 @@ export const LinkItem = () => (
     Item Label
   </SidebarItem>
 );
+export const LinkItem = LinkItemTemplate.bind({});
+LinkItem.args = { selected: false };

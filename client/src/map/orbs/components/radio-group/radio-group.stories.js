@@ -2,10 +2,12 @@ import React from 'react';
 
 import { RadioGroup } from './radio-group.component';
 
-export default {
+const Index = {
   title: 'Sidebar Components/RadioGroup',
   argTypes: { onChange: { action: true } },
 };
+
+export default Index;
 
 const Template = args => <RadioGroup {...args} />;
 

@@ -1,32 +1,31 @@
-import fetch from 'jest-fetch-mock';
-
 import { StorageClient } from './StorageClient';
 
-fetch.enableMocks();
+import { getStorage } from 'mocks/fixtures/mission-control/storage';
 
 describe('StorageClient', () => {
+  let client = null;
+
   beforeEach(() => {
-    fetch.resetMocks();
+    client = new StorageClient();
   });
 
   describe('getFiles', () => {
     it('Returns storage files from the response', async () => {
-      const files = [{ id: 1 }, { id: 2 }];
-      fetch.once(JSON.stringify(files));
-      const client = new StorageClient();
-      const responseStorage = await client.getFiles();
-      expect(responseStorage).toEqual(files);
+      const files = getStorage();
+
+      const response = await client.getFiles();
+
+      expect(response).toEqual(files);
     });
   });
 
   describe('deleteFile', () => {
     it('deletes the file from storage', async () => {
-      const client = new StorageClient();
-      await client.deleteFile(1);
-      expect(fetch).toBeCalledWith(
-        expect.stringContaining('/api/storage/1'),
-        expect.objectContaining({ method: 'DELETE' }),
-      );
+      const response = await client.deleteFile(1);
+
+      const files = getStorage();
+
+      expect(response).toEqual(files);
     });
   });
 });

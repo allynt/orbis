@@ -1,21 +1,27 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router-dom';
+
+import { render, userEvent } from 'test/test-utils';
 
 import { Checkout } from './checkout.component';
 
 const renderComponent = errors => {
   const onConfirmClick = jest.fn();
   const utils = render(
-    <Checkout
-      // @ts-ignore
-      orbs={[{ id: 1, name: 'Test Orb', licence_cost: 0 }]}
-      // @ts-ignore
-      location={{ search: '?users=10&orbId=1' }}
-      errors={errors}
-      onConfirmClick={onConfirmClick}
-    />,
+    <Routes>
+      <Route
+        path="checkout/:orbId/:users"
+        element={
+          <Checkout
+            orbs={[{ id: 1, name: 'Test Orb', licence_cost: 0 }]}
+            errors={errors}
+            onConfirmClick={onConfirmClick}
+          />
+        }
+      />
+    </Routes>,
+    { history: { initialEntries: ['/checkout/1/10'] } },
   );
   return { ...utils, onConfirmClick };
 };
@@ -36,7 +42,7 @@ describe('<Checkout />', () => {
     const { getByRole } = renderComponent();
     expect(getByRole('button', { name: /confirm/i })).toBeDisabled();
     userEvent.click(getByRole('checkbox'));
-    expect(getByRole('button', { name: /confirm/i })).not.toBeDisabled();
+    expect(getByRole('button', { name: /confirm/i })).toBeEnabled();
   });
 
   it('Calls onConfirmClick when the confirm button is clicked', () => {

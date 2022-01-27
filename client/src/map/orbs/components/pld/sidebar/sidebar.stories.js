@@ -2,9 +2,11 @@ import * as React from 'react';
 
 import { PldSidebarComponent } from './sidebar.component';
 
-export default {
+const Index = {
   title: 'Orbs/PLD/SidebarComponent',
 };
+
+export default Index;
 
 const metadata = {
   color: 'transparent',

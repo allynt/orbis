@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { object as objectSchema } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
 import {
@@ -62,7 +62,12 @@ const RegisterForm = ({
   passwordStrength,
   isLoading = false,
 }) => {
-  const { register, handleSubmit, errors, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -85,7 +90,7 @@ const RegisterForm = ({
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
           label="Email"
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           error={!!errors[FIELD_NAMES.email]}
           helperText={errors[FIELD_NAMES.email]?.message}
           autoFocus
@@ -95,7 +100,7 @@ const RegisterForm = ({
         <TextField
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
-          inputRef={register}
+          {...register(FIELD_NAMES.newPassword)}
           label="Password"
           type="password"
           error={!!errors[FIELD_NAMES.newPassword]}
@@ -107,7 +112,7 @@ const RegisterForm = ({
         <TextField
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
-          inputRef={register}
+          {...register(FIELD_NAMES.newPasswordConfirm)}
           label="Password Confirmation"
           type="password"
           error={!!errors[FIELD_NAMES.newPasswordConfirm]}
@@ -150,11 +155,7 @@ const RegisterForm = ({
       </Form.Row>
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link
-          // @ts-ignore
-          to={LOGIN}
-          component={RouterLink}
-        >
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

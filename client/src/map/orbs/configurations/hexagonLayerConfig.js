@@ -16,7 +16,7 @@ import {
 const colorRange = schemeYlOrRd[9].map(hexToRgbArray);
 
 /** @type {import("typings").LayerConfiguration<{defaultValue: string, columnSuffix?: string, valueKey?: string}>} */
-export default ({
+const Config = ({
   id,
   orbState,
   authToken,
@@ -80,3 +80,5 @@ export default ({
     },
   };
 };
+
+export default Config;

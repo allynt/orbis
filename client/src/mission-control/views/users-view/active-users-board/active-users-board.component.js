@@ -8,8 +8,8 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { OptionsMenu } from 'components/options-menu/options-menu.component';
-import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 import { Table } from 'components/table';
+import { ADMIN_STATUS } from 'mission-control/mission-control.constants';
 
 import { getLicenceInfo, getUserLicences } from '../../licence-utils';
 

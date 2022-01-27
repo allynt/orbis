@@ -1,3 +1,30 @@
+# [2.31.0](https://github.com/astrosat/orbis/compare/v2.30.0...v2.31.0) (2022-01-25)
+
+
+### Bug Fixes
+
+* **backend:** update which licences are returned from assign_licences ([cf2dd2f](https://github.com/astrosat/orbis/commit/cf2dd2f6616caa1541bd66ed84debdc8efa116a8)), closes [#ORB-1108](https://github.com/astrosat/orbis/issues/ORB-1108)
+* **frontend:** Add guard ternary to wait for memo calculation ([19c133b](https://github.com/astrosat/orbis/commit/19c133bf5115837c983fd6e9c961eb122250bcf4))
+* **frontend:** Add more tests to the chart-wrapper ([8113054](https://github.com/astrosat/orbis/commit/8113054fa3ddcf167d2707a8bd4b1477841aecbf))
+* **frontend:** Added the proper stylnig to the contact detail component ([c116baf](https://github.com/astrosat/orbis/commit/c116baf5b5fb9ad6b3ff5ac79684276a4b1801f3))
+* **frontend:** Code review fixes ([8553619](https://github.com/astrosat/orbis/commit/8553619e59c9d1339bcac88e56ad4e96b5470cea))
+* **frontend:** Extract boilerplate into constant ([68f51cf](https://github.com/astrosat/orbis/commit/68f51cf161f2d926e888b1a4d45ec6f6334cb778))
+* **frontend:** Fix a bug in the area contact detail component ([34e887f](https://github.com/astrosat/orbis/commit/34e887f596b3ef686a6e5546a7c1a2c5d996ada4))
+* **frontend:** Fix stacked bar chart regresions ([6410607](https://github.com/astrosat/orbis/commit/64106074f3d921d05e45272f1d192e365d655a70))
+* **frontend:** Refactor function ([6a65b7b](https://github.com/astrosat/orbis/commit/6a65b7b0c75d84c5b641830362b0974292c255be))
+* **frontend:** Refactor progress wheels, extract constants, extract utils, memoize ([6e4b1b0](https://github.com/astrosat/orbis/commit/6e4b1b05d6629a1514e4e394ae1a92d60a1332e3))
+* **frontend:** Rename the styling class ([94d412e](https://github.com/astrosat/orbis/commit/94d412ee637353ab8d63084c65f8f814689c1d5a))
+* **frontend:** Tweak data to show acurate numbers ([fd0f946](https://github.com/astrosat/orbis/commit/fd0f946769368e0ac0fb7f4f08fb7ea9fd47fadd))
+* **security:** Disable logstash ([#1498](https://github.com/astrosat/orbis/issues/1498)) ([baf8d2a](https://github.com/astrosat/orbis/commit/baf8d2ac100d9bd650939035da3b598ed08fdcf7))
+
+
+### Features
+
+* **frontend:** Add one more test, refactor some test code for better readability. ([3bfff4b](https://github.com/astrosat/orbis/commit/3bfff4bf7cb955c6030efa35f23bef4998cd0217))
+* **frontend:** Created three tests for the chart-wrapper component. ([99fd81e](https://github.com/astrosat/orbis/commit/99fd81e315cdb919693473d37daeaa77c13b1e65))
+* **frontend:** Fix x axis labels on stacked bar chart ([60f0b86](https://github.com/astrosat/orbis/commit/60f0b86bba455009608a0f80d5e8994bd812e5f8))
+* **frontend:** Started to built chart-wrapper tests ([85ec520](https://github.com/astrosat/orbis/commit/85ec52052fff48c8a89c02bea04bb3002e49fae2))
+
 # [2.30.0](https://github.com/astrosat/orbis/compare/v2.29.0...v2.30.0) (2021-12-14)
 
 

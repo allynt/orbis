@@ -1,8 +1,8 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
+
+import { server } from 'mocks/server';
 
 import { UsersClient } from './UsersClient';
-
-fetch.enableMocks();
 
 describe('UsersClient', () => {
   /** @type {UsersClient} */
@@ -19,7 +19,13 @@ describe('UsersClient', () => {
         email: 'test@test.com',
         name: 'Test User',
       };
-      fetch.once(JSON.stringify(user));
+
+      server.use(
+        rest.get('*/api/users/current', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(user));
+        }),
+      );
+
       expect(client.getCurrentUser()).resolves.toEqual(user);
     });
   });
@@ -31,7 +37,13 @@ describe('UsersClient', () => {
         email: 'test@test.com',
         name: 'Test User',
       };
-      fetch.once(JSON.stringify(user));
+
+      server.use(
+        rest.get('*/api/users/:userId', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(user));
+        }),
+      );
+
       expect(client.getUser(123)).resolves.toEqual(user);
     });
   });
@@ -42,7 +54,13 @@ describe('UsersClient', () => {
         name: 'Test User',
         email: 'test@test.com',
       };
-      fetch.once(JSON.stringify(updatedUser));
+
+      server.use(
+        rest.put('*/api/users/:userId', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(updatedUser));
+        }),
+      );
+
       expect(client.updateUser(updatedUser)).resolves.toEqual(updatedUser);
     });
   });

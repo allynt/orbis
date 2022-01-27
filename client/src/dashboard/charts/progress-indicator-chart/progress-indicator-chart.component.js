@@ -4,7 +4,6 @@ import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
 import { Text } from '@visx/text';
-import clsx from 'clsx';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
 const useStyles = makeStyles(theme => ({

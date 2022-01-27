@@ -8,8 +8,6 @@ import { Table } from 'components/table/table.component';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 
-export default { title: 'Dashboard/NatureScot/NearestProtectedAreas' };
-
 const NearestProtectedAreas = ({ data }) => {
   const columns = useMemo(
     () => [

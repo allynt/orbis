@@ -14,7 +14,7 @@ import { CheckboxFilters } from './checkbox-filters/checkbox-filters.component';
  *  colorMap?: import('typings').ColorMap
  *  iconColor?: string}>}
  */
-export default ({ dispatch, selectedLayer, ...rest }) => {
+const Filter = ({ dispatch, selectedLayer, ...rest }) => {
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
@@ -39,3 +39,5 @@ export default ({ dispatch, selectedLayer, ...rest }) => {
     />
   );
 };
+
+export default Filter;

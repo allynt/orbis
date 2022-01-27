@@ -3,7 +3,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 
 import Wrapper from 'accounts/wrapper.component';
-import { history } from 'root.reducer';
+import { history } from 'store';
 
 import UserRegistration from './user-registration.component';
 

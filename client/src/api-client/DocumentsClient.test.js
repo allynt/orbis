@@ -1,8 +1,8 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
+
+import { server } from 'mocks/server';
 
 import { DocumentsClient } from './DocumentsClient';
-
-fetch.enableMocks();
 
 describe('DocumentsClient', () => {
   /** @type {DocumentsClient} */
@@ -50,8 +50,15 @@ describe('DocumentsClient', () => {
 
     it('Returns saved documents from response', async () => {
       const docs = [{ id: 1 }, { id: 2 }];
-      fetch.once(JSON.stringify(docs));
+
+      server.use(
+        rest.get('*/api/documents/agreements/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(docs));
+        }),
+      );
+
       const responseSources = await client.getAgreedDocuments();
+
       expect(responseSources).toEqual(docs);
     });
   });

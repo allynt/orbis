@@ -1,16 +1,16 @@
 import React from 'react';
 
 import {
-  Avatar,
+  // Avatar,
   List,
   ListItem,
-  ListItemAvatar,
+  // ListItemAvatar,
   ListItemText,
   makeStyles,
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { COLORS } from '../nature-scotland.constants';
+// import { COLORS } from '../nature-scotland.constants';
 
 const useStyles = makeStyles(theme => ({
   listItem: {

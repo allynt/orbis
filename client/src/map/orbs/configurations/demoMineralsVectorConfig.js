@@ -10,7 +10,7 @@ import {
 } from '../layers.slice';
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-export default ({ id, orbState, activeSources }) => {
+const Config = ({ id, orbState, activeSources }) => {
   const visible = visibilitySelector(id)(orbState);
   const data = dataSelector(id)(orbState);
   const filterValue = filterValueSelector(id)(orbState);
@@ -42,3 +42,5 @@ export default ({ id, orbState, activeSources }) => {
     },
   };
 };
+
+export default Config;

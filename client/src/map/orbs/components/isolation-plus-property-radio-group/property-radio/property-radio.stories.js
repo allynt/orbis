@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropertyRadio from './property-radio.component';
 
-export default {
+const Index = {
   title: 'Orbs/Isolation Plus/Property Radio Group/Property Radio',
   args: {
     layerSourceId: 'test/layer',
@@ -14,6 +14,8 @@ export default {
     onSliderChange: { action: true },
   },
 };
+
+export default Index;
 
 const Template = args => <PropertyRadio {...args} />;
 

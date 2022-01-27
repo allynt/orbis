@@ -1,4 +1,4 @@
-FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:focal-python38-node12
+FROM 339570402237.dkr.ecr.eu-west-1.amazonaws.com/company/astrosat/base:focal-python38-node16
 
 USER app
 

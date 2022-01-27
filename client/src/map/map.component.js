@@ -119,11 +119,8 @@ const Map = ({
   const styles = useStyles();
   const { selectionLayer } = useSelectionTools();
 
-  const {
-    drawSatelliteAoiLayer,
-    scenesLayer,
-    selectedSceneLayer,
-  } = useSatellitesLayers();
+  const { drawSatelliteAoiLayer, scenesLayer, selectedSceneLayer } =
+    useSatellitesLayers();
   const isDrawingSatelliteAoi = useSelector(isDrawingSatelliteAoiSelector);
 
   const handleExtrusionScaleChange = useCallback(

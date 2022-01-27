@@ -14,7 +14,7 @@ import {
  *  dateFormat?: string
  * }>}
  */
-export default ({
+const Config = ({
   id,
   orbState,
   activeSources,
@@ -43,3 +43,5 @@ export default ({
     },
   };
 };
+
+export default Config;

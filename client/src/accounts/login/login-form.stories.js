@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Router } from 'react-router-dom';
+import { HistoryRouter } from 'redux-first-history/rr6';
 
 import Wrapper from 'accounts/wrapper.component';
+import { history } from 'store';
 
-import { history } from '../../root.reducer';
 import LoginForm from './login-form.component';
 
-export default {
+const Login = {
   title: 'Accounts/Login',
   args: {
     passwordMinLength: 2,
@@ -19,12 +19,14 @@ export default {
   },
   decorators: [
     Story => (
-      <Router history={history}>
+      <HistoryRouter history={history}>
         <Story />
-      </Router>
+      </HistoryRouter>
     ),
   ],
 };
+
+export default Login;
 
 const Template = args => <LoginForm {...args} />;
 

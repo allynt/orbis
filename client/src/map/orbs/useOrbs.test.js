@@ -2,11 +2,13 @@ import * as React from 'react';
 
 import { waitFor } from '@testing-library/dom';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { rest } from 'msw';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { MapProvider } from 'MapContext';
+import { server } from 'mocks/server';
 
 import { useOrbs } from './useOrbs';
 
@@ -35,10 +37,19 @@ const setup = async source => {
 
 describe('useOrbs', () => {
   describe('sidebarComponents', () => {
+    beforeEach(() => {
+      server.use(
+        rest.get('*/api/test/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+    });
+
     it('Adds null if the source does not have a sidebar_component name', async () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               sidebar_component: {},
@@ -54,6 +65,7 @@ describe('useOrbs', () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               sidebar_component: {
@@ -74,6 +86,7 @@ describe('useOrbs', () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               sidebar_component: {
@@ -98,6 +111,7 @@ describe('useOrbs', () => {
       const source = {
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               sidebar_component: [
@@ -137,6 +151,7 @@ describe('useOrbs', () => {
     const source = {
       source_id: 'test/layer',
       metadata: {
+        url: 'api/test/url',
         application: {
           orbis: {
             map_component: {
@@ -149,6 +164,15 @@ describe('useOrbs', () => {
         },
       },
     };
+
+    beforeEach(() => {
+      server.use(
+        rest.get('*/api/test/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+    });
+
     it('Adds a component to the array for the source', async () => {
       const { result } = await setup(source);
       expect(result.current.mapComponents[0]).toBeTruthy();
@@ -167,6 +191,7 @@ describe('useOrbs', () => {
       const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               map_component: {},
@@ -179,10 +204,19 @@ describe('useOrbs', () => {
   });
 
   describe('layers', () => {
+    beforeEach(() => {
+      server.use(
+        rest.get('*/api/test/url', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+    });
+
     it('Returns undefined if the layer name is missing', async () => {
       const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               layer: {},
@@ -197,6 +231,7 @@ describe('useOrbs', () => {
       const { result } = await setup({
         source_id: 'test/layer',
         metadata: {
+          url: 'api/test/url',
           application: {
             orbis: {
               layer: {

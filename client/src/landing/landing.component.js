@@ -9,10 +9,9 @@ import {
   useMediaQuery,
 } from '@astrosat/astrosat-ui';
 
-import { push } from 'connected-react-router';
 import ProgressiveImage from 'react-progressive-image-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import { OrbisLogo } from 'components';
 import {
@@ -78,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 
 const Landing = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // @ts-ignore
   const greaterThan1920 = useMediaQuery(theme => theme?.breakpoints?.up(1921));
   const bookmarks = useSelector(bookmarksSelector);
@@ -96,7 +97,7 @@ const Landing = () => {
   };
 
   const chooseDashboard = dashboard =>
-    dispatch(push(`/dashboard?source_id=${dashboard.source_id}`));
+    navigate(`/dashboard?source_id=${dashboard.source_id}`);
 
   useEffect(() => {
     if (!bookmarks) {

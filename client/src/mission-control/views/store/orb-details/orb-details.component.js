@@ -13,9 +13,9 @@ import {
 
 import { PlayArrow } from '@material-ui/icons';
 import { find } from 'lodash';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 
-import { Wrapper } from '../../../shared-components/wrapper.component';
+import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 const MIN_USERS = 3;
 const MAX_USERS = 30;
@@ -53,8 +53,11 @@ const useStyles = makeStyles(theme => ({
       gridArea: 'description',
     },
   },
-  back: { padding: '4px 5px', width: 'fit-content' },
-  icon: { transform: 'rotate(180deg)' },
+  back: {
+    padding: '4px 5px',
+    width: 'fit-content',
+    '& svg': { transform: 'rotate(180deg)' },
+  },
   image: {
     aspectRatio: '16/9',
     width: '100%',
@@ -88,16 +91,16 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  orbs: import('typings').Orb[]
- *  history: import('history').History
- *  match: import('react-router-dom').match<{orbId: string}>
+ *  goBack: function
  * }} props
  */
-export const OrbDetails = ({ orbs, history, match }) => {
-  const [numberOfUsers, setNumberOfUsers] = useState(10);
+export const OrbDetails = ({ orbs, goBack }) => {
+  const { orbId } = useParams();
   const styles = useStyles();
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up('sm'));
-  const { orbId } = match.params;
+
+  const [numberOfUsers, setNumberOfUsers] = useState(10);
   const orb = find(orbs, { id: +orbId });
 
   if (!orb) return null;
@@ -109,12 +112,12 @@ export const OrbDetails = ({ orbs, history, match }) => {
       <Button
         // @ts-ignore
         role="link"
-        classes={{ root: styles.back, startIcon: styles.icon }}
+        classes={{ root: styles.back }}
         startIcon={<PlayArrow />}
         variant="text"
         size="small"
         color="default"
-        onClick={() => history.goBack()}
+        onClick={() => goBack()}
       >
         Back
       </Button>
@@ -141,10 +144,7 @@ export const OrbDetails = ({ orbs, history, match }) => {
           </div>
           <RouterLink
             className={styles.link}
-            to={`${match.url?.replace(
-              `/${orbId}`,
-              '',
-            )}/checkout/?orbId=${orbId}&users=${numberOfUsers}`}
+            to={`/mission-control/store/checkout/${orbId}/${numberOfUsers}`}
           >
             <Button>Get Access</Button>
           </RouterLink>

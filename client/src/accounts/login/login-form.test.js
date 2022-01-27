@@ -1,5 +1,6 @@
-// @ts-nocheck
 import React from 'react';
+
+import { Route, Routes } from 'react-router-dom';
 
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
@@ -16,12 +17,11 @@ const WORK_EMAIL = /work\semail\saddress/i;
 const I_AGREE_TEXT =
   'I agree with the Terms & Conditions and the Privacy Policy';
 
-/** @type {jest.Mock} */
-let login;
-
-beforeEach(() => (login = jest.fn()));
-
 describe('Login Form Component', () => {
+  let login;
+
+  beforeEach(() => (login = jest.fn()));
+
   it('should render a form', () => {
     render(<LoginForm />);
 
@@ -63,10 +63,10 @@ describe('Login Form Component', () => {
 
     expect(
       screen.getByRole('button', { name: LOGIN_BUTTON_TEXT }),
-    ).not.toBeDisabled();
+    ).toBeEnabled();
   });
 
-  it('should not call `login` function when form is invalid and `Login` button clicked', async () => {
+  it('should disable `login`button when form is invalid', () => {
     render(<LoginForm login={login} />);
 
     const loginButton = screen.getByRole('button', { name: LOGIN_BUTTON_TEXT });
@@ -76,11 +76,7 @@ describe('Login Form Component', () => {
       EMAIL_TEXT,
     );
 
-    userEvent.tab();
-
-    userEvent.click(loginButton);
-
-    expect(login).not.toHaveBeenCalled();
+    expect(loginButton).toBeDisabled();
   });
 
   it('should call `login` function when form is valid and `Login` button clicked', async () => {
@@ -143,36 +139,56 @@ describe('Login Form Component', () => {
   });
 
   describe('activateAccount', () => {
-    /** @type {jest.Mock} */
     let activateAccount;
-    const match = { params: { key: '123' } };
 
     beforeEach(() => (activateAccount = jest.fn()));
 
     it('calls activateAccount if the supplied user is not verified and the url has a key', () => {
       render(
-        <LoginForm
-          user={{ is_verified: false }}
-          match={match}
-          activateAccount={activateAccount}
-        />,
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={
+              <LoginForm
+                user={{ is_verified: false }}
+                activateAccount={activateAccount}
+              />
+            }
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
       );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activateAccount if is_verified is a false string and the url has a key', () => {
       render(
-        <LoginForm
-          user={{ is_verified: 'False' }}
-          match={match}
-          activateAccount={activateAccount}
-        />,
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={
+              <LoginForm
+                user={{ is_verified: 'False' }}
+                activateAccount={activateAccount}
+              />
+            }
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
       );
       expect(activateAccount).toBeCalledWith({ key: '123' });
     });
 
     it('calls activate account if user is undefined and the url has a key', () => {
-      render(<LoginForm match={match} activateAccount={activateAccount} />);
+      render(
+        <Routes>
+          <Route
+            path="/confirm-email/:key"
+            element={<LoginForm activateAccount={activateAccount} />}
+          />
+        </Routes>,
+        { history: { initialEntries: ['/confirm-email/123'] } },
+      );
       expect(activateAccount).toBeCalled();
     });
   });

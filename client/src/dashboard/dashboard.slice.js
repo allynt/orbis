@@ -60,28 +60,26 @@ export const fetchDashboardData = createAsyncThunk(
   },
 );
 
-export const updateTargets = ({
-  sourceId,
-  targets,
-  user,
-}) => async dispatch => {
-  // adds targets to existing 'profiles' property on user
-  const profiles = {
-    orbis_profile: {
-      ...user.profiles.orbis_profile,
-      orb_state: {
-        ...user.profiles.orbis_profile.orb_state,
-        [sourceId]: {
-          ...(user.profiles.orbis_profile.orb_state?.[sourceId] || {}),
-          ...targets,
+export const updateTargets =
+  ({ sourceId, targets, user }) =>
+  async dispatch => {
+    // adds targets to existing 'profiles' property on user
+    const profiles = {
+      orbis_profile: {
+        ...user.profiles.orbis_profile,
+        orb_state: {
+          ...user.profiles.orbis_profile.orb_state,
+          [sourceId]: {
+            ...(user.profiles.orbis_profile.orb_state?.[sourceId] || {}),
+            ...targets,
+          },
         },
       },
-    },
-  };
+    };
 
-  // combines new 'profiles' property with rest of user
-  dispatch(updateUser({ profiles }));
-};
+    // combines new 'profiles' property with rest of user
+    dispatch(updateUser({ profiles }));
+  };
 
 export const { setChartData } = dashboardSlice.actions;
 

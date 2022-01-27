@@ -46,7 +46,11 @@ export const CreateUserForm = ({
   existingEmails = [],
   onSubmit,
 }) => {
-  const { register, handleSubmit, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { existingEmails },
   });
@@ -68,7 +72,7 @@ export const CreateUserForm = ({
     <Form onSubmit={handleSubmit(createUser)}>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.name)}
           name={FIELD_NAMES.name}
           id={FIELD_NAMES.name}
           label="Name"
@@ -79,7 +83,7 @@ export const CreateUserForm = ({
       </Form.Row>
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           name={FIELD_NAMES.email}
           id={FIELD_NAMES.email}
           label="Email"
@@ -102,7 +106,7 @@ export const CreateUserForm = ({
                   label={orb}
                   name="licences"
                   value={orb}
-                  inputRef={register}
+                  {...register('licences')}
                   disabled={licenceInformation[orb].available <= 0}
                   control={<Checkbox />}
                 />

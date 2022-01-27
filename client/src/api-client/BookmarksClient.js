@@ -39,6 +39,7 @@ export class BookmarksClient extends SubClient {
       },
       body: formData,
     });
+
     return response.json();
   }
 
