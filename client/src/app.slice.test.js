@@ -6,8 +6,6 @@ import { server } from 'mocks/server';
 
 import reducer, {
   fetchAppConfig,
-  appConfigSuccess,
-  appConfigFailure,
   mapboxTokenSelector,
   addLogItem,
   removeLogItems,
@@ -42,12 +40,16 @@ describe('App Slice', () => {
         }),
       );
 
-      const expectedActions = [
-        { type: appConfigFailure.type, payload: { message: '401 Test Error' } },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchAppConfig.rejected.type,
+          payload: {
+            message: '401 Test Error',
+          },
+        }),
+      ]);
 
       await store.dispatch(fetchAppConfig());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -75,12 +77,14 @@ describe('App Slice', () => {
         }),
       );
 
-      const expectedActions = [
-        { type: appConfigSuccess.type, payload: config },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchAppConfig.fulfilled.type,
+          payload: config,
+        }),
+      ]);
 
       await store.dispatch(fetchAppConfig());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -91,12 +95,14 @@ describe('App Slice', () => {
         }),
       );
 
-      const expectedActions = [
-        { type: removeLogItems.type, payload: trackingQueue },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: removeLogItems.type,
+          payload: trackingQueue,
+        }),
+      ]);
 
       await store.dispatch(logUserTracking());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -122,7 +128,7 @@ describe('App Slice', () => {
       const config = { message: 'Test App Config' };
 
       const actualState = reducer(beforeState, {
-        type: appConfigSuccess.type,
+        type: fetchAppConfig.fulfilled.type,
         payload: config,
       });
 
@@ -133,7 +139,7 @@ describe('App Slice', () => {
       const error = { message: 'Test App Config Error' };
 
       const actualState = reducer(beforeState, {
-        type: appConfigFailure.type,
+        type: fetchAppConfig.rejected.type,
         payload: error,
       });
 
@@ -151,7 +157,7 @@ describe('App Slice', () => {
       expect(actualState.trackingQueue).toEqual([payload]);
     });
 
-    it('should remove a subset of log items fro,=m state', () => {
+    it('should remove a subset of log items from state', () => {
       const payload = [
         { content: { id: 'Test id 2' }, tags: ['tag3', 'tag4'] },
       ];

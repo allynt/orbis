@@ -100,6 +100,119 @@ export const fetchSources = createAsyncThunk(
   },
 );
 
+export const setLayers = createAsyncThunk(
+  `${name}/setLayers`,
+  async (sourceIds, { rejectWithValue, dispatch, getState }) => {
+    try {
+      if (!sourceIds) return;
+
+      const activeLayers = activeLayersSelector(getState());
+      const dataSources = dataSourcesSelector(getState());
+      const sourceIdsToLog = sourceIds.filter(
+        sourceId => !activeLayers.includes(sourceId.source_id), // TODO: find out proper data shape...?
+      );
+
+      sourceIdsToLog.forEach(sourceId => {
+        const matchedDataSource = dataSources.find(
+          dataSource => dataSource.source_id === sourceId,
+        );
+
+        if (
+          !matchedDataSource.metadata.request_strategy &&
+          matchedDataSource.metadata.request_strategy !== 'manual'
+        ) {
+          dispatch(logDataset({ source_id: sourceId }));
+        }
+      });
+
+      dispatch(updateLayers(sourceIds));
+    } catch (error) {
+      const message = `${error.status} ${error.message}`;
+      return rejectWithValue({ message });
+    }
+  },
+);
+
+export const logProperty = createAsyncThunk(
+  `${name}/logProperty`,
+  async (
+    { source, property, isOn },
+    { rejectWithValue, dispatch, getState },
+  ) => {
+    const user = userSelector(getState());
+
+    dispatch(
+      addLogItem({
+        content: {
+          type: 'orbisUserAction',
+          orbisUserAction: {
+            action: 'toggleProperty',
+            userId: user?.id,
+            customerId: user?.customers[0]?.id,
+            customerName: user?.customers[0]?.name,
+            toggleProperty: {
+              layer: source.source_id,
+              property: property,
+              state: isOn,
+            },
+          },
+        },
+        tags: ['TOGGLE_PROPERTY', source.source_id, property],
+      }),
+    );
+  },
+);
+
+export const logDataset = createAsyncThunk(
+  `${name}/logProperty`,
+  async (source, { rejectWithValue, dispatch, getState }) => {
+    const user = userSelector(getState());
+
+    dispatch(
+      addLogItem({
+        content: {
+          type: 'orbisUserAction',
+          orbisUserAction: {
+            action: 'loadLayer',
+            userId: user?.id,
+            customerId: user?.customers[0]?.id,
+            customerName: user?.customers[0]?.name,
+            loadLayer: {
+              dataset: source.source_id,
+            },
+          },
+        },
+        tags: ['LOAD_LAYER', source.source_id],
+      }),
+    );
+  },
+);
+
+export const logError = createAsyncThunk(
+  `${name}/logError`,
+  async (source, { rejectWithValue, dispatch, getState }) => {
+    const user = userSelector(getState());
+
+    dispatch(
+      addLogItem({
+        content: {
+          type: 'orbisClientError',
+          orbisClientError: {
+            error: 'loadLayerError',
+            userId: user?.id,
+            customerId: user?.customers[0]?.id,
+            customerName: user?.customers[0]?.name,
+            loadLayerError: {
+              dataset: source.source_id,
+            },
+          },
+        },
+        tags: ['LOAD_LAYER_ERROR', source.source_id],
+      }),
+    );
+  },
+);
+
 const dataSlice = createSlice({
   name,
   initialState,
@@ -176,101 +289,6 @@ const dataSlice = createSlice({
 });
 
 export const { updateLayers, addSource } = dataSlice.actions;
-
-export const setLayers = sourceIds => async (dispatch, getState) => {
-  if (!sourceIds) return;
-
-  const activeLayers = activeLayersSelector(getState());
-  const dataSources = dataSourcesSelector(getState());
-
-  const sourceIdsToLog = sourceIds.filter(
-    sourceId => !activeLayers.includes(sourceId),
-  );
-
-  sourceIdsToLog.forEach(sourceId => {
-    const matchedDataSource = dataSources.find(
-      dataSource => dataSource.source_id === sourceId,
-    );
-
-    if (
-      !matchedDataSource.metadata.request_strategy &&
-      matchedDataSource.metadata.request_strategy !== 'manual'
-    ) {
-      dispatch(logDataset({ source_id: sourceId }));
-    }
-  });
-
-  dispatch(updateLayers(sourceIds));
-};
-
-export const logProperty =
-  (source, property, isOn) => async (dispatch, getState) => {
-    const user = userSelector(getState());
-
-    dispatch(
-      addLogItem({
-        content: {
-          type: 'orbisUserAction',
-          orbisUserAction: {
-            action: 'toggleProperty',
-            userId: user?.id,
-            customerId: user?.customers[0]?.id,
-            customerName: user?.customers[0]?.name,
-            toggleProperty: {
-              layer: source.source_id,
-              property: property,
-              state: isOn,
-            },
-          },
-        },
-        tags: ['TOGGLE_PROPERTY', source.source_id, property],
-      }),
-    );
-  };
-
-export const logDataset = source => async (dispatch, getState) => {
-  const user = userSelector(getState());
-
-  dispatch(
-    addLogItem({
-      content: {
-        type: 'orbisUserAction',
-        orbisUserAction: {
-          action: 'loadLayer',
-          userId: user?.id,
-          customerId: user?.customers[0]?.id,
-          customerName: user?.customers[0]?.name,
-          loadLayer: {
-            dataset: source.source_id,
-          },
-        },
-      },
-      tags: ['LOAD_LAYER', source.source_id],
-    }),
-  );
-};
-
-export const logError = source => async (dispatch, getState) => {
-  const user = userSelector(getState());
-
-  dispatch(
-    addLogItem({
-      content: {
-        type: 'orbisClientError',
-        orbisClientError: {
-          error: 'loadLayerError',
-          userId: user?.id,
-          customerId: user?.customers[0]?.id,
-          customerName: user?.customers[0]?.name,
-          loadLayerError: {
-            dataset: source.source_id,
-          },
-        },
-      },
-      tags: ['LOAD_LAYER_ERROR', source.source_id],
-    }),
-  );
-};
 
 /**
  * @param {import('typings').RootState} state
