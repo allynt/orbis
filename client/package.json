@@ -9,7 +9,7 @@
     "start": "FORCE_COLOR=true react-scripts start | cat",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:ci": "CI=true react-scripts test --reporters=default --reporters=jest-html-reporters --silent",
+    "test:ci": "CI=true react-scripts test --reporters=default --reporters=jest-html-reporters --silent --runInBand",
     "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
     "eject": "react-scripts eject",
     "release": "semantic-release",
