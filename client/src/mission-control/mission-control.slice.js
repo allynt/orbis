@@ -76,7 +76,7 @@ export const updateCustomer = createAsyncThunk(
 export const fetchCustomerUsers = createAsyncThunk(
   `${name}/fetchCustomerUsers`,
   async (customer, { rejectWithValue, dispatch }) => {
-    await dispatch(fetchCustomerUsersRequested());
+    dispatch(fetchCustomerUsersRequested());
     try {
       const users = await apiClient.customers.getCustomerUsers(customer.id);
       return dispatch(fetchCustomerUsersSuccess(users));
