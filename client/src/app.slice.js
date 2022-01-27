@@ -29,29 +29,29 @@ const initialState = {
   trackingQueue: [],
 };
 
-export const logUserTracking = createAsyncThunk(
-  `${name}/logUserTracking`,
-  async (_, { rejectWithValue, getState, dispatch }) => {
-    const headers = getJsonAuthHeaders(getState());
-    const {
-      app: { trackingQueue },
-    } = getState();
-    if (trackingQueue.length > 0) {
-      const response = await fetch(`${apiClient.apiHost}/api/logs/tracking`, {
-        credentials: 'include',
-        method: 'POST',
-        headers,
-        body: JSON.stringify(trackingQueue),
-      });
-      if (!response.ok) {
-        // Leave items in state, so we can retry later.
-        return;
-      }
-      // Remove items from state
-      return dispatch(removeLogItems(trackingQueue));
+export const logUserTracking = () => async (dispatch, getState) => {
+  // TODO: this was reverted to normal asynch due to issues around proxies/immer ORB-1055
+  const headers = getJsonAuthHeaders(getState());
+  const {
+    app: { trackingQueue },
+  } = getState();
+  if (trackingQueue.length > 0) {
+    const response = await fetch(`${apiClient.apiHost}/api/logs/tracking`, {
+      credentials: 'include',
+      method: 'POST',
+      headers,
+      body: JSON.stringify(trackingQueue),
+    });
+
+    if (!response.ok) {
+      // Leave items in state, so we can retry later.
+      return;
     }
-  },
-);
+
+    // Remove items from state
+    return dispatch(removeLogItems(trackingQueue));
+  }
+};
 
 export const fetchAppConfig = createAsyncThunk(
   `${name}/fetchAppConfig`,
@@ -93,12 +93,6 @@ const appSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchAppConfig.rejected, (state, { payload }) => {
-      state.error = payload;
-    });
-    builder.addCase(logUserTracking.fulfilled, (state, { payload }) => {
-      state.trackingQueue = [...state.trackingQueue, payload];
-    });
-    builder.addCase(logUserTracking.rejected, (state, { payload }) => {
       state.error = payload;
     });
   },
