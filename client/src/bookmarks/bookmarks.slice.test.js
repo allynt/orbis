@@ -152,7 +152,7 @@ describe('Bookmark Slice', () => {
 
       server.use(
         rest.delete('*/api/bookmarks/:bookmarkId/', (req, res, ctx) => {
-          return res(ctx.status(200), ctx.json(bookmark));
+          return res(ctx.status(204));
         }),
       );
 
