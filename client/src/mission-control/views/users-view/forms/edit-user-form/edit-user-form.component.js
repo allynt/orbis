@@ -73,7 +73,12 @@ export const EditUserForm = ({
     return defaults;
   };
 
-  const { register, handleSubmit, errors, formState, control } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+    control,
+  } = useForm({
     defaultValues: getDefaults(),
     resolver: yupResolver(validationSchema),
   });
@@ -98,7 +103,7 @@ export const EditUserForm = ({
         <TextField
           name={FIELD_NAMES.name}
           id={FIELD_NAMES.name}
-          inputRef={register}
+          {...register(FIELD_NAMES.name)}
           label="Name"
           error={!!errors[FIELD_NAMES.name]}
           helperText={errors[FIELD_NAMES.name]?.message}
@@ -125,13 +130,13 @@ export const EditUserForm = ({
                 key={l.id}
                 name={l.orb}
                 control={control}
-                render={props => (
+                render={({ field: { onChange, value } }) => (
                   <FormControlLabel
                     label={l.orb}
                     control={
                       <Checkbox
-                        onChange={e => props.onChange(e.target.checked)}
-                        checked={props.value}
+                        onChange={e => onChange(e.target.checked)}
+                        checked={value}
                       />
                     }
                   />
@@ -151,30 +156,34 @@ export const EditUserForm = ({
           <Controller
             name="type"
             control={control}
-            as={
+            defaultValue={getDefaults().type}
+            render={({ field }) => (
               <RadioGroup row>
                 <FormControlLabel
+                  {...field}
                   label="Yes"
                   value={ADMIN_STATUS.manager}
+                  checked={field.value === ADMIN_STATUS.manager}
+                  disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
                 <FormControlLabel
+                  {...field}
                   label="No"
                   value={ADMIN_STATUS.member}
-                  disabled={
-                    oneAdminRemaining || currentUser?.id === user.user.id
-                  }
+                  checked={field.value === ADMIN_STATUS.member}
+                  disabled={currentUser?.id === user.user.id}
                   control={<Radio />}
                 />
               </RadioGroup>
-            }
+            )}
           />
         </FormControl>
       </Form.Row>
       <Form.Row centered>
         <Button
           type="submit"
-          disabled={!formState.isDirty || Object.keys(errors).length > 0}
+          disabled={!isDirty || Object.keys(errors).length > 0}
         >
           Save Changes
         </Button>

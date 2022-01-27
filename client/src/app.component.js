@@ -4,13 +4,14 @@ import { Box } from '@astrosat/astrosat-ui';
 
 import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import Accounts from 'accounts';
 import apiClient from 'api-client';
 import { ErrorFallback, LoadMaskFallback } from 'components';
 import LandingView from 'landing/landing.component';
+import RequiresAuth from 'utils/requires-auth.component';
 
 import { userKeySelector, userSelector } from './accounts/accounts.selectors';
 import { fetchCurrentUser } from './accounts/accounts.slice';
@@ -20,7 +21,6 @@ import {
   userTrackingIntervalSelector,
   backgroundLocationSelector,
 } from './app.slice';
-import PrivateRoute from './utils/private-route.component';
 
 const MapLayout = React.lazy(() =>
   import(/* webpackChunkName: "MapLayout" */ 'map'),
@@ -37,8 +37,6 @@ const Dashboard = React.lazy(() =>
 );
 
 const App = () => {
-  /** @type {import('history').Location<{backgroundLocation?: import('history').Location}>} */
-  const location = useLocation();
   const dispatch = useDispatch();
   const userTrackingInterval = useSelector(userTrackingIntervalSelector);
   const fetchUserRequestStatus = useSelector(
@@ -80,17 +78,36 @@ const App = () => {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <ReactTooltip />
         <React.Suspense fallback={<LoadMaskFallback />}>
-          <Switch location={backgroundLocation || location}>
-            <PrivateRoute exact path="/" user={user} component={LandingView} />
-            <Route path="/accounts" component={Accounts} />
-            <PrivateRoute path="/map" user={user} component={MapLayout} />
-            <PrivateRoute path="/dashboard" user={user} component={Dashboard} />
-          </Switch>
-          {backgroundLocation && (
-            <Switch>
-              <Route path="/mission-control" component={MissionControl} />
-            </Switch>
-          )}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <RequiresAuth user={user} redirectTo={'/accounts/login'}>
+                  <LandingView />
+                </RequiresAuth>
+              }
+            />
+            <Route path="accounts/*" element={<Accounts />} />
+            <Route
+              path="map"
+              element={
+                <RequiresAuth user={user} redirectTo={'/accounts/login'}>
+                  <MapLayout />
+                </RequiresAuth>
+              }
+            />
+            <Route
+              path="dashboard"
+              element={
+                <RequiresAuth user={user} redirectTo={'/accounts/login'}>
+                  <Dashboard />
+                </RequiresAuth>
+              }
+            />
+            {backgroundLocation && (
+              <Route path="/mission-control/*" element={<MissionControl />} />
+            )}
+          </Routes>
         </React.Suspense>
       </ErrorBoundary>
     </Box>

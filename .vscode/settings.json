@@ -36,7 +36,7 @@
   "python.linting.pylintEnabled": true,
   "python.linting.pylintPath": "./server/.venv/bin/pylint",
   "python.linting.pylintUseMinimalCheckers": false,
-  "python.pythonPath": "./server/.venv/bin/python",
+  "python.defaultInterpreterPath": "./server/.venv/bin/python",
   "[python]": {
     "editor.tabSize": 4
   },

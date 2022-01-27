@@ -103,8 +103,8 @@ const renderComponent = ({
     <SearchForm
       satellites={satellites}
       aoi={aoi}
-      currentSearch={currentSearch}
       aoiTooLarge={aoiTooLarge}
+      currentSearch={currentSearch}
       onSubmit={onSubmit}
       onInfoClick={onInfoClick}
     />,
@@ -120,24 +120,6 @@ describe('<SearchForm />', () => {
         getByRole('checkbox', { name: satellite.label }),
       ).toBeInTheDocument(),
     );
-  });
-
-  it('Calls onSubmit with the new values when submitted', async () => {
-    const expected = {
-      satellites: ['sat0', 'sat2'],
-      start_date: new Date(2000, 0, 1).toISOString(),
-      end_date: endOfDay(new Date(2010, 0, 1)).toISOString(),
-    };
-    const { getByRole, onSubmit } = renderComponent();
-    ['Satellite 0', 'Satellite 2'].forEach(name =>
-      userEvent.click(getByRole('checkbox', { name })),
-    );
-    userEvent.clear(getByRole('textbox', { name: 'Start Date' }));
-    userEvent.type(getByRole('textbox', { name: 'Start Date' }), '01/01/2000');
-    userEvent.clear(getByRole('textbox', { name: 'End Date' }));
-    userEvent.type(getByRole('textbox', { name: 'End Date' }), '01/01/2010');
-    userEvent.click(getByRole('button', { name: 'Search' }));
-    await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
   });
 
   it('Allows for changing date using the picker', async () => {
@@ -157,6 +139,24 @@ describe('<SearchForm />', () => {
     userEvent.click(getAllByRole('button', { name: '1' })[0]);
     userEvent.click(getAllByRole('button', { name: '29' })[1]);
     userEvent.click(getByRole('button', { name: 'Apply' }));
+    userEvent.click(getByRole('button', { name: 'Search' }));
+    await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
+  });
+
+  it('Calls onSubmit with the new values when submitted', async () => {
+    const expected = {
+      satellites: ['sat0', 'sat2'],
+      start_date: new Date(2000, 0, 1).toISOString(),
+      end_date: endOfDay(new Date(2010, 0, 1)).toISOString(),
+    };
+    const { getByRole, onSubmit } = renderComponent();
+    ['Satellite 0', 'Satellite 2'].forEach(name =>
+      userEvent.click(getByRole('checkbox', { name })),
+    );
+    userEvent.clear(getByRole('textbox', { name: 'Start Date' }));
+    userEvent.type(getByRole('textbox', { name: 'Start Date' }), '01/01/2000');
+    userEvent.clear(getByRole('textbox', { name: 'End Date' }));
+    userEvent.type(getByRole('textbox', { name: 'End Date' }), '01/01/2010');
     userEvent.click(getByRole('button', { name: 'Search' }));
     await waitFor(() => expect(onSubmit).toBeCalledWith(expected));
   });
@@ -217,7 +217,7 @@ describe('<SearchForm />', () => {
         ]}
       />,
     );
-    expect(getByRole('button', { name: 'Search' })).not.toBeDisabled();
+    expect(getByRole('button', { name: 'Search' })).toBeEnabled();
   });
 
   it('Calls onInfoClick when an info button is clicked', () => {

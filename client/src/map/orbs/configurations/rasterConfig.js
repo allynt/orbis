@@ -5,7 +5,7 @@ import { dataSelector, visibilitySelector } from '../layers.slice';
 /**
  * @type {import('typings').LayerConfiguration}
  */
-export default ({ id, activeSources, authToken, orbState, propertyName }) => {
+const Config = ({ id, activeSources, authToken, orbState, propertyName }) => {
   const source = find(activeSources, { source_id: id });
   const visible = visibilitySelector(id)(orbState);
   const data = dataSelector(id)(orbState);
@@ -26,3 +26,5 @@ export default ({ id, activeSources, authToken, orbState, propertyName }) => {
     },
   };
 };
+
+export default Config;

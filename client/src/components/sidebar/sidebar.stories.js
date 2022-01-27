@@ -28,7 +28,9 @@ const AdminHeader = () => (
   </ListItem>
 );
 
-export default { title: 'Components/Sidebar', component: Sidebar };
+const Index = { title: 'Components/Sidebar', component: Sidebar };
+
+export default Index;
 
 const Template = args => <Sidebar {...args} />;
 

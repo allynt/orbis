@@ -48,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 const Wrapper = ({ children }) => {
   const styles = useStyles();
+
   return (
     <ThemeProvider theme="light">
       <ProgressiveImage

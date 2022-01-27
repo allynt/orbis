@@ -10,10 +10,10 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { object as yupObject } from 'yup';
 
-import { LOGIN } from 'accounts/accounts.constants';
+import { LOGIN_URL } from 'accounts/accounts.constants';
 import { status } from 'accounts/accounts.slice';
 import { ErrorWell } from 'accounts/error-well.component';
 import { Form } from 'components';
@@ -28,7 +28,7 @@ const PasswordResetSuccessView = () => (
     <Form.Row centered>
       <Button
         // @ts-ignore
-        to={LOGIN}
+        to={LOGIN_URL}
         component={RouterLink}
       >
         Continue
@@ -45,13 +45,18 @@ const validationSchema = yupObject({
 const PasswordResetForm = ({
   confirmResetPassword,
   resetStatus,
-  match,
   error,
   passwordMinLength,
   passwordMaxLength,
   passwordStrength,
 }) => {
-  const { register, handleSubmit, errors, watch } = useForm({
+  const params = useParams();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: yupResolver(validationSchema),
     context: { passwordMinLength, passwordMaxLength, passwordStrength },
   });
@@ -60,9 +65,7 @@ const PasswordResetForm = ({
     return <PasswordResetSuccessView />;
   }
 
-  const onSubmit = submission => {
-    confirmResetPassword(submission, match.params);
-  };
+  const onSubmit = submission => confirmResetPassword(submission, params);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -70,7 +73,7 @@ const PasswordResetForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.newPassword)}
           id={FIELD_NAMES.newPassword}
           name={FIELD_NAMES.newPassword}
           label="New Password"
@@ -85,7 +88,7 @@ const PasswordResetForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.newPasswordConfirm)}
           id={FIELD_NAMES.newPasswordConfirm}
           name={FIELD_NAMES.newPasswordConfirm}
           label="New Password Confirmation"
@@ -103,11 +106,7 @@ const PasswordResetForm = ({
 
       <Form.Row component={Typography} align="center">
         Do you have an account?&nbsp;
-        <Link
-          // @ts-ignore
-          to={LOGIN}
-          component={RouterLink}
-        >
+        <Link to={LOGIN_URL} component={RouterLink}>
           Login
         </Link>
       </Form.Row>

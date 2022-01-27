@@ -29,10 +29,10 @@ const Checkbox = ({ name, control, label, onInfoClick }) => {
       <Controller
         name={name}
         control={control}
-        render={props => (
+        render={({ field: { onChange, value } }) => (
           <FormControlLabel
-            checked={props.value}
-            onChange={(_event, checked) => props.onChange(checked)}
+            checked={value}
+            onChange={(_event, checked) => onChange(checked)}
             label={label}
             control={<AuiCheckbox />}
           />
@@ -158,7 +158,14 @@ const SearchForm = ({
   const styles = useStyles({});
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const { register, handleSubmit, control, setValue, watch, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
     defaultValues: transform.toForm(currentSearch, satellites),
     resolver: yupResolver(validationSchema),
   });

@@ -4,8 +4,8 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import { push } from 'connected-react-router';
 import { NotificationManager } from 'react-notifications';
+import { push } from 'redux-first-history';
 
 import apiClient from 'api-client';
 import {

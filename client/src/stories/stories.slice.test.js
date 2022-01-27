@@ -1,6 +1,8 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
+import { server } from 'mocks/server';
 
 import reducer, {
   fetchStoriesSuccess,
@@ -16,8 +18,6 @@ import reducer, {
   STORIES,
 } from './stories.slice';
 
-fetch.enableMocks();
-
 const mockStore = configureMockStore([thunk]);
 
 describe('Stories Slice', () => {
@@ -25,23 +25,16 @@ describe('Stories Slice', () => {
     let store = null;
 
     beforeEach(() => {
-      fetch.resetMocks();
-
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
       });
     });
 
     it('should dispatch fetch stories failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = [
@@ -57,7 +50,11 @@ describe('Stories Slice', () => {
     });
 
     it('should dispatch fetch stories success action.', async () => {
-      fetch.mockResponse(JSON.stringify(STORIES));
+      server.use(
+        rest.get('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(STORIES));
+        }),
+      );
 
       const expectedActions = [
         { type: fetchStoriesSuccess.type, payload: STORIES },
@@ -69,15 +66,10 @@ describe('Stories Slice', () => {
     });
 
     it('should dispatch add story failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.post('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = [
@@ -96,7 +88,12 @@ describe('Stories Slice', () => {
       const story = {
         id: 5,
       };
-      fetch.mockResponse(JSON.stringify(story));
+
+      server.use(
+        rest.post('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(story));
+        }),
+      );
 
       const expectedActions = [{ type: addStorySuccess.type, payload: story }];
 
@@ -106,15 +103,10 @@ describe('Stories Slice', () => {
     });
 
     it('should dispatch delete story failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.delete('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
       const expectedActions = [
@@ -130,7 +122,11 @@ describe('Stories Slice', () => {
     });
 
     it('should dispatch delete story success action.', async () => {
-      fetch.mockResponse(JSON.stringify(STORIES[1]));
+      server.use(
+        rest.delete('*/api/stories/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(STORIES[1]));
+        }),
+      );
 
       const expectedActions = [
         { type: deleteStorySuccess.type, payload: STORIES[1] },

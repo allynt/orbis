@@ -1,7 +1,6 @@
-import React from 'react';
+import { rest } from 'msw';
 
-import fetchMock from 'jest-fetch-mock';
-
+import { server } from 'mocks/server';
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import {
@@ -36,6 +35,7 @@ const setup = (initialEntries = [''], state) => {
         passwordMinLength: 0,
         passwordMaxLength: 255,
         passwordStrength: 1,
+        isRegistrationOpen: true,
       },
     },
     accounts: { user: { email: 'test@test.com', customers: [] } },
@@ -47,8 +47,6 @@ const setup = (initialEntries = [''], state) => {
     history: { initialEntries },
   });
 };
-
-fetchMock.enableMocks();
 
 describe('Accounts index', () => {
   it(`Shows journey selection when route is ${REGISTER}`, async () => {
@@ -69,7 +67,18 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${registerCustomer.name} when submitted`, async () => {
-      fetchMock.mockResponse(JSON.stringify({}));
+      server.use(
+        rest.post('*/api/customers/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.post('*/api/customers/:customerId/users/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.get('*/api/users/current', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
       const { store } = setup([REGISTER_CUSTOMER]);
 
       userEvent.type(
@@ -140,6 +149,14 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${placeOrder.name} action when submitted`, async () => {
+      server.use(
+        rest.post('*/api/customers/:customerId/orders/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.get('*/api/customers/undefined', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
       const { store } = setup([REGISTER_CUSTOMER_ORDER]);
 
       userEvent.click(screen.getByRole('checkbox'));
@@ -157,7 +174,6 @@ describe('Accounts index', () => {
     it.each([LOGIN, CONFIRM_EMAIL])(
       `Shows LoginForm when route is %s`,
       async path => {
-        fetchMock.once(JSON.stringify({}));
         setup([path]);
 
         await waitFor(() =>
@@ -171,6 +187,7 @@ describe('Accounts index', () => {
     it('Redirects to root if user is logged in, is verified, and registration stage is falsy', () => {
       const state = {
         accounts: { user: { is_verified: true }, userKey: '123' },
+        app: { config: { isRegistrationOpen: true } },
       };
 
       const { history } = setup([LOGIN], state);
@@ -179,6 +196,15 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${login.fulfilled.type} action when submitted`, async () => {
+      server.use(
+        rest.post('*/api/authentication/login/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+        rest.get('*/api/users/current', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
       const { store } = setup([LOGIN]);
 
       userEvent.type(
@@ -201,6 +227,12 @@ describe('Accounts index', () => {
 
   describe(`${PASSWORD_CHANGE}`, () => {
     it(`dispatches ${changePassword.fulfilled.type} action when submitted`, async () => {
+      server.use(
+        rest.post('*/api/authentication/password/change/', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({}));
+        }),
+      );
+
       const { store } = setup([PASSWORD_CHANGE]);
 
       userEvent.type(
@@ -238,7 +270,6 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches ${resetPasswordRequest.fulfilled.type} action when submitted`, async () => {
-      fetchMock.once(JSON.stringify({}));
       const { store } = setup([PASSWORD_RESET_REQUEST]);
 
       userEvent.type(screen.getByRole('textbox'), 'test@test.com');
@@ -266,7 +297,6 @@ describe('Accounts index', () => {
     });
 
     it(`dispatches the ${resetPasswordConfirm.fulfilled.type} action when filled out correctly`, async () => {
-      fetchMock.once(JSON.stringify({}));
       const { store } = setup([PASSWORD_RESET]);
 
       userEvent.type(

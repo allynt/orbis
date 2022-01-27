@@ -3,7 +3,7 @@ import React from 'react';
 import { render as rtlRender, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { HistoryRouter } from 'redux-first-history/rr6';
 import createMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -25,9 +25,9 @@ function render(ui, { state = {}, history: historyOptions, ...options } = {}) {
   const history = createMemoryHistory(historyOptions);
   const Wrapper = ({ children }) => (
     <Provider store={store}>
-      <Router history={history}>
+      <HistoryRouter history={history}>
         <MapProvider>{children}</MapProvider>
-      </Router>
+      </HistoryRouter>
     </Provider>
   );
   const utils = rtlRender(ui, { wrapper: Wrapper, ...options });

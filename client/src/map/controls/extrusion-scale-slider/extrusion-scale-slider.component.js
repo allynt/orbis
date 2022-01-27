@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
   alpha,
@@ -86,7 +86,12 @@ export const ExtrusionScaleSlider = React.memo(
   ({ value, onChange, mapStyle, open = false }) => {
     const lightMapStyle = mapStyle === 'light' || mapStyle === 'streets';
     const styles = useStyles({ lightMapStyle });
-    const { register, handleSubmit, errors, setValue } = useForm({
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      setValue,
+    } = useForm({
       mode: 'all',
       defaultValues: {
         text: value,
@@ -134,7 +139,11 @@ export const ExtrusionScaleSlider = React.memo(
               open={!!errors.text}
               title={errors.text?.message ?? ''}
             >
-              <input className={styles.input} name="text" ref={register} />
+              <input
+                className={styles.input}
+                name="text"
+                {...register('text')}
+              />
             </Tooltip>
           </Grid>
         </Grid>

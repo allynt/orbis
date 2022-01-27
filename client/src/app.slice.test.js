@@ -1,11 +1,11 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { server } from 'mocks/server';
+
 import reducer, {
   fetchAppConfig,
-  appConfigSuccess,
-  appConfigFailure,
   mapboxTokenSelector,
   addLogItem,
   removeLogItems,
@@ -13,8 +13,6 @@ import reducer, {
 } from './app.slice';
 
 const mockStore = configureMockStore([thunk]);
-
-fetch.enableMocks();
 
 describe('App Slice', () => {
   describe('App Actions', () => {
@@ -27,8 +25,6 @@ describe('App Slice', () => {
     ];
 
     beforeEach(() => {
-      fetch.resetMocks();
-
       store = mockStore({
         accounts: { userKey: 'Test-User-Key' },
         app: {
@@ -38,23 +34,22 @@ describe('App Slice', () => {
     });
 
     it('should dispatch fetch app config failure action.', async () => {
-      fetch.mockResponse(
-        JSON.stringify({
-          message: 'Test error message',
+      server.use(
+        rest.get('*/api/app/config', (req, res, ctx) => {
+          return res(ctx.status(401, 'Test Error'));
         }),
-        {
-          ok: false,
-          status: 401,
-          statusText: 'Test Error',
-        },
       );
 
-      const expectedActions = [
-        { type: appConfigFailure.type, payload: { message: '401 Test Error' } },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchAppConfig.rejected.type,
+          payload: {
+            message: '401 Test Error',
+          },
+        }),
+      ]);
 
       await store.dispatch(fetchAppConfig());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
 
@@ -76,26 +71,38 @@ describe('App Slice', () => {
         ],
       };
 
-      fetch.mockResponse(JSON.stringify(config));
+      server.use(
+        rest.get('*/api/app/config', (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json(config));
+        }),
+      );
 
-      const expectedActions = [
-        { type: appConfigSuccess.type, payload: config },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: fetchAppConfig.fulfilled.type,
+          payload: config,
+        }),
+      ]);
 
       await store.dispatch(fetchAppConfig());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should dispatch logUserTracking action.', async () => {
-      fetch.mockResponse(JSON.stringify(trackingQueue));
+      server.use(
+        rest.post('*/api/logs/tracking', (req, res, ctx) => {
+          return res(ctx.status(200));
+        }),
+      );
 
-      const expectedActions = [
-        { type: removeLogItems.type, payload: trackingQueue },
-      ];
+      const expectedActions = expect.arrayContaining([
+        expect.objectContaining({
+          type: removeLogItems.type,
+          payload: trackingQueue,
+        }),
+      ]);
 
       await store.dispatch(logUserTracking());
-
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -121,7 +128,7 @@ describe('App Slice', () => {
       const config = { message: 'Test App Config' };
 
       const actualState = reducer(beforeState, {
-        type: appConfigSuccess.type,
+        type: fetchAppConfig.fulfilled.type,
         payload: config,
       });
 
@@ -132,7 +139,7 @@ describe('App Slice', () => {
       const error = { message: 'Test App Config Error' };
 
       const actualState = reducer(beforeState, {
-        type: appConfigFailure.type,
+        type: fetchAppConfig.rejected.type,
         payload: error,
       });
 
@@ -150,7 +157,7 @@ describe('App Slice', () => {
       expect(actualState.trackingQueue).toEqual([payload]);
     });
 
-    it('should remove a subset of log items fro,=m state', () => {
+    it('should remove a subset of log items from state', () => {
       const payload = [
         { content: { id: 'Test id 2' }, tags: ['tag3', 'tag4'] },
       ];

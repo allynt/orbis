@@ -1,6 +1,9 @@
 import React from 'react';
 
-import { REGISTER_CUSTOMER_USER, REGISTER } from 'accounts/accounts.constants';
+import {
+  REGISTER_CUSTOMER_USER_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import JourneySelection from './journey-selection.component';
@@ -27,9 +30,7 @@ describe('<JourneySelection />', () => {
   it('disables the Team radio when team registration is not open', () => {
     render(<JourneySelection customerRegistrationIsOpen={false} />);
 
-    expect(screen.getByRole('radio', { name: TEAM_REGEX })).toHaveAttribute(
-      'disabled',
-    );
+    expect(screen.getByRole('radio', { name: TEAM_REGEX })).toBeDisabled();
   });
 
   it('disables the Individual radio when individual registration is not open', () => {
@@ -37,7 +38,7 @@ describe('<JourneySelection />', () => {
 
     expect(
       screen.getByRole('radio', { name: INDIVIDUAL_REGEX }),
-    ).toHaveAttribute('disabled');
+    ).toBeDisabled();
   });
 
   it('disables the Continue button when no selection has been made', () => {
@@ -53,9 +54,7 @@ describe('<JourneySelection />', () => {
 
     userEvent.click(screen.getByRole('radio', { name: TEAM_REGEX }));
 
-    expect(
-      screen.getByRole('button', { name: CONTINUE_REGEX }),
-    ).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: CONTINUE_REGEX })).toBeEnabled();
   });
 
   it('navigates to individual registration when the selection is Individual and Continue is clicked', () => {
@@ -64,7 +63,7 @@ describe('<JourneySelection />', () => {
     userEvent.click(screen.getByRole('radio', { name: INDIVIDUAL_REGEX }));
     userEvent.click(screen.getByRole('button', { name: CONTINUE_REGEX }));
 
-    expect(history.location.pathname).toBe(REGISTER);
+    expect(history.location.pathname).toBe(REGISTER_URL);
   });
 
   it('navigates to customer registration when Team is selected and Continue is clicked', () => {
@@ -73,7 +72,7 @@ describe('<JourneySelection />', () => {
     userEvent.click(screen.getByRole('radio', { name: TEAM_REGEX }));
     userEvent.click(screen.getByRole('button', { name: CONTINUE_REGEX }));
 
-    expect(history.location.pathname).toBe(REGISTER_CUSTOMER_USER);
+    expect(history.location.pathname).toBe(REGISTER_CUSTOMER_USER_URL);
   });
 
   it('Has a terms and conditions link', () => {

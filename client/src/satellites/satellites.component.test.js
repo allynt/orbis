@@ -1,7 +1,3 @@
-import React from 'react';
-
-import fetch from 'jest-fetch-mock';
-
 import { fireEvent, render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { Panels } from './satellite.constants';
@@ -26,8 +22,6 @@ const RESULTS_TAB = ['tab', { name: 'Results' }];
 /** @type {[matcher: import('@testing-library/react').ByRoleMatcher, options?: import('@testing-library/react').ByRoleOptions]} */
 const VISUALISATION_TAB = ['tab', { name: 'Visualisation' }];
 
-fetch.enableMocks();
-
 describe('Satellites', () => {
   let state;
 
@@ -35,17 +29,17 @@ describe('Satellites', () => {
     state = {
       accounts: {},
       app: { config: { maximumAoiArea: 20 } },
-      satellites: { satellites, scenes },
+      satellites: { satellites, scenes, visiblePanel: Panels.SEARCH },
     };
-
-    fetch.mockResponse(JSON.stringify([], { status: 200 }));
   });
 
   it.each`
     thing           | action
     ${'satellites'} | ${fetchSatellites.fulfilled}
   `('fetches $thing if there are none', async ({ action }) => {
-    const { store } = render(<Satellites />, { state: {} });
+    const { store } = render(<Satellites />, {
+      state: { satellites: { visiblePanel: Panels.SEARCH } },
+    });
 
     await waitFor(() =>
       expect(store.getActions()).toEqual(
@@ -59,7 +53,9 @@ describe('Satellites', () => {
   describe('top navigation', () => {
     describe('has results and visualisation disabled when no search has been made', () => {
       it('results', () => {
-        render(<Satellites />, { state: {} });
+        render(<Satellites />, {
+          state: { satellites: { visiblePanel: Panels.SEARCH } },
+        });
         expect(screen.getByRole(...RESULTS_TAB)).toBeDisabled();
       });
 
@@ -73,11 +69,15 @@ describe('Satellites', () => {
       render(<Satellites />, {
         state: {
           ...state,
-          satellites: { scenes, selectedScene: null },
+          satellites: {
+            scenes,
+            selectedScene: null,
+            visiblePanel: Panels.SEARCH,
+          },
         },
       });
 
-      expect(screen.getByRole(...RESULTS_TAB)).not.toBeDisabled();
+      expect(screen.getByRole(...RESULTS_TAB)).toBeEnabled();
       expect(screen.getByRole(...VISUALISATION_TAB)).toBeDisabled();
     });
 
@@ -85,12 +85,17 @@ describe('Satellites', () => {
       render(<Satellites />, {
         state: {
           ...state,
-          satellites: { satellites, scenes, selectedScene: scenes[0] },
+          satellites: {
+            satellites,
+            scenes,
+            selectedScene: scenes[0],
+            visiblePanel: Panels.SEARCH,
+          },
         },
       });
 
-      expect(screen.getByRole(...RESULTS_TAB)).not.toBeDisabled();
-      expect(screen.getByRole(...VISUALISATION_TAB)).not.toBeDisabled();
+      expect(screen.getByRole(...RESULTS_TAB)).toBeEnabled();
+      expect(screen.getByRole(...VISUALISATION_TAB)).toBeEnabled();
     });
 
     it.each`
@@ -104,7 +109,12 @@ describe('Satellites', () => {
         const { store } = render(<Satellites />, {
           state: {
             ...state,
-            satellites: { satellites, scenes, selectedScene: scenes[0] },
+            satellites: {
+              satellites,
+              scenes,
+              selectedScene: scenes[0],
+              visiblePanel: Panels.SEARCH,
+            },
           },
         });
 

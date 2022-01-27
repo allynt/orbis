@@ -15,7 +15,7 @@ import { DateStepper } from './date-stepper/date-stepper.component';
  *  stateKey?: string
  * }>}
  * */
-export default ({
+const Stepper = ({
   selectedLayer,
   dates: datesProp,
   defaultValue,
@@ -48,3 +48,5 @@ export default ({
     />
   );
 };
+
+export default Stepper;

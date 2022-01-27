@@ -35,7 +35,7 @@ const COLORS = {
 /**
  * @type {import('typings').LayerConfiguration}
  */
-export default ({ id, activeSources, dispatch }) => {
+const Config = ({ id, activeSources, dispatch }) => {
   const source = find(activeSources, { source_id: id });
   const { url } = source.metadata;
 
@@ -82,3 +82,5 @@ export default ({ id, activeSources, dispatch }) => {
     },
   };
 };
+
+export default Config;

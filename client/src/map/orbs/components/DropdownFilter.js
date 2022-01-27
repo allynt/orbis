@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filterValueSelector, setFilterValue } from '../layers.slice';
 import { DropdownFilter } from './dropdown-filter/dropdown-filter.component';
 
-export default ({ selectedLayer, options, defaultValue, label }) => {
+const Filter = ({ selectedLayer, options, defaultValue, label }) => {
   const dispatch = useDispatch();
 
   const filterValue = useSelector(state =>
@@ -30,3 +30,5 @@ export default ({ selectedLayer, options, defaultValue, label }) => {
     />
   );
 };
+
+export default Filter;

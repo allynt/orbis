@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { selectLicenceInformation } from 'mission-control/mission-control.slice';
 import { Table } from 'components/table';
+import { selectLicenceInformation } from 'mission-control/mission-control.slice';
 import { Wrapper } from 'mission-control/shared-components/wrapper.component';
 
 /**
@@ -60,7 +60,9 @@ export const Subscriptions = ({ licenceInformation }) => {
   );
 };
 
-export default () => {
+const SubscriptionsWrapper = () => {
   const licenceInformation = useSelector(selectLicenceInformation);
   return <Subscriptions licenceInformation={licenceInformation} />;
 };
+
+export default SubscriptionsWrapper;

@@ -12,11 +12,11 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { push } from 'connected-react-router';
 import { format } from 'date-fns';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { useAnalysisPanelContext } from 'analysis-panel/analysis-panel-context';
 import { useMap } from 'MapContext';
@@ -129,7 +129,7 @@ const PDF = ({
   selectedTimestamp,
 }) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const user = useSelector(userSelector);
 
@@ -198,9 +198,10 @@ const PDF = ({
   };
 
   if (!selectedProperty?.source_id) {
-    dispatch(push('/'));
+    navigate('/');
     return null;
   }
+
   return (
     <Grid container direction="column" className={styles.container}>
       <Grid

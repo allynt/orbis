@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 
 import { status } from 'accounts/accounts.slice';
 import Wrapper from 'accounts/wrapper.component';
-import { history } from 'root.reducer';
+import { history } from 'store';
 
 import PasswordResetForm from './password-reset-form.component';
 

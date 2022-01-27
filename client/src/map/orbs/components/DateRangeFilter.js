@@ -6,7 +6,7 @@ import { filterValueSelector, setFilterValue } from '../layers.slice';
 import { DateRangeFilter } from './date-range-filter/date-range-filter.component';
 
 /** @type {import('typings').SidebarComponent<{minDate?: string, maxDate?: string, label?: string}>} */
-export default ({ selectedLayer, minDate, maxDate, label }) => {
+const Filter = ({ selectedLayer, minDate, maxDate, label }) => {
   const dispatch = useDispatch();
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer.source_id)(state?.orbs),
@@ -31,3 +31,5 @@ export default ({ selectedLayer, minDate, maxDate, label }) => {
     />
   );
 };
+
+export default Filter; //

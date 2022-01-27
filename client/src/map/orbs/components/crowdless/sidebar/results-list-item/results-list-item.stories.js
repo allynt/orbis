@@ -1,18 +1,20 @@
 import * as React from 'react';
 
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import ResultsListItem from './results-list-item.component';
 
 if (isChromatic()) faker.seed(1);
 
-export default {
+const Index = {
   title: 'Orbs/Crowdless/ResultsListItem',
   argTypes: {
     onClick: { action: 'onClick' },
   },
 };
+
+export default Index;
 
 const Template = args => <ResultsListItem {...args} />;
 

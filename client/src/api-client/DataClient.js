@@ -13,7 +13,7 @@ export class DataClient extends SubClient {
    * }>}
    */
   async getSources() {
-    const response = await this.makeAuthenticatedRequest('/sources');
+    const response = await this.makeAuthenticatedRequest('/sources/');
     return response.json();
   }
 }

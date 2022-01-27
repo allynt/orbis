@@ -159,8 +159,10 @@ const configuration = ({
       return [...COLOR_HOVER, opacity];
     }
 
-    const color = /** @type {[number,number,number]} */ (colorScale &&
-      colorScale.get(getValue(d, selectedProperty, selectedTimestamp)));
+    const color = /** @type {[number,number,number]} */ (
+      colorScale &&
+        colorScale.get(getValue(d, selectedProperty, selectedTimestamp))
+    );
 
     return [...color, opacity];
   };

@@ -30,14 +30,12 @@ const useStyles = makeStyles(theme => ({
  * @param {number} resultsLength
  * @returns {(isFetchingResults: boolean, hasScenes: boolean) => string}
  */
-const resultsText = (strings, resultsLength) => (
-  isFetchingResults,
-  hasScenes,
-) => {
-  if (isFetchingResults) return 'Loading Results...';
-  if (!isFetchingResults && !hasScenes) return `No Results`;
-  return strings.join(`${resultsLength}`);
-};
+const resultsText =
+  (strings, resultsLength) => (isFetchingResults, hasScenes) => {
+    if (isFetchingResults) return 'Loading Results...';
+    if (!isFetchingResults && !hasScenes) return `No Results`;
+    return strings.join(`${resultsLength}`);
+  };
 
 /**
  * @param {{

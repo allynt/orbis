@@ -1,17 +1,20 @@
-import * as React from 'react';
+import { rest } from 'msw';
 
-import fetch from 'jest-fetch-mock';
-
+import { server } from 'mocks/server';
 import { render, screen } from 'test/test-utils';
 
 import Map from './map.component';
 
-jest.mock('@deck.gl/react');
-
-fetch.enableMocks();
+jest.mock('@deck.gl/react', () => () => <div />);
 
 describe('<Map />', () => {
-  beforeEach(() => fetch.mockResponse(JSON.stringify({})));
+  beforeEach(() =>
+    server.use(
+      rest.get('*/api/stories/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    ),
+  );
 
   it('displays the load mask when bookmarks is loading', () => {
     render(<Map />, {

@@ -2,14 +2,14 @@ import React from 'react';
 
 import { List } from '@astrosat/astrosat-ui';
 
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { VIEWS } from '../mission-control.constants';
 import SidePanelListItem from './side-panel-list-item.component';
 
 export const SidePanel = ({ userIsAdmin = false, className = '' }) => {
-  const { pathname } = useLocation();
-  const { path } = useRouteMatch();
+  const location = useLocation();
+
   return (
     <List
       className={className}
@@ -24,8 +24,8 @@ export const SidePanel = ({ userIsAdmin = false, className = '' }) => {
             key={label}
             view={label}
             Icon={Icon}
-            to={`${path}${route}`}
-            selected={pathname.includes(route)}
+            to={`/mission-control${route}`}
+            selected={location.pathname.includes(route)}
           />
         ))}
     </List>

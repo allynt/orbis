@@ -1,34 +1,34 @@
 import React from 'react';
 
-import { push } from 'connected-react-router';
-import fetchMock from 'jest-fetch-mock';
+import { rest } from 'msw';
+import { Route, Routes } from 'react-router-dom';
 
 import { placeOrder } from 'accounts/accounts.slice';
 import { fetchOrbs } from 'data-layers/data-layers.slice';
+import { server } from 'mocks/server';
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import { Store } from './store.component';
 
 const orbs = new Array(5).fill().map((_, i) => ({ id: i, name: `Orb ${i}` }));
 
-fetchMock.enableMocks();
-
-const setup = ({ state = { data: { orbs } }, pathname = '' } = {}) => {
-  const path = '/mission-control/store';
+const setup = ({ state = { data: { orbs } }, pathname = '/store' } = {}) => {
   return render(
-    <Store
-      match={{ path }}
-      location={{ key: '123', pathname: `${path}${pathname}` }}
-    />,
-    { state },
+    <Routes>
+      <Route path="/store/*" element={<Store />} />
+      <Route
+        path="/mission-control/store/completion/:orbId/:users"
+        element={<div>Complete</div>}
+      />
+    </Routes>,
+    {
+      state,
+      history: { initialEntries: [pathname] },
+    },
   );
 };
 
 describe('<Store />', () => {
-  beforeEach(() => {
-    fetchMock.resetMocks();
-  });
-
   it("Fetches orbs if there aren't any", () => {
     const { store } = setup({ state: { data: { orbs: undefined } } });
 
@@ -44,14 +44,14 @@ describe('<Store />', () => {
   });
 
   it('Shows the orb details page for the orb id in location', () => {
-    setup({ pathname: '/1' });
+    setup({ pathname: '/store/1' });
 
     expect(screen.getByRole('heading', { name: orbs[1].name })).toBeVisible();
   });
 
   it('Shows the checkout view', () => {
     setup({
-      pathname: '/checkout/?orbId=1&users=10',
+      pathname: '/store/checkout/1/10',
     });
 
     expect(
@@ -61,7 +61,7 @@ describe('<Store />', () => {
 
   it('Shows the completion view', () => {
     setup({
-      pathname: '/completion/?orbId=1&users=10',
+      pathname: '/store/completion/1/10',
     });
 
     expect(
@@ -71,9 +71,23 @@ describe('<Store />', () => {
   });
 
   it('Places an order when the checkout confirm button is clicked and navigates to completion on success', async () => {
-    fetchMock.mockResponse(JSON.stringify({}));
-    const { store } = setup({
-      pathname: '/checkout/?orbId=1&users=10',
+    server.use(
+      rest.get('*/orbs/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+      rest.get('*/data/sources/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+      rest.get('*/customers/:customerId', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+      rest.post('*/customers/:customerId/orders/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    );
+
+    const { store, history } = setup({
+      pathname: '/store/checkout/1/10',
     });
 
     userEvent.click(screen.getByRole('checkbox'));
@@ -81,10 +95,9 @@ describe('<Store />', () => {
     expect(store.getActions()).toContainEqual(
       expect.objectContaining({ type: placeOrder.pending.type }),
     );
+
     await waitFor(() =>
-      expect(store.getActions()).toContainEqual(
-        push(expect.stringContaining('completion')),
-      ),
+      expect(history.location.pathname).toContain('completion'),
     );
   });
 });

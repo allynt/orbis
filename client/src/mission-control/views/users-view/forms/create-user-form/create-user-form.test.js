@@ -9,13 +9,13 @@ import { CreateUserForm } from './create-user-form.component';
 
 describe('<CreateUserForm />', () => {
   it('Has a name field', () => {
-    const { getByLabelText } = render(<CreateUserForm />);
-    expect(getByLabelText('Name')).toBeInTheDocument();
+    const { getByRole } = render(<CreateUserForm />);
+    expect(getByRole('textbox', { name: 'Name' })).toBeInTheDocument();
   });
 
   it('Has an email field', () => {
-    const { getByLabelText } = render(<CreateUserForm />);
-    expect(getByLabelText('Email')).toBeInTheDocument();
+    const { getByRole } = render(<CreateUserForm />);
+    expect(getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
   });
 
   it('Has a checkbox for each available licence', () => {
@@ -23,11 +23,11 @@ describe('<CreateUserForm />', () => {
       Rice: { available: 1 },
       Oil: { available: 1 },
     };
-    const { getByLabelText } = render(
+    const { getByRole } = render(
       <CreateUserForm licenceInformation={licences} />,
     );
     Object.keys(licences).forEach(licence =>
-      expect(getByLabelText(licence)).toBeInTheDocument(),
+      expect(getByRole('checkbox', { name: licence })).toBeInTheDocument(),
     );
   });
 
@@ -36,10 +36,10 @@ describe('<CreateUserForm />', () => {
       Rice: { available: 1 },
       Oil: { available: 0 },
     };
-    const { getByLabelText } = render(
+    const { getByRole } = render(
       <CreateUserForm licenceInformation={licences} />,
     );
-    expect(getByLabelText('Oil')).toHaveProperty('disabled', true);
+    expect(getByRole('checkbox', { name: 'Oil' })).toBeDisabled();
   });
 
   describe('Shows text if the customer has no licences', () => {
@@ -72,13 +72,13 @@ describe('<CreateUserForm />', () => {
       email: 'test@test.com',
       licences: ['Rice'],
     };
-    const { getByText, getByLabelText } = render(
+    const { getByRole } = render(
       <CreateUserForm licenceInformation={licences} onSubmit={onSubmit} />,
     );
-    userEvent.type(getByLabelText('Name'), expected.name);
-    userEvent.type(getByLabelText('Email'), expected.email);
-    userEvent.click(getByLabelText('Rice'));
-    userEvent.click(getByText('Create User'));
+    userEvent.type(getByRole('textbox', { name: 'Name' }), expected.name);
+    userEvent.type(getByRole('textbox', { name: 'Email' }), expected.email);
+    userEvent.click(getByRole('checkbox', { name: 'Rice' }));
+    userEvent.click(getByRole('button', { name: 'Create User' }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 
@@ -93,21 +93,21 @@ describe('<CreateUserForm />', () => {
       email: 'test@test.com',
       licences: [],
     };
-    const { getByText, getByLabelText } = render(
+    const { getByRole } = render(
       <CreateUserForm licenceInformation={licences} onSubmit={onSubmit} />,
     );
-    userEvent.type(getByLabelText('Name'), expected.name);
-    userEvent.type(getByLabelText('Email'), expected.email);
-    userEvent.click(getByLabelText('Rice'));
-    userEvent.click(getByText('Create User'));
+    userEvent.type(getByRole('textbox', { name: 'Name' }), expected.name);
+    userEvent.type(getByRole('textbox', { name: 'Email' }), expected.email);
+    expect(getByRole('checkbox', { name: 'Rice' })).toBeDisabled();
+    userEvent.click(getByRole('button', { name: 'Create User' }));
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(expected));
   });
 
   it('Shows an error if email is not provided', async () => {
-    const { getByText } = render(<CreateUserForm />);
-    userEvent.click(getByText('Create User'));
-    await waitFor(() => {
-      expect(getByText(MESSAGES.email.required)).toBeInTheDocument();
-    });
+    const { getByRole, getByText } = render(<CreateUserForm />);
+    userEvent.click(getByRole('button', { name: 'Create User' }));
+    await waitFor(() =>
+      expect(getByText(MESSAGES.email.required)).toBeInTheDocument(),
+    );
   });
 });

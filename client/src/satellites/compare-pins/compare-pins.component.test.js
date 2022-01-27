@@ -56,7 +56,13 @@ describe('Compare Pins Component', () => {
       />,
     );
 
-    userEvent.click(screen.getByRole('checkbox', { name: 'Compare' }));
+    userEvent.click(
+      screen.getByRole('checkbox', { name: 'Compare' }),
+      undefined,
+      {
+        skipPointerEventsCheck: true,
+      },
+    );
     expect(toggleCompareMode).not.toHaveBeenCalled();
   });
 
@@ -69,9 +75,7 @@ describe('Compare Pins Component', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('checkbox', { name: 'Compare' }),
-    ).not.toHaveAttribute('disabled');
+    expect(screen.getByRole('checkbox', { name: 'Compare' })).toBeEnabled();
     userEvent.click(screen.getByRole('checkbox', { name: 'Compare' }));
     expect(toggleCompareMode).toHaveBeenCalled();
   });
@@ -85,9 +89,7 @@ describe('Compare Pins Component', () => {
   it('should render Clear Pins button enabled', () => {
     render(<ComparePins selectedPinnedScenes={[{ ...MOCK_SCENES[2] }]} />);
 
-    expect(
-      screen.getByRole('button', { name: 'Clear Pins' }),
-    ).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Clear Pins' })).toBeEnabled();
   });
 
   it('should Clear selected pinned scenes', () => {

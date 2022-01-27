@@ -2,7 +2,7 @@ import React from 'react';
 
 import { CogIcon } from '@astrosat/astrosat-ui';
 
-import faker from 'faker/locale/en_GB';
+import faker from '@faker-js/faker/locale/en_GB';
 
 import { ImageListItem } from './image-list-item.component';
 

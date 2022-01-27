@@ -39,9 +39,9 @@ export const getColorScaleForProperty = (property, format) => {
         format,
       });
     case 'discrete':
-      const {
-        categories,
-      } = /** @type {import('typings').DiscreteProperty} */ (property);
+      const { categories } = /** @type {import('typings').DiscreteProperty} */ (
+        property
+      );
       const pairs = toPairs(categories).map(([category, obj]) => [
         category,
         obj.color,

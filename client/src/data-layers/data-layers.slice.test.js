@@ -1,8 +1,9 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { addLogItem } from 'app.slice';
+import { server } from 'mocks/server';
 
 import reducer, {
   fetchSources,
@@ -23,19 +24,15 @@ import reducer, {
   addSource,
   fetchOrbs,
   orbsSelector,
+  logProperty,
 } from './data-layers.slice';
-
 const mockStore = configureMockStore([thunk]);
-
-fetch.enableMocks();
 
 describe('Data Slice', () => {
   describe('thunks', () => {
     let store = null;
     describe('fetchSources', () => {
       beforeEach(() => {
-        fetch.resetMocks();
-
         store = mockStore({
           accounts: {
             user: {
@@ -61,15 +58,10 @@ describe('Data Slice', () => {
       });
 
       it('should dispatch fetch sources failure action.', async () => {
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
+        server.use(
+          rest.get('*/api/data/sources/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
 
         await store.dispatch(fetchSources());
@@ -102,7 +94,11 @@ describe('Data Slice', () => {
           ],
         };
 
-        fetch.mockResponse(JSON.stringify(data));
+        server.use(
+          rest.get('*/api/data/sources/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(data));
+          }),
+        );
 
         await store.dispatch(fetchSources());
 
@@ -134,10 +130,14 @@ describe('Data Slice', () => {
           tags: ['LOAD_LAYER', source.source_id],
         };
 
-        const expectedActions = [{ type: addLogItem.type, payload: expected }];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: addLogItem.type,
+            payload: expected,
+          }),
+        ]);
 
         await store.dispatch(logDataset(source));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -161,10 +161,14 @@ describe('Data Slice', () => {
           tags: ['LOAD_LAYER_ERROR', source.source_id],
         };
 
-        const expectedActions = [{ type: addLogItem.type, payload: expected }];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: addLogItem.type,
+            payload: expected,
+          }),
+        ]);
 
         await store.dispatch(logError(source));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
 
@@ -186,33 +190,26 @@ describe('Data Slice', () => {
           tags: ['LOAD_LAYER', layers[1]],
         };
 
-        const expectedActions = [
-          { type: addLogItem.type, payload: expected },
-          { type: updateLayers.type, payload: layers },
-        ];
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({ type: addLogItem.type, payload: expected }),
+          expect.objectContaining({ type: updateLayers.type, payload: layers }),
+        ]);
 
         await store.dispatch(setLayers(layers));
-
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
 
     describe('fetchOrbs', () => {
       beforeEach(() => {
-        fetch.resetMocks();
         store = mockStore({ data: {} });
       });
 
       it(`Dispatches the ${fetchOrbs.rejected.type} action on failed request`, async () => {
-        fetch.once(
-          JSON.stringify({
-            message: 'Test error message',
+        server.use(
+          rest.get('*/api/orbs/', (req, res, ctx) => {
+            return res(ctx.status(401, 'Test Error'));
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
         await store.dispatch(fetchOrbs());
         expect(store.getActions()).toEqual(
@@ -227,7 +224,11 @@ describe('Data Slice', () => {
 
       it(`Dispatches the ${fetchOrbs.fulfilled.type} action on a successful request`, async () => {
         const orbs = [{ id: 1 }, { id: 2 }];
-        fetch.once(JSON.stringify(orbs));
+        server.use(
+          rest.get('*/api/orbs/', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(orbs));
+          }),
+        );
         await store.dispatch(fetchOrbs());
         expect(store.getActions()).toEqual(
           expect.arrayContaining([
@@ -268,6 +269,188 @@ describe('Data Slice', () => {
           );
           expect(result).toEqual(expect.objectContaining({ error: payload }));
         });
+      });
+    });
+
+    describe('setLayers', () => {
+      beforeEach(() => {
+        store = mockStore({
+          accounts: {
+            user: {
+              id: 'Test User ID',
+              customers: [{ name: 'Test Customer Name' }],
+            },
+          },
+          data: {
+            layers: ['test/id/1', 'test/id/2'],
+            sources: [
+              {
+                source_id: 'test/id/1',
+                metadata: {
+                  request_strategy: 'manual',
+                },
+              },
+              {
+                source_id: 'test/id/2',
+                metadata: {},
+              },
+            ],
+          },
+        });
+      });
+
+      it(`Dispatches the ${setLayers.rejected.type} action on failed request`, async () => {
+        server.use(
+          rest.post('*/api/broken/link', (req, res, ctx) => {
+            return res(ctx.status(401));
+          }),
+        );
+        const layers = [
+          { sourceId: 'foo/bar/baz/1' },
+          { sourceId: 'foo/bar/baz/2' },
+        ];
+        await store.dispatch(setLayers(layers));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: setLayers.rejected.type,
+            }),
+          ]),
+        );
+      });
+
+      it(`Dispatches the ${setLayers.fulfilled.type} action on a successful request`, async () => {
+        const layers = [{ source_id: 'test/id/1' }, { source_id: 'test/id/2' }];
+        server.use(
+          rest.get('*/api/setLayers', (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(layers));
+          }),
+        );
+        await store.dispatch(setLayers(layers));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: setLayers.fulfilled.type,
+            }),
+          ]),
+        );
+      });
+    });
+
+    describe('logproperty', () => {
+      beforeEach(() => {
+        store = mockStore({
+          accounts: {
+            user: {
+              id: 'Test User ID',
+              customers: [{ name: 'Test Customer Name' }],
+            },
+          },
+        });
+      });
+
+      it(`Dispatches the ${logProperty.rejected.type} action on failed request`, async () => {
+        const payload = {};
+        await store.dispatch(logProperty(payload));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logProperty.rejected.type,
+            }),
+          ]),
+        );
+      });
+
+      it(`Dispatches the ${logProperty.fulfilled.type} action on successful request`, async () => {
+        const payload = {
+          source: 'foo/bar/baz',
+          property: 'some_property',
+          isOn: true,
+        };
+        await store.dispatch(logProperty(payload));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logProperty.fulfilled.type,
+            }),
+          ]),
+        );
+      });
+    });
+
+    describe('logDataset', () => {
+      beforeEach(() => {
+        store = mockStore({
+          accounts: {
+            user: {
+              id: 'Test User ID',
+              customers: [{ name: 'Test Customer Name' }],
+            },
+          },
+        });
+      });
+
+      it(`Dispatches the ${logDataset.rejected.type} action on failed request`, async () => {
+        await store.dispatch(logDataset(undefined));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logProperty.rejected.type,
+            }),
+          ]),
+        );
+      });
+
+      it(`Dispatches the ${logDataset.rejected.type} action on successful request`, async () => {
+        const payload = {
+          source: 'foo/bar/baz',
+        };
+        await store.dispatch(logDataset(payload));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logProperty.fulfilled.type,
+            }),
+          ]),
+        );
+      });
+    });
+
+    describe('logError', () => {
+      beforeEach(() => {
+        store = mockStore({
+          accounts: {
+            user: {
+              id: 'Test User ID',
+              customers: [{ name: 'Test Customer Name' }],
+            },
+          },
+        });
+      });
+
+      it(`Dispatches the ${logError.rejected.type} action on failed request`, async () => {
+        await store.dispatch(logError(undefined));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logError.rejected.type,
+            }),
+          ]),
+        );
+      });
+
+      it(`Dispatches the ${logError.fulfilled.type} action on successful request`, async () => {
+        const payload = {
+          source: 'foo/bar/baz',
+        };
+        await store.dispatch(logError(payload));
+        expect(store.getActions()).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              type: logError.fulfilled.type,
+            }),
+          ]),
+        );
       });
     });
   });

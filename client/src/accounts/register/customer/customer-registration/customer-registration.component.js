@@ -65,7 +65,12 @@ const CustomerRegistration = ({
   serverErrors,
   onSubmit,
 }) => {
-  const { errors, formState, handleSubmit, register, control } = useForm({
+  const {
+    formState: { errors, isDirty },
+    handleSubmit,
+    register,
+    control,
+  } = useForm({
     defaultValues: {
       email,
       customerType: '',
@@ -100,7 +105,7 @@ const CustomerRegistration = ({
           id={FIELD_NAMES.email}
           name={FIELD_NAMES.email}
           label="Work Email Address"
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           InputProps={{ readOnly: true }}
           error={!!errors[FIELD_NAMES.email]}
           helperText={
@@ -113,7 +118,7 @@ const CustomerRegistration = ({
           id={FIELD_NAMES.customerName}
           name={FIELD_NAMES.customerName}
           label="Organisation Name"
-          inputRef={register}
+          {...register(FIELD_NAMES.customerName)}
           error={!!errors[FIELD_NAMES.customerName]}
           helperText={errors[FIELD_NAMES.customerName]?.message}
           required
@@ -125,7 +130,7 @@ const CustomerRegistration = ({
           id={FIELD_NAMES.customerNameOfficial}
           name={FIELD_NAMES.customerNameOfficial}
           label="Organisation Official Name"
-          inputRef={register}
+          {...register(FIELD_NAMES.customerNameOfficial)}
           error={!!errors[FIELD_NAMES.customerNameOfficial]}
           helperText={errors[FIELD_NAMES.customerNameOfficial]?.message}
         />
@@ -133,10 +138,11 @@ const CustomerRegistration = ({
       <Form.Row>
         <Controller
           control={control}
-          name={FIELD_NAMES.customerType}
-          as={
+          render={() => (
             <TextField
               id={FIELD_NAMES.customerType}
+              name={FIELD_NAMES.customerType}
+              {...register(FIELD_NAMES.customerType)}
               select
               label="Type of Organisation"
               error={!!errors[FIELD_NAMES.customerType]}
@@ -148,7 +154,7 @@ const CustomerRegistration = ({
                 </MenuItem>
               ))}
             </TextField>
-          }
+          )}
         />
       </Form.Row>
       <Form.Row>
@@ -156,7 +162,7 @@ const CustomerRegistration = ({
           id={FIELD_NAMES.registeredNumber}
           name={FIELD_NAMES.registeredNumber}
           label="Registered Number"
-          inputRef={register}
+          {...register(FIELD_NAMES.registeredNumber)}
           error={!!errors[FIELD_NAMES.registeredNumber]}
           helperText={errors[FIELD_NAMES.registeredNumber]?.message}
         />
@@ -166,7 +172,7 @@ const CustomerRegistration = ({
           id="licence"
           name="licence"
           label="Licence"
-          inputRef={register}
+          {...register('licence')}
           InputProps={{ readOnly: true }}
         />
       </Form.Row>
@@ -175,7 +181,7 @@ const CustomerRegistration = ({
           id="numberOfLicences"
           name="numberOfLicences"
           label="Number of Licences"
-          inputRef={register}
+          {...register('numberOfLicences')}
           InputProps={{ readOnly: true }}
         />
       </Form.Row>
@@ -184,14 +190,14 @@ const CustomerRegistration = ({
           id="subscriptionPeriod"
           name="subscriptionPeriod"
           label="Free Trial Subscription Period Ends"
-          inputRef={register}
+          {...register('subscriptionPeriod')}
           InputProps={{ readOnly: true }}
         />
       </Form.Row>
       <Form.Row centered>
         <Button
           type="submit"
-          disabled={!formState.isDirty || !!Object.keys(errors).length}
+          disabled={!isDirty || !!Object.keys(errors).length}
         >
           {isLoading ? <CircularProgress color="inherit" size={24} /> : 'Next'}
         </Button>

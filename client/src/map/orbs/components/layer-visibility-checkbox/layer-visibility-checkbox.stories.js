@@ -7,12 +7,14 @@ import { LayerVisibilityCheckbox } from './layer-visibility-checkbox.component';
 
 const mockStore = configureMockStore();
 
-export default {
+const Index = {
   title: 'Sidebar Components/Layer Visibility Checkbox',
   argTypes: {
     dispatch: { action: 'dispatch' },
   },
 };
+
+export default Index;
 
 const Template = ({ state, ...args }) => (
   <Provider store={mockStore(state)}>

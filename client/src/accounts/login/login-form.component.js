@@ -13,10 +13,13 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { PASSWORD_RESET_REQUEST, REGISTER } from 'accounts/accounts.constants';
+import {
+  PASSWORD_RESET_REQUEST_URL,
+  REGISTER_URL,
+} from 'accounts/accounts.constants';
 import { ErrorWell } from 'accounts/error-well.component';
 import apiClient from 'api-client';
 import { Form } from 'components';
@@ -44,7 +47,6 @@ const loginSchema = yup.object({
  */
 const LoginForm = ({
   isLoading = false,
-  match,
   passwordMinLength,
   passwordMaxLength,
   serverErrors,
@@ -52,6 +54,7 @@ const LoginForm = ({
   activateAccount,
   login,
 }) => {
+  const params = useParams();
   const isRegisteringCustomer = user?.registration_stage;
   const isOnboardingTeamMember = user?.accepted_terms === false;
 
@@ -59,14 +62,18 @@ const LoginForm = ({
 
   useEffect(() => {
     if (
-      match?.params?.key &&
+      params?.key &&
       activateAccount &&
       (!user?.is_verified || user?.is_verified === 'False')
     )
-      activateAccount({ ...match.params });
-  }, [activateAccount, match, user]);
+      activateAccount({ ...params });
+  }, [activateAccount, params, user]);
 
-  const { register, handleSubmit, formState, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty },
+  } = useForm({
     resolver: yupResolver(loginSchema),
     context: { passwordMinLength, passwordMaxLength },
   });
@@ -84,7 +91,7 @@ const LoginForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.email)}
           label={isRegisteringCustomer ? 'Work Email Address' : 'Email'}
           type="email"
           name={FIELD_NAMES.email}
@@ -98,7 +105,7 @@ const LoginForm = ({
 
       <Form.Row>
         <TextField
-          inputRef={register}
+          {...register(FIELD_NAMES.password)}
           label="Password"
           id={FIELD_NAMES.password}
           name={FIELD_NAMES.password}
@@ -146,7 +153,7 @@ const LoginForm = ({
         <Box ml="auto">
           <Link
             // @ts-ignore
-            to={PASSWORD_RESET_REQUEST}
+            to={PASSWORD_RESET_REQUEST_URL}
             component={RouterLink}
           >
             Forgot password?
@@ -159,7 +166,7 @@ const LoginForm = ({
           type="submit"
           disabled={
             Object.keys(errors).length > 0 ||
-            !formState.isDirty ||
+            !isDirty ||
             (isOnboardingTeamMember && !termsAgreed)
           }
         >
@@ -171,11 +178,7 @@ const LoginForm = ({
         {!isRegisteringCustomer && (
           <Typography>
             Don't have an account?&nbsp;
-            <Link
-              // @ts-ignore
-              component={RouterLink}
-              to={REGISTER}
-            >
+            <Link component={RouterLink} to={REGISTER_URL}>
               Sign Up
             </Link>
           </Typography>

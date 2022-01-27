@@ -1,8 +1,9 @@
 import React from 'react';
 
-import fetchMock from 'jest-fetch-mock';
+import { rest } from 'msw';
 
 import { updateCustomerRequested } from 'mission-control/mission-control.slice';
+import { server } from 'mocks/server';
 import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
 import { AccountDetailsComponent } from './account-details.component';
@@ -23,8 +24,6 @@ const setup = () => {
   return { store };
 };
 
-fetchMock.enableMocks();
-
 describe('<AccountDetails />', () => {
   it('Shows information in the info box', () => {
     setup();
@@ -35,13 +34,20 @@ describe('<AccountDetails />', () => {
 
   it('Dispatches the update customer action on submit', async () => {
     const { store } = setup();
-    fetchMock.once(JSON.stringify({}));
+
+    server.use(
+      rest.put('*/api/customers/:customerId/', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    );
 
     userEvent.type(
       screen.getByRole('textbox', { name: /registered number/i }),
       'test-number-123',
     );
-    userEvent.click(screen.getByRole('button', { name: /save/i }));
+    userEvent.click(screen.getByRole('button', { name: /save/i }), undefined, {
+      skipPointerEventsCheck: true,
+    });
 
     await waitFor(() => {
       expect(store.getActions()).toContainEqual(

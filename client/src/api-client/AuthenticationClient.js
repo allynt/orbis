@@ -14,6 +14,7 @@ export class AuthenticationClient extends SubClient {
         [FIELD_NAMES.acceptedTerms]: 'accepted_terms',
       },
       changePassword: {
+        [FIELD_NAMES.oldPassword]: 'old_password',
         [FIELD_NAMES.newPassword]: 'new_password1',
         [FIELD_NAMES.newPasswordConfirm]: 'new_password2',
       },
@@ -37,7 +38,7 @@ export class AuthenticationClient extends SubClient {
   }
 
   async logout() {
-    await this.makeAuthenticatedRequest('/logout/', { method: 'POST' });
+    return this.makeAuthenticatedPostRequest('/logout/');
   }
 
   /**

@@ -36,7 +36,11 @@ const validationSchema = yup.object({
  */
 export const SaveImageForm = ({ onSubmit }) => {
   /** @type {import('react-hook-form').UseFormMethods<FormValues>} */
-  const { register, handleSubmit, errors } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
@@ -55,7 +59,7 @@ export const SaveImageForm = ({ onSubmit }) => {
           name="name"
           label="Add Name"
           required
-          inputRef={register}
+          {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
           autoFocus
@@ -68,7 +72,7 @@ export const SaveImageForm = ({ onSubmit }) => {
           label="Add Description"
           multiline
           rows={3}
-          inputRef={register}
+          {...register('description')}
         />
       </Grid>
       <Grid item container direction="column" alignItems="center">

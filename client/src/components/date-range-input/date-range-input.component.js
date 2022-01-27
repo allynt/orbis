@@ -58,7 +58,6 @@ export const DateRangeInput = React.forwardRef(
     const styles = useStyles();
 
     const inputProps = {
-      ref: register,
       className: styles.input,
       placeholder: 'DD/MM/YYYY',
     };
@@ -80,6 +79,7 @@ export const DateRangeInput = React.forwardRef(
         <Grid item xs={4} container justifyContent="center">
           <input
             {...inputProps}
+            {...register(FIELD_NAMES.startDate)}
             name={FIELD_NAMES.startDate}
             aria-label="Start Date"
           />
@@ -90,6 +90,7 @@ export const DateRangeInput = React.forwardRef(
         <Grid item xs={4} container justifyContent="center">
           <input
             {...inputProps}
+            {...register(FIELD_NAMES.endDate)}
             name={FIELD_NAMES.endDate}
             aria-label="End Date"
           />

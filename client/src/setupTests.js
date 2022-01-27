@@ -1,14 +1,12 @@
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
-import fetchMock from 'jest-fetch-mock';
+import { server } from 'mocks/server';
 
 import './polyfills/flat-map';
 import './polyfills/array-flat';
 import './polyfills/object-fromEntries';
 
 import '../public/config';
-
-fetchMock.enableMocks();
 
 global.URL.createObjectURL = jest.fn();
 global.requestIdleCallback = jest
@@ -28,3 +26,12 @@ global.document.createRange = () => ({
     ownerDocument: document,
   },
 });
+
+// MSW
+// Establish API mocking before all tests.
+beforeAll(() => server.listen());
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers());
+// Clean up after the tests are finished.
+afterAll(() => server.close());

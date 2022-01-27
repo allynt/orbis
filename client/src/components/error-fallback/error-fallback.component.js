@@ -63,7 +63,7 @@ export const ErrorFallback = ({
       <Well icon={false} severity="error" variant="filled">
         <Message
           // @ts-ignore
-          messageOnly={messageOnly}
+          messageonly={messageOnly}
         >
           {error.stack && !messageOnly ? error.stack : error.message}
         </Message>

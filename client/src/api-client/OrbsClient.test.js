@@ -1,23 +1,28 @@
-import fetch from 'jest-fetch-mock';
-
 import { OrbsClient } from './OrbsClient';
-
-fetch.enableMocks();
 
 describe('OrbsClient', () => {
   /** @type {OrbsClient} */
   let client;
 
   beforeEach(() => {
-    fetch.resetMocks();
     client = new OrbsClient();
   });
 
   describe('getOrbs', () => {
     it('Returns the list of orbs', async () => {
-      const orbs = [{ id: 1 }, { id: 2 }];
-      fetch.once(JSON.stringify(orbs));
+      const orbs = [
+        {
+          id: 1,
+          name: 'Exploration',
+          description: 'I am an orb',
+          logo: null,
+          features: ['satellites'],
+          licence_cost: 0,
+        },
+      ];
+
       const response = await client.getOrbs();
+
       expect(response).toEqual(orbs);
     });
   });
