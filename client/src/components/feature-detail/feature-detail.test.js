@@ -22,7 +22,7 @@ describe('<FeatureDetail />', () => {
 
   it('shows the keys and values for a given feature', () => {
     const feature = {
-      id: '1',
+      pk: '1',
       'Key 1': 'Value 1',
       'Key 2': 'Value 2',
       'Key 3': 'Value 3',
@@ -36,14 +36,14 @@ describe('<FeatureDetail />', () => {
 
   it('shows the keys and values for multiple features', () => {
     const features = [
-      { id: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
-      { id: '2', 'Key 4': 'Value 4', 'Key 5': 'Value 5', 'Key 6': 'Value 6' },
+      { pk: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
+      { pk: '2', 'Key 4': 'Value 4', 'Key 5': 'Value 5', 'Key 6': 'Value 6' },
     ];
 
     render(<FeatureDetail features={features} />);
     features.forEach(feature =>
       Object.entries(feature).forEach(([key, value]) => {
-        if (key === 'id') return;
+        if (key === 'pk') return;
         expect(screen.getByText(key, { exact: false })).toBeInTheDocument();
         expect(screen.getByText(value)).toBeInTheDocument();
       }),
@@ -52,7 +52,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders nested objects', () => {
     const feature = {
-      id: '1',
+      pk: '1',
       'key 1': {
         'subkey 1': 'value 1',
         'subkey 2': 'value 2',
@@ -68,7 +68,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders arrays of basic values', () => {
     const feature = {
-      id: '1',
+      pk: '1',
       'key 1': ['value 1', 'value 2', 'value 3'],
     };
     render(<FeatureDetail features={[feature]} />);
@@ -79,7 +79,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders arrays of objects', () => {
     const feature = {
-      id: 1,
+      pk: 1,
       'key 1': [
         { 'subkey 1': 'value 1' },
         { 'subkey 2': 'value 2' },
@@ -97,7 +97,7 @@ describe('<FeatureDetail />', () => {
 
   it('Renders email addresses as links', () => {
     const feature = {
-      id: 1,
+      pk: 1,
       email: 'test@test.com',
     };
     render(<FeatureDetail features={[feature]} />);
@@ -108,7 +108,7 @@ describe('<FeatureDetail />', () => {
 
   it('renders `postFeatureComponent` if prop is present', () => {
     const feature = {
-      id: '1',
+      pk: '1',
       'Key 1': 'Value 1',
       'Key 2': 'Value 2',
       'Key 3': 'Value 3',
@@ -127,10 +127,10 @@ describe('<FeatureDetail />', () => {
 
   it('excludes fields specified in `propertiesOmitlist` prop', () => {
     const features = [
-      { id: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
+      { pk: '1', 'Key 1': 'Value 1', 'Key 2': 'Value 2', 'Key 3': 'Value 3' },
     ];
 
-    render(<FeatureDetail features={features} propertiesToOmit={['id']} />);
+    render(<FeatureDetail features={features} propertiesToOmit={['pk']} />);
 
     expect(screen.queryByText('id', { exact: false })).not.toBeInTheDocument();
     expect(screen.queryByText('1')).not.toBeInTheDocument();
@@ -138,6 +138,7 @@ describe('<FeatureDetail />', () => {
 
   it('Only shows properties listed in `propertiesToPick`', () => {
     const feature = {
+      pk: 'id',
       key1: 'value1',
       key2: 'value2',
       key3: 'value3',
@@ -157,7 +158,7 @@ describe('<FeatureDetail />', () => {
     const title = 'This is the title';
     render(
       <FeatureDetail
-        features={[{ title, other: 'Other value' }]}
+        features={[{ pk: 'id', title, other: 'Other value' }]}
         titleProperty="title"
       />,
     );
@@ -167,6 +168,7 @@ describe('<FeatureDetail />', () => {
 
   it('Uses labels specified in `labelMapping` rather than keys', () => {
     const feature = {
+      pk: 'id',
       key1: 'Value 1',
       key2: 'Value 2',
       key3: {
