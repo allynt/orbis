@@ -63,7 +63,7 @@ describe('Password Reset Form Component', () => {
     );
   });
 
-  it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', () => {
+  it('should not call `confirmResetPassword` function when form is invalid and `Reset Password` button clicked', async () => {
     const confirmResetPassword = jest.fn();
     render(<PasswordResetForm confirmResetPassword={confirmResetPassword} />);
 
@@ -71,7 +71,7 @@ describe('Password Reset Form Component', () => {
 
     userEvent.tab();
 
-    userEvent.click(screen.getByText(RESET_BUTTON_TEXT));
+    await waitFor(() => userEvent.click(screen.getByText(RESET_BUTTON_TEXT)));
     expect(confirmResetPassword).not.toHaveBeenCalled();
   });
 

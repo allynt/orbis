@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, userEvent } from 'test/test-utils';
+import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
 import { ChartWrapper } from './chart-wrapper.component';
 
@@ -37,13 +37,15 @@ describe('< ChartWrapper/>', () => {
     expect(screen.queryByRole('img', { name: 'Info' })).not.toBeInTheDocument();
   });
 
-  it('should render the info icon message when user clicks on it', () => {
+  it('should render the info icon message when user clicks on it', async () => {
     render(
       <ChartWrapper title={TITLE} info={INFO}>
         <div>Test Children</div>
       </ChartWrapper>,
     );
-    userEvent.click(screen.getByRole('button', { name: 'Info' }));
+    await waitFor(() =>
+      userEvent.click(screen.getByRole('button', { name: 'Info' })),
+    );
     expect(screen.getByText(INFO)).toBeInTheDocument();
   });
 });

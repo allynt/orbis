@@ -136,19 +136,24 @@ describe('<DateRangeFilter />', () => {
     );
   });
 
-  it('uses existing values if provided', () => {
+  it('uses existing values if provided', async () => {
     const { getByRole, getByText } = renderComponent({
       range: {
         startDate: new Date(2020, 0, 1).toISOString(),
         endDate: new Date(2020, 0, 31).toISOString(),
       },
     });
-    expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(
-      '01/01/2020',
-    );
+
+    await waitFor(() => {
+      expect(getByRole('textbox', { name: 'Start Date' })).toHaveValue(
+        '01/01/2020',
+      );
+    });
+
     expect(getByRole('textbox', { name: 'End Date' })).toHaveValue(
       '31/01/2020',
     );
+
     userEvent.click(getByRole('button', { name: 'Show date picker' }));
     expect(getByText('01/01/2020 - 31/01/2020')).toBeInTheDocument();
   });

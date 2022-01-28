@@ -12,9 +12,9 @@ const renderComponent = () => {
 };
 
 describe('<ExtrusionScaleSlider />', () => {
-  it('calls the onChange event when the slider is dragged', () => {
+  it('calls the onChange event when the slider is dragged', async () => {
     const { getByRole, onChange } = renderComponent();
-    fireEvent.mouseDown(getByRole('slider'));
+    await waitFor(() => fireEvent.mouseDown(getByRole('slider')));
     expect(onChange).toHaveBeenCalled();
   });
 
