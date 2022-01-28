@@ -248,7 +248,7 @@ describe('PDF', () => {
       },
     };
 
-    setup({ state });
+    setup(state);
 
     expect(
       screen.queryByText(
