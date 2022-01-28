@@ -15,16 +15,27 @@ describe('Password Reset Request Form Component', () => {
     const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
 
     expect(resetButton).toBeInTheDocument();
-    expect(resetButton).toHaveAttribute('disabled');
+    expect(resetButton).toBeDisabled();
     expect(screen.getByText('Do you have an account?')).toBeInTheDocument();
     expect(screen.getByText('Login')).toBeInTheDocument();
+  });
+
+  it('should disable `Reset Password` button when Email field is empty', async () => {
+    render(<PasswordResetRequestForm />);
+
+    const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
+    expect(resetButton).toBeDisabled();
+
+    await waitFor(() => {
+      expect(resetButton).toHaveAttribute('disabled');
+    });
   });
 
   it('should disable `Reset Password` button when Email too short', async () => {
     render(<PasswordResetRequestForm />);
 
     const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
-    expect(resetButton).toHaveAttribute('disabled');
+    expect(resetButton).toBeDisabled();
     userEvent.type(screen.getByRole('textbox', { name: 'Email' }), 't');
 
     userEvent.tab();
@@ -38,7 +49,7 @@ describe('Password Reset Request Form Component', () => {
     render(<PasswordResetRequestForm />);
 
     const resetButton = screen.getByRole('button', { name: RESET_BUTTON_TEXT });
-    expect(resetButton).toHaveAttribute('disabled');
+    expect(resetButton).toBeDisabled();
     userEvent.type(
       screen.getByRole('textbox', { name: 'Email' }),
       'testtest.com',
@@ -65,19 +76,22 @@ describe('Password Reset Request Form Component', () => {
     await waitFor(() =>
       expect(
         screen.getByRole('button', { name: RESET_BUTTON_TEXT }),
-      ).not.toBeDisabled(),
+      ).toBeEnabled(),
     );
   });
 
-  it.each(['', 't', 'testtest.com', 'test@test.'])(
+  it.each(['t', 'testtest.com', 'test@test.'])(
     'should not call resetPassword function when email is %s and `Reset Password` button clicked',
-    email => {
+    async email => {
       const resetPassword = jest.fn();
       render(<PasswordResetRequestForm resetPassword={resetPassword} />);
 
       userEvent.type(screen.getByRole('textbox', { name: 'Email' }), email);
-      userEvent.tab();
-      userEvent.click(screen.getByRole('button', { name: RESET_BUTTON_TEXT }));
+      await waitFor(() =>
+        userEvent.click(
+          screen.getByRole('button', { name: RESET_BUTTON_TEXT }),
+        ),
+      );
 
       expect(resetPassword).not.toHaveBeenCalled();
     },
