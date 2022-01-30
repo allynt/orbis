@@ -1,6 +1,7 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { get } from 'lodash';
 
+import { logError } from 'data-layers/data-layers.slice';
 import { getColorScaleForProperty } from 'utils/color';
 import { createReduxSafePickedInfo, getValueForTimestamp } from 'utils/data';
 import { isRealValue } from 'utils/isRealValue';
@@ -274,7 +275,7 @@ const configuration = ({
 
   return {
     id,
-    data,
+    data: data[0],
     authToken,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
@@ -296,6 +297,23 @@ const configuration = ({
       },
     },
     ...typedProps,
+    dataTransform: (data, previousData) =>
+      data.map(feature => ({
+        ...feature,
+        properties: Object.entries(feature.properties).reduce(
+          (prev, [key, value]) => {
+            let result = null;
+            try {
+              result = JSON.parse(value);
+            } catch (error) {}
+            return {
+              ...prev,
+              [key]: result ?? value,
+            };
+          },
+        ),
+      })),
+    onError: () => dispatch(logError({ source_id: id })),
   };
 };
 
