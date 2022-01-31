@@ -6,6 +6,8 @@ import { addDays, endOfDay, format, startOfDay } from 'date-fns';
 
 import { DateRangeFilter } from './date-range-filter.component';
 
+jest.setTimeout(60000);
+
 const renderComponent = ({
   minDate = undefined,
   maxDate = undefined,
