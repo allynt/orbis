@@ -78,6 +78,8 @@ const SOURCES = [
   },
 ];
 
+jest.setTimeout(60000);
+
 const renderComponent = ({ selectedSources = [] } = {}) => {
   const onSubmit = jest.fn();
   const close = jest.fn();

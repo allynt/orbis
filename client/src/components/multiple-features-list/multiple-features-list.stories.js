@@ -1,7 +1,7 @@
 import * as React from 'react';
 
+import faker from '@faker-js/faker';
 import isChromatic from 'chromatic/isChromatic';
-import faker from 'faker';
 
 import { MultipleFeaturesList } from './multiple-features-list.component';
 

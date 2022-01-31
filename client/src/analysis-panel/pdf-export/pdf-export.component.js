@@ -197,10 +197,11 @@ const PDF = ({
     close();
   };
 
-  if (!selectedProperty?.source_id) {
-    navigate('/');
-    return null;
-  }
+  useEffect(() => {
+    if (!selectedProperty?.source_id) {
+      navigate('/');
+    }
+  }, [selectedProperty, navigate]);
 
   return (
     <Grid container direction="column" className={styles.container}>

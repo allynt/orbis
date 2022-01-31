@@ -48,7 +48,7 @@ export class BookmarksClient extends SubClient {
    * @throws {ResponseError}
    */
   async deleteBookmark(bookmarkId) {
-    await this.makeAuthenticatedRequest(`/${bookmarkId}/`, {
+    return await this.makeAuthenticatedRequest(`/${bookmarkId}/`, {
       method: 'DELETE',
     });
   }

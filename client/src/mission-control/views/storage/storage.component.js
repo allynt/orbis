@@ -85,7 +85,7 @@ export const Storage = ({ files, setFiles }) => {
           noDataMessage="No Storage Data"
           pluginHooks={[useSortBy]}
           getCellProps={cell => ({
-            padding: cell.column.id === 'id' ? 'checkbox' : 'inherit',
+            padding: cell.column.id === 'id' ? 'checkbox' : 'normal',
           })}
           tableOptions={{
             initialState: { sortBy: [{ id: 'date', desc: true }] },

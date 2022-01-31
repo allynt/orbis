@@ -28,6 +28,14 @@ const renderContext = ({
 
 describe('AnalysisPanelContext', () => {
   describe('areasOfInterest', () => {
+    const selectedProperty = {
+      source_id: 'test/selected/property/latest',
+      name: 'area_name',
+      label: 'Test Property',
+      description: 'Test Property Description',
+      source: 'https://test.com',
+    };
+
     it('returns undefined if clickedFeatures is undefined', () => {
       const { result } = renderContext();
       expect(result.current.areasOfInterest).toBeUndefined();
@@ -40,11 +48,14 @@ describe('AnalysisPanelContext', () => {
           { object: { properties: { area_name: 'area name 3' } } },
         ],
         expected = ['area name 1', 'area name 2', 'area name 3'];
-      const { result } = renderContext({ clickedFeatures });
+      const { result } = renderContext({ clickedFeatures, selectedProperty });
       expect(result.current.areasOfInterest).toEqual(expected);
     });
 
     it('returns undefined if no features have an `area_name` property', () => {
+      const original = console.error;
+      console.error = jest.fn();
+
       const { result } = renderContext({
         clickedFeatures: [
           {
@@ -58,12 +69,23 @@ describe('AnalysisPanelContext', () => {
             },
           },
         ],
+        selectedProperty,
       });
       expect(result.current.areasOfInterest).toBeUndefined();
+
+      console.error = original;
     });
   });
 
   describe('populationTotal', () => {
+    const selectedProperty = {
+      source_id: 'test/selected/property/latest',
+      name: 'population',
+      label: 'Test Property',
+      description: 'Test Property Description',
+      source: 'https://test.com',
+    };
+
     it('returns total of population in all features', () => {
       const clickedFeatures = [
         { object: { properties: { population: 5 } } },
@@ -71,12 +93,20 @@ describe('AnalysisPanelContext', () => {
         { object: { properties: { population: 15 } } },
       ];
 
-      const { result } = renderContext({ clickedFeatures });
+      const { result } = renderContext({ clickedFeatures, selectedProperty });
       expect(result.current.populationTotal).toEqual('30');
     });
   });
 
   describe('householdTotal', () => {
+    const selectedProperty = {
+      source_id: 'test/selected/property/latest',
+      name: 'households',
+      label: 'Test Property',
+      description: 'Test Property Description',
+      source: 'https://test.com',
+    };
+
     it('returns total of households for all features', () => {
       const clickedFeatures = [
         { object: { properties: { households: 7 } } },
@@ -84,7 +114,7 @@ describe('AnalysisPanelContext', () => {
         { object: { properties: { households: 12 } } },
       ];
 
-      const { result } = renderContext({ clickedFeatures });
+      const { result } = renderContext({ clickedFeatures, selectedProperty });
       expect(result.current.householdTotal).toEqual('29');
     });
   });

@@ -42,7 +42,7 @@ export const VIEWS = {
 };
 
 export const ORGANISATION_TYPES = [
-  { name: 'None', value: undefined },
+  { name: 'None', value: 'NONE' },
   { name: 'Non-Profit Organisation', value: 'NON_PROFIT' },
   { name: 'Local Authority', value: 'LOCAL_AUTHORITY' },
   { name: 'Government & Executive Agencies', value: 'GOV_AND_EXEC_AGENCIES' },

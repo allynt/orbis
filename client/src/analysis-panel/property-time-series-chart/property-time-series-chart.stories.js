@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import faker from '@faker-js/faker';
 import isChromatic from 'chromatic/isChromatic';
 import addDays from 'date-fns/addDays';
-import faker from 'faker';
 
 import { PropertyTimeSeriesChart } from './property-time-series-chart.component';
 

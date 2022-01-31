@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'baseline',
     width: '100%',
   },
-  icon: { transform: 'rotate(180deg)' },
+  startIcon: { transform: 'rotate(180deg)' },
   title: {
     fontWeight: 600,
     fontSize: '2rem',
@@ -85,8 +85,7 @@ export const Checkout = ({
         <Button
           // @ts-ignore
           role="link"
-          classes={{ startIcon: styles.icon }}
-          startIcon={<PlayArrow />}
+          startIcon={<PlayArrow className={styles.startIcon} />}
           variant="text"
           size="small"
           color="default"
