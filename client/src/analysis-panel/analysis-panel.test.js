@@ -1,4 +1,5 @@
 import * as React from 'react';
+import 'jest-canvas-mock';
 
 import { setClickedFeatures, SHARED_STATE_KEY } from 'map/orbs/layers.slice';
 import { render, screen, waitFor, userEvent } from 'test/test-utils';

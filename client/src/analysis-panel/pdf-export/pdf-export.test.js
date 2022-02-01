@@ -1,11 +1,14 @@
 import React from 'react';
 
+import 'jest-canvas-mock';
 import { format } from 'date-fns';
 
 import { AnalysisPanelProvider } from 'analysis-panel/analysis-panel-context';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import PDF from './pdf-export.component';
+
+jest.mock('html2canvas', () => () => ({ then: () => ({}) }));
 
 const initialUser = { name: 'John Smith', email: 'johnsmith@gmail.com' };
 
@@ -245,7 +248,7 @@ describe('PDF', () => {
       },
     };
 
-    setup({ state });
+    setup(state);
 
     expect(
       screen.queryByText(

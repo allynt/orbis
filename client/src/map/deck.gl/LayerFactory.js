@@ -1,5 +1,5 @@
 import { HeatmapLayer, HexagonLayer } from '@deck.gl/aggregation-layers';
-import { TileLayer } from '@deck.gl/geo-layers';
+import { TileLayer, MVTLayer } from '@deck.gl/geo-layers';
 import { GeoJsonLayer, IconLayer, BitmapLayer } from '@deck.gl/layers';
 
 import * as CustomLayers from './custom-layers';
@@ -8,6 +8,7 @@ import * as CustomLayers from './custom-layers';
  * @type {{[ key in import('typings').LayerName ]: any}}
  */
 const LAYER_CLASSES = {
+  MVTLayer,
   GeoJsonLayer,
   IconLayer,
   BitmapLayer,

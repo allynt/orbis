@@ -37,10 +37,10 @@ const Well = styled(AuiWell)({
 });
 
 // @ts-ignore
-const Message = styled('pre')(({ theme, messageOnly }) => ({
+const Message = styled('pre')(({ theme, messageonly }) => ({
   textAlign: 'initial',
   margin: 0,
-  paddingBottom: messageOnly ? undefined : theme.spacing(2),
+  paddingBottom: messageonly ? undefined : theme.spacing(2),
   whiteSpace: 'pre-wrap',
 }));
 
@@ -63,7 +63,7 @@ export const ErrorFallback = ({
       <Well icon={false} severity="error" variant="filled">
         <Message
           // @ts-ignore
-          messageonly={messageOnly}
+          messageonly={messageOnly.toString()}
         >
           {error.stack && !messageOnly ? error.stack : error.message}
         </Message>

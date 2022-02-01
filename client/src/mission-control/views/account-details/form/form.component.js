@@ -77,7 +77,6 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
   const styles = useStyles();
 
   const {
-    register,
     handleSubmit,
     reset,
     control,
@@ -107,9 +106,9 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
         <Controller
           control={control}
           {...identifiers[FIELD_NAMES.customerName]}
-          render={({ field }) => (
+          render={({ field: { ref, ...rest } }) => (
             <TextField
-              {...field}
+              {...rest}
               {...identifiers[FIELD_NAMES.customerName]}
               label="Organisation Name"
             />
@@ -118,15 +117,16 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
 
         <Controller
           control={control}
-          render={({ field: { value } }) => (
+          {...identifiers[FIELD_NAMES.customerType]}
+          render={({ field: { ref, ...rest } }) => (
             <TextField
+              {...rest}
               {...identifiers[FIELD_NAMES.customerType]}
-              {...register(FIELD_NAMES.customerType)}
               label="Type of Organisation"
               select
             >
               {ORGANISATION_TYPES.map(({ name, value }) => (
-                <MenuItem key={value} value={value}>
+                <MenuItem key={name} value={value}>
                   {name}
                 </MenuItem>
               ))}
@@ -137,9 +137,9 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
         <Controller
           {...identifiers[FIELD_NAMES.registeredNumber]}
           control={control}
-          render={({ field }) => (
+          render={({ field: { ref, ...rest } }) => (
             <TextField
-              {...field}
+              {...rest}
               {...identifiers[FIELD_NAMES.registeredNumber]}
               label="Registered Number"
             />
@@ -149,9 +149,9 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
         <Controller
           {...identifiers[FIELD_NAMES.vatNumber]}
           control={control}
-          render={({ field }) => (
+          render={({ field: { ref, ...rest } }) => (
             <TextField
-              {...field}
+              {...rest}
               {...identifiers[FIELD_NAMES.vatNumber]}
               label="VAT Number"
             />
@@ -161,9 +161,9 @@ export const Form = ({ onSubmit, customer = {}, userEmail = '' }) => {
         <Controller
           {...identifiers[FIELD_NAMES.address]}
           control={control}
-          render={({ field }) => (
+          render={({ field: { ref, ...rest } }) => (
             <TextField
-              {...field}
+              {...rest}
               {...identifiers[FIELD_NAMES.address]}
               label="Billing Address"
             />

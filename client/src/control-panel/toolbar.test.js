@@ -13,6 +13,7 @@ describe('<Toolbar/>', () => {
   it("Calls the item's action on click", () => {
     const items = [
       {
+        id: 'test id',
         label: 'Item 1',
         icon: <div aria-label="Item 1" />,
         roles: ['RoleOne'],
@@ -28,8 +29,8 @@ describe('<Toolbar/>', () => {
 
   it('Navigates to root when the logo is clicked', () => {
     const items = [
-      { label: 'Item 1', roles: ['RoleOne'] },
-      { label: 'Item 2', roles: ['RoleTwo'] },
+      { id: 'Item 1', label: 'Item 1', roles: ['RoleOne'] },
+      { id: 'Item 2', label: 'Item 2', roles: ['RoleTwo'] },
     ];
 
     const { history } = render(<Toolbar items={items} />, {

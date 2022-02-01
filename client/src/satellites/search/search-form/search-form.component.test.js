@@ -16,6 +16,8 @@ const satellites = Array(5)
     label: `Satellite ${i}`,
   }));
 
+jest.setTimeout(60000);
+
 describe.each`
   inSearch                                        | inForm                                                | searchKey       | formKey
   ${['one', 'two', 'three']}                      | ${{ one: true, two: true, three: true, four: false }} | ${'satellites'} | ${'satellites'}

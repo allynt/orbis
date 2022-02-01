@@ -43,6 +43,7 @@ const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
       ],
     },
     properties: {
+      name: `Test ${i}`,
       area_name: `Test Area ${i}`,
       population: i + 1,
       households: i + 10,
@@ -50,7 +51,26 @@ const initialFeatures = new Array(3).fill(undefined).map((_, i) => ({
   },
 }));
 
-const renderComponent = (clickedFeatures = initialFeatures) => {
+const populationProperty = {
+  source_id: 'test/selected/property/latest',
+  name: 'population',
+  label: 'Test Property',
+  description: 'Test Property Description',
+  source: 'https://test.com',
+};
+
+const householdProperty = {
+  source_id: 'test/selected/property/latest',
+  name: 'households',
+  label: 'Test Property',
+  description: 'Test Property Description',
+  source: 'https://test.com',
+};
+
+const renderComponent = (
+  clickedFeatures = initialFeatures,
+  selectedProperty = populationProperty,
+) => {
   const dispatch = jest.fn(),
     setViewState = jest.fn();
 
@@ -62,7 +82,10 @@ const renderComponent = (clickedFeatures = initialFeatures) => {
         bottomDeckRef: { current: { viewports: [{ width: 0, height: 0 }] } },
       }}
     >
-      <AnalysisPanelProvider clickedFeatures={clickedFeatures}>
+      <AnalysisPanelProvider
+        clickedFeatures={clickedFeatures}
+        selectedProperty={selectedProperty}
+      >
         <ClickedFeaturesSummary
           clickedFeatures={clickedFeatures}
           dispatch={dispatch}
@@ -140,7 +163,7 @@ describe('<ClickedFeaturesSummary />', () => {
       const feature = {
         object: { id: 0, properties: { households: 1985 } },
       };
-      const { getByText } = renderComponent([feature]);
+      const { getByText } = renderComponent([feature], householdProperty);
       expect(
         getByText(feature.object.properties.households.toLocaleString(), {
           exact: false,

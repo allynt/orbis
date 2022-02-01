@@ -103,7 +103,7 @@ export const PendingInvitationsBoard = ({
       data={data}
       noDataMessage="No Pending Users"
       getCellProps={cell => ({
-        padding: cell.column.id === 'options' ? 'checkbox' : 'inherit',
+        padding: cell.column.id === 'options' ? 'checkbox' : 'normal',
       })}
     />
   );

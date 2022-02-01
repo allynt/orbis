@@ -26,7 +26,7 @@ describe('Target Dialog Screens', () => {
       expect(getByText(datasetName)).toBeInTheDocument();
       userEvent.click(getByText(datasetName));
 
-      expect(getByRole('button', { name: 'Next' })).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Next' })).toBeEnabled();
     });
 
     it('fires callback when changes have been made and `Next` button is clicked', () => {
@@ -55,7 +55,7 @@ describe('Target Dialog Screens', () => {
 
       expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
       userEvent.type(getByPlaceholderText('2011-2012'), '123');
-      expect(getByRole('button', { name: 'Add Target' })).not.toBeDisabled();
+      expect(getByRole('button', { name: 'Add Target' })).toBeEnabled();
     });
 
     it('fires callback when changes have been made and `Add Target` button is clicked', () => {
@@ -68,7 +68,6 @@ describe('Target Dialog Screens', () => {
       const { getByRole, getByPlaceholderText } = render(
         <TargetScreen onAddTargetsClick={onAddTargetsClick} />,
       );
-
       userEvent.type(getByPlaceholderText('2011-2012'), '123');
       userEvent.type(getByPlaceholderText('2012-2013'), '456');
 
