@@ -13,6 +13,45 @@ ICONS = [
     ("Extension", "extension"),
 ]
 
+STATUSES = {
+    "Pre-Approved": [
+        "Allowed",
+        "Appeal Received",
+        "Application under consideration",
+        "Called in by Secretary of State",
+        "Comment Issued",
+        "Closed",
+        "Declined to determine",
+        "Dismissed",
+        "Appeal in progress",
+        "Insufficient fee",
+        "No objection to Proposal (OBS only)",
+        "Not required",
+        "Objection raised to proposal (OBS only)",
+        "Opinion issued",
+        "Pre-application advice case completed",
+        "Split decision",
+        "Unknown",
+        "Withdrawn",
+        "Application Received",
+        "Quashed",
+        "Referred to Mayor",
+    ],
+    "Approved": ["Approved", ],
+    "Commenced": ["Commenced", ],
+    "Completed": ["Completed", ],
+    "Superseded / Legacy": [
+        "Superseded",
+        "Pending Legacy Record",
+    ],
+    "Lapsed / Revoked": [
+        "Lapsed",
+        "Revoked",
+        "Application Invalid",
+        "Refused",
+    ],
+}
+
 
 class PldAdapter(BaseProxyDataAdapter):
 
@@ -27,11 +66,18 @@ class PldAdapter(BaseProxyDataAdapter):
             source = rd["_source"]
             icon_id = None
 
-            # Get the icon id for the Label name.
+            # get the icon id for the label name...
             for icon in ICONS:
                 if icon[0] == source["development_type"]:
                     icon_id = icon[1]
                     break
+
+            # get the status-category...
+            status = source["status"]
+            status_category = next(
+                (k for k, v in STATUSES.items() if status in v),
+                None,
+            )
 
             # yapf: disable
             processed_data["features"].append({
@@ -49,7 +95,8 @@ class PldAdapter(BaseProxyDataAdapter):
                     "UPRN": source["uprn"],
                     "Address": f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
                     "Description": source["description"],
-                    "Status": source["status"],
+                    "Status Category": status_category,
+                    "Status": status,
                     "Development Type": source["development_type"],
                     "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
                     "icon": icon_id,
