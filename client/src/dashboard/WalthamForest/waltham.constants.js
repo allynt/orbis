@@ -108,3 +108,10 @@ export const PROGRESS_CHART_DATA = {
     name: 'Socially Rented',
   },
 };
+
+export const DeliverableSupplySummaryTypes = [
+  'Large Sites - With Planning Permission',
+  'Non Self Contained Accomodation With Planning Permission',
+  'Windfall Allowance From Small Sites',
+  'Sites on the Brownfield Land Site',
+];
