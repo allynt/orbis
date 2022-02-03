@@ -25,11 +25,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const HousingApprovalsComponent = ({
-  data,
   x = 'x',
-  ranges = ['y'],
   xLabel = '',
   yLabel = '',
+  ranges = ['y'],
+  data,
+  updateWalthamOrbState,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
@@ -39,6 +40,7 @@ const HousingApprovalsComponent = ({
 
   const handleToggleClick = (_, newValue) => {
     if (!newValue) return;
+    updateWalthamOrbState({ approvalsGrantedDataType: newValue });
     setSelectedDataType(newValue);
   };
 

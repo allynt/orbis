@@ -17,7 +17,7 @@ import { userSelector } from 'accounts/accounts.selectors';
 import {
   chartDataSelector,
   fetchDashboardData,
-  updateTargets,
+  updateUserDashboardConfig,
   userOrbStateSelector,
 } from '../dashboard.slice';
 import {
@@ -110,6 +110,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
     );
   }, [sourceId, dispatch]);
 
+  /**
+   * @param {object} data
+   */
+  const updateWalthamOrbState = data => {
+    dispatch(updateUserDashboardConfig({ user, sourceId, data }));
+  };
+
   const closeDialog = () => {
     setSelectedDataset(undefined);
     setTargetDialogVisible(false);
@@ -119,7 +126,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
    * @param {object} targets
    */
   const handleAddTargetsClick = targets => {
-    dispatch(updateTargets({ sourceId, targets, user }));
+    updateWalthamOrbState({ [selectedDataset]: targets });
     closeDialog();
   };
 
@@ -162,6 +169,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               }
               tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
               userOrbState={userOrbState}
+              updateWalthamOrbState={updateWalthamOrbState}
             />
             {/* big multi-line chart */}
             <HousingApprovalsComponent
@@ -170,6 +178,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
+              updateWalthamOrbState={updateWalthamOrbState}
             />
           </div>
         </div>

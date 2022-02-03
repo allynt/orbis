@@ -52,15 +52,30 @@ export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
   userOrbState,
+  updateWalthamOrbState,
 }) => {
   const styles = useStyles({});
-  const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
-  const [selectedDataType, setSelectedDataType] = useState(
-    TENURE_DATA_TYPES.net,
+
+  const { tenureType, tenureDataType } = userOrbState;
+
+  const [selectedTenureType, setSelectedTenureType] = useState(
+    tenureType ?? ALL_TENURE_TYPES,
   );
+
+  const [selectedDataType, setSelectedDataType] = useState(
+    tenureDataType ?? TENURE_DATA_TYPES.net,
+  );
+
+  const handleTenureTypeSelect = value => {
+    updateWalthamOrbState({ tenureType: value });
+    // do we still need local state if we're persisting these?
+    setSelectedTenureType(value);
+  };
 
   const handleToggleClick = (_, type) => {
     if (!type) return;
+    updateWalthamOrbState({ tenureDataType: type });
+    // do we still need local state if we're persisting these?
     setSelectedDataType(type);
   };
 
@@ -68,8 +83,9 @@ export const WalthamHousingDelivery = ({
    * @param {object[]} data
    */
   const getTenureType = data => {
-    const type = housingTenureTypes[tenureType];
-    return tenureType === ALL_TENURE_TYPES
+    const type = housingTenureTypes[selectedTenureType];
+    // remember this is broken when `All Tenure Types` is selected
+    return selectedTenureType === ALL_TENURE_TYPES
       ? data
       : data?.map(datum => ({
           Year: datum.Year,
@@ -82,8 +98,8 @@ export const WalthamHousingDelivery = ({
       <Grid item className={styles.header}>
         <Typography variant="h1">Housing Delivery</Typography>
         <Select
-          value={tenureType}
-          onChange={({ target: { value } }) => setTenureType(value)}
+          value={selectedTenureType}
+          onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
           className={styles.select}
         >
           <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
@@ -133,7 +149,9 @@ export const WalthamHousingDelivery = ({
             )}
             userTargetData={userOrbState}
             tenureType={
-              tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
+              selectedTenureType !== ALL_TENURE_TYPES
+                ? selectedTenureType
+                : undefined
             }
           />
         </ChartWrapper>
