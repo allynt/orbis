@@ -58,6 +58,18 @@ describe('Target Dialog Screens', () => {
       expect(getByRole('button', { name: 'Add Target' })).toBeEnabled();
     });
 
+    it('allows cleared targets to be saved', () => {
+      const targets = {
+        '2011-2012': '123',
+      };
+
+      const { getByRole } = render(<TargetScreen targets={targets} />);
+
+      expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
+      userEvent.click(getByRole('button', { name: 'Reset' }));
+      expect(getByRole('button', { name: 'Add Target' })).toBeEnabled();
+    });
+
     it('fires callback when changes have been made and `Add Target` button is clicked', () => {
       const onAddTargetsClick = jest.fn(),
         expected = {
