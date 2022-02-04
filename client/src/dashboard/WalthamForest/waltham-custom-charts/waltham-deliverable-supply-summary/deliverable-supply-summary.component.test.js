@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from 'test/test-utils';
 
-import { DeliverableSupplySummaryTypes } from '../../waltham.constants';
+import { deliverableSupplySummaryTypes } from '../../waltham.constants';
 import DeliverableSupplySummary from './deliverable-supply-summary.component';
 import * as MOCK_DATA from './mock-data';
 
@@ -26,9 +26,9 @@ describe('Deliverable Supply Summary', () => {
     ).toBeInTheDocument();
   });
 
-  it('should display correct xlabel, ylabel and legend titles from constants', () => {
+  it('should display correct xlabel, ylabel and legend titles', () => {
     render(<DeliverableSupplySummary data={MOCK_DATA} />);
-    DeliverableSupplySummaryTypes.forEach(legendLabel => {
+    deliverableSupplySummaryTypes.forEach(legendLabel => {
       expect(screen.getByText(legendLabel)).toBeInTheDocument();
     });
 

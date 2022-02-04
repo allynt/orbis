@@ -96,6 +96,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     ),
     totalHousingDelivery = useSelector(
       chartDataSelector(sourceId, 'TotalHousingDelivery'),
+    ),
+    deliverableSupplySummary = useSelector(
+      chartDataSelector(sourceId, 'DeliverableSupplySummary'),
     );
 
   useEffect(() => {
@@ -155,7 +158,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <div className={styles.barCharts}>
           <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
-            <DeliverableSupplySummary data={MOCK_DATA} />
+            <DeliverableSupplySummary data={deliverableSupplySummary} />
           </div>
 
           <div className={styles.housingDelivery}>

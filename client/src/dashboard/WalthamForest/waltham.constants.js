@@ -41,6 +41,10 @@ export const walthamApiMetadata = [
     datasetName: 'TotalHousingDelivery',
     url: '/wfc/mock/total_housing_delivery/v1/',
   },
+  {
+    datasetName: 'DeliverableSupplySummary',
+    url: '/wfc/mock/deliverable_supply_summary/v1/',
+  },
 ];
 
 export const targetDatasets = {
@@ -109,7 +113,7 @@ export const PROGRESS_CHART_DATA = {
   },
 };
 
-export const DeliverableSupplySummaryTypes = [
+export const deliverableSupplySummaryTypes = [
   'Large Sites - With Planning Permission',
   'Non Self Contained Accomodation With Planning Permission',
   'Windfall Allowance From Small Sites',

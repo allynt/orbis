@@ -6,7 +6,7 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
-import { DeliverableSupplySummaryTypes } from 'dashboard/WalthamForest/waltham.constants';
+import { deliverableSupplySummaryTypes } from 'dashboard/WalthamForest/waltham.constants';
 
 const DeliverableSupplySummary = ({ data }) => {
   const chartTheme = useChartTheme();
@@ -26,18 +26,18 @@ const DeliverableSupplySummary = ({ data }) => {
     [data],
   );
 
-  const apiLegendData = DeliverableSupplySummaryTypes.map((range, i) => ({
+  const legendData = deliverableSupplySummaryTypes.map((range, i) => ({
     name: range,
-    color: chartTheme.walthamChartColors.deliverableSupplySummary[i], // TODO: set up palette
+    color: chartTheme.walthamChartColors.deliverableSupplySummary[i],
   }));
 
-  const DeliverableSupplySummaryLegend = width => {
-    return <WalthamCustomLegend apiLegendData={apiLegendData} width={1024} />;
+  const DeliverableSupplySummaryLegend = () => {
+    return <WalthamCustomLegend apiLegendData={legendData} width={1024} />;
   };
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
-    const ranges = DeliverableSupplySummaryTypes;
+    const ranges = deliverableSupplySummaryTypes;
     const x = 'Year';
 
     return !!DeliverableSupplySummaryChartData ? (
