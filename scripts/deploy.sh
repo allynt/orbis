@@ -53,7 +53,6 @@ source "$(dirname "$0")/deploy-common.sh"
 
 set -x
 
-# cd ./terraform/deploy/
 cd ./deploy/
 
 $TERRAFORM_BINARY init

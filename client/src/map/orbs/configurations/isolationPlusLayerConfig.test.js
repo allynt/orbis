@@ -64,6 +64,7 @@ const setup = ({
         [source_id]: {
           clickedFeatures: clickedFeatures?.map(object => ({ object })),
           hoveredFeatures: hoveredFeatures?.map(object => ({ object })),
+          data: [],
         },
       },
     },
