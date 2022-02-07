@@ -38,11 +38,10 @@ const useStyles = makeStyles(theme => ({
   iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
 }));
 
-export const isPropertyOff = (filters, property) => {
-  return (
-    filters === undefined || filters === null || !filters.includes(property)
-  );
-};
+export const isPropertyOff = (filters, property, defaultChecked) =>
+  defaultChecked
+    ? filters === undefined || filters === null || !filters.includes(property)
+    : filters?.includes(property);
 
 /**
  * @param {{
@@ -61,6 +60,7 @@ export const CheckboxFilters = ({
   color,
   colorMap,
   iconColor,
+  defaultChecked = true,
 }) => {
   if (!filters) console.error('No `filters` prop supplied to CheckboxFilters');
 
@@ -70,7 +70,7 @@ export const CheckboxFilters = ({
     hasIconOrColorMap: filters?.some(f => !!f.icon) || colorMap != null,
   });
   let colorScale;
-  if (colorMap != null)
+  if (colorMap != null) {
     colorScale = new ColorScale({
       color: colorMap,
       domain:
@@ -78,6 +78,7 @@ export const CheckboxFilters = ({
           ? [filters[0].value, filters[filters.length - 1].value]
           : filters.map(f => f.value),
     });
+  }
 
   const handleCheckboxChange = (value, checked) => () => {
     let newFilterValue;
@@ -98,7 +99,7 @@ export const CheckboxFilters = ({
           .replace(/\s/g, '-')}`;
         const Icon = icon && iconMap[`${icon}Icon`];
         // This is backwards, beware!
-        const checked = isPropertyOff(filterValue, value);
+        const checked = isPropertyOff(filterValue, value, defaultChecked);
         const icColor = !iconColor && bgColor ? bgColor : iconColor;
 
         return (
@@ -116,6 +117,7 @@ export const CheckboxFilters = ({
                 inputProps={{ 'aria-labelledby': labelId }}
               />
             </ListItemIcon>
+
             {(Icon || colorScale) && (
               <ListItemIcon
                 className={styles.iconWrapper}
