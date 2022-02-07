@@ -27,3 +27,4 @@ export { WrappingChartLabel } from './wrapping-chart-label.component';
 export { ErrorFallback } from './error-fallback/error-fallback.component';
 export { OptionsMenu } from './options-menu/options-menu.component';
 export { Table } from './table/table.component';
+export { TooltipContent } from './tooltip-content.component';

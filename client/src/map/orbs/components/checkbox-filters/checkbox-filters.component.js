@@ -10,9 +10,14 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { InfoButtonTooltip, TooltipContent } from 'components';
 import { ColorScale } from 'utils/ColorScale';
 
 const useStyles = makeStyles(theme => ({
+  list: {
+    paddingLeft: 'unset',
+    paddingRight: 'unset',
+  },
   iconWrapper: {
     color: props => props.iconColor || theme.palette.secondary.main,
     backgroundColor: props => props.color || theme.palette.primary.main,
@@ -30,6 +35,7 @@ const useStyles = makeStyles(theme => ({
   label: {
     marginLeft: props => !props.hasIconOrColorMap && theme.spacing(2),
   },
+  iconButton: { justifySelf: 'flex-end', alignSelf: 'center' },
 }));
 
 export const isPropertyOff = (filters, property) => {
@@ -86,7 +92,7 @@ export const CheckboxFilters = ({
 
   return filters ? (
     <List disablePadding>
-      {filters.map(({ value, icon, label, bgColor }) => {
+      {filters.map(({ value, icon, label, bgColor, info }) => {
         const labelId = `checkbox-label-${value
           .toString()
           .replace(/\s/g, '-')}`;
@@ -97,6 +103,7 @@ export const CheckboxFilters = ({
 
         return (
           <ListItem
+            className={styles.list}
             key={value}
             role={undefined}
             button
@@ -120,11 +127,19 @@ export const CheckboxFilters = ({
                 {Icon && <Icon fontSize="small" titleAccess={icon} />}
               </ListItemIcon>
             )}
+
             <ListItemText
               className={styles.label}
               id={labelId}
               primary={label || value.toString()}
             />
+
+            {info && (
+              <InfoButtonTooltip
+                iconButtonClassName={styles.iconButton}
+                tooltipContent={<TooltipContent description={info} />}
+              />
+            )}
           </ListItem>
         );
       })}
