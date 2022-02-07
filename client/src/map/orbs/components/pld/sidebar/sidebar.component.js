@@ -81,7 +81,7 @@ export const PldSidebarComponent = ({
           range={dateRange}
         />
       </Grid>
-      <Grid container direction="row">
+      <Grid container justifyContent='space-between'>
         <Grid item>
           <Typography className={styles.checkboxHeading} variant="h4">
             Construction Phase&nbsp;
