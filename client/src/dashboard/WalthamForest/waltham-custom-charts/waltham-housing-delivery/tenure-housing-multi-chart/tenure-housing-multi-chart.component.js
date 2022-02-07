@@ -82,6 +82,19 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       };
     console.log('RENGES', ranges);
 
+    //const yearList = apiData.map(item => item['Year']);
+    const fieldList = Object.keys(apiData[0]);
+    const fieldsToAddUp = fieldList.filter(item => item !== 'Year');
+    let totalsArray = [];
+    for (let index in apiData) {
+      let total = 0;
+      for (let fieldName of fieldsToAddUp) {
+        total += apiData[index][fieldName];
+      }
+      totalsArray.push(total);
+    }
+
+    console.error('TOTALS ARRAY', totalsArray);
     return (
       <VictoryGroup>
         {/* data from API fetch */}
@@ -113,14 +126,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                   data={apiData}
                   x="Year"
                   y={range}
-                  labels={({ data }) => {
-                    let total = 0;
-                    data.forEach(datum => {
-                      total = total + datum._y;
-                    });
-
-                    return `The total value is: ${total}`;
-                  }}
+                  labels={totalsArray}
                   style={{
                     data: { width: barWidth },
                   }}
