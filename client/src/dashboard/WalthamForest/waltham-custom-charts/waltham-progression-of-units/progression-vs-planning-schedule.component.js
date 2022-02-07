@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { VictoryBar, VictoryStack } from 'victory';
+import { VictoryBar, VictoryStack, VictoryTooltip } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -44,10 +44,21 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
+            labelComponent={
+              <VictoryTooltip
+                constrainToVisibleArea
+                style={{ color: 'black' }}
+              />
+            }
             key={range}
             data={progressionVsPlanningChartData}
             x={x}
             y={range}
+            labels={({ datum }) => {
+              console.log('Props', datum._y);
+              return `
+                 ${datum._y}`;
+            }}
             style={{
               data: {
                 width: barWidth,

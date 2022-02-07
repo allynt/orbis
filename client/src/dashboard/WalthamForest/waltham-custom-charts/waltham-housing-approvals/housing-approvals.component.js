@@ -6,7 +6,12 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
-import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
+import {
+  VictoryGroup,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTooltip,
+} from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -80,7 +85,21 @@ const HousingApprovalsComponent = ({
           return (
             <VictoryGroup key={range}>
               <VictoryLine {...props} style={{ data: { stroke: color } }} />
-              <VictoryScatter {...props} style={{ data: { stroke: color } }} />
+              <VictoryScatter
+                {...props}
+                labelComponent={
+                  <VictoryTooltip
+                    constrainToVisibleArea
+                    style={{ color: 'black' }}
+                  />
+                }
+                labels={({ datum }) => {
+                  console.log('Props', datum);
+                  return `
+                     ${datum._y}`;
+                }}
+                style={{ data: { stroke: color } }}
+              />
             </VictoryGroup>
           );
         })

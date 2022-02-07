@@ -2,7 +2,13 @@ import React from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
+import {
+  VictoryGroup,
+  VictoryBar,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTooltip,
+} from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
@@ -14,6 +20,7 @@ import {
 } from 'dashboard/WalthamForest/waltham.constants';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
+  console.log('apiData', apiData);
   const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
@@ -48,8 +55,22 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           {apiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
+
+              labelComponent={
+                <VictoryTooltip
+                  constrainToVisibleArea
+                  style={{ color: 'black' }}
+                />
+              }
               key={`dataset-${i}`}
               data={arr}
+              x={arr.x}
+              y={arr.y}
+              labels={({ datum }) => {
+                console.log('Props', datum.x, datum.y);
+                return `
+                   ${datum.x} ${datum.y}`;
+              }}
               style={{
                 data: {
                   fill: walthamChartColors.totalHousing[i],
@@ -65,6 +86,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           <VictoryGroup>
             <VictoryScatter
               {...props}
+              labelComponent={<VictoryTooltip constrainToVisibleArea />}
               style={{
                 data: {
                   stroke: darken(color, 0.2),

@@ -8,6 +8,7 @@ import {
   VictoryGroup,
   VictoryLine,
   VictoryScatter,
+  VictoryTooltip,
 } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
@@ -30,6 +31,7 @@ import {
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
+  console.log('apitest', apiData);
   const { tenureStackColors } = useChartTheme();
 
   const tenureTypes = Object.values(housingTenureTypes),
@@ -78,23 +80,53 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         x: 'x',
         y: 'y',
       };
+    console.log('RENGES', ranges);
 
     return (
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup>
           <VictoryStack colorScale={colorScale}>
-            {ranges?.map(range => (
-              <VictoryBar
-                key={range}
-                data={apiData}
-                x="Year"
-                y={range}
-                style={{
-                  data: { width: barWidth },
-                }}
-              />
-            ))}
+            {ranges?.map(range => {
+              console.log('range', range);
+              return (
+                <VictoryBar
+                  labelComponent={
+                    <VictoryTooltip
+                      pointerOrientation="right"
+                      pointerWidth={25}
+                      flyoutHeight={60}
+                      flyoutWidth={200}
+                      // x={40}
+                      // y={40}
+                      constrainToVisibleArea
+                      style={{
+                        fill: 'black',
+                      }}
+                      flyoutStyle={{
+                        stroke: 'none',
+                        fill: '#f6be00',
+                      }}
+                    />
+                  }
+                  key={range}
+                  data={apiData}
+                  x="Year"
+                  y={range}
+                  labels={({ data }) => {
+                    let total = 0;
+                    data.forEach(datum => {
+                      total = total + datum._y;
+                    });
+
+                    return `The total value is: ${total}`;
+                  }}
+                  style={{
+                    data: { width: barWidth },
+                  }}
+                />
+              );
+            })}
           </VictoryStack>
         </VictoryGroup>
 
