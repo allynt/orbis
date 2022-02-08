@@ -25,6 +25,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     () => data?.properties[0].data,
     [data],
   );
+  console.log('ChartData', progressionVsPlanningChartData);
 
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
@@ -54,10 +55,29 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
             data={progressionVsPlanningChartData}
             x={x}
             y={range}
-            labels={({ datum }) => {
-              console.log('Props', datum._y);
+            labels={({ data }) => {
+              const fieldList = Object.keys(data[0]);
+              const fieldsToAdd = fieldList.filter(
+                item =>
+                  item !== 'Year' &&
+                  item !== '_group' &&
+                  item !== '_x' &&
+                  item !== '_y' &&
+                  item !== '_stack' &&
+                  item !== '_x1' &&
+                  item !== '_y0' &&
+                  item !== '_y1',
+              );
+              let totalsArray = [];
+              for (let index in data) {
+                let total = 0;
+                for (let fieldName of fieldsToAdd) {
+                  total += data[index][fieldName];
+                }
+                totalsArray.push(total);
+              }
               return `
-                 ${datum._y}`;
+               ${totalsArray}`;
             }}
             style={{
               data: {
