@@ -1,26 +1,27 @@
+/**
+ * Creates an array a labels from an array of objects whose properties
+ * we want to sum up
+ *
+ * @param {object[]} data - Data to generate labels for
+ * @param {string} keyLabel - Do not include this property in the same (e.g. If it's a label)
+ * @param {function} formatter - Optional function which takes an object and renders it as text
+ *
+ * @returns {any[]} An array of labels to appear over each data point
+ */
+
 const labelsForArrayOfObjects = (data, keyLabel, formatter) => {
-  // for each object in array, sum its properties, excluding the one specified
-  // in keyLabel. Optionally pass in a function to format
-  // the string for the tooltip text
   if (!data) {
     return [];
   }
-  if (!formatter) {
-    formatter = item => `${item}`;
-  }
-  let totalsArray = [];
 
-  const fieldList = Object.keys(data[0]);
-  const fieldsToAddUp = fieldList.filter(item => item !== keyLabel);
-  for (let index in data) {
+  const fieldsToAddUp = Object.keys(data[0]).filter(item => item !== keyLabel);
+  return data.map(item => {
     let total = 0;
-    for (let fieldName of fieldsToAddUp) {
-      total += data[index][fieldName];
+    for (const fieldName of fieldsToAddUp) {
+      total += item[fieldName];
     }
-    totalsArray.push(formatter(total));
-  }
-
-  return totalsArray;
+    return formatter ? formatter(total) : total;
+  });
 };
 
 export { labelsForArrayOfObjects };
