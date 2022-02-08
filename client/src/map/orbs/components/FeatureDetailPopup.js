@@ -23,6 +23,7 @@ import {
  */
 const FeatureDetailPopup = ({
   source,
+  title,
   titleProperty,
   picklist,
   omitlist = [],
@@ -80,6 +81,7 @@ const FeatureDetailPopup = ({
       {...popupProps}
     >
       <FeatureDetail
+        title={title}
         titleProperty={titleProperty}
         features={features.map(feature => feature.properties)}
         propertiesToOmit={omitlist}
