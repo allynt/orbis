@@ -102,7 +102,7 @@ export const WalthamHousingDelivery = ({
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
-            userTargetData={userTargetTransformer(userOrbState?.totalHousing)}
+            userTargetData={userOrbState?.totalHousing}
           />
         </ChartWrapper>
 
