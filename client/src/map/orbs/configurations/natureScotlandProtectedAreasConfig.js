@@ -155,7 +155,7 @@ const configuration = ({
     fillPatternAtlas: './natureScotland.png',
     fillPatternMapping: './natureScotland.json',
     getFillPattern,
-    getFillPatternScale: 500,
+    getFillPatternScale: 64,
     getFillPatternOffset: [0, 0],
     extensions: [
       new DataFilterExtension({ filterSize: 1 }),
