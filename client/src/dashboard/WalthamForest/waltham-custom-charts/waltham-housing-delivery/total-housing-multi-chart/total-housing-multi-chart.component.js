@@ -7,6 +7,10 @@ import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
+import {
+  groupedDataTransformer,
+  userTargetTransformer,
+} from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TENURE_DATA_TYPES,
@@ -18,6 +22,19 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
 
   if (!apiData) return null;
 
+  // Transform API/target data to correct data shape, and create a
+  // reliable timeline on which to base the data
+  const transformedData = groupedDataTransformer(apiData, userTargetData);
+  const transformedTargets = userTargetTransformer(userTargetData);
+
+  // hardcoded to return most recent 5 years' data for now, but can be easily
+  // configured to cut out a 5-year window based on a start/end parameter
+  const filteredApiData = [
+    transformedData[0].slice(-5),
+    transformedData[1].slice(-5),
+  ];
+  const filteredTargetData = transformedTargets.slice(-5);
+
   const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
     name: type,
     color: walthamChartColors.totalHousing[i],
@@ -26,18 +43,18 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const renderTotalHousingLegend = width => (
     <WalthamCustomLegend
       apiLegendData={apiLegendData}
-      targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+      targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
       width={width}
     />
   );
 
   const renderTotalHousingMultiChart = width => {
-    const { barWidth, offset } = GroupedWidthCalculator(apiData, width);
+    const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
 
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: filteredTargetData,
         x: 'x',
         y: 'y',
       };
@@ -45,7 +62,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup offset={offset}>
-          {apiData?.map((arr, i) => (
+          {filteredApiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
               key={`dataset-${i}`}
@@ -61,7 +78,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData ? (
+        {!!filteredTargetData ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
