@@ -19,8 +19,6 @@ const useStyles = makeStyles(theme => ({
     paddingRight: 'unset',
   },
   iconWrapper: {
-    color: props => props.iconColor || theme.palette.secondary.main,
-    backgroundColor: props => props.color || theme.palette.primary.main,
     width: '2rem',
     height: '2rem',
     minWidth: '2rem',
@@ -93,7 +91,7 @@ export const CheckboxFilters = ({
 
   return filters ? (
     <List disablePadding>
-      {filters.map(({ value, icon, label, bgColor, info }) => {
+      {filters.map(({ value, icon, label, iconColor, bgColor, info }) => {
         const labelId = `checkbox-label-${value
           .toString()
           .replace(/\s/g, '-')}`;
