@@ -8,32 +8,57 @@ import {
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
-  describe('groupedDataTransformer', () => {
+  describe.only('groupedDataTransformer', () => {
     it('sorts gross and net values into two nested arrays', () => {
       const data = [
-          {
-            Year: '2020',
-            'Total Gross': 123,
-            'Total Net': 456,
-          },
-          {
-            Year: '2020',
-            'Total Gross': 789,
-            'Total Net': 101,
-          },
-        ],
-        expected = [
-          [
-            { x: '2020', y: 123 },
-            { x: '2020', y: 789 },
-          ],
-          [
-            { x: '2020', y: 456 },
-            { x: '2020', y: 101 },
-          ],
-        ];
+        {
+          Year: '2011-2012',
+          'Total Gross': 123,
+          'Total Net': 456,
+        },
+        {
+          Year: '2019-2020',
+          'Total Gross': 789,
+          'Total Net': 101,
+        },
+      ];
 
-      const result = groupedDataTransformer(data);
+      const targets = {
+        2010: '254',
+        2018: '191',
+        2019: '181',
+        2020: '155',
+      };
+
+      const expected = [
+        [
+          { x: 2010, y: null },
+          { x: 2011, y: 123 },
+          { x: 2012, y: null },
+          { x: 2013, y: null },
+          { x: 2014, y: null },
+          { x: 2015, y: null },
+          { x: 2016, y: null },
+          { x: 2017, y: null },
+          { x: 2018, y: null },
+          { x: 2019, y: 789 },
+          { x: 2020, y: null },
+        ],
+        [
+          { x: 2010, y: null },
+          { x: 2011, y: 456 },
+          { x: 2012, y: null },
+          { x: 2013, y: null },
+          { x: 2014, y: null },
+          { x: 2015, y: null },
+          { x: 2016, y: null },
+          { x: 2017, y: null },
+          { x: 2018, y: null },
+          { x: 2019, y: 101 },
+          { x: 2020, y: null },
+        ],
+      ];
+      const result = groupedDataTransformer(data, targets);
       expect(result).toEqual(expected);
     });
   });

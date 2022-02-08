@@ -24,9 +24,6 @@ import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
-import { groupedDataTransformer } from './utils';
-import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
-import MOCK_DATA from './waltham-custom-charts/waltham-deliverable-supply-summary/mock-data';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -69,6 +66,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
+    // width: '90vw',
   },
 }));
 
@@ -79,8 +77,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
 
-  const user = useSelector(userSelector),
-    userOrbState = useSelector(userOrbStateSelector(sourceId));
+  const user = useSelector(userSelector);
+  const userOrbState = useSelector(userOrbStateSelector(sourceId));
 
   const existingTargets = userOrbState[selectedDataset];
 
@@ -122,14 +120,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   // only arrays of chart data, transformed where needed and cached
-  const totalHousingDeliveryChartData = useMemo(
-      () => groupedDataTransformer(totalHousingDelivery?.properties[0].data),
-      [totalHousingDelivery],
-    ),
-    tenureHousingDeliveryChartData = useMemo(
-      () => tenureHousingDelivery?.properties,
-      [tenureHousingDelivery],
-    );
+  const tenureHousingDeliveryChartData = useMemo(
+    () => tenureHousingDelivery?.properties,
+    [tenureHousingDelivery],
+  );
 
   return (
     <div className={styles.dashboard}>
@@ -164,7 +158,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
             <WalthamHousingDelivery
-              totalHousingDeliveryChartData={totalHousingDeliveryChartData}
+              totalHousingDeliveryChartData={
+                totalHousingDelivery?.properties[0].data
+              }
               tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
               userOrbState={userOrbState}
             />
