@@ -56,7 +56,22 @@ const DeliverableSupplySummary = ({ data }) => {
             data={DeliverableSupplySummaryChartData}
             x={x}
             y={range}
-            labelComponent={<VictoryTooltip />}
+            labelComponent={
+              <VictoryTooltip
+                pointerOrientation="right"
+                pointerWidth={25}
+                flyoutHeight={40}
+                flyoutWidth={100}
+                constrainToVisibleArea
+                style={{
+                  fill: 'black',
+                }}
+                flyoutStyle={{
+                  stroke: 'none',
+                  fill: '#f6be00',
+                }}
+              />
+            }
             labels={totalsArray}
             style={{
               data: {
