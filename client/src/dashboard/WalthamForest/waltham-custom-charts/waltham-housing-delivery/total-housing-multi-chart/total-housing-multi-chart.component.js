@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -76,12 +76,19 @@ export const dataTransformer = (data, targets) => {
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const { walthamChartColors } = useChartTheme();
 
-  if (!apiData) return null;
-
   // Transform API/target data to correct data shape, and create a
   // reliable timeline on which to base the data
-  const transformedData = dataTransformer(apiData, userTargetData);
-  const transformedTargets = userTargetTransformer(userTargetData);
+  const transformedData = useMemo(
+    () => dataTransformer(apiData, userTargetData),
+    [apiData, userTargetData],
+  );
+
+  const transformedTargets = useMemo(
+    () => userTargetTransformer(userTargetData),
+    [userTargetData],
+  );
+
+  if (!transformedData) return null;
 
   // Can be easily configured to cut out a 5-year window based on a
   // start/end parameter, but not in scope of ticket
