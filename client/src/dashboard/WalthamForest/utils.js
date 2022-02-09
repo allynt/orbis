@@ -79,6 +79,22 @@ const getTargetTotals = data => {
   );
 };
 
+const getPastYears = (years = 5) => {
+  const thisYear = new Date().getFullYear();
+
+  let yearRange = [];
+  for (let i = 0; i < years; i++) {
+    yearRange = [...yearRange, i];
+  }
+
+  return yearRange
+    .reduce((acc, num) => {
+      const year = thisYear - num;
+      return [...acc, `${year}-${year + 1}`];
+    }, [])
+    .reverse();
+};
+
 /**
  * This tallies up the user's 'total housing' target data for the last 5 years,
  * to be used in the progress wheels.
@@ -98,5 +114,6 @@ export {
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getPastYears,
   getUser5YearTotals,
 };

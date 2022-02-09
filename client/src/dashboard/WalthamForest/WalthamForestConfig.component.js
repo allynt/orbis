@@ -188,9 +188,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <DialogContent>
           {!!selectedDataset ? (
             <TargetScreen
-              onAddTargetsClick={targets =>
-                handleAddTargetsClick({ [selectedDataset]: targets })
-              }
+              onAddTargetsClick={targets => handleAddTargetsClick(targets)}
+              selectedDataset={selectedDataset}
               targets={existingTargets}
             />
           ) : (

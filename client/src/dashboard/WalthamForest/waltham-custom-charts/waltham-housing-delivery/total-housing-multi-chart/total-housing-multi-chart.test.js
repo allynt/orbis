@@ -85,6 +85,37 @@ describe('dataTransformer', () => {
     expect(result).toEqual(expected);
   });
 
+  it('returns API timeline only if no targets', () => {
+    const data = [
+      {
+        Year: '2017-2018',
+        'Total Gross': 123,
+        'Total Net': 456,
+      },
+      {
+        Year: '2019-2020',
+        'Total Gross': 789,
+        'Total Net': 101,
+      },
+    ];
+
+    const expected = [
+      [
+        { x: '2017-2018', y: 123 },
+        { x: '2018-2019', y: null },
+        { x: '2019-2020', y: 789 },
+      ],
+      [
+        { x: '2017-2018', y: 456 },
+        { x: '2018-2019', y: null },
+        { x: '2019-2020', y: 101 },
+      ],
+    ];
+
+    const result = dataTransformer(data, {});
+    expect(result).toEqual(expected);
+  });
+
   it('returns undefined if data is not present', () => {
     const result = dataTransformer(undefined, undefined);
     expect(result).toBeUndefined();

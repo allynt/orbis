@@ -49,31 +49,19 @@ export const walthamApiMetadata = [
 
 export const targetDatasets = {
   totalHousing:
-    'Total Housing Test Target For Each of The Last 5 Financial Years',
-  marketHousing:
-    'Market Housing Targets For Each of The Previous 10 Financial Years',
-  affordableHousing:
-    'Affordable Housing % Delivery Target For The Previous 10 Financial Years',
-  intermediateDelivery:
-    'Intermediate % Delivery Target For the Previous 10 Financial Years',
+    'Total housing test target for each of the last 5 financial years',
   sociallyRented:
-    'Socially Rented % Delivery Target For The Previous 10 Financial Years',
+    'Social Rented Housing Targets for previous 5 financial years',
+  marketHousing: 'Market Housing Targets for previous 5 financial years',
+  intermediateDelivery:
+    'Intermediate Housing Targets for previous 5 financial years',
+  affordableHousing:
+    'Affordable Housing Targets for previous 5 financial years',
   privateRental:
-    'Private Rental Sector % Delivery Target For The Previous 10 Financial Years',
+    'Private Rented Housing Targets for previous 5 financial years',
+  affordableHousingPercentage:
+    'Affordable Housing % delivery target for the previous 10 financial years',
 };
-
-export const targetInputFields = [
-  '2011-2012',
-  '2012-2013',
-  '2013-2014',
-  '2014-2015',
-  '2015-2016',
-  '2016-2017',
-  '2017-2018',
-  '2018-2019',
-  '2019-2020',
-  '2020-2021',
-];
 
 export const HOUSING_APPROVAL_DATA_TYPES = {
   monthly: 'Monthly',
