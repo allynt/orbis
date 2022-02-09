@@ -1,5 +1,4 @@
 import {
-  groupedDataTransformer,
   lineDataTransformer,
   userTargetTransformer,
   filterEmptyStrings,
@@ -8,61 +7,6 @@ import {
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
-  describe.only('groupedDataTransformer', () => {
-    it('sorts gross and net values into two nested arrays', () => {
-      const data = [
-        {
-          Year: '2011-2012',
-          'Total Gross': 123,
-          'Total Net': 456,
-        },
-        {
-          Year: '2019-2020',
-          'Total Gross': 789,
-          'Total Net': 101,
-        },
-      ];
-
-      const targets = {
-        2010: '254',
-        2018: '191',
-        2019: '181',
-        2020: '155',
-      };
-
-      const expected = [
-        [
-          { x: 2010, y: null },
-          { x: 2011, y: 123 },
-          { x: 2012, y: null },
-          { x: 2013, y: null },
-          { x: 2014, y: null },
-          { x: 2015, y: null },
-          { x: 2016, y: null },
-          { x: 2017, y: null },
-          { x: 2018, y: null },
-          { x: 2019, y: 789 },
-          { x: 2020, y: null },
-        ],
-        [
-          { x: 2010, y: null },
-          { x: 2011, y: 456 },
-          { x: 2012, y: null },
-          { x: 2013, y: null },
-          { x: 2014, y: null },
-          { x: 2015, y: null },
-          { x: 2016, y: null },
-          { x: 2017, y: null },
-          { x: 2018, y: null },
-          { x: 2019, y: 101 },
-          { x: 2020, y: null },
-        ],
-      ];
-      const result = groupedDataTransformer(data, targets);
-      expect(result).toEqual(expected);
-    });
-  });
-
   describe('lineDataTransformer', () => {
     it('gives all entries uniform keys, and sets missing data to null', () => {
       const data = [
@@ -96,53 +40,6 @@ describe('Waltham Forest Data Transformers', () => {
 
       const result = lineDataTransformer(data);
       expect(result).toEqual(data);
-    });
-  });
-
-  describe('userTargetTransformer', () => {
-    it('transforms data and converts string values to numbers', () => {
-      const input = {
-          'key-1': '123',
-          'key-2': '456',
-        },
-        expected = [
-          {
-            x: 'key-1',
-            y: 123,
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input);
-      expect(result).toEqual(expected);
-    });
-
-    it('does not affect values that are already numbers', () => {
-      const input = {
-          'key-1': '123',
-          'key-2': 456,
-        },
-        expected = [
-          {
-            x: 'key-1',
-            y: 123,
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input);
-      expect(result).toEqual(expected);
-    });
-
-    it('returns undefined if data is not present', () => {
-      const result = userTargetTransformer(undefined);
-      expect(result).toBeUndefined();
     });
   });
 
@@ -267,6 +164,53 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = getTargetTotals(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('userTargetTransformer', () => {
+    it('transforms data and converts string values to numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': '456',
+        },
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = userTargetTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('does not affect values that are already numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': 456,
+        },
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = userTargetTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is not present', () => {
+      const result = userTargetTransformer(undefined);
       expect(result).toBeUndefined();
     });
   });
