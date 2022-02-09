@@ -20,11 +20,13 @@ import {
   updateTargets,
   userOrbStateSelector,
 } from '../dashboard.slice';
+import * as MOCK_DATA from '../mock-data/waltham-forest/mock_affordable_housing';
 import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer } from './utils';
+import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -153,6 +155,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <div className={styles.barCharts}>
           <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+            <AffordableHousingDelivery apiData={{ MOCK_DATA }} />
           </div>
 
           <div className={styles.housingDelivery}>
