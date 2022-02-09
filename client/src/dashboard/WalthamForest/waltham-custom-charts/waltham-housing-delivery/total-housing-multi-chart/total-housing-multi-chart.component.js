@@ -39,6 +39,7 @@ export const dataTransformer = (data, targets) => {
   });
 
   // Object.keys(targets).length? Deleted targets could be empty object
+  // What are uninitiated vs cleared targets?
   const targetYears = !!targets
     ? Object.keys(targets).map(key => {
         const [year] = key.split('-');
@@ -112,7 +113,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   );
 
   const renderTotalHousingMultiChart = width => {
-    const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
+    const { barWidth, offset } = GroupedWidthCalculator(filteredApiData, width);
 
     const color = '#d13aff',
       scatterWidth = width / 2,

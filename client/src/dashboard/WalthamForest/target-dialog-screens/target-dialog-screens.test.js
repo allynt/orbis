@@ -8,9 +8,10 @@ import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
 describe('Target Dialog Screens', () => {
   describe('SelectScreen', () => {
-    const defaultValue = 'Select Type of Target',
-      datasetName =
-        'Total Housing Test Target For Each of The Last 5 Financial Years';
+    const defaultValue = 'Select Type of Target';
+    const datasetName =
+      'Total housing test target for each of the last 5 financial years';
+
     it('renders', () => {
       const { getByRole } = render(<SelectScreen />);
       expect(getByRole('button', { name: 'Next' })).toBeInTheDocument();
@@ -54,13 +55,13 @@ describe('Target Dialog Screens', () => {
       const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
 
       expect(getByRole('button', { name: 'Add Target' })).toBeDisabled();
-      userEvent.type(getByPlaceholderText('2011-2012'), '123');
+      userEvent.type(getByPlaceholderText('2020-2021'), '123');
       expect(getByRole('button', { name: 'Add Target' })).toBeEnabled();
     });
 
     it('allows cleared targets to be saved', () => {
       const targets = {
-        '2011-2012': '123',
+        '2020-2021': '123',
       };
 
       const { getByRole } = render(<TargetScreen targets={targets} />);
@@ -73,15 +74,20 @@ describe('Target Dialog Screens', () => {
     it('fires callback when changes have been made and `Add Target` button is clicked', () => {
       const onAddTargetsClick = jest.fn(),
         expected = {
-          '2011-2012': '123',
-          '2012-2013': '456',
+          'test-dataset': {
+            '2020-2021': '123',
+            '2021-2022': '456',
+          },
         };
 
       const { getByRole, getByPlaceholderText } = render(
-        <TargetScreen onAddTargetsClick={onAddTargetsClick} />,
+        <TargetScreen
+          onAddTargetsClick={onAddTargetsClick}
+          selectedDataset="test-dataset"
+        />,
       );
-      userEvent.type(getByPlaceholderText('2011-2012'), '123');
-      userEvent.type(getByPlaceholderText('2012-2013'), '456');
+      userEvent.type(getByPlaceholderText('2020-2021'), '123');
+      userEvent.type(getByPlaceholderText('2021-2022'), '456');
 
       userEvent.click(getByRole('button', { name: 'Add Target' }));
       expect(onAddTargetsClick).toHaveBeenCalledWith(expected);
@@ -90,8 +96,8 @@ describe('Target Dialog Screens', () => {
     it('clears all values when `Reset` button is clicked', () => {
       const { getByRole, getByPlaceholderText } = render(<TargetScreen />);
 
-      const input1 = getByPlaceholderText('2011-2012'),
-        input2 = getByPlaceholderText('2012-2013');
+      const input1 = getByPlaceholderText('2021-2022');
+      const input2 = getByPlaceholderText('2022-2023');
 
       userEvent.type(input1, '123');
       userEvent.type(input2, '456');
@@ -107,28 +113,28 @@ describe('Target Dialog Screens', () => {
     it('allows numbers', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011-2012'), '123');
+      userEvent.type(getByPlaceholderText('2021-2022'), '123');
       expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('allows decimals', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011-2012'), '123.456');
+      userEvent.type(getByPlaceholderText('2021-2022'), '123.456');
       expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('does not allow letters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011-2012'), 'abc');
+      userEvent.type(getByPlaceholderText('2021-2022'), 'abc');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
     it('does not allow special characters', () => {
       const { getByText, getByPlaceholderText } = render(<TargetScreen />);
 
-      userEvent.type(getByPlaceholderText('2011-2012'), ';,%');
+      userEvent.type(getByPlaceholderText('2021-2022'), ';,%');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
@@ -137,7 +143,7 @@ describe('Target Dialog Screens', () => {
         <TargetScreen />,
       );
 
-      const input = getByPlaceholderText('2011-2012');
+      const input = getByPlaceholderText('2021-2022');
 
       userEvent.type(input, ';,%');
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
@@ -151,8 +157,8 @@ describe('Target Dialog Screens', () => {
         <TargetScreen />,
       );
 
-      const input1 = getByPlaceholderText('2011-2012'),
-        input2 = getByPlaceholderText('2012-2013');
+      const input1 = getByPlaceholderText('2021-2022');
+      const input2 = getByPlaceholderText('2022-2023');
 
       userEvent.type(input1, '123');
       userEvent.type(input2, 'abc');

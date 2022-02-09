@@ -3,6 +3,7 @@ import {
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getPastYears,
   getUser5YearTotals,
 } from './utils';
 
@@ -212,6 +213,28 @@ describe('Waltham Forest Data Transformers', () => {
     it('returns undefined if data is not present', () => {
       const result = userTargetTransformer(undefined);
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getPastYears', () => {
+    it('returns specified no. of previous years, formatted correctly', () => {
+      const expected = ['2020-2021', '2021-2022', '2022-2023'];
+
+      const result = getPastYears(3);
+      expect(result).toEqual(expected);
+    });
+
+    it('defaults to 5 years if no args passed', () => {
+      const expected = [
+        '2018-2019',
+        '2019-2020',
+        '2020-2021',
+        '2021-2022',
+        '2022-2023',
+      ];
+
+      const result = getPastYears();
+      expect(result).toEqual(expected);
     });
   });
 

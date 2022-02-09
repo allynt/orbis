@@ -9,8 +9,8 @@ import {
   Input,
 } from '@astrosat/astrosat-ui';
 
-import { filterEmptyStrings } from '../utils';
-import { targetInputFields, targetDatasets } from '../waltham.constants';
+import { filterEmptyStrings, getPastYears } from '../utils';
+import { targetDatasets } from '../waltham.constants';
 import { validate } from './validate';
 
 const useStyles = makeStyles(theme => ({
@@ -93,34 +93,36 @@ const SelectScreen = ({ onNextClick }) => {
 /**
  * @param {{
  *  onAddTargetsClick: (targets: object) => void
+ *  selectedDataset: string
  *  targets: object
  * }} props
  */
-const TargetScreen = ({ onAddTargetsClick, targets = {} }) => {
+const TargetScreen = ({ onAddTargetsClick, selectedDataset, targets = {} }) => {
   const styles = useStyles({});
   const [targetData, setTargetData] = useState(targets);
   const [error, setError] = useState(undefined);
   const isDirty = targetData !== targets;
+  const yearRange = selectedDataset === 'affordableHousingPercentage' ? 10 : 5;
 
   useEffect(() => {
-    if (Object.keys(targetData).length) {
+    if (isDirty) {
       setError(validate(targetData));
     }
-  }, [targetData]);
+  }, [targetData, isDirty]);
 
-  const handleChange = (field, value) =>
+  const handleChange = (field, value) => {
     setTargetData({ ...targetData, [field]: value.trim() });
+  };
+
+  const handleSubmit = () => {
+    onAddTargetsClick({ [selectedDataset]: filterEmptyStrings(targetData) });
+  };
 
   return (
-    <Grid
-      item
-      container
-      component="form"
-      onSubmit={() => onAddTargetsClick(filterEmptyStrings(targetData))}
-    >
+    <Grid item container component="form" onSubmit={handleSubmit}>
       {!!error ? <span className={styles.error}>{error}</span> : null}
       <Grid item container className={styles.inputFields}>
-        {targetInputFields?.map(field => (
+        {getPastYears(yearRange).map(field => (
           <Input
             key={field}
             value={targetData[field] ?? ''}
