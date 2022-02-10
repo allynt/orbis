@@ -1,0 +1,30 @@
+{
+  "hatch-1": {
+    "x": 0,
+    "y": 0,
+    "width": 64,
+    "height": 64,
+    "mask": true
+  },
+  "hatch-2": {
+    "x": 64,
+    "y": 0,
+    "width": 64,
+    "height": 64,
+    "mask": true
+  },
+  "hatch-3": {
+    "x": 0,
+    "y": 64,
+    "width": 64,
+    "height": 64,
+    "mask": true
+  },
+  "hatch-4": {
+    "x": 64,
+    "y": 64,
+    "width": 64,
+    "height": 64,
+    "mask": true
+  }
+}
