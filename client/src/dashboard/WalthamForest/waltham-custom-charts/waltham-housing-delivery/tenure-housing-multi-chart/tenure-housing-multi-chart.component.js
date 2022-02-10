@@ -12,15 +12,52 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
-import {
-  userTargetTransformer,
-  getTargetTotals,
-} from 'dashboard/WalthamForest/utils';
+import { getTargetTotals } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
+
+const dataTransformer = (apiData, targets = {}) => {
+  if (!apiData) return;
+
+  const noTargets = !Object.keys(targets).length;
+
+  const apiYears = apiData.map(obj => {
+    const [year] = obj.Year.split('-');
+    return +year;
+  });
+
+  const targetYears = noTargets
+    ? []
+    : Object.keys(targets).map(key => {
+        const [year] = key.split('-');
+        return +year;
+      });
+
+  const allYears = [...apiYears, ...targetYears];
+
+  const min = Math.min(...allYears);
+  const max = Math.max(...apiYears);
+
+  let timeline = [];
+  for (let i = min; i <= max; i++) {
+    timeline = [...timeline, `${i}-${i + 1}`];
+  }
+
+  const transformedTargets = noTargets
+    ? null
+    : Object.entries(targets).reduce(
+        (acc, [key, value]) =>
+          !timeline.includes(key) ? acc : [...acc, { x: key, y: +value }],
+        [],
+      );
+
+  const transformedData = apiData;
+
+  return { transformedData, transformedTargets };
+};
 
 /**
  * @param {{
@@ -35,15 +72,21 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const tenureTypes = Object.values(housingTenureTypes),
     stackColors = Object.values(tenureStackColors);
 
-  const targets = useMemo(
-    () =>
-      !tenureType
-        ? userTargetTransformer(getTargetTotals(userTargetData))
-        : userTargetTransformer(userTargetData?.[tenureType]),
-    [tenureType, userTargetData],
+  const targets = !tenureType
+    ? getTargetTotals(userTargetData)
+    : userTargetData?.[tenureType];
+
+  const transformerOutput = useMemo(
+    () => dataTransformer(apiData, targets),
+    [apiData, targets],
   );
 
-  if (!apiData) return null;
+  if (!transformerOutput) return null;
+
+  const { transformedData, transformedTargets } = transformerOutput;
+
+  const filteredApiData = transformedData.slice(-5),
+    filteredTargetData = transformedTargets?.slice(-5);
 
   const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,
@@ -54,7 +97,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     return (
       <WalthamCustomLegend
         apiLegendData={apiLegendData}
-        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+        targetLegendData={!!filteredTargetData ? TARGET_LEGEND_DATA : null}
         width={width}
       />
     );
@@ -74,7 +117,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: targets,
+        data: filteredTargetData,
         x: 'x',
         y: 'y',
       };
@@ -87,7 +130,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
             {ranges?.map(range => (
               <VictoryBar
                 key={range}
-                data={apiData}
+                data={filteredApiData}
                 x="Year"
                 y={range}
                 style={{
@@ -99,7 +142,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData && !!targets ? (
+        {!!filteredTargetData && !!targets ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
