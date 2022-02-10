@@ -9,13 +9,13 @@ const Description = styled(Typography)(({ theme }) => ({
 
 /**
  * @param {{
- *  categoryPath: string
+ *  categoryPath?: string
  *  description: string
  * }} props
  */
 export const TooltipContent = ({ categoryPath, description }) => (
   <>
-    <CategoryPath paragraph>{categoryPath}</CategoryPath>
+    {categoryPath && <CategoryPath paragraph>{categoryPath}</CategoryPath>}
     <Description>{description}</Description>
   </>
 );

@@ -4,6 +4,8 @@ import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import { Form } from './form.component';
 
+jest.setTimeout(60000);
+
 describe('Form', () => {
   it('Calls onSubmit with the form values', async () => {
     const name = 'Silly test org',
