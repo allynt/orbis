@@ -6,7 +6,7 @@ import { render, screen, waitFor } from 'test/test-utils';
 import { AffordableHousingDelivery } from './affordable-housing-delivery.component';
 
 describe('<AfforableHousingDelivery />', () => {
-  it('renders the graph', async () => {
+  it('shows the right title in the wrapper', async () => {
     render(<AffordableHousingDelivery apiData={MOCK_DATA} />);
 
     await waitFor(() =>

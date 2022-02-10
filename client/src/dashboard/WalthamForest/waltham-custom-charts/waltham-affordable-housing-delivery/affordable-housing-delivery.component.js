@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { act } from 'react-dom/test-utils';
 import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
@@ -16,9 +15,9 @@ import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-lege
  */
 const AffordableHousingDelivery = ({ apiData }) => {
   const { walthamChartColors } = useChartTheme();
-  console.log('apiData', apiData);
+
   const actualData = MOCK_DATA.properties[0].data;
-  console.log('actualData', actualData);
+
   const apiLegendData = [
     {
       name: '% affordable housing delivered out of yearly target',
@@ -28,27 +27,19 @@ const AffordableHousingDelivery = ({ apiData }) => {
 
   const renderLineChart = width => {
     const color = '#f6be00';
+    const y_values = actualData.map(item => item['Affordable Housing']);
+    const y_max = Math.max(...y_values);
     const props = {
       data: actualData,
       x: 'Year',
-      y: 'y',
+      y: 'Affordable Housing',
+      domain: { y: [0, y_max > 100 ? y_max : 100] },
     };
     return (
       <VictoryGroup key="y">
         <VictoryLine {...props} style={{ data: { stroke: color } }} />
         <VictoryScatter {...props} style={{ data: { stroke: color } }} />
       </VictoryGroup>
-    );
-  };
-
-  const renderAffordableHousingDeliveryChart = width => {
-    return (
-      <BaseChart
-        xLabel="Year"
-        yLabel="Affordable housing %"
-        renderChart={renderLineChart}
-        renderLegend={renderAffordableHousingDeliveryLegend}
-      />
     );
   };
 
@@ -70,7 +61,7 @@ const AffordableHousingDelivery = ({ apiData }) => {
       <BaseChart
         yLabel="Affordable Housing %"
         xLabel="Year"
-        renderChart={renderAffordableHousingDeliveryChart}
+        renderChart={renderLineChart}
         renderLegend={renderAffordableHousingDeliveryLegend}
       />
     </ChartWrapper>
