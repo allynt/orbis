@@ -17,7 +17,8 @@
 export const totalHousingTransformer = (data, targets = {}) => {
   if (!data) return;
 
-  // targets may not exist (undefined) or cleared (empty object)
+  // if uninitiated by user, targets will be undefined, but
+  // defaulted to empty object
   const noTargets = !Object.keys(targets).length;
 
   const apiYears = data.map(obj => {
@@ -35,8 +36,8 @@ export const totalHousingTransformer = (data, targets = {}) => {
 
   const allYears = [...apiYears, ...targetYears];
 
-  const min = Math.min(...allYears); // show years back as far as both datasets
-  const max = Math.max(...apiYears); // only show years as high as the API data
+  const min = Math.min(...allYears); // show oldest year from both datasets
+  const max = Math.max(...apiYears); // only show latest year from API data
 
   let timeline = [];
   for (let i = min; i <= max; i++) {

@@ -63,10 +63,9 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   housingDelivery: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    // gap: '1rem',
-    width: '90vw',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
   },
 }));
 
@@ -144,18 +143,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       <div className={styles.content}>
         {/* progress indicator charts */}
-        {/* <div className={styles.progressIndicators}>
+        <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDeliveryChartData}
             userOrbState={userOrbState}
           />
-        </div> */}
+        </div>
 
         <div className={styles.barCharts}>
-          {/* <div className={styles.progression}>
+          <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
-          </div> */}
+          </div>
 
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
@@ -167,13 +166,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
               userOrbState={userOrbState}
             />
             {/* big multi-line chart */}
-            {/* <HousingApprovalsComponent
+            <HousingApprovalsComponent
               x="Month"
               xLabel="Year"
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
-            /> */}
+            />
           </div>
         </div>
       </div>
