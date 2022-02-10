@@ -20,7 +20,6 @@ import {
 } from 'dashboard/WalthamForest/waltham.constants';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
-  console.log('apiData', apiData);
   const { walthamChartColors } = useChartTheme();
 
   if (!apiData) return null;
@@ -58,8 +57,15 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
 
               labelComponent={
                 <VictoryTooltip
-                  constrainToVisibleArea
-                  style={{ color: 'black' }}
+                  dy={0}
+                  centerOffset={{ x: 25 }}
+                  pointerWidth={0}
+                  flyoutHeight={40}
+                  flyoutWidth={120}
+                  flyoutStyle={{
+                    stroke: 'none',
+                    fill: '#f6be00',
+                  }}
                 />
               }
               key={`dataset-${i}`}
@@ -67,15 +73,14 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
               x={arr.x}
               y={arr.y}
               labels={({ datum }) => {
-                console.log('Props', datum.x, datum.y);
-                return `
-                   ${datum.x} ${datum.y}`;
+                return `Total: ${datum.y}`;
               }}
               style={{
                 data: {
                   fill: walthamChartColors.totalHousing[i],
                   width: barWidth,
                 },
+                labels: { fill: 'black' },
               }}
             />
           ))}

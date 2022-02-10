@@ -31,7 +31,6 @@ import {
  * }} props
  */
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
-  console.log('apitest', apiData);
   const { tenureStackColors } = useChartTheme();
 
   const tenureTypes = Object.values(housingTenureTypes),
@@ -80,7 +79,6 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         x: 'x',
         y: 'y',
       };
-    console.log('RENGES', ranges);
 
     //const yearList = apiData.map(item => item['Year']);
     const fieldList = Object.keys(apiData[0]);
@@ -94,28 +92,21 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       totalsArray.push(total);
     }
 
-    console.error('TOTALS ARRAY', totalsArray);
     return (
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup>
           <VictoryStack colorScale={colorScale}>
             {ranges?.map(range => {
-              console.log('range', range);
               return (
                 <VictoryBar
                   labelComponent={
                     <VictoryTooltip
-                      pointerOrientation="right"
-                      pointerWidth={25}
-                      flyoutHeight={60}
-                      flyoutWidth={200}
-                      // x={40}
-                      // y={40}
-                      constrainToVisibleArea
-                      style={{
-                        fill: 'black',
-                      }}
+                      dy={0}
+                      centerOffset={{ x: 25 }}
+                      pointerWidth={0}
+                      flyoutHeight={40}
+                      flyoutWidth={120}
                       flyoutStyle={{
                         stroke: 'none',
                         fill: '#f6be00',
@@ -126,9 +117,10 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                   data={apiData}
                   x="Year"
                   y={range}
-                  labels={totalsArray}
+                  labels={totalsArray.map(item => `Total: ${item}`)}
                   style={{
                     data: { width: barWidth },
+                    labels: { fill: 'black' },
                   }}
                 />
               );

@@ -25,7 +25,6 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     () => data?.properties[0].data,
     [data],
   );
-  console.log('ChartData', progressionVsPlanningChartData);
 
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
@@ -47,15 +46,22 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
           <VictoryBar
             labelComponent={
               <VictoryTooltip
-                constrainToVisibleArea
-                style={{ color: 'black' }}
+                dy={0}
+                centerOffset={{ x: 25 }}
+                pointerWidth={0}
+                flyoutStyle={{
+                  stroke: 'none',
+                  fill: '#f6be00',
+                }}
+                flyoutHeight={40}
+                flyoutWidth={120}
               />
             }
             key={range}
             data={progressionVsPlanningChartData}
             x={x}
             y={range}
-            labels={({ data }) => {
+            labels={({ data, datum }) => {
               const fieldList = Object.keys(data[0]);
               const fieldsToAdd = fieldList.filter(
                 item =>
@@ -76,13 +82,32 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
                 }
                 totalsArray.push(total);
               }
-              return `
-               ${totalsArray}`;
+
+              if (datum._x === 2014) {
+                return ` Total: ${totalsArray[0]}`;
+              } else if (datum._x === 2015) {
+                return ` Total: ${totalsArray[1]}`;
+              } else if (datum._x === 2016) {
+                return ` Total: ${totalsArray[2]}`;
+              } else if (datum._x === 2017) {
+                return ` Total: ${totalsArray[3]}`;
+              } else if (datum._x === 2018) {
+                return ` Total: ${totalsArray[4]}`;
+              } else if (datum._x === 2019) {
+                return ` Total: ${totalsArray[5]}`;
+              } else if (datum._x === 2020) {
+                return ` Total: ${totalsArray[6]}`;
+              } else if (datum._x === 2021) {
+                return ` Total: ${totalsArray[7]}`;
+              }
+
+              return ` ${totalsArray}`;
             }}
             style={{
               data: {
                 width: barWidth,
               },
+              labels: { fill: 'black' },
             }}
           />
         ))}
