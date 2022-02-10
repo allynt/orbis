@@ -13,14 +13,14 @@ import {
 
 const DEFAULT_COLOR = [246, 190, 0];
 const PIN_COLORS = {
-  allowed: [170, 0, 0, 255],
+  'pre-approved': [255, 254, 25, 255],
   approved: [55, 229, 216, 255],
   commenced: [245, 36, 85, 255],
   completed: [138, 234, 115, 255],
-  lapsed: [0, 0, 0, 255],
-  'pending legacy record': [85, 0, 255, 255],
-  superseded: [0, 85, 255, 255],
+  'superseded / legacy': [255, 160, 72, 255],
+  'lapsed / revoked': [5, 195, 255, 255],
 };
+
 
 const defaultDateRange = {
   startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
@@ -58,7 +58,11 @@ const configuration = ({
       )
         return false;
 
-      if (constructionPhaseFilter?.includes(feature.properties?.Status))
+      if (
+        constructionPhaseFilter?.includes(
+          feature.properties?.['Status Category']
+        )
+      )
         return false;
 
       if (

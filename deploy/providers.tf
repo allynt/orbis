@@ -18,7 +18,7 @@ terraform {
 
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "1.11.1"
+      version = "~> 2.7"
     }
 
     postgresql = {
@@ -45,7 +45,6 @@ provider "kubernetes" {
   host                   = module.app_deploy.kubernetes_host
   cluster_ca_certificate = module.app_deploy.kubernetes_certificate
   token                  = module.app_deploy.kubernetes_token
-  load_config_file       = false
 }
 
 provider "postgresql" {

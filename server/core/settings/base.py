@@ -268,7 +268,11 @@ LOCALE_PATHS = [str(SERVER_DIR("core/locale"))]
 
 ADMIN_URL = "admin/"
 
-ADMINS = [(PROJECT_NAME, PROJECT_EMAIL.format(role="techdev"))]
+# this is the address to send admin emails TO;
+# the address to send admin emails FROM is handled below by SES and must use the domain specified in PROJECT_EMAIL
+ADMINS = [
+    (PROJECT_NAME, env("DJANGO_ADMIN_EMAIL", default="techdev@astrosat.net"))
+]
 MANAGERS = ADMINS
 
 ADMIN_SITE_HEADER = f"{PROJECT_NAME} administration console"

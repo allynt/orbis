@@ -7,11 +7,10 @@ import {
   Radio,
 } from '@astrosat/astrosat-ui';
 
-import { InfoButtonTooltip } from 'components';
+import { InfoButtonTooltip, TooltipContent } from 'components';
 
 import { DisplayTypeToggleButtons } from '../display-type-toggle-buttons/display-type-toggle-buttons.component';
 import { SelectedPropertyControls } from '../selected-property-controls/selected-property-controls.component';
-import { TooltipContent } from './tooltip-content.component';
 
 const useStyles = makeStyles(theme => ({
   grid: { '& + &': { marginTop: theme.spacing(0.5) } },

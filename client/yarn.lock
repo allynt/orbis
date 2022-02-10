@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@astrosat/astrosat-ui@^2.8.1":
-  version "2.8.1"
-  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.8.1/dc332b2e38e3639dea19c32966303740b68ee96573179b17af268ead48288302#3b70c14b919b2ffa83be3614588c834713b58fde"
-  integrity sha512-zxaSSbvghF2pmg89STYJa/p87AvN4nFZ5h4isEeQv5YR7oV7TYn1PAfIX6LiTlkz5yQ73ZKzOXGF3ekupvQHpw==
+"@astrosat/astrosat-ui@^2.9.0":
+  version "2.9.0"
+  resolved "https://npm.pkg.github.com/download/@astrosat/astrosat-ui/2.9.0/34720fec0a48c832aa483a469c2ad1f065830ae2ea4bf0914c6684e094ef2a87#76b582df12485d8f366d9e9acfecbd0ec1b12cc1"
+  integrity sha512-ojTZX297cT1F+IrBI6WBq/V01Brf1N6wFS/iIpW1DQAaIwlMzr3st1ozcmvPDZpFVLOtSZGLwq3g29T0htgrCw==
   dependencies:
     "@material-ui/core" "^4.11.0"
     "@material-ui/lab" "^4.0.0-alpha.56"
