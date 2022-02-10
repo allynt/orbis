@@ -17,4 +17,11 @@ describe('<AfforableHousingDelivery />', () => {
       ).toBeInTheDocument(),
     );
   });
+  it('shows the right axis labels', async () => {
+    render(<AffordableHousingDelivery apiData={MOCK_DATA} />);
+    await waitFor(() =>
+      expect(screen.getByText('Affordable Housing %')).toBeInTheDocument(),
+    );
+    expect(screen.getByText('Year')).toBeInTheDocument();
+  });
 });

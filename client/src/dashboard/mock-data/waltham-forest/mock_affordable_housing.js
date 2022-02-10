@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Mock Data for Affordable Hosuing Over Time Graph',
+  name: 'Mock Data for Affordable Housing Over Time Graph',
   version: '1.0.0',
   properties: [
     {
