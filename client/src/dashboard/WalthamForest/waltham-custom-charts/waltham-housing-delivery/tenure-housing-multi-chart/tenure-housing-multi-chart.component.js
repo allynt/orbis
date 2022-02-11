@@ -23,7 +23,7 @@ import {
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
 
-import { labelsForArrayOfObjects } from '../../../tooltipsTest-utils';
+import { labelsForArrayOfObjects } from '../../../tooltips-utils';
 
 // import { WalthamTooltip } from '../../../walthamTooltip/walthamTooltip.component';
 
