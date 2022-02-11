@@ -23,6 +23,10 @@ import {
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
 
+import { labelsForArrayOfObjects } from '../../../tooltipsTest-utils';
+
+// import { WalthamTooltip } from '../../../walthamTooltip/walthamTooltip.component';
+
 /**
  * @param {{
  *  apiData: any[]
@@ -60,7 +64,6 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       />
     );
   };
-
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
@@ -80,17 +83,11 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         y: 'y',
       };
 
-    //const yearList = apiData.map(item => item['Year']);
-    const fieldList = Object.keys(apiData[0]);
-    const fieldsToAddUp = fieldList.filter(item => item !== 'Year');
-    let totalsArray = [];
-    for (let index in apiData) {
-      let total = 0;
-      for (let fieldName of fieldsToAddUp) {
-        total += apiData[index][fieldName];
-      }
-      totalsArray.push(total);
-    }
+    let totalsArray = labelsForArrayOfObjects(
+      apiData,
+      'Year',
+      item => `Total: ${item}`,
+    );
 
     return (
       <VictoryGroup>
@@ -101,6 +98,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
               return (
                 <VictoryBar
                   labelComponent={
+                    // <WalthamTooltip />
                     <VictoryTooltip
                       dy={0}
                       centerOffset={{ x: 25 }}
@@ -109,7 +107,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                       flyoutWidth={120}
                       flyoutStyle={{
                         stroke: 'none',
-                        fill: '#f6be00',
+                        fill: 'yellow',
                       }}
                     />
                   }
@@ -117,7 +115,8 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                   data={apiData}
                   x="Year"
                   y={range}
-                  labels={totalsArray.map(item => `Total: ${item}`)}
+                  labels={totalsArray}
+                  // labels={totalsArray.map(item => `Total: ${item}`)}
                   style={{
                     data: { width: barWidth },
                     labels: { fill: 'black' },

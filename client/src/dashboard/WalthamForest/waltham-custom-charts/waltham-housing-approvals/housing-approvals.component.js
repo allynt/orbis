@@ -14,7 +14,6 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.constants';
 
-// import { SelectedProperty } from '../../../../../cypress/videos/left-pannel/src/map/orbs/components/isolation-plus-property-radio-group/display-type-toggle-buttons/display-type-toggle-buttons.stories';
 import { lineDataTransformer } from '../../utils';
 const useStyles = makeStyles(theme => ({
   toggleButtonGroup: {

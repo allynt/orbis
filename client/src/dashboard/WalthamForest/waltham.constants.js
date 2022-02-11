@@ -108,3 +108,8 @@ export const PROGRESS_CHART_DATA = {
     name: 'Socially Rented',
   },
 };
+
+export const walthamTooltip = {
+  stroke: 'none',
+  color: '#d13aff',
+};
