@@ -63,9 +63,10 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   housingDelivery: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
+    //   display: 'flex',
+    //   flexDirection: 'column',
+    //   gap: '1rem',
+    width: '90vw',
   },
 }));
 
@@ -115,12 +116,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
     closeDialog();
   };
 
-  // only arrays of chart data, transformed where needed and cached
-  const tenureHousingDeliveryChartData = useMemo(
-    () => tenureHousingDelivery?.properties,
-    [tenureHousingDelivery],
-  );
-
   return (
     <div className={styles.dashboard}>
       <Grid
@@ -137,18 +132,18 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       <div className={styles.content}>
         {/* progress indicator charts */}
-        <div className={styles.progressIndicators}>
+        {/* <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDeliveryChartData}
             userOrbState={userOrbState}
           />
-        </div>
+        </div> */}
 
         <div className={styles.barCharts}>
-          <div className={styles.progression}>
+          {/* <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
-          </div>
+          </div> */}
 
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
@@ -156,17 +151,17 @@ const WalthamForestDashboard = ({ sourceId }) => {
               totalHousingDeliveryChartData={
                 totalHousingDelivery?.properties[0].data
               }
-              tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+              tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
               userOrbState={userOrbState}
             />
             {/* big multi-line chart */}
-            <HousingApprovalsComponent
+            {/* <HousingApprovalsComponent
               x="Month"
               xLabel="Year"
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
-            />
+            /> */}
           </div>
         </div>
       </div>

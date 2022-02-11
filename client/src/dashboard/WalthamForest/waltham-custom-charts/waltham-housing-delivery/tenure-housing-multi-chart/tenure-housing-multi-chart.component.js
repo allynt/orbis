@@ -19,45 +19,7 @@ import {
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
 
-const dataTransformer = (apiData, targets = {}) => {
-  if (!apiData) return;
-
-  const noTargets = !Object.keys(targets).length;
-
-  const apiYears = apiData.map(obj => {
-    const [year] = obj.Year.split('-');
-    return +year;
-  });
-
-  const targetYears = noTargets
-    ? []
-    : Object.keys(targets).map(key => {
-        const [year] = key.split('-');
-        return +year;
-      });
-
-  const allYears = [...apiYears, ...targetYears];
-
-  const min = Math.min(...allYears);
-  const max = Math.max(...apiYears);
-
-  let timeline = [];
-  for (let i = min; i <= max; i++) {
-    timeline = [...timeline, `${i}-${i + 1}`];
-  }
-
-  const transformedTargets = noTargets
-    ? null
-    : Object.entries(targets).reduce(
-        (acc, [key, value]) =>
-          !timeline.includes(key) ? acc : [...acc, { x: key, y: +value }],
-        [],
-      );
-
-  const transformedData = apiData;
-
-  return { transformedData, transformedTargets };
-};
+import { tenureHousingTransformer } from './tenure-housing-transformer/tenure-housing-transformer';
 
 /**
  * @param {{
@@ -72,12 +34,13 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const tenureTypes = Object.values(housingTenureTypes),
     stackColors = Object.values(tenureStackColors);
 
+  // TODO: do this after transformer so API data isn't re-processed?
   const targets = !tenureType
     ? getTargetTotals(userTargetData)
     : userTargetData?.[tenureType];
 
   const transformerOutput = useMemo(
-    () => dataTransformer(apiData, targets),
+    () => tenureHousingTransformer(apiData, targets),
     [apiData, targets],
   );
 
