@@ -1,6 +1,5 @@
 module.exports = {
-  name:
-    'Mock Data for Progression of Units Relating to Planning Schedule Graph',
+  name: 'Mock Data for Progression of Units Relating to Planning Schedule Graph',
   version: '1.0.0',
   properties: [
     {
