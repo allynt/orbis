@@ -45,6 +45,10 @@ export const walthamApiMetadata = [
     datasetName: 'DeliverableSupplySummary',
     url: '/wfc/mock/deliverable_supply_summary/v1/',
   },
+  {
+    datasetName: 'AffordableHousingDelivery',
+    url: '/wfc/mock/affordable_housing_delivery/v1',
+  },
 ];
 
 export const targetDatasets = {

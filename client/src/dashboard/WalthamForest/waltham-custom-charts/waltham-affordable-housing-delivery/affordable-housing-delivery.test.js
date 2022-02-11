@@ -7,7 +7,7 @@ import { AffordableHousingDelivery } from './affordable-housing-delivery.compone
 
 describe('<AfforableHousingDelivery />', () => {
   it('shows the right title in the wrapper', async () => {
-    render(<AffordableHousingDelivery apiData={MOCK_DATA} />);
+    render(<AffordableHousingDelivery data={MOCK_DATA} />);
 
     await waitFor(() =>
       expect(
@@ -18,7 +18,7 @@ describe('<AfforableHousingDelivery />', () => {
     );
   });
   it('shows the right axis labels', async () => {
-    render(<AffordableHousingDelivery apiData={MOCK_DATA} />);
+    render(<AffordableHousingDelivery data={MOCK_DATA} />);
     await waitFor(() =>
       expect(screen.getByText('Affordable Housing %')).toBeInTheDocument(),
     );

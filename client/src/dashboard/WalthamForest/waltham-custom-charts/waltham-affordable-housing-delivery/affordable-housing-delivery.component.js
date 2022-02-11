@@ -1,22 +1,36 @@
 import React from 'react';
 
-import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
+import {
+  VictoryGroup,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTooltip,
+} from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import * as MOCK_DATA from 'dashboard/mock-data/waltham-forest/mock_affordable_housing';
+//import * as MOCK_DATA from 'dashboard/mock-data/waltham-forest/mock_affordable_housing';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+
+import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
  * @param {{
  *  apiData: {any} // chart data
  * }} props
  */
-const AffordableHousingDelivery = ({ apiData }) => {
+const AffordableHousingDelivery = ({ data }) => {
   const { walthamChartColors } = useChartTheme();
 
-  const actualData = MOCK_DATA.properties[0].data;
+  if (!data || !data?.properties) return null;
+  const actualData = data?.properties[0]?.data;
+
+  let totalsArray = labelsForArrayOfObjectsInclusive(
+    actualData,
+    ['Affordable Housing'],
+    item => `${item}%`,
+  );
 
   const apiLegendData = [
     {
@@ -31,14 +45,34 @@ const AffordableHousingDelivery = ({ apiData }) => {
     const y_max = Math.max(...y_values);
     const props = {
       data: actualData,
-      x: 'Year',
+      x: 'year',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
     };
     return (
       <VictoryGroup key="y">
         <VictoryLine {...props} style={{ data: { stroke: color } }} />
-        <VictoryScatter {...props} style={{ data: { stroke: color } }} />
+        <VictoryScatter
+          labelComponent={
+            <VictoryTooltip
+              pointerOrientation="right"
+              pointerWidth={25}
+              flyoutHeight={40}
+              flyoutWidth={100}
+              constrainToVisibleArea
+              style={{
+                fill: 'black',
+              }}
+              flyoutStyle={{
+                stroke: 'none',
+                fill: '#f6be00',
+              }}
+            />
+          }
+          {...props}
+          labels={totalsArray}
+          style={{ data: { stroke: color } }}
+        />
       </VictoryGroup>
     );
   };
