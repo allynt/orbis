@@ -27,6 +27,7 @@ import {
 } from './target-dialog-screens/target-dialog-screens';
 import { groupedDataTransformer } from './utils';
 import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
+import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -96,6 +97,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     ),
     totalHousingDelivery = useSelector(
       chartDataSelector(sourceId, 'TotalHousingDelivery'),
+    ),
+    deliverableSupplySummary = useSelector(
+      chartDataSelector(sourceId, 'DeliverableSupplySummary'),
     );
 
   useEffect(() => {
@@ -156,6 +160,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
             <AffordableHousingDelivery apiData={{ MOCK_DATA }} />
+            <DeliverableSupplySummary data={deliverableSupplySummary} />
           </div>
 
           <div className={styles.housingDelivery}>
