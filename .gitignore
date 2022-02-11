@@ -99,6 +99,7 @@ client/cypress/videos
 client/coverage
 client/reports/
 client/jest_html_reporters.html
+client/jest-html-reporters-attach
 node_modules/
 spec_generated/
 server/static
