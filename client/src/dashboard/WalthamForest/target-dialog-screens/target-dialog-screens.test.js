@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { inputErrorMessage } from '../waltham.constants';
@@ -110,18 +110,23 @@ describe('Target Dialog Screens', () => {
   });
 
   describe('validation', () => {
-    it('allows numbers', () => {
+    it('allows numbers', async () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123');
-      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
+
+      await waitFor(() =>
+        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
+      );
     });
 
-    it('allows decimals', () => {
+    it('allows decimals', async () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123.456');
-      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
+      );
     });
 
     it('does not allow letters', () => {
@@ -138,7 +143,7 @@ describe('Target Dialog Screens', () => {
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
-    it('removes error message when restricted characters removed', () => {
+    it('removes error message when restricted characters removed', async () => {
       const { getByText, queryByText, getByPlaceholderText } = render(
         <TargetScreen />,
       );
@@ -149,7 +154,9 @@ describe('Target Dialog Screens', () => {
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
 
       userEvent.clear(input);
-      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
+      await waitFor(() =>
+        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
+      );
     });
 
     it('disables `Add Targets` button if a single field fails validation', () => {
