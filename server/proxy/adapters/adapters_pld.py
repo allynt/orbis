@@ -79,6 +79,28 @@ class PldAdapter(BaseProxyDataAdapter):
                 None,
             )
 
+            properties = {
+                "Project ID": rd["_id"],
+                "UPRN": source["uprn"],
+                "Address": f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
+                "Description": source["description"],
+                "Status Category": status_category,
+                "Status": status,
+                "Development Type": source["development_type"],
+                "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
+                "icon": icon_id,
+                "decision_date": f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
+            }
+
+            if source["actual_commencement_date"]:
+                properties["actual_commencement_date"] = f"{datetime.strptime(source['actual_commencement_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+            if source["actual_completion_date"]:
+                properties["actual_completion_date"] = f"{datetime.strptime(source['actual_completion_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+            if source["appeal_decision_date"]:
+                properties["appeal_decision_date"] = f"{datetime.strptime(source['appeal_decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+            if source["lapsed_date"]:
+                properties["lapsed_date"] = f"{datetime.strptime(source['lapsed_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+
             # yapf: disable
             processed_data["features"].append({
                 "id": i,
@@ -90,18 +112,7 @@ class PldAdapter(BaseProxyDataAdapter):
                         float(source["centroid"].get("lat")),
                     ]
                 },
-                "properties": {
-                    "Project ID": rd["_id"],
-                    "UPRN": source["uprn"],
-                    "Address": f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
-                    "Description": source["description"],
-                    "Status Category": status_category,
-                    "Status": status,
-                    "Development Type": source["development_type"],
-                    "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
-                    "icon": icon_id,
-                    "decision_date": f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
-                }
+                "properties": properties
             })
 
         return processed_data
