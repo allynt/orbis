@@ -41,6 +41,29 @@ const DEVELOPMENT_TYPES = [
   },
 ];
 
+const DATE_TYPES = [
+  {
+    id: 'decision_date',
+    label: 'Decision Date',
+  },
+  {
+    id: 'actual_commencement_date',
+    label: 'Commencement Date',
+  },
+  {
+    id: 'actual_completion_date',
+    label: 'Completion Date',
+  },
+  {
+    id: 'appeal_decision_date',
+    label: 'Appeal Decision Date',
+  },
+  {
+    id: 'lapsed_date',
+    label: 'Lapsed Date',
+  },
+];
+
 describe('<PldSidebarComponent />', () => {
   it('Shows the results if there are any', () => {
     const selectedLayer = { source_id: 'test-source-id' };
@@ -52,18 +75,9 @@ describe('<PldSidebarComponent />', () => {
         iconColor="white"
         constructionPhaseFilters={CONSTRUCTION_PHASES}
         developmentTypeFilters={DEVELOPMENT_TYPES}
+        dateTypes={DATE_TYPES}
       />,
     );
-
-    // expect(
-    //   screen.getByRole('heading', { name: /date range/i }),
-    // ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole('textbox', { name: /start date/i }),
-    // ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole('textbox', { name: /end date/i }),
-    // ).toBeInTheDocument();
 
     expect(
       screen.getByRole('heading', { name: /construction phase/i }),
