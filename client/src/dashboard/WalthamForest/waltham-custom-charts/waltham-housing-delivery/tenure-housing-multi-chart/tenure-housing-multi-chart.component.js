@@ -31,10 +31,9 @@ import { tenureHousingTransformer } from './tenure-housing-transformer/tenure-ho
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const { tenureStackColors } = useChartTheme();
 
-  const tenureTypes = Object.values(housingTenureTypes),
-    stackColors = Object.values(tenureStackColors);
+  const tenureTypes = Object.values(housingTenureTypes);
+  const stackColors = Object.values(tenureStackColors);
 
-  // TODO: do this after transformer so API data isn't re-processed?
   const targets = !tenureType
     ? getTargetTotals(userTargetData)
     : userTargetData?.[tenureType];
@@ -48,8 +47,8 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
 
   const { transformedData, transformedTargets } = transformerOutput;
 
-  const filteredApiData = transformedData.slice(-5),
-    filteredTargetData = transformedTargets?.slice(-5);
+  const filteredApiData = transformedData.slice(-5);
+  const filteredTargetData = transformedTargets?.slice(-5);
 
   const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,

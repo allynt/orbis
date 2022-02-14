@@ -41,7 +41,7 @@ describe('totalHousingTransformer', () => {
     expect(result).toEqual(expected);
   });
 
-  it('pads gap years with `null` value', () => {
+  it('pads gap years with null value', () => {
     const data = [
       {
         Year: '2010-2011',
@@ -200,6 +200,29 @@ describe('totalHousingTransformer', () => {
     };
 
     const result = totalHousingTransformer(data, {});
+    expect(result).toEqual(expected);
+  });
+
+  it('returns null target values if all are higher than api years', () => {
+    const data = [
+        {
+          Year: '2017-2018',
+          'Total Gross': 123,
+          'Total Net': 456,
+        },
+      ],
+      targets = {
+        '2018-2019': '237',
+      },
+      expected = {
+        transformedData: [
+          [{ x: '2017-2018', y: 123 }],
+          [{ x: '2017-2018', y: 456 }],
+        ],
+        transformedTargets: null,
+      };
+
+    const result = totalHousingTransformer(data, targets);
     expect(result).toEqual(expected);
   });
 

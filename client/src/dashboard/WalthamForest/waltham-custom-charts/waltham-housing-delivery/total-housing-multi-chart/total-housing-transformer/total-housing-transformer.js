@@ -1,61 +1,30 @@
+import {
+  getDataTimeline,
+  userTargetTransformer,
+} from 'dashboard/WalthamForest/utils';
+
 /**
- * This function is necessary because the data does not match what Victory
- * expects. Specifically, the 'gross' and 'net' values must be split into
- * separate arrays so that they can be uses to render separate chart datasets.
- *
- * It is also used to create a stable timeline of earliest-latest year,
- * that can house the data on the chart, allowing missing values from
- * either dataset, padding them with `null` values.
- *
- * @param {object[]} data
+ * @param {object[]} apiData
  * @param {object} targets
  * @returns {{
- *  transformedData: { x: string, y: number}[][]
- *  transformedTargets: { x: string, y: number }[]|null
+ *  transformedData: { x: string, y: number }[][]
+ *  transformedTargets: { x: string, y: number }[]
  * }}
  */
-export const totalHousingTransformer = (data, targets = {}) => {
-  if (!data) return;
+export const totalHousingTransformer = (apiData, targets = {}) => {
+  if (!apiData) return;
 
-  // if uninitiated by user, targets will be undefined, but
-  // defaulted to empty object
   const noTargets = !Object.keys(targets).length;
-
-  const apiYears = data.map(obj => {
-    const [year] = obj.Year.split('-');
-    return +year;
-  });
-
-  // if targets is undefined, defaulted to object and will return empty array
-  const targetYears = noTargets
-    ? []
-    : Object.keys(targets).map(key => {
-        const [year] = key.split('-');
-        return +year;
-      });
-
-  const allYears = [...apiYears, ...targetYears];
-
-  const min = Math.min(...allYears); // show oldest year from both datasets
-  const max = Math.max(...apiYears); // only show latest year from API data
-
-  let timeline = [];
-  for (let i = min; i <= max; i++) {
-    timeline = [...timeline, `${i}-${i + 1}`];
-  }
+  const timeline = getDataTimeline(apiData, targets);
 
   const transformedTargets = noTargets
     ? null
-    : Object.entries(targets).reduce(
-        (acc, [key, value]) =>
-          !timeline.includes(key) ? acc : [...acc, { x: key, y: +value }],
-        [],
-      );
+    : userTargetTransformer(targets, timeline);
 
   const transformedData = Object.values(
     timeline.reduce(
       (acc, year) => {
-        const obj = data.find(datum => datum.Year === year) ?? {};
+        const obj = apiData.find(datum => datum.Year === year) ?? {};
         return {
           gross: [
             ...acc.gross,
