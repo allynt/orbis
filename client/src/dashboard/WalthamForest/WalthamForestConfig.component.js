@@ -20,7 +20,6 @@ import {
   updateTargets,
   userOrbStateSelector,
 } from '../dashboard.slice';
-import * as MOCK_DATA from '../mock-data/waltham-forest/mock_affordable_housing';
 import {
   SelectScreen,
   TargetScreen,

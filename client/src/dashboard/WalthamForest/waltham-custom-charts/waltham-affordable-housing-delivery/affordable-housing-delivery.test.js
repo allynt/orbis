@@ -17,6 +17,7 @@ describe('<AfforableHousingDelivery />', () => {
       ).toBeInTheDocument(),
     );
   });
+
   it('shows the right axis labels', async () => {
     render(<AffordableHousingDelivery data={MOCK_DATA} />);
     await waitFor(() =>
