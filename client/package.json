@@ -1,6 +1,6 @@
 {
   "name": "orbis",
-  "version": "2.31.0",
+  "version": "2.32.0",
   "private": true,
   "types": "./src/typings",
   "scripts": {

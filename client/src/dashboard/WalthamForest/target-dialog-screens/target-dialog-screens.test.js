@@ -115,18 +115,14 @@ describe('Target Dialog Screens', () => {
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123');
 
-      await waitFor(() =>
-        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
-      );
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('allows decimals', async () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123.456');
-      await waitFor(() =>
-        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
-      );
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('does not allow letters', () => {
@@ -154,9 +150,7 @@ describe('Target Dialog Screens', () => {
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
 
       userEvent.clear(input);
-      await waitFor(() =>
-        expect(queryByText(inputErrorMessage)).not.toBeInTheDocument(),
-      );
+      expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
     it('disables `Add Targets` button if a single field fails validation', () => {

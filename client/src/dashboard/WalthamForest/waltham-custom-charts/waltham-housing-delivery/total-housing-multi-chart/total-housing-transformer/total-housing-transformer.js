@@ -1,7 +1,7 @@
 import {
   getDataTimeline,
   userTargetTransformer,
-} from 'dashboard/WalthamForest/utils';
+} from 'dashboard/WalthamForest/utils.js';
 
 /**
  * @param {object[]} apiData

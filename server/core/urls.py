@@ -38,6 +38,8 @@ from orbis.urls import (
 
 from .views import app_config_view
 
+from core.admin import core_admin_site
+
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
@@ -90,8 +92,9 @@ urlpatterns = [
     # docker healthchecks...
     path("healthcheck/", include("health_check.urls")),
 
-    # admin...
+    # admins...
     path(settings.ADMIN_URL, admin.site.urls),
+    path("core-admin/", core_admin_site.urls),
 
     # API...
     path("api/", include(api_urlpatterns)),

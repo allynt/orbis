@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   makeStyles,
@@ -94,6 +94,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     ),
     totalHousingDelivery = useSelector(
       chartDataSelector(sourceId, 'TotalHousingDelivery'),
+    ),
+    deliverableSupplySummary = useSelector(
+      chartDataSelector(sourceId, 'DeliverableSupplySummary'),
     );
 
   useEffect(() => {

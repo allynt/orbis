@@ -18,6 +18,8 @@ import { totalHousingTransformer } from './total-housing-transformer/total-housi
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const { walthamChartColors } = useChartTheme();
 
+  // Transform API/target data to correct data shape, and create a
+  // reliable timeline form earliest total year -> latest API data year
   const transformerOutput = useMemo(
     () => totalHousingTransformer(apiData, userTargetData),
     [apiData, userTargetData],

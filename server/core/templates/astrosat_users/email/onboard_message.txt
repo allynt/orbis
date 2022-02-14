@@ -14,6 +14,10 @@
 
     If you have a question? We have the answer. Astrosat is more than a space technology company and we will support you to accomplish what you want to achieve.
 
+    {% with "https://"|add:domain|add:"/api/documents/?type=GUIDE&has_orb=false&name=general" as user_guide_url %}
+    Read our User Guide at: {{ user_guide_url|safe }}
+    {% endwith %}
+
     Our support team is just an email away and will aim to assist you within a few hours of your request.
 
     Check Out our Help Desk at: https://share.hsforms.com/1U1g8jQnFQ2ej1lyaDcncfA4cctf
