@@ -10,6 +10,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
     iconColor,
     minFilterDate,
     maxFilterDate,
+    dateTypes,
   } = selectedLayer?.metadata?.application?.orbis?.sidebar_component?.props;
   return (
     <PldSidebarComponent
@@ -21,6 +22,7 @@ const ConnectedWrapper = ({ selectedLayer, dispatch }) => {
       constructionPhaseFilters={constructionPhaseFilters}
       developmentTypeFilters={developmentTypeFilters}
       iconColor={iconColor}
+      dateTypes={dateTypes}
     />
   );
 };
