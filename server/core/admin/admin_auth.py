@@ -434,7 +434,7 @@ class AuthCustomerUserAdmin(
                             )
 
                             msgs.append((
-                                f"added {n_licences} to orb '{orb}' to customer '{customer}' .",
+                                f"added {n_licences} licences to orb '{orb}' to customer '{customer}' .",
                                 messages.INFO
                             ))
                             msgs.append((
