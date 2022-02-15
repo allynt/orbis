@@ -4,7 +4,7 @@ import { VictoryTooltip } from 'victory';
 
 import { tooltipFlyoutStyle } from './waltham.constants';
 
-const Flyout = () => {
+const FlyoutTooltip = () => {
   return (
     <VictoryTooltip
       pointerOrientation="right"
@@ -18,4 +18,4 @@ const Flyout = () => {
   );
 };
 
-export default Flyout;
+export default FlyoutTooltip;

@@ -5,7 +5,7 @@ import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
-import Flyout from 'dashboard/WalthamForest/Flyout';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
@@ -49,7 +49,7 @@ const AffordableHousingDelivery = ({ data }) => {
         <VictoryLine {...props} style={yellowStyle} />
         <VictoryScatter
           //        labelComponent={Foo()}
-          labelComponent={Flyout()}
+          labelComponent={FlyoutTooltip()}
           {...props}
           labels={totalsArray}
           style={yellowStyle}

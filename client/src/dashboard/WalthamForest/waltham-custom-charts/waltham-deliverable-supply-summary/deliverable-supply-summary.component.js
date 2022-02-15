@@ -5,7 +5,7 @@ import { VictoryBar, VictoryStack } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
-import Flyout from 'dashboard/WalthamForest/Flyout';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjects } from 'dashboard/WalthamForest/tooltips-utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { deliverableSupplySummaryTypes } from 'dashboard/WalthamForest/waltham.constants';
@@ -57,7 +57,7 @@ const DeliverableSupplySummary = ({ data }) => {
             data={DeliverableSupplySummaryChartData}
             x={x}
             y={range}
-            labelComponent={Flyout()}
+            labelComponent={FlyoutTooltip()}
             labels={totalsArray}
             style={{
               data: {
