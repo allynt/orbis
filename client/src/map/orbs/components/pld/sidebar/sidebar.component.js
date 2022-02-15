@@ -5,12 +5,13 @@ import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 import { subYears } from 'date-fns';
 import { useSelector } from 'react-redux';
 
+import { InfoButtonTooltip } from 'components';
 import { CheckboxFilters } from 'map/orbs/components/checkbox-filters/checkbox-filters.component';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 import { filterValueSelector, setFilterValue } from 'map/orbs/layers.slice';
-import { InfoButtonTooltip } from 'components';
 
-const CONSTRUCTION_PHASE_FILTER_INFO = 'The construction phases are a collection of related phases. For more details please see the user guide.'
+const CONSTRUCTION_PHASE_FILTER_INFO =
+  'The construction phases are a collection of related phases. For more details please see the user guide.';
 
 const DEFAULT_DATE_RANGE = {
   startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
@@ -81,7 +82,7 @@ export const PldSidebarComponent = ({
           range={dateRange}
         />
       </Grid>
-      <Grid container justifyContent='space-between'>
+      <Grid container justifyContent="space-between" alignItems="baseline">
         <Grid item>
           <Typography className={styles.checkboxHeading} variant="h4">
             Construction Phase&nbsp;
