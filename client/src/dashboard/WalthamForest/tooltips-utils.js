@@ -42,6 +42,7 @@ const labelsForArrayOfObjectsInclusive = (
   if (!data) {
     return [];
   }
+
   const fieldsToAddUp = Object.keys(data[0]).filter(item =>
     includeProperties.includes(item),
   );

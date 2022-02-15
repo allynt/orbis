@@ -18,6 +18,7 @@ import {
   TENURE_DATA_TYPES,
   TARGET_LEGEND_DATA,
 } from 'dashboard/WalthamForest/waltham.constants';
+import WalthamTooltip from 'dashboard/WalthamForest/walthamTooltip/walthamTooltip.component';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const { walthamChartColors } = useChartTheme();
@@ -55,19 +56,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
 
-              labelComponent={
-                <VictoryTooltip
-                  dy={0}
-                  centerOffset={{ x: 25 }}
-                  pointerWidth={0}
-                  flyoutHeight={40}
-                  flyoutWidth={120}
-                  flyoutStyle={{
-                    stroke: 'none',
-                    fill: '#f6be00',
-                  }}
-                />
-              }
+              labelComponent={WalthamTooltip()}
               key={`dataset-${i}`}
               data={arr}
               x={arr.x}

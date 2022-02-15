@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 
-import { VictoryBar, VictoryStack, VictoryTooltip } from 'victory';
+import { VictoryBar, VictoryStack } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { progressionVsPlanningTypes } from 'dashboard/WalthamForest/waltham.constants';
-
-import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
+import WalthamTooltip from 'dashboard/WalthamForest/walthamTooltip/walthamTooltip.component';
 
 const ProgressionVsPlanningSchedule = ({ data }) => {
   const chartTheme = useChartTheme();
@@ -42,60 +42,22 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     const ranges = ['Ahead of Schedule', 'Behind Schedule', 'On Track'];
     const x = 'Year';
 
+    const apiData = data?.properties[0]?.data;
+    let totalsArray = labelsForArrayOfObjectsInclusive(
+      apiData,
+      ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
+      item => `${item}`,
+    );
     return !!progressionVsPlanningChartData ? (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
-            labelComponent={
-              <VictoryTooltip
-                dy={0}
-                centerOffset={{ x: 25 }}
-                pointerWidth={0}
-                flyoutStyle={{
-                  stroke: 'none',
-                  fill: '#f6be00',
-                }}
-                flyoutHeight={40}
-                flyoutWidth={120}
-              />
-            }
+            labelComponent={WalthamTooltip()}
             key={range}
             data={progressionVsPlanningChartData}
             x={x}
             y={range}
-            labels={({ data, datum }) => {
-              let totalsArray = labelsForArrayOfObjectsInclusive(
-                data,
-                ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
-                item => `${item}`,
-              );
-              let year = datum._x;
-              switch (year) {
-                case 2014:
-                  return ` Total: ${totalsArray[0]}`;
-                  break;
-                case 2015:
-                  return ` Total: ${totalsArray[1]}`;
-                  break;
-                case 2016:
-                  return ` Total: ${totalsArray[2]}`;
-                  break;
-                case 2017:
-                  return ` Total: ${totalsArray[3]}`;
-                  break;
-                case 2018:
-                  return ` Total: ${totalsArray[4]}`;
-                  break;
-                case 2019:
-                  return ` Total: ${totalsArray[5]}`;
-                  break;
-                case 2020:
-                  return ` Total: ${totalsArray[6]}`;
-                  break;
-                default:
-                  return ` Total: ${totalsArray[7]}`;
-              }
-            }}
+            labels={totalsArray}
             style={{
               data: {
                 width: barWidth,

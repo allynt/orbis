@@ -122,5 +122,5 @@ export const deliverableSupplySummaryTypes = [
 
 export const walthamTooltip = {
   stroke: 'none',
-  color: '#d13aff',
+  color: '#f6be00',
 };
