@@ -1,20 +1,13 @@
 import React from 'react';
 
-import {
-  VictoryGroup,
-  VictoryLine,
-  VictoryScatter,
-  VictoryTooltip,
-} from 'victory';
+import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import Flyout from 'dashboard/WalthamForest/Flyout';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
-import {
-  yellowStyle,
-  tooltipFlyoutStyle,
-} from 'dashboard/WalthamForest/waltham.constants';
+import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
@@ -55,16 +48,8 @@ const AffordableHousingDelivery = ({ data }) => {
       <VictoryGroup>
         <VictoryLine {...props} style={yellowStyle} />
         <VictoryScatter
-          labelComponent={
-            <VictoryTooltip
-              pointerOrientation="right"
-              pointerWidth={25}
-              flyoutHeight={40}
-              flyoutWidth={100}
-              constrainToVisibleArea
-              flyoutStyle={tooltipFlyoutStyle}
-            />
-          }
+          //        labelComponent={Foo()}
+          labelComponent={Flyout()}
           {...props}
           labels={totalsArray}
           style={yellowStyle}
