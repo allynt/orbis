@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { inputErrorMessage } from '../waltham.constants';
@@ -110,7 +110,7 @@ describe('Target Dialog Screens', () => {
   });
 
   describe('validation', () => {
-    it('allows numbers', async () => {
+    it('allows numbers', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123');
@@ -118,7 +118,7 @@ describe('Target Dialog Screens', () => {
       expect(queryByText(inputErrorMessage)).not.toBeInTheDocument();
     });
 
-    it('allows decimals', async () => {
+    it('allows decimals', () => {
       const { queryByText, getByPlaceholderText } = render(<TargetScreen />);
 
       userEvent.type(getByPlaceholderText('2021-2022'), '123.456');
@@ -139,7 +139,7 @@ describe('Target Dialog Screens', () => {
       expect(getByText(inputErrorMessage)).toBeInTheDocument();
     });
 
-    it('removes error message when restricted characters removed', async () => {
+    it('removes error message when restricted characters removed', () => {
       const { getByText, queryByText, getByPlaceholderText } = render(
         <TargetScreen />,
       );
