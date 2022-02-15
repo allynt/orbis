@@ -5,10 +5,10 @@ import { VictoryBar, VictoryStack } from 'victory';
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { progressionVsPlanningTypes } from 'dashboard/WalthamForest/waltham.constants';
-import WalthamTooltip from 'dashboard/WalthamForest/walthamTooltip/walthamTooltip.component';
 
 const ProgressionVsPlanningSchedule = ({ data }) => {
   const chartTheme = useChartTheme();
@@ -52,7 +52,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
-            labelComponent={WalthamTooltip()}
+            labelComponent={FlyoutTooltip()}
             key={range}
             data={progressionVsPlanningChartData}
             x={x}
@@ -62,7 +62,6 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
               data: {
                 width: barWidth,
               },
-              labels: { fill: 'black' },
             }}
           />
         ))}

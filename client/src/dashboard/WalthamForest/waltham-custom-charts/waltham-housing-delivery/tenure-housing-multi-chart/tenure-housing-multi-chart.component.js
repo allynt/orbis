@@ -12,6 +12,7 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjects } from 'dashboard/WalthamForest/tooltips-utils';
 import {
   userTargetTransformer,
@@ -22,7 +23,6 @@ import {
   TARGET_LEGEND_DATA,
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
-import WalthamTooltip from 'dashboard/WalthamForest/walthamTooltip/walthamTooltip.component';
 
 /**
  * @param {{
@@ -93,7 +93,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
             {ranges?.map(range => {
               return (
                 <VictoryBar
-                  labelComponent={WalthamTooltip()}
+                  labelComponent={FlyoutTooltip()}
                   key={range}
                   data={apiData}
                   x="Year"
@@ -101,7 +101,6 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                   labels={totalsArray}
                   style={{
                     data: { width: barWidth },
-                    labels: { fill: 'black' },
                   }}
                 />
               );

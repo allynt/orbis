@@ -13,12 +13,12 @@ import {
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TENURE_DATA_TYPES,
   TARGET_LEGEND_DATA,
 } from 'dashboard/WalthamForest/waltham.constants';
-import WalthamTooltip from 'dashboard/WalthamForest/walthamTooltip/walthamTooltip.component';
 
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const { walthamChartColors } = useChartTheme();
@@ -56,7 +56,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
 
-              labelComponent={WalthamTooltip()}
+              labelComponent={FlyoutTooltip()}
               key={`dataset-${i}`}
               data={arr}
               x={arr.x}
@@ -69,7 +69,6 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
                   fill: walthamChartColors.totalHousing[i],
                   width: barWidth,
                 },
-                labels: { fill: 'black' },
               }}
             />
           ))}
