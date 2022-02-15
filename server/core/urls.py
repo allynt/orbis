@@ -38,10 +38,15 @@ from orbis.urls import (
 
 from .views import app_config_view
 
+from core.admin import core_admin_site, default_admin_site_has_permission
+
+# a little bit of admin customisation...
+admin.site.has_permission = default_admin_site_has_permission
 admin.site.site_header = settings.ADMIN_SITE_HEADER
 admin.site.site_title = settings.ADMIN_SITE_TITLE
 admin.site.index_title = settings.ADMIN_INDEX_TITLE
 
+# a little bit of error customisation...
 handler400 = "astrosat.views.handler400"
 handler403 = "astrosat.views.handler403"
 handler404 = "astrosat.views.handler404"
@@ -90,8 +95,9 @@ urlpatterns = [
     # docker healthchecks...
     path("healthcheck/", include("health_check.urls")),
 
-    # admin...
+    # admins...
     path(settings.ADMIN_URL, admin.site.urls),
+    path("core-admin/", core_admin_site.urls),
 
     # API...
     path("api/", include(api_urlpatterns)),
