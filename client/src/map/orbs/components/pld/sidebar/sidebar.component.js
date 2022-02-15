@@ -25,9 +25,6 @@ const useStyles = makeStyles(theme => ({
   checkboxHeading: {
     paddingBottom: '1rem',
   },
-  infoButtonTooltip: {
-    justifySelf: 'flex-end',
-  },
 }));
 
 export const PldSidebarComponent = ({
@@ -89,10 +86,7 @@ export const PldSidebarComponent = ({
           </Typography>
         </Grid>
         <Grid item>
-          <InfoButtonTooltip
-            iconButtonClassName={styles.infoButtonTooltip}
-            tooltipContent={CONSTRUCTION_PHASE_FILTER_INFO}
-          />
+          <InfoButtonTooltip tooltipContent={CONSTRUCTION_PHASE_FILTER_INFO} />
         </Grid>
         <CheckboxFilters
           onChange={handleChange('constructionPhase')}
