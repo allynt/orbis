@@ -45,7 +45,6 @@ const filterEmptyStrings = data => {
 const userTargetTransformer = data => {
   if (!data) return;
 
-  // TODO: can just be a map
   return Object.entries(data).reduce(
     (acc, [key, value]) => [...acc, { x: key, y: +value }],
     [],
@@ -88,7 +87,6 @@ const getPastYears = (years = 5) => {
     yearRange = [...yearRange, i];
   }
 
-  // TODO: can just be a map
   return yearRange
     .reduce((acc, num) => {
       const year = thisYear - num;
