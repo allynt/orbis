@@ -92,13 +92,13 @@ class PldAdapter(BaseProxyDataAdapter):
                 "decision_date": f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
             }
 
-            if "actual_commencement_date" in source:
+            if source.get("actual_commencement_date"):
                 properties["actual_commencement_date"] = f"{datetime.strptime(source['actual_commencement_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
-            if "actual_completion_date" in source:
+            if source.get("actual_completion_date"):
                 properties["actual_completion_date"] = f"{datetime.strptime(source['actual_completion_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
-            if "appeal_decision_date"  in source:
+            if source.get("appeal_decision_date"):
                 properties["appeal_decision_date"] = f"{datetime.strptime(source['appeal_decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
-            if "lapsed_date"  in source:
+            if source.get("lapsed_date"):
                 properties["lapsed_date"] = f"{datetime.strptime(source['lapsed_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
 
             # yapf: disable
