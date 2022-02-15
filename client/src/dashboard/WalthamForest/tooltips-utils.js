@@ -3,25 +3,53 @@
  * we want to sum up
  *
  * @param {object[]} data - Data to generate labels for
- * @param {string} keyLabel - Do not include this property in the same (e.g. If it's a label)
- * @param {function} formatter - Optional function which takes an object and renders it as text
+ * @param {string} excludeProperty - Do not include this property in the same (e.g. If it's a label)
+ * @param {function=} formatter - Optional function which takes an object and renders it as text
  *
  * @returns {any[]} An array of labels to appear over each data point
  */
 
-const labelsForArrayOfObjects = (data, keyLabel, formatter) => {
+const labelsForArrayOfObjects = (data, excludeProperty, formatter) => {
   if (!data) {
     return [];
   }
-
-  const fieldsToAddUp = Object.keys(data[0]).filter(item => item !== keyLabel);
+  const fieldsToAddUp = Object.keys(data[0]).filter(
+    item => item !== excludeProperty,
+  );
   return data.map(item => {
     let total = 0;
-    for (const fieldName of fieldsToAddUp) {
-      total += item[fieldName];
-    }
+    fieldsToAddUp.forEach(fieldName => (total += item[fieldName]));
     return formatter ? formatter(total) : total;
   });
 };
 
-export { labelsForArrayOfObjects };
+/**
+ * Creates an array a labels from an array of objects whose properties
+ * we want to sum up. We supply an array of properties whose values we need to add up
+ *
+ * @param {object[]} data - Data to generate labels for
+ * @param {string[]} includeProperties - Only sum properties in this list
+ * @param {function=} formatter - Optional function which takes an object and renders it as text
+ *
+ * @returns {any[]} An array of labels to appear over each data point
+ */
+
+const labelsForArrayOfObjectsInclusive = (
+  data,
+  includeProperties,
+  formatter,
+) => {
+  if (!data) {
+    return [];
+  }
+  const fieldsToAddUp = Object.keys(data[0]).filter(item =>
+    includeProperties.includes(item),
+  );
+  return data.map(obj => {
+    let total = 0;
+    fieldsToAddUp.forEach(fieldName => (total += obj[fieldName]));
+    return formatter ? formatter(total) : total;
+  });
+};
+
+export { labelsForArrayOfObjects, labelsForArrayOfObjectsInclusive };

@@ -8,7 +8,6 @@ import {
   VictoryGroup,
   VictoryLine,
   VictoryScatter,
-  VictoryTooltip,
 } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
@@ -24,8 +23,7 @@ import {
 } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjects } from '../../../tooltips-utils';
-
-// import { WalthamTooltip } from '../../../walthamTooltip/walthamTooltip.component';
+import WalthamTooltip from '../../../walthamTooltip/walthamTooltip.component';
 
 /**
  * @param {{
@@ -97,26 +95,12 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
             {ranges?.map(range => {
               return (
                 <VictoryBar
-                  labelComponent={
-                    // <WalthamTooltip />
-                    <VictoryTooltip
-                      dy={0}
-                      centerOffset={{ x: 25 }}
-                      pointerWidth={0}
-                      flyoutHeight={40}
-                      flyoutWidth={120}
-                      flyoutStyle={{
-                        stroke: 'none',
-                        fill: 'yellow',
-                      }}
-                    />
-                  }
+                  labelComponent={<WalthamTooltip />}
                   key={range}
                   data={apiData}
                   x="Year"
                   y={range}
                   labels={totalsArray}
-                  // labels={totalsArray.map(item => `Total: ${item}`)}
                   style={{
                     data: { width: barWidth },
                     labels: { fill: 'black' },

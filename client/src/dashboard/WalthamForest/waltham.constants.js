@@ -119,3 +119,8 @@ export const deliverableSupplySummaryTypes = [
   'Windfall Allowance From Small Sites',
   'Sites on the Brownfield Land Site',
 ];
+
+export const walthamTooltip = {
+  stroke: 'none',
+  color: '#d13aff',
+};

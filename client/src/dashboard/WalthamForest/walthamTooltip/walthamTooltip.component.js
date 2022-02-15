@@ -14,12 +14,13 @@ const WalthamTooltip = () => {
       pointerWidth={0}
       flyoutHeight={40}
       flyoutWidth={120}
+      constrainToVisibleArea
       flyoutStyle={{
-        stroke: 'none',
-        fill: 'yellow',
+        stroke: stroke,
+        fill: color,
       }}
     />
   );
 };
 
-export { WalthamTooltip };
+export default WalthamTooltip;

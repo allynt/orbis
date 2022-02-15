@@ -8,6 +8,8 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { progressionVsPlanningTypes } from 'dashboard/WalthamForest/waltham.constants';
 
+import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
+
 const ProgressionVsPlanningSchedule = ({ data }) => {
   const chartTheme = useChartTheme();
   // The theme has a hard-coded value for stacked charts, but we want the
@@ -62,46 +64,37 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
             x={x}
             y={range}
             labels={({ data, datum }) => {
-              const fieldList = Object.keys(data[0]);
-              const fieldsToAdd = fieldList.filter(
-                item =>
-                  item !== 'Year' &&
-                  item !== '_group' &&
-                  item !== '_x' &&
-                  item !== '_y' &&
-                  item !== '_stack' &&
-                  item !== '_x1' &&
-                  item !== '_y0' &&
-                  item !== '_y1',
+              let totalsArray = labelsForArrayOfObjectsInclusive(
+                data,
+                ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
+                item => `${item}`,
               );
-              let totalsArray = [];
-              for (let index in data) {
-                let total = 0;
-                for (let fieldName of fieldsToAdd) {
-                  total += data[index][fieldName];
-                }
-                totalsArray.push(total);
+              let year = datum._x;
+              switch (year) {
+                case 2014:
+                  return ` Total: ${totalsArray[0]}`;
+                  break;
+                case 2015:
+                  return ` Total: ${totalsArray[1]}`;
+                  break;
+                case 2016:
+                  return ` Total: ${totalsArray[2]}`;
+                  break;
+                case 2017:
+                  return ` Total: ${totalsArray[3]}`;
+                  break;
+                case 2018:
+                  return ` Total: ${totalsArray[4]}`;
+                  break;
+                case 2019:
+                  return ` Total: ${totalsArray[5]}`;
+                  break;
+                case 2020:
+                  return ` Total: ${totalsArray[6]}`;
+                  break;
+                default:
+                  return ` Total: ${totalsArray[7]}`;
               }
-
-              if (datum._x === 2014) {
-                return ` Total: ${totalsArray[0]}`;
-              } else if (datum._x === 2015) {
-                return ` Total: ${totalsArray[1]}`;
-              } else if (datum._x === 2016) {
-                return ` Total: ${totalsArray[2]}`;
-              } else if (datum._x === 2017) {
-                return ` Total: ${totalsArray[3]}`;
-              } else if (datum._x === 2018) {
-                return ` Total: ${totalsArray[4]}`;
-              } else if (datum._x === 2019) {
-                return ` Total: ${totalsArray[5]}`;
-              } else if (datum._x === 2020) {
-                return ` Total: ${totalsArray[6]}`;
-              } else if (datum._x === 2021) {
-                return ` Total: ${totalsArray[7]}`;
-              }
-
-              return ` ${totalsArray}`;
             }}
             style={{
               data: {
