@@ -187,11 +187,7 @@ describe('Waltham Forest Data Transformers', () => {
           },
         ];
 
-<<<<<<< HEAD
       const result = userTargetTransformer(input, ['key-1', 'key-2']);
-=======
-      const result = userTargetTransformer(input);
->>>>>>> ORB-1113/sync-api-and-target-data
       expect(result).toEqual(expected);
     });
 
@@ -211,7 +207,6 @@ describe('Waltham Forest Data Transformers', () => {
           },
         ];
 
-<<<<<<< HEAD
       const result = userTargetTransformer(input, ['key-1', 'key-2']);
       expect(result).toEqual(expected);
     });
@@ -264,14 +259,6 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = userTargetTransformer(undefined, []);
-=======
-      const result = userTargetTransformer(input);
-      expect(result).toEqual(expected);
-    });
-
-    it('returns undefined if data is not present', () => {
-      const result = userTargetTransformer(undefined);
->>>>>>> ORB-1113/sync-api-and-target-data
       expect(result).toBeUndefined();
     });
   });

@@ -65,10 +65,6 @@ class AuthUserRegisterForm(forms.ModelForm):
             raise forms.ValidationError("This email address is not unique.")
         return email
 
-        cleaned_data = super().clean()
-        cleaned_data["username"] = cleaned_data["email"]
-        return cleaned_data
-
 
 class AuthCustomerUserRegisterForm(forms.Form):
     # note, this is a Form and not a ModelForm
@@ -296,8 +292,10 @@ class AuthCustomerUserAdmin(
         "user",
     )
     search_fields = (
-        "customer",
-        "user",
+        "customer__name",
+        "customer__official_name",
+        "user__username",
+        "user__email",
     )
 
     def id_for_list_display(self, instance):

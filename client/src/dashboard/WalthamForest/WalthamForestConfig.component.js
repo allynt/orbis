@@ -97,6 +97,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     ),
     deliverableSupplySummary = useSelector(
       chartDataSelector(sourceId, 'DeliverableSupplySummary'),
+    ),
+    affordableHousingDelivery = useSelector(
+      chartDataSelector(sourceId, 'AffordableHousingDelivery'),
     );
 
   useEffect(() => {
