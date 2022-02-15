@@ -104,7 +104,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!filteredTargetData && !!targets ? (
+        {!!filteredTargetData ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
