@@ -1,43 +1,13 @@
 import {
-  groupedDataTransformer,
   lineDataTransformer,
   userTargetTransformer,
   filterEmptyStrings,
   getTargetTotals,
+  getPastYears,
   getUser5YearTotals,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
-  describe('groupedDataTransformer', () => {
-    it('sorts gross and net values into two nested arrays', () => {
-      const data = [
-          {
-            Year: '2020',
-            'Total Gross': 123,
-            'Total Net': 456,
-          },
-          {
-            Year: '2020',
-            'Total Gross': 789,
-            'Total Net': 101,
-          },
-        ],
-        expected = [
-          [
-            { x: '2020', y: 123 },
-            { x: '2020', y: 789 },
-          ],
-          [
-            { x: '2020', y: 456 },
-            { x: '2020', y: 101 },
-          ],
-        ];
-
-      const result = groupedDataTransformer(data);
-      expect(result).toEqual(expected);
-    });
-  });
-
   describe('lineDataTransformer', () => {
     it('gives all entries uniform keys, and sets missing data to null', () => {
       const data = [
@@ -71,53 +41,6 @@ describe('Waltham Forest Data Transformers', () => {
 
       const result = lineDataTransformer(data);
       expect(result).toEqual(data);
-    });
-  });
-
-  describe('userTargetTransformer', () => {
-    it('transforms data and converts string values to numbers', () => {
-      const input = {
-          'key-1': '123',
-          'key-2': '456',
-        },
-        expected = [
-          {
-            x: 'key-1',
-            y: 123,
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input);
-      expect(result).toEqual(expected);
-    });
-
-    it('does not affect values that are already numbers', () => {
-      const input = {
-          'key-1': '123',
-          'key-2': 456,
-        },
-        expected = [
-          {
-            x: 'key-1',
-            y: 123,
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input);
-      expect(result).toEqual(expected);
-    });
-
-    it('returns undefined if data is not present', () => {
-      const result = userTargetTransformer(undefined);
-      expect(result).toBeUndefined();
     });
   });
 
@@ -243,6 +166,75 @@ describe('Waltham Forest Data Transformers', () => {
     it('returns undefined if data is not present', () => {
       const result = getTargetTotals(undefined);
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('userTargetTransformer', () => {
+    it('transforms data and converts string values to numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': '456',
+        },
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = userTargetTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('does not affect values that are already numbers', () => {
+      const input = {
+          'key-1': '123',
+          'key-2': 456,
+        },
+        expected = [
+          {
+            x: 'key-1',
+            y: 123,
+          },
+          {
+            x: 'key-2',
+            y: 456,
+          },
+        ];
+
+      const result = userTargetTransformer(input);
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is not present', () => {
+      const result = userTargetTransformer(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getPastYears', () => {
+    it('returns specified no. of previous years, formatted correctly', () => {
+      const expected = ['2020-2021', '2021-2022', '2022-2023'];
+
+      const result = getPastYears(3);
+      expect(result).toEqual(expected);
+    });
+
+    it('defaults to 5 years if no args passed', () => {
+      const expected = [
+        '2018-2019',
+        '2019-2020',
+        '2020-2021',
+        '2021-2022',
+        '2022-2023',
+      ];
+
+      const result = getPastYears();
+      expect(result).toEqual(expected);
     });
   });
 

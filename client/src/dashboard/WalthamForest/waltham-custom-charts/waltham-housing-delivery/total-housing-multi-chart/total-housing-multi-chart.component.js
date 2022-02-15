@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
@@ -13,10 +13,29 @@ import {
   TARGET_LEGEND_DATA,
 } from 'dashboard/WalthamForest/waltham.constants';
 
+import { totalHousingTransformer } from './total-housing-transformer/total-housing-transformer';
+
 const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const { walthamChartColors } = useChartTheme();
 
-  if (!apiData) return null;
+  // Transform API/target data to correct data shape, and create a
+  // reliable timeline form earliest total year -> latest API data year
+  const transformerOutput = useMemo(
+    () => totalHousingTransformer(apiData, userTargetData),
+    [apiData, userTargetData],
+  );
+
+  if (!transformerOutput) return null;
+
+  const { transformedData, transformedTargets } = transformerOutput;
+
+  // This can easily be upgraded later to cut out a 5-year window
+  // based on a start/end parameter, but hardcoded for now
+  const filteredApiData = [
+      transformedData[0].slice(-5),
+      transformedData[1].slice(-5),
+    ],
+    filteredTargetData = transformedTargets?.slice(-5);
 
   const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
     name: type,
@@ -26,18 +45,18 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const renderTotalHousingLegend = width => (
     <WalthamCustomLegend
       apiLegendData={apiLegendData}
-      targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+      targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
       width={width}
     />
   );
 
   const renderTotalHousingMultiChart = width => {
-    const { barWidth, offset } = GroupedWidthCalculator(apiData, width);
+    const { barWidth, offset } = GroupedWidthCalculator(filteredApiData, width);
 
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: userTargetData,
+        data: filteredTargetData,
         x: 'x',
         y: 'y',
       };
@@ -45,7 +64,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup offset={offset}>
-          {apiData?.map((arr, i) => (
+          {filteredApiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
               key={`dataset-${i}`}
@@ -61,7 +80,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData ? (
+        {!!filteredTargetData ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}
