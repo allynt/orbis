@@ -45,6 +45,10 @@ export const walthamApiMetadata = [
     datasetName: 'DeliverableSupplySummary',
     url: '/wfc/mock/deliverable_supply_summary/v1/',
   },
+  {
+    datasetName: 'AffordableHousingDelivery',
+    url: '/wfc/mock/affordable_housing_delivery/v1',
+  },
 ];
 
 export const targetDatasets = {
@@ -119,3 +123,12 @@ export const deliverableSupplySummaryTypes = [
   'Windfall Allowance From Small Sites',
   'Sites on the Brownfield Land Site',
 ];
+
+export const tooltipFlyoutStyle = {
+  stroke: 'none',
+  fill: '#f6be00',
+};
+
+export const yellowStyle = {
+  data: { stroke: '#f6be00' },
+};
