@@ -123,3 +123,12 @@ export const deliverableSupplySummaryTypes = [
   'Windfall Allowance From Small Sites',
   'Sites on the Brownfield Land Site',
 ];
+
+export const tooltipFlyoutStyle = {
+  stroke: 'none',
+  fill: '#f6be00',
+};
+
+export const yellowStyle = {
+  data: { stroke: '#f6be00' },
+};

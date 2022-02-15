@@ -9,15 +9,18 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-//import * as MOCK_DATA from 'dashboard/mock-data/waltham-forest/mock_affordable_housing';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
+import {
+  yellowStyle,
+  tooltipFlyoutStyle,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
  * @param {{
- *  apiData: {any} // chart data
+ *  data: {any} // chart data
  * }} props
  */
 const AffordableHousingDelivery = ({ data }) => {
@@ -40,7 +43,6 @@ const AffordableHousingDelivery = ({ data }) => {
   ];
 
   const renderLineChart = width => {
-    const color = '#f6be00';
     const y_values = actualData.map(item => item['Affordable Housing']);
     const y_max = Math.max(...y_values);
     const props = {
@@ -50,8 +52,8 @@ const AffordableHousingDelivery = ({ data }) => {
       domain: { y: [0, y_max > 100 ? y_max : 100] },
     };
     return (
-      <VictoryGroup key="y">
-        <VictoryLine {...props} style={{ data: { stroke: color } }} />
+      <VictoryGroup>
+        <VictoryLine {...props} style={yellowStyle} />
         <VictoryScatter
           labelComponent={
             <VictoryTooltip
@@ -60,18 +62,12 @@ const AffordableHousingDelivery = ({ data }) => {
               flyoutHeight={40}
               flyoutWidth={100}
               constrainToVisibleArea
-              style={{
-                fill: 'black',
-              }}
-              flyoutStyle={{
-                stroke: 'none',
-                fill: '#f6be00',
-              }}
+              flyoutStyle={tooltipFlyoutStyle}
             />
           }
           {...props}
           labels={totalsArray}
-          style={{ data: { stroke: color } }}
+          style={yellowStyle}
         />
       </VictoryGroup>
     );
