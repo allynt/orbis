@@ -79,8 +79,6 @@ class PldAdapter(BaseProxyDataAdapter):
                 "Unknown",
             )
 
-            assert status_category != "Unknown", f"Status: {status} is not in the defined list {STATUSES}"
-
             properties = {
                 "Project ID": rd["_id"],
                 "UPRN": source["uprn"],
