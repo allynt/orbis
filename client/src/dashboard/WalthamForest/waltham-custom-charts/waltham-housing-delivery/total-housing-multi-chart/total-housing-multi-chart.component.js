@@ -2,11 +2,18 @@ import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
+import {
+  VictoryGroup,
+  VictoryBar,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTooltip,
+} from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TENURE_DATA_TYPES,
@@ -67,8 +74,15 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           {filteredApiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
+
+              labelComponent={FlyoutTooltip()}
               key={`dataset-${i}`}
               data={arr}
+              x={arr.x}
+              y={arr.y}
+              labels={({ datum }) => {
+                return `Total: ${datum.y}`;
+              }}
               style={{
                 data: {
                   fill: walthamChartColors.totalHousing[i],
@@ -84,6 +98,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           <VictoryGroup>
             <VictoryScatter
               {...props}
+              labelComponent={<VictoryTooltip constrainToVisibleArea />}
               style={{
                 data: {
                   stroke: darken(color, 0.2),
