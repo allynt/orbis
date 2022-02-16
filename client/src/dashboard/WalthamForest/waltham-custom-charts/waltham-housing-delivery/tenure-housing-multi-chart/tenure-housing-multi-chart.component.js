@@ -12,6 +12,8 @@ import {
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
+import { labelsForArrayOfObjects } from 'dashboard/WalthamForest/tooltips-utils';
 import {
   userTargetTransformer,
   getTargetTotals,
@@ -59,7 +61,6 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
       />
     );
   };
-
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
@@ -79,22 +80,31 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         y: 'y',
       };
 
+    let totalsArray = labelsForArrayOfObjects(
+      apiData,
+      'Year',
+      item => `Total: ${item}`,
+    );
     return (
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup>
           <VictoryStack colorScale={colorScale}>
-            {ranges?.map(range => (
-              <VictoryBar
-                key={range}
-                data={apiData}
-                x="Year"
-                y={range}
-                style={{
-                  data: { width: barWidth },
-                }}
-              />
-            ))}
+            {ranges?.map(range => {
+              return (
+                <VictoryBar
+                  labelComponent={FlyoutTooltip()}
+                  key={range}
+                  data={apiData}
+                  x="Year"
+                  y={range}
+                  labels={totalsArray}
+                  style={{
+                    data: { width: barWidth },
+                  }}
+                />
+              );
+            })}
           </VictoryStack>
         </VictoryGroup>
 
