@@ -26,7 +26,7 @@ const DEFAULT_DATE_RANGE = {
 
 const useStyles = makeStyles(theme => ({
   dateHeading: {
-    paddingBottom: '1.5rem',
+    paddingBottom: '0.5rem',
   },
   checkboxHeading: {
     paddingBottom: '1rem',
@@ -95,7 +95,9 @@ export const PldSidebarComponent = ({
             </MenuItem>
           ))}
         </Select>
+      </Grid>
 
+      <Grid item>
         <DateRangeFilter
           minDate={minFilterDate}
           maxDate={maxFilterDate}
