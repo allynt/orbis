@@ -13,12 +13,12 @@ import {
 
 const DEFAULT_COLOR = [246, 190, 0];
 const PIN_COLORS = {
-  'pre-approved': [255, 254, 25, 255],
+  allowed: [255, 254, 25, 255],
   approved: [55, 229, 216, 255],
   commenced: [245, 36, 85, 255],
   completed: [138, 234, 115, 255],
-  'superseded / legacy': [255, 160, 72, 255],
-  'lapsed / revoked': [5, 195, 255, 255],
+  superseded: [255, 160, 72, 255],
+  lapsed: [5, 195, 255, 255],
 };
 
 const defaultDateRange = {
