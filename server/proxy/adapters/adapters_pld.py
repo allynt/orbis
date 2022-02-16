@@ -76,8 +76,10 @@ class PldAdapter(BaseProxyDataAdapter):
             status = source["status"]
             status_category = next(
                 (k for k, v in STATUSES.items() if status in v),
-                None,
+                "Unknown",
             )
+
+            assert status_category != "Unknown", f"Status: {status} is not in the defined list {STATUSES}"
 
             properties = {
                 "Project ID": rd["_id"],
