@@ -13,12 +13,12 @@ import {
 
 const DEFAULT_COLOR = [246, 190, 0];
 const PIN_COLORS = {
-  allowed: [255, 254, 25, 255],
-  approved: [55, 229, 216, 255],
-  commenced: [245, 36, 85, 255],
-  completed: [138, 234, 115, 255],
-  superseded: [255, 160, 72, 255],
-  lapsed: [5, 195, 255, 255],
+  'Pre-Approval': [255, 254, 25, 255],
+  Approved: [55, 229, 216, 255],
+  Commenced: [245, 36, 85, 255],
+  Completed: [138, 234, 115, 255],
+  'Superseded / Legacy': [255, 160, 72, 255],
+  'Lapsed / Revoked': [5, 195, 255, 255],
 };
 
 const defaultDateRange = {
@@ -112,7 +112,7 @@ const configuration = ({
   const getPinColor = feature => {
     let color = DEFAULT_COLOR;
     if (!feature.properties['cluster']) {
-      color = PIN_COLORS[feature.properties['Status'].toLowerCase()];
+      color = PIN_COLORS[feature.properties['Status Category']];
     }
 
     return color;
