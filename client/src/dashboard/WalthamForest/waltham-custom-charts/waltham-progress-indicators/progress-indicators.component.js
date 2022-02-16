@@ -12,7 +12,7 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
 
   const totalDataArray = totalData?.properties?.[0]?.data;
 
-  const tenureCurrentYear = tenureData?.[0]?.data?.find(
+  const tenureCurrentYear = tenureData?.properties?.[0]?.data?.find(
     obj => obj.Year === '2020-2021',
   );
 
