@@ -24,6 +24,8 @@ import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
+import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
+import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -148,6 +150,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <div className={styles.barCharts}>
           <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+            <DeliverableSupplySummary data={deliverableSupplySummary} />
+            <AffordableHousingDelivery data={affordableHousingDelivery} />
           </div>
 
           <div className={styles.housingDelivery}>
