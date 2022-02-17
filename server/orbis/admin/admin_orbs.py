@@ -116,6 +116,7 @@ class DocumentAdminInlineForm(forms.ModelForm):
 
     n_agreements = forms.CharField(
         disabled=True,
+        required=False,
         widget=forms.TextInput(attrs={"size": 1}),
     )
 
