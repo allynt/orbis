@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     font: 'inherit',
     color: 'currentColor',
     border: 0,
-    padding: theme.spacing(2, 1),
+    padding: theme.spacing(2, 0),
     width: '100%',
     '&::-webkit-input-placeholder': placeholder(theme),
     '&::-moz-placeholder': placeholder(theme), // Firefox 19+

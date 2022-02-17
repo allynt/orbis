@@ -1,6 +1,12 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  Grid,
+  makeStyles,
+  MenuItem,
+  Select,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { subYears } from 'date-fns';
 import { useSelector } from 'react-redux';
@@ -20,7 +26,7 @@ const DEFAULT_DATE_RANGE = {
 
 const useStyles = makeStyles(theme => ({
   dateHeading: {
-    paddingBottom: '1.5rem',
+    paddingBottom: '0.5rem',
   },
   checkboxHeading: {
     paddingBottom: '1rem',
@@ -36,8 +42,11 @@ export const PldSidebarComponent = ({
   iconColor,
   minFilterDate,
   maxFilterDate,
+  dateTypes,
 }) => {
   const styles = useStyles();
+
+  const [selectedDateType, setSelectedDateType] = useState(dateTypes[0].id);
 
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
@@ -72,6 +81,23 @@ export const PldSidebarComponent = ({
         <Typography className={styles.dateHeading} variant="h4">
           Date Range
         </Typography>
+
+        <Select
+          value={selectedDateType}
+          onChange={({ target: { value } }) => {
+            setSelectedDateType(value);
+            handleChange('dateType')(value);
+          }}
+        >
+          {dateTypes.map(type => (
+            <MenuItem key={type.id} value={type.id}>
+              {type.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+
+      <Grid item>
         <DateRangeFilter
           minDate={minFilterDate}
           maxDate={maxFilterDate}

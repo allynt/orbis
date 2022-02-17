@@ -13,14 +13,13 @@ import {
 
 const DEFAULT_COLOR = [246, 190, 0];
 const PIN_COLORS = {
-  'pre-approved': [255, 254, 25, 255],
-  approved: [55, 229, 216, 255],
-  commenced: [245, 36, 85, 255],
-  completed: [138, 234, 115, 255],
-  'superseded / legacy': [255, 160, 72, 255],
-  'lapsed / revoked': [5, 195, 255, 255],
+  'Pre-Approval': [255, 254, 25, 255],
+  Approved: [55, 229, 216, 255],
+  Commenced: [245, 36, 85, 255],
+  Completed: [138, 234, 115, 255],
+  'Superseded / Legacy': [255, 160, 72, 255],
+  'Lapsed / Revoked': [5, 195, 255, 255],
 };
-
 
 const defaultDateRange = {
   startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
@@ -46,21 +45,24 @@ const configuration = ({
   const filteredData = {
     ...rawData,
     features: filter(rawData?.features, feature => {
+      const dateType = filterRange?.dateType
+        ? filterRange.dateType
+        : 'decision_date';
       if (
         dateRangeFilter.startDate &&
-        feature.properties.decision_date < dateRangeFilter.startDate
+        feature.properties[dateType] < dateRangeFilter.startDate
       )
         return false;
 
       if (
         dateRangeFilter.endDate &&
-        feature.properties.decision_date > dateRangeFilter.endDate
+        feature.properties[dateType] > dateRangeFilter.endDate
       )
         return false;
 
       if (
         constructionPhaseFilter?.includes(
-          feature.properties?.['Status Category']
+          feature.properties?.['Status Category'],
         )
       )
         return false;
@@ -110,7 +112,7 @@ const configuration = ({
   const getPinColor = feature => {
     let color = DEFAULT_COLOR;
     if (!feature.properties['cluster']) {
-      color = PIN_COLORS[feature.properties['Status'].toLowerCase()];
+      color = PIN_COLORS[feature.properties['Status Category']];
     }
 
     return color;
