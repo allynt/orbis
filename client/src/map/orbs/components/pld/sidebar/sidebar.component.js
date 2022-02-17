@@ -82,6 +82,11 @@ export const PldSidebarComponent = ({
           Date Range
         </Typography>
 
+        <Typography className={styles.dateHeading} variant="body1">
+          Please select the type of date before you select the specific date
+          range to apply.
+        </Typography>
+
         <Select
           value={selectedDateType}
           onChange={({ target: { value } }) => {
