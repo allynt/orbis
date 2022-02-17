@@ -1,5 +1,6 @@
 from urllib.parse import quote as urlquote
 
+from django import forms
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.db.models import F, Value
@@ -11,7 +12,15 @@ from django.utils.html import format_html
 from astrosat.admin import get_clickable_m2m_list_display, JSONAdminWidget
 from astrosat_users.models import Customer, User
 
-from orbis.models import Orb, OrbImage, LicencedCustomer, Licence, DataScope, Access
+from orbis.models import (
+    Access,
+    DataScope,
+    Document,
+    Licence,
+    LicencedCustomer,
+    Orb,
+    OrbImage,
+)
 
 ################
 # custom forms #
@@ -69,6 +78,7 @@ class OrbAdminForm(ModelForm):
         })
         self.fields["default_orb_state"].widget = JSONAdminWidget()
 
+
 ###########
 # inlines #
 ###########
@@ -89,6 +99,67 @@ class DataScopeAdminInline(admin.TabularInline):
 
 class OrbImageAdminInline(admin.TabularInline):
     model = OrbImage
+    extra = 0
+
+
+class DocumentAdminInlineForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = (
+            "name",
+            "version",
+            "file",
+            "type",
+            "n_agreements",
+            "is_active",
+        )
+
+    n_agreements = forms.CharField(
+        disabled=True,
+        required=False,
+        widget=forms.TextInput(attrs={"size": 1}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        document = self.instance
+        if document:
+            self.fields["n_agreements"].initial = document.n_agreements
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        other_documents = Document.objects.exclude(pk=self.instance.pk)
+
+        # Check `unique_type_name_version_orb` and `unique_type_name_version` constraints.
+        if other_documents.filter(
+            type=cleaned_data["type"],
+            name=cleaned_data["name"],
+            version=cleaned_data["version"],
+            orb=cleaned_data["orb"],
+        ).exists():
+            raise ValidationError("`type`, `name` and `orb` must be unique")
+
+        # Check `unique_type_name_orb_active and `unique_type_name_active` constraints.
+        if other_documents.filter(
+            type=cleaned_data["type"],
+            name=cleaned_data["name"],
+            orb=cleaned_data["orb"],
+            is_active=True,
+        ) and cleaned_data["is_active"]:
+            raise ValidationError(
+                "There cannot be multiple active documents with the same `type`, `name` and `orb`"
+            )
+
+        return cleaned_data
+
+
+class DocumentAdminInline(admin.TabularInline):
+    form = DocumentAdminInlineForm
+    model = Document
+    show_change_link = True
+    verbose_name_plural = "ORB DOCUMENTS"
+    verbose_name = "ORB DOCUMENT"
     extra = 0
 
 
@@ -153,6 +224,7 @@ class OrbAdmin(admin.ModelAdmin):
     form = OrbAdminForm
     inlines = (
         OrbImageAdminInline,
+        DocumentAdminInline,
         DataScopeAdminInline,
     )
     list_display = (
