@@ -113,9 +113,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
   /**
    * @param {object} data
    */
-  const updateWalthamOrbState = data => {
+  const updateWalthamOrbState = data =>
     dispatch(updateUserDashboardConfig({ user, sourceId, data }));
-  };
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
