@@ -52,7 +52,7 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   const renderTotalHousingLegend = width => (
     <WalthamCustomLegend
       apiLegendData={apiLegendData}
-      targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
+      targetLegendData={!!filteredTargetData ? TARGET_LEGEND_DATA : null}
       width={width}
     />
   );
@@ -74,15 +74,10 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           {filteredApiData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
-
-              labelComponent={FlyoutTooltip()}
               key={`dataset-${i}`}
               data={arr}
-              x={arr.x}
-              y={arr.y}
-              labels={({ datum }) => {
-                return `Total: ${datum.y}`;
-              }}
+              labels={({ datum }) => `Total: ${datum.y}`}
+              labelComponent={FlyoutTooltip()}
               style={{
                 data: {
                   fill: walthamChartColors.totalHousing[i],

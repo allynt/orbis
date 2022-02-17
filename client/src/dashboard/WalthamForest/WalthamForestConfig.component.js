@@ -126,7 +126,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
    * @param {object} targets
    */
   const handleAddTargetsClick = targets => {
-    updateWalthamOrbState({ [selectedDataset]: targets });
+    updateWalthamOrbState(targets);
     closeDialog();
   };
 
@@ -178,6 +178,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
+              userOrbState={userOrbState}
               updateWalthamOrbState={updateWalthamOrbState}
             />
           </div>

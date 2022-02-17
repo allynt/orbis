@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Grid,
@@ -11,7 +11,6 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 
 import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
@@ -55,36 +54,29 @@ export const WalthamHousingDelivery = ({
   updateWalthamOrbState,
 }) => {
   const styles = useStyles({});
-
   const { tenureType, tenureDataType } = userOrbState;
 
-  const [selectedTenureType, setSelectedTenureType] = useState(
-    tenureType ?? ALL_TENURE_TYPES,
-  );
+  const selectedTenureType = tenureType ?? ALL_TENURE_TYPES;
+  const selectedDataType = tenureDataType ?? TENURE_DATA_TYPES.net;
 
-  const [selectedDataType, setSelectedDataType] = useState(
-    tenureDataType ?? TENURE_DATA_TYPES.net,
-  );
-
-  const handleTenureTypeSelect = value => {
+  /**
+   * @param {string} value
+   */
+  const handleTenureTypeSelect = value =>
     updateWalthamOrbState({ tenureType: value });
-    // do we still need local state if we're persisting these?
-    setSelectedTenureType(value);
-  };
 
-  const handleToggleClick = (_, type) => {
-    if (!type) return;
+  /**
+   * @param {any} _
+   * @param {string} type
+   */
+  const handleToggleClick = (_, type) =>
     updateWalthamOrbState({ tenureDataType: type });
-    // do we still need local state if we're persisting these?
-    setSelectedDataType(type);
-  };
 
   /**
    * @param {object[]} data
    */
   const getTenureType = data => {
     const type = housingTenureTypes[selectedTenureType];
-    // remember this is broken when `All Tenure Types` is selected
     return selectedTenureType === ALL_TENURE_TYPES
       ? data
       : data?.map(datum => ({

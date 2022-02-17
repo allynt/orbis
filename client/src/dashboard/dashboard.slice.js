@@ -70,7 +70,7 @@ export const updateUserDashboardConfig =
         orb_state: {
           ...user.profiles.orbis_profile.orb_state,
           [sourceId]: {
-            ...(user.profiles.orbis_profile.orb_state?.[sourceId] || {}),
+            ...(user.profiles.orbis_profile.orb_state?.[sourceId] ?? {}),
             ...data,
           },
         },

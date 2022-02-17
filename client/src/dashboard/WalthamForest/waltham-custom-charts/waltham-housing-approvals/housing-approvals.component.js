@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   ToggleButtonGroup,
@@ -30,18 +30,23 @@ const HousingApprovalsComponent = ({
   yLabel = '',
   ranges = ['y'],
   data,
+  userOrbState,
   updateWalthamOrbState,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
-  const [selectedDataType, setSelectedDataType] = useState(
-    HOUSING_APPROVAL_DATA_TYPES.monthly,
-  );
 
+  const { approvalsGrantedDataType } = userOrbState;
+
+  const selectedDataType =
+    approvalsGrantedDataType ?? HOUSING_APPROVAL_DATA_TYPES.monthly;
+
+  /**
+   * @param {any} _
+   * @param {string} newValue
+   */
   const handleToggleClick = (_, newValue) => {
-    if (!newValue) return;
     updateWalthamOrbState({ approvalsGrantedDataType: newValue });
-    setSelectedDataType(newValue);
   };
 
   const dataByType = useMemo(
@@ -88,9 +93,7 @@ const HousingApprovalsComponent = ({
                 {...props}
                 style={{ data: { stroke: color } }}
                 labelComponent={FlyoutTooltip()}
-                labels={({ datum }) => {
-                  return `Total: ${datum._y}`;
-                }}
+                labels={({ datum }) => `Total: ${datum._y}`}
               />
             </VictoryGroup>
           );
