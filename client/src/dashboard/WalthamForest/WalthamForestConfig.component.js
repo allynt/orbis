@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   makeStyles,
@@ -24,6 +24,8 @@ import {
   SelectScreen,
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
+import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
+import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -121,12 +123,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
     closeDialog();
   };
 
-  // only arrays of chart data, transformed where needed and cached
-  const tenureHousingDeliveryChartData = useMemo(
-    () => tenureHousingDelivery?.properties,
-    [tenureHousingDelivery],
-  );
-
   return (
     <div className={styles.dashboard}>
       <Grid
@@ -146,7 +142,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
-            tenureData={tenureHousingDeliveryChartData}
+            tenureData={tenureHousingDelivery}
             userOrbState={userOrbState}
           />
         </div>
@@ -154,6 +150,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
         <div className={styles.barCharts}>
           <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+            <DeliverableSupplySummary data={deliverableSupplySummary} />
+            <AffordableHousingDelivery data={affordableHousingDelivery} />
           </div>
 
           <div className={styles.housingDelivery}>
@@ -162,7 +160,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               totalHousingDeliveryChartData={
                 totalHousingDelivery?.properties[0].data
               }
-              tenureHousingDeliveryChartData={tenureHousingDeliveryChartData}
+              tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
               userOrbState={userOrbState}
             />
             {/* big multi-line chart */}

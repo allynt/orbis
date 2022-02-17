@@ -39,10 +39,10 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
   // This can easily be upgraded later to cut out a 5-year window
   // based on a start/end parameter, but hardcoded for now
   const filteredApiData = [
-      transformedData[0].slice(-5),
-      transformedData[1].slice(-5),
-    ],
-    filteredTargetData = transformedTargets?.slice(-5);
+    transformedData[0].slice(-5),
+    transformedData[1].slice(-5),
+  ];
+  const filteredTargetData = transformedTargets?.slice(-5);
 
   const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
     name: type,

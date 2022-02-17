@@ -39,16 +39,27 @@ const filterEmptyStrings = data => {
  * This function transforms a key/value object into X/Y data to be rendered
  * on a line chart, and converts any 'y' values from strings to numbers, as
  * Victory can only render number values, and will break with strings.
+ *
+ * If a timeline of string years is passed, it will return only values within
+ * that timeline. If no timeline is passed, it will return all data.
+ *
+ * If a timeline is provided, but the data falls outwith it, returns null.
  * @param {object} data
- * @returns {{ x: string, y: number }[]}
+ * @param {string[]} timeline
+ * @returns {{ x: string, y: number }[]|null}
  */
-const userTargetTransformer = data => {
+const userTargetTransformer = (data, timeline) => {
   if (!data) return;
 
-  return Object.entries(data).reduce(
-    (acc, [key, value]) => [...acc, { x: key, y: +value }],
+  const result = Object.entries(data).reduce(
+    (acc, [key, value]) =>
+      !timeline || timeline.includes(key)
+        ? [...acc, { x: key, y: +value }]
+        : acc,
     [],
   );
+
+  return result.length ? result : null;
 };
 
 /**
@@ -109,6 +120,50 @@ const getUser5YearTotals = obj => {
   );
 };
 
+/**
+ * This function builds an array of string years from the years
+ * present in the api data and target data, to allow the charts to
+ * pad any missing values, to create a consistent timeline.
+ *
+ * The timeline ranges from the earlies year in both datasets, to the
+ * latest year in the api data, as was requested.
+ * @param {object[]} apiData
+ * @param {object} targets
+ * @returns {string[]}
+ */
+const getDataTimeline = (apiData, targets = {}) => {
+  if (!apiData) return;
+
+  // if uninitiated by user, targets will be undefined, but
+  // defaulted to empty object
+  const noTargets = !Object.keys(targets).length;
+
+  const apiYears = apiData.map(obj => {
+    const [year] = obj.Year.split('-');
+    return +year;
+  });
+
+  // if targets is undefined, defaulted to object and will return empty array
+  const targetYears = noTargets
+    ? []
+    : Object.keys(targets).map(key => {
+        const [year] = key.split('-');
+        return +year;
+      });
+
+  const allYears = [...apiYears, ...targetYears];
+
+  const min = Math.min(...allYears); // show oldest year from both datasets
+  const max = Math.max(...apiYears); // only show latest year from API data
+
+  let timeline = [];
+  for (let i = min; i <= max; i++) {
+    timeline = [...timeline, `${i}-${i + 1}`];
+  }
+
+  return timeline;
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -116,4 +171,5 @@ export {
   getTargetTotals,
   getPastYears,
   getUser5YearTotals,
+  getDataTimeline,
 };

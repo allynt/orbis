@@ -14,15 +14,14 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjects } from 'dashboard/WalthamForest/tooltips-utils';
-import {
-  userTargetTransformer,
-  getTargetTotals,
-} from 'dashboard/WalthamForest/utils';
+import { getTargetTotals } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
   housingTenureTypes,
 } from 'dashboard/WalthamForest/waltham.constants';
+
+import { tenureHousingTransformer } from './tenure-housing-transformer/tenure-housing-transformer';
 
 /**
  * @param {{
@@ -34,18 +33,24 @@ import {
 const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
   const { tenureStackColors } = useChartTheme();
 
-  const tenureTypes = Object.values(housingTenureTypes),
-    stackColors = Object.values(tenureStackColors);
+  const tenureTypes = Object.values(housingTenureTypes);
+  const stackColors = Object.values(tenureStackColors);
 
-  const targets = useMemo(
-    () =>
-      !tenureType
-        ? userTargetTransformer(getTargetTotals(userTargetData))
-        : userTargetTransformer(userTargetData?.[tenureType]),
-    [tenureType, userTargetData],
+  const targets = !tenureType
+    ? getTargetTotals(userTargetData)
+    : userTargetData?.[tenureType];
+
+  const transformerOutput = useMemo(
+    () => tenureHousingTransformer(apiData, targets),
+    [apiData, targets],
   );
 
-  if (!apiData) return null;
+  if (!transformerOutput) return null;
+
+  const { transformedData, transformedTargets } = transformerOutput;
+
+  const filteredApiData = transformedData.slice(-5);
+  const filteredTargetData = transformedTargets?.slice(-5);
 
   const apiLegendData = tenureTypes.map((range, i) => ({
     name: range,
@@ -56,7 +61,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     return (
       <WalthamCustomLegend
         apiLegendData={apiLegendData}
-        targetLegendData={!!userTargetData ? TARGET_LEGEND_DATA : null}
+        targetLegendData={!!filteredTargetData ? TARGET_LEGEND_DATA : null}
         width={width}
       />
     );
@@ -75,13 +80,13 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: targets,
+        data: filteredTargetData,
         x: 'x',
         y: 'y',
       };
 
     let totalsArray = labelsForArrayOfObjects(
-      apiData,
+      filteredApiData,
       'Year',
       item => `Total: ${item}`,
     );
@@ -95,7 +100,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
                 <VictoryBar
                   labelComponent={FlyoutTooltip()}
                   key={range}
-                  data={apiData}
+                  data={filteredApiData}
                   x="Year"
                   y={range}
                   labels={totalsArray}
@@ -109,7 +114,7 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!userTargetData && !!targets ? (
+        {!!filteredTargetData ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}

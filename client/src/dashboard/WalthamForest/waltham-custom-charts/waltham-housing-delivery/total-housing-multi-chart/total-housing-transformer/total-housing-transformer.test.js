@@ -189,6 +189,26 @@ const dataArray = [
     targets: undefined,
     expected: undefined,
   },
+  {
+    title: 'returns null target values if all are higher than api years',
+    data: [
+      {
+        Year: '2017-2018',
+        'Total Gross': 123,
+        'Total Net': 456,
+      },
+    ],
+    targets: {
+      '2018-2019': '237',
+    },
+    expected: {
+      transformedData: [
+        [{ x: '2017-2018', y: 123 }],
+        [{ x: '2017-2018', y: 456 }],
+      ],
+      transformedTargets: null,
+    },
+  },
 ];
 
 describe('totalHousingTransformer', () => {
