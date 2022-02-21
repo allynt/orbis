@@ -18,6 +18,22 @@ from .factories import *
 
 @pytest.mark.django_db
 class TestDocumentModels:
+    def test_cannot_delete_document_with_agreements(self, user, mock_storage):
+
+        test_document = DocumentFactory(
+            name="test", type=DocumentType.TERMS, is_active=True
+        )
+
+        # cannot delete while user agreed to document...
+        user.documents.add(test_document)
+        with pytest.raises(IntegrityError):
+            test_document.delete()
+
+        # can delete while no user agreed to document...
+        user.documents.clear()
+        test_document.delete()
+        assert not Document.objects.terms().exists()
+
     def test_unique_constraints(self, mock_storage):
 
         # same document type cannot have same name and version
