@@ -113,6 +113,7 @@ const getPastYears = (years = 5) => {
  */
 const getUser5YearTotals = obj => {
   if (!obj) return;
+  if (Object.values(obj).every(item => isNaN(item))) return;
 
   return LAST_5_YEARS.reduce(
     (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),

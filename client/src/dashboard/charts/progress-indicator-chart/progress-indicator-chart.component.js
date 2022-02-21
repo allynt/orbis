@@ -34,7 +34,8 @@ const ProgressIndicatorChart = ({ property, color }) => {
 
   const { name, target, progress } = property;
 
-  const percentage = Math.round((progress / target) * 100) || null,
+  const percentage =
+      target === 0 ? 0 : Math.round((progress / target) * 100) || null,
     data = [
       { x: 1, y: percentage },
       { x: 2, y: 100 - percentage },
