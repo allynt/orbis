@@ -34,11 +34,21 @@ const ProgressIndicatorChart = ({ property, color }) => {
 
   const { name, target, progress } = property;
 
-  const percentage = target === 0 ? 0 : Math.round((progress / target) * 100),
-    data = [
-      { x: 1, y: percentage },
-      { x: 2, y: 100 - percentage },
-    ];
+  // following code ensures we never show chart if target is 0 (prevent a
+  // divide by zero, or if target data missing)
+
+  let showChart = true;
+  let percentage = 0;
+  if (!target || target === 0) {
+    showChart = false;
+  } else {
+    percentage = target === 0 ? 0 : Math.round((progress / target) * 100);
+  }
+
+  const data = [
+    { x: 1, y: percentage },
+    { x: 2, y: 100 - percentage },
+  ];
 
   // TODO: magic numbers in <Text /> components
 
@@ -80,7 +90,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
             />
             <VictoryAnimation duration={1000} data={{ percentage }}>
               {newProps =>
-                !!newProps.percentage ? (
+                showChart ? (
                   <>
                     <Text
                       width={radius}
