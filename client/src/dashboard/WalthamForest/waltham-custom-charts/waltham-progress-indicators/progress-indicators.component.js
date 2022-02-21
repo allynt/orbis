@@ -61,7 +61,7 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
             <ChartWrapper
               key={property.name}
               title={property.title}
-              info="This is a test description"
+              info={property.info}
             >
               <ProgressIndicatorChart
                 property={property}
