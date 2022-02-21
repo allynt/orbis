@@ -77,9 +77,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
+  const [dashboardState, setDashboardState] = useState({});
 
   const user = useSelector(userSelector);
   const userOrbState = useSelector(userOrbStateSelector(sourceId));
+
+  console.log('saved userOrbState: ', userOrbState);
+  console.log('current dashboard state: ', dashboardState);
 
   const existingTargets = userOrbState[selectedDataset];
 
@@ -115,6 +119,22 @@ const WalthamForestDashboard = ({ sourceId }) => {
    */
   const updateWalthamOrbState = data =>
     dispatch(updateUserDashboardConfig({ user, sourceId, data }));
+
+  useEffect(() => {
+    // need to stop this firing if `dashboardState` is empty object
+    const saveHandler = () => updateWalthamOrbState(dashboardState);
+    window.addEventListener('beforeunload', saveHandler);
+
+    return () => {
+      console.log('hit cleanup');
+      // if component id unmounted through app use (navigating to map etc)
+      // remove listener and call save handler
+      window.removeEventListener('beforeunload', saveHandler);
+
+      // calling `saveHandler` here causes infinite loop, because
+      // cleanup doesn't just fire on unmount
+    };
+  });
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
@@ -168,7 +188,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               }
               tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
               userOrbState={userOrbState}
-              updateWalthamOrbState={updateWalthamOrbState}
+              setDashboardState={setDashboardState}
             />
             {/* big multi-line chart */}
             <HousingApprovalsComponent
@@ -178,7 +198,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
               userOrbState={userOrbState}
-              updateWalthamOrbState={updateWalthamOrbState}
+              setDashboardState={setDashboardState}
             />
           </div>
         </div>

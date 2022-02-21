@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   ToggleButtonGroup,
@@ -31,28 +31,30 @@ const HousingApprovalsComponent = ({
   ranges = ['y'],
   data,
   userOrbState,
-  updateWalthamOrbState,
+  setDashboardState,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
-
-  const { approvalsGrantedDataType } = userOrbState;
-
-  const selectedDataType =
-    approvalsGrantedDataType ?? HOUSING_APPROVAL_DATA_TYPES.monthly;
+  const [configuration, setConfiguration] = useState(
+    userOrbState.approvalsGrantedDataType ??
+      HOUSING_APPROVAL_DATA_TYPES.monthly,
+  );
 
   /**
    * @param {any} _
    * @param {string} newValue
    */
   const handleToggleClick = (_, newValue) => {
-    updateWalthamOrbState({ approvalsGrantedDataType: newValue });
+    setConfiguration(newValue);
+    setDashboardState(prev => ({
+      ...prev,
+      approvalsGrantedDataType: newValue,
+    }));
   };
 
   const dataByType = useMemo(
-    () =>
-      lineDataTransformer(data?.find(p => p.name === selectedDataType)?.data),
-    [data, selectedDataType],
+    () => lineDataTransformer(data?.find(p => p.name === configuration)?.data),
+    [data, configuration],
   );
 
   const apiLegendData = [
@@ -107,7 +109,7 @@ const HousingApprovalsComponent = ({
     >
       <ToggleButtonGroup
         size="small"
-        value={selectedDataType}
+        value={configuration}
         orientation="horizontal"
         onChange={handleToggleClick}
         className={styles.toggleButtonGroup}

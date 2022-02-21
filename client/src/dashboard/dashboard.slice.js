@@ -24,6 +24,8 @@ const dashboardSlice = createSlice({
       const { sourceId, datasetName, data } = payload;
 
       state[sourceId] = {
+        // Investigate. Why does this not break? If state[wfc_source_id]
+        // does not yet exist, this should error (spreading undefined)
         ...state[sourceId],
         [datasetName]: data,
       };
@@ -70,7 +72,7 @@ export const updateUserDashboardConfig =
         orb_state: {
           ...user.profiles.orbis_profile.orb_state,
           [sourceId]: {
-            ...(user.profiles.orbis_profile.orb_state?.[sourceId] ?? {}),
+            ...(user.profiles.orbis_profile.orb_state[sourceId] ?? {}),
             ...data,
           },
         },

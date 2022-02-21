@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Grid,
@@ -51,33 +51,39 @@ export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
   userOrbState,
-  updateWalthamOrbState,
+  setDashboardState,
 }) => {
   const styles = useStyles({});
-  const { tenureType, tenureDataType } = userOrbState;
+  const [configuration, setConfiguration] = useState({
+    tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
+    tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
+  });
 
-  const selectedTenureType = tenureType ?? ALL_TENURE_TYPES;
-  const selectedDataType = tenureDataType ?? TENURE_DATA_TYPES.net;
+  const { tenureType, tenureDataType } = configuration;
 
   /**
    * @param {string} value
    */
-  const handleTenureTypeSelect = value =>
-    updateWalthamOrbState({ tenureType: value });
+  const handleTenureTypeSelect = value => {
+    setConfiguration(prev => ({ ...prev, tenureType: value }));
+    setDashboardState(prev => ({ ...prev, tenureType: value }));
+  };
 
   /**
    * @param {any} _
    * @param {string} type
    */
-  const handleToggleClick = (_, type) =>
-    updateWalthamOrbState({ tenureDataType: type });
+  const handleToggleClick = (_, type) => {
+    setConfiguration(prev => ({ ...prev, tenureDataType: type }));
+    setDashboardState(prev => ({ ...prev, tenureDataType: type }));
+  };
 
   /**
    * @param {object[]} data
    */
   const getTenureType = data => {
-    const type = housingTenureTypes[selectedTenureType];
-    return selectedTenureType === ALL_TENURE_TYPES
+    const type = housingTenureTypes[tenureType];
+    return tenureType === ALL_TENURE_TYPES
       ? data
       : data?.map(datum => ({
           Year: datum.Year,
@@ -90,7 +96,7 @@ export const WalthamHousingDelivery = ({
       <Grid item className={styles.header}>
         <Typography variant="h1">Housing Delivery</Typography>
         <Select
-          value={selectedTenureType}
+          value={tenureType}
           onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
           className={styles.select}
         >
@@ -120,7 +126,7 @@ export const WalthamHousingDelivery = ({
         >
           <ToggleButtonGroup
             size="small"
-            value={selectedDataType}
+            value={tenureDataType}
             orientation="horizontal"
             onChange={handleToggleClick}
             className={styles.buttons}
@@ -136,14 +142,12 @@ export const WalthamHousingDelivery = ({
           <TenureHousingMultiChart
             apiData={getTenureType(
               tenureHousingDeliveryChartData?.find(
-                d => d.name === selectedDataType,
+                d => d.name === tenureDataType,
               )?.data,
             )}
             userTargetData={userOrbState}
             tenureType={
-              selectedTenureType !== ALL_TENURE_TYPES
-                ? selectedTenureType
-                : undefined
+              tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }
           />
         </ChartWrapper>
