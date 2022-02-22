@@ -48,7 +48,6 @@ const AffordableHousingDelivery = ({ data }) => {
       <VictoryGroup>
         <VictoryLine {...props} style={yellowStyle} />
         <VictoryScatter
-          //        labelComponent={Foo()}
           labelComponent={FlyoutTooltip()}
           {...props}
           labels={totalsArray}

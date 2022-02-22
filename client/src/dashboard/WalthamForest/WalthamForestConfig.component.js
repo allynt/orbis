@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import {
   makeStyles,
@@ -65,9 +65,10 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   housingDelivery: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // gap: '1rem',
+    width: '90vw',
   },
 }));
 
@@ -79,10 +80,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [selectedDataset, setSelectedDataset] = useState(undefined);
   const [dashboardState, setDashboardState] = useState({});
 
+  const ref = useRef(dashboardState);
+
   const user = useSelector(userSelector);
   const userOrbState = useSelector(userOrbStateSelector(sourceId));
 
-  console.log('saved userOrbState: ', userOrbState);
+  // console.log('saved userOrbState: ', userOrbState);
   console.log('current dashboard state: ', dashboardState);
 
   const existingTargets = userOrbState[selectedDataset];
@@ -107,13 +110,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
       chartDataSelector(sourceId, 'AffordableHousingDelivery'),
     );
 
-  useEffect(() => {
-    walthamApiMetadata.forEach(({ datasetName, url }) =>
-      // @ts-ignore
-      dispatch(fetchDashboardData({ sourceId, datasetName, url })),
-    );
-  }, [sourceId, dispatch]);
-
   /**
    * @param {object} data
    */
@@ -121,20 +117,37 @@ const WalthamForestDashboard = ({ sourceId }) => {
     dispatch(updateUserDashboardConfig({ user, sourceId, data }));
 
   useEffect(() => {
-    // need to stop this firing if `dashboardState` is empty object
-    const saveHandler = () => updateWalthamOrbState(dashboardState);
-    window.addEventListener('beforeunload', saveHandler);
+    walthamApiMetadata.forEach(({ datasetName, url }) =>
+      // @ts-ignore
+      dispatch(fetchDashboardData({ sourceId, datasetName, url })),
+    );
+  }, [sourceId, dispatch]);
 
-    return () => {
-      console.log('hit cleanup');
-      // if component id unmounted through app use (navigating to map etc)
-      // remove listener and call save handler
-      window.removeEventListener('beforeunload', saveHandler);
+  // need to stop this firing if `dashboardState` is empty object
+  const saveHandler = () => {
+    console.log('inside saveHandler: ', dashboardState);
+    updateWalthamOrbState(dashboardState);
+  };
 
-      // calling `saveHandler` here causes infinite loop, because
-      // cleanup doesn't just fire on unmount
-    };
+  // update ref to be used in saving dashboard settings every
+  // time dashboardState is updated
+  useEffect(() => {
+    ref.current = dashboardState;
+  }, [dashboardState]);
+
+  // preserve current dashboard settings when user leaves dashboard
+  useEffect(() => {
+    window.addEventListener('beforeunload', () => {
+      updateWalthamOrbState(ref.current);
+    });
   });
+
+  useEffect(() => {
+    return () => {
+      updateWalthamOrbState(ref.current);
+      window.removeEventListener('beforeunload', saveHandler);
+    };
+  }, []);
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
@@ -165,20 +178,20 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       <div className={styles.content}>
         {/* progress indicator charts */}
-        <div className={styles.progressIndicators}>
+        {/* <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
             userOrbState={userOrbState}
           />
-        </div>
+        </div> */}
 
         <div className={styles.barCharts}>
-          <div className={styles.progression}>
+          {/* <div className={styles.progression}>
             <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
             <DeliverableSupplySummary data={deliverableSupplySummary} />
             <AffordableHousingDelivery data={affordableHousingDelivery} />
-          </div>
+          </div> */}
 
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
