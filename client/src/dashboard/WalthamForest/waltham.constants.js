@@ -14,6 +14,18 @@ export const progressionVsPlanningTypes = [
   'Units on Schedule',
 ];
 
+export const progressionVsPlanningOptions = {
+  'Ahead Of Schedule': 'Ahead of Schedule',
+  'Behind Schedule': 'Behind Schedule',
+  'On Track': 'On Track',
+};
+
+export const progressionVsPlanningPalette = {
+  'Ahead of Schedule': '#37e5d8',
+  'Behind Schedule': '#d6ea69',
+  'On Track': '#05c3ff',
+};
+
 export const TENURE_DATA_TYPES = {
   gross: 'Gross',
   net: 'Net',

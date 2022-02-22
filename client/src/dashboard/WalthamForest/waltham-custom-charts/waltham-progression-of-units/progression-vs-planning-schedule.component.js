@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+
+import { Grid, Select, MenuItem } from '@astrosat/astrosat-ui';
 
 import { VictoryBar, VictoryStack } from 'victory';
 
@@ -8,10 +10,21 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
-import { progressionVsPlanningTypes } from 'dashboard/WalthamForest/waltham.constants';
+import {
+  progressionVsPlanningTypes,
+  progressionVsPlanningOptions,
+  progressionVsPlanningPalette,
+} from 'dashboard/WalthamForest/waltham.constants';
 
 const ProgressionVsPlanningSchedule = ({ data }) => {
   const chartTheme = useChartTheme();
+
+  const ALL_TYPES = 'Show All';
+
+  // State. Current filter status, defualt to full chart
+
+  const [selectedType, setSelectedType] = useState(ALL_TYPES);
+
   // The theme has a hard-coded value for stacked charts, but we want the
   // colours to be a different set. Therefore, I'm taking the theme and
   // overriding, the stacked colorScale setting here and passing it as as
@@ -21,6 +34,10 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     stack: {
       colorScale: chartTheme.walthamChartColors.progressionVsPlanning,
     },
+    selector: {
+      width: '25ch',
+      marginLeft: '10ch',
+    },
   };
 
   const progressionVsPlanningChartData = useMemo(
@@ -28,39 +45,78 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     [data],
   );
 
+  /**
+   * @param {object[]} chartData : all chart data
+   * @returns {object[]} : data filtered according to current filter
+   */
+  const filterByType = chartData => {
+    const type = selectedType;
+    return selectedType === ALL_TYPES
+      ? chartData
+      : chartData?.map(datum => ({
+          Year: datum.Year,
+          [type]: datum[type],
+        }));
+  };
+
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
     color: chartTheme.walthamChartColors.progressionVsPlanning[i],
   }));
 
   const renderTenureHousingLegend = width => {
-    return <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />;
+    return (
+      <Grid container>
+        <Grid item>
+          <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+        </Grid>
+        <Grid item style={updatedTheme.selector}>
+          <Select
+            value={selectedType}
+            onChange={({ target: { value } }) => setSelectedType(value)}
+          >
+            <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
+            {Object.entries(progressionVsPlanningOptions).map(
+              ([key, value]) => (
+                <MenuItem key={key} value={value}>
+                  {value}
+                </MenuItem>
+              ),
+            )}
+          </Select>
+        </Grid>
+      </Grid>
+    );
   };
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
-    const ranges = ['Ahead of Schedule', 'Behind Schedule', 'On Track'];
+    let ranges =
+      selectedType === ALL_TYPES
+        ? Object.values(progressionVsPlanningOptions)
+        : [selectedType];
     const x = 'Year';
-
     const apiData = data?.properties[0]?.data;
     let totalsArray = labelsForArrayOfObjectsInclusive(
       apiData,
-      ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
-      item => `${item}`,
+      ranges,
+      item => `Total: ${item}`,
     );
+
     return !!progressionVsPlanningChartData ? (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
             labelComponent={FlyoutTooltip()}
             key={range}
-            data={progressionVsPlanningChartData}
+            data={filterByType(progressionVsPlanningChartData)}
             x={x}
             y={range}
             labels={totalsArray}
             style={{
               data: {
                 width: barWidth,
+                fill: progressionVsPlanningPalette[range],
               },
             }}
           />
@@ -68,6 +124,9 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
       </VictoryStack>
     ) : null;
   };
+
+  // customise Legend to be wider
+  const renderWideTenureHousingLegend = () => renderTenureHousingLegend(600);
 
   return (
     <ChartWrapper
@@ -78,7 +137,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
         yLabel="Number Of Units"
         xLabel="Financial Year"
         renderChart={renderStackedBarChart}
-        renderLegend={renderTenureHousingLegend}
+        renderLegend={renderWideTenureHousingLegend}
         theme={updatedTheme}
       />
     </ChartWrapper>
