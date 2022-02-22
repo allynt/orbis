@@ -121,11 +121,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   // 1. listener func must be reusable so that it can also be removed
   // 2. must check changes have been made to prevent firing every time
-  const saveHandler = () => {
-    return !!Object.keys(dashboardSettingsRef.current).length
+  const saveHandler = () =>
+    !!Object.keys(dashboardSettingsRef.current).length
       ? updateWalthamOrbState(dashboardSettingsRef.current)
       : null;
-  };
 
   // update dashboardSettingsRef to be used in saving dashboard settings every
   // time dashboardSettings is updated
