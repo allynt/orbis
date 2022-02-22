@@ -6,7 +6,9 @@ import { deliverableSupplySummaryTypes } from '../../waltham.constants';
 import DeliverableSupplySummary from './deliverable-supply-summary.component';
 import * as MOCK_DATA from './mock-data';
 
-describe('Deliverable Supply Summary', () => {
+// These tests are skipped deliberately as the component has been retired
+
+xdescribe('Deliverable Supply Summary', () => {
   it('should display chart on screen', () => {
     render(<DeliverableSupplySummary data={MOCK_DATA} />);
     expect(
