@@ -78,15 +78,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState(undefined);
-  const [dashboardState, setDashboardState] = useState({});
+  const [dashboardSettings, setDashboardSettings] = useState({});
 
-  const ref = useRef(dashboardState);
+  const dashboardSettingsRef = useRef(dashboardSettings);
 
   const user = useSelector(userSelector);
   const userOrbState = useSelector(userOrbStateSelector(sourceId));
-
-  // console.log('saved userOrbState: ', userOrbState);
-  console.log('current dashboard state: ', dashboardState);
 
   const existingTargets = userOrbState[selectedDataset];
 
@@ -123,29 +120,30 @@ const WalthamForestDashboard = ({ sourceId }) => {
     );
   }, [sourceId, dispatch]);
 
-  // need to stop this firing if `dashboardState` is empty object
+  // 1. listener func must be reusable so that it can also be removed
+  // 2. must check changes have been made to prevent firing every time
   const saveHandler = () => {
-    console.log('inside saveHandler: ', dashboardState);
-    updateWalthamOrbState(dashboardState);
+    return !!Object.keys(dashboardSettingsRef.current).length
+      ? updateWalthamOrbState(dashboardSettingsRef.current)
+      : null;
   };
 
-  // update ref to be used in saving dashboard settings every
-  // time dashboardState is updated
+  // update dashboardSettingsRef to be used in saving dashboard settings every
+  // time dashboardSettings is updated
   useEffect(() => {
-    ref.current = dashboardState;
-  }, [dashboardState]);
+    dashboardSettingsRef.current = dashboardSettings;
+  }, [dashboardSettings]);
 
-  // preserve current dashboard settings when user leaves dashboard
+  // add event listener in the event that the user closes/refreshes tab
   useEffect(() => {
-    window.addEventListener('beforeunload', () => {
-      updateWalthamOrbState(ref.current);
-    });
+    window.addEventListener('beforeunload', saveHandler);
   });
 
+  // if user navigates away in-app, remove listener and save settings
   useEffect(() => {
     return () => {
-      updateWalthamOrbState(ref.current);
       window.removeEventListener('beforeunload', saveHandler);
+      saveHandler();
     };
   }, []);
 
@@ -201,7 +199,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               }
               tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
               userOrbState={userOrbState}
-              setDashboardState={setDashboardState}
+              setDashboardSettings={setDashboardSettings}
             />
             {/* big multi-line chart */}
             <HousingApprovalsComponent
@@ -211,7 +209,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
               userOrbState={userOrbState}
-              setDashboardState={setDashboardState}
+              setDashboardSettings={setDashboardSettings}
             />
           </div>
         </div>

@@ -31,10 +31,11 @@ const HousingApprovalsComponent = ({
   ranges = ['y'],
   data,
   userOrbState,
-  setDashboardState,
+  setDashboardSettings,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
+
   const [configuration, setConfiguration] = useState(
     userOrbState.approvalsGrantedDataType ??
       HOUSING_APPROVAL_DATA_TYPES.monthly,
@@ -46,7 +47,7 @@ const HousingApprovalsComponent = ({
    */
   const handleToggleClick = (_, newValue) => {
     setConfiguration(newValue);
-    setDashboardState(prev => ({
+    setDashboardSettings(prev => ({
       ...prev,
       approvalsGrantedDataType: newValue,
     }));

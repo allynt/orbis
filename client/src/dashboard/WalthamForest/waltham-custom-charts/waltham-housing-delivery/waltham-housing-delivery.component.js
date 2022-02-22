@@ -51,9 +51,10 @@ export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
   userOrbState,
-  setDashboardState,
+  setDashboardSettings,
 }) => {
   const styles = useStyles({});
+
   const [configuration, setConfiguration] = useState({
     tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
     tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
@@ -66,7 +67,7 @@ export const WalthamHousingDelivery = ({
    */
   const handleTenureTypeSelect = value => {
     setConfiguration(prev => ({ ...prev, tenureType: value }));
-    setDashboardState(prev => ({ ...prev, tenureType: value }));
+    setDashboardSettings(prev => ({ ...prev, tenureType: value }));
   };
 
   /**
@@ -75,7 +76,7 @@ export const WalthamHousingDelivery = ({
    */
   const handleToggleClick = (_, type) => {
     setConfiguration(prev => ({ ...prev, tenureDataType: type }));
-    setDashboardState(prev => ({ ...prev, tenureDataType: type }));
+    setDashboardSettings(prev => ({ ...prev, tenureDataType: type }));
   };
 
   /**
