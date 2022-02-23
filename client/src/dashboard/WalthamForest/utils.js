@@ -154,7 +154,7 @@ const getDataTimeline = (apiData, targets = {}) => {
   const allYears = [...apiYears, ...targetYears];
 
   const min = Math.min(...allYears); // show oldest year from both datasets
-  const max = Math.max(...apiYears); // only show latest year from API data
+  const max = Math.max(...allYears); // show newest year from both datasets
 
   let timeline = [];
   for (let i = min; i <= max; i++) {

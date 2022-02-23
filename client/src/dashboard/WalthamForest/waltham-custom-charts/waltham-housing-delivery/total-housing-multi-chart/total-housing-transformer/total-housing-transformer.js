@@ -15,6 +15,8 @@ export const totalHousingTransformer = (apiData, targets = {}) => {
   if (!apiData) return;
 
   const noTargets = !Object.keys(targets).length;
+
+  // this can be passed instead of being called twice
   const timeline = getDataTimeline(apiData, targets);
 
   const transformedTargets = noTargets

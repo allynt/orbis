@@ -10,7 +10,8 @@
  */
 
 const labelsForArrayOfObjects = (data, excludeProperty, formatter) => {
-  if (!data) {
+  // TODO: fix this
+  if (!data || !data.length) {
     return [];
   }
   const fieldsToAddUp = Object.keys(data[0]).filter(
