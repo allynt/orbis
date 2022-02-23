@@ -120,12 +120,11 @@ export const WalthamHousingDelivery = ({
 
   const timeline = getDataTimeline(testData, targets);
 
-  const disabledYears = timeline?.length >= 5 ? timeline.slice(0, 4) : [];
-
   const getSelectedTimeline = () => {
     // what's causing the need for ?s
     const index = timeline?.indexOf(tenureYear);
-    return timeline?.slice(index - 4, index + 1);
+    const startIndex = index < 5 ? 0 : index - 4;
+    return timeline?.slice(startIndex, index + 1);
   };
 
   return (
@@ -160,11 +159,7 @@ export const WalthamHousingDelivery = ({
             className={styles.select}
           >
             {timeline?.map(year => (
-              <MenuItem
-                key={year}
-                value={year}
-                disabled={disabledYears.includes(year)}
-              >
+              <MenuItem key={year} value={year}>
                 {year}
               </MenuItem>
             ))}
