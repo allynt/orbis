@@ -19,7 +19,6 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 const AffordableHousingDelivery = ({ data }) => {
   const { walthamChartColors } = useChartTheme();
 
-  if (!data || !data?.properties) return null;
   const actualData = data?.properties[0]?.data;
 
   let totalsArray = labelsForArrayOfObjectsInclusive(
@@ -36,6 +35,7 @@ const AffordableHousingDelivery = ({ data }) => {
   ];
 
   const renderLineChart = width => {
+    if (!actualData) return null;
     const y_values = actualData.map(item => item['Affordable Housing']);
     const y_max = Math.max(...y_values);
     const props = {

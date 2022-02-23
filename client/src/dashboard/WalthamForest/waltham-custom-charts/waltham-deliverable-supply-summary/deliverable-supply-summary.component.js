@@ -12,10 +12,9 @@ import { deliverableSupplySummaryTypes } from 'dashboard/WalthamForest/waltham.c
 
 const DeliverableSupplySummary = ({ data }) => {
   const chartTheme = useChartTheme();
-  // The theme has a hard-coded value for stacked charts, but we want the
-  // colours to be a different set. Therefore, I'm taking the theme and
-  // overriding, the stacked colorScale setting here and passing it as as
-  // a prop to the BaseChart.
+  // This chart was implemented but was subsequently dropped when it was
+  // found to have been done too early. Currently not used but code kept
+  // here in case it is needed again
   const updatedTheme = {
     ...chartTheme,
     stack: {
