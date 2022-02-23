@@ -132,3 +132,5 @@ export const tooltipFlyoutStyle = {
 export const yellowStyle = {
   data: { stroke: '#f6be00' },
 };
+
+export const ALL_TYPES = 'Show All';

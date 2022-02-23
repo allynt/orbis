@@ -14,15 +14,13 @@ import {
   progressionVsPlanningTypes,
   progressionVsPlanningOptions,
   progressionVsPlanningPalette,
+  ALL_TYPES,
 } from 'dashboard/WalthamForest/waltham.constants';
 
 const ProgressionVsPlanningSchedule = ({ data }) => {
   const chartTheme = useChartTheme();
 
-  const ALL_TYPES = 'Show All';
-
-  // State. Current filter status, defualt to full chart
-
+  // State. Current filter status, default to full chart
   const [selectedType, setSelectedType] = useState(ALL_TYPES);
 
   // The theme has a hard-coded value for stacked charts, but we want the
@@ -34,9 +32,8 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     stack: {
       colorScale: chartTheme.walthamChartColors.progressionVsPlanning,
     },
-    selector: {
-      width: '25ch',
-      marginLeft: '10ch',
+    pulldownmenu: {
+      width: '10rem',
     },
   };
 
@@ -49,15 +46,13 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
    * @param {object[]} chartData : all chart data
    * @returns {object[]} : data filtered according to current filter
    */
-  const filterByType = chartData => {
-    const type = selectedType;
-    return selectedType === ALL_TYPES
+  const filterByType = chartData =>
+    selectedType === ALL_TYPES
       ? chartData
       : chartData?.map(datum => ({
           Year: datum.Year,
-          [type]: datum[type],
+          [selectedType]: datum[selectedType],
         }));
-  };
 
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
@@ -66,11 +61,17 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
 
   const renderTenureHousingLegend = width => {
     return (
-      <Grid container>
+      <Grid
+        container
+        style={{
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+        }}
+      >
         <Grid item>
           <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
         </Grid>
-        <Grid item style={updatedTheme.selector}>
+        <Grid item style={updatedTheme.pulldownmenu}>
           <Select
             value={selectedType}
             onChange={({ target: { value } }) => setSelectedType(value)}
@@ -97,10 +98,11 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
         : [selectedType];
     const x = 'Year';
     const apiData = data?.properties[0]?.data;
+
     let totalsArray = labelsForArrayOfObjectsInclusive(
       apiData,
       ranges,
-      item => `Total: ${item}`,
+      ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
     );
 
     return !!progressionVsPlanningChartData ? (
@@ -125,9 +127,6 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     ) : null;
   };
 
-  // customise Legend to be wider
-  const renderWideTenureHousingLegend = () => renderTenureHousingLegend(600);
-
   return (
     <ChartWrapper
       title="Progression of Units Relating to Planning Schedule"
@@ -137,7 +136,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
         yLabel="Number Of Units"
         xLabel="Financial Year"
         renderChart={renderStackedBarChart}
-        renderLegend={renderWideTenureHousingLegend}
+        renderLegend={renderTenureHousingLegend}
         theme={updatedTheme}
       />
     </ChartWrapper>
