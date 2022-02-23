@@ -178,7 +178,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
-            userOrbState={userOrbState}
+            userOrbState={targets}
           />
         </div>
 
@@ -206,7 +206,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
-              userOrbState={userOrbState}
+              userOrbState={targets}
               setDashboardSettings={setDashboardSettings}
             />
           </div>
