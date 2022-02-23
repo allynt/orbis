@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { ProgressIndicatorChartWrapper } from 'dashboard/charts/progress-indicator-chart-wrapper';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
@@ -9,7 +9,6 @@ import { LAST_5_YEARS, PROGRESS_CHART_DATA } from '../../waltham.constants';
 
 const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
   const chartTheme = useChartTheme();
-
   const totalDataArray = totalData?.properties?.[0]?.data;
 
   const tenureCurrentYear = tenureData?.properties?.[0]?.data?.find(
@@ -58,7 +57,7 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
     <>
       {!!targetData
         ? targetData.map((property, i) => (
-            <ChartWrapper
+            <ProgressIndicatorChartWrapper
               key={property.name}
               title={property.title}
               info={property.info}
@@ -67,7 +66,7 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
                 property={property}
                 color={chartTheme.colors[i]}
               />
-            </ChartWrapper>
+            </ProgressIndicatorChartWrapper>
           ))
         : null}
     </>
