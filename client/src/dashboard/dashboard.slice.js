@@ -24,6 +24,8 @@ const dashboardSlice = createSlice({
       const { sourceId, datasetName, data } = payload;
 
       state[sourceId] = {
+        // Investigate. Why does this not break? If state[wfc_source_id]
+        // does not yet exist, this should error (spreading undefined)
         ...state[sourceId],
         [datasetName]: data,
       };
@@ -60,18 +62,18 @@ export const fetchDashboardData = createAsyncThunk(
   },
 );
 
-export const updateTargets =
-  ({ sourceId, targets, user }) =>
+export const updateUserDashboardConfig =
+  ({ user, sourceId, data }) =>
   async dispatch => {
-    // adds targets to existing 'profiles' property on user
+    // adds dashboard data to existing 'profiles' property on user
     const profiles = {
       orbis_profile: {
         ...user.profiles.orbis_profile,
         orb_state: {
           ...user.profiles.orbis_profile.orb_state,
           [sourceId]: {
-            ...(user.profiles.orbis_profile.orb_state?.[sourceId] || {}),
-            ...targets,
+            ...(user.profiles.orbis_profile.orb_state[sourceId] ?? {}),
+            ...data,
           },
         },
       },
