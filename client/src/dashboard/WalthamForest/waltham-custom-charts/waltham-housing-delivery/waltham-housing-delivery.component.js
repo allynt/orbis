@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Grid,
@@ -30,14 +30,10 @@ const useStyles = makeStyles(theme => ({
   header: {
     padding: '1rem',
   },
-  selects: {
-    width: 'auto',
-    '& > *': {
-      maxWidth: '20rem',
-    },
-  },
   tenureTypeSelect: {
     marginRight: '1rem',
+    //todo: is this right?
+    maxWidth: '20rem',
   },
   charts: {
     display: 'flex',
@@ -54,6 +50,13 @@ const useStyles = makeStyles(theme => ({
 
 const ALL_TENURE_TYPES = 'All Tenure Types';
 
+const getSelectedTimeline = (timeline, tenureYear) => {
+  // what's causing the need for ?s
+  const index = timeline?.indexOf(tenureYear);
+  const startIndex = index < 5 ? 0 : index - 4;
+  return timeline?.slice(startIndex, index + 1);
+};
+
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
@@ -65,7 +68,7 @@ export const WalthamHousingDelivery = ({
   const [configuration, setConfiguration] = useState({
     tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
     tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
-    tenureYear: '2018-2019',
+    tenureYear: undefined,
   });
 
   const { tenureType, tenureDataType, tenureYear } = configuration;
@@ -113,19 +116,32 @@ export const WalthamHousingDelivery = ({
       ? getTargetTotals(userOrbState)
       : userOrbState?.[tenureType];
 
-  // TODO: maybe function no longer needed?
-  const testData = getTenureType(
+  // TODO: switch for util version
+  const dataByTenureType = getTenureType(
     tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)?.data,
   );
 
-  const timeline = getDataTimeline(testData, targets);
+  const timeline = getDataTimeline(dataByTenureType, targets);
 
-  const getSelectedTimeline = () => {
-    // what's causing the need for ?s
-    const index = timeline?.indexOf(tenureYear);
-    const startIndex = index < 5 ? 0 : index - 4;
-    return timeline?.slice(startIndex, index + 1);
-  };
+  useEffect(() => {
+    // abort if timeline has not been built or selected year is valid
+    if (!timeline || timeline.includes(tenureYear)) return;
+
+    // otherwise reset date range selector
+    const latestYear = timeline[timeline.length - 1];
+    setConfiguration(prev => ({
+      ...prev,
+      tenureYear: latestYear,
+    }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      tenureYear: latestYear,
+    }));
+  }, [setDashboardSettings, tenureYear, timeline]);
+
+  if (!timeline) return null;
+
+  // TODO: why does NaN flicker when out-of-range date is selected?
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -139,7 +155,7 @@ export const WalthamHousingDelivery = ({
         <Grid item component={Typography} variant="h1">
           Housing Delivery
         </Grid>
-        <Grid item container wrap="nowrap" className={styles.selects}>
+        <Grid item>
           <Select
             value={tenureType}
             onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
@@ -149,18 +165,6 @@ export const WalthamHousingDelivery = ({
             {Object.entries(housingTenureTypes).map(([key, value]) => (
               <MenuItem key={key} value={key}>
                 {value}
-              </MenuItem>
-            ))}
-          </Select>
-
-          <Select
-            value={tenureYear}
-            onChange={({ target: { value } }) => handleYearRangeSelect(value)}
-            className={styles.select}
-          >
-            {timeline?.map(year => (
-              <MenuItem key={year} value={year}>
-                {year}
               </MenuItem>
             ))}
           </Select>
@@ -182,6 +186,17 @@ export const WalthamHousingDelivery = ({
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
         >
+          <Select
+            value={tenureYear ?? ''}
+            onChange={({ target: { value } }) => handleYearRangeSelect(value)}
+          >
+            {timeline.map(year => (
+              <MenuItem key={year} value={year}>
+                {year}
+              </MenuItem>
+            ))}
+          </Select>
+
           <ToggleButtonGroup
             size="small"
             value={tenureDataType}
@@ -198,12 +213,12 @@ export const WalthamHousingDelivery = ({
           </ToggleButtonGroup>
 
           <TenureHousingMultiChart
-            apiData={testData}
+            apiData={dataByTenureType}
             userTargetData={targets}
             tenureType={
               tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }
-            filteredTimeline={getSelectedTimeline()}
+            filteredTimeline={getSelectedTimeline(timeline, tenureYear)}
           />
         </ChartWrapper>
       </Grid>
