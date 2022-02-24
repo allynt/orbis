@@ -83,24 +83,25 @@ export const LAST_5_YEARS = [
 export const PROGRESS_CHART_DATA = {
   totalHousing: {
     title:
-      '% of Houses Delivered So Far out of Previous 5 Financial Years Target.',
-    info: 'Some info',
+      'Total units delivered so far out of the housing delivery target for last 5 financial years',
+    info: 'The percentage of housing units delivered in the previous 5 years out of the sum of the housing delivery targets for the previous 5 financial years (inc. current year).',
     name: 'Housing Delivery',
   },
   intermediate: {
     title:
-      '% Intermediate Houses Delivered so Far Out of Current Financial Year.',
-    info: 'Some info',
+      'Intermediate units delivered so far out of current financial year target',
+    info: 'The percentage of intermediate housing units delivered in the current financial year so far out of the target for intermediate housing units for the same year.',
     name: 'Intermediate Delivery',
   },
   marketHousing: {
-    title: '% Market Houses Delivered so Far Out of Current Financial Year',
-    info: 'Some info',
+    title: 'Market units delivered so far out of current financial year target',
+    info: 'The percentage of market housing units delivered in the current financial year so far out of the target for intermediate housing units for the same year.',
     name: 'Market Housing',
   },
   socialRented: {
-    title: '% Social Rented Houses Delivered so Far Out of Yearly Target',
-    info: 'Some info',
+    title:
+      'Social rented units delivered so far out of current financial year target',
+    info: 'The percentage of social rented housing units delivered in the current financial year so far out of the target for intermediate housing units for the same year.',
     name: 'Socially Rented',
   },
 };
