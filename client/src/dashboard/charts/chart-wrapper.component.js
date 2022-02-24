@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
  * title: string
  * titleSize?: string
  * info?: string
- * className?: string
+ * classes?: object
  * }} props
  */
 const ChartWrapper = ({
@@ -40,13 +40,14 @@ const ChartWrapper = ({
   title,
   titleSize = 'medium',
   info,
-  className,
+  classes = {},
   ...rest
 }) => {
   const styles = useStyles({});
+  const { header } = classes;
   return (
-    <Paper className={clsx(styles.paper, className)} {...rest}>
-      <div className={styles.header}>
+    <Paper className={styles.paper} {...rest}>
+      <div className={clsx(styles.header, header)}>
         <Typography
           component="h3"
           variant={titleSize === 'small' ? 'h4' : 'h2'}

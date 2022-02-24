@@ -1,14 +1,23 @@
 import React, { useMemo } from 'react';
 
-import { ProgressIndicatorChartWrapper } from 'dashboard/charts/progress-indicator-chart-wrapper';
+import { makeStyles } from '@astrosat/astrosat-ui';
+
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
 import { getUser5YearTotals } from '../../utils';
 import { LAST_5_YEARS, PROGRESS_CHART_DATA } from '../../waltham.constants';
 
+const useStyles = makeStyles(theme => ({
+  header: {
+    minHeight: '6ch',
+  },
+}));
+
 const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
   const chartTheme = useChartTheme();
+  const styles = useStyles({});
   const totalDataArray = totalData?.properties?.[0]?.data;
 
   const tenureCurrentYear = tenureData?.properties?.[0]?.data?.find(
@@ -57,16 +66,17 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
     <>
       {!!targetData
         ? targetData.map((property, i) => (
-            <ProgressIndicatorChartWrapper
+            <ChartWrapper
               key={property.name}
               title={property.title}
               info={property.info}
+              classes={{ header: styles.header }}
             >
               <ProgressIndicatorChart
                 property={property}
                 color={chartTheme.colors[i]}
               />
-            </ProgressIndicatorChartWrapper>
+            </ChartWrapper>
           ))
         : null}
     </>
