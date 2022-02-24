@@ -139,8 +139,6 @@ export const WalthamHousingDelivery = ({
     }));
   }, [setDashboardSettings, tenureYear, timeline]);
 
-  if (!timeline) return null;
-
   // TODO: why does NaN flicker when out-of-range date is selected?
 
   return (
@@ -190,7 +188,7 @@ export const WalthamHousingDelivery = ({
             value={tenureYear ?? ''}
             onChange={({ target: { value } }) => handleYearRangeSelect(value)}
           >
-            {timeline.map(year => (
+            {timeline?.map(year => (
               <MenuItem key={year} value={year}>
                 {year}
               </MenuItem>
