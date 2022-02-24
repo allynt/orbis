@@ -39,7 +39,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
 
   let showChart = true;
   let percentage = 0;
-  if (!target || target === 0) {
+  if (!target || target === 0 || !progress || progress === 0) {
     showChart = false;
   } else {
     percentage = target === 0 ? 0 : Math.round((progress / target) * 100);
