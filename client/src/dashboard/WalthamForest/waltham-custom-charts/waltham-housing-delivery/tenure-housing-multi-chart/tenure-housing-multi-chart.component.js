@@ -118,6 +118,8 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
           <VictoryGroup>
             <VictoryScatter
               {...props}
+              labelComponent={FlyoutTooltip()}
+              labels={({ datum }) => `Total: ${datum._y}`}
               style={{
                 data: {
                   stroke: darken(color, 0.2),
