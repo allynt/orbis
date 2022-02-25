@@ -104,7 +104,7 @@ export const WalthamHousingDelivery = ({
       ? getTargetTotals(userOrbState)
       : userOrbState?.[tenureType];
 
-  // TODO: switch for util version
+  // TODO: refactor this
   const dataByTenureType = filterByType(
     tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)?.data,
     tenureType,

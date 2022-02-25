@@ -81,7 +81,7 @@ const ProgressionVsPlanningSchedule = ({
             <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
             {Object.entries(progressionVsPlanningOptions).map(
               ([key, value]) => (
-                <MenuItem key={key} value={value}>
+                <MenuItem key={key} value={key}>
                   {value}
                 </MenuItem>
               ),
@@ -94,10 +94,12 @@ const ProgressionVsPlanningSchedule = ({
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
-    let ranges =
+
+    const ranges =
       configuration === ALL_TYPES
         ? Object.values(progressionVsPlanningOptions)
-        : [configuration];
+        : [progressionVsPlanningOptions[configuration]];
+
     const x = 'Year';
     const apiData = data?.properties[0]?.data;
 

@@ -11,6 +11,8 @@ import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
+// TODO: fix types
+
 /**
  * @param {{
  *  data: {any} // chart data

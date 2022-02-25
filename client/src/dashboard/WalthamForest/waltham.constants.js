@@ -15,9 +15,9 @@ export const progressionVsPlanningTypes = [
 ];
 
 export const progressionVsPlanningOptions = {
-  'Ahead of Schedule': 'Ahead of Schedule',
-  'Behind Schedule': 'Behind Schedule',
-  'On Track': 'On Track',
+  aheadOfSchedule: 'Ahead of Schedule',
+  behindSchedule: 'Behind Schedule',
+  onTrack: 'On Track',
 };
 
 export const progressionVsPlanningPalette = {
