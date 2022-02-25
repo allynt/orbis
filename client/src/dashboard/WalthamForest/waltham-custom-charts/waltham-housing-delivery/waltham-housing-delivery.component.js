@@ -11,6 +11,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { filterByType } from 'dashboard/WalthamForest/utils';
 
 import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
@@ -79,19 +80,6 @@ export const WalthamHousingDelivery = ({
     setDashboardSettings(prev => ({ ...prev, tenureDataType: type }));
   };
 
-  /**
-   * @param {object[]} data
-   */
-  const getTenureType = data => {
-    const type = housingTenureTypes[tenureType];
-    return tenureType === ALL_TENURE_TYPES
-      ? data
-      : data?.map(datum => ({
-          Year: datum.Year,
-          [type]: datum[type],
-        }));
-  };
-
   return (
     <Grid container direction="column" className={styles.container}>
       <Grid item className={styles.header}>
@@ -141,10 +129,13 @@ export const WalthamHousingDelivery = ({
           </ToggleButtonGroup>
 
           <TenureHousingMultiChart
-            apiData={getTenureType(
+            apiData={filterByType(
               tenureHousingDeliveryChartData?.find(
                 d => d.name === tenureDataType,
               )?.data,
+              tenureType,
+              ALL_TENURE_TYPES,
+              housingTenureTypes,
             )}
             userTargetData={userOrbState}
             tenureType={

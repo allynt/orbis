@@ -14,6 +14,18 @@ export const progressionVsPlanningTypes = [
   'Units on Schedule',
 ];
 
+export const progressionVsPlanningOptions = {
+  'Ahead of Schedule': 'Ahead of Schedule',
+  'Behind Schedule': 'Behind Schedule',
+  'On Track': 'On Track',
+};
+
+export const progressionVsPlanningPalette = {
+  'Ahead of Schedule': '#37e5d8',
+  'Behind Schedule': '#d6ea69',
+  'On Track': '#05c3ff',
+};
+
 export const TENURE_DATA_TYPES = {
   gross: 'Gross',
   net: 'Net',
@@ -121,3 +133,5 @@ export const tooltipFlyoutStyle = {
 export const yellowStyle = {
   data: { stroke: '#f6be00' },
 };
+
+export const ALL_TYPES = 'Show All';
