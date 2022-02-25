@@ -164,6 +164,21 @@ const getDataTimeline = (apiData, targets = {}) => {
   return timeline;
 };
 
+/**
+ * @param {object[]} chartData : all chart data
+ * @param {string} selectedType : currently selected type
+ * @param {string} allTypes: text for 'all of the above' option
+ * @param {Object} mapping : object mapping selectedType values to names used in data
+ * @returns {object[]} : data filtered according to current filter
+ */
+const filterByType = (chartData, selectedType, allTypes, mapping) =>
+  selectedType === allTypes
+    ? chartData
+    : chartData?.map(datum => ({
+        Year: datum.Year,
+        [mapping[selectedType]]: datum[mapping[selectedType]],
+      }));
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -172,4 +187,5 @@ export {
   getPastYears,
   getUser5YearTotals,
   getDataTimeline,
+  filterByType,
 };

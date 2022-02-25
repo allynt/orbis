@@ -181,11 +181,15 @@ const WalthamForestDashboard = ({ sourceId }) => {
         </div> */}
 
         <div className={styles.barCharts}>
-          {/* <div className={styles.progression}>
-            <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+          <div className={styles.progression}>
+            <ProgressionVsPlanningSchedule
+              data={progressionVsPlanning}
+              userOrbState={targets}
+              setDashboardSettings={setDashboardSettings}
+            />
             <AffordableHousingDelivery data={affordableHousingDelivery} />
-          </div> */}
-
+          </div>{' '}
+          */}
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
             <WalthamHousingDelivery

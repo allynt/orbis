@@ -7,7 +7,9 @@ import ProgressionVsPlanningSchedule from './progression-vs-planning-schedule.co
 
 describe('Progression vs Planning Schedule', () => {
   it('should display chart on screen', () => {
-    render(<ProgressionVsPlanningSchedule data={MOCK_DATA} />);
+    render(
+      <ProgressionVsPlanningSchedule userOrbState={{}} data={MOCK_DATA} />,
+    );
 
     expect(
       screen.getByRole('heading', {

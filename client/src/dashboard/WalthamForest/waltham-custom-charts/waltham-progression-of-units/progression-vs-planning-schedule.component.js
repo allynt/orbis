@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+
+import { Grid, Select, MenuItem } from '@astrosat/astrosat-ui';
 
 import { VictoryBar, VictoryStack } from 'victory';
 
@@ -7,11 +9,26 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
+import { filterByType } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
-import { progressionVsPlanningTypes } from 'dashboard/WalthamForest/waltham.constants';
+import {
+  progressionVsPlanningTypes,
+  progressionVsPlanningOptions,
+  progressionVsPlanningPalette,
+  ALL_TYPES,
+} from 'dashboard/WalthamForest/waltham.constants';
 
-const ProgressionVsPlanningSchedule = ({ data }) => {
+const ProgressionVsPlanningSchedule = ({
+  data,
+  userOrbState,
+  setDashboardSettings,
+}) => {
   const chartTheme = useChartTheme();
+
+  const [configuration, setConfiguration] = useState(
+    userOrbState.affordableHousingType ?? ALL_TYPES,
+  );
+
   // The theme has a hard-coded value for stacked charts, but we want the
   // colours to be a different set. Therefore, I'm taking the theme and
   // overriding, the stacked colorScale setting here and passing it as as
@@ -20,6 +37,9 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     ...chartTheme,
     stack: {
       colorScale: chartTheme.walthamChartColors.progressionVsPlanning,
+    },
+    pulldownmenu: {
+      width: '10rem',
     },
   };
 
@@ -33,34 +53,79 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     color: chartTheme.walthamChartColors.progressionVsPlanning[i],
   }));
 
+  /**
+   * @param {string} value
+   */
+  const handleTypeSelect = value => {
+    setDashboardSettings(prev => ({ ...prev, affordableHousingType: value }));
+    setConfiguration(value);
+  };
+
   const renderTenureHousingLegend = width => {
-    return <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />;
+    return (
+      <Grid
+        container
+        style={{
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Grid item>
+          <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+        </Grid>
+        <Grid item style={updatedTheme.pulldownmenu}>
+          <Select
+            value={configuration}
+            onChange={({ target: { value } }) => handleTypeSelect(value)}
+          >
+            <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
+            {Object.entries(progressionVsPlanningOptions).map(
+              ([key, value]) => (
+                <MenuItem key={key} value={value}>
+                  {value}
+                </MenuItem>
+              ),
+            )}
+          </Select>
+        </Grid>
+      </Grid>
+    );
   };
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
-    const ranges = ['Ahead of Schedule', 'Behind Schedule', 'On Track'];
+    let ranges =
+      configuration === ALL_TYPES
+        ? Object.values(progressionVsPlanningOptions)
+        : [configuration];
     const x = 'Year';
-
     const apiData = data?.properties[0]?.data;
+
     let totalsArray = labelsForArrayOfObjectsInclusive(
       apiData,
-      ['Ahead of Schedule', 'Behind Schedule', 'On Track'],
-      item => `${item}`,
+      ranges,
+      ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
     );
+
     return !!progressionVsPlanningChartData ? (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
             labelComponent={FlyoutTooltip()}
             key={range}
-            data={progressionVsPlanningChartData}
+            data={filterByType(
+              progressionVsPlanningChartData,
+              configuration,
+              ALL_TYPES,
+              progressionVsPlanningOptions,
+            )}
             x={x}
             y={range}
             labels={totalsArray}
             style={{
               data: {
                 width: barWidth,
+                fill: progressionVsPlanningPalette[range],
               },
             }}
           />
