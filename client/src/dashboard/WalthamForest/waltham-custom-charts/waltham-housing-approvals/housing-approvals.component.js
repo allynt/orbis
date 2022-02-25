@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   ToggleButtonGroup,
@@ -25,27 +25,37 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const HousingApprovalsComponent = ({
-  data,
   x = 'x',
-  ranges = ['y'],
   xLabel = '',
   yLabel = '',
+  ranges = ['y'],
+  data,
+  userOrbState,
+  setDashboardSettings,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
-  const [selectedDataType, setSelectedDataType] = useState(
-    HOUSING_APPROVAL_DATA_TYPES.monthly,
+
+  const [configuration, setConfiguration] = useState(
+    userOrbState.approvalsGrantedDataType ??
+      HOUSING_APPROVAL_DATA_TYPES.monthly,
   );
 
+  /**
+   * @param {any} _
+   * @param {string} newValue
+   */
   const handleToggleClick = (_, newValue) => {
-    if (!newValue) return;
-    setSelectedDataType(newValue);
+    setConfiguration(newValue);
+    setDashboardSettings(prev => ({
+      ...prev,
+      approvalsGrantedDataType: newValue,
+    }));
   };
 
   const dataByType = useMemo(
-    () =>
-      lineDataTransformer(data?.find(p => p.name === selectedDataType)?.data),
-    [data, selectedDataType],
+    () => lineDataTransformer(data?.find(p => p.name === configuration)?.data),
+    [data, configuration],
   );
 
   const apiLegendData = [
@@ -86,9 +96,7 @@ const HousingApprovalsComponent = ({
                 {...props}
                 style={{ data: { stroke: color } }}
                 labelComponent={FlyoutTooltip()}
-                labels={({ datum }) => {
-                  return `Total: ${datum._y}`;
-                }}
+                labels={({ datum }) => `Total: ${datum._y}`}
               />
             </VictoryGroup>
           );
@@ -102,7 +110,7 @@ const HousingApprovalsComponent = ({
     >
       <ToggleButtonGroup
         size="small"
-        value={selectedDataType}
+        value={configuration}
         orientation="horizontal"
         onChange={handleToggleClick}
         className={styles.toggleButtonGroup}

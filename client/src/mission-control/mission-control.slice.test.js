@@ -70,7 +70,9 @@ describe('Mission Control Slice', () => {
 
         fetch.mockResponse(
           JSON.stringify({
-            message: 'Test error message',
+            errors: {
+              name: ['Test error message']
+            }
           }),
           {
             ok: false,
@@ -78,6 +80,7 @@ describe('Mission Control Slice', () => {
             statusText: 'Test Error',
           },
         );
+
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({

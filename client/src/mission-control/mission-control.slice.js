@@ -62,9 +62,10 @@ export const updateCustomer = createAsyncThunk(
       return dispatch(updateCustomerSuccess(updatedCustomer));
     } catch (responseError) {
       const { message, status } = responseError;
+      const errors = await responseError.getErrors();
       NotificationManager.error(
-        `${status} ${message}`,
-        `Updating Customer Config Error - ${message}`,
+        errors,
+        `Updating Customer Config Error`,
         50000,
         () => {},
       );

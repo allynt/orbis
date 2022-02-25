@@ -98,12 +98,12 @@ const TenureHousingMultiChart = ({ apiData, userTargetData, tenureType }) => {
             {ranges?.map(range => {
               return (
                 <VictoryBar
-                  labelComponent={FlyoutTooltip()}
                   key={range}
                   data={filteredApiData}
                   x="Year"
                   y={range}
                   labels={totalsArray}
+                  labelComponent={FlyoutTooltip()}
                   style={{
                     data: { width: barWidth },
                   }}

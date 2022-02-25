@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import {
   makeStyles,
@@ -17,7 +17,7 @@ import { userSelector } from 'accounts/accounts.selectors';
 import {
   chartDataSelector,
   fetchDashboardData,
-  updateTargets,
+  updateUserDashboardConfig,
   userOrbStateSelector,
 } from '../dashboard.slice';
 import {
@@ -75,14 +75,6 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
   const dispatch = useDispatch();
 
-  const [targetDialogVisible, setTargetDialogVisible] = useState(false);
-  const [selectedDataset, setSelectedDataset] = useState(undefined);
-
-  const user = useSelector(userSelector);
-  const userOrbState = useSelector(userOrbStateSelector(sourceId));
-
-  const existingTargets = userOrbState[selectedDataset];
-
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
       chartDataSelector(sourceId, 'ApprovalsGranted'),
@@ -100,12 +92,54 @@ const WalthamForestDashboard = ({ sourceId }) => {
       chartDataSelector(sourceId, 'AffordableHousingDelivery'),
     );
 
+  const user = useSelector(userSelector);
+  const userOrbState = useSelector(userOrbStateSelector(sourceId));
+
+  const [dashboardSettings, setDashboardSettings] = useState({});
+  const [selectedDataset, setSelectedDataset] = useState(undefined);
+  const [targets, setTargets] = useState(userOrbState);
+  const [targetDialogVisible, setTargetDialogVisible] = useState(false);
+
+  const dashboardSettingsRef = useRef(dashboardSettings);
+
+  /**
+   * @param {object} data
+   */
+  const updateWalthamOrbState = data =>
+    dispatch(updateUserDashboardConfig({ user, sourceId, data }));
+
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url }) =>
       // @ts-ignore
       dispatch(fetchDashboardData({ sourceId, datasetName, url })),
     );
   }, [sourceId, dispatch]);
+
+  // 1. listener func must be reusable so that it can also be removed
+  // 2. must check changes have been made to prevent firing every time
+  const saveSettingsHandler = () =>
+    !!Object.keys(dashboardSettingsRef.current).length
+      ? updateWalthamOrbState(dashboardSettingsRef.current)
+      : null;
+
+  // update dashboardSettingsRef to be used in saving dashboard settings every
+  // time dashboardSettings is updated
+  useEffect(() => {
+    dashboardSettingsRef.current = dashboardSettings;
+  }, [dashboardSettings]);
+
+  // add event listener in the event that the user closes/refreshes tab
+  useEffect(() => {
+    window.addEventListener('beforeunload', saveSettingsHandler);
+  });
+
+  // if user navigates away in-app, remove listener and save settings
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('beforeunload', saveSettingsHandler);
+      saveSettingsHandler();
+    };
+  }, []);
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
@@ -116,7 +150,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
    * @param {object} targets
    */
   const handleAddTargetsClick = targets => {
-    dispatch(updateTargets({ sourceId, targets, user }));
+    setTargets(prev => ({ ...prev, ...targets }));
+    setDashboardSettings(prev => ({ ...prev, ...targets }));
     closeDialog();
   };
 
@@ -140,7 +175,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
-            userOrbState={userOrbState}
+            userOrbState={targets}
           />
         </div>
 
@@ -157,7 +192,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
                 totalHousingDelivery?.properties[0].data
               }
               tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
-              userOrbState={userOrbState}
+              userOrbState={targets}
+              setDashboardSettings={setDashboardSettings}
             />
             {/* big multi-line chart */}
             <HousingApprovalsComponent
@@ -166,6 +202,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
               yLabel="No. Housing Approvals Granted"
               ranges={['2019', '2020']}
               data={approvalsGranted?.properties}
+              userOrbState={targets}
+              setDashboardSettings={setDashboardSettings}
             />
           </div>
         </div>
@@ -185,7 +223,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             <TargetScreen
               onAddTargetsClick={targets => handleAddTargetsClick(targets)}
               selectedDataset={selectedDataset}
-              targets={existingTargets}
+              targets={targets[selectedDataset]}
             />
           ) : (
             <SelectScreen

@@ -5,6 +5,8 @@ from django.db.models.functions import Cast
 
 from rest_framework import serializers
 
+from astrosat.serializers import ConsolidatedErrorsSerializerMixin
+
 from astrosat_users.models import Customer, CustomerUser
 from astrosat_users.serializers import (
     CustomerSerializer as AstrosatUsersCustomerSerializer,
@@ -15,7 +17,9 @@ from orbis.models import Licence, Orb, LicencedCustomer
 from orbis.serializers.serializers_orbs import LicenceSerializer
 
 
-class CustomerSerializer(AstrosatUsersCustomerSerializer):
+class CustomerSerializer(
+    ConsolidatedErrorsSerializerMixin, AstrosatUsersCustomerSerializer
+):
     class Meta:
         model = Customer
         fields = (

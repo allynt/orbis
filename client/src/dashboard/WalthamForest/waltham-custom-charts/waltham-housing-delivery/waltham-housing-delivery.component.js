@@ -52,16 +52,32 @@ export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
   userOrbState,
+  setDashboardSettings,
 }) => {
   const styles = useStyles({});
-  const [tenureType, setTenureType] = useState(ALL_TENURE_TYPES);
-  const [selectedDataType, setSelectedDataType] = useState(
-    TENURE_DATA_TYPES.net,
-  );
 
+  const [configuration, setConfiguration] = useState({
+    tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
+    tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
+  });
+
+  const { tenureType, tenureDataType } = configuration;
+
+  /**
+   * @param {string} value
+   */
+  const handleTenureTypeSelect = value => {
+    setConfiguration(prev => ({ ...prev, tenureType: value }));
+    setDashboardSettings(prev => ({ ...prev, tenureType: value }));
+  };
+
+  /**
+   * @param {any} _
+   * @param {string} type
+   */
   const handleToggleClick = (_, type) => {
-    if (!type) return;
-    setSelectedDataType(type);
+    setConfiguration(prev => ({ ...prev, tenureDataType: type }));
+    setDashboardSettings(prev => ({ ...prev, tenureDataType: type }));
   };
 
   return (
@@ -70,7 +86,7 @@ export const WalthamHousingDelivery = ({
         <Typography variant="h1">Housing Delivery</Typography>
         <Select
           value={tenureType}
-          onChange={({ target: { value } }) => setTenureType(value)}
+          onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
           className={styles.select}
         >
           <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
@@ -99,7 +115,7 @@ export const WalthamHousingDelivery = ({
         >
           <ToggleButtonGroup
             size="small"
-            value={selectedDataType}
+            value={tenureDataType}
             orientation="horizontal"
             onChange={handleToggleClick}
             className={styles.buttons}
@@ -115,7 +131,7 @@ export const WalthamHousingDelivery = ({
           <TenureHousingMultiChart
             apiData={filterByType(
               tenureHousingDeliveryChartData?.find(
-                d => d.name === selectedDataType,
+                d => d.name === tenureDataType,
               )?.data,
               tenureType,
               ALL_TENURE_TYPES,
