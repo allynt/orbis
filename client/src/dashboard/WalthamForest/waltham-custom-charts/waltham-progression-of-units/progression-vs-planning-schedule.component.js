@@ -9,6 +9,7 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
+import { filterByType } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   progressionVsPlanningTypes,
@@ -46,13 +47,13 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
    * @param {object[]} chartData : all chart data
    * @returns {object[]} : data filtered according to current filter
    */
-  const filterByType = chartData =>
-    selectedType === ALL_TYPES
-      ? chartData
-      : chartData?.map(datum => ({
-          Year: datum.Year,
-          [selectedType]: datum[selectedType],
-        }));
+  // const filterByType = chartData =>
+  //   selectedType === ALL_TYPES
+  //     ? chartData
+  //     : chartData?.map(datum => ({
+  //         Year: datum.Year,
+  //         [selectedType]: datum[selectedType],
+  //       }));
 
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
@@ -111,7 +112,12 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
           <VictoryBar
             labelComponent={FlyoutTooltip()}
             key={range}
-            data={filterByType(progressionVsPlanningChartData)}
+            data={filterByType(
+              progressionVsPlanningChartData,
+              selectedType,
+              ALL_TYPES,
+              progressionVsPlanningOptions,
+            )}
             x={x}
             y={range}
             labels={totalsArray}
