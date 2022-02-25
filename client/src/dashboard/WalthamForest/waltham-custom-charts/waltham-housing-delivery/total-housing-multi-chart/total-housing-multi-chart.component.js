@@ -93,7 +93,8 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
           <VictoryGroup>
             <VictoryScatter
               {...props}
-              labelComponent={<VictoryTooltip constrainToVisibleArea />}
+              labelComponent={FlyoutTooltip()}
+              labels={({ datum }) => `Total: ${datum._y}`}
               style={{
                 data: {
                   stroke: darken(color, 0.2),
