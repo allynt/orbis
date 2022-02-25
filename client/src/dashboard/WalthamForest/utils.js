@@ -171,20 +171,13 @@ const getDataTimeline = (apiData, targets = {}) => {
  * @param {Object} mapping : object mapping selectedType values to names used in data
  * @returns {object[]} : data filtered according to current filter
  */
-const filterByType = (chartData, selectedType, allTypes, mapping) => {
-  console.log('chartData:', chartData);
-  console.log('SelectedType', selectedType);
-  console.log('allTypes', allTypes);
-  console.log('mapping', mapping);
-  const matchingData =
-    selectedType === allTypes
-      ? chartData
-      : chartData?.map(datum => ({
-          Year: datum.Year,
-          [mapping[selectedType]]: datum[mapping[selectedType]],
-        }));
-  return matchingData;
-};
+const filterByType = (chartData, selectedType, allTypes, mapping) =>
+  selectedType === allTypes
+    ? chartData
+    : chartData?.map(datum => ({
+        Year: datum.Year,
+        [mapping[selectedType]]: datum[mapping[selectedType]],
+      }));
 
 export {
   lineDataTransformer,
