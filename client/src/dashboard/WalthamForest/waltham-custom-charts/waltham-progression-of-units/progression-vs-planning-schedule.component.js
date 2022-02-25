@@ -18,11 +18,16 @@ import {
   ALL_TYPES,
 } from 'dashboard/WalthamForest/waltham.constants';
 
-const ProgressionVsPlanningSchedule = ({ data }) => {
+const ProgressionVsPlanningSchedule = ({
+  data,
+  userOrbState,
+  setDashboardSettings,
+}) => {
   const chartTheme = useChartTheme();
 
-  // State. Current filter status, default to full chart
-  const [selectedType, setSelectedType] = useState(ALL_TYPES);
+  const [configuration, setConfiguration] = useState(
+    userOrbState.affordableHousingType ?? ALL_TYPES,
+  );
 
   // The theme has a hard-coded value for stacked charts, but we want the
   // colours to be a different set. Therefore, I'm taking the theme and
@@ -48,6 +53,14 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     color: chartTheme.walthamChartColors.progressionVsPlanning[i],
   }));
 
+  /**
+   * @param {string} value
+   */
+  const handleTypeSelect = value => {
+    setDashboardSettings(prev => ({ ...prev, affordableHousingType: value }));
+    setConfiguration(value);
+  };
+
   const renderTenureHousingLegend = width => {
     return (
       <Grid
@@ -62,8 +75,8 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
         </Grid>
         <Grid item style={updatedTheme.pulldownmenu}>
           <Select
-            value={selectedType}
-            onChange={({ target: { value } }) => setSelectedType(value)}
+            value={configuration}
+            onChange={({ target: { value } }) => handleTypeSelect(value)}
           >
             <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
             {Object.entries(progressionVsPlanningOptions).map(
@@ -82,9 +95,9 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
   const renderStackedBarChart = width => {
     const barWidth = width / 20;
     let ranges =
-      selectedType === ALL_TYPES
+      configuration === ALL_TYPES
         ? Object.values(progressionVsPlanningOptions)
-        : [selectedType];
+        : [configuration];
     const x = 'Year';
     const apiData = data?.properties[0]?.data;
 
@@ -102,7 +115,7 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
             key={range}
             data={filterByType(
               progressionVsPlanningChartData,
-              selectedType,
+              configuration,
               ALL_TYPES,
               progressionVsPlanningOptions,
             )}

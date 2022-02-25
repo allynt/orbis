@@ -181,7 +181,11 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
         <div className={styles.barCharts}>
           <div className={styles.progression}>
-            <ProgressionVsPlanningSchedule data={progressionVsPlanning} />
+            <ProgressionVsPlanningSchedule
+              data={progressionVsPlanning}
+              userOrbState={targets}
+              setDashboardSettings={setDashboardSettings}
+            />
             <AffordableHousingDelivery data={affordableHousingDelivery} />
           </div>
 
