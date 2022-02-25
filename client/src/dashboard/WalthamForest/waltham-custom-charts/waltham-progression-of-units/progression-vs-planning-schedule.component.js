@@ -43,18 +43,6 @@ const ProgressionVsPlanningSchedule = ({ data }) => {
     [data],
   );
 
-  /**
-   * @param {object[]} chartData : all chart data
-   * @returns {object[]} : data filtered according to current filter
-   */
-  // const filterByType = chartData =>
-  //   selectedType === ALL_TYPES
-  //     ? chartData
-  //     : chartData?.map(datum => ({
-  //         Year: datum.Year,
-  //         [selectedType]: datum[selectedType],
-  //       }));
-
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
     color: chartTheme.walthamChartColors.progressionVsPlanning[i],
