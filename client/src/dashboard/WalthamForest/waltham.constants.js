@@ -83,7 +83,7 @@ export const LAST_5_YEARS = [
 export const PROGRESS_CHART_DATA = {
   totalHousing: {
     title:
-      'Total units delivered so far out of the housing delivery target for last 5 financial years',
+      'Total units delivered of housing delivery target for last 5 financial years',
     info: 'The percentage of housing units delivered in the previous 5 years out of the sum of the housing delivery targets for the previous 5 financial years (inc. current year).',
     name: 'Housing Delivery',
   },
