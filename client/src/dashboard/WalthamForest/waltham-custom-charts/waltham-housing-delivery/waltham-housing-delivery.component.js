@@ -36,6 +36,14 @@ const useStyles = makeStyles(theme => ({
     //todo: is this right?
     maxWidth: '20rem',
   },
+  tenureYearSelect: {
+    border: `1.5px solid ${theme.palette.primary.main}`,
+    borderRadius: theme.shape.borderRadius,
+    padding: '0.5rem',
+    '&:focus': {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
   charts: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -51,7 +59,34 @@ const useStyles = makeStyles(theme => ({
 
 const ALL_TENURE_TYPES = 'All Tenure Types';
 
-const getSelectedTimeline = (timeline, tenureYear) => {
+// TODO: why does NaN flicker when out-of-range date is selected?
+
+/**
+ * @param {{
+ *  timeline: string[]
+ *  tenureYear: string
+ *  handleYearRangeSelect: (value: string) => void
+ * }} props
+ */
+const TenureYearFilter = ({ timeline, tenureYear, handleYearRangeSelect }) => {
+  const { tenureYearSelect } = useStyles();
+  return (
+    <Select
+      value={tenureYear ?? ''}
+      onChange={({ target: { value } }) => handleYearRangeSelect(value)}
+      classes={{ root: tenureYearSelect }}
+      disableUnderline
+    >
+      {timeline?.map(year => (
+        <MenuItem key={year} value={year}>
+          {year}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};
+
+const getFilteredTimeline = (timeline, tenureYear) => {
   // what's causing the need for ?s
   const index = timeline?.indexOf(tenureYear);
   const startIndex = index < 5 ? 0 : index - 4;
@@ -130,8 +165,6 @@ export const WalthamHousingDelivery = ({
     }));
   }, [setDashboardSettings, tenureYear, timeline]);
 
-  // TODO: why does NaN flicker when out-of-range date is selected?
-
   return (
     <Grid container direction="column" className={styles.container}>
       <Grid
@@ -174,18 +207,14 @@ export const WalthamHousingDelivery = ({
         <ChartWrapper
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
+          headerComponent={
+            <TenureYearFilter
+              timeline={timeline}
+              tenureYear={tenureYear}
+              handleYearRangeSelect={handleYearRangeSelect}
+            />
+          }
         >
-          <Select
-            value={tenureYear ?? ''}
-            onChange={({ target: { value } }) => handleYearRangeSelect(value)}
-          >
-            {timeline?.map(year => (
-              <MenuItem key={year} value={year}>
-                {year}
-              </MenuItem>
-            ))}
-          </Select>
-
           <ToggleButtonGroup
             size="small"
             value={tenureDataType}
@@ -207,7 +236,7 @@ export const WalthamHousingDelivery = ({
             tenureType={
               tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }
-            filteredTimeline={getSelectedTimeline(timeline, tenureYear)}
+            filteredTimeline={getFilteredTimeline(timeline, tenureYear)}
           />
         </ChartWrapper>
       </Grid>

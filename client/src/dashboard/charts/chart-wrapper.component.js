@@ -21,7 +21,8 @@ const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'baseline',
+    // TODO: works for no headerComponents?
+    alignItems: 'center',
     marginBottom: theme.spacing(2),
   },
 }));
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
  * title: string
  * titleSize?: string
  * info?: string
+ * headerComponent?: any
  * classes?: object
  * }} props
  */
@@ -40,6 +42,7 @@ const ChartWrapper = ({
   title,
   titleSize = 'medium',
   info,
+  headerComponent,
   classes = {},
   ...rest
 }) => {
@@ -55,6 +58,7 @@ const ChartWrapper = ({
         >
           {title}
         </Typography>
+        {!!headerComponent ? headerComponent : null}
         {!!info ? (
           <InfoButtonTooltip
             tooltipContent={info}

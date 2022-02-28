@@ -64,8 +64,6 @@ const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
       scatterWidth = width / 2,
       props = {
         data: filteredTargetData,
-        x: 'x',
-        y: 'y',
       };
     return (
       <VictoryGroup>
