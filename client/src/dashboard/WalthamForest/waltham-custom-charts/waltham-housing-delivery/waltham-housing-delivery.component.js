@@ -125,7 +125,7 @@ const TenureDataFilter = ({
 };
 
 const getFilteredTimeline = (timeline, tenureYear) => {
-  // what's causing the need for ?s
+  // TODO: what's causing the need for ?s
   const index = timeline?.indexOf(tenureYear);
   const startIndex = index < 5 ? 0 : index - 4;
   return timeline?.slice(startIndex, index + 1);
@@ -212,14 +212,11 @@ export const WalthamHousingDelivery = ({
   const timeline = getDataTimeline(dataByTenureType, processedTargets);
 
   useEffect(() => {
-    console.log('hit 1');
     // abort if timeline has not been built or selected year is valid
     if (!timeline || timeline.includes(tenureYear)) return;
 
-    console.log('hit 2');
-
     // otherwise reset date range selector
-    const defaultYear = settings?.tenureYear ?? timeline[timeline.length - 1];
+    const defaultYear = timeline[timeline.length - 1];
 
     setConfiguration(prev => ({
       ...prev,
