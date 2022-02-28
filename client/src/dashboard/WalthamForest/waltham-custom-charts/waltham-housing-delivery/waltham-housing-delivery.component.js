@@ -31,17 +31,18 @@ const useStyles = makeStyles(theme => ({
   header: {
     padding: '1rem',
   },
-  tenureTypeSelect: {
-    marginRight: '1rem',
-    //todo: is this right?
-    maxWidth: '20rem',
+  selectFilters: {
+    width: 'fit-content',
   },
-  tenureYearSelect: {
+  select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
-    padding: '0.5rem',
+    width: '15rem',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-child': {
+      marginRight: '1rem',
     },
   },
   charts: {
@@ -65,24 +66,61 @@ const ALL_TENURE_TYPES = 'All Tenure Types';
  * @param {{
  *  timeline: string[]
  *  tenureYear: string
+ *  tenureType: string
+ *  housingTenureTypes: object
  *  handleYearRangeSelect: (value: string) => void
+ *  handleTenureTypeSelect: (value: string) => void
  * }} props
  */
-const TenureYearFilter = ({ timeline, tenureYear, handleYearRangeSelect }) => {
-  const { tenureYearSelect } = useStyles();
+const TenureDataFilter = ({
+  timeline,
+  tenureYear,
+  tenureType,
+  housingTenureTypes,
+  handleYearRangeSelect,
+  handleTenureTypeSelect,
+}) => {
+  const styles = useStyles();
   return (
-    <Select
-      value={tenureYear ?? ''}
-      onChange={({ target: { value } }) => handleYearRangeSelect(value)}
-      classes={{ root: tenureYearSelect }}
-      disableUnderline
+    <Grid
+      container
+      justifyContent="space-between"
+      alignItems="center"
+      wrap="nowrap"
+      className={styles.selectFilters}
     >
-      {timeline?.map(year => (
-        <MenuItem key={year} value={year}>
-          {year}
-        </MenuItem>
-      ))}
-    </Select>
+      <Grid
+        item
+        component={Select}
+        value={tenureYear ?? ''}
+        onChange={({ target: { value } }) => handleYearRangeSelect(value)}
+        classes={{ root: styles.select }}
+        className={styles.select}
+        disableUnderline
+      >
+        {timeline?.map(year => (
+          <MenuItem key={year} value={year}>
+            {year}
+          </MenuItem>
+        ))}
+      </Grid>
+
+      <Grid
+        item
+        component={Select}
+        value={tenureType}
+        onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
+        classes={{ root: styles.select }}
+        disableUnderline
+      >
+        <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
+        {Object.entries(housingTenureTypes).map(([key, value]) => (
+          <MenuItem key={key} value={key}>
+            {value}
+          </MenuItem>
+        ))}
+      </Grid>
+    </Grid>
   );
 };
 
@@ -93,10 +131,20 @@ const getFilteredTimeline = (timeline, tenureYear) => {
   return timeline?.slice(startIndex, index + 1);
 };
 
+// TODO: types correct?
+
+/**
+ * @param {{
+ *  totalHousingDeliveryChartData: object[]
+ *  tenureHousingDeliveryChartData: object[]
+ *  userOrbState: object
+ *  setDashboardSettings: function
+ * }} params
+ */
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
-  userOrbState,
+  userOrbState = {},
   setDashboardSettings,
 }) => {
   const styles = useStyles({});
@@ -104,7 +152,7 @@ export const WalthamHousingDelivery = ({
   const [configuration, setConfiguration] = useState({
     tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
     tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
-    tenureYear: undefined,
+    tenureYear: userOrbState.tenureYear ?? undefined,
   });
 
   const { tenureType, tenureDataType, tenureYear } = configuration;
@@ -149,21 +197,31 @@ export const WalthamHousingDelivery = ({
 
   const timeline = getDataTimeline(dataByTenureType, targets);
 
+  console.log(
+    'tenureHousingDeliveryChartData: ',
+    tenureHousingDeliveryChartData,
+  );
+  console.log('userOrbState: ', userOrbState);
+  console.log('timeline: ', timeline);
+
   useEffect(() => {
     // abort if timeline has not been built or selected year is valid
     if (!timeline || timeline.includes(tenureYear)) return;
 
     // otherwise reset date range selector
-    const latestYear = timeline[timeline.length - 1];
+    const defaultYear =
+      userOrbState.tenureYear ?? timeline[timeline.length - 1];
+
     setConfiguration(prev => ({
       ...prev,
-      tenureYear: latestYear,
+      tenureYear: defaultYear,
     }));
+
     setDashboardSettings(prev => ({
       ...prev,
-      tenureYear: latestYear,
+      tenureYear: defaultYear,
     }));
-  }, [setDashboardSettings, tenureYear, timeline]);
+  }, [tenureYear, timeline, userOrbState]);
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -176,20 +234,6 @@ export const WalthamHousingDelivery = ({
       >
         <Grid item component={Typography} variant="h1">
           Housing Delivery
-        </Grid>
-        <Grid item>
-          <Select
-            value={tenureType}
-            onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
-            className={styles.tenureTypeSelect}
-          >
-            <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
-            {Object.entries(housingTenureTypes).map(([key, value]) => (
-              <MenuItem key={key} value={key}>
-                {value}
-              </MenuItem>
-            ))}
-          </Select>
         </Grid>
       </Grid>
 
@@ -208,10 +252,13 @@ export const WalthamHousingDelivery = ({
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
           headerComponent={
-            <TenureYearFilter
+            <TenureDataFilter
               timeline={timeline}
               tenureYear={tenureYear}
+              tenureType={tenureType}
+              housingTenureTypes={housingTenureTypes}
               handleYearRangeSelect={handleYearRangeSelect}
+              handleTenureTypeSelect={handleTenureTypeSelect}
             />
           }
         >

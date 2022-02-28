@@ -151,6 +151,8 @@ const getDataTimeline = (apiData, targets = {}) => {
         return +year;
       });
 
+  console.log('targetYears: ', targetYears);
+
   const allYears = [...apiYears, ...targetYears];
 
   const min = Math.min(...allYears); // show oldest year from both datasets
