@@ -15,7 +15,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
+/**
+ * @param {{
+ *   totalData: object
+ *   tenureData: object
+ *   targets: object
+ * }} props
+ */
+const ProgressIndicators = ({ totalData, tenureData, targets }) => {
   const chartTheme = useChartTheme();
   const styles = useStyles({});
   const totalDataArray = totalData?.properties?.[0]?.data;
@@ -40,26 +47,26 @@ const ProgressIndicators = ({ totalData, tenureData, userOrbState }) => {
     () => [
       {
         ...PROGRESS_CHART_DATA.totalHousing,
-        target: getUser5YearTotals(userOrbState?.totalHousing),
+        target: getUser5YearTotals(targets?.totalHousing),
         progress: past5YearsTotal,
       },
       {
         ...PROGRESS_CHART_DATA.intermediate,
-        target: userOrbState?.intermediateDelivery?.['2020-2021'],
+        target: targets?.intermediateDelivery?.['2020-2021'],
         progress: tenureCurrentYear?.['Intermediate'],
       },
       {
         ...PROGRESS_CHART_DATA.marketHousing,
-        target: userOrbState?.marketHousing?.['2020-2021'],
+        target: targets?.marketHousing?.['2020-2021'],
         progress: tenureCurrentYear?.['Market'],
       },
       {
         ...PROGRESS_CHART_DATA.socialRented,
-        target: userOrbState?.sociallyRented?.['2020-2021'],
+        target: targets?.sociallyRented?.['2020-2021'],
         progress: tenureCurrentYear?.['Social Rented'],
       },
     ],
-    [past5YearsTotal, tenureCurrentYear, userOrbState],
+    [past5YearsTotal, tenureCurrentYear, targets],
   );
 
   return (

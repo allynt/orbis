@@ -65,6 +65,11 @@ export const fetchDashboardData = createAsyncThunk(
 export const updateUserDashboardConfig =
   ({ user, sourceId, data }) =>
   async dispatch => {
+    const { targets, settings } = data;
+
+    const { targets: currentTargets, settings: currentSettings } =
+      user.profiles.orbis_profile.orb_state[sourceId] ?? {};
+
     // adds dashboard data to existing 'profiles' property on user
     const profiles = {
       orbis_profile: {
@@ -73,7 +78,8 @@ export const updateUserDashboardConfig =
           ...user.profiles.orbis_profile.orb_state,
           [sourceId]: {
             ...(user.profiles.orbis_profile.orb_state[sourceId] ?? {}),
-            ...data,
+            targets: { ...(currentTargets ?? {}), ...targets },
+            settings: { ...(currentSettings ?? {}), ...settings },
           },
         },
       },

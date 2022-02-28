@@ -30,15 +30,14 @@ const HousingApprovalsComponent = ({
   yLabel = '',
   ranges = ['y'],
   data,
-  userOrbState,
+  settings,
   setDashboardSettings,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
 
   const [configuration, setConfiguration] = useState(
-    userOrbState.approvalsGrantedDataType ??
-      HOUSING_APPROVAL_DATA_TYPES.monthly,
+    settings?.approvalsGrantedDataType ?? HOUSING_APPROVAL_DATA_TYPES.monthly,
   );
 
   /**
@@ -49,7 +48,10 @@ const HousingApprovalsComponent = ({
     setConfiguration(newValue);
     setDashboardSettings(prev => ({
       ...prev,
-      approvalsGrantedDataType: newValue,
+      settings: {
+        ...prev.settings,
+        approvalsGrantedDataType: newValue,
+      },
     }));
   };
 

@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
-    width: '15rem',
+    maxWidth: '15rem',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
     },
@@ -137,22 +137,24 @@ const getFilteredTimeline = (timeline, tenureYear) => {
  * @param {{
  *  totalHousingDeliveryChartData: object[]
  *  tenureHousingDeliveryChartData: object[]
- *  userOrbState: object
+ *  targets: object,
+ *  settings: object
  *  setDashboardSettings: function
  * }} params
  */
 export const WalthamHousingDelivery = ({
   totalHousingDeliveryChartData,
   tenureHousingDeliveryChartData,
-  userOrbState = {},
+  targets,
+  settings,
   setDashboardSettings,
 }) => {
   const styles = useStyles({});
 
   const [configuration, setConfiguration] = useState({
-    tenureType: userOrbState.tenureType ?? ALL_TENURE_TYPES,
-    tenureDataType: userOrbState.tenureDataType ?? TENURE_DATA_TYPES.net,
-    tenureYear: userOrbState.tenureYear ?? undefined,
+    tenureType: settings?.tenureType ?? ALL_TENURE_TYPES,
+    tenureDataType: settings?.tenureDataType ?? TENURE_DATA_TYPES.net,
+    tenureYear: settings?.tenureYear ?? undefined,
   });
 
   const { tenureType, tenureDataType, tenureYear } = configuration;
@@ -162,15 +164,24 @@ export const WalthamHousingDelivery = ({
    */
   const handleTenureTypeSelect = value => {
     setConfiguration(prev => ({ ...prev, tenureType: value }));
-    setDashboardSettings(prev => ({ ...prev, tenureType: value }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, tenureType: value },
+    }));
   };
 
   /**
    * @param {string} value
    */
   const handleYearRangeSelect = value => {
-    setConfiguration(prev => ({ ...prev, tenureYear: value }));
-    setDashboardSettings(prev => ({ ...prev, tenureYear: value }));
+    setConfiguration(prev => ({
+      ...prev,
+      tenureYear: value,
+    }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, tenureYear: value },
+    }));
   };
 
   /**
@@ -179,13 +190,16 @@ export const WalthamHousingDelivery = ({
    */
   const handleToggleClick = (_, type) => {
     setConfiguration(prev => ({ ...prev, tenureDataType: type }));
-    setDashboardSettings(prev => ({ ...prev, tenureDataType: type }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, tenureDataType: type },
+    }));
   };
 
-  const targets =
+  const processedTargets =
     tenureType === ALL_TENURE_TYPES
-      ? getTargetTotals(userOrbState)
-      : userOrbState?.[tenureType];
+      ? getTargetTotals(targets)
+      : targets?.[tenureType];
 
   // TODO: refactor this
   const dataByTenureType = filterByType(
@@ -195,22 +209,17 @@ export const WalthamHousingDelivery = ({
     housingTenureTypes,
   );
 
-  const timeline = getDataTimeline(dataByTenureType, targets);
-
-  console.log(
-    'tenureHousingDeliveryChartData: ',
-    tenureHousingDeliveryChartData,
-  );
-  console.log('userOrbState: ', userOrbState);
-  console.log('timeline: ', timeline);
+  const timeline = getDataTimeline(dataByTenureType, processedTargets);
 
   useEffect(() => {
+    console.log('hit 1');
     // abort if timeline has not been built or selected year is valid
     if (!timeline || timeline.includes(tenureYear)) return;
 
+    console.log('hit 2');
+
     // otherwise reset date range selector
-    const defaultYear =
-      userOrbState.tenureYear ?? timeline[timeline.length - 1];
+    const defaultYear = settings?.tenureYear ?? timeline[timeline.length - 1];
 
     setConfiguration(prev => ({
       ...prev,
@@ -219,9 +228,9 @@ export const WalthamHousingDelivery = ({
 
     setDashboardSettings(prev => ({
       ...prev,
-      tenureYear: defaultYear,
+      settings: { ...prev.settings, tenureYear: defaultYear },
     }));
-  }, [tenureYear, timeline, userOrbState]);
+  }, [tenureYear, timeline, settings]);
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -244,7 +253,7 @@ export const WalthamHousingDelivery = ({
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
-            userTargetData={userOrbState?.totalHousing}
+            userTargetData={targets?.totalHousing}
           />
         </ChartWrapper>
 
@@ -279,7 +288,7 @@ export const WalthamHousingDelivery = ({
 
           <TenureHousingMultiChart
             apiData={dataByTenureType}
-            userTargetData={targets}
+            userTargetData={processedTargets}
             tenureType={
               tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
             }

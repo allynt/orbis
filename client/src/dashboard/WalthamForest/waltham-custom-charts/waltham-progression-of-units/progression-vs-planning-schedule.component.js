@@ -20,13 +20,13 @@ import {
 
 const ProgressionVsPlanningSchedule = ({
   data,
-  userOrbState,
+  settings,
   setDashboardSettings,
 }) => {
   const chartTheme = useChartTheme();
 
   const [configuration, setConfiguration] = useState(
-    userOrbState.affordableHousingType ?? ALL_TYPES,
+    settings?.affordableHousingType ?? ALL_TYPES,
   );
 
   // The theme has a hard-coded value for stacked charts, but we want the
@@ -57,7 +57,10 @@ const ProgressionVsPlanningSchedule = ({
    * @param {string} value
    */
   const handleTypeSelect = value => {
-    setDashboardSettings(prev => ({ ...prev, affordableHousingType: value }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, affordableHousingType: value },
+    }));
     setConfiguration(value);
   };
 
