@@ -136,6 +136,8 @@ class DataSourceView(APIView):
     about the JWT itself as well as which Orbs each DataSource belongs to to the response.
     """
 
+    CHUNK_SIZE = 60
+
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
@@ -156,7 +158,9 @@ class DataSourceView(APIView):
         data_sources = []
 
         # chunk the data_scopes to reduce the size of the request.header sent to `data-sources-directory`
-        chunked_data_scopes = chunk_data_scopes(data_scopes, chunk_size=50)
+        chunked_data_scopes = chunk_data_scopes(
+            data_scopes, chunk_size=self.CHUNK_SIZE
+        )
         for chunked_data_scope in chunked_data_scopes:
             data_token = generate_data_token(user, chunked_data_scope)
             headers = {"Authorization": f"Bearer {data_token}"}
