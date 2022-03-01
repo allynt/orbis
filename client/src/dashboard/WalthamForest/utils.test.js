@@ -347,20 +347,9 @@ describe('Waltham Forest Data Transformers', () => {
       const data = [{ Year: '2010-2011' }, { Year: '2011-2012' }],
         targets = {
           '2009-2010': '123',
+          '2012-2013': '123',
         },
-        expected = ['2009-2010', '2010-2011', '2011-2012'];
-
-      const result = getDataTimeline(data, targets);
-      expect(result).toEqual(expected);
-    });
-
-    it('excludes target years higher than highest api year', () => {
-      const data = [{ Year: '2010-2011' }, { Year: '2011-2012' }],
-        targets = {
-          '2014-2015': '123',
-          '2015-2016': '456',
-        },
-        expected = ['2010-2011', '2011-2012'];
+        expected = ['2009-2010', '2010-2011', '2011-2012', '2012-2013'];
 
       const result = getDataTimeline(data, targets);
       expect(result).toEqual(expected);

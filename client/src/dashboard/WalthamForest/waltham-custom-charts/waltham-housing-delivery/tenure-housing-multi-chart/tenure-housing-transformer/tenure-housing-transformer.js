@@ -16,8 +16,6 @@ export const tenureHousingTransformer = (
 ) => {
   if (!apiData) return;
 
-  // TODO: check tests are not broke
-
   const noTargets = !Object.keys(targets).length;
 
   const transformedTargets = noTargets

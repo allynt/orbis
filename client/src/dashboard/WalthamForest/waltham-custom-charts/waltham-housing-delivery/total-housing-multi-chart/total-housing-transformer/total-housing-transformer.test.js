@@ -76,8 +76,7 @@ const dataArray = [
     },
   },
   {
-    title:
-      'returns data from lowest year of either dataset to highest year of API data only',
+    title: 'returns data from lowest year to highest year of either dataset',
     data: [
       {
         Year: '2010-2011',
@@ -105,12 +104,16 @@ const dataArray = [
           { x: '2010-2011', y: 123 },
           { x: '2011-2012', y: null },
           { x: '2012-2013', y: 456 },
+          { x: '2013-2014', y: null },
+          { x: '2014-2015', y: null },
         ],
         [
           { x: '2009-2010', y: null },
           { x: '2010-2011', y: 456 },
           { x: '2011-2012', y: null },
           { x: '2012-2013', y: 789 },
+          { x: '2013-2014', y: null },
+          { x: '2014-2015', y: null },
         ],
       ],
       transformedTargets: [
@@ -118,6 +121,8 @@ const dataArray = [
         { x: '2010-2011', y: 254 },
         { x: '2011-2012', y: 265 },
         { x: '2012-2013', y: 451 },
+        { x: '2013-2014', y: 136 },
+        { x: '2014-2015', y: 237 },
       ],
     },
   },
@@ -188,26 +193,6 @@ const dataArray = [
     data: undefined,
     targets: undefined,
     expected: undefined,
-  },
-  {
-    title: 'returns null target values if all are higher than api years',
-    data: [
-      {
-        Year: '2017-2018',
-        'Total Gross': 123,
-        'Total Net': 456,
-      },
-    ],
-    targets: {
-      '2018-2019': '237',
-    },
-    expected: {
-      transformedData: [
-        [{ x: '2017-2018', y: 123 }],
-        [{ x: '2017-2018', y: 456 }],
-      ],
-      transformedTargets: null,
-    },
   },
 ];
 
