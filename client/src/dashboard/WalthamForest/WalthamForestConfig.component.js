@@ -65,10 +65,9 @@ const useStyles = makeStyles(theme => ({
     gap: '1rem',
   },
   housingDelivery: {
-    // display: 'flex',
-    // flexDirection: 'column',
-    // gap: '1rem',
-    width: '90vw',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
   },
 }));
 
@@ -185,23 +184,23 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
       <div className={styles.content}>
         {/* progress indicator charts */}
-        {/* <div className={styles.progressIndicators}>
+        <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
             targets={localTargets}
           />
-        </div> */}
+        </div>
 
         <div className={styles.barCharts}>
-          {/* <div className={styles.progression}>
+          <div className={styles.progression}>
             <ProgressionVsPlanningSchedule
               data={progressionVsPlanning}
               settings={settings}
               setDashboardSettings={setDashboardSettings}
             />
             <AffordableHousingDelivery data={affordableHousingDelivery} />
-          </div> */}
+          </div>
           <div className={styles.housingDelivery}>
             {/* group/line and stack/line charts */}
             <WalthamHousingDelivery
@@ -214,7 +213,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               setDashboardSettings={setDashboardSettings}
             />
             {/* big multi-line chart */}
-            {/* <HousingApprovalsComponent
+            <HousingApprovalsComponent
               x="Month"
               xLabel="Year"
               yLabel="No. Housing Approvals Granted"
@@ -222,7 +221,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
               data={approvalsGranted?.properties}
               settings={settings}
               setDashboardSettings={setDashboardSettings}
-            /> */}
+            />
           </div>
         </div>
       </div>
