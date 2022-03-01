@@ -281,14 +281,16 @@ export const WalthamHousingDelivery = ({
             </ToggleButton>
           </ToggleButtonGroup>
 
-          <TenureHousingMultiChart
-            apiData={dataByTenureType}
-            userTargetData={processedTargets}
-            tenureType={
-              tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
-            }
-            filteredTimeline={getFilteredTimeline(timeline, tenureYear)}
-          />
+          {timeline?.includes(tenureYear) ? (
+            <TenureHousingMultiChart
+              apiData={dataByTenureType}
+              userTargetData={processedTargets}
+              tenureType={
+                tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
+              }
+              filteredTimeline={getFilteredTimeline(timeline, tenureYear)}
+            />
+          ) : null}
         </ChartWrapper>
       </Grid>
     </Grid>
