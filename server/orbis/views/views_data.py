@@ -68,7 +68,9 @@ _decoded_token_schema = openapi.Schema(
 _data_sources_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     properties=OrderedDict((  # yapf: disable
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
+        ("tokens", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
+            ("scope_id", openapi.Schema(type=openapi.TYPE_STRING, example="<jwt>")),  # yapf: disable
+        )))),  # yapf: disable
         ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),  # yapf: disable
         ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
             ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),  # yapf: disable
