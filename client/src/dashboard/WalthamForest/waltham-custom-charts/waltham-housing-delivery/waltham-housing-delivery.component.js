@@ -60,8 +60,6 @@ const useStyles = makeStyles(theme => ({
 
 const ALL_TENURE_TYPES = 'All Tenure Types';
 
-// TODO: why does NaN flicker when out-of-range date is selected?
-
 /**
  * @param {{
  *  timeline: string[]
@@ -130,8 +128,7 @@ const getFilteredTimeline = (timeline, tenureYear) => {
   return timeline?.slice(startIndex, index + 1);
 };
 
-// TODO: types correct?
-
+// TODO: what type for (setDashboardSettings: function)?
 /**
  * @param {{
  *  totalHousingDeliveryChartData: object[]

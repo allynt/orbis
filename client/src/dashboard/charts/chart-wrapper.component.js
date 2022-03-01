@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    // TODO: works for no headerComponents?
-    alignItems: 'center',
+    alignItems: ({ hasHeaderComponent }) =>
+      hasHeaderComponent ? 'center' : 'baseline',
     marginBottom: theme.spacing(2),
   },
 }));
@@ -46,7 +46,8 @@ const ChartWrapper = ({
   classes = {},
   ...rest
 }) => {
-  const styles = useStyles({});
+  const hasHeaderComponent = !!headerComponent;
+  const styles = useStyles({ hasHeaderComponent });
   const { header } = classes;
   return (
     <Paper className={styles.paper} {...rest}>
