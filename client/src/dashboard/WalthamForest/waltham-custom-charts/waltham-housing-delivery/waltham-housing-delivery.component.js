@@ -125,7 +125,6 @@ const TenureDataFilter = ({
 };
 
 const getFilteredTimeline = (timeline, tenureYear) => {
-  // TODO: what's causing the need for ?s
   const index = timeline?.indexOf(tenureYear);
   const startIndex = index < 5 ? 0 : index - 4;
   return timeline?.slice(startIndex, index + 1);
@@ -201,7 +200,6 @@ export const WalthamHousingDelivery = ({
       ? getTargetTotals(targets)
       : targets?.[tenureType];
 
-  // TODO: refactor this
   const dataByTenureType = filterByType(
     tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)?.data,
     tenureType,
@@ -227,7 +225,7 @@ export const WalthamHousingDelivery = ({
       ...prev,
       settings: { ...prev.settings, tenureYear: defaultYear },
     }));
-  }, [tenureYear, timeline, settings]);
+  }, [tenureYear, timeline, settings, setDashboardSettings]);
 
   return (
     <Grid container direction="column" className={styles.container}>
