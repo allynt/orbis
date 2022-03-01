@@ -16,7 +16,26 @@ from astrosat_users.serializers import UserSerializer
 from orbis.models import DataScope, Licence
 
 
-def generate_scopes_for_data_token(user):
+def chunk_data_scopes(data_scopes, chunk_size=None):
+    """
+    iterates over data_scopes returning successive dicts
+    each w/ no more than chunk_size values
+    """
+
+    n_values = 0
+    chunked_data_scopes = defaultdict(list)
+    for access, scopes in data_scopes.items():
+        for scope in scopes:
+            chunked_data_scopes[access].append(scope)
+            n_values += 1
+            if n_values == chunk_size:
+                yield chunked_data_scopes
+                chunked_data_scopes = defaultdict(list)
+                n_values = 0
+    yield chunked_data_scopes
+
+
+def generate_data_scopes(user):
 
     default_data_scopes = {
         "read": [f"orbis-user-{user.id}/*/*/*"],
@@ -73,7 +92,7 @@ def generate_scopes_for_data_token(user):
 def generate_data_token(user, data_scopes=None):
 
     if data_scopes is None:
-        data_scopes = generate_scopes_for_data_token(user)
+        data_scopes = generate_data_scopes(user)
 
     payload = {
         "iss": Site.objects.get_current().domain,  # token issuer

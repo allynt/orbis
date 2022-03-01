@@ -21,7 +21,12 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.models import DataScope, Orb
 from orbis.serializers import StoredDataSourceSerializer
-from orbis.utils import generate_scopes_for_data_token, generate_data_token, validate_data_token
+from orbis.utils import (
+    chunk_data_scopes,
+    generate_data_scopes,
+    generate_data_token,
+    validate_data_token,
+)
 
 
 class IsAuthenticatedOrAdmin(BasePermission):
@@ -135,51 +140,48 @@ class DataSourceView(APIView):
 
     @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
     def get(self, request, format=None):
+        """
+        Makes a request to the `data-sources-directory` URL
+        to get the set of `DataSources` the user can access.
+        Also adds any local `StoredDataSources` to that set.
+        """
 
         user = request.user
-        data_scopes = generate_scopes_for_data_token(user)
-        data_token = generate_data_token(user, data_scopes=data_scopes)
-        data_token_timeout = settings.DATA_TOKEN_TIMEOUT
-
-        # reshape the output to be a dict of individual tokens keyed by data_scopes
-        keyed_data_tokens = {
-            data_scope: generate_data_token(
-                user,
-                data_scopes={
-                    k: [data_scope] if data_scope in v else []
-                    for k, v in data_scopes.items()
-                }
-            )
-            for data_scope in set(chain.from_iterable(data_scopes.values()))
-        } # yapf: disable
-
-
         url = urljoin(
             settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
         )
-        headers = {"Authorization": f"Bearer {data_token}"}
-        try:
 
-            response = requests.get(
-                url,
-                headers=headers,
-                timeout=2.5,
-                proxies={
-                    "http": settings.REQUESTS_PROXY,
-                    "https": settings.REQUESTS_PROXY,
-                } if settings.REQUESTS_PROXY else None
-            )
-            if not status.is_success(response.status_code):
-                raise APIException("Error retrieving data sources")
-        except Timeout as e:
-            raise APIException(
-                f"Request {url} timed out, exception was: {str(e)}"
-            )
-        except Exception as e:
-            raise APIException(
-                f"Unable to retrieve data sources at '{url}': {str(e)}"
-            )
-        sources = response.json()["results"]
+        data_token_timeout = settings.DATA_TOKEN_TIMEOUT
+        data_scopes = generate_data_scopes(user)
+        data_sources = []
+
+        # chunk the data_scopes to reduce the size of the request.header sent to `data-sources-directory`
+        chunked_data_scopes = chunk_data_scopes(data_scopes, chunk_size=50)
+        for chunked_data_scope in chunked_data_scopes:
+            data_token = generate_data_token(user, chunked_data_scope)
+            headers = {"Authorization": f"Bearer {data_token}"}
+            try:
+
+                response = requests.get(
+                    url,
+                    headers=headers,
+                    timeout=2.5,
+                    proxies={
+                        "http": settings.REQUESTS_PROXY,
+                        "https": settings.REQUESTS_PROXY,
+                    } if settings.REQUESTS_PROXY else None
+                )
+                if not status.is_success(response.status_code):
+                    raise APIException("Error retrieving data sources")
+            except Timeout as e:
+                raise APIException(
+                    f"Request {url} timed out, exception was: {str(e)}"
+                )
+            except Exception as e:
+                raise APIException(
+                    f"Unable to retrieve data sources at '{url}': {str(e)}"
+                )
+            data_sources += response.json()["results"]
 
         # find all orbs that this user has a licence to...
         orbs = Orb.objects.filter(
@@ -202,7 +204,7 @@ class DataSourceView(APIView):
                     "name": orb.name, "description": orb.description
                 }]
 
-        for source in sources:
+        for source in data_sources:
             # find all of the above orbs w/ a data_scope that matches the source_id...
             matching_orbs = dict(
                 filter(
@@ -230,10 +232,20 @@ class DataSourceView(APIView):
         stored_data_source_serializer = StoredDataSourceSerializer(
             stored_data_sources, many=True
         )
-        sources += stored_data_source_serializer.data
+        data_sources += stored_data_source_serializer.data
 
         return Response({
-            "tokens": keyed_data_tokens,
+            "tokens": {
+                # reshape the data_tokens used in the response
+                data_scope: generate_data_token(
+                    user,
+                    data_scopes={
+                        k: [data_scope] if data_scope in v else []
+                        for k, v in data_scopes.items()
+                    }
+                )
+                for data_scope in set(chain.from_iterable(data_scopes.values()))
+            },
             "timeout": data_token_timeout,
-            "sources": sources,
-        })
+            "sources": data_sources,
+        })  # yapf: disable
