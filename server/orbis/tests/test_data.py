@@ -280,6 +280,52 @@ class TestDataSourceView:
                                                                  ]["orbis"]
         assert len(source_orbis_metadata["orbs"]) == 1
 
+    def test_response_shape(
+        self,
+        user,
+        api_client,
+        mock_data_sources,
+        mock_storage,
+    ):
+        """
+        Tests that the shape of the response is as expected,
+        particularly that several data tokens keyed by each data_scope are returned
+        as opposed to a single data token for all data_scopes
+        """
+
+        N_SOURCES = 10
+
+        source_ids = [
+            f"authority/namespace/{i}/latest" for i in range(N_SOURCES)
+        ]
+        data_scopes = [
+            DataScopeFactory(
+                authority="authority",
+                namespace="namespace",
+                name=str(i),
+                version="*"
+            ) for i in range(N_SOURCES)
+        ]
+        orb = OrbFactory(data_scopes=data_scopes)
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, status="ACTIVE", type="MANAGER")
+        customer.assign_licences(orb, customer.customer_users.all())
+
+        mock_data_sources(source_ids)
+
+        client = api_client(user)
+        url = reverse("datasources")
+
+        response = client.get(url, {}, format="json")
+        content = response.json()
+
+        assert content["timeout"] == settings.DATA_TOKEN_TIMEOUT
+        assert len(content["sources"]) == N_SOURCES
+        assert len(content["tokens"]) == N_SOURCES + 1
+        assert set([data_scope.source_id_pattern for data_scope in data_scopes]
+                  ).issubset(content["tokens"].keys())
+
     def test_num_queries(
         self,
         user,
