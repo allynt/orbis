@@ -110,6 +110,41 @@ class TestTokens:
         assert data_scope.source_id_pattern in payload_data_scopes[
             test_application_data_scope_access]
 
+    def test_generate_token_removes_duplicates(
+        self, user, api_client, mock_storage
+    ):
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user)
+
+        data_scope = DataScopeFactory()
+        orbs = [
+            OrbFactory(data_scopes=[data_scope]),
+            OrbFactory(data_scopes=[data_scope]),
+        ]
+
+        for orb in orbs:
+            customer.assign_licences(orb, customer.customer_users.all())
+
+        payload = validate_data_token(generate_data_token(user))
+        payload_data_scopes = payload["scopes"]["data"]
+
+        # these orbs use the same datascope so the data_token should only have 2 entries
+        # (user + unique data_scope) and not 3 entries (user + orbs)
+        assert len(payload_data_scopes["read"]) == 2
+
+    # def test_token_iterator(self, user, api_client, mock_storage):
+    #     customer = CustomerFactory(logo=None)
+    #     customer.add_user(user)
+
+    #     data_scopes = [
+    #         DataScopeFactory(
+    #             authority="test", namespace="test", name=str(i), version="*"
+    #         ) for i in range(100)
+    #     ]
+    #     orb = OrbFactory(data_scopes=data_scopes)
+
+    #     customer.assign_licences(orb, customer.customer_users.all())
+
     def test_generate_token_correct_data_access(
         self, user, api_client, mock_storage
     ):
@@ -260,8 +295,8 @@ class TestDataSourceView:
 
         N_SOURCES = 100
         N_QUERIES = (
-            17 + 1
-        )  # 17 to get scope details & 1 to get management details; still a lot better than linear (100+)
+            19 + 1
+        )  # 19 to get scope details & 1 to get management details; still a lot better than linear (100+)
 
         # TODO: REMOVE THIS LINE ONCE SatelliteDataSource ACCESS IS RESTRICTED BY Orb.features
         N_QUERIES += 1  # checking SatelliteDataSources

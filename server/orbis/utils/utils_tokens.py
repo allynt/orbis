@@ -16,7 +16,7 @@ from astrosat_users.serializers import UserSerializer
 from orbis.models import DataScope, Licence
 
 
-def generate_data_token(user):
+def generate_scopes_for_data_token(user):
 
     default_data_scopes = {
         "read": [f"orbis-user-{user.id}/*/*/*"],
@@ -66,6 +66,14 @@ def generate_data_token(user):
     ).filter(applications__overlap=["a4h", "A4H"])
     if a4h_data_scopes.exists() and user.customer_users.active().managers().exists():
         data_scopes["download"].extend([str(scope) for scope in a4h_data_scopes])
+
+    return data_scopes
+
+
+def generate_data_token(user, data_scopes=None):
+
+    if data_scopes is None:
+        data_scopes = generate_scopes_for_data_token(user)
 
     payload = {
         "iss": Site.objects.get_current().domain,  # token issuer

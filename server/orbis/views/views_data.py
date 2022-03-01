@@ -1,5 +1,7 @@
 import requests
+
 from collections import OrderedDict, defaultdict
+from itertools import chain
 from functools import reduce
 from urllib.parse import urljoin
 
@@ -19,7 +21,7 @@ from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.models import DataScope, Orb
 from orbis.serializers import StoredDataSourceSerializer
-from orbis.utils import generate_data_token, validate_data_token
+from orbis.utils import generate_scopes_for_data_token, generate_data_token, validate_data_token
 
 
 class IsAuthenticatedOrAdmin(BasePermission):
@@ -133,8 +135,22 @@ class DataSourceView(APIView):
     def get(self, request, format=None):
 
         user = request.user
-        data_token = generate_data_token(user)
+        data_scopes = generate_scopes_for_data_token(user)
+        data_token = generate_data_token(user, data_scopes=data_scopes)
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
+
+        # reshape the output to be a dict of individual tokens keyed by data_scopes
+        keyed_data_tokens = {
+            data_scope: generate_data_token(
+                user,
+                data_scopes={
+                    k: [data_scope] if data_scope in v else []
+                    for k, v in data_scopes.items()
+                }
+            )
+            for data_scope in set(chain.from_iterable(data_scopes.values()))
+        } # yapf: disable
+
 
         url = urljoin(
             settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
@@ -215,7 +231,7 @@ class DataSourceView(APIView):
         sources += stored_data_source_serializer.data
 
         return Response({
-            "token": data_token,
+            "tokens": keyed_data_tokens,
             "timeout": data_token_timeout,
             "sources": sources,
         })
