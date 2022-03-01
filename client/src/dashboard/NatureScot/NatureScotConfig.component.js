@@ -16,6 +16,7 @@ import {
   dataSourceByIdSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import AreaOfficeContactDetails from './area-office-contact-details.component';
@@ -92,9 +93,10 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [caseworks, setCaseworks] = useState([]);
   const [protectedFeatures, setProtectedFeatures] = useState([]);
   const [contactDetails, setContactDetails] = useState({});
-  const authToken = useSelector(selectDataToken);
+  const authTokens = useSelector(selectDataToken);
   const selectedAoi = useSelector(selectedAoiSelector);
   const source = useSelector(dataSourceByIdSelector(sourceId));
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   console.log('protectedFeatures: ', protectedFeatures);
 

@@ -4,6 +4,7 @@ import { find } from 'lodash';
 
 import { hexToRgbArray } from 'utils/color';
 import { easeInOutCubic } from 'utils/easingFunctions';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import {
   extrudedModeSelector,
@@ -19,7 +20,7 @@ const colorRange = schemeYlOrRd[9].map(hexToRgbArray);
 const Config = ({
   id,
   orbState,
-  authToken,
+  authTokens,
   valueKey = 'value',
   defaultValue,
   columnSuffix = '',
@@ -32,6 +33,7 @@ const Config = ({
   const visible = visibilitySelector(id)(orbState);
   const otherState = otherSelector(id)(orbState);
   const { url } = source.metadata;
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   let value = otherState?.[valueKey];
   if (valueKey === 'date' && value) {

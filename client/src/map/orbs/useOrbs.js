@@ -20,7 +20,7 @@ import { orbsSelector } from './orbsSelectors';
 export const useOrbs = () => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
-  const authToken = useSelector(selectDataToken);
+  const authTokens = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
 
   const layersWithDataIds = useSelector(state =>
@@ -39,7 +39,7 @@ export const useOrbs = () => {
     async source => {
       try {
         const response = await getData(dataUrlFromSource(source), {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${authTokens[0]}`,
         });
 
         if (!response.ok) {
@@ -59,7 +59,7 @@ export const useOrbs = () => {
         return dispatch(logError(source));
       }
     },
-    [authToken, dispatch],
+    [authTokens, dispatch],
   );
 
   useEffect(() => {
@@ -176,7 +176,7 @@ export const useOrbs = () => {
           dispatch,
           setViewState,
           orbState,
-          authToken,
+          authTokens,
           ...metadataConfig,
         });
       }
@@ -198,7 +198,7 @@ export const useOrbs = () => {
     dispatch,
     setViewState,
     orbState,
-    authToken,
+    authTokens,
   ]);
 
   return {

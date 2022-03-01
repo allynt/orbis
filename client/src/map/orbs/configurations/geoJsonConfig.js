@@ -1,4 +1,5 @@
 import { hexToRgbArray } from 'utils/color';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import { dataSelector, visibilitySelector } from '../layers.slice';
 
@@ -19,12 +20,13 @@ export const DEFAULT_HIGHLIGHT_COLOR = '#483D8B';
  *   isOutlined: boolean
  *   activeSources?: import('typings').Source[]
  *   orbState: import('../orbReducer').OrbState
- *   authToken?: string
+ *   authTokens?: object
  * }} parameters
  */
 const geoJsonConfiguration = ({
   id,
-  authToken,
+  activeSources,
+  authTokens,
   orbState,
   isFilled = true,
   filledColor = DEFAULT_FILLED_COLOR,
@@ -34,8 +36,11 @@ const geoJsonConfiguration = ({
   outlineColor = DEFAULT_LINE_COLOR,
   ...rest
 }) => {
+  const source = activeSources?.find(source => source.source_id === id);
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
+
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   const newOutlineColor = hexToRgbArray(outlineColor);
   const newFilledColor = hexToRgbArray(filledColor);

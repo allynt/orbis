@@ -1,5 +1,7 @@
 import { BitmapLayer } from '@deck.gl/layers';
 
+import { getAuthTokenForSource } from 'utils/tokens';
+
 import { dataSelector, visibilitySelector } from '../layers.slice';
 
 /** @type {import("typings/orbis").LayerConfiguration<{visible?: boolean}>} */
@@ -39,10 +41,11 @@ export const baseSatelliteImageConfig = ({
 };
 
 /** @type {import("typings/orbis").LayerConfiguration} */
-const Config = ({ id, activeSources, orbState, authToken, ...rest }) => {
+const Config = ({ id, activeSources, orbState, authTokens, ...rest }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const data = dataSelector(id)(orbState);
   const visible = visibilitySelector(id)(orbState);
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   return baseSatelliteImageConfig({
     id,

@@ -1,6 +1,8 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
 import { get } from 'lodash';
 
+import { getAuthTokenForSource } from 'utils/tokens';
+
 import {
   otherSelector,
   timestampSelector,
@@ -10,7 +12,7 @@ import {
 
 export const COLOR_PRIMARY = [246, 190, 0, 255];
 
-const configuration = ({ id, activeSources, orbState, authToken }) => {
+const configuration = ({ id, activeSources, orbState, authTokens }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const other = otherSelector(SHARED_STATE_KEY)(orbState);
   const data = dataSelector(id)(orbState);
@@ -22,6 +24,7 @@ const configuration = ({ id, activeSources, orbState, authToken }) => {
   const selectedPropertyMetadata = source?.metadata?.properties?.find(
     property => property.name === selectedProperty.name,
   );
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   const getFillColor = feature => COLOR_PRIMARY;
 

@@ -5,6 +5,7 @@ import { logError } from 'data-layers/data-layers.slice';
 import { getColorScaleForProperty } from 'utils/color';
 import { createReduxSafePickedInfo, getValueForTimestamp } from 'utils/data';
 import { isRealValue } from 'utils/isRealValue';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import {
   addClickedFeatures,
@@ -58,7 +59,7 @@ export const getValue = (feature, selectedProperty, selectedTimestamp) =>
  *   activeSources?: import('typings').Source[]
  *   dispatch: import('redux').Dispatch
  *   orbState: import('../orbReducer').OrbState
- *   authToken?: string
+ *   authTokens?: object
  * }} parameters
  */
 const configuration = ({
@@ -66,7 +67,7 @@ const configuration = ({
   activeSources,
   dispatch,
   orbState,
-  authToken,
+  authTokens,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const other = otherSelector(SHARED_STATE_KEY)(orbState);
@@ -99,6 +100,8 @@ const configuration = ({
         : selectedPropertyMetadata,
       'array',
     );
+
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   const clickedFeatureIds = clickedFeatures?.map(f =>
     get(f.object.properties, source?.metadata?.index),
@@ -276,7 +279,6 @@ const configuration = ({
   return {
     id,
     data: data[0],
-    authToken,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,

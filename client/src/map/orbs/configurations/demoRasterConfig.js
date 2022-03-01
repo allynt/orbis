@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
 import { find } from 'lodash';
 
+import { getAuthTokenForSource } from 'utils/tokens';
+
 import {
   visibilitySelector,
   otherSelector,
@@ -19,7 +21,7 @@ import {
 const Config = ({
   id,
   activeSources,
-  authToken,
+  authTokens,
   orbState,
   otherStateKey = id,
   valueKey,
@@ -31,6 +33,7 @@ const Config = ({
   const visible = visibilitySelector(id)(orbState);
   const other = otherSelector(otherStateKey)(orbState);
   const data = dataSelector(id)(orbState);
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   return {
     id,
