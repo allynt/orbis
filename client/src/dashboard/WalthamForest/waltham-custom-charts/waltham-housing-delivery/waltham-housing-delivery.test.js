@@ -47,9 +47,10 @@ const defaultData = {
 
 describe('WalthamHousingDelivery', () => {
   describe('filters', () => {
-    xit('sets default values if no saved settings', () => {
+    it('sets default values if no saved settings', () => {
       const { getByRole } = render(<WalthamHousingDelivery {...defaultData} />);
 
+      expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(1);
       expect(getByRole('button', { name: '2016-2017' })).toBeInTheDocument();
 
       expect(
@@ -69,6 +70,8 @@ describe('WalthamHousingDelivery', () => {
       const { getByRole } = render(
         <WalthamHousingDelivery {...defaultData} settings={settings} />,
       );
+
+      expect(defaultData.setDashboardSettings).not.toHaveBeenCalled();
 
       expect(getByRole('button', { name: '2015-2016' })).toBeInTheDocument();
       expect(
@@ -97,16 +100,23 @@ describe('WalthamHousingDelivery', () => {
       userEvent.click(getByRole('button', { name: 'Market' }));
       userEvent.click(getByRole('option', { name: 'Social Rented' }));
 
+      // will update once as usual, then again to correct itself if invalid.
+      expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(2);
       expect(getByText('2016-2017')).toBeInTheDocument();
     });
 
-    it.only('calls setDashboardSettings function when filters are changed', () => {
-      const { getByRole } = render(<WalthamHousingDelivery {...defaultData} />);
+    it('calls setDashboardSettings function when filters are changed', () => {
+      const { getByRole } = render(
+        <WalthamHousingDelivery
+          {...defaultData}
+          settings={{ tenureYear: '2016-2017' }}
+        />,
+      );
 
       userEvent.click(getByRole('button', { name: 'All Tenure Types' }));
-      userEvent.click(getByRole('button', { name: 'Market' }));
+      userEvent.click(getByRole('option', { name: 'Market' }));
 
-      expect(defaultData.setDashboardSettings).toHaveBeenCalled();
+      expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(1);
     });
   });
 });
