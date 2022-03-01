@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pytest
 import urllib
 
@@ -9,7 +10,7 @@ from rest_framework.test import APIClient
 from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
-from orbis.utils import generate_data_token, validate_data_token
+from orbis.utils import chunk_data_scopes, generate_data_token, validate_data_token
 
 from .factories import *
 from .utils import *
@@ -132,18 +133,33 @@ class TestTokens:
         # (user + unique data_scope) and not 3 entries (user + orbs)
         assert len(payload_data_scopes["read"]) == 2
 
-    # def test_token_iterator(self, user, api_client, mock_storage):
-    #     customer = CustomerFactory(logo=None)
-    #     customer.add_user(user)
+    def test_chunk_data_scopes(self, user, api_client, mock_storage):
+        # don't actually have to use DataScope models, etc.
+        # just checking the logic of the function
 
-    #     data_scopes = [
-    #         DataScopeFactory(
-    #             authority="test", namespace="test", name=str(i), version="*"
-    #         ) for i in range(100)
-    #     ]
-    #     orb = OrbFactory(data_scopes=data_scopes)
+        test_data_scopes = {
+            "scope_1": [
+                "source_id_1", "source_id_2", "source_id_3", "source_id_4"
+            ],
+            "scope_2": [
+                "source_id_5", "source_id_6", "source_id_7", "source_id_8"
+            ],
+        }
+        chunked_data_scopes = list(
+            chunk_data_scopes(test_data_scopes, chunk_size=3)
+        )
 
-    #     customer.assign_licences(orb, customer.customer_users.all())
+        assert len(chunked_data_scopes) == 3
+        assert chunked_data_scopes[0] == {
+            "scope_1": ["source_id_1", "source_id_2", "source_id_3"],
+        }
+        assert chunked_data_scopes[1] == {
+            "scope_1": ["source_id_4"],
+            "scope_2": ["source_id_5", "source_id_6"],
+        }
+        assert chunked_data_scopes[2] == {
+            "scope_2": ["source_id_7", "source_id_8"],
+        }
 
     def test_generate_token_correct_data_access(
         self, user, api_client, mock_storage
