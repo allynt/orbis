@@ -12,6 +12,7 @@ import { setIsLoading } from 'map/map.slice';
 import { useMap } from 'MapContext';
 import { dataUrlFromSource } from 'utils/data';
 import { getData } from 'utils/http';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import { LayerFactory } from '../deck.gl/LayerFactory';
 import { setData, layersWithDataSelector } from './layers.slice';
@@ -37,9 +38,11 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
+      const authToken = getAuthTokenForSource(authTokens, source);
+
       try {
         const response = await getData(dataUrlFromSource(source), {
-          Authorization: `Bearer ${authTokens[0]}`,
+          Authorization: `Bearer ${authToken}`,
         });
 
         if (!response.ok) {
