@@ -22,6 +22,10 @@ const setup = async source => {
           data: {
             layers: ['test/layer'],
             sources: [source],
+            tokens: {
+              'test/layer': 'testAuthToken',
+              'test/layer2': 'testAuthToken2',
+            },
           },
         })}
       >

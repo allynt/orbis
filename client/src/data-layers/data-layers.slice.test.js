@@ -462,7 +462,7 @@ describe('Data Slice', () => {
       beforeState = {
         layers: [],
         sources: null,
-        token: null,
+        tokens: null,
         pollingPeriod: 30000,
         error: null,
       };
@@ -523,7 +523,10 @@ describe('Data Slice', () => {
     describe('fetchSourcesSuccess', () => {
       it('should update the sources in state, when successfully retrieved', () => {
         const data = {
-          token: 'Test Token',
+          tokens: {
+            'test/layer': 'testAuthToken',
+            'test/layer2': 'testAuthToken2',
+          },
           timeout: 60,
           sources: [
             {
@@ -547,7 +550,7 @@ describe('Data Slice', () => {
           payload: data,
         });
 
-        expect(actualState.token).toEqual(data.token);
+        expect(actualState.tokens).toEqual(data.tokens);
         expect(actualState.pollingPeriod).toEqual(timeoutInMilliseconds);
         expect(actualState.sources).toEqual(data.sources);
       });
@@ -590,32 +593,28 @@ describe('Data Slice', () => {
       it('should return the data token from state', () => {
         const state = {
           data: {
-            token: `If there's a place you got to go
-            I'm the one you need to know
-            I'm the token
-            I'm the token
-            I'm the token
-            oh oh oh
-            I'm the token
-            `,
+            tokens: {
+              'test/layer': 'testAuthToken',
+              'test/layer2': 'testAuthToken2',
+            },
           },
         };
         const result = selectDataToken(state);
-        expect(result).toBe(state.data.token);
+        expect(result).toBe(state.data.tokens);
       });
 
-      it('should return an empty string if no data state is present', () => {
+      it('should return null if no data state is present', () => {
         const state = {};
         const result = selectDataToken(state);
-        expect(result).toBe('');
+        expect(result).toBeNull();
       });
 
-      it('should return an empty string if no token is present', () => {
+      it('should return null if no token is present', () => {
         const state = {
           data: {},
         };
         const result = selectDataToken(state);
-        expect(result).toBe('');
+        expect(result).toBeNull();
       });
     });
 

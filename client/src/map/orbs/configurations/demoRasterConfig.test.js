@@ -28,6 +28,10 @@ const setup = ({ orbState = undefined } = {}) =>
     otherStateKey: 'test/layer',
     valueKey: 'value',
     defaultDate: '123',
+    authTokens: {
+      'test/layer': 'testAuthToken',
+      'test/layer2': 'testAuthToken2',
+    },
   });
 
 describe('demoRasterConfig', () => {
@@ -37,12 +41,18 @@ describe('demoRasterConfig', () => {
       expect(result.image).toStrictEqual(
         expect.stringContaining('data/url/defaultValue'),
       );
+      expect(result.loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
 
     it('Uses defaultValue if other[valueKey] is not present', () => {
       const result = setup();
       expect(result.image).toStrictEqual(
         expect.stringContaining('data/url/defaultValue'),
+      );
+      expect(result.loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
       );
     });
 
@@ -53,27 +63,39 @@ describe('demoRasterConfig', () => {
       expect(result.image).toStrictEqual(
         expect.stringContaining('data/url/test'),
       );
+      expect(result.loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
 
     it('Uses defaultDate if other is not present', () => {
-      const { image } = setup();
+      const { image, loadOptions } = setup();
       expect(image).toStrictEqual(expect.stringContaining('123'));
+      expect(loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
 
     it('Uses defaultDate if other.date is not present', () => {
-      const { image } = setup({
+      const { image, loadOptions } = setup({
         orbState: { layers: { 'test/layer': { other: {} } } },
       });
       expect(image).toStrictEqual(expect.stringContaining('123'));
+      expect(loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
 
     it('Uses other.date', () => {
-      const { image } = setup({
+      const { image, loadOptions } = setup({
         orbState: {
           layers: { 'test/layer': { other: { date: 1577836800000 } } },
         },
       });
       expect(image).toStrictEqual(expect.stringContaining('20200101'));
+      expect(loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
   });
 
@@ -84,12 +106,15 @@ describe('demoRasterConfig', () => {
     });
 
     it('Uses the bounds of other[valueKey]', () => {
-      const { bounds } = setup({
+      const { bounds, loadOptions } = setup({
         orbState: {
           layers: { 'test/layer': { other: { value: 'otherValue' } } },
         },
       });
       expect(bounds).toBe(456);
+      expect(loadOptions.fetch.headers.Authorization).toEqual(
+        'Bearer testAuthToken',
+      );
     });
   });
 });

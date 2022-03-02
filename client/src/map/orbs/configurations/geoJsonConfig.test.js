@@ -11,21 +11,44 @@ const STROKE_COLOR_RGB = hexToRgbArray(DEFAULT_LINE_COLOR);
 const HIGHLIGHT_COLOR_RGB = hexToRgbArray(DEFAULT_HIGHLIGHT_COLOR);
 const TEST_COLOR = '#ffffff';
 
+const AUTH_TOKENS = {
+  'test/layer': 'testAuthToken',
+  'test/layer2': 'testAuthToken2',
+};
+const ACTIVE_SOURCES = [
+  {
+    source_id: 'test/layer',
+    metadata: {
+      properties: [
+        { name: 'defaultValue', bounds: 123 },
+        { name: 'otherValue', bounds: 456 },
+      ],
+    },
+  },
+];
+const ID = ACTIVE_SOURCES[0].source_id;
+
 const setup = ({
+  id = ID,
   isFilled,
   filledColor,
   isOutlined,
   outlineColor,
   isHighlighted,
   highlightColor,
+  authTokens = AUTH_TOKENS,
+  activeSources = ACTIVE_SOURCES,
 } = {}) =>
   configFn({
+    id,
     isFilled,
     filledColor,
     isOutlined,
     outlineColor,
     isHighlighted,
     highlightColor,
+    authTokens,
+    activeSources,
   });
 
 describe('GeoJsonConfig', () => {

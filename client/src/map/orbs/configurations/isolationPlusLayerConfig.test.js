@@ -68,6 +68,10 @@ const setup = ({
         },
       },
     },
+    authTokens: {
+      'test/layer': 'testAuthToken',
+      'test/layer2': 'testAuthToken2',
+    },
   });
   return { ...fns, dispatch };
 };
