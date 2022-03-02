@@ -109,9 +109,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     dispatch(updateUserDashboardConfig({ user, sourceId, data }));
 
   useEffect(() => {
-    walthamApiMetadata.forEach(({ datasetName, url, dataScope }) =>
+    walthamApiMetadata.forEach(({ datasetName, url, apiSourceId }) =>
       // @ts-ignore
-      dispatch(fetchDashboardData({ sourceId, datasetName, url, dataScope })),
+      dispatch(fetchDashboardData({ sourceId, datasetName, url, apiSourceId })),
     );
   }, [sourceId, dispatch]);
 

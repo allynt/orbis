@@ -38,12 +38,12 @@ export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
   async (props, { getState, rejectWithValue, dispatch }) => {
     // @ts-ignore
-    const { sourceId, datasetName, url, dataScope } = props;
+    const { sourceId, datasetName, url, apiSourceId } = props;
     const {
       data: { tokens },
     } = getState();
     const authToken = getAuthTokenForSource(tokens, {
-      source_id: dataScope,
+      source_id: apiSourceId,
     });
 
     try {
