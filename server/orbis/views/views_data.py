@@ -1,4 +1,5 @@
 import requests
+from requests.exceptions import Timeout
 
 from collections import OrderedDict, defaultdict
 from itertools import chain
@@ -13,8 +14,6 @@ from rest_framework.exceptions import APIException
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from requests.exceptions import Timeout
 
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
@@ -47,52 +46,53 @@ class IsAuthenticatedOrAdmin(BasePermission):
 
 _encoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)), # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
+    ))
+)  # yapf: disable
+
 
 _decoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),  # yapf: disable
-        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),  # yapf: disable
-        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),  # yapf: disable
-        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
-        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
-        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-            )))),  # yapf: disable
-        )))),  # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),
+        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),
+        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
+        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
+        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+            )))),
+        )))),
+    ))
+)  # yapf: disable
 
 _data_sources_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("tokens", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-            ("scope_id", openapi.Schema(type=openapi.TYPE_STRING, example="<jwt>")),  # yapf: disable
-        )))),  # yapf: disable
-        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),  # yapf: disable
-        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-            ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),  # yapf: disable
-            ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),  # yapf: disable
-            ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),  # yapf: disable
-            ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),  # yapf: disable
-            ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),  # yapf: disable
-            ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),  # yapf: disable
-            ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),  # yapf: disable
-            ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-                ("name", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
-                ("description", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
-            ))))),  # yapf: disable
-            ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),  # yapf: disable
-        ))))),  # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("tokens", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("scope_id", openapi.Schema(type=openapi.TYPE_STRING, example="<jwt>")),
+        )))),
+        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),
+        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),
+            ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),
+            ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),
+            ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),
+            ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),
+            ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),
+            ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),
+            ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+                ("name", openapi.Schema(type=openapi.TYPE_STRING)),
+                ("description", openapi.Schema(type=openapi.TYPE_STRING)),
+            ))))),
+            ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),
+        ))))),
+    ))
+)  # yapf: disable
 
 
 class TokenView(APIView):
@@ -158,14 +158,12 @@ class DataSourceView(APIView):
         data_sources = []
 
         # chunk the data_scopes to reduce the size of the request.header sent to `data-sources-directory`
-        chunked_data_scopes = chunk_data_scopes(
+        for chunked_data_scopes in chunk_data_scopes(
             data_scopes, chunk_size=self.CHUNK_SIZE
-        )
-        for chunked_data_scope in chunked_data_scopes:
-            data_token = generate_data_token(user, chunked_data_scope)
+        ):
+            data_token = generate_data_token(user, chunked_data_scopes)
             headers = {"Authorization": f"Bearer {data_token}"}
             try:
-
                 response = requests.get(
                     url,
                     headers=headers,
