@@ -1,7 +1,5 @@
 import { DataFilterExtension, FillStyleExtension } from '@deck.gl/extensions';
 
-import { getAuthTokenForSource } from 'utils/tokens';
-
 import {
   dataSelector,
   filterValueSelector,
@@ -55,13 +53,12 @@ const configuration = ({
   id,
   activeSources,
   orbState,
-  authTokens,
+  authToken,
   dispatch,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const data = dataSelector(id)(orbState);
   const filterValue = filterValueSelector(id)(orbState);
-  const authToken = getAuthTokenForSource(authTokens, source);
 
   /**
    * What to do when a feature is clicked.

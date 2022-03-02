@@ -78,6 +78,7 @@ const TOKENS_ARRAY = [
     'astrosat/wfc/dashboard/latest',
     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3Q6ODAwMCIsInN1YiI6Im1hcmsuc21hbGxAYXN0cm9zYXQubmV0IiwibmFtZSI6Im9yYmlzIHRva2VuIiwiaWF0IjoxNjQ2MTU2MTY5LCJleHAiOjE2NDYxNTk3NjksInNjb3BlcyI6eyJkYXRhIjp7InJlYWQiOlsiYXN0cm9zYXQvd2ZjL2Rhc2hib2FyZC8qIl0sImNyZWF0ZSI6W10sImRlbGV0ZSI6W10sInVwZGF0ZSI6W119fX0.9Tn_EAQCIA6zTo2E_VILr7mgnrWGKZYLg9nzKb0Ieog',
   ],
+  ['astro/wfc/dashboard/latest', undefined],
 ];
 
 describe('Token utils', () => {

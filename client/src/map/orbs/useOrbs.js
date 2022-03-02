@@ -39,6 +39,14 @@ export const useOrbs = () => {
   const fetchData = useCallback(
     async source => {
       const authToken = getAuthTokenForSource(authTokens, source);
+      if (!authToken) {
+        console.error(
+          'ERROR: No auth token found for: ',
+          source.source_id,
+          ', in: ',
+          authTokens,
+        );
+      }
 
       try {
         const response = await getData(dataUrlFromSource(source), {
@@ -169,6 +177,16 @@ export const useOrbs = () => {
       const { props, name } = source.metadata.application.orbis.layer;
       const { config, ...metadataConfig } = props;
 
+      const authToken = getAuthTokenForSource(authTokens, source);
+      if (!authToken) {
+        console.error(
+          'ERROR: No auth token found for: ',
+          source.source_id,
+          ', in: ',
+          authTokens,
+        );
+      }
+
       let loadedConfig = {};
       if (config) {
         const imported = await import(`./configurations/${config}`);
@@ -179,7 +197,7 @@ export const useOrbs = () => {
           dispatch,
           setViewState,
           orbState,
-          authTokens,
+          authToken,
           ...metadataConfig,
         });
       }
