@@ -179,6 +179,33 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
         [mapping[selectedType]]: datum[mapping[selectedType]],
       }));
 
+/**
+ * @param {object[]} data : actual data. data points are properties
+ * @param {object[]} targets : target data. array of objects
+ * @param {string} targetProperty : target property in targets objects to use
+ * @returns {object[]} : actual data, values replaced with percentages relative to target
+ */
+
+const computePercentages = (data, targets, targetProperty) => {
+  // we return the data in the same shape as data, but values are
+  // replaced with the percentage relative to the corresponding target
+  // for years where data is zero, or target is zero, or both, then we use null to
+  // prevent the chart from being misleading. This may result in gaps in the chart
+  let percentages = [];
+  if (!data || !targets) return null;
+  for (let key of data) {
+    const numerator = key[targetProperty];
+    const legend = key['year'];
+    const denominator = targets[legend] ?? null;
+    const pc =
+      numerator && numerator > 0 && denominator && denominator > 0
+        ? (numerator / denominator) * 100.0
+        : null;
+    percentages.push({ year: key['year'], [targetProperty]: pc });
+  }
+  return percentages;
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -188,4 +215,5 @@ export {
   getUser5YearTotals,
   getDataTimeline,
   filterByType,
+  computePercentages,
 };
