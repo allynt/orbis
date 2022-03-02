@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
 const RATIOS = {
-    legendContainer: 0.14,
+    legendContainer: 0.1,
     squareIconSize: 0.03,
     fontSize: 0.025,
     lineIconWidth: 0.06,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import {
   Grid,
@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectFilters: {
     width: 'fit-content',
+    marginLeft: 'auto',
   },
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
@@ -40,9 +41,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '15rem',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-child': {
-      marginRight: '1rem',
     },
   },
   charts: {
@@ -96,11 +94,14 @@ const TenureDataFilter = ({
         className={styles.select}
         disableUnderline
       >
-        {timeline?.map(year => (
-          <MenuItem key={year} value={year}>
-            {year}
-          </MenuItem>
-        ))}
+        {timeline?.map(year => {
+          const startYear = timeline[timeline.indexOf(year) - 4];
+          return !!startYear ? (
+            <MenuItem key={year} value={year}>
+              {startYear} - {year}
+            </MenuItem>
+          ) : null;
+        })}
       </Grid>
 
       <Grid
@@ -124,8 +125,7 @@ const TenureDataFilter = ({
 
 const getFilteredTimeline = (timeline, tenureYear) => {
   const index = timeline?.indexOf(tenureYear);
-  const startIndex = index < 5 ? 0 : index - 4;
-  return timeline?.slice(startIndex, index + 1);
+  return timeline?.slice(index - 4, index + 1);
 };
 
 // TODO: what type for (setDashboardSettings: function)?
@@ -197,11 +197,16 @@ export const WalthamHousingDelivery = ({
       ? getTargetTotals(targets)
       : targets?.[tenureType];
 
-  const dataByTenureType = filterByType(
-    tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)?.data,
-    tenureType,
-    ALL_TENURE_TYPES,
-    housingTenureTypes,
+  const dataByTenureType = useMemo(
+    () =>
+      filterByType(
+        tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)
+          ?.data,
+        tenureType,
+        ALL_TENURE_TYPES,
+        housingTenureTypes,
+      ),
+    [tenureDataType, tenureHousingDeliveryChartData, tenureType],
   );
 
   const timeline = getDataTimeline(dataByTenureType, processedTargets);

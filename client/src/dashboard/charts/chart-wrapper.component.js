@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
  * title: string
  * titleSize?: string
  * info?: string
- * headerComponent?: any
+ * headerComponent?: React.ReactNode
  * classes?: object
  * }} props
  */

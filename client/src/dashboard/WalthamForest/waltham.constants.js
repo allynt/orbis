@@ -53,14 +53,14 @@ export const walthamApiMetadata = [
     datasetName: 'TotalHousingDelivery',
     url: '/wfc/mock/total_housing_delivery/v1/',
   },
-  {
-    datasetName: 'DeliverableSupplySummary',
-    url: '/wfc/mock/deliverable_supply_summary/v1/',
-  },
-  {
-    datasetName: 'AffordableHousingDelivery',
-    url: '/wfc/mock/affordable_housing_delivery/v1',
-  },
+  // {
+  //   datasetName: 'DeliverableSupplySummary',
+  //   url: '/wfc/mock/deliverable_supply_summary/v1/',
+  // },
+  // {
+  //   datasetName: 'AffordableHousingDelivery',
+  //   url: '/wfc/mock/affordable_housing_delivery/v1',
+  // },
 ];
 
 export const targetDatasets = {

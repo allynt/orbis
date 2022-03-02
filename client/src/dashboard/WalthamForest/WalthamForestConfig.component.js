@@ -54,17 +54,12 @@ const useStyles = makeStyles(theme => ({
   planningProgression: {
     height: 'fit-content',
   },
-  barCharts: {
+  bottomChartContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     gap: '1rem',
   },
-  progression: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  housingDelivery: {
+  columnCharts: {
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
@@ -183,17 +178,26 @@ const WalthamForestDashboard = ({ sourceId }) => {
       </Grid>
 
       <div className={styles.content}>
-        {/* progress indicator charts */}
-        <div className={styles.progressIndicators}>
+        {/* <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
             targets={localTargets}
           />
-        </div>
+        </div> */}
 
-        <div className={styles.barCharts}>
-          <div className={styles.progression}>
+        <WalthamHousingDelivery
+          totalHousingDeliveryChartData={
+            totalHousingDelivery?.properties[0].data
+          }
+          tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
+          targets={localTargets}
+          settings={settings}
+          setDashboardSettings={setDashboardSettings}
+        />
+
+        {/* <div className={styles.bottomChartContainer}>
+          <div className={styles.columnCharts}>
             <ProgressionVsPlanningSchedule
               data={progressionVsPlanning}
               settings={settings}
@@ -201,29 +205,17 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
             <AffordableHousingDelivery data={affordableHousingDelivery} />
           </div>
-          <div className={styles.housingDelivery}>
-            {/* group/line and stack/line charts */}
-            <WalthamHousingDelivery
-              totalHousingDeliveryChartData={
-                totalHousingDelivery?.properties[0].data
-              }
-              tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
-              targets={localTargets}
-              settings={settings}
-              setDashboardSettings={setDashboardSettings}
-            />
-            {/* big multi-line chart */}
-            <HousingApprovalsComponent
-              x="Month"
-              xLabel="Year"
-              yLabel="No. Housing Approvals Granted"
-              ranges={['2019', '2020']}
-              data={approvalsGranted?.properties}
-              settings={settings}
-              setDashboardSettings={setDashboardSettings}
-            />
-          </div>
-        </div>
+
+          <HousingApprovalsComponent
+            x="Month"
+            xLabel="Year"
+            yLabel="No. Housing Approvals Granted"
+            ranges={['2019', '2020']}
+            data={approvalsGranted?.properties}
+            settings={settings}
+            setDashboardSettings={setDashboardSettings}
+          />
+        </div> */}
       </div>
 
       <Dialog
@@ -240,7 +232,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             <TargetScreen
               onAddTargetsClick={targets => handleAddTargetsClick(targets)}
               selectedDataset={selectedDataset}
-              targets={localTargets[selectedDataset]}
+              targets={localTargets?.[selectedDataset]}
             />
           ) : (
             <SelectScreen
