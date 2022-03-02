@@ -24,7 +24,6 @@ export const DEFAULT_HIGHLIGHT_COLOR = '#483D8B';
  */
 const geoJsonConfiguration = ({
   id,
-  activeSources,
   authToken,
   orbState,
   isFilled = true,
