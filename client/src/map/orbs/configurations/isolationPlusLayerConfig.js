@@ -68,7 +68,7 @@ const configuration = ({
   orbState,
   authToken,
 }) => {
-  let source = activeSources?.find(source => source.source_id === id);
+  const source = activeSources?.find(source => source.source_id === id);
   const other = otherSelector(SHARED_STATE_KEY)(orbState);
   const data = dataSelector(id)(orbState);
   const selectedProperty = get(other, 'property');
