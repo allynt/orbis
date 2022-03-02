@@ -16,6 +16,7 @@ import {
   getTargetTotals,
   filterByType,
 } from 'dashboard/WalthamForest/utils';
+import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 
 import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
@@ -41,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '15rem',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-child': {
+      marginRight: '1rem',
     },
   },
   charts: {
@@ -85,23 +89,12 @@ const TenureDataFilter = ({
       wrap="nowrap"
       className={styles.selectFilters}
     >
-      <Grid
-        item
-        component={Select}
-        value={tenureYear ?? ''}
-        onChange={({ target: { value } }) => handleYearRangeSelect(value)}
-        classes={{ root: styles.select }}
-        className={styles.select}
-        disableUnderline
-      >
-        {timeline?.map(year => {
-          const startYear = timeline[timeline.indexOf(year) - 4];
-          return !!startYear ? (
-            <MenuItem key={year} value={year}>
-              {startYear} - {year}
-            </MenuItem>
-          ) : null;
-        })}
+      <Grid item>
+        <WalthamCustomDateRange
+          timeline={timeline}
+          value={tenureYear}
+          onSelect={handleYearRangeSelect}
+        />
       </Grid>
 
       <Grid
@@ -123,8 +116,8 @@ const TenureDataFilter = ({
   );
 };
 
-const getFilteredTimeline = (timeline, tenureYear) => {
-  const index = timeline?.indexOf(tenureYear);
+const getFilteredTimeline = (timeline, selectedYear) => {
+  const index = timeline?.indexOf(selectedYear);
   return timeline?.slice(index - 4, index + 1);
 };
 
@@ -151,9 +144,25 @@ export const WalthamHousingDelivery = ({
     tenureType: settings?.tenureType ?? ALL_TENURE_TYPES,
     tenureDataType: settings?.tenureDataType ?? TENURE_DATA_TYPES.net,
     tenureYear: settings?.tenureYear ?? undefined,
+    totalYear: settings?.totalYear ?? undefined,
   });
 
-  const { tenureType, tenureDataType, tenureYear } = configuration;
+  const { tenureType, tenureDataType, tenureYear, totalYear } = configuration;
+
+  /**
+   * @param {object} newSettings
+   */
+  const updateDateFilter = newSettings => {
+    setConfiguration(prev => ({
+      ...prev,
+      ...newSettings,
+    }));
+
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, ...newSettings },
+    }));
+  };
 
   /**
    * @param {string} value
@@ -163,20 +172,6 @@ export const WalthamHousingDelivery = ({
     setDashboardSettings(prev => ({
       ...prev,
       settings: { ...prev.settings, tenureType: value },
-    }));
-  };
-
-  /**
-   * @param {string} value
-   */
-  const handleYearRangeSelect = value => {
-    setConfiguration(prev => ({
-      ...prev,
-      tenureYear: value,
-    }));
-    setDashboardSettings(prev => ({
-      ...prev,
-      settings: { ...prev.settings, tenureYear: value },
     }));
   };
 
@@ -209,25 +204,31 @@ export const WalthamHousingDelivery = ({
     [tenureDataType, tenureHousingDeliveryChartData, tenureType],
   );
 
-  const timeline = getDataTimeline(dataByTenureType, processedTargets);
+  const totalTimeline = getDataTimeline(
+      totalHousingDeliveryChartData,
+      targets?.totalHousing,
+    ),
+    tenureTimeline = getDataTimeline(dataByTenureType, processedTargets);
 
+  // setup/error catch for total chart
   useEffect(() => {
-    // abort if timeline has not been built or selected year is valid
-    if (!timeline || timeline.includes(tenureYear)) return;
+    if (!totalTimeline || totalTimeline.includes(totalYear)) {
+      return;
+    } else {
+      updateDateFilter({ totalYear: totalTimeline[totalTimeline.length - 1] });
+    }
+  }, [totalYear, totalTimeline]);
 
-    // otherwise reset date range selector
-    const defaultYear = timeline[timeline.length - 1];
-
-    setConfiguration(prev => ({
-      ...prev,
-      tenureYear: defaultYear,
-    }));
-
-    setDashboardSettings(prev => ({
-      ...prev,
-      settings: { ...prev.settings, tenureYear: defaultYear },
-    }));
-  }, [tenureYear, timeline, settings, setDashboardSettings]);
+  // setup/error catch for tenure chart
+  useEffect(() => {
+    if (!tenureTimeline || tenureTimeline.includes(tenureYear)) {
+      return;
+    } else {
+      updateDateFilter({
+        tenureYear: tenureTimeline[tenureTimeline.length - 1],
+      });
+    }
+  }, [tenureYear, tenureTimeline]);
 
   return (
     <Grid container direction="column" className={styles.container}>
@@ -247,6 +248,13 @@ export const WalthamHousingDelivery = ({
         <ChartWrapper
           title="Total Housing Delivery"
           info="This is a test description"
+          headerComponent={
+            <WalthamCustomDateRange
+              timeline={getFilteredTimeline(totalTimeline, totalYear)}
+              value={totalYear}
+              onSelect={value => updateDateFilter({ totalYear: value })}
+            />
+          }
         >
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
@@ -259,11 +267,13 @@ export const WalthamHousingDelivery = ({
           info="This is a test description"
           headerComponent={
             <TenureDataFilter
-              timeline={timeline}
+              timeline={tenureTimeline}
               tenureYear={tenureYear}
               tenureType={tenureType}
               housingTenureTypes={housingTenureTypes}
-              handleYearRangeSelect={handleYearRangeSelect}
+              handleYearRangeSelect={value =>
+                updateDateFilter({ tenureYear: value })
+              }
               handleTenureTypeSelect={handleTenureTypeSelect}
             />
           }
@@ -283,14 +293,14 @@ export const WalthamHousingDelivery = ({
             </ToggleButton>
           </ToggleButtonGroup>
 
-          {timeline?.includes(tenureYear) ? (
+          {tenureTimeline?.includes(tenureYear) ? (
             <TenureHousingMultiChart
               apiData={dataByTenureType}
               userTargetData={processedTargets}
               tenureType={
                 tenureType !== ALL_TENURE_TYPES ? tenureType : undefined
               }
-              filteredTimeline={getFilteredTimeline(timeline, tenureYear)}
+              filteredTimeline={getFilteredTimeline(tenureTimeline, tenureYear)}
             />
           ) : null}
         </ChartWrapper>
