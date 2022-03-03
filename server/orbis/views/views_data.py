@@ -140,6 +140,24 @@ class DataSourceView(APIView):
 
     permission_classes = [IsAuthenticated]
 
+    @classmethod
+    def reshape_data_tokens(cls, user, data_scopes):
+        """
+        Rather than return a single JWT for every data_scope,
+        returns a dictionary of separate JWTs for each data_scope.
+        """
+        verb, scope_ids = zip(*data_scopes.items())
+        return {
+            scope_id: generate_data_token(
+                user,
+                data_scopes={
+                    k: [scope_id] if scope_id in v else []
+                    for k, v in zip(verb, scope_ids)
+                }
+            )
+            for scope_id in set(chain.from_iterable(scope_ids))
+        }  # yapf: disable
+
     @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
     def get(self, request, format=None):
         """
@@ -237,17 +255,10 @@ class DataSourceView(APIView):
         data_sources += stored_data_source_serializer.data
 
         return Response({
-            "tokens": {
-                # reshape the data_tokens used in the response
-                data_scope: generate_data_token(
-                    user,
-                    data_scopes={
-                        k: [data_scope] if data_scope in v else []
-                        for k, v in data_scopes.items()
-                    }
-                )
-                for data_scope in set(chain.from_iterable(data_scopes.values()))
-            },
+            "tokens": self.reshape_data_tokens(
+                user,
+                data_scopes,
+            ),
             "timeout": data_token_timeout,
             "sources": data_sources,
-        })  # yapf: disable
+        })
