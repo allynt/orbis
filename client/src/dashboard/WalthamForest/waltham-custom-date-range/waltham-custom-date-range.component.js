@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
  *  timeline: string[]
  *  value: string
  *  onSelect: (value: string) => void
- *  range: number
+ *  range?: number
  * }} props
  */
 const WalthamCustomDateRange = ({ timeline, value, onSelect, range = 4 }) => {

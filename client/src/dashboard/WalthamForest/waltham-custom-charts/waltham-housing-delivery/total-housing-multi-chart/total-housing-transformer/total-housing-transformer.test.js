@@ -1,12 +1,5 @@
 import { totalHousingTransformer } from './total-housing-transformer';
 
-const padArray = [
-  { x: '2011-2012', y: null },
-  { x: '2012-2013', y: null },
-  { x: '2013-2014', y: null },
-  { x: '2014-2015', y: null },
-];
-
 const dataArray = [
   {
     title: 'transforms API and target data into correct data shape',
@@ -26,10 +19,17 @@ const dataArray = [
       '2015-2016': '181',
       '2016-2017': '155',
     },
+    filteredTimeline: ['2015-2016', '2016-2017'],
     expected: {
       transformedData: [
-        [...padArray, { x: '2015-2016', y: 123 }, { x: '2016-2017', y: 789 }],
-        [...padArray, { x: '2015-2016', y: 456 }, { x: '2016-2017', y: 101 }],
+        [
+          { x: '2015-2016', y: 123 },
+          { x: '2016-2017', y: 789 },
+        ],
+        [
+          { x: '2015-2016', y: 456 },
+          { x: '2016-2017', y: 101 },
+        ],
       ],
       transformedTargets: [
         { x: '2015-2016', y: 181 },
@@ -56,16 +56,15 @@ const dataArray = [
       '2016-2017': '191',
       '2017-2018': '181',
     },
+    filteredTimeline: ['2015-2016', '2016-2017', '2017-2018'],
     expected: {
       transformedData: [
         [
-          ...padArray,
           { x: '2015-2016', y: 123 },
           { x: '2016-2017', y: null },
           { x: '2017-2018', y: 456 },
         ],
         [
-          ...padArray,
           { x: '2015-2016', y: 456 },
           { x: '2016-2017', y: null },
           { x: '2017-2018', y: 789 },
@@ -91,16 +90,15 @@ const dataArray = [
       '2015-2016': '191',
       '2017-2018': '254',
     },
+    filteredTimeline: ['2015-2016', '2016-2017', '2017-2018'],
     expected: {
       transformedData: [
         [
-          ...padArray,
           { x: '2015-2016', y: null },
           { x: '2016-2017', y: 123 },
           { x: '2017-2018', y: null },
         ],
         [
-          ...padArray,
           { x: '2015-2016', y: null },
           { x: '2016-2017', y: 456 },
           { x: '2017-2018', y: null },
@@ -127,10 +125,17 @@ const dataArray = [
       },
     ],
     targets: undefined,
+    filteredTimeline: ['2015-2016', '2016-2017'],
     expected: {
       transformedData: [
-        [...padArray, { x: '2015-2016', y: 123 }, { x: '2016-2017', y: 789 }],
-        [...padArray, { x: '2015-2016', y: 456 }, { x: '2016-2017', y: 101 }],
+        [
+          { x: '2015-2016', y: 123 },
+          { x: '2016-2017', y: 789 },
+        ],
+        [
+          { x: '2015-2016', y: 456 },
+          { x: '2016-2017', y: 101 },
+        ],
       ],
       transformedTargets: null,
     },
@@ -150,10 +155,17 @@ const dataArray = [
       },
     ],
     targets: {},
+    filteredTimeline: ['2015-2016', '2016-2017'],
     expected: {
       transformedData: [
-        [...padArray, { x: '2015-2016', y: 123 }, { x: '2016-2017', y: 789 }],
-        [...padArray, { x: '2015-2016', y: 456 }, { x: '2016-2017', y: 101 }],
+        [
+          { x: '2015-2016', y: 123 },
+          { x: '2016-2017', y: 789 },
+        ],
+        [
+          { x: '2015-2016', y: 456 },
+          { x: '2016-2017', y: 101 },
+        ],
       ],
       transformedTargets: null,
     },
@@ -162,14 +174,15 @@ const dataArray = [
     title: 'returns undefined if data is not present',
     data: undefined,
     targets: undefined,
+    filteredTimeline: [],
     expected: undefined,
   },
 ];
 
 describe('totalHousingTransformer', () => {
-  dataArray.forEach(({ title, data, targets, expected }) =>
+  dataArray.forEach(({ title, data, targets, filteredTimeline, expected }) =>
     it(title, () => {
-      const result = totalHousingTransformer(data, targets);
+      const result = totalHousingTransformer(data, targets, filteredTimeline);
       expect(result).toEqual(expected);
     }),
   );

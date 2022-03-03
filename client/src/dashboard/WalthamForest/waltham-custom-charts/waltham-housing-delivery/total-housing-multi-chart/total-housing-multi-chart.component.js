@@ -22,14 +22,25 @@ import {
 
 import { totalHousingTransformer } from './total-housing-transformer/total-housing-transformer';
 
-const TotalHousingMultiChart = ({ apiData, userTargetData }) => {
+/**
+ * @param {{
+ *  apiData: object[]
+ *  userTargetData: object[]
+ *  filteredTimeline: string[]
+ * }} props
+ */
+const TotalHousingMultiChart = ({
+  apiData,
+  userTargetData,
+  filteredTimeline,
+}) => {
   const { walthamChartColors } = useChartTheme();
 
   // Transform API/target data to correct data shape, and create a
   // reliable timeline form earliest total year -> latest API data year
   const transformerOutput = useMemo(
-    () => totalHousingTransformer(apiData, userTargetData),
-    [apiData, userTargetData],
+    () => totalHousingTransformer(apiData, userTargetData, filteredTimeline),
+    [apiData, userTargetData, filteredTimeline],
   );
 
   if (!transformerOutput) return null;

@@ -248,7 +248,7 @@ export const WalthamHousingDelivery = ({
           info="This is a test description"
           headerComponent={
             <WalthamCustomDateRange
-              timeline={getFilteredTimeline(totalTimeline, totalYear)}
+              timeline={totalTimeline}
               value={totalYear}
               onSelect={value => updateDateFilter({ totalYear: value })}
             />
@@ -257,6 +257,7 @@ export const WalthamHousingDelivery = ({
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
             userTargetData={targets?.totalHousing}
+            filteredTimeline={getFilteredTimeline(totalTimeline, totalYear)}
           />
         </ChartWrapper>
 
