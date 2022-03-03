@@ -7,26 +7,35 @@ const useStyles = makeStyles(theme => ({
     border: `1.5px solid ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
     maxWidth: '15rem',
+    marginLeft: 'auto',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
     },
   },
 }));
 
-const WalthamCustomDateRange = ({ timeline, value, onSelect }) => {
+/**
+ * @param {{
+ *  timeline: string[]
+ *  value: string
+ *  onSelect: (value: string) => void
+ *  range: number
+ * }} props
+ */
+const WalthamCustomDateRange = ({ timeline, value, onSelect, range = 4 }) => {
   const styles = useStyles({});
   return (
     <Select
       value={value ?? ''}
       onChange={({ target: { value } }) => onSelect(value)}
-      classes={{ root: styles.select }}
+      className={styles.select}
       disableUnderline
     >
       {timeline?.map(year => {
-        const startYear = timeline[timeline.indexOf(year) - 4];
+        const startYear = timeline[timeline.indexOf(year) - range];
         return !!startYear ? (
           <MenuItem key={year} value={year}>
-            {timeline[timeline.indexOf(year) - 4]} - {year}
+            {startYear} - {year}
           </MenuItem>
         ) : null;
       })}

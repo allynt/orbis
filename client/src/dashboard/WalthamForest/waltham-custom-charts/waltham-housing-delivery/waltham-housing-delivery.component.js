@@ -35,9 +35,7 @@ const useStyles = makeStyles(theme => ({
   selectFilters: {
     width: 'fit-content',
     marginLeft: 'auto',
-    '&:first-child': {
-      marginRight: '1rem',
-    },
+    gap: '1rem',
   },
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,

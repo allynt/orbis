@@ -178,13 +178,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
       </Grid>
 
       <div className={styles.content}>
-        {/* <div className={styles.progressIndicators}>
+        <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
             targets={localTargets}
           />
-        </div> */}
+        </div>
 
         <WalthamHousingDelivery
           totalHousingDeliveryChartData={
@@ -196,7 +196,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           setDashboardSettings={setDashboardSettings}
         />
 
-        {/* <div className={styles.bottomChartContainer}>
+        <div className={styles.bottomChartContainer}>
           <div className={styles.columnCharts}>
             <ProgressionVsPlanningSchedule
               data={progressionVsPlanning}
@@ -215,7 +215,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             settings={settings}
             setDashboardSettings={setDashboardSettings}
           />
-        </div> */}
+        </div>
       </div>
 
       <Dialog
