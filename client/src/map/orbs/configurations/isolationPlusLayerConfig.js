@@ -276,7 +276,6 @@ const configuration = ({
   return {
     id,
     data: data[0],
-    authToken,
     visible: !!source && selectedProperty.source_id === id,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,

@@ -16,7 +16,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @typedef DataState
  * @property {import('typings').Source['source_id'][]} layers
  * @property {number} pollingPeriod
- * @property {string} [token]
+ * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
  * @property {any} [error]
  * @property {import('typings').Orb[]} [orbs]
@@ -29,7 +29,7 @@ const name = 'data';
 const initialState = {
   layers: [],
   pollingPeriod: 30000,
-  token: null,
+  tokens: null,
   sources: null,
   error: null,
   requests: {},
@@ -248,9 +248,9 @@ const dataSlice = createSlice({
       .addCase(fetchSources.fulfilled, (state, { payload }) => {
         // Convert from minutes to millliseconds and then half the value.
         // This will ensure we update the token before it expires.
-        const { sources, token, timeout } = payload;
+        const { sources, tokens, timeout } = payload;
         const timeoutInMilliseconds = (timeout * 60 * 1000) / 2;
-        state.token = token;
+        state.tokens = tokens;
         state.sources = sources;
         state.pollingPeriod = timeoutInMilliseconds;
         state.requests = {
@@ -297,7 +297,7 @@ const baseSelector = state => state?.data;
 
 export const selectDataToken = createSelector(
   baseSelector,
-  state => state?.token ?? '',
+  state => state?.tokens ?? null,
 );
 
 export const dataSourcesSelector = createSelector(

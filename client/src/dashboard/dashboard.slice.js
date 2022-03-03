@@ -8,6 +8,7 @@ import { NotificationManager } from 'react-notifications';
 import { userSelector } from 'accounts/accounts.selectors';
 import { updateUser } from 'accounts/accounts.slice';
 import apiClient from 'api-client';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 const name = 'dashboard';
 
@@ -37,14 +38,17 @@ export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
   async (props, { getState, rejectWithValue, dispatch }) => {
     // @ts-ignore
-    const { sourceId, datasetName, url } = props;
+    const { sourceId, datasetName, url, apiSourceId } = props;
     const {
-      data: { token },
+      data: { tokens },
     } = getState();
+    const authToken = getAuthTokenForSource(tokens, {
+      source_id: apiSourceId,
+    });
 
     try {
       const data = await apiClient.dashboard.getDashboardData(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       dispatch(setChartData({ sourceId, datasetName, data }));
