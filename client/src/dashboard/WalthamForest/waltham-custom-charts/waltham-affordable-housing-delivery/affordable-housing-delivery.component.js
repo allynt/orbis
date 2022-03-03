@@ -6,7 +6,10 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
-import { computePercentages } from 'dashboard/WalthamForest/utils';
+import {
+  computePercentages,
+  getLastNYearRange,
+} from 'dashboard/WalthamForest/utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
@@ -22,6 +25,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   const { walthamChartColors } = useChartTheme();
 
   const actualData = data?.properties[0]?.data; // API data
+  const chartTitle = `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`;
 
   let percentageData = computePercentages(
     actualData,
@@ -81,7 +85,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   if (gotNoData) {
     return (
       <ChartWrapper
-        title="Affordable Housing Delivery 2018 - 2023 (%)"
+        title={chartTitle}
         info="This shows the % of affordable housing delivered each year"
       >
         <h4>No target data for specified time period</h4>
@@ -90,7 +94,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   } else {
     return (
       <ChartWrapper
-        title="Affordable Housing Delivery 2018 - 2023 (%)"
+        title={chartTitle}
         info="This shows the % of affordable housing delivered each year"
       >
         <BaseChart

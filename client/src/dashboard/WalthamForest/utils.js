@@ -206,6 +206,16 @@ const computePercentages = (data, targets, targetProperty) => {
   return percentages;
 };
 
+/**
+ * Return label for last N years
+ * e.g. for N=5 in 2022, return 2018-2023
+ * @param {*} numberOfYears
+ */
+const getLastNYearRange = (numberOfYears = 5) => {
+  const thisYear = parseInt(new Date().getFullYear());
+  return `${thisYear + 1 - numberOfYears} - ${thisYear + 1}`;
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -216,4 +226,5 @@ export {
   getDataTimeline,
   filterByType,
   computePercentages,
+  getLastNYearRange,
 };
