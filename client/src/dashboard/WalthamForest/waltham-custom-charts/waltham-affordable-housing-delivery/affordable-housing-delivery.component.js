@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ParentSize } from '@visx/responsive';
 import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
@@ -82,30 +83,27 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
     );
   };
 
-  if (gotNoData) {
-    return (
-      <ChartWrapper
-        title={chartTitle}
-        info="This shows the % of affordable housing delivered each year"
-      >
-        <h4>No target data for specified time period</h4>
-      </ChartWrapper>
-    );
-  } else {
-    return (
-      <ChartWrapper
-        title={chartTitle}
-        info="This shows the % of affordable housing delivered each year"
-      >
+  return (
+    <ChartWrapper
+      title={chartTitle}
+      info="This shows the % of affordable housing delivered each year"
+      style={{ height: '370px' }}
+    >
+      {gotNoData ? (
+        <ParentSize>
+          {({ width, height }) => (
+            <h4>Please enter affordable housing delivery % targets</h4>
+          )}
+        </ParentSize>
+      ) : (
         <BaseChart
           yLabel="Affordable Housing %"
           xLabel="Year"
           renderChart={renderLineChart}
           renderLegend={renderAffordableHousingDeliveryLegend}
         />
-      </ChartWrapper>
-    );
-  }
+      )}
+    </ChartWrapper>
+  );
 };
-
 export { AffordableHousingDelivery };
