@@ -6,6 +6,7 @@ import {
   getPastYears,
   getUser5YearTotals,
   getDataTimeline,
+  getFilteredTimeline,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -379,6 +380,34 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = getDataTimeline(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getFilteredTimeline', () => {
+    it('filters the timeline to 5 year slice by default', () => {
+      const timeline = ['1', '2', '3', '4', '5', '6', '7'],
+        selectedYear = '7',
+        expected = ['3', '4', '5', '6', '7'];
+
+      const result = getFilteredTimeline(timeline, selectedYear);
+
+      expect(result).toEqual(expected);
+    });
+
+    it('filters timeline by specific range if arg passed', () => {
+      const timeline = ['1', '2', '3', '4', '5', '6', '7'],
+        selectedYear = '7',
+        expected = ['5', '6', '7'];
+
+      const result = getFilteredTimeline(timeline, selectedYear, 2);
+
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if no timeline or selected year', () => {
+      const result = getFilteredTimeline(undefined, undefined);
+
       expect(result).toBeUndefined();
     });
   });

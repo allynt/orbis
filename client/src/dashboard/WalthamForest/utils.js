@@ -1,4 +1,4 @@
-import { LAST_5_YEARS } from './waltham.constants';
+import { LAST_5_YEARS, WALTHAM_YEAR_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -132,7 +132,7 @@ const getUser5YearTotals = obj => {
  * @param {number} pad
  * @returns {string[]}
  */
-const getDataTimeline = (apiData, targets = {}, pad = 4) => {
+const getDataTimeline = (apiData, targets = {}, pad = WALTHAM_YEAR_RANGE) => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
@@ -180,6 +180,21 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
         [mapping[selectedType]]: datum[mapping[selectedType]],
       }));
 
+/**
+ * @param {string[]} timeline
+ * @param {string} selectedYear
+ * @param {number} range
+ * @returns {string[]}
+ */
+const getFilteredTimeline = (
+  timeline,
+  selectedYear,
+  range = WALTHAM_YEAR_RANGE,
+) => {
+  const index = timeline?.indexOf(selectedYear);
+  return timeline?.slice(index - range, index + 1);
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -189,4 +204,5 @@ export {
   getUser5YearTotals,
   getDataTimeline,
   filterByType,
+  getFilteredTimeline,
 };

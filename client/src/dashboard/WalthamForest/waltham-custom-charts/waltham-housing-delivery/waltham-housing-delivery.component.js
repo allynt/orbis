@@ -15,6 +15,7 @@ import {
   getDataTimeline,
   getTargetTotals,
   filterByType,
+  getFilteredTimeline,
 } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 
@@ -112,11 +113,6 @@ const TenureDataFilter = ({
       </Grid>
     </Grid>
   );
-};
-
-const getFilteredTimeline = (timeline, selectedYear) => {
-  const index = timeline?.indexOf(selectedYear);
-  return timeline?.slice(index - 4, index + 1);
 };
 
 // TODO: what type for (setDashboardSettings: function)?

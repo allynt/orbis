@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Select, MenuItem, makeStyles } from '@astrosat/astrosat-ui';
 
+import { WALTHAM_YEAR_RANGE } from 'dashboard/WalthamForest/waltham.constants';
+
 const useStyles = makeStyles(theme => ({
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
@@ -22,7 +24,12 @@ const useStyles = makeStyles(theme => ({
  *  range?: number
  * }} props
  */
-const WalthamCustomDateRange = ({ timeline, value, onSelect, range = 4 }) => {
+const WalthamCustomDateRange = ({
+  timeline,
+  value,
+  onSelect,
+  range = WALTHAM_YEAR_RANGE,
+}) => {
   const styles = useStyles({});
   return (
     <Select
