@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   selectFilters: {
     width: 'fit-content',
     marginLeft: 'auto',
+    '&:first-child': {
+      marginRight: '1rem',
+    },
   },
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
@@ -42,9 +45,6 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '15rem',
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-child': {
-      marginRight: '1rem',
     },
   },
   charts: {
@@ -102,7 +102,7 @@ const TenureDataFilter = ({
         component={Select}
         value={tenureType}
         onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
-        classes={{ root: styles.select }}
+        className={styles.select}
         disableUnderline
       >
         <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>

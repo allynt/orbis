@@ -129,9 +129,10 @@ const getUser5YearTotals = obj => {
  * latest year in the api data, as was requested.
  * @param {object[]} apiData
  * @param {object} targets
+ * @param {number} pad
  * @returns {string[]}
  */
-const getDataTimeline = (apiData, targets = {}) => {
+const getDataTimeline = (apiData, targets = {}, pad = 4) => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
@@ -157,7 +158,7 @@ const getDataTimeline = (apiData, targets = {}) => {
   const max = Math.max(...allYears); // show newest year from both datasets
 
   let timeline = [];
-  for (let i = min; i <= max; i++) {
+  for (let i = min - pad; i <= max; i++) {
     timeline = [...timeline, `${i}-${i + 1}`];
   }
 

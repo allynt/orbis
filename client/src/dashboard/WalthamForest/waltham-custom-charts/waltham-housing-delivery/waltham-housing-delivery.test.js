@@ -51,7 +51,9 @@ describe('WalthamHousingDelivery', () => {
       const { getByRole } = render(<WalthamHousingDelivery {...defaultData} />);
 
       expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(1);
-      expect(getByRole('button', { name: '2016-2017' })).toBeInTheDocument();
+      expect(
+        getByRole('button', { name: '2012-2013 - 2016-2017' }),
+      ).toBeInTheDocument();
 
       expect(
         getByRole('button', { name: 'All Tenure Types' }),
@@ -73,7 +75,9 @@ describe('WalthamHousingDelivery', () => {
 
       expect(defaultData.setDashboardSettings).not.toHaveBeenCalled();
 
-      expect(getByRole('button', { name: '2015-2016' })).toBeInTheDocument();
+      expect(
+        getByRole('button', { name: '2011-2012 - 2015-2016' }),
+      ).toBeInTheDocument();
       expect(
         getByRole('button', { name: 'Social Rented' }),
       ).toBeInTheDocument();
@@ -102,7 +106,7 @@ describe('WalthamHousingDelivery', () => {
 
       // will update once as usual, then again to correct itself if invalid.
       expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(2);
-      expect(getByText('2016-2017')).toBeInTheDocument();
+      expect(getByText('2012-2013 - 2016-2017')).toBeInTheDocument();
     });
 
     it('calls setDashboardSettings function when filters are changed', () => {

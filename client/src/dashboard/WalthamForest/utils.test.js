@@ -339,7 +339,7 @@ describe('Waltham Forest Data Transformers', () => {
       const data = [{ Year: '2010-2011' }, { Year: '2012-2013' }],
         expected = ['2010-2011', '2011-2012', '2012-2013'];
 
-      const result = getDataTimeline(data);
+      const result = getDataTimeline(data, undefined, 0);
       expect(result).toEqual(expected);
     });
 
@@ -351,7 +351,29 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = ['2009-2010', '2010-2011', '2011-2012', '2012-2013'];
 
-      const result = getDataTimeline(data, targets);
+      const result = getDataTimeline(data, targets, 0);
+      expect(result).toEqual(expected);
+    });
+
+    it('default pads with 4 extra years', () => {
+      const data = [{ Year: '2013-2014' }],
+        expected = [
+          '2009-2010',
+          '2010-2011',
+          '2011-2012',
+          '2012-2013',
+          '2013-2014',
+        ];
+
+      const result = getDataTimeline(data);
+      expect(result).toEqual(expected);
+    });
+
+    it('pads with specified extra years when arg passed', () => {
+      const data = [{ Year: '2013-2014' }],
+        expected = ['2011-2012', '2012-2013', '2013-2014'];
+
+      const result = getDataTimeline(data, undefined, 2);
       expect(result).toEqual(expected);
     });
 

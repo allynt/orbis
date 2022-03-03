@@ -10,9 +10,6 @@ const useStyles = makeStyles(theme => ({
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
     },
-    '&:first-child': {
-      marginRight: '1rem',
-    },
   },
 }));
 
@@ -22,14 +19,14 @@ const WalthamCustomDateRange = ({ timeline, value, onSelect }) => {
     <Select
       value={value ?? ''}
       onChange={({ target: { value } }) => onSelect(value)}
-      classes={{ select: styles.select }}
+      classes={{ root: styles.select }}
       disableUnderline
     >
       {timeline?.map(year => {
         const startYear = timeline[timeline.indexOf(year) - 4];
         return !!startYear ? (
           <MenuItem key={year} value={year}>
-            {startYear} - {year}
+            {timeline[timeline.indexOf(year) - 4]} - {year}
           </MenuItem>
         ) : null;
       })}
