@@ -40,7 +40,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   let totalsArray = labelsForArrayOfObjectsInclusive(
     percentageData,
     ['Affordable Housing'],
-    item => `${item.toFixed(2)}%`,
+    item => `${Math.round(item)}%`,
   );
 
   const apiLegendData = [
