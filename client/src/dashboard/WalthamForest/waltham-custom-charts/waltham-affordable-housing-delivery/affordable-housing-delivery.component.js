@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ParentSize } from '@visx/responsive';
+import { Grid } from '@astrosat/astrosat-ui';
+
 import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
@@ -51,9 +52,11 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   ];
 
   const renderLineChart = width => {
-    if (!actualData || !percentageData) return null;
-    const y_values = percentageData.map(item => item['Affordable Housing']);
-    const y_max = Math.max(...y_values);
+    if (!percentageData) return null;
+    //const y_values = percentageData.map(item => item['Affordable Housing']);
+    const y_max = Math.max(
+      ...percentageData.map(item => item['Affordable Housing']),
+    );
     const props = {
       data: percentageData,
       x: 'year',
@@ -90,11 +93,14 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
       style={{ height: '370px' }}
     >
       {gotNoData ? (
-        <ParentSize>
-          {({ width, height }) => (
-            <h4>Please enter affordable housing delivery % targets</h4>
-          )}
-        </ParentSize>
+        <Grid
+          item
+          justifyContent="space-around"
+          alignItems="center"
+          style={{ height: '60%' }}
+        >
+          <h4>Please enter affordable housing delivery % targets</h4>
+        </Grid>
       ) : (
         <BaseChart
           yLabel="Affordable Housing %"
