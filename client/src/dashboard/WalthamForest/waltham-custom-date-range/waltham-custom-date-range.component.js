@@ -2,9 +2,13 @@ import React from 'react';
 
 import { Select, MenuItem, makeStyles } from '@astrosat/astrosat-ui';
 
-import { WALTHAM_YEAR_RANGE } from 'dashboard/WalthamForest/waltham.constants';
+import { WALTHAM_FILTER_RANGE } from 'dashboard/WalthamForest/waltham.constants';
 
-const useStyles = makeStyles(theme => ({
+const useWalthamSelectStyles = makeStyles(theme => ({
+  root: {
+    padding: '0.5rem',
+    width: '10rem',
+  },
   select: {
     border: `1.5px solid ${theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius,
@@ -28,14 +32,15 @@ const WalthamCustomDateRange = ({
   timeline,
   value,
   onSelect,
-  range = WALTHAM_YEAR_RANGE,
+  range = WALTHAM_FILTER_RANGE,
 }) => {
-  const styles = useStyles({});
+  const styles = useWalthamSelectStyles({});
   return (
     <Select
       value={value ?? ''}
       onChange={({ target: { value } }) => onSelect(value)}
-      className={styles.select}
+      // className={styles.select}
+      classes={{ root: styles.root, select: styles.select }}
       disableUnderline
     >
       {timeline?.map(year => {
@@ -50,4 +55,4 @@ const WalthamCustomDateRange = ({
   );
 };
 
-export { WalthamCustomDateRange };
+export { WalthamCustomDateRange, useWalthamSelectStyles };

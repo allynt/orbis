@@ -17,6 +17,9 @@ import { HOUSING_APPROVAL_DATA_TYPES } from 'dashboard/WalthamForest/waltham.con
 
 import { lineDataTransformer } from '../../utils';
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    height: 'fit-content',
+  },
   toggleButtonGroup: {
     width: '40%',
     marginLeft: '60%',
@@ -109,6 +112,7 @@ const HousingApprovalsComponent = ({
     <ChartWrapper
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
+      classes={{ paper: styles.wrapper }}
     >
       <ToggleButtonGroup
         size="small"

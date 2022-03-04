@@ -10,6 +10,7 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
 import { filterByType } from 'dashboard/WalthamForest/utils';
+import { useWalthamSelectStyles } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   progressionVsPlanningTypes,
@@ -24,6 +25,11 @@ const ProgressionVsPlanningSchedule = ({
   setDashboardSettings,
 }) => {
   const chartTheme = useChartTheme();
+
+  // this can be moved into component when renderProps funcs are
+  // converted to children components (hooks must be in components)
+  // can possibly also use `width` param to adjust responsive size
+  const { root, select } = useWalthamSelectStyles({});
 
   const [configuration, setConfiguration] = useState(
     settings?.affordableHousingType ?? ALL_TYPES,
@@ -64,36 +70,34 @@ const ProgressionVsPlanningSchedule = ({
     setConfiguration(value);
   };
 
-  const renderTenureHousingLegend = width => {
-    return (
-      <Grid
-        container
-        style={{
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Grid item>
-          <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
-        </Grid>
-        <Grid item style={updatedTheme.pulldownmenu}>
-          <Select
-            value={configuration}
-            onChange={({ target: { value } }) => handleTypeSelect(value)}
-          >
-            <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
-            {Object.entries(progressionVsPlanningOptions).map(
-              ([key, value]) => (
-                <MenuItem key={key} value={key}>
-                  {value}
-                </MenuItem>
-              ),
-            )}
-          </Select>
-        </Grid>
+  const renderTenureHousingLegend = width => (
+    <Grid
+      container
+      style={{
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Grid item>
+        <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
       </Grid>
-    );
-  };
+      <Grid item style={updatedTheme.pulldownmenu}>
+        <Select
+          value={configuration}
+          onChange={({ target: { value } }) => handleTypeSelect(value)}
+          classes={{ root, select }}
+          disableUnderline
+        >
+          <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
+          {Object.entries(progressionVsPlanningOptions).map(([key, value]) => (
+            <MenuItem key={key} value={key}>
+              {value}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+    </Grid>
+  );
 
   const renderStackedBarChart = width => {
     const barWidth = width / 20;

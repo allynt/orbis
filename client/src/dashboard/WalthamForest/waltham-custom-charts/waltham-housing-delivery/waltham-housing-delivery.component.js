@@ -17,7 +17,10 @@ import {
   filterByType,
   getFilteredTimeline,
 } from 'dashboard/WalthamForest/utils';
-import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
+import {
+  WalthamCustomDateRange,
+  useWalthamSelectStyles,
+} from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 
 import { housingTenureTypes, TENURE_DATA_TYPES } from '../../waltham.constants';
 import { TenureHousingMultiChart } from './tenure-housing-multi-chart/tenure-housing-multi-chart.component';
@@ -35,16 +38,8 @@ const useStyles = makeStyles(theme => ({
   },
   selectFilters: {
     width: 'fit-content',
-    marginLeft: 'auto',
+    margin: '0 0 1rem auto',
     gap: '1rem',
-  },
-  select: {
-    border: `1.5px solid ${theme.palette.primary.main}`,
-    borderRadius: theme.shape.borderRadius,
-    maxWidth: '15rem',
-    '&:focus': {
-      borderRadius: theme.shape.borderRadius,
-    },
   },
   charts: {
     display: 'flex',
@@ -60,6 +55,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ALL_TENURE_TYPES = 'All Tenure Types';
+
+// TODO: toggle buttons are disabled and initialisation of Gross/Net in state is hardcoded to 'Gross' for now, because mock data contained Gross/Net data, but API does not. This may be re-instated in the future, so commenting out is better than removing only to code again later.
 
 /**
  * @param {{
@@ -80,6 +77,7 @@ const TenureDataFilter = ({
   handleTenureTypeSelect,
 }) => {
   const styles = useStyles();
+  const { root, select } = useWalthamSelectStyles({});
   return (
     <Grid
       container
@@ -89,33 +87,32 @@ const TenureDataFilter = ({
       className={styles.selectFilters}
     >
       <Grid item>
+        <Select
+          value={tenureType}
+          onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
+          classes={{ root, select }}
+          disableUnderline
+        >
+          <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
+          {Object.entries(housingTenureTypes).map(([key, value]) => (
+            <MenuItem key={key} value={key}>
+              {value}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+
+      <Grid item>
         <WalthamCustomDateRange
           timeline={timeline}
           value={tenureYear}
           onSelect={handleYearRangeSelect}
         />
       </Grid>
-
-      <Grid
-        item
-        component={Select}
-        value={tenureType}
-        onChange={({ target: { value } }) => handleTenureTypeSelect(value)}
-        className={styles.select}
-        disableUnderline
-      >
-        <MenuItem value={ALL_TENURE_TYPES}>{ALL_TENURE_TYPES}</MenuItem>
-        {Object.entries(housingTenureTypes).map(([key, value]) => (
-          <MenuItem key={key} value={key}>
-            {value}
-          </MenuItem>
-        ))}
-      </Grid>
     </Grid>
   );
 };
 
-// TODO: what type for (setDashboardSettings: function)?
 /**
  * @param {{
  *  totalHousingDeliveryChartData: object[]
@@ -136,7 +133,7 @@ export const WalthamHousingDelivery = ({
 
   const [configuration, setConfiguration] = useState({
     tenureType: settings?.tenureType ?? ALL_TENURE_TYPES,
-    tenureDataType: settings?.tenureDataType ?? TENURE_DATA_TYPES.net,
+    tenureDataType: TENURE_DATA_TYPES.gross,
     tenureYear: settings?.tenureYear ?? undefined,
     totalYear: settings?.totalYear ?? undefined,
   });
@@ -169,17 +166,17 @@ export const WalthamHousingDelivery = ({
     }));
   };
 
-  /**
-   * @param {any} _
-   * @param {string} type
-   */
-  const handleToggleClick = (_, type) => {
-    setConfiguration(prev => ({ ...prev, tenureDataType: type }));
-    setDashboardSettings(prev => ({
-      ...prev,
-      settings: { ...prev.settings, tenureDataType: type },
-    }));
-  };
+  // /**
+  //  * @param {any} _
+  //  * @param {string} type
+  //  */
+  // const handleToggleClick = (_, type) => {
+  //   setConfiguration(prev => ({ ...prev, tenureDataType: type }));
+  //   setDashboardSettings(prev => ({
+  //     ...prev,
+  //     settings: { ...prev.settings, tenureDataType: type },
+  //   }));
+  // };
 
   const processedTargets =
     tenureType === ALL_TENURE_TYPES
@@ -242,14 +239,12 @@ export const WalthamHousingDelivery = ({
         <ChartWrapper
           title="Total Housing Delivery"
           info="This is a test description"
-          headerComponent={
-            <WalthamCustomDateRange
-              timeline={totalTimeline}
-              value={totalYear}
-              onSelect={value => updateDateFilter({ totalYear: value })}
-            />
-          }
         >
+          <WalthamCustomDateRange
+            timeline={totalTimeline}
+            value={totalYear}
+            onSelect={value => updateDateFilter({ totalYear: value })}
+          />
           <TotalHousingMultiChart
             apiData={totalHousingDeliveryChartData}
             userTargetData={targets?.totalHousing}
@@ -260,20 +255,18 @@ export const WalthamHousingDelivery = ({
         <ChartWrapper
           title="Housing Delivery by Tenure Type"
           info="This is a test description"
-          headerComponent={
-            <TenureDataFilter
-              timeline={tenureTimeline}
-              tenureYear={tenureYear}
-              tenureType={tenureType}
-              housingTenureTypes={housingTenureTypes}
-              handleYearRangeSelect={value =>
-                updateDateFilter({ tenureYear: value })
-              }
-              handleTenureTypeSelect={handleTenureTypeSelect}
-            />
-          }
         >
-          <ToggleButtonGroup
+          <TenureDataFilter
+            timeline={tenureTimeline}
+            tenureYear={tenureYear}
+            tenureType={tenureType}
+            housingTenureTypes={housingTenureTypes}
+            handleYearRangeSelect={value =>
+              updateDateFilter({ tenureYear: value })
+            }
+            handleTenureTypeSelect={handleTenureTypeSelect}
+          />
+          {/* <ToggleButtonGroup
             size="small"
             value={tenureDataType}
             orientation="horizontal"
@@ -286,7 +279,7 @@ export const WalthamHousingDelivery = ({
             <ToggleButton value={TENURE_DATA_TYPES.net}>
               {TENURE_DATA_TYPES.net}
             </ToggleButton>
-          </ToggleButtonGroup>
+          </ToggleButtonGroup> */}
 
           {tenureTimeline?.includes(tenureYear) ? (
             <TenureHousingMultiChart

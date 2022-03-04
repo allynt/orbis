@@ -10,7 +10,6 @@
  */
 
 const labelsForArrayOfObjects = (data, excludeProperty, formatter) => {
-  // TODO: fix this
   if (!data || !data.length) {
     return [];
   }

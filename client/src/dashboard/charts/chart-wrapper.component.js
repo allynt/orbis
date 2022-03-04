@@ -21,8 +21,7 @@ const useStyles = makeStyles(theme => ({
   header: {
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: ({ hasHeaderComponent }) =>
-      hasHeaderComponent ? 'center' : 'baseline',
+    alignItems: 'baseline',
     marginBottom: theme.spacing(2),
   },
 }));
@@ -33,7 +32,6 @@ const useStyles = makeStyles(theme => ({
  * title: string
  * titleSize?: string
  * info?: string
- * headerComponent?: React.ReactNode
  * classes?: object
  * }} props
  */
@@ -42,15 +40,13 @@ const ChartWrapper = ({
   title,
   titleSize = 'medium',
   info,
-  headerComponent,
   classes = {},
   ...rest
 }) => {
-  const hasHeaderComponent = !!headerComponent;
-  const styles = useStyles({ hasHeaderComponent });
-  const { header } = classes;
+  const styles = useStyles({});
+  const { header, paper } = classes;
   return (
-    <Paper className={styles.paper} {...rest}>
+    <Paper className={clsx(styles.paper, paper)} {...rest}>
       <div className={clsx(styles.header, header)}>
         <Typography
           component="h3"
@@ -59,7 +55,6 @@ const ChartWrapper = ({
         >
           {title}
         </Typography>
-        {!!headerComponent ? headerComponent : null}
         {!!info ? (
           <InfoButtonTooltip
             tooltipContent={info}

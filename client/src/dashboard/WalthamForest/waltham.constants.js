@@ -138,4 +138,4 @@ export const ALL_TYPES = 'Show All';
 
 // start index not included, so must be one less than target number,
 // for example, 5-year range would be 4, like below.
-export const WALTHAM_YEAR_RANGE = 4;
+export const WALTHAM_FILTER_RANGE = 4;

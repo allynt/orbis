@@ -1,4 +1,4 @@
-import { LAST_5_YEARS, WALTHAM_YEAR_RANGE } from './waltham.constants';
+import { LAST_5_YEARS, WALTHAM_FILTER_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -129,10 +129,9 @@ const getUser5YearTotals = obj => {
  * latest year in the api data, as was requested.
  * @param {object[]} apiData
  * @param {object} targets
- * @param {number} pad
  * @returns {string[]}
  */
-const getDataTimeline = (apiData, targets = {}, pad = WALTHAM_YEAR_RANGE) => {
+const getDataTimeline = (apiData, targets = {}) => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
@@ -158,7 +157,7 @@ const getDataTimeline = (apiData, targets = {}, pad = WALTHAM_YEAR_RANGE) => {
   const max = Math.max(...allYears); // show newest year from both datasets
 
   let timeline = [];
-  for (let i = min - pad; i <= max; i++) {
+  for (let i = min; i <= max; i++) {
     timeline = [...timeline, `${i}-${i + 1}`];
   }
 
@@ -189,7 +188,7 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
 const getFilteredTimeline = (
   timeline,
   selectedYear,
-  range = WALTHAM_YEAR_RANGE,
+  range = WALTHAM_FILTER_RANGE,
 ) => {
   const index = timeline?.indexOf(selectedYear);
   return timeline?.slice(index - range, index + 1);
