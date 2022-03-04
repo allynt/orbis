@@ -71,13 +71,7 @@ const ProgressionVsPlanningSchedule = ({
   };
 
   const renderTenureHousingLegend = width => (
-    <Grid
-      container
-      style={{
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-      }}
-    >
+    <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
       </Grid>
