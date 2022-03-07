@@ -97,7 +97,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
           style={{ height: '12rem' }}
         >
           <Typography variant="h4">
-            Affordable Delivery Target Required
+            Please enter affordable housing delivery % targets.
           </Typography>
         </Grid>
       ) : (
