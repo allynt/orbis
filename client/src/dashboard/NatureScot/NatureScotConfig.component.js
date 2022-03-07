@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { Button, makeStyles, Tab, Tabs } from '@astrosat/astrosat-ui';
 
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
-import { feature } from '@turf/turf';
-import { format } from 'date-fns';
-import { NotificationManager } from 'react-notifications';
-import { useSelector } from 'react-redux';
-import { useSortBy } from 'react-table';
-
-import apiClient from 'api-client';
-import ExpandableTable from 'components/table/expandable/expandable-table.component';
-import { selectedAoiSelector } from 'data-layers/aoi/aoi.slice';
-import {
-  dataSourceByIdSelector,
-  selectDataToken,
-} from 'data-layers/data-layers.slice';
-import { getAuthTokenForSource } from 'utils/tokens';
-
-import { ChartWrapper } from '../charts/chart-wrapper.component';
-import AreaOfficeContactDetails from './area-office-contact-details.component';
-import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from './nature-scotland.constants';
-import { NearestProtectedAreas } from './nearest-protected-areas';
-import ProtectedFeature from './protected-feature/protected-feature.component';
+import AssessmentTable from './assessments/assessments-table.component';
+import Charts from './charts/charts.component';
+import AssessmentDialog from './dialog/assessment-dialog.component';
 
 const useStyles = makeStyles(theme => ({
   subRow: {
@@ -39,158 +21,129 @@ const useStyles = makeStyles(theme => ({
   item: {
     width: 'calc(50% - 1rem)',
   },
+  wrapper: {
+    width: '100%',
+  },
+  tab: {},
+  assessmentButton: {
+    marginLeft: 'auto',
+    marginRight: '2rem',
+  },
 }));
 
-const BUTTONS = [
-  { label: 'Species' },
-  { label: 'Geology' },
-  { label: 'Habitat' },
-];
+const PANELS = {
+  data: 'data',
+  assessments: 'assessments',
+};
 
-const COLUMNS = [
+// const ASSESSMENT_DATA = [];
+const ASSESSMENT_DATA = [
   {
-    Header: 'Code',
-    accessor: 'name',
+    id: 1,
+    name: 'Construct campsite',
+    date: '2000-01-01T00:00:00.000Z',
+    time: '2000-01-01T00:00:00.000Z',
+    version: '1st',
   },
   {
-    Header: 'Received',
-    accessor: 'date',
-    Cell: ({ value }) => format(new Date(value), 'dd/MM/yyyy'),
+    id: 2,
+    name: 'Raise Building',
+    date: '2000-01-01T00:42:00.000Z',
+    time: '2000-01-01T00:42:00.000Z',
+    version: '2nd',
   },
   {
-    // Make an expander cell
-    Header: () => null, // No header
-    id: 'expander', // It needs an ID
-    Cell: ({ row }) => (
-      // Use Cell to render an expander for each row.
-      // We can use the getToggleRowExpandedProps prop-getter
-      // to build the expander.
-      <span {...row.getToggleRowExpandedProps()}>
-        {row.isExpanded ? <ArrowDropUp /> : <ArrowDropDown />}
-      </span>
-    ),
+    id: 3,
+    name: 'Some Building',
+    date: '2000-01-01T00:00:00.000Z',
+    time: '2000-01-01T00:00:00.000Z',
+    version: '1st',
+  },
+  {
+    id: 4,
+    name: 'Another Building',
+    date: '2000-01-01T00:42:00.000Z',
+    time: '2000-01-01T00:42:00.000Z',
+    version: '2nd',
+  },
+  {
+    id: 5,
+    name: 'Shopping Mall',
+    date: '2000-01-01T00:00:00.000Z',
+    time: '2000-01-01T00:00:00.000Z',
+    version: '1st',
+  },
+  {
+    id: 6,
+    name: 'Hospital',
+    date: '2000-01-01T00:42:00.000Z',
+    time: '2000-01-01T00:42:00.000Z',
+    version: '2nd',
+  },
+  {
+    id: 7,
+    name: 'Skateboard Park',
+    date: '2000-01-01T00:00:00.000Z',
+    time: '2000-01-01T00:00:00.000Z',
+    version: '1st',
+  },
+  {
+    id: 8,
+    name: 'Old Folks Home',
+    date: '2000-01-01T00:42:00.000Z',
+    time: '2000-01-01T00:42:00.000Z',
+    version: '2nd',
+  },
+  {
+    id: 9,
+    name: 'Easter Road',
+    date: '2000-01-01T00:00:00.000Z',
+    time: '2000-01-01T00:00:00.000Z',
+    version: '1st',
   },
 ];
 
 const NatureScotDashboard = ({ sourceId }) => {
   const styles = useStyles();
 
-  const [nearestProtectedAreas, setNearestProtectedAreas] = useState([]);
-  const [caseworks, setCaseworks] = useState([]);
-  const [protectedFeatures, setProtectedFeatures] = useState([]);
-  const [contactDetails, setContactDetails] = useState({});
-  const authTokens = useSelector(selectDataToken);
-  const selectedAoi = useSelector(selectedAoiSelector);
-  const source = useSelector(dataSourceByIdSelector(sourceId));
-  const authToken = getAuthTokenForSource(authTokens, source);
-
-  const proxyUrl =
-    source?.metadata?.application?.orbis?.dashboard_component?.proxyUrl;
-
-  useEffect(() => {
-    // Fetch data from IR API.
-
-    const queryApi = async () => {
-      try {
-        const body = {
-          buffer: AOI_BUFFER,
-          limit: QUERY_RESPONSE_LIMIT,
-          feature: feature(selectedAoi.geometry),
-        };
-        const response =
-          await apiClient.dashboard.getNatureScotlandIRDashboardData(
-            proxyUrl,
-            body,
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-
-        setNearestProtectedAreas(response.protected_areas);
-        setCaseworks(response.casework);
-        setContactDetails(response.contact_details?.[0]);
-        setProtectedFeatures(response.protected_features);
-      } catch (error) {
-        const { message, status } = error;
-        NotificationManager.error(
-          `${status} ${message}`,
-          `Fetching Dashboard Data Error - ${message}`,
-          50000,
-          () => {},
-        );
-      }
-    };
-
-    queryApi();
-  }, [authToken, proxyUrl, selectedAoi]);
-
-  const renderRowSubComponent = React.useCallback(
-    ({ row }) => (
-      <Grid className={styles.subRow} container>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Casework Title:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
-        <Grid item xs={3}>
-          <Typography variant="h4">Site Name:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.site_name}</Typography>
-        </Grid>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Site Type:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
-        <Grid item xs={3}>
-          <Typography variant="h4">Casework Decision:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.status}</Typography>
-        </Grid>
-      </Grid>
-    ),
-    [],
-  );
+  const [visibleTab, setVisibleTab] = useState(PANELS.data);
+  const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
+    useState(false);
 
   return (
-    <Grid container className={styles.dashboard}>
-      <Grid item className={styles.item}>
-        <NearestProtectedAreas data={nearestProtectedAreas} />
-      </Grid>
-
-      <Grid item className={styles.item}>
-        <ChartWrapper
-          title="List of Casework"
-          info="An expandable table of each relevant casework."
-        >
-          <ExpandableTable
-            columns={COLUMNS}
-            data={caseworks}
-            pluginHooks={[useSortBy]}
-            renderRowSubComponent={renderRowSubComponent}
-          />
-        </ChartWrapper>
-      </Grid>
-
-      <Grid item className={styles.item}>
-        <ProtectedFeature
-          buttons={BUTTONS}
-          features={protectedFeatures}
-          onSubmit={() => console.log('Category Clicked')}
+    <div className={styles.wrapper}>
+      <Tabs
+        variant="standard"
+        scrollButtons="on"
+        value={visibleTab}
+        onChange={(_event, value) => setVisibleTab(value)}
+      >
+        <Tab className={styles.tab} label="Dashboard" value={PANELS.data} />
+        <Tab
+          className={styles.tab}
+          label="Assessments"
+          value={PANELS.assessments}
         />
-      </Grid>
+        <Button
+          onClick={() => setIsAssessmentDialogVisible(true)}
+          className={styles.assessmentButton}
+          color="secondary"
+        >
+          Start Impact Assessment
+        </Button>
+      </Tabs>
 
-      <Grid item className={styles.item}>
-        <AreaOfficeContactDetails contactDetails={contactDetails} />
-      </Grid>
-    </Grid>
+      {visibleTab === PANELS.data && <Charts sourceId={sourceId} />}
+      {visibleTab === PANELS.assessments && (
+        <AssessmentTable data={ASSESSMENT_DATA} />
+      )}
+
+      <AssessmentDialog
+        onSubmit={() => console.log('Submitting assessment')}
+        close={() => setIsAssessmentDialogVisible(false)}
+        open={isAssessmentDialogVisible}
+      />
+    </div>
   );
 };
 

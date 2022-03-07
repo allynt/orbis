@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
 
-// import { Button } from '@astrosat/astrosat-ui';
-
 import { useSortBy } from 'react-table';
 
 import { Table } from 'components/table/table.component';
 
-import { ChartWrapper } from '../charts/chart-wrapper.component';
+import { ChartWrapper } from '../../charts/chart-wrapper.component';
 
 const NearestProtectedAreas = ({ data }) => {
   const columns = useMemo(
@@ -27,21 +25,6 @@ const NearestProtectedAreas = ({ data }) => {
         id: 'distance',
         Cell: ({ value }) => `${value} km`,
       },
-      // {
-      //   Header: '',
-      //   accessor: 'null',
-      //   id: 'button',
-      //   Cell: ({ value }) => (
-      //     <Button
-      //       size="small"
-      //       href={value}
-      //       target="_blank"
-      //       rel="noreferrer noopener"
-      //     >
-      //       More Details
-      //     </Button>
-      //   ),
-      // },
     ],
     [],
   );
