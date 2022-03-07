@@ -6,6 +6,7 @@ import {
   getPastYears,
   getUser5YearTotals,
   getDataTimeline,
+  computePercentages,
 } from './utils';
 
 describe('Waltham Forest Data Transformers', () => {
@@ -369,6 +370,52 @@ describe('Waltham Forest Data Transformers', () => {
     it('returns undefined if data is not present', () => {
       const result = getDataTimeline(undefined);
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('compute percentages', () => {
+    it('computePercentages works', () => {
+      const key = 'Affordable Housing';
+      const data = [
+          {
+            year: '2017 - 2018',
+            'Affordable Housing': 62,
+          },
+          {
+            year: '2018 - 2019',
+            'Affordable Housing': 69,
+          },
+          {
+            year: '2019 - 2020',
+            'Affordable Housing': 54,
+          },
+          {
+            year: '2020 - 2021',
+            'Affordable Housing': 53,
+          },
+          {
+            year: '2021 - 2022',
+            'Affordable Housing': 0,
+          },
+          {
+            year: '2022 - 2023',
+            'Affordable Housing': 33,
+          },
+        ],
+        targets = {
+          '2018 - 2019': 100,
+          '2019 - 2020': 100,
+          '2020 - 2021': 100,
+          '2021 - 2022': 200,
+          '2022 - 2023': 200,
+        };
+      const result = computePercentages(data, targets, 'Affordable Housing');
+      expect(result[0][key]).toBeNull(); // not matching data
+      expect(result[1][key]).toBe(69);
+      expect(result[2][key]).toBe(54);
+      expect(result[3][key]).toBe(53);
+      expect(result[4][key]).toBe(0);
+      expect(result[5][key]).toBe(17); // 33/200
     });
   });
 });

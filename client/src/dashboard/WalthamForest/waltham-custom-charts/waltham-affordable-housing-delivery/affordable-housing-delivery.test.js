@@ -7,7 +7,7 @@ import { render, screen } from 'test/test-utils';
 import { AffordableHousingDelivery } from './affordable-housing-delivery.component';
 
 const userOrbState = {
-  AffordableHousingDelivery: {
+  affordableHousing: {
     '2018 - 2019': 100,
     '2019 - 2020': 70,
     '2020 - 2021': 80,
