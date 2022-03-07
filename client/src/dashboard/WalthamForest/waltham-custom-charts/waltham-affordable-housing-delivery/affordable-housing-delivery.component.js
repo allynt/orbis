@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid } from '@astrosat/astrosat-ui';
+import { Grid, Typography } from '@astrosat/astrosat-ui';
 
 import { VictoryGroup, VictoryLine, VictoryScatter } from 'victory';
 
@@ -36,7 +36,9 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
   );
 
   const gotNoData =
-    percentageData && percentageData.every(item => !item['Affordable Housing']);
+    !userOrbState.affordableHousing ||
+    (percentageData &&
+      percentageData.every(item => !item['Affordable Housing']));
 
   let totalsArray = labelsForArrayOfObjectsInclusive(
     percentageData,
@@ -53,7 +55,6 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
 
   const renderLineChart = width => {
     if (!percentageData) return null;
-    //const y_values = percentageData.map(item => item['Affordable Housing']);
     const y_max = Math.max(
       ...percentageData.map(item => item['Affordable Housing']),
     );
@@ -90,16 +91,17 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
     <ChartWrapper
       title={chartTitle}
       info="This shows the % of affordable housing delivered each year"
-      style={{ height: '370px' }}
     >
       {gotNoData ? (
         <Grid
-          item
+          container
           justifyContent="space-around"
           alignItems="center"
-          style={{ height: '60%' }}
+          style={{ height: '12rem' }}
         >
-          <h4>Please enter affordable housing delivery % targets</h4>
+          <Typography variant="h4">
+            Affordable Delivery Target Required
+          </Typography>
         </Grid>
       ) : (
         <BaseChart
