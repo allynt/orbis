@@ -186,7 +186,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
               userOrbState={targets}
               setDashboardSettings={setDashboardSettings}
             />
-            <AffordableHousingDelivery data={affordableHousingDelivery} />
+            <AffordableHousingDelivery
+              data={affordableHousingDelivery}
+              userOrbState={targets}
+            />
           </div>
 
           <div className={styles.housingDelivery}>
