@@ -35,10 +35,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
     'Affordable Housing',
   );
 
-  const gotNoData =
-    !userOrbState.affordableHousing ||
-    (percentageData &&
-      percentageData.every(item => !item['Affordable Housing']));
+  const hasData = percentageData?.some(item => !!item['Affordable Housing']);
 
   let totalsArray = labelsForArrayOfObjectsInclusive(
     percentageData,
@@ -92,7 +89,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
       title={chartTitle}
       info="This shows the % of affordable housing delivered each year"
     >
-      {gotNoData ? (
+      {!hasData ? (
         <Grid
           container
           justifyContent="space-around"
