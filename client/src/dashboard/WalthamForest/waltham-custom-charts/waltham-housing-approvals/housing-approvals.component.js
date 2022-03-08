@@ -58,12 +58,7 @@ const HousingApprovalsComponent = ({
   };
 
   const dataByType = useMemo(
-    () =>
-      lineDataTransformer(
-        data?.find(p => {
-          return p.name === configuration;
-        })?.data,
-      ),
+    () => lineDataTransformer(data?.find(p => p.name === configuration)?.data),
     [data, configuration],
   );
 
@@ -123,9 +118,7 @@ const HousingApprovalsComponent = ({
               {...props}
               style={{ data: { stroke: color } }}
               labelComponent={FlyoutTooltip()}
-              labels={({ datum }) => {
-                return ` ${datum._y}`;
-              }}
+              labels={({ datum }) => `Total: ${datum._y}`}
             />
           );
         })}
