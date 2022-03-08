@@ -27,6 +27,9 @@ import configuration from '../../../../map/orbs/configurations/pldConfig';
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 import { lineDataTransformer } from '../../utils';
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    height: 'fit-content',
+  },
   toggleButtonGroup: {
     width: '40%',
     marginLeft: '60%',
@@ -40,15 +43,14 @@ const HousingApprovalsComponent = ({
   yLabel = '',
   ranges = ['y'],
   data,
-  userOrbState,
+  settings,
   setDashboardSettings,
 }) => {
   const { walthamChartColors } = useChartTheme();
   const styles = useStyles({});
 
   const [configuration, setConfiguration] = useState(
-    userOrbState.approvalsGrantedDataType ??
-      HOUSING_APPROVAL_DATA_TYPES.monthly,
+    settings?.approvalsGrantedDataType ?? HOUSING_APPROVAL_DATA_TYPES.monthly,
   );
   console.log('Configaration', configuration);
   /**
@@ -59,7 +61,10 @@ const HousingApprovalsComponent = ({
     setConfiguration(newValue);
     setDashboardSettings(prev => ({
       ...prev,
-      approvalsGrantedDataType: newValue,
+      settings: {
+        ...prev.settings,
+        approvalsGrantedDataType: newValue,
+      },
     }));
   };
 
@@ -173,6 +178,7 @@ const HousingApprovalsComponent = ({
     <ChartWrapper
       title="No. of housing approvals granted over time"
       info="This shows the number of housing approvals granted over time"
+      classes={{ paper: styles.wrapper }}
     >
       <ToggleButtonGroup
         size="small"

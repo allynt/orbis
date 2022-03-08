@@ -11,13 +11,13 @@ export const housingTenureTypes = {
 export const progressionVsPlanningTypes = [
   'Units Ahead of Schedule',
   'Units Behind Schedule',
-  'Units on Schedule',
+  'Units on Track',
 ];
 
 export const progressionVsPlanningOptions = {
-  'Ahead of Schedule': 'Ahead of Schedule',
-  'Behind Schedule': 'Behind Schedule',
-  'On Track': 'On Track',
+  aheadOfSchedule: 'Ahead of Schedule',
+  behindSchedule: 'Behind Schedule',
+  onTrack: 'On Track',
 };
 
 export const progressionVsPlanningPalette = {
@@ -40,26 +40,32 @@ export const walthamApiMetadata = [
   {
     datasetName: 'ApprovalsGranted',
     url: '/wfc/mock/approvals_granted/v1/',
+    apiSourceId: 'wfc/mock/approvals_granted/v1',
   },
   {
     datasetName: 'ProgressionVsPlanning',
     url: '/wfc/mock/progression_vs_planning_schedule/v1/',
+    apiSourceId: 'wfc/mock/progression_vs_planning_schedule/v1',
   },
   {
     datasetName: 'TenureHousingDelivery',
     url: '/wfc/mock/tenure_type_housing_delivery/v1/',
+    apiSourceId: 'wfc/mock/tenure_type_housing_delivery/v1',
   },
   {
     datasetName: 'TotalHousingDelivery',
     url: '/wfc/mock/total_housing_delivery/v1/',
+    apiSourceId: 'wfc/mock/total_housing_delivery/v1',
   },
   {
     datasetName: 'DeliverableSupplySummary',
     url: '/wfc/mock/deliverable_supply_summary/v1/',
+    apiSourceId: 'wfc/mock/deliverable_supply_summary/v1',
   },
   {
     datasetName: 'AffordableHousingDelivery',
     url: '/wfc/mock/affordable_housing_delivery/v1',
+    apiSourceId: 'wfc/mock/affordable_housing_delivery/v1',
   },
 ];
 
@@ -135,3 +141,7 @@ export const yellowStyle = {
 };
 
 export const ALL_TYPES = 'Show All';
+
+// start index not included, so must be one less than target number,
+// for example, 5-year range would be 4, like below.
+export const WALTHAM_FILTER_RANGE = 4;

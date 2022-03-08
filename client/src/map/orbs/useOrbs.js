@@ -12,6 +12,7 @@ import { setIsLoading } from 'map/map.slice';
 import { useMap } from 'MapContext';
 import { dataUrlFromSource } from 'utils/data';
 import { getData } from 'utils/http';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import { LayerFactory } from '../deck.gl/LayerFactory';
 import { setData, layersWithDataSelector } from './layers.slice';
@@ -20,7 +21,7 @@ import { orbsSelector } from './orbsSelectors';
 export const useOrbs = () => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
-  const authToken = useSelector(selectDataToken);
+  const authTokens = useSelector(selectDataToken);
   const activeSources = useSelector(activeDataSourcesSelector);
 
   const layersWithDataIds = useSelector(state =>
@@ -37,6 +38,16 @@ export const useOrbs = () => {
 
   const fetchData = useCallback(
     async source => {
+      const authToken = getAuthTokenForSource(authTokens, source);
+      if (!authToken) {
+        console.error(
+          'ERROR: No auth token found for: ',
+          source.source_id,
+          ', in: ',
+          authTokens,
+        );
+      }
+
       try {
         const response = await getData(dataUrlFromSource(source), {
           Authorization: `Bearer ${authToken}`,
@@ -59,7 +70,7 @@ export const useOrbs = () => {
         return dispatch(logError(source));
       }
     },
-    [authToken, dispatch],
+    [authTokens, dispatch],
   );
 
   useEffect(() => {
@@ -166,6 +177,16 @@ export const useOrbs = () => {
       const { props, name } = source.metadata.application.orbis.layer;
       const { config, ...metadataConfig } = props;
 
+      const authToken = getAuthTokenForSource(authTokens, source);
+      if (!authToken) {
+        console.error(
+          'ERROR: No auth token found for: ',
+          source.source_id,
+          ', in: ',
+          authTokens,
+        );
+      }
+
       let loadedConfig = {};
       if (config) {
         const imported = await import(`./configurations/${config}`);
@@ -198,7 +219,7 @@ export const useOrbs = () => {
     dispatch,
     setViewState,
     orbState,
-    authToken,
+    authTokens,
   ]);
 
   return {

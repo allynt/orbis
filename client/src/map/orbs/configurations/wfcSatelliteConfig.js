@@ -56,6 +56,13 @@ const configuration = ({ id, activeSources, orbState, authToken }) => {
     updateTriggers: {
       getFilterValue: [selectedProperty, selectedTimestamp, filterRange],
     },
+    loadOptions: {
+      fetch: {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      },
+    },
   };
 
   return config;

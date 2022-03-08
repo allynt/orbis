@@ -1,5 +1,8 @@
 import requests
+from requests.exceptions import Timeout
+
 from collections import OrderedDict, defaultdict
+from itertools import chain
 from functools import reduce
 from urllib.parse import urljoin
 
@@ -12,14 +15,17 @@ from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_MET
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from requests.exceptions import Timeout
-
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 
 from orbis.models import DataScope, Orb
 from orbis.serializers import StoredDataSourceSerializer
-from orbis.utils import generate_data_token, validate_data_token
+from orbis.utils import (
+    chunk_data_scopes,
+    generate_data_scopes,
+    generate_data_token,
+    validate_data_token,
+)
 
 
 class IsAuthenticatedOrAdmin(BasePermission):
@@ -40,50 +46,53 @@ class IsAuthenticatedOrAdmin(BasePermission):
 
 _encoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)), # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("token", openapi.Schema(type=openapi.TYPE_STRING)),
+    ))
+)  # yapf: disable
+
 
 _decoded_token_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),  # yapf: disable
-        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),  # yapf: disable
-        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),  # yapf: disable
-        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
-        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),  # yapf: disable
-        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),  # yapf: disable
-            )))),  # yapf: disable
-        )))),  # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("iss", openapi.Schema(type=openapi.TYPE_STRING, example="domain.com")),
+        ("sub", openapi.Schema(type=openapi.TYPE_STRING, example="user")),
+        ("name", openapi.Schema(type=openapi.TYPE_STRING, example="orbis token")),
+        ("iat", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
+        ("exp", openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME)),
+        ("scopes", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("data", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+                ("read", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+                ("create", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+                ("delete", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_STRING, example="authority/namespace/name/version"))),
+            )))),
+        )))),
+    ))
+)  # yapf: disable
 
 _data_sources_schema = openapi.Schema(
     type=openapi.TYPE_OBJECT,
-    properties=OrderedDict((  # yapf: disable
-        ("token", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
-        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),  # yapf: disable
-        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-            ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),  # yapf: disable
-            ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),  # yapf: disable
-            ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),  # yapf: disable
-            ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),  # yapf: disable
-            ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),  # yapf: disable
-            ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),  # yapf: disable
-            ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),  # yapf: disable
-            ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((  # yapf: disable
-                ("name", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
-                ("description", openapi.Schema(type=openapi.TYPE_STRING)),  # yapf: disable
-            ))))),  # yapf: disable
-            ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),  # yapf: disable
-        ))))),  # yapf: disable
-    ))  # yapf: disable
-)
+    properties=OrderedDict((
+        ("tokens", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("scope_id", openapi.Schema(type=openapi.TYPE_STRING, example="<jwt>")),
+        )))),
+        ("timeout", openapi.Schema(type=openapi.TYPE_NUMBER, example=60)),
+        ("sources", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+            ("source_id", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat/core/infrastructure/2020")),
+            ("authority", openapi.Schema(type=openapi.TYPE_STRING, example="astrosat")),
+            ("namespace", openapi.Schema(type=openapi.TYPE_STRING, example="core")),
+            ("name", openapi.Schema(type=openapi.TYPE_STRING, example="infrastructure")),
+            ("version", openapi.Schema(type=openapi.TYPE_STRING, example="2020")),
+            ("type", openapi.Schema(type=openapi.TYPE_STRING, example="vector")),
+            ("status", openapi.Schema(type=openapi.TYPE_STRING, example="published")),
+            ("orbs", openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
+                ("name", openapi.Schema(type=openapi.TYPE_STRING)),
+                ("description", openapi.Schema(type=openapi.TYPE_STRING)),
+            ))))),
+            ("metadata", openapi.Schema(type=openapi.TYPE_OBJECT)),
+        ))))),
+    ))
+)  # yapf: disable
 
 
 class TokenView(APIView):
@@ -127,41 +136,72 @@ class DataSourceView(APIView):
     about the JWT itself as well as which Orbs each DataSource belongs to to the response.
     """
 
+    CHUNK_SIZE = 60
+
     permission_classes = [IsAuthenticated]
+
+    @classmethod
+    def reshape_data_tokens(cls, user, data_scopes):
+        """
+        Rather than return a single JWT for every data_scope,
+        returns a dictionary of separate JWTs for each data_scope.
+        """
+        verb, scope_ids = zip(*data_scopes.items())
+        return {
+            scope_id: generate_data_token(
+                user,
+                data_scopes={
+                    k: [scope_id] if scope_id in v else []
+                    for k, v in zip(verb, scope_ids)
+                }
+            )
+            for scope_id in set(chain.from_iterable(scope_ids))
+        }  # yapf: disable
 
     @swagger_auto_schema(responses={status.HTTP_200_OK: _data_sources_schema})
     def get(self, request, format=None):
+        """
+        Makes a request to the `data-sources-directory` URL
+        to get the set of `DataSources` the user can access.
+        Also adds any local `StoredDataSources` to that set.
+        """
 
         user = request.user
-        data_token = generate_data_token(user)
-        data_token_timeout = settings.DATA_TOKEN_TIMEOUT
-
         url = urljoin(
             settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
         )
-        headers = {"Authorization": f"Bearer {data_token}"}
-        try:
 
-            response = requests.get(
-                url,
-                headers=headers,
-                timeout=2.5,
-                proxies={
-                    "http": settings.REQUESTS_PROXY,
-                    "https": settings.REQUESTS_PROXY,
-                } if settings.REQUESTS_PROXY else None
-            )
-            if not status.is_success(response.status_code):
-                raise APIException("Error retrieving data sources")
-        except Timeout as e:
-            raise APIException(
-                f"Request {url} timed out, exception was: {str(e)}"
-            )
-        except Exception as e:
-            raise APIException(
-                f"Unable to retrieve data sources at '{url}': {str(e)}"
-            )
-        sources = response.json()["results"]
+        data_token_timeout = settings.DATA_TOKEN_TIMEOUT
+        data_scopes = generate_data_scopes(user)
+        data_sources = []
+
+        # chunk the data_scopes to reduce the size of the request.header sent to `data-sources-directory`
+        for chunked_data_scopes in chunk_data_scopes(
+            data_scopes, chunk_size=self.CHUNK_SIZE
+        ):
+            data_token = generate_data_token(user, chunked_data_scopes)
+            headers = {"Authorization": f"Bearer {data_token}"}
+            try:
+                response = requests.get(
+                    url,
+                    headers=headers,
+                    timeout=2.5,
+                    proxies={
+                        "http": settings.REQUESTS_PROXY,
+                        "https": settings.REQUESTS_PROXY,
+                    } if settings.REQUESTS_PROXY else None
+                )
+                if not status.is_success(response.status_code):
+                    raise APIException("Error retrieving data sources")
+            except Timeout as e:
+                raise APIException(
+                    f"Request {url} timed out, exception was: {str(e)}"
+                )
+            except Exception as e:
+                raise APIException(
+                    f"Unable to retrieve data sources at '{url}': {str(e)}"
+                )
+            data_sources += response.json()["results"]
 
         # find all orbs that this user has a licence to...
         orbs = Orb.objects.filter(
@@ -184,7 +224,7 @@ class DataSourceView(APIView):
                     "name": orb.name, "description": orb.description
                 }]
 
-        for source in sources:
+        for source in data_sources:
             # find all of the above orbs w/ a data_scope that matches the source_id...
             matching_orbs = dict(
                 filter(
@@ -212,10 +252,13 @@ class DataSourceView(APIView):
         stored_data_source_serializer = StoredDataSourceSerializer(
             stored_data_sources, many=True
         )
-        sources += stored_data_source_serializer.data
+        data_sources += stored_data_source_serializer.data
 
         return Response({
-            "token": data_token,
+            "tokens": self.reshape_data_tokens(
+                user,
+                data_scopes,
+            ),
             "timeout": data_token_timeout,
-            "sources": sources,
+            "sources": data_sources,
         })

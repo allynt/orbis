@@ -1,7 +1,4 @@
-import {
-  getDataTimeline,
-  userTargetTransformer,
-} from 'dashboard/WalthamForest/utils';
+import { userTargetTransformer } from 'dashboard/WalthamForest/utils';
 import { housingTenureTypes } from 'dashboard/WalthamForest/waltham.constants';
 
 /**
@@ -12,17 +9,20 @@ import { housingTenureTypes } from 'dashboard/WalthamForest/waltham.constants';
  *  transformedTargets: { x: string, y: number }[]
  * }}
  */
-export const tenureHousingTransformer = (apiData, targets = {}) => {
+export const tenureHousingTransformer = (
+  apiData,
+  targets = {},
+  filteredTimeline,
+) => {
   if (!apiData) return;
 
   const noTargets = !Object.keys(targets).length;
-  const timeline = getDataTimeline(apiData, targets);
 
   const transformedTargets = noTargets
     ? null
-    : userTargetTransformer(targets, timeline);
+    : userTargetTransformer(targets, filteredTimeline);
 
-  const transformedData = timeline.map(year => {
+  const transformedData = filteredTimeline.map(year => {
     const obj = apiData.find(datum => datum.Year === year);
     return (
       obj ?? {

@@ -8,6 +8,7 @@ import { NotificationManager } from 'react-notifications';
 import { userSelector } from 'accounts/accounts.selectors';
 import { updateUser } from 'accounts/accounts.slice';
 import apiClient from 'api-client';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 const name = 'dashboard';
 
@@ -37,14 +38,17 @@ export const fetchDashboardData = createAsyncThunk(
   `${name}/fetchDashboardData`,
   async (props, { getState, rejectWithValue, dispatch }) => {
     // @ts-ignore
-    const { sourceId, datasetName, url } = props;
+    const { sourceId, datasetName, url, apiSourceId } = props;
     const {
-      data: { token },
+      data: { tokens },
     } = getState();
+    const authToken = getAuthTokenForSource(tokens, {
+      source_id: apiSourceId,
+    });
 
     try {
       const data = await apiClient.dashboard.getDashboardData(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       dispatch(setChartData({ sourceId, datasetName, data }));
@@ -65,6 +69,11 @@ export const fetchDashboardData = createAsyncThunk(
 export const updateUserDashboardConfig =
   ({ user, sourceId, data }) =>
   async dispatch => {
+    const { targets, settings } = data;
+
+    const { targets: currentTargets, settings: currentSettings } =
+      user.profiles.orbis_profile.orb_state[sourceId] ?? {};
+
     // adds dashboard data to existing 'profiles' property on user
     const profiles = {
       orbis_profile: {
@@ -73,7 +82,8 @@ export const updateUserDashboardConfig =
           ...user.profiles.orbis_profile.orb_state,
           [sourceId]: {
             ...(user.profiles.orbis_profile.orb_state[sourceId] ?? {}),
-            ...data,
+            targets: { ...(currentTargets ?? {}), ...targets },
+            settings: { ...(currentSettings ?? {}), ...settings },
           },
         },
       },

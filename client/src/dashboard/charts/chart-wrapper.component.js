@@ -44,9 +44,9 @@ const ChartWrapper = ({
   ...rest
 }) => {
   const styles = useStyles({});
-  const { header } = classes;
+  const { header, paper } = classes;
   return (
-    <Paper className={styles.paper} {...rest}>
+    <Paper className={clsx(styles.paper, paper)} {...rest}>
       <div className={clsx(styles.header, header)}>
         <Typography
           component="h3"

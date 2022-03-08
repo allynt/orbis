@@ -1,4 +1,4 @@
-import { LAST_5_YEARS } from './waltham.constants';
+import { LAST_5_YEARS, WALTHAM_FILTER_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -154,7 +154,7 @@ const getDataTimeline = (apiData, targets = {}) => {
   const allYears = [...apiYears, ...targetYears];
 
   const min = Math.min(...allYears); // show oldest year from both datasets
-  const max = Math.max(...apiYears); // only show latest year from API data
+  const max = Math.max(...allYears); // show newest year from both datasets
 
   let timeline = [];
   for (let i = min; i <= max; i++) {
@@ -179,6 +179,55 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
         [mapping[selectedType]]: datum[mapping[selectedType]],
       }));
 
+/**
+ * @param {string[]} timeline
+ * @param {string} selectedYear
+ * @param {number} range
+ * @returns {string[]}
+ */
+const getFilteredTimeline = (
+  timeline,
+  selectedYear,
+  range = WALTHAM_FILTER_RANGE,
+) => {
+  const index = timeline?.indexOf(selectedYear);
+  return timeline?.slice(index - range, index + 1);
+};
+
+/**
+ * @param {object[]} data : actual data. data points are properties
+ * @param {object} targets : target data. array of objects
+ * @param {string} targetProperty : target property in targets objects to use
+ * @returns {object[]} : actual data, values replaced with percentages relative to target
+ */
+const computePercentages = (data, targets, targetProperty) => {
+  // we return the data in the same shape as data, but values are
+  // replaced with the percentage relative to the corresponding target
+  // for years where data is zero, or target is zero, or both, then we use null to
+  // prevent the chart from being misleading. This may result in gaps in the chart
+  if (!data || !targets) return null;
+
+  return data.map(datum => {
+    const percentage = Math.round(
+      (datum[targetProperty] / targets[datum.year]) * 100,
+    );
+    return {
+      year: datum.year,
+      [targetProperty]: isNaN(percentage) ? null : percentage,
+    };
+  });
+};
+
+/**
+ * Return label for last N years
+ * e.g. for N=5 in 2022, return 2018-2023
+ * @param {*} numberOfYears
+ */
+const getLastNYearRange = (numberOfYears = 5) => {
+  const thisYear = parseInt(new Date().getFullYear());
+  return `${thisYear + 1 - numberOfYears} - ${thisYear + 1}`;
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -188,4 +237,7 @@ export {
   getUser5YearTotals,
   getDataTimeline,
   filterByType,
+  getFilteredTimeline,
+  computePercentages,
+  getLastNYearRange,
 };
