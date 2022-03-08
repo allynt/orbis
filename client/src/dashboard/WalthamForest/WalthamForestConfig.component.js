@@ -109,9 +109,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
     dispatch(updateUserDashboardConfig({ user, sourceId, data }));
 
   useEffect(() => {
-    walthamApiMetadata.forEach(({ datasetName, url }) =>
+    walthamApiMetadata.forEach(({ datasetName, url, apiSourceId }) =>
       // @ts-ignore
-      dispatch(fetchDashboardData({ sourceId, datasetName, url })),
+      dispatch(fetchDashboardData({ sourceId, datasetName, url, apiSourceId })),
     );
   }, [sourceId, dispatch]);
 
@@ -203,7 +203,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
               settings={settings}
               setDashboardSettings={setDashboardSettings}
             />
-            <AffordableHousingDelivery data={affordableHousingDelivery} />
+            <AffordableHousingDelivery
+              data={affordableHousingDelivery}
+              userOrbState={targets}
+            />
           </div>
 
           <HousingApprovalsComponent

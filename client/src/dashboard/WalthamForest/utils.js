@@ -194,6 +194,40 @@ const getFilteredTimeline = (
   return timeline?.slice(index - range, index + 1);
 };
 
+/**
+ * @param {object[]} data : actual data. data points are properties
+ * @param {object[]} targets : target data. array of objects
+ * @param {string} targetProperty : target property in targets objects to use
+ * @returns {object[]} : actual data, values replaced with percentages relative to target
+ */
+const computePercentages = (data, targets, targetProperty) => {
+  // we return the data in the same shape as data, but values are
+  // replaced with the percentage relative to the corresponding target
+  // for years where data is zero, or target is zero, or both, then we use null to
+  // prevent the chart from being misleading. This may result in gaps in the chart
+  if (!data || !targets) return null;
+
+  return data.map(datum => {
+    const percentage = Math.round(
+      (datum[targetProperty] / targets[datum.year]) * 100,
+    );
+    return {
+      year: datum.year,
+      [targetProperty]: isNaN(percentage) ? null : percentage,
+    };
+  });
+};
+
+/**
+ * Return label for last N years
+ * e.g. for N=5 in 2022, return 2018-2023
+ * @param {*} numberOfYears
+ */
+const getLastNYearRange = (numberOfYears = 5) => {
+  const thisYear = parseInt(new Date().getFullYear());
+  return `${thisYear + 1 - numberOfYears} - ${thisYear + 1}`;
+};
+
 export {
   lineDataTransformer,
   userTargetTransformer,
@@ -204,4 +238,6 @@ export {
   getDataTimeline,
   filterByType,
   getFilteredTimeline,
+  computePercentages,
+  getLastNYearRange,
 };

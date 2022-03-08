@@ -1,3 +1,18 @@
+## [2.33.1](https://github.com/astrosat/orbis/compare/v2.33.0...v2.33.1) (2022-03-03)
+
+
+### Bug Fixes
+
+* **frontend:** Add fetch header to WFC Satellite data ([83a5481](https://github.com/astrosat/orbis/commit/83a5481f626143031d5bd62c69935c2e42df8886))
+* **frontend:** Fix data fetching token for geojson data ([ce447bf](https://github.com/astrosat/orbis/commit/ce447bffaeec9470ddd55e1f28fa73de0088cfeb))
+* **frontend:** Fix WFC Dashboard data fetching ([3839edc](https://github.com/astrosat/orbis/commit/3839edc02d27fdcf8ed54d2574295def4e8d805d))
+* **frontend:** Refactor token management code ([331330f](https://github.com/astrosat/orbis/commit/331330f4ec7699903396e70df3ad8de2440e6a34))
+* **frontend:** Remove unnecessary prop ([66c5404](https://github.com/astrosat/orbis/commit/66c54048640b04c68a250c692cc7901c63f9a554))
+* **frontend:** Rename variable to make it clearer ([1baef7f](https://github.com/astrosat/orbis/commit/1baef7fc9182de0017852abf70fce3a63a828115))
+* **frontend:** Revert usage of let to const ([150c881](https://github.com/astrosat/orbis/commit/150c881cfcd3c3cf2f42d5e953fccdbe61810bc7))
+* **frontend:** Update frontend to use new auth tokens ([78707d6](https://github.com/astrosat/orbis/commit/78707d6d5a0cbc1ea1bc34029fd977b92fd7dccb))
+* **frontend:** Update tests relevant to token changes ([c60a71f](https://github.com/astrosat/orbis/commit/c60a71fa95c7ea25f0278a36508e061672375c7b))
+
 # [2.33.0](https://github.com/astrosat/orbis/compare/v2.32.0...v2.33.0) (2022-02-25)
 
 

@@ -16,6 +16,7 @@ import {
   dataSourceByIdSelector,
   selectDataToken,
 } from 'data-layers/data-layers.slice';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import { ChartWrapper } from '../charts/chart-wrapper.component';
 import AreaOfficeContactDetails from './area-office-contact-details.component';
@@ -45,20 +46,6 @@ const BUTTONS = [
   { label: 'Geology' },
   { label: 'Habitat' },
 ];
-
-// const TYPES = ['warning', 'not-good', 'neutral', 'good', 'very-good'];
-
-// const PROTECTED_FEATURES = Array(5)
-//   .fill()
-//   .map((_, i) => {
-//     return {
-//       id: i,
-//       // icon: faker.image.imageUrl(),
-//       title: `Title ${i}`,
-//       description: `Description ${i}`,
-//       type: TYPES[Math.floor(Math.random() * TYPES.length)],
-//     };
-//   });
 
 const COLUMNS = [
   {
@@ -92,11 +79,10 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [caseworks, setCaseworks] = useState([]);
   const [protectedFeatures, setProtectedFeatures] = useState([]);
   const [contactDetails, setContactDetails] = useState({});
-  const authToken = useSelector(selectDataToken);
+  const authTokens = useSelector(selectDataToken);
   const selectedAoi = useSelector(selectedAoiSelector);
   const source = useSelector(dataSourceByIdSelector(sourceId));
-
-  console.log('protectedFeatures: ', protectedFeatures);
+  const authToken = getAuthTokenForSource(authTokens, source);
 
   const proxyUrl =
     source?.metadata?.application?.orbis?.dashboard_component?.proxyUrl;
@@ -127,7 +113,6 @@ const NatureScotDashboard = ({ sourceId }) => {
         setCaseworks(response.casework);
         setContactDetails(response.contact_details?.[0]);
         setProtectedFeatures(response.protected_features);
-        // setProtectedFeatures(PROTECTED_FEATURES);
       } catch (error) {
         const { message, status } = error;
         NotificationManager.error(
@@ -175,12 +160,7 @@ const NatureScotDashboard = ({ sourceId }) => {
   );
 
   return (
-    <Grid
-      container
-      className={styles.dashboard}
-      // rowSpacing={1}
-      // columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-    >
+    <Grid container className={styles.dashboard}>
       <Grid item className={styles.item}>
         <NearestProtectedAreas data={nearestProtectedAreas} />
       </Grid>
