@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Grid, Typography } from '@astrosat/astrosat-ui';
 
@@ -11,7 +11,9 @@ import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import {
   computePercentages,
   getLastNYearRange,
+  getDataTimeline,
 } from 'dashboard/WalthamForest/utils';
+import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
@@ -19,19 +21,32 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
  * @param {{
- *  data: any
- *  userOrbState: object
+ *  affordableHousingDeliveryChartData: any
+ *  targets: object
+ *  settings: object
+ *  setDashboardSettings: function
  * }} props
  */
-const AffordableHousingDelivery = ({ data, userOrbState }) => {
+const AffordableHousingDelivery = ({
+  affordableHousingDeliveryChartData,
+  targets,
+  settings,
+  setDashboardSettings,
+}) => {
   const { walthamChartColors } = useChartTheme();
 
-  const actualData = data?.properties[0]?.data; // API data
+  const actualData = affordableHousingDeliveryChartData?.properties[0]?.data; // API data
   const chartTitle = `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`;
+
+  const [configuration, setConfiguration] = useState({
+    totalYear: settings?.totalYear ?? undefined,
+  });
+
+  const { totalYear } = configuration;
 
   let percentageData = computePercentages(
     actualData,
-    userOrbState?.affordableHousing,
+    targets?.affordableHousing,
     'Affordable Housing',
   );
 
@@ -49,6 +64,26 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
       color: walthamChartColors.affordableHousingDelivery[0],
     },
   ];
+
+  console.log('actualData', actualData);
+  console.log('targets ==>', targets?.affordableHousing);
+  console.log('settings ==>', settings);
+  const totalTimeline = getDataTimeline(actualData, targets?.affordableHousing);
+
+  /**
+   * @param {object} newSettings
+   */
+  const updateDateFilter = newSettings => {
+    setConfiguration(prev => ({
+      ...prev,
+      ...newSettings,
+    }));
+
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, ...newSettings },
+    }));
+  };
 
   const renderLineChart = width => {
     if (!percentageData) return null;
@@ -101,12 +136,19 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
           </Typography>
         </Grid>
       ) : (
-        <BaseChart
-          yLabel="Affordable Housing %"
-          xLabel="Year"
-          renderChart={renderLineChart}
-          renderLegend={renderAffordableHousingDeliveryLegend}
-        />
+        <Grid container>
+          <WalthamCustomDateRange
+            timeline={totalTimeline}
+            value={totalYear}
+            onSelect={value => updateDateFilter({ totalYear: value })}
+          />
+          <BaseChart
+            yLabel="Affordable Housing %"
+            xLabel="Year"
+            renderChart={renderLineChart}
+            renderLegend={renderAffordableHousingDeliveryLegend}
+          />
+        </Grid>
       )}
     </ChartWrapper>
   );
