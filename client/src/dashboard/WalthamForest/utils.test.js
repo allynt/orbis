@@ -6,6 +6,7 @@ import {
   getPastYears,
   getUser5YearTotals,
   getDataTimeline,
+  getFilteredTimeline,
   computePercentages,
 } from './utils';
 
@@ -340,7 +341,7 @@ describe('Waltham Forest Data Transformers', () => {
       const data = [{ Year: '2010-2011' }, { Year: '2012-2013' }],
         expected = ['2010-2011', '2011-2012', '2012-2013'];
 
-      const result = getDataTimeline(data);
+      const result = getDataTimeline(data, undefined);
       expect(result).toEqual(expected);
     });
 
@@ -348,20 +349,9 @@ describe('Waltham Forest Data Transformers', () => {
       const data = [{ Year: '2010-2011' }, { Year: '2011-2012' }],
         targets = {
           '2009-2010': '123',
+          '2012-2013': '123',
         },
-        expected = ['2009-2010', '2010-2011', '2011-2012'];
-
-      const result = getDataTimeline(data, targets);
-      expect(result).toEqual(expected);
-    });
-
-    it('excludes target years higher than highest api year', () => {
-      const data = [{ Year: '2010-2011' }, { Year: '2011-2012' }],
-        targets = {
-          '2014-2015': '123',
-          '2015-2016': '456',
-        },
-        expected = ['2010-2011', '2011-2012'];
+        expected = ['2009-2010', '2010-2011', '2011-2012', '2012-2013'];
 
       const result = getDataTimeline(data, targets);
       expect(result).toEqual(expected);
@@ -369,6 +359,34 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns undefined if data is not present', () => {
       const result = getDataTimeline(undefined);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getFilteredTimeline', () => {
+    it('filters the timeline to 5 year slice by default', () => {
+      const timeline = ['1', '2', '3', '4', '5', '6', '7'],
+        selectedYear = '7',
+        expected = ['3', '4', '5', '6', '7'];
+
+      const result = getFilteredTimeline(timeline, selectedYear);
+
+      expect(result).toEqual(expected);
+    });
+
+    it('filters timeline by specific range if arg passed', () => {
+      const timeline = ['1', '2', '3', '4', '5', '6', '7'],
+        selectedYear = '7',
+        expected = ['5', '6', '7'];
+
+      const result = getFilteredTimeline(timeline, selectedYear, 2);
+
+      expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if no timeline or selected year', () => {
+      const result = getFilteredTimeline(undefined, undefined);
+
       expect(result).toBeUndefined();
     });
   });

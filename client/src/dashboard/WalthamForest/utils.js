@@ -1,4 +1,4 @@
-import { LAST_5_YEARS } from './waltham.constants';
+import { LAST_5_YEARS, WALTHAM_FILTER_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -154,7 +154,7 @@ const getDataTimeline = (apiData, targets = {}) => {
   const allYears = [...apiYears, ...targetYears];
 
   const min = Math.min(...allYears); // show oldest year from both datasets
-  const max = Math.max(...apiYears); // only show latest year from API data
+  const max = Math.max(...allYears); // show newest year from both datasets
 
   let timeline = [];
   for (let i = min; i <= max; i++) {
@@ -180,12 +180,26 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
       }));
 
 /**
+ * @param {string[]} timeline
+ * @param {string} selectedYear
+ * @param {number} range
+ * @returns {string[]}
+ */
+const getFilteredTimeline = (
+  timeline,
+  selectedYear,
+  range = WALTHAM_FILTER_RANGE,
+) => {
+  const index = timeline?.indexOf(selectedYear);
+  return timeline?.slice(index - range, index + 1);
+};
+
+/**
  * @param {object[]} data : actual data. data points are properties
- * @param {object[]} targets : target data. array of objects
+ * @param {object} targets : target data. array of objects
  * @param {string} targetProperty : target property in targets objects to use
  * @returns {object[]} : actual data, values replaced with percentages relative to target
  */
-
 const computePercentages = (data, targets, targetProperty) => {
   // we return the data in the same shape as data, but values are
   // replaced with the percentage relative to the corresponding target
@@ -223,6 +237,7 @@ export {
   getUser5YearTotals,
   getDataTimeline,
   filterByType,
+  getFilteredTimeline,
   computePercentages,
   getLastNYearRange,
 };

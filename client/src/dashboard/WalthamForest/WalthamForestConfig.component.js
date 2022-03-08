@@ -54,17 +54,12 @@ const useStyles = makeStyles(theme => ({
   planningProgression: {
     height: 'fit-content',
   },
-  barCharts: {
+  bottomChartContainer: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     gap: '1rem',
   },
-  progression: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  housingDelivery: {
+  columnCharts: {
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
@@ -95,9 +90,14 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const user = useSelector(userSelector);
   const userOrbState = useSelector(userOrbStateSelector(sourceId));
 
-  const [dashboardSettings, setDashboardSettings] = useState({});
+  const { targets, settings } = userOrbState;
+
+  const [dashboardSettings, setDashboardSettings] = useState({
+    targets: {},
+    settings: {},
+  });
   const [selectedDataset, setSelectedDataset] = useState(undefined);
-  const [targets, setTargets] = useState(userOrbState);
+  const [localTargets, setLocalTargets] = useState(targets);
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
 
   const dashboardSettingsRef = useRef(dashboardSettings);
@@ -117,10 +117,15 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   // 1. listener func must be reusable so that it can also be removed
   // 2. must check changes have been made to prevent firing every time
-  const saveSettingsHandler = () =>
-    !!Object.keys(dashboardSettingsRef.current).length
+  const saveSettingsHandler = () => {
+    const changesMade = Object.values(dashboardSettingsRef.current).some(
+      obj => !!Object.keys(obj).length,
+    );
+
+    return changesMade
       ? updateWalthamOrbState(dashboardSettingsRef.current)
       : null;
+  };
 
   // update dashboardSettingsRef to be used in saving dashboard settings every
   // time dashboardSettings is updated
@@ -147,11 +152,14 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   /**
-   * @param {object} targets
+   * @param {object} newTargets
    */
-  const handleAddTargetsClick = targets => {
-    setTargets(prev => ({ ...prev, ...targets }));
-    setDashboardSettings(prev => ({ ...prev, ...targets }));
+  const handleAddTargetsClick = newTargets => {
+    setLocalTargets(prev => ({ ...prev, ...newTargets }));
+    setDashboardSettings(prev => ({
+      ...prev,
+      targets: { ...prev.targets, ...newTargets },
+    }));
     closeDialog();
   };
 
@@ -170,20 +178,29 @@ const WalthamForestDashboard = ({ sourceId }) => {
       </Grid>
 
       <div className={styles.content}>
-        {/* progress indicator charts */}
         <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
             tenureData={tenureHousingDelivery}
-            userOrbState={targets}
+            targets={localTargets}
           />
         </div>
 
-        <div className={styles.barCharts}>
-          <div className={styles.progression}>
+        <WalthamHousingDelivery
+          totalHousingDeliveryChartData={
+            totalHousingDelivery?.properties[0].data
+          }
+          tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
+          targets={localTargets}
+          settings={settings}
+          setDashboardSettings={setDashboardSettings}
+        />
+
+        <div className={styles.bottomChartContainer}>
+          <div className={styles.columnCharts}>
             <ProgressionVsPlanningSchedule
               data={progressionVsPlanning}
-              userOrbState={targets}
+              settings={settings}
               setDashboardSettings={setDashboardSettings}
             />
             <AffordableHousingDelivery
@@ -192,27 +209,15 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           </div>
 
-          <div className={styles.housingDelivery}>
-            {/* group/line and stack/line charts */}
-            <WalthamHousingDelivery
-              totalHousingDeliveryChartData={
-                totalHousingDelivery?.properties[0].data
-              }
-              tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
-              userOrbState={targets}
-              setDashboardSettings={setDashboardSettings}
-            />
-            {/* big multi-line chart */}
-            <HousingApprovalsComponent
-              x="Month"
-              xLabel="Year"
-              yLabel="No. Housing Approvals Granted"
-              ranges={['2019', '2020']}
-              data={approvalsGranted?.properties}
-              userOrbState={targets}
-              setDashboardSettings={setDashboardSettings}
-            />
-          </div>
+          <HousingApprovalsComponent
+            x="Month"
+            xLabel="Year"
+            yLabel="No. Housing Approvals Granted"
+            ranges={['2019', '2020']}
+            data={approvalsGranted?.properties}
+            settings={settings}
+            setDashboardSettings={setDashboardSettings}
+          />
         </div>
       </div>
 
@@ -230,7 +235,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             <TargetScreen
               onAddTargetsClick={targets => handleAddTargetsClick(targets)}
               selectedDataset={selectedDataset}
-              targets={targets[selectedDataset]}
+              targets={localTargets?.[selectedDataset]}
             />
           ) : (
             <SelectScreen

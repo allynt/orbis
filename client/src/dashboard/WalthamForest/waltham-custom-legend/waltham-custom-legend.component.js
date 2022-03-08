@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
 const RATIOS = {
-    legendContainer: 0.14,
+    legendContainer: 0.1125,
     squareIconSize: 0.03,
     fontSize: 0.025,
     lineIconWidth: 0.06,
@@ -43,30 +43,28 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
         wrap="wrap"
         className={styles.apiLegend}
       >
-        {apiLegendData?.map(({ name, color }) => {
-          return (
-            <Grid key={name} item container alignItems="center">
-              {/* creates square with correct color */}
-              <div
-                style={{
-                  width: width * RATIOS.squareIconSize,
-                  height: width * RATIOS.squareIconSize,
-                  backgroundColor: `${color}`,
-                  marginRight: width * RATIOS.iconSpacing,
-                  maxWidth: '1rem',
-                  maxHeight: '1rem',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
-                }}
-              >
-                {name}
-              </span>
-            </Grid>
-          );
-        })}
+        {apiLegendData?.map(({ name, color }) => (
+          <Grid key={name} item container alignItems="center">
+            {/* creates square with correct color */}
+            <div
+              style={{
+                width: width * RATIOS.squareIconSize,
+                height: width * RATIOS.squareIconSize,
+                backgroundColor: `${color}`,
+                marginRight: width * RATIOS.iconSpacing,
+                maxWidth: '1rem',
+                maxHeight: '1rem',
+              }}
+            />
+            <span
+              style={{
+                fontSize: fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
+              }}
+            >
+              {name}
+            </span>
+          </Grid>
+        ))}
       </Grid>
 
       {!!targetLegendData ? (

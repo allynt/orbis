@@ -26,6 +26,7 @@ const dataArray = [
       '2015-2016': '181',
       '2016-2017': '155',
     },
+    filteredTimeline: ['2015-2016', '2016-2017'],
     expected: {
       transformedData: [
         {
@@ -63,6 +64,7 @@ const dataArray = [
       '2014-2015': '181',
       '2015-2016': '155',
     },
+    filteredTimeline: ['2014-2015', '2015-2016', '2016-2017'],
     expected: {
       transformedData: [
         { Year: '2014-2015', Market: null, Intermediate: null },
@@ -84,7 +86,7 @@ const dataArray = [
     },
   },
   {
-    title: 'only returns data as high as latest year in api data',
+    title: 'returns lowest-to-highest year from both datasets',
     data: [
       {
         Year: '2015-2016',
@@ -96,6 +98,7 @@ const dataArray = [
       '2015-2016': '181',
       '2016-2017': '155',
     },
+    filteredTimeline: ['2015-2016', '2016-2017'],
     expected: {
       transformedData: [
         {
@@ -103,31 +106,16 @@ const dataArray = [
           Market: 123,
           Intermediate: 456,
         },
-      ],
-      transformedTargets: [{ x: '2015-2016', y: 181 }],
-    },
-  },
-  {
-    title: 'returns null target data if higher than api data years',
-    data: [
-      {
-        Year: '2015-2016',
-        Market: 123,
-        Intermediate: 456,
-      },
-    ],
-    targets: {
-      '2016-2017': '155',
-    },
-    expected: {
-      transformedData: [
         {
-          Year: '2015-2016',
-          Market: 123,
-          Intermediate: 456,
+          Year: '2016-2017',
+          Market: null,
+          Intermediate: null,
         },
       ],
-      transformedTargets: null,
+      transformedTargets: [
+        { x: '2015-2016', y: 181 },
+        { x: '2016-2017', y: 155 },
+      ],
     },
   },
   {
@@ -140,6 +128,7 @@ const dataArray = [
       },
     ],
     targets: undefined,
+    filteredTimeline: ['2015-2016'],
     expected: {
       transformedData: [
         {
@@ -160,9 +149,9 @@ const dataArray = [
 ];
 
 describe('tenureHousingTransformer', () => {
-  dataArray.forEach(({ title, data, targets, expected }) =>
+  dataArray.forEach(({ title, data, targets, filteredTimeline, expected }) =>
     it(title, () => {
-      const result = tenureHousingTransformer(data, targets);
+      const result = tenureHousingTransformer(data, targets, filteredTimeline);
       expect(result).toEqual(expected);
     }),
   );

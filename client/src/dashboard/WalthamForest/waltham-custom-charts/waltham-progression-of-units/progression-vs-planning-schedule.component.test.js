@@ -29,7 +29,7 @@ describe('Progression vs Planning Schedule', () => {
 
     expect(screen.getByText('Units Ahead of Schedule')).toBeInTheDocument();
     expect(screen.getByText('Units Behind Schedule')).toBeInTheDocument();
-    expect(screen.getByText('Units on Schedule')).toBeInTheDocument();
+    expect(screen.getByText('Units on Track')).toBeInTheDocument();
 
     expect(screen.getByText('Financial Year')).toBeInTheDocument();
     expect(screen.getByText('Number Of Units')).toBeInTheDocument();

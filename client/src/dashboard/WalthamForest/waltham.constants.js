@@ -11,13 +11,13 @@ export const housingTenureTypes = {
 export const progressionVsPlanningTypes = [
   'Units Ahead of Schedule',
   'Units Behind Schedule',
-  'Units on Schedule',
+  'Units on Track',
 ];
 
 export const progressionVsPlanningOptions = {
-  'Ahead of Schedule': 'Ahead of Schedule',
-  'Behind Schedule': 'Behind Schedule',
-  'On Track': 'On Track',
+  aheadOfSchedule: 'Ahead of Schedule',
+  behindSchedule: 'Behind Schedule',
+  onTrack: 'On Track',
 };
 
 export const progressionVsPlanningPalette = {
@@ -141,3 +141,7 @@ export const yellowStyle = {
 };
 
 export const ALL_TYPES = 'Show All';
+
+// start index not included, so must be one less than target number,
+// for example, 5-year range would be 4, like below.
+export const WALTHAM_FILTER_RANGE = 4;
