@@ -129,26 +129,19 @@ const getUser5YearTotals = obj => {
  * latest year in the api data, as was requested.
  * @param {object[]} apiData
  * @param {object} targets
+ * @params {string}? keyField
  * @returns {string[]}
  */
-const getDataTimeline = (apiData, targets = {}) => {
+const getDataTimeline = (apiData, targets = {}, keyField = 'Year') => {
   if (!apiData) return;
 
-  console.warn('apiData', apiData);
-  console.warn('targets', targets);
   // if uninitiated by user, targets will be undefined, but
   // defaulted to empty object
   const noTargets = !Object.keys(targets).length;
 
   const apiYears = apiData.map(obj => {
-    // TODO: fix mock data to always use Year not year
-    if (obj.Year) {
-      const [year] = obj.Year.split('-');
-      return +year;
-    } else {
-      const [year] = obj.year.split('-');
-      return +year;
-    }
+    const [year] = obj[keyField].split('-');
+    return +year;
   });
 
   // if targets is undefined, defaulted to object and will return empty array

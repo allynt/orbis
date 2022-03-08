@@ -65,10 +65,11 @@ const AffordableHousingDelivery = ({
     },
   ];
 
-  console.log('actualData', actualData);
-  console.log('targets ==>', targets?.affordableHousing);
-  console.log('settings ==>', settings);
-  const totalTimeline = getDataTimeline(actualData, targets?.affordableHousing);
+  const totalTimeline = getDataTimeline(
+    actualData,
+    targets?.affordableHousing,
+    'year',
+  );
 
   /**
    * @param {object} newSettings
@@ -124,6 +125,13 @@ const AffordableHousingDelivery = ({
       title={chartTitle}
       info="This shows the % of affordable housing delivered each year"
     >
+      <Grid item style={{ paddingBottom: '1rem' }}>
+        <WalthamCustomDateRange
+          timeline={totalTimeline}
+          value={totalYear}
+          onSelect={value => updateDateFilter({ totalYear: value })}
+        />
+      </Grid>
       {!hasData ? (
         <Grid
           container
@@ -136,19 +144,12 @@ const AffordableHousingDelivery = ({
           </Typography>
         </Grid>
       ) : (
-        <Grid container>
-          <WalthamCustomDateRange
-            timeline={totalTimeline}
-            value={totalYear}
-            onSelect={value => updateDateFilter({ totalYear: value })}
-          />
-          <BaseChart
-            yLabel="Affordable Housing %"
-            xLabel="Year"
-            renderChart={renderLineChart}
-            renderLegend={renderAffordableHousingDeliveryLegend}
-          />
-        </Grid>
+        <BaseChart
+          yLabel="Affordable Housing %"
+          xLabel="Year"
+          renderChart={renderLineChart}
+          renderLegend={renderAffordableHousingDeliveryLegend}
+        />
       )}
     </ChartWrapper>
   );
