@@ -19,8 +19,8 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
  * @param {{
- *  data: {any} // chart data
- *  userOrbState: {object} // orb state
+ *  data: any
+ *  userOrbState: object
  * }} props
  */
 const AffordableHousingDelivery = ({ data, userOrbState }) => {
@@ -31,7 +31,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
 
   let percentageData = computePercentages(
     actualData,
-    userOrbState.affordableHousing,
+    userOrbState?.affordableHousing,
     'Affordable Housing',
   );
 

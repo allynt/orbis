@@ -341,7 +341,7 @@ describe('Waltham Forest Data Transformers', () => {
       const data = [{ Year: '2010-2011' }, { Year: '2012-2013' }],
         expected = ['2010-2011', '2011-2012', '2012-2013'];
 
-      const result = getDataTimeline(data, undefined, 0);
+      const result = getDataTimeline(data, undefined);
       expect(result).toEqual(expected);
     });
 

@@ -196,7 +196,7 @@ const getFilteredTimeline = (
 
 /**
  * @param {object[]} data : actual data. data points are properties
- * @param {object[]} targets : target data. array of objects
+ * @param {object} targets : target data. array of objects
  * @param {string} targetProperty : target property in targets objects to use
  * @returns {object[]} : actual data, values replaced with percentages relative to target
  */

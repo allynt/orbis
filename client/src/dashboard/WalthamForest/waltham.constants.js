@@ -11,7 +11,7 @@ export const housingTenureTypes = {
 export const progressionVsPlanningTypes = [
   'Units Ahead of Schedule',
   'Units Behind Schedule',
-  'Units on Schedule',
+  'Units on Track',
 ];
 
 export const progressionVsPlanningOptions = {
