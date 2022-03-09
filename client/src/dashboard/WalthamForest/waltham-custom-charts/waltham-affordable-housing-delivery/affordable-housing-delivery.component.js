@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Grid, Typography } from '@astrosat/astrosat-ui';
 
@@ -12,6 +12,7 @@ import {
   computePercentages,
   getLastNYearRange,
   getDataTimeline,
+  getFilteredTimeline,
 } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
@@ -36,7 +37,7 @@ const AffordableHousingDelivery = ({
   const { walthamChartColors } = useChartTheme();
 
   const actualData = affordableHousingDeliveryChartData?.properties[0]?.data; // API data
-  const chartTitle = `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`;
+  const chartTitle = `Affordable Housing Delivery (%)`;
 
   const [configuration, setConfiguration] = useState({
     totalYear: settings?.totalYear ?? undefined,
@@ -57,6 +58,13 @@ const AffordableHousingDelivery = ({
     ['Affordable Housing'],
     item => `${Math.round(item)}%`,
   );
+
+  const getFilteredData = (data, year) => {
+    const currentYearObject = data.find(datum => datum.year === year);
+    const index = data.indexOf(currentYearObject);
+
+    return data.slice(index - 4, index + 1);
+  };
 
   const apiLegendData = [
     {
@@ -86,13 +94,24 @@ const AffordableHousingDelivery = ({
     }));
   };
 
+  // setup/error catch for total chart
+  useEffect(() => {
+    if (!totalTimeline || totalTimeline.includes(totalYear)) {
+      return;
+    } else {
+      updateDateFilter({ totalYear: totalTimeline[totalTimeline.length - 1] });
+    }
+  }, [totalYear, totalTimeline]);
+
   const renderLineChart = width => {
     if (!percentageData) return null;
+    const filteredData = getFilteredData(percentageData, totalYear);
+    if (!filteredData) return null;
     const y_max = Math.max(
-      ...percentageData.map(item => item['Affordable Housing']),
+      ...filteredData.map(item => item['Affordable Housing']),
     );
     const props = {
-      data: percentageData,
+      data: filteredData,
       x: 'year',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
@@ -123,15 +142,17 @@ const AffordableHousingDelivery = ({
   return (
     <ChartWrapper
       title={chartTitle}
-      info="This shows the % of affordable housing delivered each year"
+      info="The percentage of affordable housing delivered each year. The values shown are for the total affordable housing sites delivered as the sum of: 'Affordable Rent (not at LAR benchmark rents)' and 'London Affordable Rent' for the London Borough Waltham Forest area"
     >
-      <Grid item style={{ paddingBottom: '1rem' }}>
-        <WalthamCustomDateRange
-          timeline={totalTimeline}
-          value={totalYear}
-          onSelect={value => updateDateFilter({ totalYear: value })}
-        />
-      </Grid>
+      {hasData ? (
+        <Grid item style={{ paddingBottom: '1rem' }}>
+          <WalthamCustomDateRange
+            timeline={totalTimeline}
+            value={totalYear}
+            onSelect={value => updateDateFilter({ totalYear: value })}
+          />
+        </Grid>
+      ) : null}
       {!hasData ? (
         <Grid
           container
