@@ -46,7 +46,7 @@ const AffordableHousingDelivery = ({
 
   let percentageData = computePercentages(
     actualData,
-    targets?.affordableHousing,
+    targets?.affordableHousingPercentage,
     'Affordable Housing',
   );
 
@@ -67,7 +67,7 @@ const AffordableHousingDelivery = ({
 
   const totalTimeline = getDataTimeline(
     actualData,
-    targets?.affordableHousing,
+    targets?.affordableHousingPercentage,
     'year',
   );
 
@@ -140,7 +140,7 @@ const AffordableHousingDelivery = ({
           style={{ height: '12rem' }}
         >
           <Typography variant="h4">
-            Please enter affordable housing delivery % targets.
+            Please enter affordable housing delivery targets
           </Typography>
         </Grid>
       ) : (

@@ -214,7 +214,8 @@ const computePercentages = (data, targets, targetProperty) => {
     );
     return {
       year: datum.year,
-      [targetProperty]: isNaN(percentage) ? null : percentage,
+      [targetProperty]:
+        isNaN(percentage) || !isFinite(percentage) ? null : percentage,
     };
   });
 };
