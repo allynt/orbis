@@ -21,6 +21,20 @@ import { DEFAULT_TITLE, VALUE_TYPE } from './feature-detail.constants';
 const NO_DATA = 'Not available';
 
 /**
+ * Check if value is a valid date or not.
+ *
+ * @param {*} value
+ *
+ * @returns {boolean} Whether the value is a valid date or not.
+ */
+const isValueDateString = value => {
+  const isISODateString =
+    value && typeof value === 'string' ? value.slice(-1) === 'Z' : null;
+  const isValidDate = value ? isValid(new Date(value)) : null;
+
+  return isValidDate && isISODateString;
+};
+/**
  * @typedef {import('./feature-detail.constants').ValueType} ValueType
  */
 /**
@@ -28,7 +42,7 @@ const NO_DATA = 'Not available';
  * @returns {ValueType[keyof ValueType]}
  */
 const getTypeForValue = value => {
-  if (isValid(new Date(value))) return VALUE_TYPE.date;
+  if (isValueDateString(value)) return VALUE_TYPE.date;
   if (Array.isArray(value)) return VALUE_TYPE.array;
   if (typeof value === 'object' && value !== null) return VALUE_TYPE.object;
   return VALUE_TYPE.item;
@@ -224,6 +238,7 @@ const FeatureDetail = ({
               ]);
             if (propertiesToPick)
               properties = pick(properties, propertiesToPick);
+
             return (
               <List key={feature?.pk} className={styles.list}>
                 {mapObject(properties, labelMapping, dateFormat)}
