@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, within } from 'test/test-utils';
+import { render, screen } from 'test/test-utils';
 
 import AreaOfficeContactDetail from './area-office-contact-details.component';
 
