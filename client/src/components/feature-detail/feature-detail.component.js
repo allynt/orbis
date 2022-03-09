@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import { format, isValid } from 'date-fns';
 import { omit, pick, get } from 'lodash';
 
 import { isEmail } from 'utils/text';
@@ -27,6 +28,7 @@ const NO_DATA = 'Not available';
  * @returns {ValueType[keyof ValueType]}
  */
 const getTypeForValue = value => {
+  if (isValid(new Date(value))) return VALUE_TYPE.date;
   if (Array.isArray(value)) return VALUE_TYPE.array;
   if (typeof value === 'object' && value !== null) return VALUE_TYPE.object;
   return VALUE_TYPE.item;
@@ -121,9 +123,10 @@ const ArrayItem = ({ jsonKey, value }) => (
 /**
  * @param {{[key: string]: any}} feature
  * @param {{[key: string]: string}} [labelMapping]
+ * @param {string} [dateFormat]
  * @returns
  */
-const mapObject = (feature, labelMapping) => {
+const mapObject = (feature, labelMapping, dateFormat) => {
   return (
     <>
       {feature &&
@@ -133,7 +136,14 @@ const mapObject = (feature, labelMapping) => {
             jsonKey: labelMapping?.[jsonKey] ? labelMapping[jsonKey] : jsonKey,
             value,
           };
+
           switch (getTypeForValue(value)) {
+            case VALUE_TYPE.date:
+              const updatedProps = {
+                ...props,
+                value: format(new Date(value), dateFormat),
+              };
+              return <Item {...updatedProps} />;
             case VALUE_TYPE.array:
               return <ArrayItem {...props} />;
             case VALUE_TYPE.object:
@@ -154,6 +164,7 @@ const mapObject = (feature, labelMapping) => {
  * @property {string} [titleProperty]
  * @property {string[]} [propertiesToOmit]
  * @property {string[]} [propertiesToPick]
+ * @property {string} [dateFormat]
  * @property {(obj: object) => React.ReactNode|null} [postFeatureComponent]
  * @property {{label: string, content: string}} [footer]
  * @property {string} [title]
@@ -190,6 +201,7 @@ const FeatureDetail = ({
   titleProperty,
   propertiesToOmit,
   propertiesToPick,
+  dateFormat = 'dd/MM/yyyy',
   postFeatureComponent,
   labelMapping,
   footer,
@@ -214,7 +226,7 @@ const FeatureDetail = ({
               properties = pick(properties, propertiesToPick);
             return (
               <List key={feature?.pk} className={styles.list}>
-                {mapObject(properties, labelMapping)}
+                {mapObject(properties, labelMapping, dateFormat)}
                 {postFeatureComponent ? postFeatureComponent(feature) : null}
                 {footer && (
                   <Item jsonKey={footer.label} value={footer.content} />

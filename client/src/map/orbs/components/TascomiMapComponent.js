@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TascomiMapComponent = ({ source }) => {
+const TascomiMapComponent = ({ source, dateFormat }) => {
   const styles = useStyles();
 
   const pickedObjects = useSelector(state =>
@@ -45,7 +45,7 @@ const TascomiMapComponent = ({ source }) => {
       <FeatureDetail
         features={pickedObjects.map(obj => obj.properties)}
         title="Feature Detail"
-        dateFormat="yyyy-MM-dd"
+        dateFormat={dateFormat}
       >
         <div className={styles.bodyFooter}>
           <Button
