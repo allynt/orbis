@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { inputErrorMessage } from '../waltham.constants';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
+// TODO: fix strings/numbers in tests
+
 describe('Target Dialog Screens', () => {
   describe('SelectScreen', () => {
     const defaultValue = 'Select Type of Target';
@@ -75,8 +77,8 @@ describe('Target Dialog Screens', () => {
       const onAddTargetsClick = jest.fn(),
         expected = {
           'test-dataset': {
-            '2020-2021': '123',
-            '2021-2022': '456',
+            2020: '123',
+            2021: '456',
           },
         };
 

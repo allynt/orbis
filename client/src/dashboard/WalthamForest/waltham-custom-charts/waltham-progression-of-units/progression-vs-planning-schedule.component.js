@@ -49,10 +49,8 @@ const ProgressionVsPlanningSchedule = ({
     },
   };
 
-  const progressionVsPlanningChartData = useMemo(
-    () => data?.properties[0].data,
-    [data],
-  );
+  // TODO: this necessary? No calcs going on, so is doing nothing?
+  const progressionVsPlanningChartData = useMemo(() => data, [data]);
 
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
@@ -101,11 +99,9 @@ const ProgressionVsPlanningSchedule = ({
         ? Object.values(progressionVsPlanningOptions)
         : [progressionVsPlanningOptions[configuration]];
 
-    const x = 'Year';
-    const apiData = data?.properties[0]?.data;
-
+    const x = 'startYear';
     let totalsArray = labelsForArrayOfObjectsInclusive(
-      apiData,
+      progressionVsPlanningChartData,
       ranges,
       ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
     );

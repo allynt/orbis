@@ -26,7 +26,7 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 const AffordableHousingDelivery = ({ data, userOrbState }) => {
   const { walthamChartColors } = useChartTheme();
 
-  const actualData = data?.properties[0]?.data; // API data
+  const actualData = data; // API data
   const chartTitle = `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`;
 
   let percentageData = computePercentages(
@@ -103,7 +103,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
       ) : (
         <BaseChart
           yLabel="Affordable Housing %"
-          xLabel="Year"
+          xLabel="startYear"
           renderChart={renderLineChart}
           renderLegend={renderAffordableHousingDeliveryLegend}
         />

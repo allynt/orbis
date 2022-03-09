@@ -3,10 +3,10 @@ import { userTargetTransformer } from 'dashboard/WalthamForest/utils.js';
 /**
  * @param {object[]} apiData
  * @param {object} targets
- * @param {string[]} filteredTimeline
+ * @param {number[]} filteredTimeline
  * @returns {{
- *  transformedData: { x: string, y: number }[][]
- *  transformedTargets: { x: string, y: number }[]
+ *  transformedData: { x: number, y: number }[][]
+ *  transformedTargets: { x: number, y: number }[]
  * }}
  */
 export const totalHousingTransformer = (
@@ -16,21 +16,19 @@ export const totalHousingTransformer = (
 ) => {
   if (!apiData) return;
 
-  const noTargets = !Object.keys(targets).length;
-  const transformedTargets = noTargets
-    ? null
-    : userTargetTransformer(targets, filteredTimeline);
+  const hasTargets = !!Object.keys(targets).length;
+
+  const transformedTargets = hasTargets
+    ? userTargetTransformer(targets, filteredTimeline)
+    : null;
 
   const transformedData = Object.values(
     filteredTimeline.reduce(
       (acc, year) => {
-        const obj = apiData.find(datum => datum.Year === year) ?? {};
+        const obj = apiData.find(datum => datum.startYear === year) ?? {};
         return {
-          gross: [
-            ...acc.gross,
-            { x: `${year}`, y: obj['Total Gross'] ?? null },
-          ],
-          net: [...acc.net, { x: `${year}`, y: obj['Total Net'] ?? null }],
+          gross: [...acc.gross, { x: year, y: obj['Total Gross'] ?? null }],
+          net: [...acc.net, { x: year, y: obj['Total Net'] ?? null }],
         };
       },
       { gross: [], net: [] },

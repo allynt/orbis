@@ -24,12 +24,24 @@ const walthamChartColors = {
   deliverableSupplySummary: ['#8aea73', '#d76781', '#37e5d8', '#ffa048'],
 };
 
+// mock data colors
+// const tenureStackColors = {
+//   affordableHousing: '#37e5d8',
+//   intermediateDelivery: '#75b7b2',
+//   marketHousing: '#adeab0',
+//   sociallyRented: '#05c3ff',
+//   privateRental: '#d6ea69',
+// };
+
+// live data colors
 const tenureStackColors = {
   affordableHousing: '#37e5d8',
+  // TODO: this is made a up green
+  affordableHousingLondon: '#36a90d',
   intermediateDelivery: '#75b7b2',
+  intermediateOther: 'Intermediate Other',
   marketHousing: '#adeab0',
   sociallyRented: '#05c3ff',
-  privateRental: '#d6ea69',
 };
 
 const baseProps = {

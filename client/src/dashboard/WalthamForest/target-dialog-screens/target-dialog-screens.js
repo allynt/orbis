@@ -110,8 +110,10 @@ const TargetScreen = ({ onAddTargetsClick, selectedDataset, targets = {} }) => {
     }
   }, [targetData, isDirty]);
 
-  const handleChange = (field, value) =>
-    setTargetData({ ...targetData, [field]: value.trim() });
+  /**
+   * @param {object} data
+   */
+  const handleChange = data => setTargetData(prev => ({ ...prev, ...data }));
 
   const handleSubmit = () =>
     onAddTargetsClick({ [selectedDataset]: filterEmptyStrings(targetData) });
@@ -124,8 +126,10 @@ const TargetScreen = ({ onAddTargetsClick, selectedDataset, targets = {} }) => {
           <Input
             key={field}
             value={targetData[field] ?? ''}
-            placeholder={field}
-            onChange={({ target: { value } }) => handleChange(field, value)}
+            placeholder={`${field}-${field + 1}`}
+            onChange={({ target: { value } }) =>
+              handleChange({ [field]: value.trim() })
+            }
           />
         ))}
       </Grid>

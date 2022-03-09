@@ -60,7 +60,7 @@ const ALL_TENURE_TYPES = 'All Tenure Types';
 
 /**
  * @param {{
- *  timeline: string[]
+ *  timeline: number[]
  *  tenureYear: string
  *  tenureType: string
  *  housingTenureTypes: object
@@ -186,17 +186,25 @@ export const WalthamHousingDelivery = ({
   const dataByTenureType = useMemo(
     () =>
       filterByType(
-        tenureHousingDeliveryChartData?.find(d => d.name === tenureDataType)
-          ?.data,
+        tenureHousingDeliveryChartData,
         tenureType,
         ALL_TENURE_TYPES,
         housingTenureTypes,
       ),
-    [tenureDataType, tenureHousingDeliveryChartData, tenureType],
+    [tenureHousingDeliveryChartData, tenureType],
   );
 
+  // TODO: this is only here because mock data needs `startYear` added and `Year` filtered out
+  const adaptedTotalData = totalHousingDeliveryChartData?.map(obj => {
+    const [startYear] = obj.Year.split('-');
+    return Object.entries({ startYear: Number(startYear), ...obj }).reduce(
+      (acc, [key, value]) => (key === 'Year' ? acc : { ...acc, [key]: value }),
+      {},
+    );
+  });
+
   const totalTimeline = getDataTimeline(
-      totalHousingDeliveryChartData,
+      adaptedTotalData,
       targets?.totalHousing,
     ),
     tenureTimeline = getDataTimeline(dataByTenureType, processedTargets);
@@ -246,7 +254,7 @@ export const WalthamHousingDelivery = ({
             onSelect={value => updateDateFilter({ totalYear: value })}
           />
           <TotalHousingMultiChart
-            apiData={totalHousingDeliveryChartData}
+            apiData={adaptedTotalData}
             userTargetData={targets?.totalHousing}
             filteredTimeline={getFilteredTimeline(totalTimeline, totalYear)}
           />

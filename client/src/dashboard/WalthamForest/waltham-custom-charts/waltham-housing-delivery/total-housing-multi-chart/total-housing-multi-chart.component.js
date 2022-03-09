@@ -26,7 +26,7 @@ import { totalHousingTransformer } from './total-housing-transformer/total-housi
  * @param {{
  *  apiData: object[]
  *  userTargetData: object[]
- *  filteredTimeline: string[]
+ *  filteredTimeline: number[]
  * }} props
  */
 const TotalHousingMultiChart = ({
