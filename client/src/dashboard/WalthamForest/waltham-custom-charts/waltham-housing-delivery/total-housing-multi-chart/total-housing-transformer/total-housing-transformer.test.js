@@ -16,8 +16,8 @@ const dataArray = [
       },
     ],
     targets: {
-      2015: '181',
-      2016: '155',
+      2015: 181,
+      2016: 155,
     },
     filteredTimeline: [2015, 2016],
     expected: {
@@ -52,9 +52,9 @@ const dataArray = [
       },
     ],
     targets: {
-      2015: '254',
-      2016: '191',
-      2017: '181',
+      2015: 254,
+      2016: 191,
+      2017: 181,
     },
     filteredTimeline: [2015, 2016, 2017],
     expected: {
@@ -87,8 +87,8 @@ const dataArray = [
       },
     ],
     targets: {
-      2015: '191',
-      2017: '254',
+      2015: 191,
+      2017: 254,
     },
     filteredTimeline: [2015, 2016, 2017],
     expected: {

@@ -30,7 +30,7 @@ const filterEmptyStrings = data => {
   if (!data) return;
 
   return Object.entries(data).reduce(
-    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
+    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: +value }),
     {},
   );
 };

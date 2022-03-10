@@ -50,9 +50,9 @@ describe('Waltham Forest Data Transformers', () => {
   describe('filterEmptyStrings', () => {
     it('filters out empty string values from object', () => {
       const data = {
-          'key-1': 123,
+          'key-1': '123',
           'key-2': '',
-          'key-3': 456,
+          'key-3': '456',
         },
         expected = {
           'key-1': 123,
@@ -65,13 +65,18 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('does not filter 0 values', () => {
       const data = {
-        'key-1': 123,
-        'key-2': 0,
-        'key-3': 456,
-      };
+          'key-1': '123',
+          'key-2': '0',
+          'key-3': '456',
+        },
+        expected = {
+          'key-1': 123,
+          'key-2': 0,
+          'key-3': 456,
+        };
 
       const result = filterEmptyStrings(data);
-      expect(result).toEqual(data);
+      expect(result).toEqual(expected);
     });
 
     it('returns undefined if data is not present', () => {
@@ -172,30 +177,10 @@ describe('Waltham Forest Data Transformers', () => {
     });
   });
 
-  describe('userTargetTransformer', () => {
-    it('transforms data and converts string values to numbers', () => {
+  describe.only('userTargetTransformer', () => {
+    it('transforms data', () => {
       const input = {
-          2010: '123',
-          2012: '456',
-        },
-        expected = [
-          {
-            x: 2010,
-            y: 123,
-          },
-          {
-            x: 2012,
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input, [2010, 2012]);
-      expect(result).toEqual(expected);
-    });
-
-    it('does not affect values that are already numbers', () => {
-      const input = {
-          2010: '123',
+          2010: 123,
           2012: 456,
         },
         expected = [
@@ -215,8 +200,8 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('excludes values not present in timeline', () => {
       const input = {
-          2010: '123',
-          2011: '456',
+          2010: 123,
+          2011: 456,
         },
         expected = [
           {
@@ -231,8 +216,8 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns all data if no timeline is provided', () => {
       const input = {
-          2010: '123',
-          2011: '456',
+          2010: 123,
+          2011: 456,
         },
         expected = [
           {
@@ -251,8 +236,8 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns null if all targets fall outwith timeline', () => {
       const input = {
-        2012: '123',
-        2013: '456',
+        2012: 123,
+        2013: 456,
       };
 
       const result = userTargetTransformer(input, [2010, 2011]);

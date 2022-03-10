@@ -103,7 +103,7 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
       ) : (
         <BaseChart
           yLabel="Affordable Housing %"
-          xLabel="startYear"
+          xLabel="Year"
           renderChart={renderLineChart}
           renderLegend={renderAffordableHousingDeliveryLegend}
         />

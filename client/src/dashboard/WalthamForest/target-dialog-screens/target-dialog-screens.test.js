@@ -6,8 +6,6 @@ import userEvent from '@testing-library/user-event';
 import { inputErrorMessage } from '../waltham.constants';
 import { SelectScreen, TargetScreen } from './target-dialog-screens';
 
-// TODO: fix strings/numbers in tests
-
 describe('Target Dialog Screens', () => {
   describe('SelectScreen', () => {
     const defaultValue = 'Select Type of Target';

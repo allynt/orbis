@@ -1,4 +1,9 @@
 import { inputErrorMessage } from '../waltham.constants';
+
+/**
+ * @param {object} targets
+ * @returns {string|undefined}
+ */
 export const validate = targets => {
   let error = undefined;
   const values = Object.values(targets);

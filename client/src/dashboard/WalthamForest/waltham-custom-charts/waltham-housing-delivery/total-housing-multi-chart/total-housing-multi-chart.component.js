@@ -117,6 +117,7 @@ const TotalHousingMultiChart = ({
       xLabel="Year"
       renderChart={renderTotalHousingMultiChart}
       renderLegend={renderTotalHousingLegend}
+      financialYear
     />
   );
 };
