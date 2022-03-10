@@ -6,11 +6,8 @@ import {
   Dialog,
   IconButton,
   makeStyles,
-  Typography,
   Grid,
 } from '@astrosat/astrosat-ui';
-
-import { dialogWelcomeText } from './dialog.constants';
 
 const useStyles = makeStyles(theme => ({
   dialog: {
@@ -29,9 +26,12 @@ const useStyles = makeStyles(theme => ({
     margin: 20,
   },
   overviewHighlightedText: {
-    color: '#f6be00',
+    color: theme.palette.primary.main,
     paddingLeft: theme.spacing(0.5),
     paddingRight: theme.spacing(0.5),
+  },
+  overviewText: {
+    fontSize: 14,
   },
 }));
 
@@ -61,20 +61,19 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
       </IconButton>
 
       <div className={styles.content}>
-        <h2>Impact Assessment Components</h2>
-        <Grid container justifyContent="space-between" spacing={2}>
-          <Grid item>
-            <Typography variant="h3">{dialogWelcomeText.heading}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="h4">
-              {dialogWelcomeText.overviewStandardTextPart1}
-              <span className={styles.overviewHighlightedText}>
-                {dialogWelcomeText.overviewHighlightedText}
-              </span>
-              {dialogWelcomeText.overviewStandardTextPart2}
-            </Typography>
-          </Grid>
+        <Grid container direction="row" justifyContent="space-between">
+          <h4>
+            Welcome to the Impact Assessment functionality for Eco-an-Alba.
+          </h4>
+          <div className={styles.overviewText}>
+            This feature will show you the impacts of a proposed change or
+            development within your area of interest.
+            <span className={styles.overviewHighlightedText}>
+              Please note, it does not replace the consent or consultation
+              processes.
+            </span>
+            Applications should continue to be made to NatureScot.
+          </div>
         </Grid>
         <Button onClick={() => handleSubmit()}>Submit Assessment</Button>
       </div>
