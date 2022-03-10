@@ -7,6 +7,7 @@ import {
   IconButton,
   makeStyles,
   Grid,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
@@ -61,20 +62,16 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
       </IconButton>
 
       <div className={styles.content}>
-        <Grid container direction="row" justifyContent="space-between">
-          <h4>
-            Welcome to the Impact Assessment functionality for Eco-an-Alba.
-          </h4>
-          <div className={styles.overviewText}>
-            This feature will show you the impacts of a proposed change or
-            development within your area of interest.
-            <span className={styles.overviewHighlightedText}>
-              Please note, it does not replace the consent or consultation
-              processes.
-            </span>
-            Applications should continue to be made to NatureScot.
-          </div>
-        </Grid>
+        <h4>Welcome to the Impact Assessment functionality for Eco-an-Alba.</h4>
+        <p className={styles.overviewText}>
+          This feature will show you the impacts of a proposed change or
+          development within your area of interest.
+          <span className={styles.overviewHighlightedText}>
+            Please note, it does not replace the consent or consultation
+            processes.
+          </span>
+          Applications should continue to be made to NatureScot.
+        </p>
         <Button onClick={() => handleSubmit()}>Submit Assessment</Button>
       </div>
     </Dialog>

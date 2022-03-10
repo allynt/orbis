@@ -17,7 +17,7 @@ describe('AssessmentDialog', () => {
     render(<AssessmentDialog open={false} close={close} onSubmit={onSubmit} />);
 
     expect(
-      screen.queryByRole('heading', { name: /impact assessment components/i }),
+      screen.queryByRole('heading', { name: /welcome/i }),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: /submit assessment/i }),
@@ -28,7 +28,7 @@ describe('AssessmentDialog', () => {
     render(<AssessmentDialog open={true} close={close} onSubmit={onSubmit} />);
 
     expect(
-      screen.getByRole('heading', { name: /impact assessment components/i }),
+      screen.getByRole('heading', { name: /welcome/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /submit assessment/i }),
