@@ -64,6 +64,7 @@ const TenureHousingMultiChart = ({
       />
     );
   };
+
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
@@ -139,6 +140,7 @@ const TenureHousingMultiChart = ({
       xLabel="Year"
       renderChart={renderTenureHousingMultiChart}
       renderLegend={renderTenureHousingLegend}
+      financialYear
     />
   );
 };

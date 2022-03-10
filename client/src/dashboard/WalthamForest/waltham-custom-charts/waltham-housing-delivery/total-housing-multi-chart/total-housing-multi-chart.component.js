@@ -47,14 +47,6 @@ const TotalHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
-  // This can easily be upgraded later to cut out a 5-year window
-  // based on a start/end parameter, but hardcoded for now
-  const filteredApiData = [
-    transformedData[0].slice(-5),
-    transformedData[1].slice(-5),
-  ];
-  const filteredTargetData = transformedTargets?.slice(-5);
-
   const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
     name: type,
     color: walthamChartColors.totalHousing[i],
@@ -63,24 +55,24 @@ const TotalHousingMultiChart = ({
   const renderTotalHousingLegend = width => (
     <WalthamCustomLegend
       apiLegendData={apiLegendData}
-      targetLegendData={!!filteredTargetData ? TARGET_LEGEND_DATA : null}
+      targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
       width={width}
     />
   );
 
   const renderTotalHousingMultiChart = width => {
-    const { barWidth, offset } = GroupedWidthCalculator(filteredApiData, width);
+    const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
 
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
-        data: filteredTargetData,
+        data: transformedTargets,
       };
     return (
       <VictoryGroup>
         {/* data from API fetch */}
         <VictoryGroup offset={offset}>
-          {filteredApiData?.map((arr, i) => (
+          {transformedData?.map((arr, i) => (
             <VictoryBar
               // eslint-disable-next-line react/no-array-index-key
               key={`dataset-${i}`}
@@ -98,7 +90,7 @@ const TotalHousingMultiChart = ({
         </VictoryGroup>
 
         {/* user uploaded target data */}
-        {!!filteredTargetData ? (
+        {!!transformedTargets ? (
           <VictoryGroup>
             <VictoryScatter
               {...props}

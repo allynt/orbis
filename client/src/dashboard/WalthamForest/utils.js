@@ -52,10 +52,9 @@ const userTargetTransformer = (data, timeline) => {
   if (!data) return;
 
   const result = Object.entries(data).reduce((acc, [key, value]) => {
-    const numYear = Number(key),
-      numValue = Number(value);
+    const numYear = Number(key);
     return !timeline || timeline.includes(numYear)
-      ? [...acc, { x: numYear, y: numValue }]
+      ? [...acc, { x: numYear, y: value }]
       : acc;
   }, []);
 
@@ -70,7 +69,7 @@ const userTargetTransformer = (data, timeline) => {
 const getTargetTotals = data => {
   if (!data) return;
 
-  // extract year/value objects, eg: [{ '2016': 123 }, { '2017': 456 }]
+  // extract year/value objects, eg: [{ 2016: 123 }, { 2017: 456 }]
   return Object.entries(data).reduce(
     (acc, [key, targets]) =>
       key === 'totalHousing'
@@ -149,7 +148,7 @@ const getDataTimeline = (apiData, targets = {}) => {
   const min = Math.min(...allYears);
   const max = Math.max(...allYears);
 
-  // TODO: does server already do this? Will never be gap years?
+  // TODO: does server already do this? Will never be gap years to pad out?
   let timeline = [];
   for (let i = min; i <= max; i++) {
     timeline = [...timeline, i];

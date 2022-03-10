@@ -7,7 +7,7 @@ export const validate = targets => {
     return error;
   }
 
-  if (values.some(v => isNaN(Number(v)))) {
+  if (values.some(v => isNaN(v))) {
     error = inputErrorMessage;
     return error;
   }

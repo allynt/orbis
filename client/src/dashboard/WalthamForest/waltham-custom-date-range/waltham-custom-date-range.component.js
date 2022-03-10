@@ -38,8 +38,7 @@ const WalthamCustomDateRange = ({
   return (
     <Select
       value={value ?? ''}
-      // TODO: fix this type error
-      onChange={({ target: { value } }) => onSelect(value)}
+      onChange={({ target: { value } }) => onSelect(+value)}
       classes={{ root: styles.root, select: styles.select }}
       disableUnderline
     >

@@ -128,7 +128,7 @@ const TargetScreen = ({ onAddTargetsClick, selectedDataset, targets = {} }) => {
             value={targetData[field] ?? ''}
             placeholder={`${field}-${field + 1}`}
             onChange={({ target: { value } }) =>
-              handleChange({ [field]: value.trim() })
+              handleChange({ [field]: +value.trim() })
             }
           />
         ))}

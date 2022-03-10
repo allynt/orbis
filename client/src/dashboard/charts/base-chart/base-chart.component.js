@@ -23,7 +23,8 @@ const useStyles = makeStyles(theme => ({
  *  yLabel?: string
  *  renderChart: (width: number) => React.ReactNode
  *  renderLegend?: (width: number) => React.ReactNode
- * theme?: object
+ *  financialYear?: boolean
+ *  theme?: object
  * }} props
  */
 const BaseChart = ({
@@ -31,6 +32,7 @@ const BaseChart = ({
   yLabel = '',
   renderChart,
   renderLegend,
+  financialYear = false,
   theme = {},
 }) => {
   const chartTheme = { ...useChartTheme(), ...theme };
@@ -38,14 +40,11 @@ const BaseChart = ({
   const styles = useStyles({});
 
   const getXTickFormat = tick => {
-    if (tick.toString().includes('-')) {
-      const split = tick.split(/-/);
-      return [`${split[0]}-`, split[1]];
-    }
-    if (isNaN(Number(tick))) {
-      return tick.toString();
+    if (financialYear) {
+      const year = Math.floor(tick);
+      return [`${year}-`, `${year + 1}`];
     } else {
-      return tick;
+      return isNaN(Number(tick)) ? tick.toString() : tick;
     }
   };
 

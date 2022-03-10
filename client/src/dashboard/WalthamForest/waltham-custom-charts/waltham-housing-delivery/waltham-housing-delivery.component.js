@@ -61,10 +61,10 @@ const ALL_TENURE_TYPES = 'All Tenure Types';
 /**
  * @param {{
  *  timeline: number[]
- *  tenureYear: string
+ *  tenureYear: number
  *  tenureType: string
  *  housingTenureTypes: object
- *  handleYearRangeSelect: (value: string) => void
+ *  handleYearRangeSelect: (value: number) => void
  *  handleTenureTypeSelect: (value: string) => void
  * }} props
  */
