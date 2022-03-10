@@ -20,5 +20,3 @@ class TestWFCDashboardAdapter:
     def test_wfc_dashboard_adapter(self):
         adapter = WFCDashboardAdapter()
         transformed_data = adapter.process_data(adapter.SAMPLE_DATA)
-
-        assert False
