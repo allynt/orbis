@@ -33,6 +33,10 @@ def validate_proxy_headers(value):
     return validate_dict(value, field_name="proxy_headers")
 
 
+def proxy_extra_content_path(instance, filename):
+    return f"proxies/extra_content/{filename}"
+
+
 ########################
 # managers & querysets #
 ########################
@@ -159,6 +163,16 @@ class ProxyDataSource(models.Model):
         )
     )
 
+    proxy_extra_content = models.FileField(
+        blank=True,
+        null=True,
+        upload_to=proxy_extra_content_path,
+        help_text=_(
+            "A file w/ extra information to use as needed by the adapter. "
+            "Typically this will be JSON or GeoJSON, but the adapter will process it as needed."
+        )
+    )
+
     request_strategy = models.TextField(
         blank=False,
         null=False,
@@ -188,7 +202,9 @@ class ProxyDataSource(models.Model):
 
     @property
     def adapter(self):
-        return PROXY_DATA_ADAPTER_REGISTRY[self.adapter_name]
+        adapter = PROXY_DATA_ADAPTER_REGISTRY[self.adapter_name]
+        adapter.proxy = self
+        return adapter
 
     @property
     def source_id(self):

@@ -6,47 +6,38 @@ import { WalthamHousingDelivery } from './waltham-housing-delivery.component';
 const tenures = {
     'Affordable Rent': 303,
     Intermediate: 130,
-    Market: 124,
-    'Social Rented': 127,
+    'Market for sale': 124,
+    'Social Rent': 127,
     'Private Rented Sector': 198,
   },
   data = [
     {
-      Year: '2014-2015',
+      startYear: 2014,
       ...tenures,
     },
     {
-      Year: '2015-2016',
+      startYear: 2015,
       ...tenures,
     },
     {
-      Year: '2016-2017',
+      startYear: 2016,
       ...tenures,
     },
     {
-      Year: '2017-2018',
+      startYear: 2017,
       ...tenures,
     },
     {
-      Year: '2018-2019',
+      startYear: 2018,
       ...tenures,
     },
     {
-      Year: '2019-2020',
+      startYear: 2019,
       ...tenures,
     },
   ],
   defaultData = {
-    tenureHousingDeliveryChartData: [
-      {
-        name: 'Gross',
-        data,
-      },
-      {
-        name: 'Net',
-        data,
-      },
-    ],
+    tenureHousingDeliveryChartData: data,
     targets: {},
     settings: {},
     setDashboardSettings: jest.fn(),
@@ -71,7 +62,7 @@ describe('WalthamHousingDelivery', () => {
 
     it('defaults to user`s saved settings if present', () => {
       const settings = {
-        tenureYear: '2018-2019',
+        tenureYear: 2018,
         tenureType: 'sociallyRented',
         tenureDateType: 'Net',
       };
@@ -85,18 +76,16 @@ describe('WalthamHousingDelivery', () => {
       expect(
         getByRole('button', { name: '2014-2015 - 2018-2019' }),
       ).toBeInTheDocument();
-      expect(
-        getByRole('button', { name: 'Social Rented' }),
-      ).toBeInTheDocument();
+      expect(getByRole('button', { name: 'Social Rent' })).toBeInTheDocument();
       // expect(getByRole('button', { name: 'Net' })).toBeInTheDocument();
     });
 
     it('resets to highest available year if year is invalid after switching tenure type', () => {
       const targets = {
-          marketHousing: { '2020-2021': 123 },
+          marketHousing: { 2020: 123 },
         },
         settings = {
-          tenureYear: '2020-2021',
+          tenureYear: 2020,
           tenureType: 'marketHousing',
         };
 
@@ -108,8 +97,8 @@ describe('WalthamHousingDelivery', () => {
         />,
       );
 
-      userEvent.click(getByRole('button', { name: 'Market' }));
-      userEvent.click(getByRole('option', { name: 'Social Rented' }));
+      userEvent.click(getByRole('button', { name: 'Market for sale' }));
+      userEvent.click(getByRole('option', { name: 'Social Rent' }));
 
       // will update once as usual, then again to correct itself if invalid.
       expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(2);
@@ -120,12 +109,12 @@ describe('WalthamHousingDelivery', () => {
       const { getByRole } = render(
         <WalthamHousingDelivery
           {...defaultData}
-          settings={{ tenureYear: '2019-2020' }}
+          settings={{ tenureYear: 2019 }}
         />,
       );
 
       userEvent.click(getByRole('button', { name: 'All Tenure Types' }));
-      userEvent.click(getByRole('option', { name: 'Market' }));
+      userEvent.click(getByRole('option', { name: 'Market for sale' }));
 
       expect(defaultData.setDashboardSettings).toHaveBeenCalledTimes(1);
     });
