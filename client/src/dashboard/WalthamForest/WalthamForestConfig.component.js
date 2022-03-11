@@ -203,12 +203,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
               settings={settings}
               setDashboardSettings={setDashboardSettings}
             />
-            {/* <AffordableHousingDelivery
-              affordableHousingDeliveryChartData={affordableHousingDelivery}
+            <AffordableHousingDelivery
+              data={affordableHousingDelivery}
               targets={localTargets}
               settings={settings}
               setDashboardSettings={setDashboardSettings}
-            /> */}
+            />
           </div>
 
           <HousingApprovalsComponent

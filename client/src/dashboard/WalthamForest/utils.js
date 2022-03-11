@@ -204,24 +204,14 @@ const computePercentages = (data, targets, targetProperty) => {
 
   return data.map(datum => {
     const percentage = Math.round(
-      (datum[targetProperty] / targets[datum.year]) * 100,
+      (datum[targetProperty] / targets[datum.startYear]) * 100,
     );
     return {
-      year: datum.year,
+      year: datum.startYear,
       [targetProperty]:
         isNaN(percentage) || !isFinite(percentage) ? null : percentage,
     };
   });
-};
-
-/**
- * Return label for last N years
- * e.g. for N=5 in 2022, return 2018-2023
- * @param {*} numberOfYears
- */
-const getLastNYearRange = (numberOfYears = 5) => {
-  const thisYear = parseInt(new Date().getFullYear());
-  return `${thisYear + 1 - numberOfYears} - ${thisYear + 1}`;
 };
 
 export {
@@ -235,5 +225,4 @@ export {
   filterByType,
   getFilteredTimeline,
   computePercentages,
-  getLastNYearRange,
 };

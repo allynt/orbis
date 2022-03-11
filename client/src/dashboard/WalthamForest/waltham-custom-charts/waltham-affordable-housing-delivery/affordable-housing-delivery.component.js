@@ -8,12 +8,7 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
-import {
-  computePercentages,
-  getLastNYearRange,
-  getDataTimeline,
-  getFilteredTimeline,
-} from 'dashboard/WalthamForest/utils';
+import { getDataTimeline } from 'dashboard/WalthamForest/utils';
 import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
@@ -22,51 +17,41 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
  * @param {{
- *  affordableHousingDeliveryChartData: any
+ *  data: any
  *  targets: object
  *  settings: object
  *  setDashboardSettings: function
  * }} props
  */
 const AffordableHousingDelivery = ({
-  affordableHousingDeliveryChartData,
+  data,
   targets,
   settings,
   setDashboardSettings,
 }) => {
   const { walthamChartColors } = useChartTheme();
 
-  console.log(
-    'affordableHousingDeliveryChartData',
-    affordableHousingDeliveryChartData,
-  );
-  const actualData = affordableHousingDeliveryChartData?.properties[0]?.data; // API data
-  console.log('actualData', actualData);
+  const actualData = data;
 
   const chartTitle = `Affordable Housing Delivery (%)`;
 
   const [configuration, setConfiguration] = useState({
-    totalYear: settings?.totalYear ?? undefined,
+    affordableHousingTotalYear:
+      settings?.affordableHousingTotalYear ?? new Date().getFullYear() - 5,
   });
 
-  const { totalYear } = configuration;
+  const { affordableHousingTotalYear } = configuration;
 
-  let percentageData = computePercentages(
-    actualData,
-    targets?.affordableHousingPercentage,
-    'Affordable Housing',
-  );
-
-  const hasData = percentageData?.some(item => !!item['Affordable Housing']);
+  const hasData = data?.some(item => !!item['Affordable Housing']);
 
   let totalsArray = labelsForArrayOfObjectsInclusive(
-    percentageData,
+    data,
     ['Affordable Housing'],
     item => `${Math.round(item)}%`,
   );
 
   const getFilteredData = (data, year) => {
-    const currentYearObject = data.find(datum => datum.year === year);
+    const currentYearObject = data.find(datum => datum.startYear === year);
     const index = data.indexOf(currentYearObject);
 
     return data.slice(index - 4, index + 1);
@@ -102,23 +87,31 @@ const AffordableHousingDelivery = ({
 
   // setup/error catch for total chart
   useEffect(() => {
-    if (!totalTimeline || totalTimeline.includes(totalYear)) {
+    if (!totalTimeline || totalTimeline.includes(affordableHousingTotalYear)) {
       return;
     } else {
-      updateDateFilter({ totalYear: totalTimeline[totalTimeline.length - 1] });
+      updateDateFilter({
+        affordableHousingTotalYear: totalTimeline[totalTimeline.length - 1],
+      });
     }
-  }, [totalYear, totalTimeline]);
+  }, [affordableHousingTotalYear, totalTimeline]);
 
   const renderLineChart = width => {
-    if (!percentageData) return null;
-    const filteredData = getFilteredData(percentageData, totalYear);
+    if (!data) return null;
+    const filteredData = getFilteredData(data, affordableHousingTotalYear);
     if (!filteredData) return null;
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
+    const filteredData2 = filteredData.map(item => {
+      return {
+        startYear: `${item.startYear} - \n${item.startYear + 1}`,
+        'Affordable Housing': item['Affordable Housing'],
+      };
+    });
     const props = {
-      data: filteredData,
-      x: 'year',
+      data: filteredData2,
+      x: 'startYear',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
     };
@@ -154,8 +147,10 @@ const AffordableHousingDelivery = ({
         <Grid item style={{ paddingBottom: '1rem' }}>
           <WalthamCustomDateRange
             timeline={totalTimeline}
-            value={totalYear}
-            onSelect={value => updateDateFilter({ totalYear: value })}
+            value={affordableHousingTotalYear}
+            onSelect={value =>
+              updateDateFilter({ affordableHousingTotalYear: value })
+            }
           />
         </Grid>
       ) : null}

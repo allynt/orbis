@@ -25,7 +25,7 @@ describe('<AfforableHousingDelivery />', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`,
+        name: `Affordable Housing Delivery (%)`,
       }),
     ).toBeInTheDocument();
   });
