@@ -42,7 +42,6 @@ const HousingApprovalsComponent = ({
   const [configuration, setConfiguration] = useState(
     settings?.approvalsGrantedDataType ?? HOUSING_APPROVAL_DATA_TYPES.monthly,
   );
-
   /**
    * @param {any} _
    * @param {string} newValue
@@ -84,29 +83,48 @@ const HousingApprovalsComponent = ({
     );
   };
 
-  const renderLineChart = width =>
-    !!dataByType
-      ? ranges?.map((range, i) => {
+  const renderLineChart = width => {
+    if (!dataByType) return null;
+
+    return (
+      <VictoryGroup>
+        {ranges?.map((range, i) => {
           const color = walthamChartColors.housingApproval[i],
             props = {
               data: dataByType,
               x,
               y: range,
             };
-          return (
-            <VictoryGroup key={range}>
-              <VictoryLine {...props} style={{ data: { stroke: color } }} />
 
-              <VictoryScatter
-                {...props}
-                style={{ data: { stroke: color } }}
-                labelComponent={FlyoutTooltip()}
-                labels={({ datum }) => `Total: ${datum._y}`}
-              />
-            </VictoryGroup>
+          return (
+            <VictoryLine
+              {...props}
+              style={{ data: { stroke: color } }}
+              key={range}
+            />
           );
-        })
-      : null;
+        })}
+        {ranges?.map((range, i) => {
+          const color = walthamChartColors.housingApproval[i],
+            props = {
+              data: dataByType,
+              x,
+              y: range,
+            };
+
+          return (
+            <VictoryScatter
+              key={range}
+              {...props}
+              style={{ data: { stroke: color } }}
+              labelComponent={FlyoutTooltip()}
+              labels={({ datum }) => `Total: ${datum._y}`}
+            />
+          );
+        })}
+      </VictoryGroup>
+    );
+  };
 
   return (
     <ChartWrapper

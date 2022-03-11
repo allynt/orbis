@@ -49,11 +49,6 @@ const ProgressionVsPlanningSchedule = ({
     },
   };
 
-  const progressionVsPlanningChartData = useMemo(
-    () => data?.properties[0].data,
-    [data],
-  );
-
   const apiLegendData = progressionVsPlanningTypes.map((range, i) => ({
     name: range,
     color: chartTheme.walthamChartColors.progressionVsPlanning[i],
@@ -101,23 +96,21 @@ const ProgressionVsPlanningSchedule = ({
         ? Object.values(progressionVsPlanningOptions)
         : [progressionVsPlanningOptions[configuration]];
 
-    const x = 'Year';
-    const apiData = data?.properties[0]?.data;
-
+    const x = 'startYear';
     let totalsArray = labelsForArrayOfObjectsInclusive(
-      apiData,
+      data,
       ranges,
       ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
     );
 
-    return !!progressionVsPlanningChartData ? (
+    return !!data ? (
       <VictoryStack>
         {ranges?.map(range => (
           <VictoryBar
             labelComponent={FlyoutTooltip()}
             key={range}
             data={filterByType(
-              progressionVsPlanningChartData,
+              data,
               configuration,
               ALL_TYPES,
               progressionVsPlanningOptions,

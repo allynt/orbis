@@ -190,7 +190,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           totalHousingDeliveryChartData={
             totalHousingDelivery?.properties[0].data
           }
-          tenureHousingDeliveryChartData={tenureHousingDelivery?.properties}
+          tenureHousingDeliveryChartData={tenureHousingDelivery}
           targets={localTargets}
           settings={settings}
           setDashboardSettings={setDashboardSettings}

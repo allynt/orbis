@@ -50,9 +50,9 @@ describe('Waltham Forest Data Transformers', () => {
   describe('filterEmptyStrings', () => {
     it('filters out empty string values from object', () => {
       const data = {
-          'key-1': 123,
+          'key-1': '123',
           'key-2': '',
-          'key-3': 456,
+          'key-3': '456',
         },
         expected = {
           'key-1': 123,
@@ -65,13 +65,18 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('does not filter 0 values', () => {
       const data = {
-        'key-1': 123,
-        'key-2': 0,
-        'key-3': 456,
-      };
+          'key-1': '123',
+          'key-2': '0',
+          'key-3': '456',
+        },
+        expected = {
+          'key-1': 123,
+          'key-2': 0,
+          'key-3': 456,
+        };
 
       const result = filterEmptyStrings(data);
-      expect(result).toEqual(data);
+      expect(result).toEqual(expected);
     });
 
     it('returns undefined if data is not present', () => {
@@ -172,75 +177,55 @@ describe('Waltham Forest Data Transformers', () => {
     });
   });
 
-  describe('userTargetTransformer', () => {
-    it('transforms data and converts string values to numbers', () => {
+  describe.only('userTargetTransformer', () => {
+    it('transforms data', () => {
       const input = {
-          'key-1': '123',
-          'key-2': '456',
+          2010: 123,
+          2012: 456,
         },
         expected = [
           {
-            x: 'key-1',
+            x: 2010,
             y: 123,
           },
           {
-            x: 'key-2',
+            x: 2012,
             y: 456,
           },
         ];
 
-      const result = userTargetTransformer(input, ['key-1', 'key-2']);
-      expect(result).toEqual(expected);
-    });
-
-    it('does not affect values that are already numbers', () => {
-      const input = {
-          'key-1': '123',
-          'key-2': 456,
-        },
-        expected = [
-          {
-            x: 'key-1',
-            y: 123,
-          },
-          {
-            x: 'key-2',
-            y: 456,
-          },
-        ];
-
-      const result = userTargetTransformer(input, ['key-1', 'key-2']);
+      const result = userTargetTransformer(input, [2010, 2012]);
       expect(result).toEqual(expected);
     });
 
     it('excludes values not present in timeline', () => {
       const input = {
-          'key-1': '123',
-          'key-2': '456',
+          2010: 123,
+          2011: 456,
         },
         expected = [
           {
-            x: 'key-1',
+            x: 2010,
             y: 123,
           },
         ];
 
-      const result = userTargetTransformer(input, ['key-1']);
+      const result = userTargetTransformer(input, [2010]);
       expect(result).toEqual(expected);
     });
 
     it('returns all data if no timeline is provided', () => {
       const input = {
-          'key-1': '123',
-          'key-2': '456',
+          2010: 123,
+          2011: 456,
         },
         expected = [
           {
-            x: 'key-1',
+            x: 2010,
             y: 123,
           },
           {
-            x: 'key-2',
+            x: 2011,
             y: 456,
           },
         ];
@@ -251,11 +236,11 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('returns null if all targets fall outwith timeline', () => {
       const input = {
-        'key-3': '123',
-        'key-4': '456',
+        2012: 123,
+        2013: 456,
       };
 
-      const result = userTargetTransformer(input, ['key-1', 'key-2']);
+      const result = userTargetTransformer(input, [2010, 2011]);
       expect(result).toBeNull();
     });
 
@@ -267,20 +252,14 @@ describe('Waltham Forest Data Transformers', () => {
 
   describe('getPastYears', () => {
     it('returns specified no. of previous years, formatted correctly', () => {
-      const expected = ['2020-2021', '2021-2022', '2022-2023'];
+      const expected = [2020, 2021, 2022];
 
       const result = getPastYears(3);
       expect(result).toEqual(expected);
     });
 
     it('defaults to 5 years if no args passed', () => {
-      const expected = [
-        '2018-2019',
-        '2019-2020',
-        '2020-2021',
-        '2021-2022',
-        '2022-2023',
-      ];
+      const expected = [2018, 2019, 2020, 2021, 2022];
 
       const result = getPastYears();
       expect(result).toEqual(expected);
@@ -338,20 +317,20 @@ describe('Waltham Forest Data Transformers', () => {
 
   describe('getDataTimeline', () => {
     it('returns a timeline built from data years', () => {
-      const data = [{ Year: '2010-2011' }, { Year: '2012-2013' }],
-        expected = ['2010-2011', '2011-2012', '2012-2013'];
+      const data = [{ startYear: 2010 }, { startYear: 2012 }],
+        expected = [2010, 2011, 2012];
 
       const result = getDataTimeline(data, undefined);
       expect(result).toEqual(expected);
     });
 
     it('combines both datasets', () => {
-      const data = [{ Year: '2010-2011' }, { Year: '2011-2012' }],
+      const data = [{ startYear: 2010 }, { startYear: 2011 }],
         targets = {
-          '2009-2010': '123',
-          '2012-2013': '123',
+          2009: '123',
+          2012: '123',
         },
-        expected = ['2009-2010', '2010-2011', '2011-2012', '2012-2013'];
+        expected = [2009, 2010, 2011, 2012];
 
       const result = getDataTimeline(data, targets);
       expect(result).toEqual(expected);

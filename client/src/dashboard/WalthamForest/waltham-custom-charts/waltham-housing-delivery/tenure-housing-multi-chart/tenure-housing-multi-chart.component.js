@@ -27,7 +27,7 @@ import { tenureHousingTransformer } from './tenure-housing-transformer/tenure-ho
  *  apiData: any[]
  *  userTargetData: any[]
  *  tenureType: string
- *  filteredTimeline: string[]
+ *  filteredTimeline: number[]
  * }} props
  */
 const TenureHousingMultiChart = ({
@@ -64,6 +64,7 @@ const TenureHousingMultiChart = ({
       />
     );
   };
+
   const renderTenureHousingMultiChart = width => {
     const barWidth = width / 20;
 
@@ -85,7 +86,7 @@ const TenureHousingMultiChart = ({
 
     let totalsArray = labelsForArrayOfObjects(
       transformedData,
-      'Year',
+      'startYear',
       item => `Total: ${item}`,
     );
     return (
@@ -98,7 +99,7 @@ const TenureHousingMultiChart = ({
                 <VictoryBar
                   key={range}
                   data={transformedData}
-                  x="Year"
+                  x="startYear"
                   y={range}
                   labels={totalsArray}
                   labelComponent={FlyoutTooltip()}
@@ -139,6 +140,7 @@ const TenureHousingMultiChart = ({
       xLabel="Year"
       renderChart={renderTenureHousingMultiChart}
       renderLegend={renderTenureHousingLegend}
+      financialYear
     />
   );
 };

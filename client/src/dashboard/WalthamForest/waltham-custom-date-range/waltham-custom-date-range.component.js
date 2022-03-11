@@ -22,9 +22,9 @@ const useWalthamSelectStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *  timeline: string[]
- *  value: string
- *  onSelect: (value: string) => void
+ *  timeline: number[]
+ *  value: number
+ *  onSelect: (value: number) => void
  *  range?: number
  * }} props
  */
@@ -38,16 +38,21 @@ const WalthamCustomDateRange = ({
   return (
     <Select
       value={value ?? ''}
-      onChange={({ target: { value } }) => onSelect(value)}
-      // className={styles.select}
+      onChange={({ target: { value } }) => onSelect(+value)}
       classes={{ root: styles.root, select: styles.select }}
       disableUnderline
     >
       {timeline?.map(year => {
-        const startYear = timeline[timeline.indexOf(year) - range];
+        const startYear = Number(timeline[timeline.indexOf(year) - range]);
+
+        const optionLabel = `
+          ${startYear}-${startYear + 1} -
+          ${year}-${year + 1}
+        `;
+
         return !!startYear ? (
           <MenuItem key={year} value={year}>
-            {startYear} - {year}
+            {optionLabel}
           </MenuItem>
         ) : null;
       })}

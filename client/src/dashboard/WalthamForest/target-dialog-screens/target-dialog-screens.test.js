@@ -75,8 +75,8 @@ describe('Target Dialog Screens', () => {
       const onAddTargetsClick = jest.fn(),
         expected = {
           'test-dataset': {
-            '2020-2021': '123',
-            '2021-2022': '456',
+            2020: 123,
+            2021: 456,
           },
         };
 
