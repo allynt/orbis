@@ -11,7 +11,7 @@ import {
   dataSelector,
 } from '../layers.slice';
 
-const PIN_COLOR = [255, 254, 25, 255];
+const PIN_COLOR = [72, 169, 197, 255];
 
 const defaultDateRange = {
   startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
