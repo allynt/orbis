@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
+import AssessmentDialogForm from './assessment-dialog-form';
+
 const useStyles = makeStyles(theme => ({
   dialog: {
     borderRadius: '1rem',
@@ -72,6 +74,14 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
           </span>
           Applications should continue to be made to NatureScot.
         </p>
+        <AssessmentDialogForm>
+          <AssessmentDialogForm.Row centered>
+            This is the first row for dates component
+          </AssessmentDialogForm.Row>
+          <AssessmentDialogForm.Row centered>
+            This is the second row for description impact assessment component
+          </AssessmentDialogForm.Row>
+        </AssessmentDialogForm>
         <Button onClick={() => handleSubmit()}>Submit Assessment</Button>
       </div>
     </Dialog>
