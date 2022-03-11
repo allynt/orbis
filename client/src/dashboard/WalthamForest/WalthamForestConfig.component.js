@@ -186,7 +186,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </div>
 
-        <WalthamHousingDelivery
+        {/* <WalthamHousingDelivery
           totalHousingDeliveryChartData={
             totalHousingDelivery?.properties[0].data
           }
@@ -194,7 +194,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           targets={localTargets}
           settings={settings}
           setDashboardSettings={setDashboardSettings}
-        />
+        /> */}
 
         <div className={styles.bottomChartContainer}>
           <div className={styles.columnCharts}>
@@ -203,12 +203,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
               settings={settings}
               setDashboardSettings={setDashboardSettings}
             />
-            <AffordableHousingDelivery
+            {/* <AffordableHousingDelivery
               affordableHousingDeliveryChartData={affordableHousingDelivery}
               targets={localTargets}
               settings={settings}
               setDashboardSettings={setDashboardSettings}
-            />
+            /> */}
           </div>
 
           <HousingApprovalsComponent

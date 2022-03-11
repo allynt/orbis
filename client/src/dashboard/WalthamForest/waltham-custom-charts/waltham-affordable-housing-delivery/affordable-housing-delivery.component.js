@@ -36,7 +36,13 @@ const AffordableHousingDelivery = ({
 }) => {
   const { walthamChartColors } = useChartTheme();
 
+  console.log(
+    'affordableHousingDeliveryChartData',
+    affordableHousingDeliveryChartData,
+  );
   const actualData = affordableHousingDeliveryChartData?.properties[0]?.data; // API data
+  console.log('actualData', actualData);
+
   const chartTitle = `Affordable Housing Delivery (%)`;
 
   const [configuration, setConfiguration] = useState({
