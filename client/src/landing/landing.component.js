@@ -112,16 +112,23 @@ const Landing = () => {
   }, [dispatch, sources]);
 
   const dashboards = dashboardSources.length
-    ? dashboardSources.map(source => {
-        const metadata =
-          source?.metadata?.application?.orbis?.dashboard_component;
-        return {
-          source_id: source?.source_id,
-          title: metadata?.title,
-          thumbnail: `/images/dashboard/${metadata.name}.png`,
-        };
-      })
+    ? dashboardSources
+        .filter(
+          source =>
+            source?.metadata?.application?.orbis?.dashboard_component
+              .isOnLanding,
+        )
+        .map(source => {
+          const metadata =
+            source?.metadata?.application?.orbis?.dashboard_component;
+          return {
+            source_id: source?.source_id,
+            title: metadata?.title,
+            thumbnail: `/images/dashboard/${metadata.name}.png`,
+          };
+        })
     : null;
+
   return (
     <ThemeProvider theme={hasContent ? 'light' : 'dark'}>
       <div className={styles.page}>
