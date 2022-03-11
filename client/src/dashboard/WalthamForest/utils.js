@@ -30,7 +30,7 @@ const filterEmptyStrings = data => {
   if (!data) return;
 
   return Object.entries(data).reduce(
-    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: value }),
+    (acc, [key, value]) => (value === '' ? acc : { ...acc, [key]: +value }),
     {},
   );
 };
@@ -45,19 +45,18 @@ const filterEmptyStrings = data => {
  *
  * If a timeline is provided, but the data falls outwith it, returns null.
  * @param {object} data
- * @param {string[]} timeline
- * @returns {{ x: string, y: number }[]|null}
+ * @param {number[]} timeline
+ * @returns {{ x: number, y: number }[]|null}
  */
 const userTargetTransformer = (data, timeline) => {
   if (!data) return;
 
-  const result = Object.entries(data).reduce(
-    (acc, [key, value]) =>
-      !timeline || timeline.includes(key)
-        ? [...acc, { x: key, y: +value }]
-        : acc,
-    [],
-  );
+  const result = Object.entries(data).reduce((acc, [key, value]) => {
+    const numYear = Number(key);
+    return !timeline || timeline.includes(numYear)
+      ? [...acc, { x: numYear, y: value }]
+      : acc;
+  }, []);
 
   return result.length ? result : null;
 };
@@ -70,7 +69,7 @@ const userTargetTransformer = (data, timeline) => {
 const getTargetTotals = data => {
   if (!data) return;
 
-  // extract year/value objects, eg: [{ '2016-2017': 123 }, { 2016-2017': 456 }]
+  // extract year/value objects, eg: [{ 2016: 123 }, { 2017: 456 }]
   return Object.entries(data).reduce(
     (acc, [key, targets]) =>
       key === 'totalHousing'
@@ -90,20 +89,19 @@ const getTargetTotals = data => {
   );
 };
 
+/**
+ * @param {number} years
+ * @returns {number[]}
+ */
 const getPastYears = (years = 5) => {
   const thisYear = new Date().getFullYear();
 
   let yearRange = [];
   for (let i = 0; i < years; i++) {
-    yearRange = [...yearRange, i];
+    yearRange = [...yearRange, thisYear - i];
   }
 
-  return yearRange
-    .reduce((acc, num) => {
-      const year = thisYear - num;
-      return [...acc, `${year}-${year + 1}`];
-    }, [])
-    .reverse();
+  return yearRange.reverse();
 };
 
 /**
@@ -129,36 +127,31 @@ const getUser5YearTotals = obj => {
  * latest year in the api data, as was requested.
  * @param {object[]} apiData
  * @param {object} targets
- * @returns {string[]}
+ * @returns {number[]}
  */
 const getDataTimeline = (apiData, targets = {}) => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
   // defaulted to empty object
-  const noTargets = !Object.keys(targets).length;
+  const hasTargets = !!Object.keys(targets).length;
 
-  const apiYears = apiData.map(obj => {
-    const [year] = obj.Year.split('-');
-    return +year;
-  });
+  const apiYears = apiData.map(obj => Number(obj.startYear));
 
   // if targets is undefined, defaulted to object and will return empty array
-  const targetYears = noTargets
-    ? []
-    : Object.keys(targets).map(key => {
-        const [year] = key.split('-');
-        return +year;
-      });
+  const targetYears = hasTargets
+    ? Object.keys(targets).map(d => Number(d))
+    : [];
 
   const allYears = [...apiYears, ...targetYears];
 
-  const min = Math.min(...allYears); // show oldest year from both datasets
-  const max = Math.max(...allYears); // show newest year from both datasets
+  const min = Math.min(...allYears);
+  const max = Math.max(...allYears);
 
+  // TODO: does server already do this? Will never be gap years to pad out?
   let timeline = [];
   for (let i = min; i <= max; i++) {
-    timeline = [...timeline, `${i}-${i + 1}`];
+    timeline = [...timeline, i];
   }
 
   return timeline;
@@ -175,15 +168,15 @@ const filterByType = (chartData, selectedType, allTypes, mapping) =>
   selectedType === allTypes
     ? chartData
     : chartData?.map(datum => ({
-        Year: datum.Year,
+        startYear: datum.startYear,
         [mapping[selectedType]]: datum[mapping[selectedType]],
       }));
 
 /**
- * @param {string[]} timeline
- * @param {string} selectedYear
+ * @param {number[]} timeline
+ * @param {number} selectedYear
  * @param {number} range
- * @returns {string[]}
+ * @returns {number[]}
  */
 const getFilteredTimeline = (
   timeline,
@@ -191,7 +184,9 @@ const getFilteredTimeline = (
   range = WALTHAM_FILTER_RANGE,
 ) => {
   const index = timeline?.indexOf(selectedYear);
-  return timeline?.slice(index - range, index + 1);
+  const result = timeline?.slice(index - range, index + 1);
+
+  return result;
 };
 
 /**

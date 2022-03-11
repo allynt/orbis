@@ -6,7 +6,7 @@ import { housingTenureTypes } from 'dashboard/WalthamForest/waltham.constants';
  * @param {object} targets
  * @returns {{
  *  transformedData: object[]
- *  transformedTargets: { x: string, y: number }[]
+ *  transformedTargets: { x: number, y: number }[]
  * }}
  */
 export const tenureHousingTransformer = (
@@ -16,17 +16,17 @@ export const tenureHousingTransformer = (
 ) => {
   if (!apiData) return;
 
-  const noTargets = !Object.keys(targets).length;
+  const hasTargets = !!Object.keys(targets).length;
 
-  const transformedTargets = noTargets
-    ? null
-    : userTargetTransformer(targets, filteredTimeline);
+  const transformedTargets = hasTargets
+    ? userTargetTransformer(targets, filteredTimeline)
+    : null;
 
   const transformedData = filteredTimeline.map(year => {
-    const obj = apiData.find(datum => datum.Year === year);
+    const obj = apiData.find(datum => datum.startYear === year);
     return (
       obj ?? {
-        Year: year,
+        startYear: year,
         ...Object.values(housingTenureTypes).reduce(
           (acc, cur) => ({ ...acc, [cur]: null }),
           {},

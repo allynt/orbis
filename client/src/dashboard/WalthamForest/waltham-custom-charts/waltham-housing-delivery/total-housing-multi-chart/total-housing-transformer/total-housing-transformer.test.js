@@ -5,35 +5,35 @@ const dataArray = [
     title: 'transforms API and target data into correct data shape',
     data: [
       {
-        Year: '2015-2016',
+        startYear: 2015,
         'Total Gross': 123,
         'Total Net': 456,
       },
       {
-        Year: '2016-2017',
+        startYear: 2016,
         'Total Gross': 789,
         'Total Net': 101,
       },
     ],
     targets: {
-      '2015-2016': '181',
-      '2016-2017': '155',
+      2015: 181,
+      2016: 155,
     },
-    filteredTimeline: ['2015-2016', '2016-2017'],
+    filteredTimeline: [2015, 2016],
     expected: {
       transformedData: [
         [
-          { x: '2015-2016', y: 123 },
-          { x: '2016-2017', y: 789 },
+          { x: 2015, y: 123 },
+          { x: 2016, y: 789 },
         ],
         [
-          { x: '2015-2016', y: 456 },
-          { x: '2016-2017', y: 101 },
+          { x: 2015, y: 456 },
+          { x: 2016, y: 101 },
         ],
       ],
       transformedTargets: [
-        { x: '2015-2016', y: 181 },
-        { x: '2016-2017', y: 155 },
+        { x: 2015, y: 181 },
+        { x: 2016, y: 155 },
       ],
     },
   },
@@ -41,39 +41,39 @@ const dataArray = [
     title: 'pads gap years with `null` value',
     data: [
       {
-        Year: '2015-2016',
+        startYear: 2015,
         'Total Gross': 123,
         'Total Net': 456,
       },
       {
-        Year: '2017-2018',
+        startYear: 2017,
         'Total Gross': 456,
         'Total Net': 789,
       },
     ],
     targets: {
-      '2015-2016': '254',
-      '2016-2017': '191',
-      '2017-2018': '181',
+      2015: 254,
+      2016: 191,
+      2017: 181,
     },
-    filteredTimeline: ['2015-2016', '2016-2017', '2017-2018'],
+    filteredTimeline: [2015, 2016, 2017],
     expected: {
       transformedData: [
         [
-          { x: '2015-2016', y: 123 },
-          { x: '2016-2017', y: null },
-          { x: '2017-2018', y: 456 },
+          { x: 2015, y: 123 },
+          { x: 2016, y: null },
+          { x: 2017, y: 456 },
         ],
         [
-          { x: '2015-2016', y: 456 },
-          { x: '2016-2017', y: null },
-          { x: '2017-2018', y: 789 },
+          { x: 2015, y: 456 },
+          { x: 2016, y: null },
+          { x: 2017, y: 789 },
         ],
       ],
       transformedTargets: [
-        { x: '2015-2016', y: 254 },
-        { x: '2016-2017', y: 191 },
-        { x: '2017-2018', y: 181 },
+        { x: 2015, y: 254 },
+        { x: 2016, y: 191 },
+        { x: 2017, y: 181 },
       ],
     },
   },
@@ -81,32 +81,32 @@ const dataArray = [
     title: 'returns data from lowest year to highest year of either dataset',
     data: [
       {
-        Year: '2016-2017',
+        startYear: 2016,
         'Total Gross': 123,
         'Total Net': 456,
       },
     ],
     targets: {
-      '2015-2016': '191',
-      '2017-2018': '254',
+      2015: 191,
+      2017: 254,
     },
-    filteredTimeline: ['2015-2016', '2016-2017', '2017-2018'],
+    filteredTimeline: [2015, 2016, 2017],
     expected: {
       transformedData: [
         [
-          { x: '2015-2016', y: null },
-          { x: '2016-2017', y: 123 },
-          { x: '2017-2018', y: null },
+          { x: 2015, y: null },
+          { x: 2016, y: 123 },
+          { x: 2017, y: null },
         ],
         [
-          { x: '2015-2016', y: null },
-          { x: '2016-2017', y: 456 },
-          { x: '2017-2018', y: null },
+          { x: 2015, y: null },
+          { x: 2016, y: 456 },
+          { x: 2017, y: null },
         ],
       ],
       transformedTargets: [
-        { x: '2015-2016', y: 191 },
-        { x: '2017-2018', y: 254 },
+        { x: 2015, y: 191 },
+        { x: 2017, y: 254 },
       ],
     },
   },
@@ -114,27 +114,27 @@ const dataArray = [
     title: 'works if target data is undefined',
     data: [
       {
-        Year: '2015-2016',
+        startYear: 2015,
         'Total Gross': 123,
         'Total Net': 456,
       },
       {
-        Year: '2016-2017',
+        startYear: 2016,
         'Total Gross': 789,
         'Total Net': 101,
       },
     ],
     targets: undefined,
-    filteredTimeline: ['2015-2016', '2016-2017'],
+    filteredTimeline: [2015, 2016],
     expected: {
       transformedData: [
         [
-          { x: '2015-2016', y: 123 },
-          { x: '2016-2017', y: 789 },
+          { x: 2015, y: 123 },
+          { x: 2016, y: 789 },
         ],
         [
-          { x: '2015-2016', y: 456 },
-          { x: '2016-2017', y: 101 },
+          { x: 2015, y: 456 },
+          { x: 2016, y: 101 },
         ],
       ],
       transformedTargets: null,
@@ -144,27 +144,27 @@ const dataArray = [
     title: 'works if target data is empty object',
     data: [
       {
-        Year: '2015-2016',
+        startYear: 2015,
         'Total Gross': 123,
         'Total Net': 456,
       },
       {
-        Year: '2016-2017',
+        startYear: 2016,
         'Total Gross': 789,
         'Total Net': 101,
       },
     ],
     targets: {},
-    filteredTimeline: ['2015-2016', '2016-2017'],
+    filteredTimeline: [2015, 2016],
     expected: {
       transformedData: [
         [
-          { x: '2015-2016', y: 123 },
-          { x: '2016-2017', y: 789 },
+          { x: 2015, y: 123 },
+          { x: 2016, y: 789 },
         ],
         [
-          { x: '2015-2016', y: 456 },
-          { x: '2016-2017', y: 101 },
+          { x: 2015, y: 456 },
+          { x: 2016, y: 101 },
         ],
       ],
       transformedTargets: null,
