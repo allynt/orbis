@@ -18,13 +18,11 @@ const defaultDateRange = {
   endDate: new Date(2020, 2, 26).toISOString(),
 };
 
-export const DATE_TYPE = 'Commencement Date';
-
 /**
  * @typedef {import('typings').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
 
-const configuration = ({ id, dispatch, setViewState, orbState }) => {
+const configuration = ({ id, dispatch, setViewState, orbState, dateType }) => {
   const filterRange = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
 
@@ -33,12 +31,12 @@ const configuration = ({ id, dispatch, setViewState, orbState }) => {
   const filteredData = {
     ...data,
     features: filter(data?.features, feature => {
-      if (!feature.properties[DATE_TYPE]) return false;
+      if (!feature.properties[dateType]) return false;
 
-      if (feature.properties[DATE_TYPE] < dateRangeFilter.startDate)
+      if (feature.properties[dateType] < dateRangeFilter.startDate)
         return false;
 
-      if (feature.properties[DATE_TYPE] > dateRangeFilter.endDate) return false;
+      if (feature.properties[dateType] > dateRangeFilter.endDate) return false;
 
       return true;
     }),

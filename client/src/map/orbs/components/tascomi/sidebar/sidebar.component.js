@@ -12,8 +12,6 @@ import {
   setFilterValue,
 } from 'map/orbs/layers.slice';
 
-import { DATE_TYPE } from '../../../configurations/tascomiMapConfig';
-
 const DEFAULT_DATE_RANGE = {
   startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
   endDate: new Date(2020, 2, 26).toISOString(),
@@ -28,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SidebarComponent = ({ selectedLayer, dispatch }) => {
+export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
   const styles = useStyles();
 
   const filterValue = useSelector(state =>
@@ -39,8 +37,8 @@ export const SidebarComponent = ({ selectedLayer, dispatch }) => {
   );
   const latestDateString = featureCollection?.features.reduce(
     (acc, feature) => {
-      if (feature.properties[DATE_TYPE] > acc) {
-        acc = feature.properties[DATE_TYPE];
+      if (feature.properties[dateType] > acc) {
+        acc = feature.properties[dateType];
       }
       return acc;
     },
