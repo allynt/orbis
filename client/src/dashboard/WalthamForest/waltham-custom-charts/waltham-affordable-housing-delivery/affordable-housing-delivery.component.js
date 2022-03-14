@@ -8,7 +8,10 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
-import { getDataTimeline } from 'dashboard/WalthamForest/utils';
+import {
+  getDataTimeline,
+  computePercentages,
+} from 'dashboard/WalthamForest/utils';
 import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
@@ -63,6 +66,12 @@ const AffordableHousingDelivery = ({
     'year',
   );
 
+  let percentageData = computePercentages(
+    actualData,
+    targets?.affordableHousingPercentage,
+    'Affordable Housing',
+  );
+
   /**
    * @param {object} newSettings
    */
@@ -91,7 +100,10 @@ const AffordableHousingDelivery = ({
 
   const renderLineChart = width => {
     if (!data) return null;
-    const filteredData = getFilteredData(data, affordableHousingTotalYear);
+    const filteredData = getFilteredData(
+      percentageData,
+      affordableHousingTotalYear,
+    );
 
     if (!filteredData) return null;
 
