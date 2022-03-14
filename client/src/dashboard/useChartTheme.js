@@ -36,10 +36,10 @@ const walthamChartColors = {
 // live data colors
 const tenureStackColors = {
   affordableHousing: '#37e5d8',
-  // TODO: this is made a up green
-  affordableHousingLondon: '#36a90d',
+  affordableHousingLondon: '#aaeaff',
   intermediateDelivery: '#75b7b2',
-  intermediateOther: 'Intermediate Other',
+  // TODO: also made up, needs a color
+  intermediateOther: '#3ebd9f',
   marketHousing: '#adeab0',
   sociallyRented: '#05c3ff',
 };

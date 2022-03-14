@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Grid, Select, MenuItem } from '@astrosat/astrosat-ui';
 
@@ -6,6 +6,7 @@ import { VictoryBar, VictoryStack } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
@@ -65,7 +66,7 @@ const ProgressionVsPlanningSchedule = ({
     setConfiguration(value);
   };
 
-  const renderTenureHousingLegend = width => (
+  const ProgressPlanningHousingLegend = ({ width }) => (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
@@ -88,7 +89,7 @@ const ProgressionVsPlanningSchedule = ({
     </Grid>
   );
 
-  const renderStackedBarChart = width => {
+  const ProgressVsPlanningStackedChart = ({ width }) => {
     const barWidth = width / 20;
 
     const ranges =
@@ -135,13 +136,21 @@ const ProgressionVsPlanningSchedule = ({
       title="Progression of Units Relating to Planning Schedule"
       info="This is a test description"
     >
-      <BaseChart
-        yLabel="Number Of Units"
-        xLabel="Financial Year"
-        renderChart={renderStackedBarChart}
-        renderLegend={renderTenureHousingLegend}
-        theme={updatedTheme}
-      />
+      <StyledParentSize>
+        {({ width }) => (
+          <>
+            <ProgressPlanningHousingLegend width={width} />
+            <BaseChart
+              width={width}
+              yLabel="Number Of Units"
+              xLabel="Financial Year"
+              theme={updatedTheme}
+            >
+              {ProgressVsPlanningStackedChart({ width })}
+            </BaseChart>
+          </>
+        )}
+      </StyledParentSize>
     </ChartWrapper>
   );
 };

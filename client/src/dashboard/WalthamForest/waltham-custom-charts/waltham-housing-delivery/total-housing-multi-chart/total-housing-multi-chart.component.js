@@ -11,6 +11,7 @@ import {
 } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
+import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import { GroupedWidthCalculator } from 'dashboard/utils';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
@@ -47,78 +48,81 @@ const TotalHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
+  // TODO: do this like tenure
   const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
     name: type,
     color: walthamChartColors.totalHousing[i],
   }));
 
-  const renderTotalHousingLegend = width => (
-    <WalthamCustomLegend
-      apiLegendData={apiLegendData}
-      targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
-      width={width}
-    />
-  );
-
-  const renderTotalHousingMultiChart = width => {
+  const TotalHousingGroupChart = ({ width }) => {
     const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
+    return (
+      <VictoryGroup offset={offset}>
+        {transformedData?.map((arr, i) => (
+          <VictoryBar
+            // eslint-disable-next-line react/no-array-index-key
+            key={`dataset-${i}`}
+            data={arr}
+            labels={({ datum }) => `Total: ${datum.y}`}
+            labelComponent={FlyoutTooltip()}
+            style={{
+              data: {
+                fill: walthamChartColors.totalHousing[i],
+                width: barWidth,
+              },
+            }}
+          />
+        ))}
+      </VictoryGroup>
+    );
+  };
 
+  const TotalHousingLineChart = ({ width }) => {
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
         data: transformedTargets,
       };
-    return (
+    return !!transformedTargets ? (
       <VictoryGroup>
-        {/* data from API fetch */}
-        <VictoryGroup offset={offset}>
-          {transformedData?.map((arr, i) => (
-            <VictoryBar
-              // eslint-disable-next-line react/no-array-index-key
-              key={`dataset-${i}`}
-              data={arr}
-              labels={({ datum }) => `Total: ${datum.y}`}
-              labelComponent={FlyoutTooltip()}
-              style={{
-                data: {
-                  fill: walthamChartColors.totalHousing[i],
-                  width: barWidth,
-                },
-              }}
-            />
-          ))}
-        </VictoryGroup>
-
-        {/* user uploaded target data */}
-        {!!transformedTargets ? (
-          <VictoryGroup>
-            <VictoryScatter
-              {...props}
-              labelComponent={FlyoutTooltip()}
-              labels={({ datum }) => `Total: ${datum._y}`}
-              style={{
-                data: {
-                  stroke: darken(color, 0.2),
-                  width: scatterWidth,
-                  fill: color,
-                },
-              }}
-            />
-            <VictoryLine {...props} style={{ data: { stroke: color } }} />
-          </VictoryGroup>
-        ) : null}
+        <VictoryScatter
+          {...props}
+          labelComponent={FlyoutTooltip()}
+          labels={({ datum }) => `Total: ${datum._y}`}
+          style={{
+            data: {
+              stroke: darken(color, 0.2),
+              width: scatterWidth,
+              fill: color,
+            },
+          }}
+        />
+        <VictoryLine {...props} style={{ data: { stroke: color } }} />
       </VictoryGroup>
-    );
+    ) : null;
   };
 
   return (
-    <BaseChart
-      yLabel="Housing Delivery in Units"
-      xLabel="Year"
-      renderChart={renderTotalHousingMultiChart}
-      renderLegend={renderTotalHousingLegend}
-      financialYear
-    />
+    <StyledParentSize>
+      {({ width }) => (
+        <>
+          <WalthamCustomLegend
+            apiLegendData={apiLegendData}
+            targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
+            width={width}
+          />
+          <BaseChart
+            width={width}
+            yLabel="Housing Delivery in Units"
+            xLabel="Year"
+            financialYear
+          >
+            {TotalHousingGroupChart({ width })}
+            {TotalHousingLineChart({ width })}
+          </BaseChart>
+        </>
+      )}
+    </StyledParentSize>
   );
 };
 

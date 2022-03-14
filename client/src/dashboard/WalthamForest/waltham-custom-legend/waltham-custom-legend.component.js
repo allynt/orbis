@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     maxHeight: props => props.maxHeight,
   },
   userTarget: {
-    width: 'fit-content',
+    width: '100%',
   },
 }));
 
@@ -32,10 +32,11 @@ const useStyles = makeStyles(theme => ({
 const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
   const maxHeight = width * RATIOS.legendContainer,
     fontSize = width * RATIOS.fontSize,
+    fontSizeLimit = fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
     styles = useStyles({ maxHeight });
 
   return (
-    <Grid container justifyContent="space-between" alignItems="flex-end">
+    <Grid container direction="column" justifyContent="space-between">
       <Grid
         item
         container
@@ -43,32 +44,42 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
         wrap="wrap"
         className={styles.apiLegend}
       >
-        {apiLegendData?.map(({ name, color }) => (
-          <Grid key={name} item container alignItems="center">
-            {/* creates square with correct color */}
-            <div
-              style={{
-                width: width * RATIOS.squareIconSize,
-                height: width * RATIOS.squareIconSize,
-                backgroundColor: `${color}`,
-                marginRight: width * RATIOS.iconSpacing,
-                maxWidth: '1rem',
-                maxHeight: '1rem',
-              }}
-            />
-            <span
-              style={{
-                fontSize: fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
-              }}
-            >
-              {name}
-            </span>
-          </Grid>
-        ))}
+        {apiLegendData?.map(({ name, color }) => {
+          const legendItemMargin = width * RATIOS.iconSpacing;
+          return (
+            <Grid key={name} item container alignItems="center">
+              {/* creates square with correct color */}
+              <div
+                style={{
+                  width: width * RATIOS.squareIconSize,
+                  height: width * RATIOS.squareIconSize,
+                  backgroundColor: `${color}`,
+                  marginRight: legendItemMargin,
+                  marginLeft: legendItemMargin,
+                  maxWidth: '1rem',
+                  maxHeight: '1rem',
+                }}
+              />
+              <span
+                style={{
+                  fontSize: fontSizeLimit,
+                }}
+              >
+                {name}
+              </span>
+            </Grid>
+          );
+        })}
       </Grid>
 
       {!!targetLegendData ? (
-        <Grid item container alignItems="center" className={styles.userTarget}>
+        <Grid
+          item
+          container
+          justifyContent="flex-end"
+          alignItems="center"
+          className={styles.userTarget}
+        >
           {/* creates line with correct color */}
           <div
             style={{
@@ -80,7 +91,7 @@ const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
           />
           <span
             style={{
-              fontSize: width * RATIOS.fontSize,
+              fontSize: fontSizeLimit,
             }}
           >
             {targetLegendData.name}
