@@ -60,9 +60,11 @@ export const GroupedWidthCalculator = (data, width) => {
   const barGapMultiplier = 1.44; // gap between bars, where 1 = bar width
   const minBarWidth = 3; // can be no narrower than this
 
-  const groupCount = data.length;
+  const keys = Object.keys(data);
+
+  const groupCount = keys.length;
   const thinness = groupCount * 2; // increase to narrow the bars
-  const dataPointCount = Object.keys(data[0]).length;
+  const dataPointCount = data?.[keys[0]].length;
   const zoneWidth = width / dataPointCount;
   const barWidth = minBarWidth + zoneWidth / (groupCount * thinness);
   const offset = barWidth * barGapMultiplier;
