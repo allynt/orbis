@@ -29,7 +29,7 @@ const labelsForArrayOfObjects = (data, excludeProperty, formatter) => {
  *
  * @param {object[]} data - Data to generate labels for
  * @param {string[]} includeProperties - Only sum properties in this list
- * @param {function=} formatter - Optional function which takes an object and renders it as text
+ * @param {(item: number) => string} formatter - Optional function which takes an object and renders it as text
  *
  * @returns {any[]} An array of labels to appear over each data point
  */
@@ -42,13 +42,12 @@ const labelsForArrayOfObjectsInclusive = (
   if (!data) {
     return [];
   }
-
-  const fieldsToAddUp = Object.keys(data[0]).filter(item =>
+  const fieldsToAddUp = Object.keys(data[1]).filter(item =>
     includeProperties.includes(item),
   );
   return data.map(obj => {
     let total = 0;
-    fieldsToAddUp.forEach(fieldName => (total += obj[fieldName]));
+    fieldsToAddUp.forEach(fieldName => (total += obj[fieldName] ?? 0));
     return formatter ? formatter(total) : total;
   });
 };

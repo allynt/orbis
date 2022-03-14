@@ -44,16 +44,9 @@ const AffordableHousingDelivery = ({
 
   const hasData = data?.some(item => !!item['Affordable Housing']);
 
-  let totalsArray = labelsForArrayOfObjectsInclusive(
-    data,
-    ['Affordable Housing'],
-    item => `${Math.round(item)}%`,
-  );
-
   const getFilteredData = (data, year) => {
     const currentYearObject = data.find(datum => datum.startYear === year);
     const index = data.indexOf(currentYearObject);
-
     return data.slice(index - 4, index + 1);
   };
 
@@ -99,7 +92,15 @@ const AffordableHousingDelivery = ({
   const renderLineChart = width => {
     if (!data) return null;
     const filteredData = getFilteredData(data, affordableHousingTotalYear);
+
     if (!filteredData) return null;
+
+    let totalsArray = labelsForArrayOfObjectsInclusive(
+      filteredData,
+      ['Affordable Housing'],
+      item => `${item}%`,
+    );
+
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
@@ -109,6 +110,7 @@ const AffordableHousingDelivery = ({
         'Affordable Housing': item['Affordable Housing'],
       };
     });
+
     const props = {
       data: filteredData2,
       x: 'startYear',

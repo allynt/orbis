@@ -184,34 +184,7 @@ const getFilteredTimeline = (
   range = WALTHAM_FILTER_RANGE,
 ) => {
   const index = timeline?.indexOf(selectedYear);
-  const result = timeline?.slice(index - range, index + 1);
-
-  return result;
-};
-
-/**
- * @param {object[]} data : actual data. data points are properties
- * @param {object} targets : target data. array of objects
- * @param {string} targetProperty : target property in targets objects to use
- * @returns {object[]} : actual data, values replaced with percentages relative to target
- */
-const computePercentages = (data, targets, targetProperty) => {
-  // we return the data in the same shape as data, but values are
-  // replaced with the percentage relative to the corresponding target
-  // for years where data is zero, or target is zero, or both, then we use null to
-  // prevent the chart from being misleading. This may result in gaps in the chart
-  if (!data || !targets) return null;
-
-  return data.map(datum => {
-    const percentage = Math.round(
-      (datum[targetProperty] / targets[datum.startYear]) * 100,
-    );
-    return {
-      year: datum.startYear,
-      [targetProperty]:
-        isNaN(percentage) || !isFinite(percentage) ? null : percentage,
-    };
-  });
+  return timeline?.slice(index - range, index + 1);
 };
 
 export {
@@ -224,5 +197,4 @@ export {
   getDataTimeline,
   filterByType,
   getFilteredTimeline,
-  computePercentages,
 };
