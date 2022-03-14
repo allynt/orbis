@@ -48,26 +48,26 @@ const TotalHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
-  // TODO: do this like tenure
-  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
-    name: type,
-    color: walthamChartColors.totalHousing[i],
-  }));
+  const apiLegendData = Object.entries(TENURE_DATA_TYPES).map(
+    ([key, value]) => ({
+      name: value,
+      color: walthamChartColors.totalHousing[key],
+    }),
+  );
 
   const TotalHousingGroupChart = ({ width }) => {
     const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
     return (
       <VictoryGroup offset={offset}>
-        {transformedData?.map((arr, i) => (
+        {Object.entries(transformedData)?.map(([key, value]) => (
           <VictoryBar
-            // eslint-disable-next-line react/no-array-index-key
-            key={`dataset-${i}`}
-            data={arr}
+            key={key}
+            data={value}
             labels={({ datum }) => `Total: ${datum.y}`}
             labelComponent={FlyoutTooltip()}
             style={{
               data: {
-                fill: walthamChartColors.totalHousing[i],
+                fill: walthamChartColors.totalHousing[key],
                 width: barWidth,
               },
             }}

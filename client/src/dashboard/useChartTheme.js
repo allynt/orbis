@@ -18,7 +18,10 @@ const colors = [
 
 const walthamChartColors = {
   affordableHousingDelivery: ['#f6be00'],
-  totalHousing: ['#37e5d8', '#8189f3'],
+  totalHousing: {
+    gross: '#37e5d8',
+    net: '#8189f3',
+  },
   housingApproval: ['#f6be00', '#af31d6'],
   progressionVsPlanning: ['#37e5d8', '#d6ea69', '#05c3ff'],
   deliverableSupplySummary: ['#8aea73', '#d76781', '#37e5d8', '#ffa048'],
