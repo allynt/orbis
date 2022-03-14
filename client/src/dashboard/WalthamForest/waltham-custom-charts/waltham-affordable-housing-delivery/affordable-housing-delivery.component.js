@@ -66,7 +66,7 @@ const AffordableHousingDelivery = ({
     'year',
   );
 
-  let percentageData = computePercentages(
+  const percentageData = computePercentages(
     actualData,
     targets?.affordableHousingPercentage,
     'Affordable Housing',
@@ -107,7 +107,7 @@ const AffordableHousingDelivery = ({
 
     if (!filteredData) return null;
 
-    let totalsArray = labelsForArrayOfObjectsInclusive(
+    const totalsArray = labelsForArrayOfObjectsInclusive(
       filteredData,
       ['Affordable Housing'],
       item => `${item}%`,
@@ -116,7 +116,7 @@ const AffordableHousingDelivery = ({
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
-    const filteredData2 = filteredData.map(item => {
+    const filteredDataForDisplay = filteredData.map(item => {
       return {
         startYear: `${item.startYear} - \n${item.startYear + 1}`,
         'Affordable Housing': item['Affordable Housing'],
@@ -124,7 +124,7 @@ const AffordableHousingDelivery = ({
     });
 
     const props = {
-      data: filteredData2,
+      data: filteredDataForDisplay,
       x: 'startYear',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
