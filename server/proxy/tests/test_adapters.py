@@ -16,6 +16,7 @@ class TestPldAdapter:
             assert feature.get("geometry") is not None
             assert feature.get("properties") is not None
 
+@pytest.mark.skip()
 class TestWFCDashboardAdapter:
     def test_wfc_dashboard_adapter(self):
         adapter = WFCDashboardAdapter()
