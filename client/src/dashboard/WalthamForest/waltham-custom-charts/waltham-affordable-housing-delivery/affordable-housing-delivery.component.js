@@ -97,7 +97,7 @@ const AffordableHousingDelivery = ({
     }
   }, [affordableHousingTotalYear, timeline]);
 
-  const renderLineChart = width => {
+  const AffordableHousingLineChart = ({ width }) => {
     if (!data) return null;
     const filteredData = getFilteredData(
       percentageData,
@@ -140,34 +140,44 @@ const AffordableHousingDelivery = ({
       title="Affordable Housing Delivery (%)"
       info="The percentage of affordable housing delivered each year. The values shown are for the total affordable housing sites delivered as the sum of: 'Affordable Rent (not at LAR benchmark rents)' and 'London Affordable Rent' for the London Borough Waltham Forest area"
     >
-      {!hasData ? (
-        <Grid
-          container
-          justifyContent="space-around"
-          alignItems="center"
-          style={{ height: '12rem' }}
-        >
-          <Typography variant="h4">
-            Please enter affordable housing delivery targets
-          </Typography>
-        </Grid>
-      ) : (
-        <>
-          <WalthamCustomDateRange
-            timeline={timeline}
-            value={affordableHousingTotalYear}
-            onSelect={value =>
-              updateDateFilter({ affordableHousingTotalYear: value })
-            }
-          />
-          <BaseChart
-            yLabel="Affordable Housing %"
-            xLabel="Financial Year"
-            renderChart={renderLineChart}
-            renderLegend={renderAffordableHousingDeliveryLegend}
-          />
-        </>
-      )}
+      <StyledParentSize>
+        {({ width }) =>
+          !hasData ? (
+            <Grid
+              container
+              justifyContent="space-around"
+              alignItems="center"
+              style={{ height: '12rem' }}
+            >
+              <Typography variant="h4">
+                Please enter affordable housing delivery targets
+              </Typography>
+            </Grid>
+          ) : (
+            <>
+              <WalthamCustomDateRange
+                timeline={timeline}
+                value={affordableHousingTotalYear}
+                onSelect={value =>
+                  updateDateFilter({ affordableHousingTotalYear: value })
+                }
+              />
+              <WalthamCustomLegend
+                width={width}
+                apiLegendData={apiLegendData}
+                targetLegendData={null}
+              />
+              <BaseChart
+                yLabel="Affordable Housing %"
+                xLabel="Financial Year"
+                width={width}
+              >
+                {AffordableHousingLineChart({ width })}
+              </BaseChart>
+            </>
+          )
+        }
+      </StyledParentSize>
     </ChartWrapper>
   );
 };
