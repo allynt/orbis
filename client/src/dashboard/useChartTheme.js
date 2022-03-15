@@ -38,10 +38,10 @@ const tenureStackColors = {
   affordableHousing: '#37e5d8',
   affordableHousingLondon: '#aaeaff',
   intermediateDelivery: '#75b7b2',
-  // TODO: also made up, needs a color
-  intermediateOther: '#3ebd9f',
+  intermediateOther: '#61d767',
   marketHousing: '#adeab0',
   sociallyRented: '#05c3ff',
+  // privateRented: '#d6ea69',
 };
 
 const baseProps = {
