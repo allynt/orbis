@@ -205,7 +205,9 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
             <AffordableHousingDelivery
               data={affordableHousingDelivery}
-              userOrbState={targets}
+              targets={localTargets?.affordableHousingPercentage}
+              settings={settings}
+              setDashboardSettings={setDashboardSettings}
             />
           </div>
 

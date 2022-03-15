@@ -129,7 +129,7 @@ const getUser5YearTotals = obj => {
  * @param {object} targets
  * @returns {number[]}
  */
-const getDataTimeline = (apiData, targets = {}) => {
+const getDataTimeline = (apiData, targets = {}, keyField = 'Year') => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
@@ -184,9 +184,7 @@ const getFilteredTimeline = (
   range = WALTHAM_FILTER_RANGE,
 ) => {
   const index = timeline?.indexOf(selectedYear);
-  const result = timeline?.slice(index - range, index + 1);
-
-  return result;
+  return timeline?.slice(index - range, index + 1);
 };
 
 /**
@@ -203,24 +201,17 @@ const computePercentages = (data, targets, targetProperty) => {
   if (!data || !targets) return null;
 
   return data.map(datum => {
-    const percentage = Math.round(
-      (datum[targetProperty] / targets[datum.year]) * 100,
-    );
+    let percentage = null;
+    if (!!datum[targetProperty] && !!targets[datum.startYear]) {
+      percentage = Math.round(
+        (datum[targetProperty] / targets[datum.startYear]) * 100,
+      );
+    }
     return {
-      year: datum.year,
-      [targetProperty]: isNaN(percentage) ? null : percentage,
+      startYear: datum.startYear,
+      [targetProperty]: percentage,
     };
   });
-};
-
-/**
- * Return label for last N years
- * e.g. for N=5 in 2022, return 2018-2023
- * @param {*} numberOfYears
- */
-const getLastNYearRange = (numberOfYears = 5) => {
-  const thisYear = parseInt(new Date().getFullYear());
-  return `${thisYear + 1 - numberOfYears} - ${thisYear + 1}`;
 };
 
 export {
@@ -234,5 +225,4 @@ export {
   filterByType,
   getFilteredTimeline,
   computePercentages,
-  getLastNYearRange,
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Grid, Typography } from '@astrosat/astrosat-ui';
 
@@ -9,39 +9,49 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import {
+  getDataTimeline,
   computePercentages,
-  getLastNYearRange,
 } from 'dashboard/WalthamForest/utils';
+import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
 /**
+ * @param {object[]} data
+ * @param {number} year
+ * @returns {object[]}
+ */
+const getFilteredData = (data, year) => {
+  if (!data) return;
+  const currentYearObject = data.find(datum => datum.startYear === year);
+  const index = data.indexOf(currentYearObject);
+  return data.slice(index - 4, index + 1);
+};
+
+/**
  * @param {{
- *  data: any
- *  userOrbState: object
+ *  data: object[]
+ *  targets: object
+ *  settings: object
+ *  setDashboardSettings: function
  * }} props
  */
-const AffordableHousingDelivery = ({ data, userOrbState }) => {
+const AffordableHousingDelivery = ({
+  data,
+  targets,
+  settings,
+  setDashboardSettings,
+}) => {
   const { walthamChartColors } = useChartTheme();
 
-  const actualData = data; // API data
-  const chartTitle = `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`;
+  const [configuration, setConfiguration] = useState({
+    affordableHousingTotalYear:
+      settings?.affordableHousingTotalYear ?? undefined,
+  });
 
-  let percentageData = computePercentages(
-    actualData,
-    userOrbState?.affordableHousing,
-    'Affordable Housing',
-  );
-
-  const hasData = percentageData?.some(item => !!item['Affordable Housing']);
-
-  let totalsArray = labelsForArrayOfObjectsInclusive(
-    percentageData,
-    ['Affordable Housing'],
-    item => `${Math.round(item)}%`,
-  );
+  const { affordableHousingTotalYear } = configuration;
 
   const apiLegendData = [
     {
@@ -50,14 +60,64 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
     },
   ];
 
+  const timeline = getDataTimeline(data, targets, 'year');
+
+  const percentageData = computePercentages(
+    data,
+    targets,
+    'Affordable Housing',
+  );
+
+  const hasData = percentageData?.some(item => !!item['Affordable Housing']);
+
+  /**
+   * @param {object} newSettings
+   */
+  const updateDateFilter = newSettings => {
+    setConfiguration(prev => ({
+      ...prev,
+      ...newSettings,
+    }));
+
+    setDashboardSettings(prev => ({
+      ...prev,
+      settings: { ...prev.settings, ...newSettings },
+    }));
+  };
+
+  // setup/error catch for affordable housing chart
+  useEffect(() => {
+    if (!timeline || timeline.includes(affordableHousingTotalYear)) {
+      return;
+    } else {
+      updateDateFilter({
+        affordableHousingTotalYear: timeline[timeline.length - 1],
+      });
+    }
+  }, [affordableHousingTotalYear, timeline]);
+
   const renderLineChart = width => {
-    if (!percentageData) return null;
-    const y_max = Math.max(
-      ...percentageData.map(item => item['Affordable Housing']),
+    if (!data) return null;
+    const filteredData = getFilteredData(
+      percentageData,
+      affordableHousingTotalYear,
     );
+
+    if (!filteredData) return null;
+
+    const totalsArray = labelsForArrayOfObjectsInclusive(
+      filteredData,
+      ['Affordable Housing'],
+      item => `${item}%`,
+    );
+
+    const y_max = Math.max(
+      ...filteredData.map(item => item['Affordable Housing']),
+    );
+
     const props = {
-      data: percentageData,
-      x: 'year',
+      data: filteredData,
+      x: 'startYear',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
     };
@@ -86,8 +146,8 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
 
   return (
     <ChartWrapper
-      title={chartTitle}
-      info="This shows the % of affordable housing delivered each year"
+      title="Affordable Housing Delivery (%)"
+      info="The percentage of affordable housing delivered each year. The values shown are for the total affordable housing sites delivered as the sum of: 'Affordable Rent (not at LAR benchmark rents)' and 'London Affordable Rent' for the London Borough Waltham Forest area"
     >
       {!hasData ? (
         <Grid
@@ -97,16 +157,25 @@ const AffordableHousingDelivery = ({ data, userOrbState }) => {
           style={{ height: '12rem' }}
         >
           <Typography variant="h4">
-            Please enter affordable housing delivery % targets.
+            Please enter affordable housing delivery targets
           </Typography>
         </Grid>
       ) : (
-        <BaseChart
-          yLabel="Affordable Housing %"
-          xLabel="Year"
-          renderChart={renderLineChart}
-          renderLegend={renderAffordableHousingDeliveryLegend}
-        />
+        <>
+          <WalthamCustomDateRange
+            timeline={timeline}
+            value={affordableHousingTotalYear}
+            onSelect={value =>
+              updateDateFilter({ affordableHousingTotalYear: value })
+            }
+          />
+          <BaseChart
+            yLabel="Affordable Housing %"
+            xLabel="Financial Year"
+            renderChart={renderLineChart}
+            renderLegend={renderAffordableHousingDeliveryLegend}
+          />
+        </>
       )}
     </ChartWrapper>
   );
