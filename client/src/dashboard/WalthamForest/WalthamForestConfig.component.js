@@ -205,7 +205,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
             <AffordableHousingDelivery
               data={affordableHousingDelivery}
-              targets={localTargets}
+              targets={localTargets?.affordableHousingPercentage}
               settings={settings}
               setDashboardSettings={setDashboardSettings}
             />

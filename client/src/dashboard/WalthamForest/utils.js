@@ -202,14 +202,14 @@ const computePercentages = (data, targets, targetProperty) => {
 
   return data.map(datum => {
     let percentage = null;
-    if (datum[targetProperty] && targets[datum.startYear]) {
+    if (!!datum[targetProperty] && !!targets[datum.startYear]) {
       percentage = Math.round(
         (datum[targetProperty] / targets[datum.startYear]) * 100,
       );
     }
     return {
       startYear: datum.startYear,
-      [targetProperty]: isNaN(percentage) ? null : percentage,
+      [targetProperty]: percentage,
     };
   });
 };

@@ -18,6 +18,13 @@ import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
+const getFilteredData = (data, year) => {
+  if (!data) return;
+  const currentYearObject = data.find(datum => datum.startYear === year);
+  const index = data.indexOf(currentYearObject);
+  return data.slice(index - 4, index + 1);
+};
+
 /**
  * @param {{
  *  data: any
@@ -47,12 +54,6 @@ const AffordableHousingDelivery = ({
 
   const hasData = data?.some(item => !!item['Affordable Housing']);
 
-  const getFilteredData = (data, year) => {
-    const currentYearObject = data.find(datum => datum.startYear === year);
-    const index = data.indexOf(currentYearObject);
-    return data.slice(index - 4, index + 1);
-  };
-
   const apiLegendData = [
     {
       name: '% affordable housing delivered out of yearly target',
@@ -68,7 +69,7 @@ const AffordableHousingDelivery = ({
 
   const percentageData = computePercentages(
     actualData,
-    targets?.affordableHousingPercentage,
+    targets,
     'Affordable Housing',
   );
 
@@ -182,7 +183,7 @@ const AffordableHousingDelivery = ({
       ) : (
         <BaseChart
           yLabel="Affordable Housing %"
-          xLabel="Year"
+          xLabel="Financial Year"
           renderChart={renderLineChart}
           renderLegend={renderAffordableHousingDeliveryLegend}
         />
