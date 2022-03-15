@@ -94,7 +94,7 @@ const ProgressionVsPlanningSchedule = ({
         ? Object.values(progressionVsPlanningOptions)
         : [progressionVsPlanningOptions[configuration]];
 
-    const x = 'startYear';
+    const x = 'Year';
     let totalsArray = labelsForArrayOfObjectsInclusive(
       data,
       ranges,
