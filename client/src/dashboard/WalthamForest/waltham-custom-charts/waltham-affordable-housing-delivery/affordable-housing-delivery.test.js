@@ -53,6 +53,6 @@ describe('<AfforableHousingDelivery />', () => {
       />,
     );
     expect(screen.getByText('Affordable Housing %')).toBeInTheDocument();
-    expect(screen.getByText('Year')).toBeInTheDocument();
+    expect(screen.getByText('Financial Year')).toBeInTheDocument();
   });
 });

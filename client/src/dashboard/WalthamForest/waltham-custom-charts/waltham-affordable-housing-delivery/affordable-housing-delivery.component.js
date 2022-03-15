@@ -18,6 +18,11 @@ import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
 import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
 
+/**
+ * @param {object[]} data
+ * @param {number} year
+ * @returns {object[]}
+ */
 const getFilteredData = (data, year) => {
   if (!data) return;
   const currentYearObject = data.find(datum => datum.startYear === year);
@@ -27,7 +32,7 @@ const getFilteredData = (data, year) => {
 
 /**
  * @param {{
- *  data: any
+ *  data: object[]
  *  targets: object
  *  settings: object
  *  setDashboardSettings: function
@@ -41,13 +46,9 @@ const AffordableHousingDelivery = ({
 }) => {
   const { walthamChartColors } = useChartTheme();
 
-  const actualData = data;
-
-  const chartTitle = `Affordable Housing Delivery (%)`;
-
   const [configuration, setConfiguration] = useState({
     affordableHousingTotalYear:
-      settings?.affordableHousingTotalYear ?? new Date().getFullYear() - 5,
+      settings?.affordableHousingTotalYear ?? undefined,
   });
 
   const { affordableHousingTotalYear } = configuration;
@@ -61,14 +62,10 @@ const AffordableHousingDelivery = ({
     },
   ];
 
-  const totalTimeline = getDataTimeline(
-    actualData,
-    targets?.affordableHousingPercentage,
-    'year',
-  );
+  const timeline = getDataTimeline(data, targets, 'year');
 
   const percentageData = computePercentages(
-    actualData,
+    data,
     targets,
     'Affordable Housing',
   );
@@ -88,16 +85,16 @@ const AffordableHousingDelivery = ({
     }));
   };
 
-  // setup/error catch for total chart
+  // setup/error catch for affordable housing chart
   useEffect(() => {
-    if (!totalTimeline || totalTimeline.includes(affordableHousingTotalYear)) {
+    if (!timeline || timeline.includes(affordableHousingTotalYear)) {
       return;
     } else {
       updateDateFilter({
-        affordableHousingTotalYear: totalTimeline[totalTimeline.length - 1],
+        affordableHousingTotalYear: timeline[timeline.length - 1],
       });
     }
-  }, [affordableHousingTotalYear, totalTimeline]);
+  }, [affordableHousingTotalYear, timeline]);
 
   const renderLineChart = width => {
     if (!data) return null;
@@ -117,15 +114,9 @@ const AffordableHousingDelivery = ({
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
-    const filteredDataForDisplay = filteredData.map(item => {
-      return {
-        startYear: `${item.startYear} - \n${item.startYear + 1}`,
-        'Affordable Housing': item['Affordable Housing'],
-      };
-    });
 
     const props = {
-      data: filteredDataForDisplay,
+      data: filteredData,
       x: 'startYear',
       y: 'Affordable Housing',
       domain: { y: [0, y_max > 100 ? y_max : 100] },
@@ -155,13 +146,13 @@ const AffordableHousingDelivery = ({
 
   return (
     <ChartWrapper
-      title={chartTitle}
+      title="Affordable Housing Delivery (%)"
       info="The percentage of affordable housing delivered each year. The values shown are for the total affordable housing sites delivered as the sum of: 'Affordable Rent (not at LAR benchmark rents)' and 'London Affordable Rent' for the London Borough Waltham Forest area"
     >
       {hasData ? (
         <Grid item style={{ paddingBottom: '1rem' }}>
           <WalthamCustomDateRange
-            timeline={totalTimeline}
+            timeline={timeline}
             value={affordableHousingTotalYear}
             onSelect={value =>
               updateDateFilter({ affordableHousingTotalYear: value })
