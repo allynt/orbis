@@ -139,11 +139,7 @@ const HousingApprovalsComponent = ({
                 {HOUSING_APPROVAL_DATA_TYPES.cumulative}
               </ToggleButton>
             </ToggleButtonGroup>
-            <WalthamCustomLegend
-              apiLegendData={apiLegendData}
-              targetLegendData={null}
-              width={width}
-            />
+            <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
             <BaseChart width={width} xLabel={xLabel} yLabel={yLabel}>
               {HousingApprovalsLineChart({ width })}
             </BaseChart>

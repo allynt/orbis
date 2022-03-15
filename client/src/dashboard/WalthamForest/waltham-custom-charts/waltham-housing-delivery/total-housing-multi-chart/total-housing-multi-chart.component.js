@@ -48,8 +48,8 @@ const TotalHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
-  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((value, i) => ({
-    name: value,
+  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((type, i) => ({
+    name: type,
     color: walthamChartColors.totalHousing[i],
   }));
 

@@ -96,7 +96,6 @@ const AffordableHousingDelivery = ({ data, targets }) => {
             <>
               <WalthamCustomLegend
                 apiLegendData={apiLegendData}
-                targetLegendData={null}
                 width={width}
               />
               <BaseChart
