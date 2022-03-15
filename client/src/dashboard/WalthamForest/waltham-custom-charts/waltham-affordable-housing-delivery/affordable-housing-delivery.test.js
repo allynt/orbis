@@ -8,13 +8,11 @@ import { AffordableHousingDelivery } from './affordable-housing-delivery.compone
 
 const data = mockData.properties[0].data,
   targets = {
-    affordableHousing: {
-      '2018 - 2019': 100,
-      '2019 - 2020': 70,
-      '2020 - 2021': 80,
-      '2021 - 2022': 120,
-      '2022 - 2023': 90,
-    },
+    2018: 100,
+    2019: 70,
+    2020: 80,
+    2021: 120,
+    2022: 90,
   };
 
 describe('<AfforableHousingDelivery />', () => {
