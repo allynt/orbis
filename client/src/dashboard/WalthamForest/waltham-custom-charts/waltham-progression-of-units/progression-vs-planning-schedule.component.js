@@ -61,7 +61,12 @@ const ProgressionVsPlanningSchedule = ({
   const ProgressPlanningHousingLegend = ({ width }) => {
     const { root, select } = useWalthamSelectStyles({});
     return (
-      <Grid container justifyContent="space-between" alignItems="center">
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        wrap="nowrap"
+      >
         <Grid item>
           <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
         </Grid>
