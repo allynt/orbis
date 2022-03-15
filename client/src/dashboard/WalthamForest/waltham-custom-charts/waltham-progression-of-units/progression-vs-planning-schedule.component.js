@@ -27,11 +27,6 @@ const ProgressionVsPlanningSchedule = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  // this can be moved into component when renderProps funcs are
-  // converted to children components (hooks must be in components)
-  // can possibly also use `width` param to adjust responsive size
-  const { root, select } = useWalthamSelectStyles({});
-
   const [configuration, setConfiguration] = useState(
     settings?.affordableHousingType ?? ALL_TYPES,
   );
@@ -44,9 +39,6 @@ const ProgressionVsPlanningSchedule = ({
     ...chartTheme,
     stack: {
       colorScale: chartTheme.walthamChartColors.progressionVsPlanning,
-    },
-    pulldownmenu: {
-      width: '10rem',
     },
   };
 
@@ -66,28 +58,33 @@ const ProgressionVsPlanningSchedule = ({
     setConfiguration(value);
   };
 
-  const ProgressPlanningHousingLegend = ({ width }) => (
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
-        <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+  const ProgressPlanningHousingLegend = ({ width }) => {
+    const { root, select } = useWalthamSelectStyles({});
+    return (
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+        </Grid>
+        <Grid item>
+          <Select
+            value={configuration}
+            onChange={({ target: { value } }) => handleTypeSelect(value)}
+            classes={{ root, select }}
+            disableUnderline
+          >
+            <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
+            {Object.entries(progressionVsPlanningOptions).map(
+              ([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ),
+            )}
+          </Select>
+        </Grid>
       </Grid>
-      <Grid item style={updatedTheme.pulldownmenu}>
-        <Select
-          value={configuration}
-          onChange={({ target: { value } }) => handleTypeSelect(value)}
-          classes={{ root, select }}
-          disableUnderline
-        >
-          <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
-          {Object.entries(progressionVsPlanningOptions).map(([key, value]) => (
-            <MenuItem key={key} value={key}>
-              {value}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
-  );
+    );
+  };
 
   const ProgressVsPlanningStackedChart = ({ width }) => {
     const barWidth = width / 20;

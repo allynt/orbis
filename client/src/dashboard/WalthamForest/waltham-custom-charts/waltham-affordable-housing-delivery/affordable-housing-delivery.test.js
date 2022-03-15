@@ -7,7 +7,7 @@ import { render, screen } from 'test/test-utils';
 import { AffordableHousingDelivery } from './affordable-housing-delivery.component';
 
 const data = mockData.properties[0].data,
-  userOrbState = {
+  targets = {
     affordableHousing: {
       '2018 - 2019': 100,
       '2019 - 2020': 70,
@@ -19,9 +19,7 @@ const data = mockData.properties[0].data,
 
 describe('<AfforableHousingDelivery />', () => {
   it('shows the right title in the wrapper', () => {
-    render(
-      <AffordableHousingDelivery data={data} userOrbState={userOrbState} />,
-    );
+    render(<AffordableHousingDelivery data={data} targets={targets} />);
 
     expect(
       screen.getByRole('heading', {
@@ -31,10 +29,10 @@ describe('<AfforableHousingDelivery />', () => {
   });
 
   it('shows the right axis labels', () => {
-    render(
-      <AffordableHousingDelivery data={data} userOrbState={userOrbState} />,
-    );
-    expect(screen.getByText('Affordable Housing %')).toBeInTheDocument();
+    render(<AffordableHousingDelivery data={data} targets={targets} />);
+    expect(
+      screen.getByText('Affordable Housing Delivery 2018 - 2023 (%)'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Year')).toBeInTheDocument();
   });
 });

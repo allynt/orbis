@@ -73,26 +73,24 @@ const TenureHousingMultiChart = ({
     );
     return (
       <VictoryStack colorScale={colorScale}>
-        {ranges?.map(range => {
-          return (
-            <VictoryBar
-              key={range}
-              data={transformedData}
-              x="startYear"
-              y={range}
-              labels={totalsArray}
-              labelComponent={FlyoutTooltip()}
-              style={{
-                data: { width: barWidth },
-              }}
-            />
-          );
-        })}
+        {ranges?.map(range => (
+          <VictoryBar
+            key={range}
+            data={transformedData}
+            x="startYear"
+            y={range}
+            labels={totalsArray}
+            labelComponent={FlyoutTooltip()}
+            style={{
+              data: { width: barWidth },
+            }}
+          />
+        ))}
       </VictoryStack>
     );
   };
 
-  const Targets = ({ width }) => {
+  const TargetsLineChart = ({ width }) => {
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
@@ -135,7 +133,7 @@ const TenureHousingMultiChart = ({
             financialYear
           >
             {TenureHousingStackChart({ width })}
-            {!!transformedTargets ? Targets({ width }) : null}
+            {!!transformedTargets ? TargetsLineChart({ width }) : null}
           </BaseChart>
         </>
       )}

@@ -38,7 +38,7 @@ const TotalHousingMultiChart = ({
   const { walthamChartColors } = useChartTheme();
 
   // Transform API/target data to correct data shape, and create a
-  // reliable timeline form earliest total year -> latest API data year
+  // reliable timeline form earliest year -> latest year
   const transformerOutput = useMemo(
     () => totalHousingTransformer(apiData, userTargetData, filteredTimeline),
     [apiData, userTargetData, filteredTimeline],
@@ -48,26 +48,25 @@ const TotalHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
-  const apiLegendData = Object.entries(TENURE_DATA_TYPES).map(
-    ([key, value]) => ({
-      name: value,
-      color: walthamChartColors.totalHousing[key],
-    }),
-  );
+  const apiLegendData = Object.values(TENURE_DATA_TYPES).map((value, i) => ({
+    name: value,
+    color: walthamChartColors.totalHousing[i],
+  }));
 
   const TotalHousingGroupChart = ({ width }) => {
     const { barWidth, offset } = GroupedWidthCalculator(transformedData, width);
     return (
       <VictoryGroup offset={offset}>
-        {Object.entries(transformedData)?.map(([key, value]) => (
+        {transformedData?.map((arr, i) => (
           <VictoryBar
-            key={key}
-            data={value}
+            // eslint-disable-next-line react/no-array-index-key
+            key={`dataset-${i}`}
+            data={arr}
             labels={({ datum }) => `Total: ${datum.y}`}
             labelComponent={FlyoutTooltip()}
             style={{
               data: {
-                fill: walthamChartColors.totalHousing[key],
+                fill: walthamChartColors.totalHousing[i],
                 width: barWidth,
               },
             }}
@@ -77,13 +76,13 @@ const TotalHousingMultiChart = ({
     );
   };
 
-  const TotalHousingLineChart = ({ width }) => {
+  const TargetLineChart = ({ width }) => {
     const color = '#d13aff',
       scatterWidth = width / 2,
       props = {
         data: transformedTargets,
       };
-    return !!transformedTargets ? (
+    return (
       <VictoryGroup>
         <VictoryScatter
           {...props}
@@ -99,7 +98,7 @@ const TotalHousingMultiChart = ({
         />
         <VictoryLine {...props} style={{ data: { stroke: color } }} />
       </VictoryGroup>
-    ) : null;
+    );
   };
 
   return (
@@ -118,7 +117,7 @@ const TotalHousingMultiChart = ({
             financialYear
           >
             {TotalHousingGroupChart({ width })}
-            {TotalHousingLineChart({ width })}
+            {!!transformedTargets ? TargetLineChart({ width }) : null}
           </BaseChart>
         </>
       )}
