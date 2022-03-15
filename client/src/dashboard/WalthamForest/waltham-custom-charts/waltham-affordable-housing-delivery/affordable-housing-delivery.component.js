@@ -53,8 +53,6 @@ const AffordableHousingDelivery = ({
 
   const { affordableHousingTotalYear } = configuration;
 
-  const hasData = data?.some(item => !!item['Affordable Housing']);
-
   const apiLegendData = [
     {
       name: '% affordable housing delivered out of yearly target',
@@ -69,6 +67,8 @@ const AffordableHousingDelivery = ({
     targets,
     'Affordable Housing',
   );
+
+  const hasData = percentageData?.some(item => !!item['Affordable Housing']);
 
   /**
    * @param {object} newSettings
@@ -149,17 +149,6 @@ const AffordableHousingDelivery = ({
       title="Affordable Housing Delivery (%)"
       info="The percentage of affordable housing delivered each year. The values shown are for the total affordable housing sites delivered as the sum of: 'Affordable Rent (not at LAR benchmark rents)' and 'London Affordable Rent' for the London Borough Waltham Forest area"
     >
-      {hasData ? (
-        <Grid item style={{ paddingBottom: '1rem' }}>
-          <WalthamCustomDateRange
-            timeline={timeline}
-            value={affordableHousingTotalYear}
-            onSelect={value =>
-              updateDateFilter({ affordableHousingTotalYear: value })
-            }
-          />
-        </Grid>
-      ) : null}
       {!hasData ? (
         <Grid
           container
@@ -172,12 +161,21 @@ const AffordableHousingDelivery = ({
           </Typography>
         </Grid>
       ) : (
-        <BaseChart
-          yLabel="Affordable Housing %"
-          xLabel="Financial Year"
-          renderChart={renderLineChart}
-          renderLegend={renderAffordableHousingDeliveryLegend}
-        />
+        <>
+          <WalthamCustomDateRange
+            timeline={timeline}
+            value={affordableHousingTotalYear}
+            onSelect={value =>
+              updateDateFilter({ affordableHousingTotalYear: value })
+            }
+          />
+          <BaseChart
+            yLabel="Affordable Housing %"
+            xLabel="Financial Year"
+            renderChart={renderLineChart}
+            renderLegend={renderAffordableHousingDeliveryLegend}
+          />
+        </>
       )}
     </ChartWrapper>
   );
