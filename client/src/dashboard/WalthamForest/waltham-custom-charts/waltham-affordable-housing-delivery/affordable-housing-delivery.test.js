@@ -1,7 +1,6 @@
 import React from 'react';
 
 import * as mockData from 'dashboard/mock-data/waltham-forest/mock_affordable_housing';
-import { getLastNYearRange } from 'dashboard/WalthamForest/utils';
 import { render, screen } from 'test/test-utils';
 
 import { AffordableHousingDelivery } from './affordable-housing-delivery.component';
@@ -21,7 +20,7 @@ describe('<AfforableHousingDelivery />', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: `Affordable Housing Delivery ${getLastNYearRange(5)} (%)`,
+        name: `Affordable Housing Delivery (%)`,
       }),
     ).toBeInTheDocument();
   });

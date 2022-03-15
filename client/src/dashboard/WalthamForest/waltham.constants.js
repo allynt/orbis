@@ -119,12 +119,10 @@ export const targetDatasets = {
   marketHousing: 'Market Housing Targets for previous 5 financial years',
   intermediateDelivery:
     'Intermediate Housing Targets for previous 5 financial years',
-  affordableHousing:
-    'Affordable Housing Targets for previous 5 financial years',
   privateRental:
     'Private Rented Housing Targets for previous 5 financial years',
   affordableHousingPercentage:
-    'Affordable Housing % delivery target for the previous 10 financial years',
+    'Affordable Housing Targets for previous 10 financial years',
 };
 
 export const HOUSING_APPROVAL_DATA_TYPES = {
