@@ -64,6 +64,7 @@ const AffordableHousingDelivery = ({
   const timeline = getDataTimeline(data, targets);
 
   const percentageData = computePercentages(
+    timeline,
     data,
     targets,
     'Affordable Housing',
@@ -161,6 +162,7 @@ const AffordableHousingDelivery = ({
                 onSelect={value =>
                   updateDateFilter({ affordableHousingTotalYear: value })
                 }
+                pad
               />
               <WalthamCustomLegend
                 width={width}

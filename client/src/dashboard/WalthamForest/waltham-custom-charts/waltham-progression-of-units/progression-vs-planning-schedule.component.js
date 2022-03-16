@@ -117,6 +117,7 @@ const ProgressionVsPlanningSchedule = ({
               configuration,
               ALL_TYPES,
               progressionVsPlanningOptions,
+              'Year',
             )}
             x={x}
             y={range}
