@@ -66,7 +66,7 @@ const TenureHousingMultiChart = ({
       ? [tenureStackColors[tenureType]]
       : Object.values(tenureStackColors);
 
-    let totalsArray = labelsForArrayOfObjects(
+    const totalsArray = labelsForArrayOfObjects(
       transformedData,
       'startYear',
       item => `Total: ${item}`,

@@ -61,7 +61,7 @@ const AffordableHousingDelivery = ({
     },
   ];
 
-  const timeline = getDataTimeline(data, targets, 'year');
+  const timeline = getDataTimeline(data, targets);
 
   const percentageData = computePercentages(
     data,

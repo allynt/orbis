@@ -129,7 +129,7 @@ const getUser5YearTotals = obj => {
  * @param {object} targets
  * @returns {number[]}
  */
-const getDataTimeline = (apiData, targets = {}, keyField = 'Year') => {
+const getDataTimeline = (apiData, targets = {}) => {
   if (!apiData) return;
 
   // if uninitiated by user, targets will be undefined, but
@@ -148,7 +148,6 @@ const getDataTimeline = (apiData, targets = {}, keyField = 'Year') => {
   const min = Math.min(...allYears);
   const max = Math.max(...allYears);
 
-  // TODO: does server already do this? Will never be gap years to pad out?
   let timeline = [];
   for (let i = min; i <= max; i++) {
     timeline = [...timeline, i];

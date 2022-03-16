@@ -41,7 +41,6 @@ const tenureStackColors = {
   intermediateOther: '#61d767',
   marketHousing: '#adeab0',
   sociallyRented: '#05c3ff',
-  // privateRented: '#d6ea69',
 };
 
 const baseProps = {

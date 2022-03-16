@@ -100,7 +100,7 @@ const ProgressionVsPlanningSchedule = ({
         : [progressionVsPlanningOptions[configuration]];
 
     const x = 'Year';
-    let totalsArray = labelsForArrayOfObjectsInclusive(
+    const totalsArray = labelsForArrayOfObjectsInclusive(
       data,
       ranges,
       ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
