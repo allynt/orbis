@@ -372,8 +372,9 @@ describe('Waltham Forest Data Transformers', () => {
 
   describe('compute percentages', () => {
     it('computePercentages works', () => {
-      const key = 'Affordable Housing';
-      const data = [
+      const timeline = [2017, 2018, 2019, 2020, 2021, 2022],
+        key = 'Affordable Housing',
+        data = [
           {
             startYear: 2017,
             'Affordable Housing': 62,
@@ -406,7 +407,12 @@ describe('Waltham Forest Data Transformers', () => {
           2021: 200,
           2022: 200,
         };
-      const result = computePercentages(data, targets, 'Affordable Housing');
+      const result = computePercentages(
+        timeline,
+        data,
+        targets,
+        'Affordable Housing',
+      );
       expect(result[0][key]).toBeNull(); // not matching data
       expect(result[1][key]).toBe(69);
       expect(result[2][key]).toBe(54);
