@@ -210,7 +210,7 @@ const computePercentages = (timeline, data, targets, targetProperty) => {
     const obj = data.find(datum => datum.startYear === year) ?? {};
 
     let percentage = null;
-    if (!!obj[targetProperty] && !!targets[obj?.startYear]) {
+    if (!!obj[targetProperty] && !!targets[obj.startYear]) {
       percentage = Math.round(
         (obj[targetProperty] / targets[obj.startYear]) * 100,
       );
