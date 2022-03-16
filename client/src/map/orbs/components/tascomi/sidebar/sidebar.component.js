@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
@@ -12,11 +12,6 @@ import {
   setFilterValue,
 } from 'map/orbs/layers.slice';
 
-const DEFAULT_DATE_RANGE = {
-  startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
-  endDate: new Date(2020, 2, 26).toISOString(),
-};
-
 const useStyles = makeStyles(theme => ({
   dateHeading: {
     paddingBottom: '0.5rem',
@@ -29,21 +24,52 @@ const useStyles = makeStyles(theme => ({
 export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
   const styles = useStyles();
 
+  const [dateRange, setDateRange] = useState(null);
+  const [latestDateString, setLatestDateString] = useState(null);
+
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
+  const { startDate, endDate } = filterValue?.dateRange || {};
+
   const featureCollection = useSelector(state =>
     dataSelector(selectedLayer?.source_id)(state?.orbs),
   );
-  const latestDateString = featureCollection?.features.reduce(
-    (acc, feature) => {
+
+  // Figure out the latest date in the data.
+  useEffect(() => {
+    const dateString = featureCollection?.features.reduce((acc, feature) => {
       if (feature.properties[dateType] > acc) {
         acc = feature.properties[dateType];
       }
       return acc;
-    },
-    '',
-  );
+    }, '');
+
+    setLatestDateString(dateString);
+  }, [featureCollection, dateType]);
+
+  // When latest date changes, set the date range to be used.
+  useEffect(() => {
+    if (latestDateString) {
+      const lastDate = new Date(latestDateString);
+      setDateRange({
+        startDate: startDate || subYears(lastDate, 1).toISOString(),
+        endDate: endDate || lastDate.toISOString(),
+      });
+    }
+  }, [latestDateString, startDate, endDate]);
+
+  // Set the filter to the date range selected.
+  useEffect(() => {
+    dispatch(
+      setFilterValue({
+        key: selectedLayer?.source_id,
+        filterValue: {
+          dateRange,
+        },
+      }),
+    );
+  }, [dateRange, selectedLayer, dispatch]);
 
   const handleChange = filter => newFilterValue =>
     dispatch(
@@ -51,31 +77,10 @@ export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
         key: selectedLayer?.source_id,
         filterValue: {
           ...filterValue,
-          [filter]:
-            filter === 'dateRange' &&
-            newFilterValue.startDate == null &&
-            newFilterValue.endDate == null
-              ? DEFAULT_DATE_RANGE
-              : newFilterValue,
+          [filter]: newFilterValue,
         },
       }),
     );
-
-  const { startDate, endDate } = filterValue?.dateRange || {};
-
-  let dateRange = null;
-  if (latestDateString) {
-    const lastDate = new Date(latestDateString);
-    dateRange = {
-      startDate: startDate || subYears(lastDate, 1).toISOString(),
-      endDate: endDate || lastDate.toISOString(),
-    };
-  } else {
-    dateRange = {
-      startDate: startDate || DEFAULT_DATE_RANGE.startDate,
-      endDate: endDate || DEFAULT_DATE_RANGE.endDate,
-    };
-  }
 
   return (
     <Grid container direction="column" spacing={2}>

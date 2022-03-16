@@ -1,5 +1,5 @@
 import { FlyToInterpolator } from '@deck.gl/core';
-import { subYears } from 'date-fns';
+import { isWithinInterval } from 'date-fns';
 import { filter } from 'lodash';
 
 import { MAX_ZOOM } from 'map/map.constants';
@@ -13,11 +13,6 @@ import {
 
 const PIN_COLOR = [72, 169, 197, 255];
 
-const defaultDateRange = {
-  startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
-  endDate: new Date(2020, 2, 26).toISOString(),
-};
-
 /**
  * @typedef {import('typings').GeoJsonFeature<{type?: string, Type?: string}>} ActionForHelpFeature
  */
@@ -25,18 +20,26 @@ const defaultDateRange = {
 const configuration = ({ id, dispatch, setViewState, orbState, dateType }) => {
   const filterRange = filterValueSelector(id)(orbState);
   const data = dataSelector(id)(orbState);
-
-  const dateRangeFilter = filterRange?.dateRange ?? defaultDateRange;
+  const dateRangeFilter = filterRange?.dateRange ?? {};
 
   const filteredData = {
     ...data,
     features: filter(data?.features, feature => {
       if (!feature.properties[dateType]) return false;
 
-      if (feature.properties[dateType] < dateRangeFilter.startDate)
-        return false;
+      if (dateRangeFilter.startDate && feature.properties[dateType]) {
+        const testDate = new Date(feature.properties[dateType]);
+        const interval = {
+          start: new Date(dateRangeFilter.startDate),
+          end: new Date(dateRangeFilter.endDate),
+        };
 
-      if (feature.properties[dateType] > dateRangeFilter.endDate) return false;
+        if (!isWithinInterval(testDate, interval)) {
+          return false;
+        }
+      } else {
+        return false;
+      }
 
       return true;
     }),
