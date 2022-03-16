@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Grid, Select, MenuItem } from '@astrosat/astrosat-ui';
 
@@ -6,6 +6,7 @@ import { VictoryBar, VictoryStack } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
@@ -26,11 +27,6 @@ const ProgressionVsPlanningSchedule = ({
 }) => {
   const chartTheme = useChartTheme();
 
-  // this can be moved into component when renderProps funcs are
-  // converted to children components (hooks must be in components)
-  // can possibly also use `width` param to adjust responsive size
-  const { root, select } = useWalthamSelectStyles({});
-
   const [configuration, setConfiguration] = useState(
     settings?.affordableHousingType ?? ALL_TYPES,
   );
@@ -43,9 +39,6 @@ const ProgressionVsPlanningSchedule = ({
     ...chartTheme,
     stack: {
       colorScale: chartTheme.walthamChartColors.progressionVsPlanning,
-    },
-    pulldownmenu: {
-      width: '10rem',
     },
   };
 
@@ -65,30 +58,40 @@ const ProgressionVsPlanningSchedule = ({
     setConfiguration(value);
   };
 
-  const renderTenureHousingLegend = width => (
-    <Grid container justifyContent="space-between" alignItems="center">
-      <Grid item>
-        <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+  const ProgressPlanningHousingLegend = ({ width }) => {
+    const { root, select } = useWalthamSelectStyles({});
+    return (
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        wrap="nowrap"
+      >
+        <Grid item>
+          <WalthamCustomLegend apiLegendData={apiLegendData} width={width} />
+        </Grid>
+        <Grid item>
+          <Select
+            value={configuration}
+            onChange={({ target: { value } }) => handleTypeSelect(value)}
+            classes={{ root, select }}
+            disableUnderline
+          >
+            <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
+            {Object.entries(progressionVsPlanningOptions).map(
+              ([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ),
+            )}
+          </Select>
+        </Grid>
       </Grid>
-      <Grid item style={updatedTheme.pulldownmenu}>
-        <Select
-          value={configuration}
-          onChange={({ target: { value } }) => handleTypeSelect(value)}
-          classes={{ root, select }}
-          disableUnderline
-        >
-          <MenuItem value={ALL_TYPES}>{ALL_TYPES}</MenuItem>
-          {Object.entries(progressionVsPlanningOptions).map(([key, value]) => (
-            <MenuItem key={key} value={key}>
-              {value}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
-  );
+    );
+  };
 
-  const renderStackedBarChart = width => {
+  const ProgressVsPlanningStackedChart = ({ width }) => {
     const barWidth = width / 20;
 
     const ranges =
@@ -96,8 +99,8 @@ const ProgressionVsPlanningSchedule = ({
         ? Object.values(progressionVsPlanningOptions)
         : [progressionVsPlanningOptions[configuration]];
 
-    const x = 'startYear';
-    let totalsArray = labelsForArrayOfObjectsInclusive(
+    const x = 'Year';
+    const totalsArray = labelsForArrayOfObjectsInclusive(
       data,
       ranges,
       ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
@@ -135,13 +138,21 @@ const ProgressionVsPlanningSchedule = ({
       title="Progression of Units Relating to Planning Schedule"
       info="This is a test description"
     >
-      <BaseChart
-        yLabel="Number Of Units"
-        xLabel="Financial Year"
-        renderChart={renderStackedBarChart}
-        renderLegend={renderTenureHousingLegend}
-        theme={updatedTheme}
-      />
+      <StyledParentSize>
+        {({ width }) => (
+          <>
+            <ProgressPlanningHousingLegend width={width} />
+            <BaseChart
+              width={width}
+              yLabel="Number Of Units"
+              xLabel="Financial Year"
+              theme={updatedTheme}
+            >
+              {ProgressVsPlanningStackedChart({ width })}
+            </BaseChart>
+          </>
+        )}
+      </StyledParentSize>
     </ChartWrapper>
   );
 };

@@ -37,7 +37,7 @@ const DeliverableSupplySummary = ({ data }) => {
   };
 
   const apiData = data?.properties[0]?.data;
-  let totalsArray = labelsForArrayOfObjects(
+  const totalsArray = labelsForArrayOfObjects(
     apiData,
     'Year',
     item => `Total is ${item}`,

@@ -2,14 +2,14 @@ import React from 'react';
 
 import { render, screen } from 'test/test-utils';
 
-import * as MOCK_DATA from './mock-data';
+import * as mockData from './mock-data';
 import ProgressionVsPlanningSchedule from './progression-vs-planning-schedule.component';
+
+const data = mockData.properties[0].data;
 
 describe('Progression vs Planning Schedule', () => {
   it('should display chart on screen', () => {
-    render(
-      <ProgressionVsPlanningSchedule userOrbState={{}} data={MOCK_DATA} />,
-    );
+    render(<ProgressionVsPlanningSchedule settings={{}} data={data} />);
 
     expect(
       screen.getByRole('heading', {

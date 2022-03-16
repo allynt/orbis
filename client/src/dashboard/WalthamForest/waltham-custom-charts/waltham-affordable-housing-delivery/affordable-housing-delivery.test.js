@@ -5,32 +5,21 @@ import { render, screen } from 'test/test-utils';
 
 import { AffordableHousingDelivery } from './affordable-housing-delivery.component';
 
-const data = mockData.properties[0].data;
-
-const setDashboardSettings = jest.fn();
-const targets = {
-  affordableHousingPercentage: {
-    2013: 100,
-    2014: 100,
-    2015: 200,
-    2016: 200,
-    2017: 100,
+const data = mockData.properties[0].data,
+  targets = {
     2018: 100,
-    2019: 100,
-    2020: 100,
-    2021: 100,
-    2022: 150,
-    2023: 100,
+    2019: 70,
+    2020: 80,
+    2021: 120,
+    2022: 90,
   },
-};
-const settings = { affordableHousingTotalYear: 2022 };
+  setDashboardSettings = jest.fn();
 
 describe('<AfforableHousingDelivery />', () => {
   it('shows the right title in the wrapper', () => {
     render(
       <AffordableHousingDelivery
         data={data}
-        settings={settings}
         targets={targets}
         setDashboardSettings={setDashboardSettings}
       />,
@@ -47,12 +36,13 @@ describe('<AfforableHousingDelivery />', () => {
     render(
       <AffordableHousingDelivery
         data={data}
-        settings={settings}
         targets={targets}
         setDashboardSettings={setDashboardSettings}
       />,
     );
-    expect(screen.getByText('Affordable Housing %')).toBeInTheDocument();
+    expect(
+      screen.getByText('% affordable housing delivered out of yearly target'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Financial Year')).toBeInTheDocument();
   });
 });
