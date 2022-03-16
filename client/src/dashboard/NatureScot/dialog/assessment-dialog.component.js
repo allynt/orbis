@@ -1,12 +1,13 @@
 import React from 'react';
 
 import {
-  Button,
   CloseIcon,
   Dialog,
   IconButton,
   makeStyles,
 } from '@astrosat/astrosat-ui';
+
+import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({
   dialog: {
@@ -22,13 +23,20 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    margin: 20,
+  },
+  overviewHighlightedText: {
+    color: theme.palette.primary.main,
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: theme.spacing(0.5),
+  },
+  overviewText: {
+    fontSize: 14,
   },
 }));
 
 const AssessmentDialog = ({ open = false, close, onSubmit }) => {
   const styles = useStyles();
-
-  const handleSubmit = () => onSubmit();
 
   const handleClose = () => {
     close();
@@ -49,9 +57,19 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
       >
         <CloseIcon fontSize="inherit" />
       </IconButton>
+
       <div className={styles.content}>
-        <h2>Impact Assessment Components</h2>
-        <Button onClick={() => handleSubmit()}>Submit Assessment</Button>
+        <h4>Welcome to the Impact Assessment functionality for Eco-an-Alba.</h4>
+        <p className={styles.overviewText}>
+          This feature will show you the impacts of a proposed change or
+          development within your area of interest.
+          <span className={styles.overviewHighlightedText}>
+            Please note, it does not replace the consent or consultation
+            processes.
+          </span>
+          Applications should continue to be made to NatureScot.
+        </p>
+        <AssessmentDialogForm onSubmit={onSubmit} />
       </div>
     </Dialog>
   );
