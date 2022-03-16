@@ -204,7 +204,9 @@ const computePercentages = (timeline, data, targets, targetProperty) => {
   // we return the data in the same shape as data, but values are
   // replaced with the percentage relative to the corresponding target
   // for years where data is zero, or target is zero, or both, then we use null // to prevent the chart from being misleading. This may result in gaps in the // chart
-  if (!data) return;
+
+  // No data points can be constructed if both datasets are not present
+  if (!data || !targets) return;
 
   return timeline?.map(year => {
     const obj = data.find(datum => datum.startYear === year) ?? {};
