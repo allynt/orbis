@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
@@ -32,11 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const DescriptionInput = ({ register }) => {
   const styles = useStyles();
-  const [textAreaCount, ChangeTextAreaCount] = useState(0);
 
-  const recalculate = e => {
-    ChangeTextAreaCount(e.target.value.length);
-  };
   return (
     <fieldset className={styles.fieldset}>
       <legend className={styles.legend}>
@@ -52,9 +48,6 @@ const DescriptionInput = ({ register }) => {
         {...register('description')}
         label="Describe Your Change or Development"
         margin="normal"
-        helperText={`${textAreaCount}/5 characters max length`}
-        inputProps={{ maxLength: 5 }}
-        onChange={recalculate}
         InputProps={{
           disableUnderline: true,
           classes: { input: styles.placeholder },
