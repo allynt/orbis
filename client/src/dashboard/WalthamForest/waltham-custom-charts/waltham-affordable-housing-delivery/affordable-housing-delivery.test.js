@@ -41,7 +41,7 @@ describe('<AfforableHousingDelivery />', () => {
       />,
     );
     expect(
-      screen.getByText('% affordable housing delivered out of yearly target'),
+      screen.getByText('Affordable Housing Delivery (%)'),
     ).toBeInTheDocument();
     expect(screen.getByText('Financial Year')).toBeInTheDocument();
   });
