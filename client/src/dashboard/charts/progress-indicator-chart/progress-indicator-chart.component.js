@@ -34,21 +34,20 @@ const ProgressIndicatorChart = ({ property, color }) => {
 
   const { name, target, progress } = property;
 
-  // following code ensures we never show chart if target is 0 (prevent a
-  // divide by zero, or if target data missing)
-
-  let showChart = true;
-  let percentage = 0;
-  if (!target || target === 0 || !progress || progress === 0) {
-    showChart = false;
-  } else {
-    percentage = target === 0 ? 0 : Math.round((progress / target) * 100);
+  // this prevents "Infinity%" values being shown, but calculates any
+  // valid values, including zero
+  let percentage = null;
+  if (target >= 0 && progress !== undefined && progress !== null) {
+    percentage = target === 0 ? 100 : Math.round((progress / target) * 100);
   }
 
-  const data = [
-    { x: 1, y: percentage },
-    { x: 2, y: 100 - percentage },
-  ];
+  const data =
+    percentage === null
+      ? null
+      : [
+          { x: 1, y: percentage },
+          { x: 2, y: 100 - percentage },
+        ];
 
   // TODO: magic numbers in <Text /> components
 
@@ -90,7 +89,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
             />
             <VictoryAnimation duration={1000} data={{ percentage }}>
               {newProps =>
-                showChart ? (
+                data ? (
                   <>
                     <Text
                       width={radius}

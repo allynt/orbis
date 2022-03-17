@@ -27,19 +27,28 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
   const styles = useStyles({});
   const totalDataArray = totalData?.properties?.[0]?.data;
 
-  const tenureCurrentYear = tenureData?.properties?.[0]?.data?.find(
-    obj => obj.Year === '2020-2021',
-  );
+  const tenureCurrentYear = tenureData?.find(obj => obj.startYear === 2022);
+
+  // TODO: this is only here because mock data needs `startYear` added and `Year` filtered out
+  const adaptedTotalData = totalDataArray?.map(obj => {
+    const [startYear] = obj.Year.split('-');
+    return Object.entries({ startYear: Number(startYear), ...obj }).reduce(
+      (acc, [key, value]) => (key === 'Year' ? acc : { ...acc, [key]: value }),
+      {},
+    );
+  });
 
   // 'Gross' values tallied up for last 5 years, like ticket asks
   const past5YearsTotal = useMemo(
     () =>
       LAST_5_YEARS.reduce(
         (acc, cur) =>
-          (acc += +totalDataArray?.find(d => d.Year === cur)?.['Total Gross']),
+          (acc += adaptedTotalData?.find(d => d.startYear === cur)?.[
+            'Total Gross'
+          ]),
         0,
       ),
-    [totalDataArray],
+    [adaptedTotalData],
   );
 
   // data combined with user target for progress wheels
@@ -52,18 +61,18 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
       },
       {
         ...PROGRESS_CHART_DATA.intermediate,
-        target: targets?.intermediateDelivery?.['2020-2021'],
+        target: targets?.intermediateDelivery?.['2022'],
         progress: tenureCurrentYear?.['Intermediate'],
       },
       {
         ...PROGRESS_CHART_DATA.marketHousing,
-        target: targets?.marketHousing?.['2020-2021'],
-        progress: tenureCurrentYear?.['Market'],
+        target: targets?.marketHousing?.['2022'],
+        progress: tenureCurrentYear?.['Market for sale'],
       },
       {
         ...PROGRESS_CHART_DATA.socialRented,
-        target: targets?.sociallyRented?.['2020-2021'],
-        progress: tenureCurrentYear?.['Social Rented'],
+        target: targets?.sociallyRented?.['2022'],
+        progress: tenureCurrentYear?.['Social Rent'],
       },
     ],
     [past5YearsTotal, tenureCurrentYear, targets],
