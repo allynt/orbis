@@ -30,6 +30,7 @@ const TEST_DASHBOARD_SOURCES = new Array(2).fill(undefined).map((_, i) => ({
         dashboard_component: {
           name: 'WalthamForest',
           title: `Dashboard Title ${i}`,
+          isOnLanding: true,
         },
       },
     },
@@ -87,9 +88,15 @@ describe('<Landing />', () => {
   it('should render the Content Landing view', () => {
     landingSetup();
 
-    expect(screen.getByText(BOOKMARK_TEXT)).toBeInTheDocument();
-    expect(screen.getByText(DASHBOARD_TEXT)).toBeInTheDocument();
-    expect(screen.getByText('Browse Map')).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: BOOKMARK_TEXT }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: DASHBOARD_TEXT }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Browse Map' }),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'View all' }),
     ).toBeInTheDocument();
