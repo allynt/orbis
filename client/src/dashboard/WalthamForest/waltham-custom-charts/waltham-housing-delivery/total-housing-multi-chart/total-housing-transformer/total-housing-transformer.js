@@ -6,7 +6,7 @@ import { userTargetTransformer } from 'dashboard/WalthamForest/utils.js';
  * @param {number[]} filteredTimeline
  * @returns {{
  *  transformedData: { x: number, y: number }[][]
- *  transformedTargets: { x: number, y: number }[]
+ *  transformedTargets: { x: string, y: number }[]
  * }}
  */
 export const totalHousingTransformer = (
@@ -27,8 +27,14 @@ export const totalHousingTransformer = (
       (acc, year) => {
         const obj = apiData.find(datum => datum.startYear === year) ?? {};
         return {
-          gross: [...acc.gross, { x: year, y: obj['Total Gross'] ?? null }],
-          net: [...acc.net, { x: year, y: obj['Total Net'] ?? null }],
+          gross: [
+            ...acc.gross,
+            { x: year.toString(), y: obj['Total Gross'] ?? null },
+          ],
+          net: [
+            ...acc.net,
+            { x: year.toString(), y: obj['Total Net'] ?? null },
+          ],
         };
       },
       { gross: [], net: [] },

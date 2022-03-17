@@ -6,7 +6,7 @@ import { housingTenureTypes } from 'dashboard/WalthamForest/waltham.constants';
  * @param {object} targets
  * @returns {{
  *  transformedData: object[]
- *  transformedTargets: { x: number, y: number }[]
+ *  transformedTargets: { x: string, y: number }[]
  * }}
  */
 export const tenureHousingTransformer = (
@@ -24,15 +24,16 @@ export const tenureHousingTransformer = (
 
   const transformedData = filteredTimeline.map(year => {
     const obj = apiData.find(datum => datum.startYear === year);
-    return (
-      obj ?? {
-        startYear: year,
-        ...Object.values(housingTenureTypes).reduce(
-          (acc, cur) => ({ ...acc, [cur]: null }),
-          {},
-        ),
-      }
-    );
+    // Victory does not work well with number values, so must be stringified.
+    return obj
+      ? { ...obj, startYear: `${obj.startYear}` }
+      : {
+          startYear: `${year}`,
+          ...Object.values(housingTenureTypes).reduce(
+            (acc, cur) => ({ ...acc, [cur]: null }),
+            {},
+          ),
+        };
   });
 
   return { transformedData, transformedTargets };

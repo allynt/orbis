@@ -26,7 +26,7 @@ import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
  */
 const getFilteredData = (data, year) => {
   if (!data) return;
-  const currentYearObject = data.find(datum => datum.startYear === year);
+  const currentYearObject = data.find(datum => +datum.startYear === year);
   const index = data.indexOf(currentYearObject);
   return data.slice(index - 4, index + 1);
 };
@@ -162,12 +162,12 @@ const AffordableHousingDelivery = ({
                 onSelect={value =>
                   updateDateFilter({ affordableHousingTotalYear: value })
                 }
-                pad
               />
               <WalthamCustomLegend
                 width={width}
                 apiLegendData={apiLegendData}
                 targetLegendData={null}
+                padTop
               />
               <BaseChart
                 yLabel="Affordable Housing %"

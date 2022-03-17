@@ -30,19 +30,19 @@ const dataArray = [
     expected: {
       transformedData: [
         {
-          startYear: 2015,
+          startYear: '2015',
           Market: 123,
           Intermediate: 456,
         },
         {
-          startYear: 2016,
+          startYear: '2016',
           Market: 789,
           Intermediate: 101,
         },
       ],
       transformedTargets: [
-        { x: 2015, y: 181 },
-        { x: 2016, y: 155 },
+        { x: '2015', y: 181 },
+        { x: '2016', y: 155 },
       ],
     },
   },
@@ -67,21 +67,21 @@ const dataArray = [
     filteredTimeline: [2014, 2015, 2016],
     expected: {
       transformedData: [
-        { startYear: 2014, Market: null, Intermediate: null },
+        { startYear: '2014', Market: null, Intermediate: null },
         {
-          startYear: 2015,
+          startYear: '2015',
           Market: 123,
           Intermediate: 456,
         },
         {
-          startYear: 2016,
+          startYear: '2016',
           Market: 789,
           Intermediate: 101,
         },
       ],
       transformedTargets: [
-        { x: 2014, y: 181 },
-        { x: 2015, y: 155 },
+        { x: '2014', y: 181 },
+        { x: '2015', y: 155 },
       ],
     },
   },
@@ -102,19 +102,19 @@ const dataArray = [
     expected: {
       transformedData: [
         {
-          startYear: 2015,
+          startYear: '2015',
           Market: 123,
           Intermediate: 456,
         },
         {
-          startYear: 2016,
+          startYear: '2016',
           Market: null,
           Intermediate: null,
         },
       ],
       transformedTargets: [
-        { x: 2015, y: 181 },
-        { x: 2016, y: 155 },
+        { x: '2015', y: 181 },
+        { x: '2016', y: 155 },
       ],
     },
   },
@@ -132,7 +132,7 @@ const dataArray = [
     expected: {
       transformedData: [
         {
-          startYear: 2015,
+          startYear: '2015',
           Market: 123,
           Intermediate: 456,
         },

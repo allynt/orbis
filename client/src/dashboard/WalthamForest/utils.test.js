@@ -185,11 +185,11 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
           {
-            x: 2012,
+            x: '2012',
             y: 456,
           },
         ];
@@ -205,7 +205,7 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
         ];
@@ -221,11 +221,11 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
           {
-            x: 2011,
+            x: '2011',
             y: 456,
           },
         ];

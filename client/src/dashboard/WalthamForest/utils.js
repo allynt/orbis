@@ -46,7 +46,7 @@ const filterEmptyStrings = data => {
  * If a timeline is provided, but the data falls outwith it, returns null.
  * @param {object} data
  * @param {number[]} timeline
- * @returns {{ x: number, y: number }[]|null}
+ * @returns {{ x: string, y: number }[]|null}
  */
 const userTargetTransformer = (data, timeline) => {
   if (!data) return;
@@ -54,7 +54,7 @@ const userTargetTransformer = (data, timeline) => {
   const result = Object.entries(data).reduce((acc, [key, value]) => {
     const numYear = Number(key);
     return !timeline || timeline.includes(numYear)
-      ? [...acc, { x: numYear, y: value }]
+      ? [...acc, { x: key, y: value }]
       : acc;
   }, []);
 
@@ -218,7 +218,7 @@ const computePercentages = (timeline, data, targets, targetProperty) => {
       );
     }
     return {
-      startYear: year,
+      startYear: year.toString(),
       [targetProperty]: percentage,
     };
   });
