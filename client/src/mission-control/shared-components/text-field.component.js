@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {import('@material-ui/core').TextFieldProps} props
  */
-export const TextField = ({ className, InputLabelProps, ...rest }) => {
+export const TextField = ({ className, InputLabelProps, value = '', ...rest }) => {
   const styles = useStyles();
 
   return (
@@ -35,6 +35,7 @@ export const TextField = ({ className, InputLabelProps, ...rest }) => {
           shrink: clsx(styles.shrink, InputLabelProps?.classes?.shrink),
         },
       }}
+      value={value}
       {...rest}
     />
   );

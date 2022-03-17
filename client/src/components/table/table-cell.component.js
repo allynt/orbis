@@ -29,7 +29,13 @@ const useCellStyles = makeStyles(theme => ({
 /**
  * @param {import('@material-ui/core').TableCellProps} props
  */
-export const OrbisTableCell = ({ classes, ...props }) => {
+export const OrbisTableCell = ({ classes, padding, ...props }) => {
   const styles = useCellStyles();
-  return <TableCell classes={{ ...styles, ...classes }} {...props} />;
+  return (
+    <TableCell
+      classes={{ ...styles, ...classes }}
+      padding="normal"
+      {...props}
+    />
+  );
 };
