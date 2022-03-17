@@ -14,7 +14,6 @@ const useWalthamSelectStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
     maxWidth: '15rem',
     marginLeft: 'auto',
-    marginBottom: ({ pad }) => (pad ? '1rem' : '0'),
     '&:focus': {
       borderRadius: theme.shape.borderRadius,
     },
@@ -27,7 +26,6 @@ const useWalthamSelectStyles = makeStyles(theme => ({
  *  value: number
  *  onSelect: (value: number) => void
  *  range?: number,
- *  pad?: boolean
  * }} props
  */
 const WalthamCustomDateRange = ({
@@ -35,14 +33,13 @@ const WalthamCustomDateRange = ({
   value,
   onSelect,
   range = WALTHAM_FILTER_RANGE,
-  pad = false,
 }) => {
-  const styles = useWalthamSelectStyles({ pad });
+  const { root, select } = useWalthamSelectStyles({});
   return (
     <Select
       value={value ?? ''}
       onChange={({ target: { value } }) => onSelect(+value)}
-      classes={{ root: styles.root, select: styles.select }}
+      classes={{ root, select }}
       disableUnderline
     >
       {timeline?.map(year => {
