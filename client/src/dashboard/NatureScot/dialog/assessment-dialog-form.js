@@ -8,6 +8,8 @@ import * as yup from 'yup';
 
 import { Form } from 'components';
 
+import AssessmentsShuttle from './assessments-shuttle.component';
+
 const validationSchema = yup.object({
   description: yup.string(),
 });
@@ -76,6 +78,9 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
         <DescriptionInput register={register} />
+      </Form.Row>
+      <Form.Row>
+        <AssessmentsShuttle data={{}} selectedActivity="Foobar" />
       </Form.Row>
       <Button type="submit">Submit Assessment</Button>
     </Form>
