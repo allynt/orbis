@@ -29,7 +29,7 @@ const ActivityList = ({ activityList, name, filter }) => {
       <List
         sx={{
           width: '300px',
-          height: '512px', // TODO: find out how to stretch vertically if empty
+          //height: '512px', // TODO: find out how to stretch vertically if empty
           bgcolor: '#f00',
           overflow: 'auto',
         }}

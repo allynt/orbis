@@ -41,6 +41,12 @@ const useStyles = makeStyles(theme => ({
     border: '4px solid',
     borderColor: theme.palette.background.paper,
   },
+  outlined: {
+    padding: '3px',
+    borderRadius: '5px',
+    backgroundColor: '#323e47',
+    border: '1px solid black',
+  },
   legend: {
     fontSize: 10,
     fontWeight: 800,
@@ -49,8 +55,11 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14,
   },
   placeholder: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
+    borderRadius: '5px',
+    width: '30ch',
     height: 25,
+    padding: '3px',
   },
   listtitle: {
     padding: '1rem',
@@ -65,6 +74,9 @@ const useStyles = makeStyles(theme => ({
   nudge2: {
     marginLeft: '1rem',
     marginBottom: '1.25rem',
+  },
+  inputbox: {
+    width: '80%',
   },
 }));
 
@@ -101,6 +113,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const styles = useStyles();
   return (
     <fieldset className={styles.fieldset}>
+      {/* header */}
       <legend className={styles.legend}>Select activities</legend>
       <div>
         <p>
@@ -114,6 +127,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         </p>
       </div>
       <Grid container>
+        {/* left list (available activities) */}
         <Grid xs={5}>
           <Card>
             <Grid xs={12}>
@@ -138,7 +152,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <Grid
               container
               alignItems="center"
-              justifyContent="space-around"
+              justifyContent="space-between"
               wrap="nowrap"
               className={styles.nudge}
             >
@@ -148,11 +162,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                 name="search"
                 margin="normal"
                 placeholder="type ahead..."
+                variant="filled"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.nudge}
+                className={[styles.nudge]}
                 focused
               />
             </Grid>
@@ -160,6 +175,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList name="proposed_activities" activityList={mockData} />
           </Card>
         </Grid>
+        {/* arrows in middle */}
         <Grid
           container
           alignItems="center"
@@ -177,6 +193,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             </Grid>
           </Card>
         </Grid>
+        {/* right list (selected activities) */}
         <Grid xs={5}>
           <Card>
             <Grid xs={12}>
@@ -200,8 +217,9 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                 placeholder="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
-                  classes: { input: styles.placeholder },
+                  classes: { input: [styles.placeholder] },
                 }}
+                className={[styles.nudge]}
                 focused
               />
             </Grid>
@@ -209,11 +227,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList name="selected_activities" activityList={[]} />
           </Card>
         </Grid>
+        {/* footer left 'choose all' */}
         <Grid
           container
           direction="row"
           alignItems="center"
-          justifyContent="flex-end"
+          justifyContent="center"
           xs={5}
           style={{ marginTop: '1rem' }}
         >
@@ -228,11 +247,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         <Grid xs={2}>
           <Typography variant="h2">&nbsp;</Typography>
         </Grid>
+        {/* footer right 'remove all' */}
         <Grid
           container
           direction="row"
           alignItems="center"
-          justifyContent="flex-start"
+          justifyContent="center"
           xs={5}
           style={{ marginTop: '1rem' }}
         >
