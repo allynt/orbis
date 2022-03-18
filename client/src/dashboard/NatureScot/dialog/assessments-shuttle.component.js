@@ -14,7 +14,12 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { AddCircle } from '@material-ui/icons';
+import {
+  AddCircle,
+  ArrowLeftRounded,
+  ArrowRightAltRounded,
+  ArrowRightOutlined,
+} from '@material-ui/icons';
 
 import ActivityList from './activity-list.component';
 
@@ -44,6 +49,16 @@ const useStyles = makeStyles(theme => ({
   placeholder: {
     backgroundColor: theme.palette.background.paper,
     height: 25,
+  },
+  listtitle: {
+    padding: '1rem',
+    textTransform: 'uppercase',
+  },
+  highlightText: {
+    color: '#f6be00',
+  },
+  nudge: {
+    marginLeft: '1rem',
   },
 }));
 
@@ -83,26 +98,33 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
       <legend className={styles.legend}>Select activities</legend>
       <div>
         <p>
-          It looks like you're interested in {selectedActivity}. The list below
-          on the left shows some suggested activities that you might undertake
-          as part of your development. Please select your activities from the
-          'available activities' list and click on the arrow to add them to your
-          list. Likewise, you can add or remove items from the "selected
-          activities" list.
+          It looks like you're interested in{' '}
+          <span className={styles.highlightText}>{selectedActivity}</span>. The
+          list below on the left shows some suggested activities that you might
+          undertake as part of your development. Please select your activities
+          from the 'available activities' list and click on the arrow to add
+          them to your list. Likewise, you can add or remove items from the
+          "selected activities" list.
         </p>
       </div>
       <Grid container>
-        <Grid xs={4}>
+        <Grid xs={5}>
           <Card>
             <Grid xs={12}>
-              <Typography variant="h2">Available Activities</Typography>
+              <Typography className={styles.listtitle} variant="h2">
+                Available Activities
+              </Typography>
             </Grid>
             <Divider />
             <Grid xs={12}>
-              <FormGroup>
+              <FormGroup className={styles.nudge}>
                 <FormControlLabel
                   control={<Checkbox />}
-                  label="Proposed Activities"
+                  label={
+                    <Typography className={styles.highlightText}>
+                      Proposed Activities
+                    </Typography>
+                  }
                 />
               </FormGroup>
             </Grid>
@@ -112,8 +134,9 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
               alignItems="center"
               justifyContent="space-around"
               wrap="nowrap"
+              className={styles.nudge}
             >
-              <SearchIcon />
+              <SearchIcon fontSize="small" />
               <TextField
                 id="search"
                 name="search"
@@ -123,6 +146,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
+                className={styles.nudge}
                 focused
               />
             </Grid>
@@ -130,13 +154,29 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList name="proposed_activities" activityList={mockData} />
           </Card>
         </Grid>
-        <Grid xs={4}>
-          <h1>Arrows</h1>
-        </Grid>
-        <Grid xs={4}>
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="space-around"
+          wrap="nowrap"
+          xs={2}
+        >
           <Card>
             <Grid xs={12}>
-              <Typography variant="h2">Selected Activities</Typography>
+              <ArrowRightOutlined fontSize="large" />
+            </Grid>
+            <Divider />
+            <Grid xs={12}>
+              <ArrowLeftRounded fontSize="large" />
+            </Grid>
+          </Card>
+        </Grid>
+        <Grid xs={5}>
+          <Card>
+            <Grid xs={12}>
+              <Typography className={styles.listtitle} variant="h2">
+                Selected Activities
+              </Typography>
             </Grid>
             <Divider />
             <Grid
@@ -144,8 +184,9 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
               alignItems="center"
               justifyContent="space-around"
               wrap="nowrap"
+              className={styles.nudge}
             >
-              <AddCircle />
+              <AddCircle fontSize="small" />
               <TextField
                 id="search"
                 name="search"

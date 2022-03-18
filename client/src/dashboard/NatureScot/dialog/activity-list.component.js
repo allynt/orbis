@@ -42,7 +42,9 @@ const ActivityList = ({ activityList, name, filter }) => {
             <ListItemText
               id={labelId}
               primary={value.label}
-              style={{ fontWeight: value.highlight ? 'bold' : 'normal' }}
+              primaryTypographyProps={{
+                fontWeight: value.highlight ? 'bold' : 'normal',
+              }}
             />
           </ListItem>
         );
