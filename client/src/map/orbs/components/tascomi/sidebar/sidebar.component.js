@@ -96,6 +96,10 @@ export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
       </Grid>
 
       <Grid item>
+        <Typography className={styles.dateHeading} variant="h4">
+          Decision Date
+        </Typography>
+
         <DateRangeFilter
           onSubmit={handleChange('dateRange')}
           range={dateRange}
