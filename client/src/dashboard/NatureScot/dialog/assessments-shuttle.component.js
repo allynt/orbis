@@ -16,6 +16,7 @@ import {
 
 import {
   AddCircle,
+  ArrowLeftOutlined,
   ArrowLeftRounded,
   ArrowRightAltRounded,
   ArrowRightOutlined,
@@ -202,6 +203,29 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <Divider />
             <ActivityList name="selected_activities" activityList={[]} />
           </Card>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          xs={5}
+        >
+          <Typography variant="h2">Choose all</Typography>
+          <ArrowRightOutlined size="medium" />
+        </Grid>
+        <Grid xs={2}>
+          <Typography variant="h2">&nbsp;</Typography>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          xs={5}
+        >
+          <ArrowLeftOutlined size="medium" />
+          <Typography variant="h2">Remove all</Typography>
         </Grid>
       </Grid>
     </fieldset>
