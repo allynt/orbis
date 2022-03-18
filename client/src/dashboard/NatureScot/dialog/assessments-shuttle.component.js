@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Button,
   //Button,
   Card,
   Checkbox,
@@ -60,6 +61,10 @@ const useStyles = makeStyles(theme => ({
   },
   nudge: {
     marginLeft: '1rem',
+  },
+  nudge2: {
+    marginLeft: '1rem',
+    marginBottom: '1.25rem',
   },
 }));
 
@@ -185,7 +190,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
               alignItems="center"
               justifyContent="space-around"
               wrap="nowrap"
-              className={styles.nudge}
+              className={styles.nudge2}
             >
               <AddCircle fontSize="small" />
               <TextField
@@ -210,9 +215,15 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           alignItems="center"
           justifyContent="flex-end"
           xs={5}
+          style={{ marginTop: '1rem' }}
         >
-          <Typography variant="h2">Choose all</Typography>
-          <ArrowRightOutlined size="medium" />
+          <Button
+            secondary
+            endIcon={<ArrowRightOutlined size="medium" />}
+            size="small"
+          >
+            Choose all
+          </Button>
         </Grid>
         <Grid xs={2}>
           <Typography variant="h2">&nbsp;</Typography>
@@ -223,9 +234,11 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           alignItems="center"
           justifyContent="flex-start"
           xs={5}
+          style={{ marginTop: '1rem' }}
         >
-          <ArrowLeftOutlined size="medium" />
-          <Typography variant="h2">Remove all</Typography>
+          <Button startIcon={<ArrowLeftOutlined size="medium" />} size="small">
+            Remove all
+          </Button>
         </Grid>
       </Grid>
     </fieldset>
