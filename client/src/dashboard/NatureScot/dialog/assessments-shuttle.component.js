@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import {
-  Button,
+  //Button,
   Card,
   Checkbox,
   Divider,
@@ -13,6 +13,10 @@ import {
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
+
+import { AddCircle } from '@material-ui/icons';
+
+import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
   actions: {
@@ -43,6 +47,35 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const mockData = [
+  {
+    label: 'Plant flowerbed',
+    value: 1,
+    highlight: true,
+  },
+  {
+    label: 'Build a fence',
+    value: 2,
+  },
+  {
+    label: 'Install a shed',
+    value: 3,
+    highlight: true,
+  },
+  {
+    label: 'Grow some flowers',
+    value: 4,
+  },
+  {
+    label: 'Lay a track',
+    value: 5,
+  },
+  {
+    label: 'Install telegraph pole',
+    value: 6,
+  },
+];
+
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const styles = useStyles();
   return (
@@ -62,7 +95,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         <Grid xs={4}>
           <Card>
             <Grid xs={12}>
-              <Typography variant="h3">Available Activities</Typography>
+              <Typography variant="h2">Available Activities</Typography>
             </Grid>
             <Divider />
             <Grid xs={12}>
@@ -93,13 +126,41 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                 focused
               />
             </Grid>
+            <Divider />
+            <ActivityList name="proposed_activities" activityList={mockData} />
           </Card>
         </Grid>
         <Grid xs={4}>
           <h1>Arrows</h1>
         </Grid>
         <Grid xs={4}>
-          <h1>Right List</h1>
+          <Card>
+            <Grid xs={12}>
+              <Typography variant="h2">Selected Activities</Typography>
+            </Grid>
+            <Divider />
+            <Grid
+              container
+              alignItems="center"
+              justifyContent="space-around"
+              wrap="nowrap"
+            >
+              <AddCircle />
+              <TextField
+                id="search"
+                name="search"
+                margin="normal"
+                placeholder="Add a new Activity"
+                InputProps={{
+                  disableUnderline: true,
+                  classes: { input: styles.placeholder },
+                }}
+                focused
+              />
+            </Grid>
+            <Divider />
+            <ActivityList name="selected_activities" activityList={[]} />
+          </Card>
         </Grid>
       </Grid>
     </fieldset>
