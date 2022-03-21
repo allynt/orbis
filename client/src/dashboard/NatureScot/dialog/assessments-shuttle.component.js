@@ -142,22 +142,49 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     }
   };
 
+  const clearSelections = () => {
+    // need to clear selections after any movement between lists
+    setLeftSelected([]);
+    setRightSelected([]);
+  };
+
   const chooseAll = () => {
-    // user clicks choose all, move all selected to right
-    // and remove from left
-    // TODO: change to move all VISIBLE to right
-    setRight([...right, ...leftSelected.map(item => item)]);
-    setLeft(left.filter(item => !leftSelected.includes(item)));
+    // move all items visible in left list to right,
+    // irrespective of selection
+    // TODO: make sure this honours filters applied
+    console.log('Clicked choose all');
+    setLeftSelected([]);
+    setRight([...right, ...left]);
+    setLeft([]);
+    clearSelections();
   };
 
   const removeAll = () => {
+    // move all items visible in right list to right,
+    // irrespective of selection
+    // TODO: make sure this excludes userdefined options
+    console.log('Clicked remove all');
+    setLeft([...left, ...right]);
+    setRight([]);
+    clearSelections();
+  };
+
+  const chooseSelected = () => {
+    // user clicks choose all, move all selected to right
+    // and remove from left
+    setRight([...right, ...leftSelected.map(item => item)]);
+    setLeft(left.filter(item => !leftSelected.includes(item)));
+    clearSelections();
+  };
+
+  const removeSelected = () => {
     // user clicks remove all, move all selected from right list
     // and back to left list
-    // TODO : change to remove all non-user added VISIBLE to left
     // TODO: filter out those with userDefined flag
     console.log('Clicked remove All');
     setLeft([...left, ...rightSelected.map(item => item)]);
     setRight(right.filter(item => !rightSelected.includes(item)));
+    clearSelections();
   };
 
   return (
@@ -237,13 +264,16 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           <Card>
             <Grid xs={12}>
               <ArrowRightOutlined
-                onClick={() => chooseAll()}
+                onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
             <Divider />
             <Grid xs={12}>
-              <ArrowLeftRounded onClick={() => removeAll()} fontSize="large" />
+              <ArrowLeftRounded
+                onClick={() => removeSelected()}
+                fontSize="large"
+              />
             </Grid>
           </Card>
         </Grid>
