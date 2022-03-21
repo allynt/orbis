@@ -16,9 +16,6 @@ const useStyles = makeStyles(theme => ({
   dateHeading: {
     paddingBottom: '0.5rem',
   },
-  checkboxHeading: {
-    paddingBottom: '1rem',
-  },
 }));
 
 export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
@@ -86,16 +83,9 @@ export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography className={styles.dateHeading} variant="h4">
-          Date Range
+          Decision Date
         </Typography>
 
-        <Typography className={styles.dateHeading} variant="body1">
-          Please select the type of date before you select the specific date
-          range to apply.
-        </Typography>
-      </Grid>
-
-      <Grid item>
         <DateRangeFilter
           onSubmit={handleChange('dateRange')}
           range={dateRange}
