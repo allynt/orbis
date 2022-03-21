@@ -15,7 +15,9 @@ const RATIOS = {
 const useStyles = makeStyles(theme => ({
   apiLegend: {
     width: 'fit-content',
-    maxHeight: props => props.maxHeight,
+    maxHeight: ({ maxHeight }) => maxHeight,
+    marginTop: ({ padTop }) => (padTop ? '1rem' : '0'),
+    marginBottom: ({ padBottom }) => (padBottom ? '1rem' : '0'),
   },
   userTarget: {
     width: '100%',
@@ -27,13 +29,21 @@ const useStyles = makeStyles(theme => ({
  *  apiLegendData: { name: string, color: string }[]
  *  targetLegendData?: { name: string, color: string }
  *  width: number
+ *  padTop?: boolean
+ *  padBottom?: boolean
  * }} props
  */
-const WalthamCustomLegend = ({ apiLegendData, targetLegendData, width }) => {
+const WalthamCustomLegend = ({
+  apiLegendData,
+  targetLegendData,
+  width,
+  padTop = false,
+  padBottom = false,
+}) => {
   const maxHeight = width * RATIOS.legendContainer,
     fontSize = width * RATIOS.fontSize,
     fontSizeLimit = fontSize < MAX_FONT_SIZE ? fontSize : MAX_FONT_SIZE,
-    styles = useStyles({ maxHeight });
+    styles = useStyles({ maxHeight, padTop, padBottom });
 
   return (
     <Grid container direction="column" justifyContent="space-between">

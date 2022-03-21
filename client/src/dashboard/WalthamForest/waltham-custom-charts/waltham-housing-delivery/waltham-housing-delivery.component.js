@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectFilters: {
     width: 'fit-content',
-    margin: '0 0 1rem auto',
+    marginLeft: 'auto',
     gap: '1rem',
   },
   charts: {

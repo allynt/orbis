@@ -25,7 +25,7 @@ const useWalthamSelectStyles = makeStyles(theme => ({
  *  timeline: number[]
  *  value: number
  *  onSelect: (value: number) => void
- *  range?: number
+ *  range?: number,
  * }} props
  */
 const WalthamCustomDateRange = ({
@@ -34,12 +34,12 @@ const WalthamCustomDateRange = ({
   onSelect,
   range = WALTHAM_FILTER_RANGE,
 }) => {
-  const styles = useWalthamSelectStyles({});
+  const { root, select } = useWalthamSelectStyles({});
   return (
     <Select
       value={value ?? ''}
       onChange={({ target: { value } }) => onSelect(+value)}
-      classes={{ root: styles.root, select: styles.select }}
+      classes={{ root, select }}
       disableUnderline
     >
       {timeline?.map(year => {
