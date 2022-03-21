@@ -148,6 +148,7 @@ const ProgressionVsPlanningSchedule = ({
               yLabel="Number Of Units"
               xLabel="Financial Year"
               theme={updatedTheme}
+              financialYear
             >
               {ProgressVsPlanningStackedChart({ width })}
             </BaseChart>

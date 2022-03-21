@@ -173,6 +173,7 @@ const AffordableHousingDelivery = ({
                 yLabel="Affordable Housing %"
                 xLabel="Financial Year"
                 width={width}
+                financialYear
               >
                 {AffordableHousingLineChart({ width })}
               </BaseChart>
