@@ -21,8 +21,15 @@ const useStyles = makeStyles(theme => ({
  * @param {function(object):boolean =} filter -  optional filter function to veto each object
  * @returns {JSX}
  */
-const ActivityList = ({ activityList, name, filter }) => {
+const ActivityList = ({ activityList, name, filter, onSelect }) => {
   const styles = useStyles();
+
+  const onItemSelection = item => {
+    // notify parent via callback
+    if (onSelect) {
+      onSelect(item);
+    }
+  };
 
   return (
     <Box sx={{ height: '300px' }}>
@@ -44,7 +51,7 @@ const ActivityList = ({ activityList, name, filter }) => {
               key={value.label}
               role="listitem"
               button
-              onClick={() => {}}
+              onClick={() => onItemSelection(value)}
             >
               <ListItemText
                 id={labelId}
