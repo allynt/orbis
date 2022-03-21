@@ -15,7 +15,7 @@ export const LoadingTextFallback = ({
   children = 'Loading...',
   variant = 'h4',
   // @ts-ignore
-  component = 'p',
+  component = 'div',
   ...rest
 }) => (
   <Typography

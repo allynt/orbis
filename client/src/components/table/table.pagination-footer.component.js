@@ -104,12 +104,13 @@ export const TablePaginationFooter = ({
         page={currentPage}
         count={pageCount}
         onChange={handleChangePage}
-        renderItem={({ type, selected, page, ...rest }) => (
+        renderItem={({ type, selected, page, color, ...rest }) => (
           // @ts-ignore
           <Button
             className={clsx(styles.button, styles[type], {
               [styles.selected]: selected,
             })}
+            color="default"
             {...rest}
           >
             {type === 'page' ? page : type === 'previous' ? 'Prev' : 'Next'}

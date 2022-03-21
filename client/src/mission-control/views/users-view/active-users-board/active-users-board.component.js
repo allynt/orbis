@@ -77,7 +77,7 @@ export const ActiveUsersBoard = ({
               vertical: -40,
               horizontal: 'left',
             }}
-            Button={props => (
+            Button={({ active, ...rest }) => (
               <Button
                 className={styles.statusButton}
                 aria-controls="role-menu"
@@ -91,7 +91,8 @@ export const ActiveUsersBoard = ({
                 endIcon={
                   <TriangleIcon style={{ transform: 'rotate(180deg)' }} />
                 }
-                {...props}
+                active={active.toString()}
+                {...rest}
               >
                 {customerUser.type === ADMIN_STATUS.manager
                   ? USER_LABELS.admin
