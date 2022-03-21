@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
@@ -25,29 +25,32 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-const ProgressIndicatorChart = ({ property, color }) => {
-  const styles = useStyles({});
-
-  if (!property) {
-    return null;
-  }
-
-  const { name, target, progress } = property;
-
-  // this prevents "Infinity%" values being shown, but calculates any
-  // valid values, including zero
+// this prevents "Infinity%" values being shown, but calculates any
+// valid values, including zero
+const calculatePercentage = property => {
+  const { target, progress } = property;
   let percentage = null;
-  if (target >= 0 && progress !== undefined && progress !== null) {
+  if (target >= 0 && (!!progress || progress === 0)) {
     percentage = target === 0 ? 100 : Math.round((progress / target) * 100);
   }
 
-  const data =
-    percentage === null
-      ? null
-      : [
-          { x: 1, y: percentage },
-          { x: 2, y: 100 - percentage },
-        ];
+  return percentage;
+};
+
+const ProgressIndicatorChart = ({ property, color }) => {
+  const styles = useStyles({});
+  const [percentage, setPercentage] = useState(null);
+
+  useEffect(() => {
+    setPercentage(calculatePercentage(property));
+  }, [percentage, property]);
+
+  const { name, target } = property;
+
+  const data = [
+    { x: 1, y: percentage ?? 0 },
+    { x: 2, y: 100 - percentage ?? 0 },
+  ];
 
   // TODO: magic numbers in <Text /> components
 
@@ -87,9 +90,9 @@ const ProgressIndicatorChart = ({ property, color }) => {
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={{ percentage }}>
-              {newProps =>
-                data ? (
+            <VictoryAnimation duration={1000} data={{ display: percentage }}>
+              {({ display }) =>
+                !!percentage ? (
                   <>
                     <Text
                       width={radius}
@@ -103,7 +106,7 @@ const ProgressIndicatorChart = ({ property, color }) => {
                         fontSize: `${width / 150}rem`,
                       }}
                     >
-                      {`${Math.round(Number(newProps.percentage))}%`}
+                      {`${Math.round(+display)}%`}
                     </Text>
                     <Text
                       width={radius}
