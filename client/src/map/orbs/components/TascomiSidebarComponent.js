@@ -2,11 +2,16 @@ import React from 'react';
 
 import { SidebarComponent } from './tascomi/sidebar/sidebar.component';
 
-const ConnectedWrapper = ({ selectedLayer, dispatch, dateType, dateLabel }) => (
+const ConnectedWrapper = ({
+  selectedLayer,
+  dispatch,
+  dateTypes,
+  dateLabel,
+}) => (
   <SidebarComponent
     selectedLayer={selectedLayer}
     dispatch={dispatch}
-    dateType={dateType}
+    dateTypes={dateTypes}
     dateLabel={dateLabel}
   />
 );
