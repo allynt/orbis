@@ -120,7 +120,16 @@ const AssessmentDialogForm = ({ onSubmit }) => {
         <DateRange onChange={handleDateRangeSelection} />
       </Form.Row>
 
-      {areActivitiesVisible ? <div>Yes, I'm here</div> : null}
+      {areActivitiesVisible ? (
+        <Form.Row>
+          <FieldWrapper title="Select activities">
+            <AssessmentsShuttle
+              data="{mock_data}"
+              selectedActivity={'Some activity'}
+            />
+          </FieldWrapper>
+        </Form.Row>
+      ) : null}
 
       <Form.Row>
         <div className={styles.row}>

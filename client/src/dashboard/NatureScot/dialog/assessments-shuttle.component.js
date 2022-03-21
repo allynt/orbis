@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import {
   Button,
@@ -112,9 +112,7 @@ const mockData = [
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const styles = useStyles();
   return (
-    <fieldset className={styles.fieldset}>
-      {/* header */}
-      <legend className={styles.legend}>Select activities</legend>
+    <Fragment>
       <div>
         <p>
           It looks like you're interested in{' '}
@@ -261,7 +259,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           </Button>
         </Grid>
       </Grid>
-    </fieldset>
+    </Fragment>
   );
 };
 
