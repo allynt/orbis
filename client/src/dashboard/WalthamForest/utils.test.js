@@ -269,11 +269,11 @@ describe('Waltham Forest Data Transformers', () => {
   describe('getUser5YearTotals', () => {
     it('totals up data for last 5 years', () => {
       const data = {
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
-          '2019-2020': '40',
-          '2020-2021': '50',
+          2016: '10',
+          2017: '20',
+          2018: '30',
+          2019: '40',
+          2020: '50',
         },
         expected = 150;
 
@@ -283,13 +283,13 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('filters values outside of last 5 years', () => {
       const data = {
-          '2014-2015': '1000',
-          '2015-2016': '2000',
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
-          '2019-2020': '40',
-          '2020-2021': '50',
+          2014: '1000',
+          2015: '2000',
+          2016: '10',
+          2017: '20',
+          2018: '30',
+          2019: '40',
+          2020: '50',
         },
         expected = 150;
 
@@ -299,9 +299,9 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('works if not all 5 years have values', () => {
       const data = {
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
+          2016: '10',
+          2017: '20',
+          2018: '30',
         },
         expected = 60;
 
