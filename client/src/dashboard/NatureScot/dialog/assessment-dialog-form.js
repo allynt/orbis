@@ -60,6 +60,7 @@ const DescriptionInput = ({ register }) => {
           disableUnderline: true,
           className: styles.input,
         }}
+        maxLength={150}
         focused
       />
     </FieldWrapper>
