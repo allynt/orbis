@@ -19,7 +19,6 @@ import {
   AddCircle,
   ArrowLeftOutlined,
   ArrowLeftRounded,
-  ArrowRightAltRounded,
   ArrowRightOutlined,
 } from '@material-ui/icons';
 
@@ -80,36 +79,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// const mockData = [
-//   {
-//     label: 'Plant flowerbed',
-//     value: 1,
-//     proposed: true,
-//   },
-//   {
-//     label: 'Build a fence',
-//     value: 2,
-//   },
-//   {
-//     label: 'Install a shed',
-//     value: 3,
-//     proposed: true,
-//   },
-//   {
-//     label: 'Grow some flowers',
-//     value: 4,
-//   },
-//   {
-//     label: 'Lay a track',
-//     value: 5,
-//   },
-//   {
-//     label: 'Install telegraph pole',
-//     value: 6,
-//     proposed: true,
-//   },
-// ];
-
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
   console.log('SHUTTLE: data is', data);
   const styles = useStyles();
@@ -118,12 +87,8 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
-
-  // array of functions used to filter left hand panel. Each function
-  // takes an object and returns a binary for whether to show item
-  // all must be true for item to be shown
-  //const [filterFunctions, setFilterFunctions] = useState([item => item]);
-  const [filterFunctions, setFilterFunctions] = useState([item => item]);
+  const [searchString, setSearchString] = useState([]);
+  const [onlyProposals, setOnlyProposals] = useState(false);
 
   useEffect(() => {
     console.clear();
@@ -132,29 +97,34 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     console.log('Right Selected: ', right);
     console.log('Left Selected: ', leftSelected);
     console.log('Right Selected: ', rightSelected);
+    console.log('searchString', searchString);
   });
 
   const getFilteredLeft = () => {
+    let filterList = [];
+
+    // regex filter
+    if (searchString) {
+      filterList.push(item => {
+        const finder = new RegExp(`.*${searchString}.*`, 'i');
+        return item.label.match(finder);
+      });
+    }
+    // proposals filter?
+    if (onlyProposals) {
+      filterList.push(item => item.proposed);
+    }
+
     // get filtered list by applying filter functions
     return left.filter(item => {
-      let votes = filterFunctions.map(filterFunc => filterFunc(item));
+      let votes = filterList.map(filterFunc => filterFunc(item));
       return votes.every(item => item);
     });
   };
 
-  const clearFilters = () => {
-    // clear all filters
-    setFilterFunctions([item => item]);
-  };
-
   const handleSearch = searchtext => {
     // typing in search box
-    setFilterFunctions([
-      item => {
-        const finder = new RegExp(`.*${searchtext}.*`, 'i');
-        return item.label.match(finder);
-      },
-    ]);
+    setSearchString(searchtext);
   };
 
   const selectItemOnLeft = object => {
@@ -176,13 +146,14 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   };
 
   const clearSelections = () => {
-    // need to clear selections after any movement between lists
+    // called after any shuttling between lists
     setLeftSelected([]);
     setRightSelected([]);
+    setSearchString(['']);
   };
 
   const chooseAll = () => {
-    // move all items visible in left list to right (filters applie),
+    // move all items visible in left list to right (filters applied),
     // irrespective of selection
     const filteredLeft = getFilteredLeft();
     setLeftSelected([]);
@@ -190,14 +161,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     setRightSelected([]);
     setLeft(left.filter(item => !filteredLeft.includes(item)));
     clearSelections();
-    clearFilters();
   };
 
   const removeAll = () => {
     // move all items visible in right list to right,
     // irrespective of selection
     // TODO: make sure this excludes userdefined options
-    console.log('Clicked remove all');
     setLeft([...left, ...right]);
     setRight([]);
     clearSelections();
@@ -215,7 +184,6 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     // user clicks remove all, move all selected from right list
     // and back to left list
     // TODO: filter out those with userDefined flag
-    console.log('Clicked remove All');
     setLeft([...left, ...rightSelected.map(item => item)]);
     setRight(right.filter(item => !rightSelected.includes(item)));
     clearSelections();
@@ -247,7 +215,11 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <Grid xs={12}>
               <FormGroup className={styles.nudge}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={
+                    <Checkbox
+                      onChange={() => setOnlyProposals(!onlyProposals)}
+                    />
+                  }
                   label={
                     <Typography className={styles.highlightText}>
                       Proposed Activities
@@ -275,7 +247,8 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={[styles.nudge]}
+                className={styles.nudge}
+                value={searchString}
                 onChange={e => handleSearch(e.target.value)}
                 focused
               />
@@ -337,9 +310,9 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                 placeholder="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
-                  classes: { input: [styles.placeholder] },
+                  classes: { input: styles.placeholder },
                 }}
-                className={[styles.nudge]}
+                className={styles.nudge}
                 focused
               />
             </Grid>

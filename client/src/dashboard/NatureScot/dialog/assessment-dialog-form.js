@@ -110,11 +110,17 @@ const AssessmentDialogForm = ({ onSubmit }) => {
 
   const handleFilterActivities = filter => {
     console.log('FILTER: ', filter);
+
     const filteredActivities = activities.filter(activity =>
       activity.label.includes(filter),
     );
-
+    console.log('FILTERED:', filteredActivities);
     setFilteredActivities(filteredActivities);
+  };
+
+  const getRandomSelectionOfActivities = () => {
+    // TODO: placeholder, temp filter to retrieve 15% of rows
+    return activities.filter(activity => activity && Math.random() > 0.85);
   };
 
   const handleDateRangeSelection = range => {
@@ -146,7 +152,7 @@ const AssessmentDialogForm = ({ onSubmit }) => {
         <Form.Row>
           <FieldWrapper title="Select activities">
             <AssessmentsShuttle
-              data={ACTIVITIES}
+              data={getRandomSelectionOfActivities()}
               selectedActivity={'Some activity'}
             />
           </FieldWrapper>

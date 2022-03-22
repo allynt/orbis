@@ -15,12 +15,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**
- *
- * @param {*} activityList - list of activities
- * @param {string} name - string to identify this list for unique keys
- * @returns {React.ReactNode}
- */
 const ActivityList = ({ activityList, name, onSelect }) => {
   const styles = useStyles();
 
