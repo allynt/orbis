@@ -113,7 +113,7 @@ const TotalHousingMultiChart = ({
           <BaseChart
             width={width}
             yLabel="Housing Delivery in Units"
-            xLabel="Year"
+            xLabel="Financial Year"
             financialYear
           >
             {TotalHousingGroupChart({ width })}

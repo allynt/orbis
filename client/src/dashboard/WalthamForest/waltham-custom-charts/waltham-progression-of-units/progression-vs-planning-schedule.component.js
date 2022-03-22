@@ -137,7 +137,7 @@ const ProgressionVsPlanningSchedule = ({
   return (
     <ChartWrapper
       title="Progression of Units Relating to Planning Schedule"
-      info="This is a test description"
+      info="This graph uses PLD (Planning London Data Hub) data augmented with mock data to demonstrate how housing delivery progress information could be presented."
     >
       <StyledParentSize>
         {({ width }) => (
