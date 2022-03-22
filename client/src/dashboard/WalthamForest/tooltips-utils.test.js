@@ -1,7 +1,7 @@
 import {
   labelsForArrayOfObjects,
   labelsForArrayOfObjectsInclusive,
-  getStackTotals,
+  getStackDatumTotal,
 } from './tooltips-utils';
 
 const MOCK_DATA = [
@@ -54,7 +54,7 @@ describe('Tooltip Utilities', () => {
     });
   });
 
-  describe.only('getStackTotals', () => {
+  describe.only('getStackDatumTotal', () => {
     const testData = {
       key1: 100,
       key2: 200,
@@ -62,18 +62,18 @@ describe('Tooltip Utilities', () => {
     };
     it('totals data values', () => {
       const ranges = ['key1', 'key2'];
-      const result = getStackTotals(testData, ranges, ranges.length);
+      const result = getStackDatumTotal(testData, ranges, ranges.length);
       expect(result).toEqual('Total: 300');
     });
 
     it('shows no `Total: ` message when only one range present', () => {
       const ranges = ['key2'];
-      const result = getStackTotals(testData, ranges, ranges.length);
+      const result = getStackDatumTotal(testData, ranges, ranges.length);
       expect(result).toEqual('200');
     });
 
     it('returns undefined if no data present', () => {
-      const result = getStackTotals(undefined, [], 0);
+      const result = getStackDatumTotal(undefined, [], 0);
       expect(result).toBeUndefined();
     });
   });

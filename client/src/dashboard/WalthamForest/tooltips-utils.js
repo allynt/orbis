@@ -62,7 +62,7 @@ const labelsForArrayOfObjectsInclusive = (
  * @param {number} length
  * @returns {string}
  */
-const getStackTotals = (datum, whitelist, length) => {
+const getStackDatumTotal = (datum, whitelist, length) => {
   if (!datum) return;
 
   const filteredKeys = Object.keys(datum).filter(key =>
@@ -77,5 +77,5 @@ const getStackTotals = (datum, whitelist, length) => {
 export {
   labelsForArrayOfObjects,
   labelsForArrayOfObjectsInclusive,
-  getStackTotals,
+  getStackDatumTotal,
 };

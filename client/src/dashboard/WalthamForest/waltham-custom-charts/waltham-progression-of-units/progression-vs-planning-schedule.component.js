@@ -9,7 +9,7 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
-import { getStackTotals } from 'dashboard/WalthamForest/tooltips-utils';
+import { getStackDatumTotal } from 'dashboard/WalthamForest/tooltips-utils';
 import { filterByType } from 'dashboard/WalthamForest/utils';
 import { useWalthamSelectStyles } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
@@ -119,7 +119,7 @@ const ProgressionVsPlanningSchedule = ({
             x={x}
             y={range}
             labels={({ datum }) =>
-              getStackTotals(datum, progressVsPlanningRanges, ranges.length)
+              getStackDatumTotal(datum, progressVsPlanningRanges, ranges.length)
             }
             style={{
               data: {
