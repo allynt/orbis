@@ -309,6 +309,11 @@ describe('Waltham Forest Data Transformers', () => {
       expect(result).toEqual(expected);
     });
 
+    it('returns undefined if data is empty object', () => {
+      const result = getUser5YearTotals({});
+      expect(result).toBeUndefined();
+    });
+
     it('returns undefined if data is not present', () => {
       const result = getUser5YearTotals(undefined);
       expect(result).toBeUndefined();

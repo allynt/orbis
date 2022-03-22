@@ -110,7 +110,7 @@ const getPastYears = (years = 5) => {
  * @param {object} obj
  */
 const getUser5YearTotals = obj => {
-  if (!obj) return;
+  if (!obj || !Object.keys(obj).length) return;
 
   return LAST_5_YEARS.reduce(
     (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),
