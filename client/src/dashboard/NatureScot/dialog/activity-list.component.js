@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemText,
   Box,
+  Button,
 } from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
@@ -15,13 +16,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ActivityList = ({ activityList, name, onSelect }) => {
+const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
   const styles = useStyles();
+  console.log('onDelete function=>', onDelete);
+
+  // notify parent via callback
 
   const onItemSelection = item => {
-    // notify parent via callback
     if (onSelect) {
       onSelect(item);
+    }
+  };
+
+  const onItemDelete = activity => {
+    console.log('onItemDelete', activity);
+    if (onDelete) {
+      onDelete(activity);
     }
   };
 
@@ -38,24 +48,37 @@ const ActivityList = ({ activityList, name, onSelect }) => {
         component="div"
         role="list"
       >
-        {activityList.map(value => {
-          const labelId = `${name}-${value}-label`;
+        {activityList.map(activity => {
+          const labelId = `${name}-${activity}-label`;
           return (
             <ListItem
-              key={value.label}
+              key={activity.label}
               role="listitem"
               button
-              onClick={() => onItemSelection(value)}
+              onClick={() => onItemSelection(activity)}
             >
               <ListItemText
                 id={labelId}
-                primary={value.label}
+                primary={activity.label}
                 primaryTypographyProps={{
                   style: {
-                    fontWeight: value.proposed ? 'bold' : 'normal',
+                    fontWeight: activity.proposed ? 'bold' : 'normal',
                   },
                 }}
               />
+              {activity.userdefined ? (
+                <Button
+                  onClick={() => onItemDelete(activity)}
+                  component="a"
+                  disableRipple
+                  //href="#simple-list"
+                >
+                  <ListItemText
+                    primary="Delete"
+                    primaryTypographyProps={{ style: { color: '#f00' } }}
+                  />
+                </Button>
+              ) : null}
             </ListItem>
           );
         })}

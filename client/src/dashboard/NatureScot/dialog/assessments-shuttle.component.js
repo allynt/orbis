@@ -21,6 +21,9 @@ import {
   ArrowLeftRounded,
   ArrowRightOutlined,
 } from '@material-ui/icons';
+import { act } from 'react-dom/test-utils';
+
+import { Form } from 'components';
 
 import ActivityList from './activity-list.component';
 
@@ -80,7 +83,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
-  console.log('SHUTTLE: data is', data);
   const styles = useStyles();
 
   const [left, setLeft] = useState(data);
@@ -88,6 +90,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
   const [searchString, setSearchString] = useState([]);
+  const [newActivityText, setNewActivityText] = useState('');
   const [onlyProposals, setOnlyProposals] = useState(false);
 
   useEffect(() => {
@@ -98,6 +101,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     console.log('Left Selected: ', leftSelected);
     console.log('Right Selected: ', rightSelected);
     console.log('searchString', searchString);
+    console.log('newActivityText', newActivityText);
   });
 
   const getFilteredLeft = () => {
@@ -167,8 +171,10 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     // move all items visible in right list to right,
     // irrespective of selection
     // TODO: make sure this excludes userdefined options
-    setLeft([...left, ...right]);
-    setRight([]);
+    const rightToMove = right.filter(item => !item.userdefined);
+    setLeft([...left, ...rightToMove]);
+    setRightSelected([]);
+    setRight(right.filter(item => item.userdefined));
     clearSelections();
   };
 
@@ -184,9 +190,28 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     // user clicks remove all, move all selected from right list
     // and back to left list
     // TODO: filter out those with userDefined flag
-    setLeft([...left, ...rightSelected.map(item => item)]);
-    setRight(right.filter(item => !rightSelected.includes(item)));
+    setLeft([...left, ...rightSelected.map(item => item && !item.userdefined)]);
+    setRight(
+      right.filter(item => !rightSelected.includes(item) || item.userdefined),
+    );
     clearSelections();
+  };
+
+  const addActivity = () => {
+    const newActivity = {
+      value: 100, // TODO: need to think about this. Not used for now, label more important
+      label: newActivityText,
+      proposed: false,
+      userdefined: true,
+    };
+    setRight([...right, newActivity]);
+    setNewActivityText(['']);
+  };
+
+  const deleteActivity = activity => {
+    setRight(
+      right.filter(eachActivity => eachActivity.label !== activity.label),
+    );
   };
 
   return (
@@ -257,7 +282,6 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList
               name="proposed_activities"
               activityList={getFilteredLeft()}
-              // filters={filterFunctions}
               onSelect={selectItemOnLeft}
             />
           </Card>
@@ -286,6 +310,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             </Grid>
           </Card>
         </Grid>
+
         {/* right list (selected activities) */}
         <Grid xs={5}>
           <Card>
@@ -302,17 +327,19 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
               wrap="nowrap"
               className={styles.nudge2}
             >
-              <AddCircle fontSize="small" />
+              <AddCircle onClick={addActivity} fontSize="small" />
               <TextField
                 id="search"
                 name="search"
                 margin="normal"
+                value={newActivityText}
                 placeholder="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
                 className={styles.nudge}
+                onChange={e => setNewActivityText(e.target.value)}
                 focused
               />
             </Grid>
@@ -321,6 +348,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
               name="selected_activities"
               activityList={right}
               onSelect={selectItemOnRight}
+              onDelete={deleteActivity}
             />
           </Card>
         </Grid>
