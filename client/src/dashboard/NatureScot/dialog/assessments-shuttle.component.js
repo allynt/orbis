@@ -80,40 +80,41 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mockData = [
-  {
-    label: 'Plant flowerbed',
-    value: 1,
-    proposed: true,
-  },
-  {
-    label: 'Build a fence',
-    value: 2,
-  },
-  {
-    label: 'Install a shed',
-    value: 3,
-    proposed: true,
-  },
-  {
-    label: 'Grow some flowers',
-    value: 4,
-  },
-  {
-    label: 'Lay a track',
-    value: 5,
-  },
-  {
-    label: 'Install telegraph pole',
-    value: 6,
-    proposed: true,
-  },
-];
+// const mockData = [
+//   {
+//     label: 'Plant flowerbed',
+//     value: 1,
+//     proposed: true,
+//   },
+//   {
+//     label: 'Build a fence',
+//     value: 2,
+//   },
+//   {
+//     label: 'Install a shed',
+//     value: 3,
+//     proposed: true,
+//   },
+//   {
+//     label: 'Grow some flowers',
+//     value: 4,
+//   },
+//   {
+//     label: 'Lay a track',
+//     value: 5,
+//   },
+//   {
+//     label: 'Install telegraph pole',
+//     value: 6,
+//     proposed: true,
+//   },
+// ];
 
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
+  console.log('SHUTTLE: data is', data);
   const styles = useStyles();
 
-  const [left, setLeft] = useState(mockData);
+  const [left, setLeft] = useState(data);
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);

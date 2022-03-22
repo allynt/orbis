@@ -11,6 +11,7 @@ import {
 const useStyles = makeStyles(theme => ({
   List: {
     height: '512px',
+    overflow: 'scroll',
   },
 }));
 
@@ -31,7 +32,7 @@ const ActivityList = ({ activityList, name, onSelect }) => {
   };
 
   return (
-    <Box sx={{ height: '300px' }}>
+    <Box sx={{ height: '300px', overflow: 'auto' }}>
       <List
         sx={{
           width: '300px',
