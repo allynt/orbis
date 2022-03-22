@@ -18,10 +18,9 @@ const useStyles = makeStyles(theme => ({
  *
  * @param {*} activityList - list of activities
  * @param {string} name - string to identify this list for unique keys
- * @param {function(object):boolean =} filter -  optional filter function to veto each object
- * @returns {JSX}
+ * @returns {React.ReactNode}
  */
-const ActivityList = ({ activityList, name, filter, onSelect }) => {
+const ActivityList = ({ activityList, name, onSelect }) => {
   const styles = useStyles();
 
   const onItemSelection = item => {
@@ -58,7 +57,7 @@ const ActivityList = ({ activityList, name, filter, onSelect }) => {
                 primary={value.label}
                 primaryTypographyProps={{
                   style: {
-                    fontWeight: value.highlight ? 'bold' : 'normal',
+                    fontWeight: value.proposed ? 'bold' : 'normal',
                   },
                 }}
               />

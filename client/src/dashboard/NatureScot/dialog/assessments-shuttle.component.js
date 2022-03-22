@@ -84,7 +84,7 @@ const mockData = [
   {
     label: 'Plant flowerbed',
     value: 1,
-    highlight: true,
+    proposed: true,
   },
   {
     label: 'Build a fence',
@@ -93,7 +93,7 @@ const mockData = [
   {
     label: 'Install a shed',
     value: 3,
-    highlight: true,
+    proposed: true,
   },
   {
     label: 'Grow some flowers',
@@ -106,23 +106,55 @@ const mockData = [
   {
     label: 'Install telegraph pole',
     value: 6,
+    proposed: true,
   },
 ];
 
 const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const styles = useStyles();
+
   const [left, setLeft] = useState(mockData);
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
 
+  // array of functions used to filter left hand panel. Each function
+  // takes an object and returns a binary for whether to show item
+  // all must be true for item to be shown
+  //const [filterFunctions, setFilterFunctions] = useState([item => item]);
+  const [filterFunctions, setFilterFunctions] = useState([item => item]);
+
   useEffect(() => {
     console.clear();
     console.log('Left:', left);
+    console.log('Filtered left', getFilteredLeft());
     console.log('Right Selected: ', right);
     console.log('Left Selected: ', leftSelected);
     console.log('Right Selected: ', rightSelected);
   });
+
+  const getFilteredLeft = () => {
+    // get filtered list by applying filter functions
+    return left.filter(item => {
+      let votes = filterFunctions.map(filterFunc => filterFunc(item));
+      return votes.every(item => item);
+    });
+  };
+
+  const clearFilters = () => {
+    // clear all filters
+    setFilterFunctions([item => item]);
+  };
+
+  const handleSearch = searchtext => {
+    // typing in search box
+    setFilterFunctions([
+      item => {
+        const finder = new RegExp(`.*${searchtext}.*`, 'i');
+        return item.label.match(finder);
+      },
+    ]);
+  };
 
   const selectItemOnLeft = object => {
     if (!leftSelected.find(item => item.label === object.label)) {
@@ -149,14 +181,15 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   };
 
   const chooseAll = () => {
-    // move all items visible in left list to right,
+    // move all items visible in left list to right (filters applie),
     // irrespective of selection
-    // TODO: make sure this honours filters applied
-    console.log('Clicked choose all');
+    const filteredLeft = getFilteredLeft();
     setLeftSelected([]);
-    setRight([...right, ...left]);
-    setLeft([]);
+    setRight([...right, ...filteredLeft]);
+    setRightSelected([]);
+    setLeft(left.filter(item => !filteredLeft.includes(item)));
     clearSelections();
+    clearFilters();
   };
 
   const removeAll = () => {
@@ -242,13 +275,15 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                   classes: { input: styles.placeholder },
                 }}
                 className={[styles.nudge]}
+                onChange={e => handleSearch(e.target.value)}
                 focused
               />
             </Grid>
             <Divider />
             <ActivityList
               name="proposed_activities"
-              activityList={left}
+              activityList={getFilteredLeft()}
+              // filters={filterFunctions}
               onSelect={selectItemOnLeft}
             />
           </Card>
