@@ -9,7 +9,7 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
-import { labelsForArrayOfObjectsInclusive } from 'dashboard/WalthamForest/tooltips-utils';
+import { getStackTotals } from 'dashboard/WalthamForest/tooltips-utils';
 import { filterByType } from 'dashboard/WalthamForest/utils';
 import { useWalthamSelectStyles } from 'dashboard/WalthamForest/waltham-custom-date-range/waltham-custom-date-range.component';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
@@ -30,6 +30,8 @@ const ProgressionVsPlanningSchedule = ({
   const [configuration, setConfiguration] = useState(
     settings?.affordableHousingType ?? ALL_TYPES,
   );
+
+  const progressVsPlanningRanges = Object.values(progressionVsPlanningOptions);
 
   // The theme has a hard-coded value for stacked charts, but we want the
   // colours to be a different set. Therefore, I'm taking the theme and
@@ -96,15 +98,10 @@ const ProgressionVsPlanningSchedule = ({
 
     const ranges =
       configuration === ALL_TYPES
-        ? Object.values(progressionVsPlanningOptions)
+        ? progressVsPlanningRanges
         : [progressionVsPlanningOptions[configuration]];
 
     const x = 'Year';
-    const totalsArray = labelsForArrayOfObjectsInclusive(
-      data,
-      ranges,
-      ranges.length > 1 ? item => `Total: ${item}` : item => `${item}`,
-    );
 
     return !!data ? (
       <VictoryStack>
@@ -121,7 +118,9 @@ const ProgressionVsPlanningSchedule = ({
             )}
             x={x}
             y={range}
-            labels={totalsArray}
+            labels={({ datum }) =>
+              getStackTotals(datum, progressVsPlanningRanges, ranges.length)
+            }
             style={{
               data: {
                 width: barWidth,

@@ -14,6 +14,7 @@ import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
+import { getStackTotals } from 'dashboard/WalthamForest/tooltips-utils';
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import {
   TARGET_LEGEND_DATA,
@@ -47,6 +48,8 @@ const TenureHousingMultiChart = ({
 
   const { transformedData, transformedTargets } = transformerOutput;
 
+  const housingTenureRanges = Object.values(housingTenureTypes);
+
   const apiLegendData = Object.entries(housingTenureTypes).map(
     ([key, value]) => ({
       name: value,
@@ -59,7 +62,7 @@ const TenureHousingMultiChart = ({
 
     const ranges = !!tenureType
       ? [housingTenureTypes[tenureType]]
-      : Object.values(housingTenureTypes);
+      : housingTenureRanges;
 
     const colorScale = !!tenureType
       ? [tenureStackColors[tenureType]]
@@ -73,7 +76,9 @@ const TenureHousingMultiChart = ({
             data={transformedData}
             x="startYear"
             y={range}
-            labels={({ datum }) => datum._y1}
+            labels={({ datum }) =>
+              getStackTotals(datum, housingTenureRanges, ranges.length)
+            }
             labelComponent={FlyoutTooltip()}
             style={{
               data: { width: barWidth },

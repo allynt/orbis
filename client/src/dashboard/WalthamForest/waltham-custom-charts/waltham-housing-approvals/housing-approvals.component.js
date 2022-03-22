@@ -107,7 +107,7 @@ const HousingApprovalsComponent = ({
               {...props}
               style={{ data: { stroke: color } }}
               labelComponent={FlyoutTooltip()}
-              labels={({ datum }) => `Total: ${datum._y}`}
+              labels={({ datum }) => `${datum._y}`}
             />
           );
         })}

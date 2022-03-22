@@ -62,7 +62,7 @@ const TotalHousingMultiChart = ({
             // eslint-disable-next-line react/no-array-index-key
             key={`dataset-${i}`}
             data={arr}
-            labels={({ datum }) => `Total: ${datum.y}`}
+            labels={({ datum }) => `${datum.y}`}
             labelComponent={FlyoutTooltip()}
             style={{
               data: {

@@ -244,7 +244,7 @@ export const WalthamHousingDelivery = ({
       </Grid>
 
       <Grid item className={styles.charts}>
-        {/* <ChartWrapper
+        <ChartWrapper
           title="Total Housing Delivery"
           info="Total housing delivery values per financial year. The data source is the PLD (Planning London Data Hub)."
         >
@@ -258,7 +258,7 @@ export const WalthamHousingDelivery = ({
             userTargetData={targets?.totalHousing}
             filteredTimeline={getFilteredTimeline(totalTimeline, totalYear)}
           />
-        </ChartWrapper> */}
+        </ChartWrapper>
 
         <ChartWrapper
           title="Housing Delivery by Tenure Type"

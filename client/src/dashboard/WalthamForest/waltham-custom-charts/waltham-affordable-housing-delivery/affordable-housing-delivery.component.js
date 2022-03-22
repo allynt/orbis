@@ -17,8 +17,6 @@ import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-d
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
-import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
-
 /**
  * @param {object[]} data
  * @param {number} year
@@ -107,12 +105,6 @@ const AffordableHousingDelivery = ({
 
     if (!filteredData) return null;
 
-    const totalsArray = labelsForArrayOfObjectsInclusive(
-      filteredData,
-      ['Affordable Housing'],
-      item => `${item}%`,
-    );
-
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
@@ -129,7 +121,7 @@ const AffordableHousingDelivery = ({
         <VictoryScatter
           labelComponent={FlyoutTooltip()}
           {...props}
-          labels={totalsArray}
+          labels={({ datum }) => `${datum._y}`}
           style={yellowStyle}
         />
       </VictoryGroup>
