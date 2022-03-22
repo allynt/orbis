@@ -52,4 +52,30 @@ const labelsForArrayOfObjectsInclusive = (
   });
 };
 
-export { labelsForArrayOfObjects, labelsForArrayOfObjectsInclusive };
+/**
+ * Calculates the totals of a stack chart's datum, excluding all properties
+ * except those specified, and returning a varied string depending on whether
+ * there is one or multiple properties.
+ *
+ * @param {object} datum
+ * @param {string[]} whitelist
+ * @param {number} length
+ * @returns {string}
+ */
+const getStackTotals = (datum, whitelist, length) => {
+  if (!datum) return;
+
+  const filteredKeys = Object.keys(datum).filter(key =>
+    whitelist.includes(key),
+  );
+
+  const total = filteredKeys.reduce((acc, cur) => (acc += datum[cur]), 0);
+
+  return `${length > 1 ? 'Total: ' : ''}${total}`;
+};
+
+export {
+  labelsForArrayOfObjects,
+  labelsForArrayOfObjectsInclusive,
+  getStackTotals,
+};

@@ -1,6 +1,7 @@
 import {
   labelsForArrayOfObjects,
   labelsForArrayOfObjectsInclusive,
+  getStackTotals,
 } from './tooltips-utils';
 
 const MOCK_DATA = [
@@ -50,6 +51,30 @@ describe('Tooltip Utilities', () => {
     it('returns empty array if no data passed', () => {
       const result = labelsForArrayOfObjectsInclusive(undefined, ['Year']);
       expect(result).toEqual([]);
+    });
+  });
+
+  describe.only('getStackTotals', () => {
+    const testData = {
+      key1: 100,
+      key2: 200,
+      key3: 'Non-related value',
+    };
+    it('totals data values', () => {
+      const ranges = ['key1', 'key2'];
+      const result = getStackTotals(testData, ranges, ranges.length);
+      expect(result).toEqual('Total: 300');
+    });
+
+    it('shows no `Total: ` message when only one range present', () => {
+      const ranges = ['key2'];
+      const result = getStackTotals(testData, ranges, ranges.length);
+      expect(result).toEqual('200');
+    });
+
+    it('returns undefined if no data present', () => {
+      const result = getStackTotals(undefined, [], 0);
+      expect(result).toBeUndefined();
     });
   });
 });
