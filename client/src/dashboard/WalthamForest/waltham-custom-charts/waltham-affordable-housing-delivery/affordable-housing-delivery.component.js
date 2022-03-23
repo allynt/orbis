@@ -175,7 +175,9 @@ const AffordableHousingDelivery = ({
               style={{ height: '12rem' }}
             >
               <Typography variant="h4">
-                Please enter affordable housing delivery targets
+                {!!Object.keys(targets ?? {}).length
+                  ? 'No matching data for provided targets.'
+                  : 'Please enter affordable housing delivery targets.'}
               </Typography>
             </Grid>
           ) : (
