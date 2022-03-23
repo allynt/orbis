@@ -84,26 +84,33 @@ const useStyles = makeStyles(theme => ({
     width: '2rem',
     height: '2rem',
     color: '#333f48',
-    margin: '0.5rem',
-  },
-  cartouche: {
-    backgroundColor: '#5d666e',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: '30px',
+    margin: '0rem 0.5rem',
+    padding: '0.1rem',
   },
   cartouchetop: {
     width: '3rem',
     backgroundColor: '#5d666e',
     borderTopLeftRadius: '50px',
-    borderTopRightRadius: '50%',
+    borderTopRightRadius: '50px',
+    position: 'relative',
+    top: '0px',
   },
   cartouchebottom: {
     width: '3rem',
     backgroundColor: '#5d666e',
-    borderBottomLeftRadius: '50%',
-    borderBottomRightRadius: '50%',
+    borderBottomLeftRadius: '50px',
+    borderBottomRightRadius: '50px',
+    position: 'relative',
+    bottom: '9px',
+  },
+  cartoucheline: {
+    border: '2px solid yellow',
+    backgroundColor: '#f00',
+  },
+  cartouchebox: {
+    height: '2.6rem',
+    backgroundColor: '#5d666e',
+    zIndex: 9999,
   },
   chooseallbutton: {
     marginTop: '1em',
@@ -132,14 +139,14 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [onlyProposals, setOnlyProposals] = useState(false);
 
   useEffect(() => {
-    console.clear();
-    console.log('Left:', left);
-    console.log('Filtered left', getFilteredLeft());
-    console.log('Right Selected: ', right);
-    console.log('Left Selected: ', leftSelected);
-    console.log('Right Selected: ', rightSelected);
-    console.log('searchString', searchString);
-    console.log('newActivityText', newActivityText);
+    // console.clear();
+    // console.log('Left:', left);
+    // console.log('Filtered left', getFilteredLeft());
+    // console.log('Right Selected: ', right);
+    // console.log('Left Selected: ', leftSelected);
+    // console.log('Right Selected: ', rightSelected);
+    // console.log('searchString', searchString);
+    // console.log('newActivityText', newActivityText);
   });
 
   const getFilteredLeft = () => {
@@ -238,6 +245,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   };
 
   const addActivity = () => {
+    if (
+      !newActivityText ||
+      newActivityText.length === 0 ||
+      newActivityText === ''
+    )
+      return;
     const newActivity = {
       value: 100, // TODO: need to think about this. Not used for now, label more important
       label: newActivityText,
@@ -245,7 +258,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
       userdefined: true,
     };
     setRight([...right, newActivity]);
-    setNewActivityText(['']);
+    setNewActivityText('');
   };
 
   const deleteActivity = activity => {
@@ -334,19 +347,18 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           wrap="nowrap"
           xs={2}
         >
-          <Card>
+          <div className="{styles.cartoucheline}">
             <Grid xs={12} className={styles.cartouchetop}>
               &nbsp;
             </Grid>
-            <Grid xs={12} className={styles.cartouche}>
+            <Grid xs={12} className={styles.cartouchebox}>
               <ArrowForward
                 className={styles.roundel}
                 onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
-            <Divider />
-            <Grid xs={12} className={styles.cartouche}>
+            <Grid xs={12} className={styles.cartouchebox}>
               <ArrowBack
                 className={styles.roundel}
                 onClick={() => removeSelected()}
@@ -356,7 +368,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <Grid xs={12} className={styles.cartouchebottom}>
               &nbsp;
             </Grid>
-          </Card>
+          </div>
         </Grid>
 
         {/* right list (selected activities) */}
