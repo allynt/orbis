@@ -119,7 +119,7 @@ const AffordableHousingDelivery = ({
 
   // setup/error catch for affordable housing chart
   useEffect(() => {
-    if (!timeline || timeline.includes(affordableHousingTotalYear)) {
+    if (!timeline?.length || timeline.includes(affordableHousingTotalYear)) {
       return;
     } else {
       updateDateFilter({

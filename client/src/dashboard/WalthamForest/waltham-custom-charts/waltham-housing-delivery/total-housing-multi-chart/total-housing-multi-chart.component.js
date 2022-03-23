@@ -2,13 +2,7 @@ import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import {
-  VictoryGroup,
-  VictoryBar,
-  VictoryLine,
-  VictoryScatter,
-  VictoryTooltip,
-} from 'victory';
+import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
