@@ -30,6 +30,37 @@ const getFilteredData = (data, year) => {
 };
 
 /**
+ * Non-matching pairs in API data/targets cannot be computed into
+ * percentage values, so is guaranteed to result in empty columns so
+ * filtering any lone values out is required.
+ *
+ * @param {object[]} data
+ * @param {object} targets
+ * @returns {{ pairedData: object[], pairedTargets: object }}
+ */
+export const getPairedValues = (data, targets) => {
+  if (!data || !targets) return;
+
+  return data.reduce(
+    (acc, cur) => {
+      const currentYear = cur.startYear;
+      if (!cur['Affordable Housing'] || !targets[currentYear]) {
+        return acc;
+      } else {
+        return {
+          pairedData: [...acc.pairedData, cur],
+          pairedTargets: {
+            ...acc.pairedTargets,
+            [currentYear]: targets[currentYear],
+          },
+        };
+      }
+    },
+    { pairedData: [], pairedTargets: {} },
+  );
+};
+
+/**
  * @param {{
  *  data: object[]
  *  targets: object
@@ -58,8 +89,9 @@ const AffordableHousingDelivery = ({
       color: walthamChartColors.affordableHousingDelivery[0],
     },
   ];
+  const { pairedData, pairedTargets } = getPairedValues(data, targets) ?? {};
 
-  const timeline = getDataTimeline(data, targets);
+  const timeline = getDataTimeline(pairedData, pairedTargets);
 
   const percentageData = computePercentages(
     timeline,
@@ -121,7 +153,7 @@ const AffordableHousingDelivery = ({
         <VictoryScatter
           labelComponent={FlyoutTooltip()}
           {...props}
-          labels={({ datum }) => `${datum._y}`}
+          labels={({ datum }) => `${datum._y}%`}
           style={yellowStyle}
         />
       </VictoryGroup>

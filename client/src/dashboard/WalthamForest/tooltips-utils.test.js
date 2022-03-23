@@ -62,18 +62,18 @@ describe('Tooltip Utilities', () => {
     };
     it('totals data values', () => {
       const ranges = ['key1', 'key2'];
-      const result = getStackDatumTotal(testData, ranges, ranges.length);
+      const result = getStackDatumTotal(testData, ranges);
       expect(result).toEqual('Total: 300');
     });
 
     it('shows no `Total: ` message when only one range present', () => {
       const ranges = ['key2'];
-      const result = getStackDatumTotal(testData, ranges, ranges.length);
+      const result = getStackDatumTotal(testData, ranges);
       expect(result).toEqual('200');
     });
 
     it('returns undefined if no data present', () => {
-      const result = getStackDatumTotal(undefined, [], 0);
+      const result = getStackDatumTotal(undefined, []);
       expect(result).toBeUndefined();
     });
   });

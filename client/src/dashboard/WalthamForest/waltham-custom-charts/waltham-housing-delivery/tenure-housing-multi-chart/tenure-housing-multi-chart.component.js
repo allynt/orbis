@@ -76,9 +76,7 @@ const TenureHousingMultiChart = ({
             data={transformedData}
             x="startYear"
             y={range}
-            labels={({ datum }) =>
-              getStackDatumTotal(datum, housingTenureRanges, ranges.length)
-            }
+            labels={({ datum }) => getStackDatumTotal(datum, ranges)}
             labelComponent={FlyoutTooltip()}
             style={{
               data: { width: barWidth },

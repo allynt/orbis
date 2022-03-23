@@ -118,9 +118,7 @@ const ProgressionVsPlanningSchedule = ({
             )}
             x={x}
             y={range}
-            labels={({ datum }) =>
-              getStackDatumTotal(datum, progressVsPlanningRanges, ranges.length)
-            }
+            labels={({ datum }) => getStackDatumTotal(datum, ranges)}
             style={{
               data: {
                 width: barWidth,
