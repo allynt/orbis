@@ -6,8 +6,9 @@ import {
   ListItem,
   ListItemText,
   Box,
-  Button,
 } from '@astrosat/astrosat-ui';
+
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   List: {
@@ -24,6 +25,11 @@ const useStyles = makeStyles(theme => ({
     height: '300px',
     overflow: 'auto',
   },
+  deletebutton: {
+    backgroundColor: '#f0f',
+    width: '10%',
+    textDecoration: 'underline',
+  },
 }));
 
 const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
@@ -32,15 +38,11 @@ const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
   // notify parent via callback
 
   const onItemSelection = item => {
-    if (onSelect) {
-      onSelect(item);
-    }
+    onSelect(item);
   };
 
   const onItemDelete = activity => {
-    if (onDelete) {
-      onDelete(activity);
-    }
+    onDelete(activity);
   };
 
   return (
@@ -67,6 +69,7 @@ const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
               {activity.userdefined ? (
                 <Button
                   onClick={() => onItemDelete(activity)}
+                  xs={2}
                   component="a"
                   disableRipple
                 >

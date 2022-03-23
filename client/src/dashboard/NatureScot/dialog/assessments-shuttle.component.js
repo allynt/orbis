@@ -17,13 +17,11 @@ import {
 
 import {
   AddCircle,
+  ArrowBack,
+  ArrowForward,
   ArrowLeftOutlined,
-  ArrowLeftRounded,
   ArrowRightOutlined,
 } from '@material-ui/icons';
-import { act } from 'react-dom/test-utils';
-
-import { Form } from 'components';
 
 import ActivityList from './activity-list.component';
 
@@ -79,6 +77,46 @@ const useStyles = makeStyles(theme => ({
   },
   inputbox: {
     width: '80%',
+  },
+  roundel: {
+    borderRadius: '50%',
+    backgroundColor: '#f5f5f5',
+    width: '2rem',
+    height: '2rem',
+    color: '#333f48',
+    margin: '0.5rem',
+  },
+  cartouche: {
+    backgroundColor: '#5d666e',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: '30px',
+  },
+  cartouchetop: {
+    width: '3rem',
+    backgroundColor: '#5d666e',
+    borderTopLeftRadius: '50px',
+    borderTopRightRadius: '50%',
+  },
+  cartouchebottom: {
+    width: '3rem',
+    backgroundColor: '#5d666e',
+    borderBottomLeftRadius: '50%',
+    borderBottomRightRadius: '50%',
+  },
+  chooseallbutton: {
+    marginTop: '1em',
+    backgroundColor: '#333f48',
+    color: '#fff',
+  },
+  removeallbutton: {
+    marginTop: '1em',
+    backgroundColor: '#333f48',
+    color: '#fff',
+  },
+  maincartouche: {
+    borderRadius: '25px',
   },
 }));
 
@@ -297,18 +335,26 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           xs={2}
         >
           <Card>
-            <Grid xs={12}>
-              <ArrowRightOutlined
+            <Grid xs={12} className={styles.cartouchetop}>
+              &nbsp;
+            </Grid>
+            <Grid xs={12} className={styles.cartouche}>
+              <ArrowForward
+                className={styles.roundel}
                 onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
             <Divider />
-            <Grid xs={12}>
-              <ArrowLeftRounded
+            <Grid xs={12} className={styles.cartouche}>
+              <ArrowBack
+                className={styles.roundel}
                 onClick={() => removeSelected()}
-                fontSize="large"
+                fontSize="small"
               />
+            </Grid>
+            <Grid xs={12} className={styles.cartouchebottom}>
+              &nbsp;
             </Grid>
           </Card>
         </Grid>
@@ -361,12 +407,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           alignItems="center"
           justifyContent="center"
           xs={5}
-          style={{ marginTop: '1rem' }}
         >
           <Button
             secondary
             endIcon={<ArrowRightOutlined size="medium" />}
             onClick={() => chooseAll()}
+            className={styles.chooseallbutton}
             size="small"
           >
             Choose all
@@ -382,12 +428,12 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           alignItems="center"
           justifyContent="center"
           xs={5}
-          style={{ marginTop: '1rem' }}
         >
           <Button
             startIcon={<ArrowLeftOutlined size="medium" />}
             size="small"
             onClick={() => removeAll()}
+            className={styles.removeallbutton}
           >
             Remove all
           </Button>
