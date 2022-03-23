@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.default,
     borderRadius: '5px',
     width: '30ch',
-    height: 25,
+    height: '2rem',
     padding: '3px',
   },
   listtitle: {
@@ -187,13 +187,15 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   };
 
   const removeSelected = () => {
-    // user clicks remove all, move all selected from right list
-    // and back to left list
-    // TODO: filter out those with userDefined flag
-    setLeft([...left, ...rightSelected.map(item => item && !item.userdefined)]);
+    // move selected from right list to left list,
+    setLeft([
+      ...left,
+      ...rightSelected.filter(item => item && !item.userdefined),
+    ]);
     setRight(
       right.filter(item => !rightSelected.includes(item) || item.userdefined),
     );
+    setRightSelected([]);
     clearSelections();
   };
 

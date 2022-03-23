@@ -11,14 +11,23 @@ import {
 
 const useStyles = makeStyles(theme => ({
   List: {
-    height: '512px',
     overflow: 'scroll',
+    bgcolor: '#f00',
+  },
+  highlightedActivity: {
+    fontWeight: 'bold',
+  },
+  normalActivity: {
+    fontWeight: 'normal',
+  },
+  Box: {
+    height: '300px',
+    overflow: 'auto',
   },
 }));
 
 const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
   const styles = useStyles();
-  console.log('onDelete function=>', onDelete);
 
   // notify parent via callback
 
@@ -29,25 +38,14 @@ const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
   };
 
   const onItemDelete = activity => {
-    console.log('onItemDelete', activity);
     if (onDelete) {
       onDelete(activity);
     }
   };
 
   return (
-    <Box sx={{ height: '300px', overflow: 'auto' }}>
-      <List
-        sx={{
-          width: '300px',
-          //height: '512px', // TODO: find out how to stretch vertically if empty
-          bgcolor: '#f00',
-          overflow: 'auto',
-        }}
-        dense
-        component="div"
-        role="list"
-      >
+    <Box sx={{ height: '20rem', overflow: 'auto' }}>
+      <List dense component="ul" role="list">
         {activityList.map(activity => {
           const labelId = `${name}-${activity}-label`;
           return (
@@ -71,7 +69,6 @@ const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
                   onClick={() => onItemDelete(activity)}
                   component="a"
                   disableRipple
-                  //href="#simple-list"
                 >
                   <ListItemText
                     primary="Delete"
