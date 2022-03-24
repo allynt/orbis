@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'normal',
   },
   selectedActivity: {
-    backgroundColor: '#333f48',
+    backgroundColor: '#7c8990',
     '&:hover': {
-      backgroundColor: '#333f48',
+      backgroundColor: '#7c8990',
     },
   },
   unselectedActivity: {},
@@ -32,10 +32,6 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#f0f',
     width: '10%',
     textDecoration: 'underline',
-  },
-  box: {
-    height: '20rem',
-    overflow: 'auto',
   },
 }));
 
@@ -48,7 +44,7 @@ const ActivityList = ({
 }) => {
   const styles = useStyles();
 
-  // notify parent via callback
+  // notify parent via callbacks
 
   const onItemSelection = item => onSelect(item);
 
@@ -58,8 +54,7 @@ const ActivityList = ({
     selectedActivityList.find(item => item.label === activity.label);
 
   return (
-    //<Box sx={{ height: '20rem', overflow: 'auto' }}>
-    <Box className="box">
+    <Box sx={{ height: '20rem', overflow: 'auto' }}>
       <List dense component="ul" role="list">
         {activityList.map(activity => {
           const labelId = `${name}-${activity}-label`;

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Button,
-  //Button,
   Card,
   Checkbox,
   Divider,
@@ -61,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     height: '2rem',
     padding: '3px',
   },
-  listtitle: {
+  listTitle: {
     padding: '1rem',
     textTransform: 'uppercase',
   },
@@ -87,7 +86,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0rem 0.5rem',
     padding: '0.1rem',
   },
-  cartouchetop: {
+  cartoucheTop: {
     width: '3rem',
     backgroundColor: '#5d666e',
     borderTopLeftRadius: '50px',
@@ -95,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     top: '0px',
   },
-  cartouchebottom: {
+  cartoucheBottom: {
     width: '3rem',
     backgroundColor: '#5d666e',
     borderBottomLeftRadius: '50px',
@@ -103,27 +102,24 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '9px',
   },
-  cartoucheline: {
+  cartoucheLine: {
     border: '2px solid yellow',
     backgroundColor: '#f00',
   },
-  cartouchebox: {
+  cartoucheBox: {
     height: '2.6rem',
     backgroundColor: '#5d666e',
     zIndex: 9999,
   },
-  chooseallbutton: {
+  chooseAllButton: {
     marginTop: '1em',
     backgroundColor: '#333f48',
     color: '#fff',
   },
-  removeallbutton: {
+  removeAllButton: {
     marginTop: '1em',
     backgroundColor: '#333f48',
     color: '#fff',
-  },
-  maincartouche: {
-    borderRadius: '25px',
   },
 }));
 
@@ -138,17 +134,6 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [newActivityText, setNewActivityText] = useState('');
   const [onlyProposals, setOnlyProposals] = useState(false);
 
-  useEffect(() => {
-    // console.clear();
-    // console.log('Left:', left);
-    // console.log('Filtered left', getFilteredLeft());
-    // console.log('Right Selected: ', right);
-    // console.log('Left Selected: ', leftSelected);
-    // console.log('Right Selected: ', rightSelected);
-    // console.log('searchString', searchString);
-    // console.log('newActivityText', newActivityText);
-  });
-
   const getFilteredLeft = () => {
     let filterList = [];
 
@@ -159,22 +144,24 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         return item.label.match(finder);
       });
     }
-    // proposals filter?
+    // proposals filter
     if (onlyProposals) {
       filterList.push(item => item.proposed);
     }
 
     // get filtered list by applying filter functions
-    return left.filter(item => {
-      let votes = filterList.map(filterFunc => filterFunc(item));
-      return votes.every(item => item);
-    });
+    return left.filter(item =>
+      filterList.map(filterFunc => filterFunc(item)).every(item => item),
+    );
   };
 
   const handleSearch = searchtext => {
     // typing in search box
     setSearchString(searchtext);
   };
+
+  const getCountAvailableProposals = () =>
+    getFilteredLeft().filter(item => item.proposed).length;
 
   const selectItemOnLeft = object => {
     if (!leftSelected.find(item => item.label === object.label)) {
@@ -282,7 +269,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         <Grid xs={5}>
           <Card>
             <Grid xs={12}>
-              <Typography className={styles.listtitle} variant="h2">
+              <Typography className={styles.listTitle} variant="h2">
                 Available Activities
               </Typography>
             </Grid>
@@ -297,7 +284,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                   }
                   label={
                     <Typography className={styles.highlightText}>
-                      Proposed Activities
+                      {`Proposed Activities (${getCountAvailableProposals()} available)`}
                     </Typography>
                   }
                 />
@@ -345,25 +332,25 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div className="{styles.cartoucheline}">
-            <Grid xs={12} className={styles.cartouchetop}>
+          <div className="{styles.cartoucheLine}">
+            <Grid xs={12} className={styles.cartoucheTop}>
               &nbsp;
             </Grid>
-            <Grid xs={12} className={styles.cartouchebox}>
+            <Grid xs={12} className={styles.cartoucheBox}>
               <ArrowForward
                 className={styles.roundel}
                 onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
-            <Grid xs={12} className={styles.cartouchebox}>
+            <Grid xs={12} className={styles.cartoucheBox}>
               <ArrowBack
                 className={styles.roundel}
                 onClick={() => removeSelected()}
                 fontSize="small"
               />
             </Grid>
-            <Grid xs={12} className={styles.cartouchebottom}>
+            <Grid xs={12} className={styles.cartoucheBottom}>
               &nbsp;
             </Grid>
           </div>
@@ -373,7 +360,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         <Grid xs={5}>
           <Card>
             <Grid xs={12}>
-              <Typography className={styles.listtitle} variant="h2">
+              <Typography className={styles.listTitle} variant="h2">
                 Selected Activities
               </Typography>
             </Grid>
@@ -423,7 +410,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             secondary
             endIcon={<ArrowRightOutlined size="medium" />}
             onClick={() => chooseAll()}
-            className={styles.chooseallbutton}
+            className={styles.chooseAllButton}
             size="small"
           >
             Choose all
@@ -444,7 +431,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             startIcon={<ArrowLeftOutlined size="medium" />}
             size="small"
             onClick={() => removeAll()}
-            className={styles.removeallbutton}
+            className={styles.removeAllButton}
           >
             Remove all
           </Button>
