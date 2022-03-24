@@ -265,15 +265,25 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   return (
     <>
       <p>
-        It looks like you're interested in{' '}
-        <span className={styles.highlightText}>{selectedActivity}</span>. The
-        list below on the left shows some suggested activities that you might
-        undertake as part of your development. Please select your activities
-        from the 'available activities' list and click on the arrow to add them
-        to your list. Likewise, you can add or remove items from the "selected
-        activities" list.
+        The purpose of this section is to call out the activities that you may
+        undertake as part of your change or developmen. Doing this will allow
+        the system to provide you with a more targeted impact assessment report.
       </p>
-
+      <p>
+        The available activities list on the left, provides a list of activities
+        you may undertake as part of your development. Checking the 'Proposed
+        Activities' box will allow you to see the activities usually asociated
+        with the change or development you have described. Unchecking this box
+        will allow you to see all available activities in the list. You can use
+        the type-ahead feature to find an activity.
+      </p>
+      <p>
+        Select your activities from the Available Activities list and click on
+        the 'forward' arrow to add them to your Selected Activities list.
+        Similarly, you can remove an activity from your Selected Activities list
+        by clicking the 'backward' arrow. You can also add a new activity, not
+        in the list, by typing it into the top of the Selected Activities box.
+      </p>
       <Grid container>
         {/* left list (available activities) */}
         <Grid xs={5}>

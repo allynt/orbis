@@ -148,6 +148,16 @@ const AssessmentDialogForm = ({ onSubmit }) => {
         <DateRange onChange={handleDateRangeSelection} />
       </Form.Row>
 
+      <Form.Row>
+        <div className={styles.row}>
+          <Button
+            onClick={() => setAreActivitiesVisible(!areActivitiesVisible)}
+          >
+            Show proposed activities
+          </Button>
+        </div>
+      </Form.Row>
+
       {areActivitiesVisible ? (
         <Form.Row>
           <FieldWrapper title="Select activities">
@@ -158,16 +168,6 @@ const AssessmentDialogForm = ({ onSubmit }) => {
           </FieldWrapper>
         </Form.Row>
       ) : null}
-
-      <Form.Row>
-        <div className={styles.row}>
-          <Button
-            onClick={() => setAreActivitiesVisible(!areActivitiesVisible)}
-          >
-            Show proposed activities
-          </Button>
-        </div>
-      </Form.Row>
 
       <Form.Row>
         <div className={styles.row}>
