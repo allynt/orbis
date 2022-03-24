@@ -151,7 +151,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
 
     // get filtered list by applying filter functions
     return left.filter(item =>
-      filterList.map(filterFunc => filterFunc(item)).every(item => item),
+      filterList.map(filterFunc => filterFunc(item)).every(x => x),
     );
   };
 
@@ -417,7 +417,6 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           xs={5}
         >
           <Button
-            secondary
             endIcon={<ArrowRightOutlined size="medium" />}
             onClick={() => chooseAll()}
             className={styles.chooseAllButton}

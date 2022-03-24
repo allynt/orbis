@@ -28,11 +28,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   unselectedActivity: {},
-  deletebutton: {
-    backgroundColor: '#f0f',
-    width: '10%',
-    textDecoration: 'underline',
-  },
 }));
 
 const ActivityList = ({
@@ -55,7 +50,7 @@ const ActivityList = ({
 
   return (
     <Box sx={{ height: '20rem', overflow: 'auto' }}>
-      <List dense component="ul" role="list">
+      <List dense component="ul">
         {activityList.map(activity => {
           const labelId = `${name}-${activity}-label`;
           return (
@@ -66,7 +61,6 @@ const ActivityList = ({
                   ? styles.selectedActivity
                   : styles.unselectedActivity
               }
-              role="listitem"
               button
               onClick={() => onItemSelection(activity)}
             >
@@ -88,7 +82,13 @@ const ActivityList = ({
                 >
                   <ListItemText
                     primary="Delete"
-                    primaryTypographyProps={{ style: { color: '#f00' } }}
+                    primaryTypographyProps={{
+                      style: {
+                        width: '10%',
+                        textDecoration: 'underline',
+                        color: '#f6be00',
+                      },
+                    }}
                   />
                 </Button>
               ) : null}
