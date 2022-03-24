@@ -73,7 +73,7 @@ const ActivityList = ({
                   },
                 }}
               />
-              {activity.userdefined ? (
+              {activity.userDefined ? (
                 <Button
                   onClick={() => onItemDelete(activity)}
                   xs={2}

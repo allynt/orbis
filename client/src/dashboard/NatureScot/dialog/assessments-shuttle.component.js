@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   inputbox: {
     width: '80%',
   },
-  roundel: {
+  circle: {
     borderRadius: '50%',
     backgroundColor: '#f5f5f5',
     width: '2rem',
@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
     margin: '0rem 0.5rem',
     padding: '0.1rem',
   },
-  cartoucheTop: {
+  capsuleTop: {
     width: '3rem',
     backgroundColor: '#5d666e',
     borderTopLeftRadius: '50px',
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     top: '0px',
   },
-  cartoucheBottom: {
+  capsuleBottom: {
     width: '3rem',
     backgroundColor: '#5d666e',
     borderBottomLeftRadius: '50px',
@@ -102,11 +102,11 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '9px',
   },
-  cartoucheLine: {
+  capsuleLine: {
     border: '2px solid yellow',
     backgroundColor: '#f00',
   },
-  cartoucheBox: {
+  capsuleBox: {
     height: '2.6rem',
     backgroundColor: '#5d666e',
     zIndex: 9999,
@@ -155,10 +155,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     );
   };
 
-  const handleSearch = searchtext => {
-    // typing in search box
-    setSearchString(searchtext);
-  };
+  const handleSearch = searchtext => setSearchString(searchtext);
 
   const getCountAvailableProposals = () =>
     getFilteredLeft().filter(item => item.proposed).length;
@@ -212,10 +209,10 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const removeAll = () => {
     // move all items visible in right list to right,
     // irrespective of selection
-    const rightToMove = right.filter(item => !item.userdefined);
+    const rightToMove = right.filter(item => !item.userDefined);
     setLeft([...left, ...rightToMove]);
     setRightSelected([]);
-    setRight(right.filter(item => item.userdefined));
+    setRight(right.filter(item => item.userDefined));
     clearSelections();
   };
 
@@ -231,27 +228,22 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     // move selected from right list to left list,
     setLeft([
       ...left,
-      ...rightSelected.filter(item => item && !item.userdefined),
+      ...rightSelected.filter(item => item && !item.userDefined),
     ]);
     setRight(
-      right.filter(item => !rightSelected.includes(item) || item.userdefined),
+      right.filter(item => !rightSelected.includes(item) || item.userDefined),
     );
     setRightSelected([]);
     clearSelections();
   };
 
   const addActivity = () => {
-    if (
-      !newActivityText ||
-      newActivityText.length === 0 ||
-      newActivityText === ''
-    )
-      return;
+    if (!newActivityText) return;
     const newActivity = {
       value: 100, // TODO: need to think about this. Not used for now, label more important
       label: newActivityText,
       proposed: false,
-      userdefined: true,
+      userDefined: true,
     };
     setRight([...right, newActivity]);
     setNewActivityText('');
@@ -352,25 +344,25 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div className="{styles.cartoucheLine}">
-            <Grid xs={12} className={styles.cartoucheTop}>
+          <div className="{styles.capsuleLine}">
+            <Grid xs={12} className={styles.capsuleTop}>
               &nbsp;
             </Grid>
-            <Grid xs={12} className={styles.cartoucheBox}>
+            <Grid xs={12} className={styles.capsuleBox}>
               <ArrowForward
-                className={styles.roundel}
+                className={styles.circle}
                 onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
-            <Grid xs={12} className={styles.cartoucheBox}>
+            <Grid xs={12} className={styles.capsuleBox}>
               <ArrowBack
-                className={styles.roundel}
+                className={styles.circle}
                 onClick={() => removeSelected()}
                 fontSize="small"
               />
             </Grid>
-            <Grid xs={12} className={styles.cartoucheBottom}>
+            <Grid xs={12} className={styles.capsuleBottom}>
               &nbsp;
             </Grid>
           </div>
