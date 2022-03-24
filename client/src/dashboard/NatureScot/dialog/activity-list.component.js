@@ -21,38 +21,56 @@ const useStyles = makeStyles(theme => ({
   normalActivity: {
     fontWeight: 'normal',
   },
-  Box: {
-    height: '300px',
-    overflow: 'auto',
+  selectedActivity: {
+    backgroundColor: '#333f48',
+    '&:hover': {
+      backgroundColor: '#333f48',
+    },
   },
+  unselectedActivity: {},
   deletebutton: {
     backgroundColor: '#f0f',
     width: '10%',
     textDecoration: 'underline',
   },
+  box: {
+    height: '20rem',
+    overflow: 'auto',
+  },
 }));
 
-const ActivityList = ({ activityList, name, onSelect, onDelete }) => {
+const ActivityList = ({
+  activityList,
+  selectedActivityList,
+  name,
+  onSelect,
+  onDelete,
+}) => {
   const styles = useStyles();
 
   // notify parent via callback
 
-  const onItemSelection = item => {
-    onSelect(item);
-  };
+  const onItemSelection = item => onSelect(item);
 
-  const onItemDelete = activity => {
-    onDelete(activity);
-  };
+  const onItemDelete = activity => onDelete(activity);
+
+  const isSelected = activity =>
+    selectedActivityList.find(item => item.label === activity.label);
 
   return (
-    <Box sx={{ height: '20rem', overflow: 'auto' }}>
+    //<Box sx={{ height: '20rem', overflow: 'auto' }}>
+    <Box className="box">
       <List dense component="ul" role="list">
         {activityList.map(activity => {
           const labelId = `${name}-${activity}-label`;
           return (
             <ListItem
               key={activity.label}
+              className={
+                isSelected(activity)
+                  ? styles.selectedActivity
+                  : styles.unselectedActivity
+              }
               role="listitem"
               button
               onClick={() => onItemSelection(activity)}

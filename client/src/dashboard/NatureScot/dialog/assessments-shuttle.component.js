@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -215,7 +215,6 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const removeAll = () => {
     // move all items visible in right list to right,
     // irrespective of selection
-    // TODO: make sure this excludes userdefined options
     const rightToMove = right.filter(item => !item.userdefined);
     setLeft([...left, ...rightToMove]);
     setRightSelected([]);
@@ -261,25 +260,23 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     setNewActivityText('');
   };
 
-  const deleteActivity = activity => {
+  const deleteActivity = activity =>
     setRight(
       right.filter(eachActivity => eachActivity.label !== activity.label),
     );
-  };
 
   return (
-    <Fragment>
-      <div>
-        <p>
-          It looks like you're interested in{' '}
-          <span className={styles.highlightText}>{selectedActivity}</span>. The
-          list below on the left shows some suggested activities that you might
-          undertake as part of your development. Please select your activities
-          from the 'available activities' list and click on the arrow to add
-          them to your list. Likewise, you can add or remove items from the
-          "selected activities" list.
-        </p>
-      </div>
+    <>
+      <p>
+        It looks like you're interested in{' '}
+        <span className={styles.highlightText}>{selectedActivity}</span>. The
+        list below on the left shows some suggested activities that you might
+        undertake as part of your development. Please select your activities
+        from the 'available activities' list and click on the arrow to add them
+        to your list. Likewise, you can add or remove items from the "selected
+        activities" list.
+      </p>
+
       <Grid container>
         {/* left list (available activities) */}
         <Grid xs={5}>
@@ -335,6 +332,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList
               name="proposed_activities"
               activityList={getFilteredLeft()}
+              selectedActivityList={leftSelected}
               onSelect={selectItemOnLeft}
             />
           </Card>
@@ -407,6 +405,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
             <ActivityList
               name="selected_activities"
               activityList={right}
+              selectedActivityList={rightSelected}
               onSelect={selectItemOnRight}
               onDelete={deleteActivity}
             />
@@ -451,7 +450,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
           </Button>
         </Grid>
       </Grid>
-    </Fragment>
+    </>
   );
 };
 
