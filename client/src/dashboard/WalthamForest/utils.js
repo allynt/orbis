@@ -148,8 +148,11 @@ const getDataTimeline = (apiData, targets = {}) => {
   const min = Math.min(...allYears);
   const max = Math.max(...allYears);
 
+  // ensures a minimum years displayed on charts
+  const startPoint = allYears.length < 5 ? min - WALTHAM_FILTER_RANGE : min;
+
   let timeline = [];
-  for (let i = min; i <= max; i++) {
+  for (let i = startPoint; i <= max; i++) {
     timeline = [...timeline, i];
   }
 
