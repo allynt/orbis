@@ -125,6 +125,8 @@ const getUser5YearTotals = obj => {
  *
  * The timeline ranges from the earlies year in both datasets, to the
  * latest year in the api data, as was requested.
+ *
+ * Also pads up to a given constant, at a minimum.
  * @param {object[]} apiData
  * @param {object} targets
  * @returns {number[]}
@@ -148,8 +150,13 @@ const getDataTimeline = (apiData, targets = {}) => {
   const min = Math.min(...allYears);
   const max = Math.max(...allYears);
 
-  // ensures a minimum years displayed on charts
-  const startPoint = allYears.length < 5 ? min - WALTHAM_FILTER_RANGE : min;
+  const yearRange = max - min;
+
+  // ensures a minimum year range displayed on charts
+  const startPoint =
+    yearRange < WALTHAM_FILTER_RANGE
+      ? min - (WALTHAM_FILTER_RANGE - yearRange)
+      : min;
 
   let timeline = [];
   for (let i = startPoint; i <= max; i++) {
