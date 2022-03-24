@@ -130,7 +130,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
-  const [searchString, setSearchString] = useState([]);
+  const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
   const [onlyProposals, setOnlyProposals] = useState(false);
 
@@ -169,6 +169,11 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         ...leftSelected,
         left.find(item => item.label === object.label),
       ]);
+    } else {
+      // already selected, remove from selection
+      setLeftSelected([
+        ...leftSelected.filter(item => item.label !== object.label),
+      ]);
     }
   };
 
@@ -178,6 +183,11 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
         ...rightSelected,
         right.find(item => item.label === object.label),
       ]);
+    } else {
+      // already selected, remove from selection
+      setRightSelected([
+        ...rightSelected.filter(item => item.label !== object.label),
+      ]);
     }
   };
 
@@ -185,7 +195,7 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
     // called after any shuttling between lists
     setLeftSelected([]);
     setRightSelected([]);
-    setSearchString(['']);
+    setSearchString('');
   };
 
   const chooseAll = () => {
