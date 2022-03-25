@@ -117,6 +117,7 @@ const ProgressionVsPlanningSchedule = ({
               configuration,
               ALL_TYPES,
               progressionVsPlanningOptions,
+              'Year',
             )}
             x={x}
             y={range}
@@ -147,6 +148,7 @@ const ProgressionVsPlanningSchedule = ({
               yLabel="Number Of Units"
               xLabel="Financial Year"
               theme={updatedTheme}
+              financialYear
             >
               {ProgressVsPlanningStackedChart({ width })}
             </BaseChart>

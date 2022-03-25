@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   toggleButtonGroup: {
     width: '40%',
     marginLeft: '60%',
-    marginBottom: '-1rem',
   },
 }));
 

@@ -9,27 +9,27 @@ module.exports = {
       units: 'Units',
       data: [
         {
-          startYear: '2017',
+          startYear: 2017,
           'Affordable Housing': 62,
         },
         {
-          startYear: '2018',
+          startYear: 2018,
           'Affordable Housing': 69,
         },
         {
-          startYear: '2019',
+          startYear: 2019,
           'Affordable Housing': 54,
         },
         {
-          startYear: '2020',
+          startYear: 2020,
           'Affordable Housing': 53,
         },
         {
-          startYear: '2021',
+          startYear: 2021,
           'Affordable Housing': 55,
         },
         {
-          startYear: '2022',
+          startYear: 2022,
           'Affordable Housing': 33,
         },
       ],

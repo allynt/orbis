@@ -59,10 +59,12 @@ const ResultsListItem = ({
           isLoading ? (
             <Skeleton role="progressbar" variant="text" width="30ch" />
           ) : (
-            <div>
-              <div>Type: {result?.properties['Vessel Type'] || 'Unknown'}</div>
-              <div>Flag: {result?.properties['Flag'] || 'Unknown'}</div>
-            </div>
+            <span>
+              <span>
+                Type: {result?.properties['Vessel Type'] || 'Unknown'}
+              </span>
+              <span>Flag: {result?.properties['Flag'] || 'Unknown'}</span>
+            </span>
           )
         }
       />

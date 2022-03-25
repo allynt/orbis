@@ -185,11 +185,11 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
           {
-            x: 2012,
+            x: '2012',
             y: 456,
           },
         ];
@@ -205,7 +205,7 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
         ];
@@ -221,11 +221,11 @@ describe('Waltham Forest Data Transformers', () => {
         },
         expected = [
           {
-            x: 2010,
+            x: '2010',
             y: 123,
           },
           {
-            x: 2011,
+            x: '2011',
             y: 456,
           },
         ];
@@ -269,11 +269,11 @@ describe('Waltham Forest Data Transformers', () => {
   describe('getUser5YearTotals', () => {
     it('totals up data for last 5 years', () => {
       const data = {
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
-          '2019-2020': '40',
-          '2020-2021': '50',
+          2016: '10',
+          2017: '20',
+          2018: '30',
+          2019: '40',
+          2020: '50',
         },
         expected = 150;
 
@@ -283,13 +283,13 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('filters values outside of last 5 years', () => {
       const data = {
-          '2014-2015': '1000',
-          '2015-2016': '2000',
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
-          '2019-2020': '40',
-          '2020-2021': '50',
+          2014: '1000',
+          2015: '2000',
+          2016: '10',
+          2017: '20',
+          2018: '30',
+          2019: '40',
+          2020: '50',
         },
         expected = 150;
 
@@ -299,9 +299,9 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('works if not all 5 years have values', () => {
       const data = {
-          '2016-2017': '10',
-          '2017-2018': '20',
-          '2018-2019': '30',
+          2016: '10',
+          2017: '20',
+          2018: '30',
         },
         expected = 60;
 
@@ -372,8 +372,9 @@ describe('Waltham Forest Data Transformers', () => {
 
   describe('compute percentages', () => {
     it('computePercentages works', () => {
-      const key = 'Affordable Housing';
-      const data = [
+      const timeline = [2017, 2018, 2019, 2020, 2021, 2022],
+        key = 'Affordable Housing',
+        data = [
           {
             startYear: 2017,
             'Affordable Housing': 62,
@@ -406,7 +407,12 @@ describe('Waltham Forest Data Transformers', () => {
           2021: 200,
           2022: 200,
         };
-      const result = computePercentages(data, targets, 'Affordable Housing');
+      const result = computePercentages(
+        timeline,
+        data,
+        targets,
+        'Affordable Housing',
+      );
       expect(result[0][key]).toBeNull(); // not matching data
       expect(result[1][key]).toBe(69);
       expect(result[2][key]).toBe(54);

@@ -46,7 +46,7 @@ const filterEmptyStrings = data => {
  * If a timeline is provided, but the data falls outwith it, returns null.
  * @param {object} data
  * @param {number[]} timeline
- * @returns {{ x: number, y: number }[]|null}
+ * @returns {{ x: string, y: number }[]|null}
  */
 const userTargetTransformer = (data, timeline) => {
   if (!data) return;
@@ -54,7 +54,7 @@ const userTargetTransformer = (data, timeline) => {
   const result = Object.entries(data).reduce((acc, [key, value]) => {
     const numYear = Number(key);
     return !timeline || timeline.includes(numYear)
-      ? [...acc, { x: numYear, y: value }]
+      ? [...acc, { x: key, y: value }]
       : acc;
   }, []);
 
@@ -161,13 +161,20 @@ const getDataTimeline = (apiData, targets = {}) => {
  * @param {string} selectedType : currently selected type
  * @param {string} allTypes: text for 'all of the above' option
  * @param {Object} mapping : object mapping selectedType values to names used in data
+ * @param {string} yearField
  * @returns {object[]} : data filtered according to current filter
  */
-const filterByType = (chartData, selectedType, allTypes, mapping) =>
+const filterByType = (
+  chartData,
+  selectedType,
+  allTypes,
+  mapping,
+  yearField = 'startYear',
+) =>
   selectedType === allTypes
     ? chartData
     : chartData?.map(datum => ({
-        startYear: datum.startYear,
+        [yearField]: datum[yearField],
         [mapping[selectedType]]: datum[mapping[selectedType]],
       }));
 
@@ -187,27 +194,31 @@ const getFilteredTimeline = (
 };
 
 /**
+ * @param {number[]} timeline
  * @param {object[]} data : actual data. data points are properties
  * @param {object} targets : target data. array of objects
  * @param {string} targetProperty : target property in targets objects to use
  * @returns {object[]} : actual data, values replaced with percentages relative to target
  */
-const computePercentages = (data, targets, targetProperty) => {
+const computePercentages = (timeline, data, targets, targetProperty) => {
   // we return the data in the same shape as data, but values are
   // replaced with the percentage relative to the corresponding target
-  // for years where data is zero, or target is zero, or both, then we use null to
-  // prevent the chart from being misleading. This may result in gaps in the chart
-  if (!data || !targets) return null;
+  // for years where data is zero, or target is zero, or both, then we use null // to prevent the chart from being misleading. This may result in gaps in the // chart
 
-  return data.map(datum => {
+  // No data points can be constructed if both datasets are not present
+  if (!data || !targets) return;
+
+  return timeline?.map(year => {
+    const obj = data.find(datum => datum.startYear === year) ?? {};
+
     let percentage = null;
-    if (!!datum[targetProperty] && !!targets[datum.startYear]) {
+    if (!!obj[targetProperty] && !!targets[obj.startYear]) {
       percentage = Math.round(
-        (datum[targetProperty] / targets[datum.startYear]) * 100,
+        (obj[targetProperty] / targets[obj.startYear]) * 100,
       );
     }
     return {
-      startYear: datum.startYear,
+      startYear: year.toString(),
       [targetProperty]: percentage,
     };
   });

@@ -61,6 +61,7 @@ const DescriptionInput = ({ register, data, filterActivities }) => {
           disableUnderline: true,
           className: styles.input,
         }}
+        maxLength={150}
         focused
         onChange={filterActivities}
       />

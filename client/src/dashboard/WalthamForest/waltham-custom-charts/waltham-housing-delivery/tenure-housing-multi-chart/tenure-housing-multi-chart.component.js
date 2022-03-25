@@ -125,6 +125,7 @@ const TenureHousingMultiChart = ({
             apiLegendData={apiLegendData}
             targetLegendData={!!transformedTargets ? TARGET_LEGEND_DATA : null}
             width={width}
+            padTop
           />
           <BaseChart
             width={width}

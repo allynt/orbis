@@ -86,6 +86,7 @@ describe('Target Dialog Screens', () => {
           selectedDataset="test-dataset"
         />,
       );
+
       userEvent.type(getByPlaceholderText('2020-2021'), '123');
       userEvent.type(getByPlaceholderText('2021-2022'), '456');
 
