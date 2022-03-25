@@ -262,14 +262,14 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   return (
     <>
       <p>
-        The purpose of this section is to call out the activities that you may
-        undertake as part of your change or developmen. Doing this will allow
-        the system to provide you with a more targeted impact assessment report.
+        This section is to select the activities that you may undertake as part
+        of your change or development. Doing this will allow the system to
+        provide you with a more targeted impact assessment report.
       </p>
       <p>
-        The available activities list on the left, provides a list of activities
+        The available activities list on the left provides a list of activities
         you may undertake as part of your development. Checking the 'Proposed
-        Activities' box will allow you to see the activities usually asociated
+        Activities' box will allow you to see the activities usually associated
         with the change or development you have described. Unchecking this box
         will allow you to see all available activities in the list. You can use
         the type-ahead feature to find an activity.
