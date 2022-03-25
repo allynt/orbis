@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import clsx from 'clsx';
 import { subYears } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { Form } from 'components';
-import { ACTIVITIES } from 'dashboard/mock-data/NatureScot/activities-mock-data';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
 import { FieldWrapper } from './assessment-field-wrapper.component';
-import AssessmentsShuttle from './assessments-shuttle.component';
 
 const validationSchema = yup.object({
   description: yup.string(),
@@ -35,10 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DEFAULT_DATE_RANGE = {
-  startDate: subYears(new Date(2020, 2, 26), 1).toISOString(),
-  endDate: new Date(2020, 2, 26).toISOString(),
-};
+const today = new Date().toISOString();
 
 const DescriptionInput = ({ register, data, filterActivities }) => {
   const styles = useStyles();
@@ -53,10 +49,6 @@ const DescriptionInput = ({ register, data, filterActivities }) => {
       </p>
 
       <TextField
-        // id="description"
-        // name="description"
-        // {...register('description')}
-        // label="Describe Your Change or Development"
         InputProps={{
           disableUnderline: true,
           className: styles.input,
@@ -80,7 +72,7 @@ const DateRange = ({ onChange }) => {
         change will take place.
       </p>
 
-      <DateRangeFilter onSubmit={onChange} range={DEFAULT_DATE_RANGE} />
+      <DateRangeFilter onSubmit={onChange} minDate={today} />
     </FieldWrapper>
   );
 };
@@ -103,19 +95,15 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     setValue,
     formState: { errors, isDirty },
   } = useForm({
-    defaultValues: { ...DEFAULT_DATE_RANGE },
+    defaultValues: { startDate: today, endDate: today },
     resolver: yupResolver(validationSchema),
   });
-  console.log('ERRORS/IS DIRTY: ', errors, isDirty);
-  console.log('MOCK ACTIVITY DATA: ', ACTIVITIES);
 
   const handleFilterActivities = filter => {
-    console.log('FILTER: ', filter);
-
     const filteredActivities = activities.filter(activity =>
       activity.label.includes(filter),
     );
-    console.log('FILTERED:', filteredActivities);
+
     setFilteredActivities(filteredActivities);
   };
 
@@ -125,7 +113,6 @@ const AssessmentDialogForm = ({ onSubmit }) => {
   };
 
   const handleDateRangeSelection = range => {
-    console.log('DATE RANGE: ', range);
     setValue('startDate', range.startDate, { shouldValidate: true });
     setValue('endDate', range.endDate, { shouldValidate: true });
   };
