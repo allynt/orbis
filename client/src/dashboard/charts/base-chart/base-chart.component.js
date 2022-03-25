@@ -45,6 +45,7 @@ const BaseChart = ({
       width={width}
       height={width / 1.778}
       domainPadding={{ x: width * 0.1 }}
+      animate={{ duration: 1000 }}
     >
       <VictoryAxis label={xLabel} tickFormat={getXTickFormat} />
       <VictoryAxis
