@@ -70,9 +70,14 @@ const useStyles = makeStyles(theme => ({
   nudge: {
     marginLeft: '1rem',
   },
+  searchField: {
+    margin: '0rem',
+    paddingTop: '1rem',
+    paddingBottom: '0rem',
+  },
   nudge2: {
     marginLeft: '1rem',
-    marginBottom: '1.25rem',
+    marginBottom: '0.5rem',
   },
   inputbox: {
     width: '80%',
@@ -395,7 +400,8 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.nudge}
+                className={styles.searchField}
+                maxLength={50}
                 onChange={e => setNewActivityText(e.target.value)}
                 focused
               />
