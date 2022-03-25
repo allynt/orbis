@@ -120,7 +120,6 @@ export const selectAoi = createAsyncThunk(
 const initialState = {
   selectedAoi: null,
   aois: null,
-  aoi: null,
   error: null,
   isLoading: false,
   isDrawingAoi: false,
