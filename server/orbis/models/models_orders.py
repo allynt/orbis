@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from io import BytesIO
-from PyPDF2 import PdfFileMerger
 from xhtml2pdf import pisa
 import uuid
 

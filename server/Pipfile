@@ -15,7 +15,8 @@ celery = "*"
 # django... duh
 django = "~=3.0"
 # users
-dj-rest-auth = {extras = ["with_social"],version = "*"}
+django-allauth = "*"
+dj-rest-auth = "*"
 # task scheduler
 django-celery-beat = "*"
 # task db access
