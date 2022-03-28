@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import clsx from 'clsx';
 import { subYears } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { Form } from 'components';
+import { ACTIVITIES } from 'dashboard/mock-data/NatureScot/activities-mock-data';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
 import { FieldWrapper } from './assessment-field-wrapper.component';
+import AssessmentsShuttle from './assessments-shuttle.component';
 
 const validationSchema = yup.object({
   description: yup.string(),
@@ -39,7 +40,7 @@ const DEFAULT_DATE_RANGE = {
   endDate: new Date(2020, 2, 26).toISOString(),
 };
 
-const DescriptionInput = ({ register }) => {
+const DescriptionInput = ({ register, data, filterActivities }) => {
   const styles = useStyles();
 
   return (
@@ -52,16 +53,17 @@ const DescriptionInput = ({ register }) => {
       </p>
 
       <TextField
-        id="description"
-        name="description"
-        {...register('description')}
-        label="Describe Your Change or Development"
+        // id="description"
+        // name="description"
+        // {...register('description')}
+        // label="Describe Your Change or Development"
         InputProps={{
           disableUnderline: true,
           className: styles.input,
         }}
         maxLength={150}
         focused
+        onChange={filterActivities}
       />
     </FieldWrapper>
   );
@@ -87,6 +89,13 @@ const AssessmentDialogForm = ({ onSubmit }) => {
   const styles = useStyles();
 
   const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
+  const [activities, setActivities] = useState(null);
+  const [filteredActivities, setFilteredActivities] = useState(null);
+
+  useEffect(() => {
+    // Get full list of activities.
+    setActivities(ACTIVITIES);
+  }, [setActivities]);
 
   const {
     register,
@@ -98,6 +107,22 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     resolver: yupResolver(validationSchema),
   });
   console.log('ERRORS/IS DIRTY: ', errors, isDirty);
+  console.log('MOCK ACTIVITY DATA: ', ACTIVITIES);
+
+  const handleFilterActivities = filter => {
+    console.log('FILTER: ', filter);
+
+    const filteredActivities = activities.filter(activity =>
+      activity.label.includes(filter),
+    );
+    console.log('FILTERED:', filteredActivities);
+    setFilteredActivities(filteredActivities);
+  };
+
+  const getRandomSelectionOfActivities = () => {
+    // TODO: placeholder, temp filter to retrieve 15% of rows
+    return activities.filter(activity => activity && Math.random() > 0.85);
+  };
 
   const handleDateRangeSelection = range => {
     console.log('DATE RANGE: ', range);
@@ -113,14 +138,16 @@ const AssessmentDialogForm = ({ onSubmit }) => {
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
-        <DescriptionInput register={register} />
+        <DescriptionInput
+          register={register}
+          data={activities}
+          filterActivities={event => handleFilterActivities(event.target.value)}
+        />
       </Form.Row>
 
       <Form.Row>
         <DateRange onChange={handleDateRangeSelection} />
       </Form.Row>
-
-      {areActivitiesVisible ? <div>Yes, I'm here</div> : null}
 
       <Form.Row>
         <div className={styles.row}>
@@ -131,6 +158,17 @@ const AssessmentDialogForm = ({ onSubmit }) => {
           </Button>
         </div>
       </Form.Row>
+
+      {areActivitiesVisible ? (
+        <Form.Row>
+          <FieldWrapper title="Select activities">
+            <AssessmentsShuttle
+              data={getRandomSelectionOfActivities()}
+              selectedActivity={'Some activity'}
+            />
+          </FieldWrapper>
+        </Form.Row>
+      ) : null}
 
       <Form.Row>
         <div className={styles.row}>
