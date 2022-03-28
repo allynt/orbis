@@ -51,6 +51,8 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             json.dumps(raw_data["geometry"])
         ) if "geometry" in raw_data else None
 
+        bng_aoi = bng_aoi = aoi.transform(27700, clone=True) if aoi else None
+
         aoi_buffered = GEOSGeometry(
             json.dumps(raw_data["buffered"])
         ) if "buffered" in raw_data else None
@@ -60,6 +62,13 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             suggestion_bbox = Polygon.from_bbox(
                 suggestion["bbox"]
             ) if "bbox" in suggestion else None
+
+            bng_suggestion_bbox = None
+            if suggestion_bbox:
+                bng_suggestion_bbox = suggestion_bbox.clone()
+                bng_suggestion_bbox.srid = 4326
+                bng_suggestion_bbox.transform(27700)
+
             suggestion_center = Point(
                 suggestion["center"]
             ) if "center" in suggestion else None
@@ -118,8 +127,8 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     aoi_buffered.intersects(suggestion_bbox)
                     if aoi_buffered and suggestion_bbox else None,
                 "distance":
-                    round(aoi.distance(suggestion_bbox), 2)
-                    if aoi and suggestion_bbox else None
+                    round(bng_aoi.distance(bng_suggestion_bbox) / 1000, 2)
+                    if bng_aoi and bng_suggestion_bbox else None
             })
 
             # extract protected_features...
