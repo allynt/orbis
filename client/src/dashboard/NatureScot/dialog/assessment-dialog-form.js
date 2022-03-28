@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import clsx from 'clsx';
-import { subYears } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { Form } from 'components';
+import { ACTIVITIES } from 'dashboard/mock-data/NatureScot/activities-mock-data';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
 import { FieldWrapper } from './assessment-field-wrapper.component';
+import AssessmentsShuttle from './assessments-shuttle.component';
 
 const validationSchema = yup.object({
   description: yup.string(),
