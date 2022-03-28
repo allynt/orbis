@@ -62,9 +62,16 @@ export const DateRangeFilter = ({
   range,
   label,
 }) => {
-  const minDate =
-      minDateProp === 'today' ? new Date().toISOString() : minDateProp,
-    maxDate = maxDateProp === 'today' ? new Date().toISOString() : maxDateProp;
+  const date = new Date();
+  const today = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+  ).toISOString();
+
+  const minDate = minDateProp === 'today' ? today : minDateProp,
+    maxDate = maxDateProp === 'today' ? today : maxDateProp;
+
   const styles = useStyles();
   const {
     register,

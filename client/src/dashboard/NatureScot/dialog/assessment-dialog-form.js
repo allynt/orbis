@@ -72,7 +72,7 @@ const DateRange = ({ onChange }) => {
         change will take place.
       </p>
 
-      <DateRangeFilter onSubmit={onChange} minDate={today} />
+      <DateRangeFilter onSubmit={onChange} minDate="today" />
     </FieldWrapper>
   );
 };
