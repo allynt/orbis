@@ -15,13 +15,19 @@ import {
 
 import { useSelector } from 'react-redux';
 
-import { dashboardSourcesSelector } from 'data-layers/data-layers.slice';
+import apiClient from 'api-client';
+import {
+  dashboardSourcesSelector,
+  selectDataToken,
+} from 'data-layers/data-layers.slice';
 import { useMap } from 'MapContext';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import AoiList from './aoi-list/aoi-list.component';
 import { aoiSelector, aoiListSelector } from './aoi.slice';
 import SaveAoiForm from './save-aoi-form/save-aoi-form.component';
 import AoiToolbox from './toolbox/aoi-toolbox.component';
+import TypeAhead from './typeahead/typeahead.component';
 
 const useStyles = makeStyles({
   button: {
@@ -60,6 +66,7 @@ const Aoi = ({
   const aois = useSelector(aoiListSelector);
   const isAoiVisible = useSelector(aoiSelector);
 
+  const dataTokens = useSelector(selectDataToken);
   const dashboardDataSources = useSelector(dashboardSourcesSelector);
   const natureScotlandSource = dashboardDataSources.find(
     source => source.namespace === NATURE_SCOTLAND_NAMESPACE,
@@ -91,6 +98,28 @@ const Aoi = ({
     }
   };
 
+  const search = async query => {
+    const apiSourceId = 'astrosat/nature-scotland/ir-typeahead-search/dev';
+    const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/`;
+
+    const authToken = getAuthTokenForSource(dataTokens, {
+      source_id: apiSourceId,
+    });
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({ query }),
+    });
+
+    const data = await response.json();
+
+    return data;
+  };
+
   return (
     <Grid container direction="column">
       <Typography variant="h3" component="h1">
@@ -102,6 +131,10 @@ const Aoi = ({
       </Typography>
 
       <AoiToolbox onToolSelect={handleToolSelect} selectedTool={aoiDrawMode} />
+
+      <Typography variant="h3">OR</Typography>
+
+      <TypeAhead search={search} />
 
       <div className={styles.buttons}>
         <Button
