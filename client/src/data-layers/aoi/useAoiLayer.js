@@ -44,8 +44,8 @@ export const useAoiLayer = ({
 
   const onEdit = ({ updatedData }) => dispatch(setAoiFeatures(updatedData));
 
-  const onClick = ({ index, ...rest }) => {
-    if (!isDrawingAoi) {
+  const onClick = ({ index, isGuide }) => {
+    if (!isDrawingAoi || isGuide) {
       return;
     }
 
