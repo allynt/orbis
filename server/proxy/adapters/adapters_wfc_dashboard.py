@@ -59,6 +59,17 @@ def get_dates(year_string):
 
     return dates
 
+def get_financial_year(dates):
+    financial_year = None
+    if (dates["start_date"] <= dates["actual_date"] <= dates["end_date"]):
+        financial_year = dates["year"]
+    elif (dates["actual_date"] < dates["start_date"]):
+        financial_year = dates["year"] - 1
+    elif (dates["actual_date"] > dates["end_date"]):
+        financial_year = dates["year"] + 1
+
+    return financial_year
+
 def housing_delivery_by_tenure(hits_data):
     """
     Function to transform raw data into the shape needed for this chart.
@@ -70,12 +81,12 @@ def housing_delivery_by_tenure(hits_data):
         year_string, residential_units = itemgetter("year", "residential_units")(details)
 
         if year_string is not None and residential_units is not None:
-            # year = datetime.strptime(year_string, DATE_FORMAT).year
             dates = get_dates(year_string)
-            year = itemgetter("year")(dates)
+
+            financial_year = get_financial_year(dates)
 
             # Get existing year if it already exists.
-            year_totals = totals_per_year.get(year, defaultdict(int, { "startYear": year }))
+            year_totals = totals_per_year.get(financial_year, defaultdict(int, { "startYear": financial_year }))
 
             for unit in residential_units:
                 tenure_type = unit["tenure"]
@@ -85,7 +96,7 @@ def housing_delivery_by_tenure(hits_data):
                     year_totals[tenure_type] = 0
 
             merged_year_totals = { **TENURE_TYPES, **year_totals }
-            totals_per_year[year] = merged_year_totals
+            totals_per_year[financial_year] = merged_year_totals
 
     return totals_per_year
 
@@ -101,21 +112,17 @@ def affordable_housing_delivery(hits_data):
 
         if year_string is not None and residential_units is not None:
             dates = get_dates(year_string)
-            year, application_datetime, financial_year_start, financial_year_end = itemgetter("year", "actual_date", "start_date", "end_date")(dates)
+            financial_year = get_financial_year(dates)
 
             # Get existing year if it already exists.
-            year_totals = affordable_housing.get(year, defaultdict(int, { "startYear": year }))
+            year_totals = affordable_housing.get(financial_year, defaultdict(int, { "startYear": financial_year }))
 
             for unit in residential_units:
-                # If the application is within the financial year of
-                # 05 April this year to 05 April next year, add it to
-                # the yearly total.
-                if application_datetime >= financial_year_start and application_datetime < financial_year_end:
-                    tenure_type = unit["tenure"]
-                    if tenure_type in AFFORDABLE_TYPES:
-                        year_totals[AFFORDABLE_LABEL] += 1
+                tenure_type = unit["tenure"]
+                if tenure_type in AFFORDABLE_TYPES:
+                    year_totals[AFFORDABLE_LABEL] += 1
 
-            affordable_housing[year] = year_totals
+            affordable_housing[financial_year] = year_totals
 
     # If a year has no `Affordable Housing`, set it to `None`.
     sanitized_affordable_housing = { key: value if AFFORDABLE_LABEL in value else { "startYear": value["startYear"], AFFORDABLE_LABEL: None } for key, value in affordable_housing.items() }
@@ -133,7 +140,6 @@ def housing_approval_over_time(hits_data):
         year_string, residential_units = itemgetter("year", "residential_units")(details)
 
         if year_string is not None and residential_units is not None:
-            # year = datetime.strptime(year_string, DATE_FORMAT).year
             dates = get_dates(year_string)
             year = itemgetter("year")(dates)
 
