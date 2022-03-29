@@ -1,4 +1,4 @@
-import { LAST_5_YEARS, WALTHAM_FILTER_RANGE } from './waltham.constants';
+import { WALTHAM_FILTER_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -112,7 +112,7 @@ const getPastYears = (years = 5) => {
 const getUser5YearTotals = obj => {
   if (!obj || !Object.keys(obj).length) return;
 
-  return LAST_5_YEARS.reduce(
+  return getPastYears().reduce(
     (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),
     0,
   );
