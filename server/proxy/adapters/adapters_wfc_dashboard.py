@@ -82,7 +82,6 @@ def housing_delivery_by_tenure(hits_data):
 
         if year_string is not None and residential_units is not None:
             dates = get_dates(year_string)
-
             financial_year = get_financial_year(dates)
 
             # Get existing year if it already exists.
@@ -93,7 +92,7 @@ def housing_delivery_by_tenure(hits_data):
                 if year_totals[tenure_type] is not None:
                     year_totals[tenure_type] += 1
                 else:
-                    year_totals[tenure_type] = 0
+                    year_totals[tenure_type] = 1
 
             merged_year_totals = { **TENURE_TYPES, **year_totals }
             totals_per_year[financial_year] = merged_year_totals
