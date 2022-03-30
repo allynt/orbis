@@ -269,11 +269,11 @@ describe('Waltham Forest Data Transformers', () => {
   describe('getUser5YearTotals', () => {
     it('totals up data for last 5 years', () => {
       const data = {
-          2016: '10',
-          2017: '20',
-          2018: '30',
-          2019: '40',
-          2020: '50',
+          2018: '10',
+          2019: '20',
+          2020: '30',
+          2021: '40',
+          2022: '50',
         },
         expected = 150;
 
@@ -283,13 +283,13 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('filters values outside of last 5 years', () => {
       const data = {
-          2014: '1000',
-          2015: '2000',
-          2016: '10',
-          2017: '20',
-          2018: '30',
-          2019: '40',
-          2020: '50',
+          2016: '1000',
+          2017: '2000',
+          2018: '10',
+          2019: '20',
+          2020: '30',
+          2021: '40',
+          2022: '50',
         },
         expected = 150;
 
@@ -299,14 +299,19 @@ describe('Waltham Forest Data Transformers', () => {
 
     it('works if not all 5 years have values', () => {
       const data = {
-          2016: '10',
-          2017: '20',
-          2018: '30',
+          2018: '10',
+          2019: '20',
+          2020: '30',
         },
         expected = 60;
 
       const result = getUser5YearTotals(data);
       expect(result).toEqual(expected);
+    });
+
+    it('returns undefined if data is empty object', () => {
+      const result = getUser5YearTotals({});
+      expect(result).toBeUndefined();
     });
 
     it('returns undefined if data is not present', () => {
@@ -317,8 +322,8 @@ describe('Waltham Forest Data Transformers', () => {
 
   describe('getDataTimeline', () => {
     it('returns a timeline built from data years', () => {
-      const data = [{ startYear: 2010 }, { startYear: 2012 }],
-        expected = [2010, 2011, 2012];
+      const data = [{ startYear: 2010 }, { startYear: 2014 }],
+        expected = [2010, 2011, 2012, 2013, 2014];
 
       const result = getDataTimeline(data, undefined);
       expect(result).toEqual(expected);
@@ -327,10 +332,22 @@ describe('Waltham Forest Data Transformers', () => {
     it('combines both datasets', () => {
       const data = [{ startYear: 2010 }, { startYear: 2011 }],
         targets = {
-          2009: '123',
+          2008: '123',
           2012: '123',
         },
-        expected = [2009, 2010, 2011, 2012];
+        expected = [2008, 2009, 2010, 2011, 2012];
+
+      const result = getDataTimeline(data, targets);
+      expect(result).toEqual(expected);
+    });
+
+    it('pads timeline when no. of years less than constant', () => {
+      const data = [{ startYear: 2010 }],
+        targets = {
+          2008: '123',
+          2009: '123',
+        },
+        expected = [2006, 2007, 2008, 2009, 2010];
 
       const result = getDataTimeline(data, targets);
       expect(result).toEqual(expected);

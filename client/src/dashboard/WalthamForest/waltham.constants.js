@@ -130,8 +130,6 @@ export const HOUSING_APPROVAL_DATA_TYPES = {
   cumulative: 'Cumulative',
 };
 
-export const LAST_5_YEARS = [2016, 2017, 2018, 2019, 2020];
-
 export const PROGRESS_CHART_DATA = {
   totalHousing: {
     title:

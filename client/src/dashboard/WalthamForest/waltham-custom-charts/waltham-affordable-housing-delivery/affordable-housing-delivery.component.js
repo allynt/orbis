@@ -17,8 +17,6 @@ import { WalthamCustomDateRange } from 'dashboard/WalthamForest/waltham-custom-d
 import { WalthamCustomLegend } from 'dashboard/WalthamForest/waltham-custom-legend/waltham-custom-legend.component';
 import { yellowStyle } from 'dashboard/WalthamForest/waltham.constants';
 
-import { labelsForArrayOfObjectsInclusive } from '../../tooltips-utils';
-
 /**
  * @param {object[]} data
  * @param {number} year
@@ -29,6 +27,37 @@ const getFilteredData = (data, year) => {
   const currentYearObject = data.find(datum => +datum.startYear === year);
   const index = data.indexOf(currentYearObject);
   return data.slice(index - 4, index + 1);
+};
+
+/**
+ * Non-matching pairs in API data/targets cannot be computed into
+ * percentage values, so is guaranteed to result in empty columns so
+ * filtering any lone values out is required.
+ *
+ * @param {object[]} data
+ * @param {object} targets
+ * @returns {{ pairedData: object[], pairedTargets: object }}
+ */
+export const getPairedValues = (data, targets) => {
+  if (!data || !targets) return;
+
+  return data.reduce(
+    (acc, cur) => {
+      const currentYear = cur.startYear;
+      if (!cur['Affordable Housing'] || !targets[currentYear]) {
+        return acc;
+      } else {
+        return {
+          pairedData: [...acc.pairedData, cur],
+          pairedTargets: {
+            ...acc.pairedTargets,
+            [currentYear]: targets[currentYear],
+          },
+        };
+      }
+    },
+    { pairedData: [], pairedTargets: {} },
+  );
 };
 
 /**
@@ -60,8 +89,9 @@ const AffordableHousingDelivery = ({
       color: walthamChartColors.affordableHousingDelivery[0],
     },
   ];
+  const { pairedData, pairedTargets } = getPairedValues(data, targets) ?? {};
 
-  const timeline = getDataTimeline(data, targets);
+  const timeline = getDataTimeline(pairedData, pairedTargets);
 
   const percentageData = computePercentages(
     timeline,
@@ -89,7 +119,7 @@ const AffordableHousingDelivery = ({
 
   // setup/error catch for affordable housing chart
   useEffect(() => {
-    if (!timeline || timeline.includes(affordableHousingTotalYear)) {
+    if (!timeline?.length || timeline.includes(affordableHousingTotalYear)) {
       return;
     } else {
       updateDateFilter({
@@ -107,12 +137,6 @@ const AffordableHousingDelivery = ({
 
     if (!filteredData) return null;
 
-    const totalsArray = labelsForArrayOfObjectsInclusive(
-      filteredData,
-      ['Affordable Housing'],
-      item => `${item}%`,
-    );
-
     const y_max = Math.max(
       ...filteredData.map(item => item['Affordable Housing']),
     );
@@ -129,7 +153,7 @@ const AffordableHousingDelivery = ({
         <VictoryScatter
           labelComponent={FlyoutTooltip()}
           {...props}
-          labels={totalsArray}
+          labels={({ datum }) => `${datum._y}%`}
           style={yellowStyle}
         />
       </VictoryGroup>
@@ -151,7 +175,9 @@ const AffordableHousingDelivery = ({
               style={{ height: '12rem' }}
             >
               <Typography variant="h4">
-                Please enter affordable housing delivery targets
+                {!!Object.keys(targets ?? {}).length
+                  ? 'No matching data for provided targets.'
+                  : 'Please enter affordable housing delivery targets.'}
               </Typography>
             </Grid>
           ) : (

@@ -1,4 +1,4 @@
-import { LAST_5_YEARS, WALTHAM_FILTER_RANGE } from './waltham.constants';
+import { WALTHAM_FILTER_RANGE } from './waltham.constants';
 
 /**
  * This function is necessary because the data entries do not always have equal
@@ -110,9 +110,9 @@ const getPastYears = (years = 5) => {
  * @param {object} obj
  */
 const getUser5YearTotals = obj => {
-  if (!obj) return;
+  if (!obj || !Object.keys(obj).length) return;
 
-  return LAST_5_YEARS.reduce(
+  return getPastYears().reduce(
     (acc, cur) => (acc += !!obj[cur] ? +obj[cur] : 0),
     0,
   );
@@ -125,6 +125,8 @@ const getUser5YearTotals = obj => {
  *
  * The timeline ranges from the earlies year in both datasets, to the
  * latest year in the api data, as was requested.
+ *
+ * Also pads up to a given constant, at a minimum.
  * @param {object[]} apiData
  * @param {object} targets
  * @returns {number[]}
@@ -148,8 +150,16 @@ const getDataTimeline = (apiData, targets = {}) => {
   const min = Math.min(...allYears);
   const max = Math.max(...allYears);
 
+  const yearRange = max - min;
+
+  // ensures a minimum year range displayed on charts
+  const startPoint =
+    yearRange < WALTHAM_FILTER_RANGE
+      ? min - (WALTHAM_FILTER_RANGE - yearRange)
+      : min;
+
   let timeline = [];
-  for (let i = min; i <= max; i++) {
+  for (let i = startPoint; i <= max; i++) {
     timeline = [...timeline, i];
   }
 

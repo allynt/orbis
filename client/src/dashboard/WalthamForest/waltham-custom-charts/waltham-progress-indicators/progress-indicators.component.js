@@ -6,8 +6,8 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-import { getUser5YearTotals } from '../../utils';
-import { LAST_5_YEARS, PROGRESS_CHART_DATA } from '../../waltham.constants';
+import { getUser5YearTotals, getPastYears } from '../../utils';
+import { PROGRESS_CHART_DATA } from '../../waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -41,7 +41,7 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
   // 'Gross' values tallied up for last 5 years, like ticket asks
   const past5YearsTotal = useMemo(
     () =>
-      LAST_5_YEARS.reduce(
+      getPastYears().reduce(
         (acc, cur) =>
           (acc += adaptedTotalData?.find(d => d.startYear === cur)?.[
             'Total Gross'

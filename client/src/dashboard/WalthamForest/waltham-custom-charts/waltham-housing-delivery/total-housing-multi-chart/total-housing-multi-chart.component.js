@@ -2,13 +2,7 @@ import React, { useMemo } from 'react';
 
 import { darken } from '@astrosat/astrosat-ui';
 
-import {
-  VictoryGroup,
-  VictoryBar,
-  VictoryLine,
-  VictoryScatter,
-  VictoryTooltip,
-} from 'victory';
+import { VictoryGroup, VictoryBar, VictoryLine, VictoryScatter } from 'victory';
 
 import { BaseChart } from 'dashboard/charts/base-chart/base-chart.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
@@ -62,7 +56,7 @@ const TotalHousingMultiChart = ({
             // eslint-disable-next-line react/no-array-index-key
             key={`dataset-${i}`}
             data={arr}
-            labels={({ datum }) => `Total: ${datum.y}`}
+            labels={({ datum }) => `${datum.y}`}
             labelComponent={FlyoutTooltip()}
             style={{
               data: {
@@ -113,7 +107,7 @@ const TotalHousingMultiChart = ({
           <BaseChart
             width={width}
             yLabel="Housing Delivery in Units"
-            xLabel="Year"
+            xLabel="Financial Year"
             financialYear
           >
             {TotalHousingGroupChart({ width })}

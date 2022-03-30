@@ -246,7 +246,7 @@ export const WalthamHousingDelivery = ({
       <Grid item className={styles.charts}>
         <ChartWrapper
           title="Total Housing Delivery"
-          info="This is a test description"
+          info="Total housing delivery values per financial year. The data source is the PLD (Planning London Data Hub)."
         >
           <WalthamCustomDateRange
             timeline={totalTimeline}
@@ -262,7 +262,7 @@ export const WalthamHousingDelivery = ({
 
         <ChartWrapper
           title="Housing Delivery by Tenure Type"
-          info="This is a test description"
+          info="Housing delivery values broken down by tenure type per financial year. The data source is the PLD (Planning London Data Hub)."
         >
           <TenureDataFilter
             timeline={tenureTimeline}
