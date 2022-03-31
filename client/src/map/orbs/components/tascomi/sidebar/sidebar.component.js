@@ -18,7 +18,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
+export const SidebarComponent = ({
+  selectedLayer,
+  dispatch,
+  dateType,
+  dateLabel,
+}) => {
   const styles = useStyles();
 
   const [dateRange, setDateRange] = useState(null);
@@ -83,7 +88,7 @@ export const SidebarComponent = ({ selectedLayer, dispatch, dateType }) => {
     <Grid container direction="column" spacing={2}>
       <Grid item>
         <Typography className={styles.dateHeading} variant="h4">
-          Decision Date
+          {dateLabel}
         </Typography>
 
         <DateRangeFilter
