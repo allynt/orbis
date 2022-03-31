@@ -1,3 +1,10 @@
+## [2.34.1](https://github.com/astrosat/orbis/compare/v2.34.0...v2.34.1) (2022-03-31)
+
+
+### Bug Fixes
+
+* **frontend:** Update Date range label text ([35b4d8d](https://github.com/astrosat/orbis/commit/35b4d8d1a2f9b128eb0a7e76eb9b6fd0069e20dc))
+
 # [2.34.0](https://github.com/astrosat/orbis/compare/v2.33.1...v2.34.0) (2022-03-30)
 
 
