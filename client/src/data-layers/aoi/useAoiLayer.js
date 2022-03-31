@@ -44,7 +44,7 @@ export const useAoiLayer = ({
 
   const onEdit = ({ updatedData }) => {
     const { type, features } = updatedData;
-    const newAoiFeatures = features[features.length === 2 ? 1 : 0];
+    const newAoiFeatures = features[features.length - 1];
     return dispatch(setAoiFeatures({ type, features: newAoiFeatures }));
   };
 
