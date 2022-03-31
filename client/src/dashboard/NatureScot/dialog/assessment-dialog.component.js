@@ -14,10 +14,6 @@ import { TabPanel } from '../assessments/impact-feature-details-nav.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({
-  dialog: {
-    borderRadius: '1rem',
-    height: '90%',
-  },
   closeButton: {
     position: 'absolute',
     top: theme.spacing(1),
@@ -51,13 +47,7 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
   };
 
   return (
-    <Dialog
-      maxWidth="xl"
-      fullWidth
-      PaperProps={{ className: styles.dialog }}
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullScreen open={open} onClose={handleClose}>
       <IconButton
         size="small"
         className={styles.closeButton}
