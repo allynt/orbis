@@ -142,7 +142,7 @@ const aoiSlice = createSlice({
     },
     setAoiFeatures: (state, { payload }) => {
       if ('type' in payload) {
-        state.aoi = payload.features[0];
+        state.aoi = payload.features;
       }
     },
     onUnmount: state => {
