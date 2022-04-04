@@ -210,12 +210,11 @@ class AuthUserAdmin(ReadOnlyModelAdminBase, admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset.prefetch_related("customers")
 
+    @admin.display(description="IS VERIFIED", boolean=True)
     def is_verified_for_list_display(self, instance):
         return instance.is_verified
 
-    is_verified_for_list_display.boolean = True
-    is_verified_for_list_display.short_description = "IS VERIFIED"
-
+    @admin.display(description="CUSTOMERS")
     def get_customers_for_list_display(self, obj):
         admin_change_url = f"{core_admin_site.name}:{Customer._meta.db_table}_change"
         list_display = [
@@ -224,8 +223,7 @@ class AuthUserAdmin(ReadOnlyModelAdminBase, admin.ModelAdmin):
         ]
         return format_html(",".join(list_display))
 
-    get_customers_for_list_display.short_description = "CUSTOMERS"
-
+    @admin.display(description="Toggles the approval of the selected users")
     def toggle_approval(self, request, queryset):
         # TODO: doing this cleverly w/ negated F expressions is not supported (https://code.djangoproject.com/ticket/17186)
         # queryset.update(is_approved=not(F("is_approved")))
@@ -238,8 +236,10 @@ class AuthUserAdmin(ReadOnlyModelAdminBase, admin.ModelAdmin):
                 f"{obj} {'not' if not obj.is_approved else ''} approved."
             )
 
-    toggle_approval.short_description = "Toggles the approval of the selected users"
-
+    @admin.display(
+        description=
+        "Toggles the verification of the selected users' primary email addresses"
+    )
     def toggle_verication(self, request, queryset):
 
         for obj in queryset:
@@ -258,10 +258,6 @@ class AuthUserAdmin(ReadOnlyModelAdminBase, admin.ModelAdmin):
                 f"{emailaddress} {'created and' if created else ''} {'not' if not emailaddress.verified else ''} verified."
             )
 
-    toggle_verication.short_description = (
-        "Toggles the verification of the selected users' primary email addresses"
-    )
-
 
 @admin.register(CustomerUser, site=core_admin_site)
 class AuthCustomerUserAdmin(
@@ -270,7 +266,7 @@ class AuthCustomerUserAdmin(
     """
     Special "Core" Admin for manually registering a CustomerUser
     """
-
+    actions = ("resend_invitation", )
     change_list_template = "core/admin/customer_user_changelist.html"
     fields = (
         "customer",
@@ -298,22 +294,32 @@ class AuthCustomerUserAdmin(
         "user__email",
     )
 
+    @admin.display(
+        description="Resends invitations to the selected CustomerUsers"
+    )
+    def resend_invitation(self, request, queryset):
+        request.force_api = True
+        request.META["HTTP_ORIGIN"] = settings.CLIENT_HOST
+        adapter = get_adapter(request)
+        for customer_user in queryset:
+            customer_user.invite(adapter=adapter)
+            self.message_user(
+                request,
+                f"sent invitation email to '{customer_user.user}'.",
+                level=messages.INFO
+            )
+
+    @admin.display(description="CUSTOMER: USER")
     def id_for_list_display(self, instance):
         return str(instance)
 
-    id_for_list_display.short_description = "CUSTOMER: USER"
-
+    @admin.display(description="IS APPROVED", boolean=True)
     def is_approved_for_list_display(self, instance):
         return instance.user.is_approved
 
-    is_approved_for_list_display.boolean = True
-    is_approved_for_list_display.short_description = "IS APPROVED"
-
+    @admin.display(description="IS VERIFIED", boolean=True)
     def is_verified_for_list_display(self, instance):
         return instance.user.is_verified
-
-    is_verified_for_list_display.boolean = True
-    is_verified_for_list_display.short_description = "IS VERIFIED"
 
     def get_urls(self):
         # adding some "local" urls to map to the "register_customer_user" action below
