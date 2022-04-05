@@ -395,7 +395,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGOUT_ON_GET = False
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "sentinel"]
-
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = DynamicSetting(
+    "astrosat_users.UserSettings.verify_email_timeout", 3
+)
 REST_AUTH_TOKEN_MODEL = "knox.models.AuthToken"
 REST_AUTH_TOKEN_CREATOR = "astrosat_users.utils.create_knox_token"
 
