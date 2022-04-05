@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     padding: '2rem',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
     overflowY: 'scroll',
+    height: '100vh',
     gap: '1rem',
   },
   item: {
