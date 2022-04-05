@@ -309,7 +309,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                   }
                   label={
                     <Typography className={styles.highlightText}>
-                      {`Proposed Activities (${getCountAvailableProposals()} available)`}
+                      {`Show suggested activities only (${getCountAvailableProposals()} available)`}
                     </Typography>
                   }
                 />
