@@ -15,6 +15,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import mockdata from 'dashboard/mock-data/NatureScot/activity-feature-mock';
+import { styles } from 'map-style/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +31,12 @@ const useStyles = makeStyles(theme => ({
     overflowy: 'scroll',
   },
   body: {},
-  tabpanel: {},
+  tabpanel2: {
+    border: '1px solid red',
+  },
+  '& .MuiTabs-scroller': {
+    border: '1px solid red',
+  },
   table: {},
   row: {
     padding: 0,
@@ -41,9 +47,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '0.5rem',
   },
   minus3: {
-    color: 'red',
+    color: '#f03b30',
   },
-  minu2: {
+  minus2: {
     color: '#f67971',
   },
   minus1: {
@@ -64,7 +70,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const TabPanel = ({ value, index, children, ...rest }) => (
-  <div role="tabpanel" hidden={value !== index} {...rest}>
+  <div
+    role="tabpanel"
+    className={styles.tabpanel2}
+    hidden={value !== index}
+    {...rest}
+  >
     {value === index && (
       <Box sx={{ padding: 0 }} p={3}>
         {children}
@@ -124,9 +135,12 @@ const ImpactFeatureDetailsNav = () => {
       </Tabs>
 
       {mockdata.map((item, index) => {
+        const sortedImpacts = item.impacts.sort((a, b) =>
+          a.strength >= b.strength ? 1 : -1,
+        );
         return (
           <TabPanel
-            key={index}
+            key={item}
             value={tab}
             index={index}
             className={styles.tabpanel}
@@ -134,7 +148,7 @@ const ImpactFeatureDetailsNav = () => {
             <TableContainer component={Paper} className={styles.container}>
               <Table className={styles.table}>
                 <TableBody className={styles.body}>
-                  {item.impacts.map(impact => (
+                  {sortedImpacts.map(impact => (
                     <TableRow key={impact} className={styles.row}>
                       <TableCell>{impact.name}</TableCell>
                       <TableCell>{impact.effect}</TableCell>
