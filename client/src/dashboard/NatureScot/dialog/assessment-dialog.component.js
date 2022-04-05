@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   CloseIcon,
   Dialog,
   IconButton,
+  Tab,
+  Tabs,
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import AssessmentResults from '../assessments/assessment-results.component';
+import { TabPanel } from '../assessments/impact-feature-details-nav.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({
-  dialog: {
-    borderRadius: '1rem',
-    height: '70%',
-  },
   closeButton: {
     position: 'absolute',
     top: theme.spacing(1),
@@ -38,18 +38,16 @@ const useStyles = makeStyles(theme => ({
 const AssessmentDialog = ({ open = false, close, onSubmit }) => {
   const styles = useStyles();
 
+  const [tab, setTab] = useState(0);
+
+  const toggleTab = (event, tab) => setTab(tab);
+
   const handleClose = () => {
     close();
   };
 
   return (
-    <Dialog
-      maxWidth="md"
-      fullWidth
-      PaperProps={{ className: styles.dialog }}
-      open={open}
-      onClose={handleClose}
-    >
+    <Dialog fullScreen open={open} onClose={handleClose}>
       <IconButton
         size="small"
         className={styles.closeButton}
@@ -60,16 +58,28 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
 
       <div className={styles.content}>
         <h4>Welcome to the Impact Assessment functionality for Eco-an-Alba.</h4>
-        <p className={styles.overviewText}>
-          This feature will show you the impacts of a proposed change or
-          development within your area of interest.
-          <span className={styles.overviewHighlightedText}>
-            Please note, it does not replace the consent or consultation
-            processes.
-          </span>
-          Applications should continue to be made to NatureScot.
-        </p>
-        <AssessmentDialogForm onSubmit={onSubmit} />
+
+        <Tabs value={tab} onChange={toggleTab}>
+          <Tab label="Form" />
+          <Tab label="Results" />
+        </Tabs>
+
+        <TabPanel value={tab} index={0}>
+          <p className={styles.overviewText}>
+            This feature will show you the impacts of a proposed change or
+            development within your area of interest.
+            <span className={styles.overviewHighlightedText}>
+              Please note, it does not replace the consent or consultation
+              processes.
+            </span>
+            Applications should continue to be made to NatureScot.
+          </p>
+          <AssessmentDialogForm onSubmit={onSubmit} />
+        </TabPanel>
+
+        <TabPanel value={tab} index={1}>
+          <AssessmentResults />
+        </TabPanel>
       </div>
     </Dialog>
   );
