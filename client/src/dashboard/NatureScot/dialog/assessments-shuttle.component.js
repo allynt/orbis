@@ -63,6 +63,7 @@ const useStyles = makeStyles(theme => ({
   listTitle: {
     padding: '1rem',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
   highlightText: {
     color: '#f6be00',
