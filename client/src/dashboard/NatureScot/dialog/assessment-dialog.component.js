@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(0.5),
   },
   overviewText: {
-    fontSize: 14,
+    fontSize: '1rem',
   },
 }));
 

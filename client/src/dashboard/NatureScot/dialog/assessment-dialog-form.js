@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
   },
   descriptionText: {
-    fontSize: 14,
+    fontSize: '1rem',
   },
   innerText: {
     fontStyle: 'italic',
