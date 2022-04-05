@@ -127,6 +127,9 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#333f48',
     color: '#fff',
   },
+  plusIcon: {
+    marginRight: '0.75rem',
+  },
 }));
 
 const AssessmentsShuttle = ({ setValue, data }) => {
@@ -394,7 +397,11 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               wrap="nowrap"
               className={styles.nudge2}
             >
-              <AddCircle onClick={addActivity} fontSize="small" />
+              <AddCircle
+                onClick={addActivity}
+                fontSize="small"
+                className={styles.plusIcon}
+              />
               <TextField
                 id="search"
                 name="search"
