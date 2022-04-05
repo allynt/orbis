@@ -96,8 +96,6 @@ const ProtectedFeatureList = ({ features }) => {
 
   if (!features) return null;
 
-  console.log('features: ', features);
-
   return (
     <List>
       {features?.map(({ id, icon, title, description, type }) => {
