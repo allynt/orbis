@@ -9,7 +9,7 @@ import {
   FormGroup,
   Grid,
   makeStyles,
-  SearchIcon,
+  MagnifierIcon,
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     color: '#f6be00',
   },
   nudge: {
-    marginLeft: '1rem',
+    marginLeft: '0.75rem',
   },
   searchField: {
     margin: '0rem',
@@ -130,6 +130,11 @@ const useStyles = makeStyles(theme => ({
   plusIcon: {
     marginRight: '0.75rem',
   },
+  checkbox: {
+    paddingBottom: '10px',
+    paddingTop: '10px',
+    marginLeft: '1rem',
+  },
 }));
 
 const AssessmentsShuttle = ({ setValue, data }) => {
@@ -141,7 +146,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [rightSelected, setRightSelected] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
-  const [onlyProposals, setOnlyProposals] = useState(false);
+  const [onlyProposals, setOnlyProposals] = useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
@@ -300,10 +305,11 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Divider />
             <Grid xs={12}>
-              <FormGroup className={styles.nudge}>
+              <FormGroup className={styles.checkbox}>
                 <FormControlLabel
                   control={
                     <Checkbox
+                      defaultChecked
                       onChange={() => setOnlyProposals(!onlyProposals)}
                     />
                   }
@@ -323,12 +329,16 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               wrap="nowrap"
               className={styles.nudge}
             >
-              <SearchIcon fontSize="small" />
+              <MagnifierIcon
+                fontSize="small"
+                color="primary"
+                style={{ paddingTop: '3px' }}
+              />
               <TextField
                 id="search"
                 name="search"
                 margin="normal"
-                placeholder="type ahead..."
+                placeholder="Type ahead..."
                 variant="filled"
                 InputProps={{
                   disableUnderline: true,
