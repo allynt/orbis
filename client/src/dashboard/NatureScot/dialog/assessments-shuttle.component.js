@@ -302,15 +302,15 @@ const AssessmentsShuttle = ({ setValue, data }) => {
       </p>
       <Grid container>
         {/* left list (available activities) */}
-        <Grid xs={5}>
+        <Grid item xs={5}>
           <Card>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Typography className={styles.listTitle} variant="h2">
                 Available Activities
               </Typography>
             </Grid>
             <Divider />
-            <Grid xs={12}></Grid>
+            <Grid item xs={12}></Grid>
             <Divider />
             <Grid
               container
@@ -346,16 +346,17 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         {/* arrows in middle */}
         <Grid
           container
+          item
           alignItems="center"
           justifyContent="space-around"
           wrap="nowrap"
           xs={2}
         >
           <div className="{styles.capsuleLine}">
-            <Grid xs={12} className={styles.capsuleTop}>
+            <Grid item xs={12} className={styles.capsuleTop}>
               &nbsp;
             </Grid>
-            <Grid xs={12} className={styles.capsuleBox}>
+            <Grid item xs={12} className={styles.capsuleBox}>
               <ArrowForward
                 className={`${styles.circle} ${
                   leftSelected.length > 0 ? styles.blueCircle : ''
@@ -365,7 +366,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 data-testid="choose activity"
               />
             </Grid>
-            <Grid xs={12} className={styles.capsuleBox}>
+            <Grid item xs={12} className={styles.capsuleBox}>
               <ArrowBack
                 className={`${styles.circle} ${
                   rightSelected.length > 0 ? styles.blueCircle : ''
@@ -375,16 +376,16 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 data-testid="choose selected"
               />
             </Grid>
-            <Grid xs={12} className={styles.capsuleBottom}>
+            <Grid item xs={12} className={styles.capsuleBottom}>
               &nbsp;
             </Grid>
           </div>
         </Grid>
 
         {/* right list (selected activities) */}
-        <Grid xs={5}>
+        <Grid item xs={5}>
           <Card>
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <Typography className={styles.listTitle} variant="h2">
                 Selected Activities
               </Typography>
@@ -431,6 +432,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         {/* footer left 'choose all' */}
         <Grid
           container
+          item
           direction="row"
           alignItems="center"
           justifyContent="center"
@@ -447,13 +449,14 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             Choose all
           </Button>
         </Grid>
-        <Grid xs={2}>
+        <Grid item xs={2}>
           <Typography variant="h2">&nbsp;</Typography>
         </Grid>
 
         {/* footer right 'remove all' */}
         <Grid
           container
+          item
           direction="row"
           alignItems="center"
           justifyContent="center"
