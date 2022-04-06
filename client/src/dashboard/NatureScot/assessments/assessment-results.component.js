@@ -33,12 +33,7 @@ const AssessmentResults = () => (
     </Grid>
     <Grid container item xs={6} spacing={3}></Grid>
     <Grid container item xs={6} spacing={3}>
-      <ChartWrapper
-        title="Impact Detail By Feature"
-        info="Impact Detail By Feature Description"
-      >
-        <ImpactFeatureDetailsNav />
-      </ChartWrapper>
+      <ImpactFeatureDetailsNav />
     </Grid>
   </Grid>
 );

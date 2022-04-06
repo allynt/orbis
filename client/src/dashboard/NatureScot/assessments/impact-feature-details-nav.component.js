@@ -14,6 +14,7 @@ import {
   Paper,
 } from '@astrosat/astrosat-ui';
 
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import mockdata from 'dashboard/mock-data/NatureScot/activity-feature-mock';
 import { styles } from 'map-style/styles';
 
@@ -31,11 +32,14 @@ const useStyles = makeStyles(theme => ({
     overflowy: 'scroll',
   },
   body: {},
-  tabpanel2: {
+  box: {},
+  tabpanel: {
     border: '1px solid red',
+    overflow: 'scroll',
   },
   '& .MuiTabs-scroller': {
     border: '1px solid red',
+    backgroundColor: '#f00',
   },
   table: {},
   row: {
@@ -43,8 +47,19 @@ const useStyles = makeStyles(theme => ({
     margin: '-1rem',
   },
   tabs: {
+    backgroundColor: '#000',
     borderRight: `1px solid ${theme.palette.divider}`,
+    border: '1px solid red',
+    width: '15rem',
     fontSize: '0.5rem',
+    '& .MuiButtonBase-root.MuiTab-root': {
+      fontSize: 12,
+    },
+
+    '& .Mui-selected': {
+      textDecoration: 'underline',
+      backgroundColor: theme.palette.background.paper,
+    },
   },
   minus3: {
     color: '#f03b30',
@@ -72,12 +87,12 @@ const useStyles = makeStyles(theme => ({
 export const TabPanel = ({ value, index, children, ...rest }) => (
   <div
     role="tabpanel"
-    className={styles.tabpanel2}
+    className={styles.tabpanel}
     hidden={value !== index}
     {...rest}
   >
     {value === index && (
-      <Box sx={{ padding: 0 }} p={3}>
+      <Box className={styles.box} sx={{ padding: 0 }} p={3}>
         {children}
       </Box>
     )}
@@ -120,49 +135,54 @@ const ImpactFeatureDetailsNav = () => {
   const toggleTab = (event, tab) => setTab(tab);
 
   return (
-    <div className={styles.root}>
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={tab}
-        onChange={toggleTab}
-        aria-label="Impact details by feature"
-        className={styles.tabs}
-      >
-        {mockdata.map(item => (
-          <Tab key={item} label={item.name} />
-        ))}
-      </Tabs>
+    <ChartWrapper
+      title="Impact Detail By Feature"
+      info="Impact Detail By Feature Description"
+    >
+      <div className={styles.root}>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={tab}
+          onChange={toggleTab}
+          aria-label="Impact details by feature"
+          className={styles.tabs}
+        >
+          {mockdata.map(item => (
+            <Tab key={item} label={item.name} />
+          ))}
+        </Tabs>
 
-      {mockdata.map((item, index) => {
-        const sortedImpacts = item.impacts.sort((a, b) =>
-          a.strength >= b.strength ? 1 : -1,
-        );
-        return (
-          <TabPanel
-            key={item}
-            value={tab}
-            index={index}
-            className={styles.tabpanel}
-          >
-            <TableContainer component={Paper} className={styles.container}>
-              <Table className={styles.table}>
-                <TableBody className={styles.body}>
-                  {sortedImpacts.map(impact => (
-                    <TableRow key={impact} className={styles.row}>
-                      <TableCell>{impact.name}</TableCell>
-                      <TableCell>{impact.effect}</TableCell>
-                      {getStrengthText(styles, impact.strength)}
-                      <TableCell>{impact.notification}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        );
-      })}
-    </div>
+        {mockdata.map((item, index) => {
+          const sortedImpacts = item.impacts.sort((a, b) =>
+            a.strength >= b.strength ? 1 : -1,
+          );
+          return (
+            <TabPanel
+              key={item}
+              value={tab}
+              index={index}
+              className={styles.tabpanel}
+            >
+              <TableContainer component={Paper} className={styles.container}>
+                <Table className={styles.table}>
+                  <TableBody className={styles.body}>
+                    {sortedImpacts.map(impact => (
+                      <TableRow key={impact} className={styles.row}>
+                        <TableCell>{impact.name}</TableCell>
+                        <TableCell>{impact.effect}</TableCell>
+                        {getStrengthText(styles, impact.strength)}
+                        <TableCell>{impact.notification}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+          );
+        })}
+      </div>
+    </ChartWrapper>
   );
 };
 
