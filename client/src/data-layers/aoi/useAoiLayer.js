@@ -42,7 +42,11 @@ export const useAoiLayer = ({
     }
   }, [isDrawingAoi]);
 
-  const onEdit = ({ updatedData }) => dispatch(setAoiFeatures(updatedData));
+  const onEdit = ({ updatedData }) => {
+    const { type, features } = updatedData;
+    const newAoiFeatures = features[features.length - 1];
+    return dispatch(setAoiFeatures({ type, features: newAoiFeatures }));
+  };
 
   const onClick = ({ index, isGuide }) => {
     if (!isDrawingAoi || isGuide) {
@@ -50,7 +54,6 @@ export const useAoiLayer = ({
     }
 
     setSelectedFeatureIndexes([index]);
-
     setAoiDrawMode('ViewMode');
   };
 

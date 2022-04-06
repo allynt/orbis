@@ -437,7 +437,7 @@ describe('AOIs Slice', () => {
           setAoiFeatures(featureCollection),
         );
 
-        expect(result.aoi).toEqual(featureCollection.features[0]);
+        expect(result.aoi).toEqual(featureCollection.features);
       });
     });
 
