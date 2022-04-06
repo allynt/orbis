@@ -9,9 +9,10 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  //TableHead,
   TableRow,
   Paper,
+  Typography,
+  TableHead,
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -29,58 +30,75 @@ const useStyles = makeStyles(theme => ({
     height: '15rem',
     margin: 0,
     padding: 0,
-    overflowy: 'scroll',
   },
   body: {},
   box: {},
   tabpanel: {
-    border: '1px solid red',
-    overflow: 'scroll',
+    width: '80%',
   },
-  '& .MuiTabs-scroller': {
-    border: '1px solid red',
-    backgroundColor: '#f00',
-  },
+  '& .MuiTabs-scroller': {},
   table: {},
   row: {
     padding: 0,
     margin: '-1rem',
   },
+  tab: {
+    // border: '1px solid red',
+    textAlign: 'left',
+  },
   tabs: {
-    backgroundColor: '#000',
-    borderRight: `1px solid ${theme.palette.divider}`,
-    border: '1px solid red',
-    width: '15rem',
-    fontSize: '0.5rem',
+    backgroundColor: '#333f48',
+    border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
+      width: '15rem',
+      maxWidth: '15rem',
       fontSize: 12,
     },
-
     '& .Mui-selected': {
-      textDecoration: 'underline',
+      fontWeight: 800,
+      color: 'white',
       backgroundColor: theme.palette.background.paper,
     },
   },
   minus3: {
     color: '#f03b30',
+    border: '1px solid #333f48',
   },
   minus2: {
     color: '#f67971',
+    border: '1px solid #333f48',
   },
   minus1: {
     color: '#eda46c',
+    border: '1px solid #333f48',
   },
   zero: {
     color: '#d8c06a',
+    border: '1px solid #333f48',
   },
   plus1: {
     color: '#c7d99f',
+    border: '1px solid #333f48',
   },
   plus2: {
     color: '#b3d567',
+    border: '1px solid #333f48',
   },
   plus3: {
     color: '#7ef664',
+    border: '1px solid #333f48',
+  },
+  headerone: {
+    width: '25%',
+    fontSize: '1.0rem',
+  },
+  headerother: {
+    width: '18.75%',
+    fontSize: '1.0rem',
+  },
+  tablecell: {
+    width: '25%',
+    border: '1px solid #333f48',
   },
 }));
 
@@ -139,6 +157,36 @@ const ImpactFeatureDetailsNav = () => {
       title="Impact Detail By Feature"
       info="Impact Detail By Feature Description"
     >
+      <Typography variant="body1">
+        The table below shows the impact of your proposal in more detail. Click
+        a feature to see more information about the impacts on that feature.
+      </Typography>
+      <br />
+
+      <TableContainer component={Paper}>
+        <Table className={styles.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell className={styles.headerone} align="left">
+                Feature
+              </TableCell>
+              <TableCell className={styles.headerother} align="left">
+                Activity
+              </TableCell>
+              <TableCell className={styles.headerother} align="left">
+                Effect
+              </TableCell>
+              <TableCell className={styles.headerother} align="left">
+                Strength
+              </TableCell>
+              <TableCell className={styles.headerother} align="left">
+                Notifications
+              </TableCell>
+            </TableRow>
+          </TableHead>
+        </Table>
+      </TableContainer>
+
       <div className={styles.root}>
         <Tabs
           orientation="vertical"
@@ -149,7 +197,7 @@ const ImpactFeatureDetailsNav = () => {
           className={styles.tabs}
         >
           {mockdata.map(item => (
-            <Tab key={item} label={item.name} />
+            <Tab key={item} className={styles.tab} label={item.name} />
           ))}
         </Tabs>
 
@@ -169,10 +217,16 @@ const ImpactFeatureDetailsNav = () => {
                   <TableBody className={styles.body}>
                     {sortedImpacts.map(impact => (
                       <TableRow key={impact} className={styles.row}>
-                        <TableCell>{impact.name}</TableCell>
-                        <TableCell>{impact.effect}</TableCell>
+                        <TableCell className={styles.tablecell}>
+                          {impact.name}
+                        </TableCell>
+                        <TableCell className={styles.tablecell}>
+                          {impact.effect}
+                        </TableCell>
                         {getStrengthText(styles, impact.strength)}
-                        <TableCell>{impact.notification}</TableCell>
+                        <TableCell className={styles.tablecell}>
+                          {impact.notification}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
