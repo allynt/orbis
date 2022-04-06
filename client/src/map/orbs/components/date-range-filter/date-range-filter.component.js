@@ -187,7 +187,7 @@ export const DateRangeFilter = ({
         />
       }
     >
-      <form onChange={handleSubmit(onSubmit)}>
+      <div onChange={handleSubmit(onSubmit)}>
         {label ? (
           <InputLabel shrink color="secondary">
             {label}
@@ -208,7 +208,7 @@ export const DateRangeFilter = ({
             </Well>
           </Fade>
         ) : null}
-      </form>
+      </div>
     </Tooltip>
   );
 };
