@@ -49,6 +49,9 @@ const DescriptionInput = ({ register, data, filterActivities }) => {
       </p>
 
       <TextField
+        id="description"
+        name="description"
+        {...register('description')}
         InputProps={{
           disableUnderline: true,
           className: styles.input,
@@ -95,7 +98,7 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     setValue,
     formState: { errors, isDirty },
   } = useForm({
-    defaultValues: { startDate: today, endDate: today },
+    defaultValues: { startDate: today, endDate: today, activities: [] },
     resolver: yupResolver(validationSchema),
   });
 
@@ -117,10 +120,7 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     setValue('endDate', range.endDate, { shouldValidate: true });
   };
 
-  const doSubmit = form => {
-    console.log('form', form);
-    // onSubmit(form);
-  };
+  const doSubmit = form => onSubmit(form);
 
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
@@ -150,6 +150,7 @@ const AssessmentDialogForm = ({ onSubmit }) => {
         <Form.Row>
           <FieldWrapper title="Select activities">
             <AssessmentsShuttle
+              setValue={setValue}
               data={getRandomSelectionOfActivities()}
               selectedActivity={'Some activity'}
             />
