@@ -80,7 +80,7 @@ const DateRange = ({ onChange }) => {
   );
 };
 
-const AssessmentDialogForm = ({ onSubmit }) => {
+const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const styles = useStyles();
 
   const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
@@ -98,7 +98,12 @@ const AssessmentDialogForm = ({ onSubmit }) => {
     setValue,
     formState: { errors, isDirty },
   } = useForm({
-    defaultValues: { startDate: today, endDate: today, activities: [] },
+    defaultValues: {
+      startDate: today,
+      endDate: today,
+      activities: [],
+      geometry: selectedAoi?.geometry,
+    },
     resolver: yupResolver(validationSchema),
   });
 

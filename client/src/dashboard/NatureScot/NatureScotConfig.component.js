@@ -4,6 +4,8 @@ import { Button, makeStyles, Tab, Tabs } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { selectedAoiSelector } from 'data-layers/aoi/aoi.slice';
+
 import AssessmentTable from './assessments/assessments-table.component';
 import Charts from './charts/charts.component';
 import AssessmentDialog from './dialog/assessment-dialog.component';
@@ -118,6 +120,7 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
 
+  const selectedAoi = useSelector(selectedAoiSelector);
   const impactAssessment = useSelector(impactAssessmentSelector);
 
   const submitAssessment = form => {
@@ -148,7 +151,9 @@ const NatureScotDashboard = ({ sourceId }) => {
         </Button>
       </Tabs>
 
-      {visibleTab === PANELS.data && <Charts sourceId={sourceId} />}
+      {visibleTab === PANELS.data && (
+        <Charts sourceId={sourceId} selectedAoi={selectedAoi} />
+      )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable data={ASSESSMENT_DATA} />
       )}
@@ -159,6 +164,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
+        selectedAoi={selectedAoi}
       />
     </div>
   );

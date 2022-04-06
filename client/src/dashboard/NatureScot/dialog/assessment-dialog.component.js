@@ -41,6 +41,7 @@ const AssessmentDialog = ({
   close,
   onSubmit,
   results,
+  selectedAoi,
 }) => {
   const styles = useStyles();
 
@@ -82,7 +83,7 @@ const AssessmentDialog = ({
             </span>
             Applications should continue to be made to NatureScot.
           </p>
-          <AssessmentDialogForm onSubmit={onSubmit} />
+          <AssessmentDialogForm onSubmit={onSubmit} selectedAoi={selectedAoi} />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
