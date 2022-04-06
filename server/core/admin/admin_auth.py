@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin, messages
@@ -9,6 +11,7 @@ from django.shortcuts import render
 from django.urls import path, reverse
 from django.utils.html import format_html
 
+from allauth.account import app_settings as allauth_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress
 
@@ -273,6 +276,8 @@ class AuthCustomerUserAdmin(
         "user",
         "customer_user_type",
         "customer_user_status",
+        "invitation_date",
+        "invitation_expiry_date_for_detail_display",
     )
     list_display = (
         "id_for_list_display",
@@ -286,6 +291,8 @@ class AuthCustomerUserAdmin(
     readonly_fields = (
         "customer",
         "user",
+        "invitation_date",
+        "invitation_expiry_date_for_detail_display",
     )
     search_fields = (
         "customer__name",
@@ -320,6 +327,15 @@ class AuthCustomerUserAdmin(
     @admin.display(description="IS VERIFIED", boolean=True)
     def is_verified_for_list_display(self, instance):
         return instance.user.is_verified
+
+    @admin.display(description="Invitation expiry date")
+    def invitation_expiry_date_for_detail_display(self, instance):
+        DATETIME_FORMAT = "%-d %b %Y, %I:%M %p"
+        if instance.invitation_date:
+            invitation_expiry_date = instance.invitation_date + timedelta(
+                days=allauth_settings.EMAIL_CONFIRMATION_EXPIRE_DAYS
+            )
+            return invitation_expiry_date.strftime(DATETIME_FORMAT)
 
     def get_urls(self):
         # adding some "local" urls to map to the "register_customer_user" action below
