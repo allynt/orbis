@@ -105,8 +105,8 @@ const ExpandableTable = ({
 
               return (
                 // eslint-disable-next-line react/jsx-key
-                <React.Fragment {...row.getRowProps()}>
-                  <TableRow>
+                <React.Fragment key={row.original.name}>
+                  <TableRow {...row.getRowProps()}>
                     {row.cells.map(cell => {
                       return (
                         // eslint-disable-next-line react/jsx-key
@@ -117,26 +117,10 @@ const ExpandableTable = ({
                     })}
                   </TableRow>
 
-                  {/*
-                    If the row is in an expanded state, render a row with a
-                    column that fills the entire length of the table.
-                  */}
                   {row.isExpanded ? (
                     <TableRow>
                       <OrbisTableCell colSpan={visibleColumns.length}>
-                        {/*
-                          Inside it, call our renderRowSubComponent function. In reality,
-                          you could pass whatever you want as props to
-                          a component like this, including the entire
-                          table instance. But for this example, we'll just
-                          pass the row
-                        */}
-                        {console.log('Yet another ROW DATA: ', row)}
                         {renderRowSubComponent({ row })}
-                        {/* {() => {
-                          console.log('PASSING DATA ROW: ', row);
-                          return renderRowSubComponent({ row });
-                        }} */}
                       </OrbisTableCell>
                     </TableRow>
                   ) : null}
