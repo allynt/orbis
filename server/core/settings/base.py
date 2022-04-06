@@ -396,7 +396,7 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGOUT_ON_GET = False
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "sentinel"]
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = DynamicSetting(
-    "astrosat_users.UserSettings.verify_email_timeout", 3
+    "astrosat_users.UserSettings.email_token_timeout", 3
 )
 REST_AUTH_TOKEN_MODEL = "knox.models.AuthToken"
 REST_AUTH_TOKEN_CREATOR = "astrosat_users.utils.create_knox_token"
@@ -461,7 +461,9 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptPasswordHasher",
 ]
 
-PASSWORD_RESET_TIMEOUT = 604800  # (7 days in seconds); default is 259200 (3 days in seconds)
+PASSWORD_RESET_TIMEOUT = DynamicSetting(
+    "astrosat_users.UserSettings.password_token_timeout", 3 * 86400
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
