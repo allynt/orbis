@@ -13,6 +13,7 @@ import {
   Paper,
   Typography,
   TableHead,
+  Grid,
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -33,6 +34,10 @@ const useStyles = makeStyles(theme => ({
   },
   body: {},
   box: {},
+  grid: {
+    border: '5px solid #333f48',
+    borderRadius: '3px',
+  },
   tabpanel: {
     width: '80%',
   },
@@ -56,6 +61,7 @@ const useStyles = makeStyles(theme => ({
     '& .Mui-selected': {
       fontWeight: 800,
       color: 'white',
+      marginTop: '1px',
       backgroundColor: theme.palette.background.paper,
     },
     '& .MuiTab-wrapper': {
@@ -63,8 +69,9 @@ const useStyles = makeStyles(theme => ({
       alignItems: 'start',
     },
     '& .MuiTabs-indicator': {
-      // this is the tab stripe
+      // this is the animated tab stripe, dont want this
       border: '0px',
+      display: 'none',
       backgroundColor: '#333f48',
     },
   },
@@ -97,10 +104,12 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #333f48',
   },
   headerone: {
+    backgroundColor: '#3e4952',
     width: '25%',
     fontSize: '1.0rem',
   },
   headerother: {
+    backgroundColor: '#3e4952',
     width: '18.75%',
     fontSize: '1.0rem',
   },
@@ -110,6 +119,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+// This bit shows the impacts in the table to the right
 export const TabPanel = ({ value, index, children, ...rest }) => (
   <div
     role="tabpanel"
@@ -130,6 +140,7 @@ const ImpactFeatureDetailsNav = () => {
 
   const [tab, setTab] = useState(0);
 
+  // strength table cell defined here
   const getStrengthText = (styles, strength) => {
     const colorScale = [
       styles.minus3,
@@ -163,14 +174,14 @@ const ImpactFeatureDetailsNav = () => {
   return (
     <ChartWrapper
       title="Impact Detail By Feature"
-      info="Impact Detail By Feature Description"
+      info="This widget provides detailed impact information relating to your proposal."
     >
+      {/* preamble */}
       <Typography variant="body1">
         The table below shows the impact of your proposal in more detail. Click
         a feature to see more information about the impacts on that feature.
       </Typography>
-      <br />
-
+      {/* table headings */}
       <TableContainer component={Paper}>
         <Table className={styles.table}>
           <TableHead>
@@ -194,56 +205,58 @@ const ImpactFeatureDetailsNav = () => {
           </TableHead>
         </Table>
       </TableContainer>
-
-      <div className={styles.root}>
-        <Tabs
-          orientation="vertical"
-          variant="scrollable"
-          value={tab}
-          onChange={toggleTab}
-          aria-label="Impact details by feature"
-          className={styles.tabs}
-        >
-          {mockdata.map(item => (
-            <Tab key={item} className={styles.tab} label={item.name} />
-          ))}
-        </Tabs>
-
-        {mockdata.map((item, index) => {
-          const sortedImpacts = item.impacts.sort((a, b) =>
-            a.strength >= b.strength ? 1 : -1,
-          );
-          return (
-            <TabPanel
-              key={item}
-              value={tab}
-              index={index}
-              className={styles.tabpanel}
-            >
-              <TableContainer component={Paper} className={styles.container}>
-                <Table className={styles.table}>
-                  <TableBody className={styles.body}>
-                    {sortedImpacts.map(impact => (
-                      <TableRow key={impact} className={styles.row}>
-                        <TableCell className={styles.tablecell}>
-                          {impact.name}
-                        </TableCell>
-                        <TableCell className={styles.tablecell}>
-                          {impact.effect}
-                        </TableCell>
-                        {getStrengthText(styles, impact.strength)}
-                        <TableCell className={styles.tablecell}>
-                          {impact.notification}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </TabPanel>
-          );
-        })}
-      </div>
+      <Grid container className={styles.grid}>
+        <div className={styles.root}>
+          {/* tabs on the left, feature names */}
+          <Tabs
+            orientation="vertical"
+            variant="scrollable"
+            value={tab}
+            onChange={toggleTab}
+            aria-label="Impact details by feature"
+            className={styles.tabs}
+          >
+            {mockdata.map(item => (
+              <Tab key={item} className={styles.tab} label={item.name} />
+            ))}
+          </Tabs>
+          {/* right-hand table rendered here, most negative first */}
+          {mockdata.map((item, index) => {
+            const sortedImpacts = item.impacts.sort((a, b) =>
+              a.strength >= b.strength ? 1 : -1,
+            );
+            return (
+              <TabPanel
+                key={item}
+                value={tab}
+                index={index}
+                className={styles.tabpanel}
+              >
+                <TableContainer component={Paper} className={styles.container}>
+                  <Table className={styles.table}>
+                    <TableBody className={styles.body}>
+                      {sortedImpacts.map(impact => (
+                        <TableRow key={impact} className={styles.row}>
+                          <TableCell className={styles.tablecell}>
+                            {impact.name}
+                          </TableCell>
+                          <TableCell className={styles.tablecell}>
+                            {impact.effect}
+                          </TableCell>
+                          {getStrengthText(styles, impact.strength)}
+                          <TableCell className={styles.tablecell}>
+                            {impact.notification}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </TabPanel>
+            );
+          })}
+        </div>
+      </Grid>
     </ChartWrapper>
   );
 };
