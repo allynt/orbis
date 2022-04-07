@@ -114,6 +114,7 @@ $ cd ..
 $ docker-compose up --build
 $ docker-compose exec server pipenv run server/manage.py createsuperuser
 $ docker-compose exec server pipenv run server/manage.py force_verification --username <superuser>
+$ docker-compose exec server pipenv run server/manage.py force_group_membership --groups admingroup coreadmingroup --username <superuser>
 ```
 
 To view all API endpoints, navigate to "localhost:8000/api/swagger"

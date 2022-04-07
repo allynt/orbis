@@ -129,19 +129,19 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:9d8ddfefe0c4a993423e2c40831034c78fcb7b3425bf3610cf0087301dd9098b",
-                "sha256:c06b9b29f80da8cf6d9fac8f41d74a74d0f5347927acf11b15428b295fcbdd31"
+                "sha256:4fb810755bca4696effbeb0c6f792295795fae52e895638038dff53965f3f423",
+                "sha256:ab6e001ba9de1db986634424abff6c79d938c15d0d2fa3ef95eb0939c120b4f6"
             ],
             "index": "pypi",
-            "version": "==1.21.33"
+            "version": "==1.21.35"
         },
         "botocore": {
             "hashes": [
-                "sha256:16ca4a2b72fef8caaf0eeb423dbf6cd64938442c4b9f96deb672468229e5e3f9",
-                "sha256:ea5fd180082030a6c33fa19bf011d72970f3ed23cfff1b41413069e325768103"
+                "sha256:36b5422d8f0c312983582b8b4b056c98e1fd6121cb0b2ddb1f67e882e1ae6867",
+                "sha256:734aa598af5d6bc0351e6ecce4a91b0b6ccf245febfd8d4de8425211aada5f36"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==1.24.33"
+            "version": "==1.24.35"
         },
         "brotli": {
             "hashes": [
@@ -221,11 +221,11 @@
         },
         "celery": {
             "hashes": [
-                "sha256:19247ba189b72f82cf387fe5130f8d972f1c41255f87002f3198452849bf3a97",
-                "sha256:1f31c196e61dde344e322f9c0d33d1bb88c0dbaccbab5019fbb519a43d44706d"
+                "sha256:d1398cadf30f576266b34370e28e880306ec55f7a4b6307549b0ae9c15663481",
+                "sha256:da31f8eae7607b1582e5ee2d3f2d6f58450585afd23379491e3d9229d08102d0"
             ],
             "index": "pypi",
-            "version": "==5.2.5"
+            "version": "==5.2.6"
         },
         "certifi": {
             "hashes": [
@@ -432,7 +432,7 @@
         "django-astrosat-users": {
             "editable": true,
             "git": "https://github.com/astrosat/django-astrosat-users.git",
-            "ref": "e9f2673cdfee721a19d23d22fe164d8e748f6c57"
+            "ref": "92d91f736e35a4e93991902b0cbb603c26d24728"
         },
         "django-celery-beat": {
             "hashes": [
@@ -1890,11 +1890,11 @@
         },
         "pylint": {
             "hashes": [
-                "sha256:7cc6d0c4f61dff440f9ed8b657f4ecd615dcfe35345953eb7b1dc74afe901d7a",
-                "sha256:8672cf7441b81410f5de7defdf56e2d559c956fd0579652f2e0a0a35bea2d546"
+                "sha256:c149694cfdeaee1aa2465e6eaab84c87a881a7d55e6e93e09466be7164764d1e",
+                "sha256:dab221658368c7a05242e673c275c488670144123f4bd262b2777249c1c0de9b"
             ],
             "index": "pypi",
-            "version": "==2.13.4"
+            "version": "==2.13.5"
         },
         "pyparsing": {
             "hashes": [
