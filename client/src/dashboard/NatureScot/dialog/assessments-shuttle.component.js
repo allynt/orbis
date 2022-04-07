@@ -18,8 +18,8 @@ import {
   AddCircle,
   ArrowBack,
   ArrowForward,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
+  ArrowBackIos,
+  ArrowForwardIos,
 } from '@material-ui/icons';
 
 import ActivityList from './activity-list.component';
@@ -147,10 +147,17 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
   const [onlyProposals, setOnlyProposals] = useState(true);
+  const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
+  const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
   useEffect(() => setLeft(data), [data]);
+
+  useEffect(() => {
+    setChooseAllDisabledButton(left.length === 0);
+    setRemoveAllDisabledButton(right.length === 0);
+  }, [left, setChooseAllDisabledButton, right, setRemoveAllDisabledButton]);
 
   const getFilteredLeft = () => {
     let filterList = [];
@@ -173,7 +180,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
     );
   };
 
-  const handleSearch = searchtext => setSearchString(searchtext);
+  const handleSearch = searchText => setSearchString(searchText);
 
   const getCountAvailableProposals = () =>
     getFilteredLeft().filter(item => item.proposed).length;
@@ -447,10 +454,12 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           xs={5}
         >
           <Button
-            endIcon={<ArrowRightOutlined size="medium" />}
+            endIcon={<ArrowForwardIos size="small" />}
             onClick={() => chooseAll()}
             className={styles.chooseAllButton}
             size="small"
+            variant="text"
+            disabled={chooseAllDisabledButton}
           >
             Choose all
           </Button>
@@ -467,10 +476,12 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           xs={5}
         >
           <Button
-            startIcon={<ArrowLeftOutlined size="medium" />}
+            startIcon={<ArrowBackIos size="small" />}
             size="small"
+            variant="text"
             onClick={() => removeAll()}
             className={styles.removeAllButton}
+            disabled={removeAllDisabledButton}
           >
             Remove all
           </Button>
