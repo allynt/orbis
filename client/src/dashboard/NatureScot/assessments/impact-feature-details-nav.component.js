@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabpanel: {
     width: '80%',
+    height: '15rem',
   },
   '& .MuiTabs-scroller': {},
   table: {},
@@ -52,6 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     backgroundColor: '#333f48',
+    height: '15rem',
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
       width: '15rem',

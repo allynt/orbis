@@ -84,6 +84,30 @@ const mockdata = [
       },
     ],
   },
+  {
+    name: 'Featue3 is empty',
+    impacts: [],
+  },
+  {
+    name: 'Featue4 is empty',
+    impacts: [],
+  },
+  {
+    name: 'Featue5 is empty',
+    impacts: [],
+  },
+  {
+    name: 'Featue6 is empty',
+    impacts: [],
+  },
+  {
+    name: 'Featue7 is empty',
+    impacts: [],
+  },
+  {
+    name: 'Featue8 is empty',
+    impacts: [],
+  },
 ];
 
 export default mockdata;
