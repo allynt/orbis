@@ -1,3 +1,22 @@
+# [2.35.0](https://github.com/astrosat/orbis/compare/v2.34.1...v2.35.0) (2022-04-07)
+
+
+### Bug Fixes
+
+* **frontend:** Fix drawing tools ([eb9da33](https://github.com/astrosat/orbis/commit/eb9da3319d3dd40470068913db95c89f3bb13779))
+* **frontend:** fixed NS dashboard scrolling bar ([e970a73](https://github.com/astrosat/orbis/commit/e970a73895601b19f81b090bb72af0689ddc4f35))
+* **frontend:** Make dialog full screen ([a9a6613](https://github.com/astrosat/orbis/commit/a9a66139588badab50142aedba2b8cd50b8cdb64))
+* **frontend:** Refactor onEdit handler ([6854647](https://github.com/astrosat/orbis/commit/685464791f4bae4c51fdf7d5272612d779013327))
+* **frontend:** Refactor ternary ([ea30ce0](https://github.com/astrosat/orbis/commit/ea30ce05d7cae78a0c4def0937c505aad9d509d1))
+* **frontend:** Update slice test ([b296dbe](https://github.com/astrosat/orbis/commit/b296dbeddf52c40039df0b58a385626fe409c04d))
+
+
+### Features
+
+* **backend:** added an action to allow admins to re-send a CustomerUser ([9524df3](https://github.com/astrosat/orbis/commit/9524df327ea000283b2cc9a80e4b7edf3d5daca6))
+* **backend:** updated email and password token expiry ([02e8382](https://github.com/astrosat/orbis/commit/02e83823650b34ac0bc0ed3081b2ff2be1e6a7af))
+* **frontend:** Re-organise dialog and add basic results ([368d693](https://github.com/astrosat/orbis/commit/368d693858af072ccb78cd55cd8ac4ffd95b5e41))
+
 ## [2.34.1](https://github.com/astrosat/orbis/compare/v2.34.0...v2.34.1) (2022-03-31)
 
 
