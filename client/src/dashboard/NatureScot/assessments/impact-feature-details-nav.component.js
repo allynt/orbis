@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     height: '15rem',
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
-      width: '15rem',
+      width: '20%',
       maxWidth: '15rem',
       fontSize: 12,
     },
