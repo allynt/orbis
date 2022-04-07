@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssessmentsShuttle = ({ setValue, data, selectedActivity }) => {
+const AssessmentsShuttle = ({ setValue, data }) => {
   const styles = useStyles();
 
   const [left, setLeft] = useState(data);
@@ -140,6 +140,8 @@ const AssessmentsShuttle = ({ setValue, data, selectedActivity }) => {
   const [onlyProposals, setOnlyProposals] = useState(false);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
+
+  useEffect(() => setLeft(data), [data]);
 
   const getFilteredLeft = () => {
     let filterList = [];

@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { Form } from 'components';
-import { ACTIVITIES } from 'dashboard/mock-data/NatureScot/activities-mock-data';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
+import {
+  impactActivitiesSelector,
+  fetchImpactActivities,
+} from '../nature-scot.slice';
 import { FieldWrapper } from './assessment-field-wrapper.component';
 import AssessmentsShuttle from './assessments-shuttle.component';
+
+const today = new Date().toISOString();
 
 const validationSchema = yup.object({
   description: yup.string(),
@@ -34,9 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const today = new Date().toISOString();
-
-const DescriptionInput = ({ register, data, filterActivities }) => {
+const DescriptionInput = ({ register }) => {
   const styles = useStyles();
 
   return (
@@ -58,7 +62,6 @@ const DescriptionInput = ({ register, data, filterActivities }) => {
         }}
         maxLength={150}
         focused
-        onChange={filterActivities}
       />
     </FieldWrapper>
   );
@@ -82,19 +85,16 @@ const DateRange = ({ onChange }) => {
 
 const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
 
   const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
-  const [activities, setActivities] = useState(null);
-  const [filteredActivities, setFilteredActivities] = useState(null);
 
-  useEffect(() => {
-    // Get full list of activities.
-    setActivities(ACTIVITIES);
-  }, [setActivities]);
+  const activities = useSelector(impactActivitiesSelector);
 
   const {
     register,
     handleSubmit,
+    getValues,
     setValue,
     formState: { errors, isDirty },
   } = useForm({
@@ -107,22 +107,15 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleFilterActivities = filter => {
-    const filteredActivities = activities.filter(activity =>
-      activity.label.includes(filter),
-    );
-
-    setFilteredActivities(filteredActivities);
-  };
-
-  const getRandomSelectionOfActivities = () => {
-    // TODO: placeholder, temp filter to retrieve 15% of rows
-    return activities.filter(activity => activity && Math.random() > 0.85);
-  };
-
   const handleDateRangeSelection = range => {
     setValue('startDate', range.startDate, { shouldValidate: true });
     setValue('endDate', range.endDate, { shouldValidate: true });
+  };
+
+  const handleFetchActivities = () => {
+    const form = getValues();
+    dispatch(fetchImpactActivities(form));
+    setAreActivitiesVisible(!areActivitiesVisible);
   };
 
   const doSubmit = form => onSubmit(form);
@@ -130,11 +123,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
-        <DescriptionInput
-          register={register}
-          data={activities}
-          filterActivities={event => handleFilterActivities(event.target.value)}
-        />
+        <DescriptionInput register={register} />
       </Form.Row>
 
       <Form.Row>
@@ -143,9 +132,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
       <Form.Row>
         <div className={styles.row}>
-          <Button
-            onClick={() => setAreActivitiesVisible(!areActivitiesVisible)}
-          >
+          <Button onClick={() => handleFetchActivities()}>
             Show proposed activities
           </Button>
         </div>
@@ -154,11 +141,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
       {areActivitiesVisible ? (
         <Form.Row>
           <FieldWrapper title="Select activities">
-            <AssessmentsShuttle
-              setValue={setValue}
-              data={getRandomSelectionOfActivities()}
-              selectedActivity={'Some activity'}
-            />
+            <AssessmentsShuttle setValue={setValue} data={activities} />
           </FieldWrapper>
         </Form.Row>
       ) : null}

@@ -13,7 +13,7 @@ describe('AssessmentDialog', () => {
     onSubmit = jest.fn();
   });
 
-  xit('should not show the dialog', () => {
+  it('should not show the dialog', () => {
     render(
       <AssessmentDialog
         open={false}
