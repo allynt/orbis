@@ -43,7 +43,6 @@ const useStyles = makeStyles(theme => ({
     margin: '-1rem',
   },
   tab: {
-    // border: '1px solid red',
     textAlign: 'left',
   },
   tabs: {
@@ -58,6 +57,15 @@ const useStyles = makeStyles(theme => ({
       fontWeight: 800,
       color: 'white',
       backgroundColor: theme.palette.background.paper,
+    },
+    '& .MuiTab-wrapper': {
+      // the tab itself
+      alignItems: 'start',
+    },
+    '& .MuiTabs-indicator': {
+      // this is the tab stripe
+      border: '0px',
+      backgroundColor: '#333f48',
     },
   },
   minus3: {
