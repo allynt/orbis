@@ -5,7 +5,7 @@ export class NatureScotClient extends SubClient {
     super('/proxy/data');
   }
 
-  async getImpactAssessment(url, form, options = {}) {
+  async getImpactData(url, form, options = {}) {
     const response = await this.makeAuthenticatedRequest(url, {
       ...options,
       method: 'POST',
