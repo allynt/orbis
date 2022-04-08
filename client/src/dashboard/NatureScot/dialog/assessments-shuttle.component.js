@@ -56,9 +56,9 @@ const useStyles = makeStyles(theme => ({
   placeholder: {
     backgroundColor: theme.palette.background.default,
     borderRadius: '5px',
-    width: '30ch',
+    width: '90%',
     height: '2rem',
-    padding: '3px',
+    paddingLeft: '1rem',
   },
   listTitle: {
     padding: '1rem',
@@ -71,17 +71,9 @@ const useStyles = makeStyles(theme => ({
   nudge: {
     marginLeft: '0.75rem',
   },
-  searchField: {
-    margin: '0rem',
-    paddingTop: '1rem',
-    paddingBottom: '0rem',
-  },
   nudge2: {
     marginLeft: '1rem',
     marginBottom: '0.5rem',
-  },
-  inputbox: {
-    width: '80%',
   },
   circle: {
     borderRadius: '50%',
@@ -134,6 +126,10 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '10px',
     paddingTop: '10px',
     marginLeft: '1rem',
+  },
+  filterField: {
+    paddingBottom: '1rem',
+    marginLeft: '0.75rem',
   },
 }));
 
@@ -336,25 +332,19 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               wrap="nowrap"
               className={styles.nudge}
             >
-              <MagnifierIcon
-                fontSize="small"
-                color="primary"
-                style={{ paddingTop: '3px' }}
-              />
+              <MagnifierIcon fontSize="small" color="primary" />
               <TextField
                 id="search"
                 name="search"
                 margin="normal"
-                placeholder="Type ahead..."
-                variant="filled"
+                label="Type ahead..."
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.nudge}
+                className={styles.filterField}
                 value={searchString}
                 onChange={e => handleSearch(e.target.value)}
-                focused
               />
             </Grid>
             <Divider />
@@ -424,15 +414,13 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 name="search"
                 margin="normal"
                 value={newActivityText}
-                placeholder="Add a new Activity"
+                label="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.searchField}
                 maxLength={50}
                 onChange={e => setNewActivityText(e.target.value)}
-                focused
               />
             </Grid>
             <Divider />
