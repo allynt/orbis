@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button,
@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssessmentsShuttle = ({ data, selectedActivity }) => {
+const AssessmentsShuttle = ({ setValue, data }) => {
   const styles = useStyles();
 
   const [left, setLeft] = useState(data);
@@ -138,6 +138,10 @@ const AssessmentsShuttle = ({ data, selectedActivity }) => {
   const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
   const [onlyProposals, setOnlyProposals] = useState(false);
+
+  useEffect(() => setValue('activities', right), [right, setValue]);
+
+  useEffect(() => setLeft(data), [data]);
 
   const getFilteredLeft = () => {
     let filterList = [];

@@ -13,8 +13,15 @@ describe('AssessmentDialog', () => {
     onSubmit = jest.fn();
   });
 
-  xit('should not show the dialog', () => {
-    render(<AssessmentDialog open={false} close={close} onSubmit={onSubmit} />);
+  it('should not show the dialog', () => {
+    render(
+      <AssessmentDialog
+        open={false}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+      />,
+    );
 
     expect(
       screen.queryByRole('heading', {
@@ -27,7 +34,14 @@ describe('AssessmentDialog', () => {
   });
 
   it('should show the dialog', () => {
-    render(<AssessmentDialog open={true} close={close} onSubmit={onSubmit} />);
+    render(
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+      />,
+    );
 
     expect(
       screen.getByRole('heading', {

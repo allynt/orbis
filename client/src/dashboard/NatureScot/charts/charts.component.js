@@ -11,7 +11,6 @@ import { useSortBy } from 'react-table';
 
 import apiClient from 'api-client';
 import ExpandableTable from 'components/table/expandable/expandable-table.component';
-import { selectedAoiSelector } from 'data-layers/aoi/aoi.slice';
 import {
   dataSourceByIdSelector,
   selectDataToken,
@@ -81,7 +80,7 @@ const COLUMNS = [
   },
 ];
 
-const Charts = ({ sourceId }) => {
+const Charts = ({ sourceId, selectedAoi }) => {
   const styles = useStyles();
 
   const [nearestProtectedAreas, setNearestProtectedAreas] = useState([]);
@@ -89,7 +88,6 @@ const Charts = ({ sourceId }) => {
   const [protectedFeatures, setProtectedFeatures] = useState([]);
   const [contactDetails, setContactDetails] = useState({});
 
-  const selectedAoi = useSelector(selectedAoiSelector);
   const source = useSelector(dataSourceByIdSelector(sourceId));
   const authTokens = useSelector(selectDataToken);
 
