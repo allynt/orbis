@@ -5,14 +5,14 @@ const mockdata = [
       {
         name: 'Woodland Thinning',
         effect: 'disturbance',
-        strength: -2,
+        strength: -3,
         notification:
-          'Mitigation : undertake woodland thinning outside of the nesting season',
+          'Mitigation : undertake woodland thinning outside of the nesting season. undertake woodland thinning outside of the nesting season. ',
       },
       {
         name: 'Outhouse construction',
         effect: 'disruption',
-        strength: -3,
+        strength: -2,
         notification:
           'Mitigation : undertake outhouse construction outside of the nesting season',
       },
@@ -26,7 +26,7 @@ const mockdata = [
       {
         name: 'Woodland Changing',
         effect: 'disturbance',
-        strength: -1,
+        strength: 0,
         notification:
           'Mitigation : undertake woodland thinning outside of the nesting season',
       },
@@ -40,21 +40,21 @@ const mockdata = [
       {
         name: 'Outhouse Budgerigar',
         effect: 'disruption',
-        strength: -1,
+        strength: 1,
         notification:
           'Protection: Proposal location is adjacent to SSSI 1186 Moorfoot Hills citing breeding bird assemblage as a protected feature.',
       },
       {
         name: 'Woodland Thinking',
         effect: 'disturbance',
-        strength: 0,
+        strength: 3,
         notification:
           'Mitigation : undertake woodland thinning outside of the nesting season',
       },
       {
         name: 'Outhouse Building',
         effect: 'disruption',
-        strength: 2,
+        strength: 3,
         notification:
           'Mitigation : undertake outhouse construction outside of the nesting season',
       },
