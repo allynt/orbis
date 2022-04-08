@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemText,
   Box,
+  useTheme,
 } from '@astrosat/astrosat-ui';
 
 import { Button } from '@material-ui/core';
@@ -38,6 +39,7 @@ const ActivityList = ({
   onDelete,
 }) => {
   const styles = useStyles();
+  const theme = useTheme();
 
   // notify parent via callbacks
 
@@ -69,6 +71,7 @@ const ActivityList = ({
                 primary={activity.label}
                 primaryTypographyProps={{
                   style: {
+                    color: theme.palette.primary.main,
                     fontWeight: activity.proposed ? 'bold' : 'normal',
                   },
                 }}
