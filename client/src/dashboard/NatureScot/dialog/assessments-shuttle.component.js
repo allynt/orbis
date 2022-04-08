@@ -134,6 +134,15 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: '1rem',
     marginLeft: '0.75rem',
   },
+  blueCircle: {
+    borderRadius: '50%',
+    backgroundColor: theme.palette.info.main,
+    width: '2rem',
+    height: '2rem',
+    color: theme.palette.secondary.main,
+    margin: '0rem 0.5rem',
+    padding: '0.1rem',
+  },
 }));
 
 const AssessmentsShuttle = ({ setValue, data }) => {
@@ -337,8 +346,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             >
               <MagnifierIcon fontSize="small" color="primary" />
               <TextField
-                id="search"
-                name="search"
                 margin="normal"
                 label="Type ahead..."
                 InputProps={{
@@ -374,14 +381,18 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Grid xs={12} className={styles.capsuleBox}>
               <ArrowForward
-                className={styles.circle}
+                className={`${styles.circle} ${
+                  leftSelected.length > 0 ? styles.blueCircle : ''
+                }`}
                 onClick={() => chooseSelected()}
                 fontSize="large"
               />
             </Grid>
             <Grid xs={12} className={styles.capsuleBox}>
               <ArrowBack
-                className={styles.circle}
+                className={`${styles.circle} ${
+                  rightSelected.length > 0 ? styles.blueCircle : ''
+                }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
               />
