@@ -66,7 +66,7 @@ const AssessmentDialog = ({
       </IconButton>
 
       <div className={styles.content}>
-        <h4>Welcome to the Impact Assessment functionality for Eco-an-Alba.</h4>
+        <h3>Welcome to the Impact Assessment functionality for Eco-an-Alba.</h3>
 
         <Tabs value={tab} onChange={toggleTab}>
           <Tab label="Form" />
