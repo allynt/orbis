@@ -77,16 +77,16 @@ const useStyles = makeStyles(theme => ({
   },
   circle: {
     borderRadius: '50%',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: theme.palette.text.primary,
     width: '2rem',
     height: '2rem',
-    color: '#333f48',
+    color: theme.palette.secondary.main,
     margin: '0rem 0.5rem',
     padding: '0.1rem',
   },
   capsuleTop: {
     width: '3rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     borderTopLeftRadius: '50px',
     borderTopRightRadius: '50px',
     position: 'relative',
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
   },
   capsuleBottom: {
     width: '3rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     borderBottomLeftRadius: '50px',
     borderBottomRightRadius: '50px',
     position: 'relative',
@@ -106,21 +106,24 @@ const useStyles = makeStyles(theme => ({
   },
   capsuleBox: {
     height: '2.6rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     zIndex: 9999,
   },
   chooseAllButton: {
     marginTop: '1em',
-    backgroundColor: '#333f48',
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff',
   },
   removeAllButton: {
     marginTop: '1em',
-    backgroundColor: '#333f48',
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff',
   },
   plusIcon: {
     marginRight: '0.75rem',
+  },
+  newActivity: {
+    color: theme.palette.primary.main,
   },
   checkbox: {
     paddingBottom: '10px',
@@ -356,6 +359,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             />
           </Card>
         </Grid>
+
         {/* arrows in middle */}
         <Grid
           container
@@ -407,11 +411,11 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               <AddCircle
                 onClick={addActivity}
                 fontSize="small"
-                className={styles.plusIcon}
+                className={`${styles.plusIcon} ${
+                  newActivityText ? styles.newActivity : ''
+                }`}
               />
               <TextField
-                id="search"
-                name="search"
                 margin="normal"
                 value={newActivityText}
                 label="Add a new Activity"
@@ -433,6 +437,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             />
           </Card>
         </Grid>
+
         {/* footer left 'choose all' */}
         <Grid
           container
@@ -455,6 +460,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         <Grid xs={2}>
           <Typography variant="h2">&nbsp;</Typography>
         </Grid>
+
         {/* footer right 'remove all' */}
         <Grid
           container
