@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
   row: {
     display: 'flex',
     justifyContent: 'center',
+    marginTop: '3rem',
   },
 }));
 
@@ -120,6 +121,12 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
   const doSubmit = form => onSubmit(form);
 
+  const values = getValues();
+  const isSubmitButtonDisabled =
+    values?.description?.length === 0 ||
+    Object.keys(errors).length > 0 ||
+    !isDirty;
+
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
@@ -143,16 +150,14 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
           <FieldWrapper title="Select activities">
             <AssessmentsShuttle setValue={setValue} data={activities} />
           </FieldWrapper>
+
+          <div className={styles.row}>
+            <Button type="submit" disabled={isSubmitButtonDisabled}>
+              Submit Assessment
+            </Button>
+          </div>
         </Form.Row>
       ) : null}
-
-      <Form.Row>
-        <div className={styles.row}>
-          <Button type="submit" disabled={!errors && isDirty}>
-            Submit Assessment
-          </Button>
-        </div>
-      </Form.Row>
     </Form>
   );
 };
