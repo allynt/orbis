@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginTop: '3rem',
   },
+  dateRange: {
+    width: '50%',
+  },
 }));
 
 const DescriptionInput = ({ register }) => {
@@ -79,7 +82,9 @@ const DateRange = ({ onChange }) => {
         change will take place.
       </p>
 
-      <DateRangeFilter onSubmit={onChange} minDate="today" />
+      <div className={styles.dateRange}>
+        <DateRangeFilter onSubmit={onChange} minDate="today" />
+      </div>
     </FieldWrapper>
   );
 };
