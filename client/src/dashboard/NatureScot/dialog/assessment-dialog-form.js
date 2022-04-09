@@ -42,32 +42,50 @@ const useStyles = makeStyles(theme => ({
   dateRange: {
     width: '50%',
   },
+  fieldset: {
+    margin: '2rem 0',
+  },
+  field: {
+    padding: '2rem',
+  },
+  strapline: {
+    fontSize: '0.8125rem',
+  },
 }));
 
 const DescriptionInput = ({ register }) => {
   const styles = useStyles();
 
   return (
-    <FieldWrapper title="Describe Your Development or Change">
-      <p className={styles.descriptionText}>
-        Please provide a basic description of your development or change e.g.{' '}
-        <span className={styles.innerText}>
-          build a burn, convert shed to the house, clear a wood etc.
-        </span>
-      </p>
+    <div className={styles.fieldset}>
+      <FieldWrapper title="Describe Your Development or Change">
+        <div className={styles.field}>
+          <p className={styles.descriptionText}>
+            Please provide a basic description of your development or change
+            e.g.{' '}
+            <span className={styles.innerText}>
+              build a burn, convert shed to the house, clear a wood etc.
+            </span>
+          </p>
 
-      <TextField
-        id="description"
-        name="description"
-        {...register('description')}
-        InputProps={{
-          disableUnderline: true,
-          className: styles.input,
-        }}
-        maxLength={150}
-        focused
-      />
-    </FieldWrapper>
+          <p className={styles.strapline}>
+            Please describe your development or change here
+          </p>
+
+          <TextField
+            id="description"
+            name="description"
+            {...register('description')}
+            InputProps={{
+              disableUnderline: true,
+              className: styles.input,
+            }}
+            maxLength={150}
+            focused
+          />
+        </div>
+      </FieldWrapper>
+    </div>
   );
 };
 
@@ -76,16 +94,20 @@ const DateRange = ({ onChange }) => {
   const title = 'Describe Your Development or Change';
 
   return (
-    <FieldWrapper title={title}>
-      <p className={styles.descriptionText}>
-        Please use the date pickers below to confirm when your development or
-        change will take place.
-      </p>
+    <div className={styles.fieldset}>
+      <FieldWrapper title={title}>
+        <div className={styles.field}>
+          <p className={styles.descriptionText}>
+            Please use the date pickers below to confirm when your development
+            or change will take place.
+          </p>
 
-      <div className={styles.dateRange}>
-        <DateRangeFilter onSubmit={onChange} minDate="today" />
-      </div>
-    </FieldWrapper>
+          <div className={styles.dateRange}>
+            <DateRangeFilter onSubmit={onChange} minDate="today" />
+          </div>
+        </div>
+      </FieldWrapper>
+    </div>
   );
 };
 
@@ -152,14 +174,18 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
       {areActivitiesVisible ? (
         <Form.Row>
-          <FieldWrapper title="Select activities">
-            <AssessmentsShuttle setValue={setValue} data={activities} />
-          </FieldWrapper>
+          <div className={styles.fieldset}>
+            <FieldWrapper title="Select activities">
+              <div className={styles.field}>
+                <AssessmentsShuttle setValue={setValue} data={activities} />
+              </div>
+            </FieldWrapper>
 
-          <div className={styles.row}>
-            <Button type="submit" disabled={isSubmitButtonDisabled}>
-              Submit Assessment
-            </Button>
+            <div className={styles.row}>
+              <Button type="submit" disabled={isSubmitButtonDisabled}>
+                Run impact assessment
+              </Button>
+            </div>
           </div>
         </Form.Row>
       ) : null}
