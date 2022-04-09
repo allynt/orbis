@@ -17,10 +17,14 @@ import {
 import { FieldWrapper } from './assessment-field-wrapper.component';
 import AssessmentsShuttle from './assessments-shuttle.component';
 
-const today = new Date().toISOString();
+const now = new Date();
+const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
 const validationSchema = yup.object({
-  description: yup.string(),
+  description: yup.string().min(3, 'Description must be at least 3 characters'),
+  startDate: yup.date().min(midnight, 'Start date must be today or later'),
+  endDate: yup.date().min(midnight, 'End date must be today or later'),
+  activities: yup.array().min(1, 'At least one activity must be selected'),
 });
 
 const useStyles = makeStyles(theme => ({
@@ -124,11 +128,12 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
     handleSubmit,
     getValues,
     setValue,
-    formState: { errors, isDirty },
+    formState: { isValid },
   } = useForm({
+    mode: 'onChange',
     defaultValues: {
-      startDate: today,
-      endDate: today,
+      startDate: null,
+      endDate: null,
       activities: [],
       geometry: selectedAoi?.geometry,
     },
@@ -149,10 +154,8 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const doSubmit = form => onSubmit(form);
 
   const values = getValues();
-  const isSubmitButtonDisabled =
-    values?.description?.length === 0 ||
-    Object.keys(errors).length > 0 ||
-    !isDirty;
+  const isActivitiesButtonDisabled =
+    !values?.description || !values?.startDate || !values?.endDate;
 
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
@@ -166,7 +169,10 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
       <Form.Row>
         <div className={styles.row}>
-          <Button onClick={() => handleFetchActivities()} disabled={false}>
+          <Button
+            onClick={() => handleFetchActivities()}
+            disabled={isActivitiesButtonDisabled}
+          >
             {areActivitiesVisible ? 'Hide' : 'Show'} activities
           </Button>
         </div>
@@ -182,7 +188,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
             </FieldWrapper>
 
             <div className={styles.row}>
-              <Button type="submit" disabled={isSubmitButtonDisabled}>
+              <Button type="submit" disabled={!isValid}>
                 Run impact assessment
               </Button>
             </div>
