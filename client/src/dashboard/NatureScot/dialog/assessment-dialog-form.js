@@ -144,8 +144,8 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
       <Form.Row>
         <div className={styles.row}>
-          <Button onClick={() => handleFetchActivities()}>
-            Show proposed activities
+          <Button onClick={() => handleFetchActivities()} disabled={false}>
+            {areActivitiesVisible ? 'Hide' : 'Show'} activities
           </Button>
         </div>
       </Form.Row>
