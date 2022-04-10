@@ -36,6 +36,11 @@ from orbis.urls import (
     api_urlpatterns as orbis_api_urlpatterns,
 )
 
+from orbs.eco_an_alba.urls import (
+    urlpatterns as eco_an_alba_urlpatterns,
+    api_urlpatterns as eco_an_alba_api_urlpatterns,
+)
+
 from .views import app_config_view
 
 from core.admin import core_admin_site, default_admin_site_has_permission
@@ -86,6 +91,7 @@ api_urlpatterns += maps_api_urlpatterns
 api_urlpatterns += satellites_api_urlpatterns
 api_urlpatterns += proxy_api_urlpatterns
 api_urlpatterns += orbis_api_urlpatterns
+api_urlpatterns += eco_an_alba_api_urlpatterns
 
 #################
 # normal routes #
@@ -109,6 +115,7 @@ urlpatterns = [
     path("satellites/", include(satellites_urlpatterns)),
     path("proxy/", include(proxy_urlpatterns)),
     path("orbis/", include(orbis_urlpatterns)),
+    path("orbs/eco_an_alba/", include(eco_an_alba_urlpatterns)),
 
     # note: index_view is added at the very end of this module!
 ]
