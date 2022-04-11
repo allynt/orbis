@@ -390,6 +390,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 }`}
                 onClick={() => chooseSelected()}
                 fontSize="large"
+                data-testid="choose activity"
               />
             </Grid>
             <Grid xs={12} className={styles.capsuleBox}>
@@ -399,6 +400,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
+                data-testid="choose selected"
               />
             </Grid>
             <Grid xs={12} className={styles.capsuleBottom}>

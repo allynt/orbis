@@ -83,6 +83,7 @@ const DescriptionInput = ({ register }) => {
             InputProps={{
               disableUnderline: true,
               className: styles.input,
+              'data-testid': 'description',
             }}
             maxLength={150}
             focused
