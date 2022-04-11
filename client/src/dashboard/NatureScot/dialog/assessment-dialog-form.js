@@ -121,18 +121,15 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
   const [isActivitiesButtonDisabled, setIsActivitiesButtonDisabled] =
     useState(true);
+  const [
+    isAssessmentSubmitButtonDisabled,
+    setIsAssessmentSubmitButtonDisabled,
+  ] = useState(true);
   const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
 
   const activities = useSelector(impactActivitiesSelector);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    setValue,
-    formState: { isValid },
-    watch,
-  } = useForm({
+  const { register, handleSubmit, getValues, setValue, watch } = useForm({
     mode: 'onChange',
     defaultValues: {
       startDate: null,
@@ -157,11 +154,18 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const doSubmit = form => onSubmit(form);
 
   useEffect(() => {
-    const subscription = watch(value =>
+    const subscription = watch(value => {
       setIsActivitiesButtonDisabled(
         !value?.description || !value?.startDate || !value?.endDate,
-      ),
-    );
+      );
+
+      setIsAssessmentSubmitButtonDisabled(
+        !value?.description ||
+          !value?.startDate ||
+          !value?.endDate ||
+          value.activities.length === 0,
+      );
+    });
 
     return () => subscription.unsubscribe();
   }, [watch]);
@@ -197,7 +201,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
             </FieldWrapper>
 
             <div className={styles.row}>
-              <Button type="submit" disabled={!isValid}>
+              <Button type="submit" disabled={isAssessmentSubmitButtonDisabled}>
                 Run impact assessment
               </Button>
             </div>
