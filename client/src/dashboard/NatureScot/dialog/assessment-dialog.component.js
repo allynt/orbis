@@ -9,8 +9,9 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { TabPanel } from 'dashboard/NatureScot/tab-panel';
+
 import AssessmentResults from '../assessments/assessment-results.component';
-import { TabPanel } from '../assessments/impact-feature-details.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({

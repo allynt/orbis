@@ -2,9 +2,8 @@ import React from 'react';
 
 import { render, screen, userEvent } from 'test/test-utils';
 
-import ImpactFeatureDetails, {
-  TabPanel,
-} from './impact-feature-details.component';
+import { TabPanel } from '../tab-panel';
+import ImpactFeatureDetails from './impact-feature-details.component';
 
 describe('Impact Feature Details', () => {
   describe('Tabbed Panel', () => {

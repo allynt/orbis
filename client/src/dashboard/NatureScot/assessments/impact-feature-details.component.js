@@ -17,11 +17,10 @@ import {
   Grid,
 } from '@astrosat/astrosat-ui';
 
-import { AddCircle, RemoveCircle, CloudCircle } from '@material-ui/icons';
+import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import mockdata from 'dashboard/mock-data/NatureScot/activity-feature-mock';
-import { styles } from 'map-style/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,14 +28,21 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
     height: 'auto',
+    padding: 0,
   },
   container: {
     height: '15rem',
+    width: '100%',
     margin: 0,
     padding: 0,
+    border: '1px solid red',
   },
-  body: {},
-  box: {},
+  body: {
+    padding: 0,
+  },
+  box: {
+    padding: 0,
+  },
   grid: {
     border: '5px solid #333f48',
     borderRadius: '3px',
@@ -44,12 +50,16 @@ const useStyles = makeStyles(theme => ({
   tabpanel: {
     width: '80%',
     height: '15rem',
+    padding: 0,
+    // border: '1px solid red',
   },
   '& .MuiTabs-scroller': {},
-  table: {},
+  table: {
+    padding: 0,
+  },
   row: {
     padding: 0,
-    margin: '-1rem',
+    margin: 0,
   },
   tab: {
     textAlign: 'left',
@@ -127,14 +137,15 @@ const useStyles = makeStyles(theme => ({
 
 // This bit shows the impacts in the table to the right
 export const TabPanel = ({ value, index, children, ...rest }) => (
-  <div
-    role="tabpanel"
-    className={styles.tabpanel}
-    hidden={value !== index}
-    {...rest}
-  >
+  <div role="tabpanel" hidden={value !== index} {...rest}>
+    {value === index && <Box p={3}>{children}</Box>}
+  </div>
+);
+
+const TablePanel = ({ value, index, children, ...rest }) => (
+  <div role="tabpanel" hidden={value !== index} {...rest}>
     {value === index && (
-      <Box className={styles.box} sx={{ padding: 0 }} p={3}>
+      <Box sx={{ padding: 0 }} p={3}>
         {children}
       </Box>
     )}
@@ -266,12 +277,7 @@ const ImpactFeatureDetails = () => {
               a.strength >= b.strength ? 1 : -1,
             );
             return (
-              <TabPanel
-                key={item}
-                value={tab}
-                index={index}
-                className={styles.tabpanel}
-              >
+              <TablePanel key={item} value={tab} index={index}>
                 <TableContainer component={Paper} className={styles.container}>
                   <Table className={styles.table}>
                     <TableBody className={styles.body}>
@@ -292,7 +298,7 @@ const ImpactFeatureDetails = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </TabPanel>
+              </TablePanel>
             );
           })}
         </div>
