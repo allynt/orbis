@@ -83,6 +83,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.secondary.main,
     margin: '0rem 0.5rem',
     padding: '0.1rem',
+    cursor: 'pointer',
   },
   capsuleTop: {
     width: '3rem',
@@ -121,6 +122,7 @@ const useStyles = makeStyles(theme => ({
   },
   plusIcon: {
     marginRight: '0.75rem',
+    cursor: 'pointer',
   },
   newActivity: {
     color: theme.palette.primary.main,
@@ -142,6 +144,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.secondary.main,
     margin: '0rem 0.5rem',
     padding: '0.1rem',
+    cursor: 'pointer',
   },
 }));
 
