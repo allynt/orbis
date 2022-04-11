@@ -49,4 +49,16 @@ class TestProposalSerializer:
         assert not serializer.is_valid()
         assert serializer.errors['non_field_errors'][0] == "Proposal start date must be before proposal end date"
 
+    def test_proposal_duplicate_activities(self):
+        proposal = ProposalFactory.build(owner=UserFactory())
+        proposal_data = {
+            "created": proposal.created,
+            "modified": proposal.modified,
+            "name": proposal.name,
+            "owner": proposal.owner.uuid,
+            "proposal_activities": ["activity1", "activity1"],
+        }
 
+        serializer = ProposalSerializer(data=proposal_data)
+        assert not serializer.is_valid()
+        assert serializer.errors['proposal_activities'][0] == "Proposal activities cannot contain duplicates: ['activity1']"

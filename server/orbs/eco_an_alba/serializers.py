@@ -42,3 +42,14 @@ class ProposalSerializer(serializers.ModelSerializer):
                 )
 
         return validated_data
+
+    def validate_proposal_activities(self, proposal_activities):
+        duplicates = [activity for activity in proposal_activities if proposal_activities.count(activity) > 1]
+        unique_duplicates = list(set(duplicates))
+
+        if len(unique_duplicates) > 0:
+            raise serializers.ValidationError(
+                f"Proposal activities cannot contain duplicates: {unique_duplicates}"
+            )
+
+        return proposal_activities
