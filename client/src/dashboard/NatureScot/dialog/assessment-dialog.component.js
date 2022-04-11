@@ -10,7 +10,7 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import AssessmentResults from '../assessments/assessment-results.component';
-import { TabPanel } from '../assessments/impact-feature-details-nav.component';
+import { TabPanel } from '../assessments/impact-feature-details.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({

@@ -4,7 +4,7 @@ import { Grid, Typography } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import ImpactFeatureDetailsNav from '../assessments/impact-feature-details-nav.component';
+import ImpactFeatureDetails from './impact-feature-details.component';
 
 const AssessmentResults = () => (
   <Grid container spacing={5}>
@@ -33,7 +33,7 @@ const AssessmentResults = () => (
     </Grid>
     <Grid container item xs={6} spacing={3}></Grid>
     <Grid container item xs={6} spacing={3}>
-      <ImpactFeatureDetailsNav />
+      <ImpactFeatureDetails />
     </Grid>
   </Grid>
 );

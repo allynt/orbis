@@ -141,7 +141,7 @@ export const TabPanel = ({ value, index, children, ...rest }) => (
   </div>
 );
 
-const ImpactFeatureDetailsNav = () => {
+const ImpactFeatureDetails = () => {
   const styles = useStyles();
 
   const [tab, setTab] = useState(0);
@@ -161,7 +161,6 @@ const ImpactFeatureDetailsNav = () => {
     for (let i = 0; i < Math.abs(strength); i++) {
       starArray.push('*');
     }
-    console.log('starArray', starArray);
     const strengthIndex = strength + 3;
 
     if (strength === 0) {
@@ -302,4 +301,4 @@ const ImpactFeatureDetailsNav = () => {
   );
 };
 
-export default ImpactFeatureDetailsNav;
+export default ImpactFeatureDetails;

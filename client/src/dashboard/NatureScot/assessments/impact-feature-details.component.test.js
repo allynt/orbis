@@ -2,11 +2,11 @@ import React from 'react';
 
 import { render, screen, userEvent } from 'test/test-utils';
 
-import ImpactFeatureDetailsNav, {
+import ImpactFeatureDetails, {
   TabPanel,
-} from './impact-feature-details-nav.component';
+} from './impact-feature-details.component';
 
-describe('Impact Feature Details Nav', () => {
+describe('Impact Feature Details', () => {
   describe('Tabbed Panel', () => {
     it('should display a tab panel', () => {
       render(
@@ -32,32 +32,31 @@ describe('Impact Feature Details Nav', () => {
   });
   describe('Feature Detail Nav', () => {
     it('should display a tab list', () => {
-      render(<ImpactFeatureDetailsNav />);
+      render(<ImpactFeatureDetails />);
 
       expect(
         screen.getByRole('tablist', { name: /impact details by feature/i }),
       ).toBeInTheDocument();
 
       // 3 tab navigation
-      expect(screen.getAllByRole('tab').length).toBe(3);
+      expect(screen.getAllByRole('tab').length).toBe(8);
 
       // Only one panel visible.
       expect(screen.getAllByRole('tabpanel').length).toBe(1);
     });
 
     it('should switch between tabs', () => {
-      render(<ImpactFeatureDetailsNav />);
+      render(<ImpactFeatureDetails />);
 
       expect(
-        screen.getByRole('tab', { name: /item one/i }),
+        screen.getByRole('tab', { name: /Breeding Bird Assemblage/i }),
       ).toBeInTheDocument();
-      expect(screen.getByText('Item Content One')).toBeInTheDocument();
-      expect(screen.queryByText('Item Content Two')).not.toBeInTheDocument();
+      expect(screen.getByText('Breeding Bird Assemblage')).toBeInTheDocument();
 
-      userEvent.click(screen.getByRole('tab', { name: /item two/i }));
+      userEvent.click(screen.getByRole('tab', { name: /Watersources/i }));
 
-      expect(screen.getByText('Item Content Two')).toBeInTheDocument();
-      expect(screen.queryByText('Item Content One')).not.toBeInTheDocument();
+      expect(screen.getByText('Build a culvert')).toBeInTheDocument();
+      expect(screen.queryByText('This is not in here')).not.toBeInTheDocument();
     });
   });
 });
