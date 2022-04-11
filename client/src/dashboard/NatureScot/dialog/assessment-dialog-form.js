@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
@@ -119,6 +119,8 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
+  const [isActivitiesButtonDisabled, setIsActivitiesButtonDisabled] =
+    useState(true);
   const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
 
   const activities = useSelector(impactActivitiesSelector);
@@ -129,6 +131,7 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
     getValues,
     setValue,
     formState: { isValid },
+    watch,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -153,9 +156,15 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
   const doSubmit = form => onSubmit(form);
 
-  const values = getValues();
-  const isActivitiesButtonDisabled =
-    !values?.description || !values?.startDate || !values?.endDate;
+  useEffect(() => {
+    const subscription = watch(value =>
+      setIsActivitiesButtonDisabled(
+        !value?.description || !value?.startDate || !value?.endDate,
+      ),
+    );
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
