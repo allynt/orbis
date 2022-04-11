@@ -20,7 +20,7 @@ import {
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import mockdata from 'dashboard/mock-data/NatureScot/activity-feature-mock';
+import data from 'dashboard/mock-data/NatureScot/activity-feature-mock';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,13 +35,15 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     margin: 0,
     padding: 0,
-    border: '1px solid red',
   },
   body: {
     padding: 0,
   },
   box: {
     padding: 0,
+  },
+  tablepanel: {
+    width: '80%',
   },
   grid: {
     border: '5px solid #333f48',
@@ -51,7 +53,6 @@ const useStyles = makeStyles(theme => ({
     width: '80%',
     height: '15rem',
     padding: 0,
-    // border: '1px solid red',
   },
   '& .MuiTabs-scroller': {},
   table: {
@@ -69,8 +70,6 @@ const useStyles = makeStyles(theme => ({
     height: '15rem',
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
-      width: '20%',
-      maxWidth: '15rem',
       fontSize: 12,
     },
     '& .Mui-selected': {
@@ -78,14 +77,17 @@ const useStyles = makeStyles(theme => ({
       color: 'white',
       marginTop: '1px',
       backgroundColor: theme.palette.background.paper,
+      width: '100%',
     },
     '& .MuiTab-wrapper': {
       // the tab itself
       alignItems: 'start',
+      width: '100%',
     },
     '& .MuiTabs-indicator': {
       // this is the animated tab stripe, dont want this
       border: '0px',
+      width: 0,
       display: 'none',
       backgroundColor: '#333f48',
     },
@@ -135,13 +137,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-// This bit shows the impacts in the table to the right
-export const TabPanel = ({ value, index, children, ...rest }) => (
-  <div role="tabpanel" hidden={value !== index} {...rest}>
-    {value === index && <Box p={3}>{children}</Box>}
-  </div>
-);
-
+// This is a slightly modified version of TabPanel
 const TablePanel = ({ value, index, children, ...rest }) => (
   <div role="tabpanel" hidden={value !== index} {...rest}>
     {value === index && (
@@ -157,7 +153,7 @@ const ImpactFeatureDetails = () => {
 
   const [tab, setTab] = useState(0);
 
-  // strength table cell defined here
+  // strength table cell defined here. Showing rows of + or - icons
   const getStrengthText = (styles, strength) => {
     const colorScale = [
       styles.minus3,
@@ -174,6 +170,7 @@ const ImpactFeatureDetails = () => {
     }
     const strengthIndex = strength + 3;
 
+    // custom SVG for neutral. Not ideal, but desired icon was not in v4 MUI...
     if (strength === 0) {
       return (
         <TableCell align="center" className={colorScale[strengthIndex]}>
@@ -267,17 +264,22 @@ const ImpactFeatureDetails = () => {
             aria-label="Impact details by feature"
             className={styles.tabs}
           >
-            {mockdata.map(item => (
+            {data.map(item => (
               <Tab key={item} className={styles.tab} label={item.name} />
             ))}
           </Tabs>
           {/* right-hand table rendered here, most negative first */}
-          {mockdata.map((item, index) => {
+          {data.map((item, index) => {
             const sortedImpacts = item.impacts.sort((a, b) =>
               a.strength >= b.strength ? 1 : -1,
             );
             return (
-              <TablePanel key={item} value={tab} index={index}>
+              <TablePanel
+                key={item}
+                value={tab}
+                index={index}
+                className={styles.tablepanel}
+              >
                 <TableContainer component={Paper} className={styles.container}>
                   <Table className={styles.table}>
                     <TableBody className={styles.body}>
