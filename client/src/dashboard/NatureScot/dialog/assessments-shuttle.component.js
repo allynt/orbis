@@ -346,6 +346,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             >
               <MagnifierIcon fontSize="small" color="primary" />
               <TextField
+                id="filter-activities"
                 margin="normal"
                 label="Type ahead..."
                 InputProps={{
@@ -427,6 +428,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 }`}
               />
               <TextField
+                id="add-activity"
                 margin="normal"
                 value={newActivityText}
                 label="Add a new Activity"
