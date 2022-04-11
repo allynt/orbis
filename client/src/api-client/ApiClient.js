@@ -1,3 +1,5 @@
+import { NatureScotClient } from 'dashboard/NatureScot/NatureScotClient';
+
 import { AoiClient } from './AoisClient';
 import { AppClient } from './AppClient';
 import { AuthenticationClient } from './AuthenticationClient';
@@ -24,6 +26,7 @@ export class ApiClient {
   users;
   storage;
   aois;
+  natureScot;
   /** @private */
   subClients = [
     'app',
@@ -38,6 +41,7 @@ export class ApiClient {
     'users',
     'storage',
     'aois',
+    'natureScot',
   ];
 
   constructor() {
@@ -53,6 +57,8 @@ export class ApiClient {
     this.users = new UsersClient();
     this.storage = new StorageClient();
     this.aois = new AoiClient();
+    this.natureScot = new NatureScotClient();
+
     this.apiHost =
       process.env.NODE_ENV === 'development'
         ? process.env.REACT_APP_API_HOST

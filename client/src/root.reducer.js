@@ -6,6 +6,7 @@ import accounts from './accounts/accounts.slice';
 import app from './app.slice';
 import bookmarks from './bookmarks/bookmarks.slice';
 import dashboard from './dashboard/dashboard.slice';
+import natureScotDashboard from './dashboard/NatureScot/nature-scot.slice';
 import aois from './data-layers/aoi/aoi.slice';
 import data from './data-layers/data-layers.slice';
 import map from './map/map.slice';
@@ -29,4 +30,5 @@ export const createRootReducer = ({ routerReducer }) =>
     stories,
     missionControl,
     dashboard,
+    natureScotDashboard,
   });

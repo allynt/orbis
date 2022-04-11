@@ -6,7 +6,7 @@ import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 import ImpactFeatureDetails from './impact-feature-details.component';
 
-const AssessmentResults = () => (
+const AssessmentResults = ({ results }) => (
   <Grid container spacing={5}>
     <Grid container item xs={6} spacing={3}>
       <ChartWrapper title="Impact Summary" info="Impact Summary Description">

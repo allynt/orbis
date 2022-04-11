@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 
 import { Button, makeStyles, Tab, Tabs } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { selectedAoiSelector } from 'data-layers/aoi/aoi.slice';
+
 import AssessmentTable from './assessments/assessments-table.component';
 import Charts from './charts/charts.component';
 import AssessmentDialog from './dialog/assessment-dialog.component';
+import {
+  fetchImpactAssessment,
+  impactAssessmentSelector,
+} from './nature-scot.slice';
 
 const useStyles = makeStyles(theme => ({
   subRow: {
@@ -105,10 +113,20 @@ const ASSESSMENT_DATA = [
 
 const NatureScotDashboard = ({ sourceId }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
 
+  const [assessmentDialogTab, setAssessmentDialogTab] = useState(0);
   const [visibleTab, setVisibleTab] = useState(PANELS.data);
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
+
+  const selectedAoi = useSelector(selectedAoiSelector);
+  const impactAssessment = useSelector(impactAssessmentSelector);
+
+  const submitAssessment = form => {
+    dispatch(fetchImpactAssessment(form));
+    setAssessmentDialogTab(1);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -133,15 +151,20 @@ const NatureScotDashboard = ({ sourceId }) => {
         </Button>
       </Tabs>
 
-      {visibleTab === PANELS.data && <Charts sourceId={sourceId} />}
+      {visibleTab === PANELS.data && (
+        <Charts sourceId={sourceId} selectedAoi={selectedAoi} />
+      )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable data={ASSESSMENT_DATA} />
       )}
 
       <AssessmentDialog
-        onSubmit={() => console.log('Submitting assessment')}
+        visibleTab={assessmentDialogTab}
+        results={impactAssessment}
+        onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
+        selectedAoi={selectedAoi}
       />
     </div>
   );

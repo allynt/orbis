@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   CloseIcon,
@@ -36,16 +36,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssessmentDialog = ({ open = false, close, onSubmit }) => {
+const AssessmentDialog = ({
+  visibleTab,
+  open = false,
+  close,
+  onSubmit,
+  results,
+  selectedAoi,
+}) => {
   const styles = useStyles();
 
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(visibleTab);
 
   const toggleTab = (event, tab) => setTab(tab);
 
   const handleClose = () => {
     close();
   };
+
+  useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
 
   return (
     <Dialog fullScreen open={open} onClose={handleClose}>
@@ -75,11 +84,11 @@ const AssessmentDialog = ({ open = false, close, onSubmit }) => {
             </span>
             Applications should continue to be made to NatureScot.
           </p>
-          <AssessmentDialogForm onSubmit={onSubmit} />
+          <AssessmentDialogForm onSubmit={onSubmit} selectedAoi={selectedAoi} />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults />
+          <AssessmentResults results={results} />
         </TabPanel>
       </div>
     </Dialog>
