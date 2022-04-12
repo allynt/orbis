@@ -148,8 +148,10 @@ const TablePanel = ({ value, index, children, ...rest }) => (
   </div>
 );
 
-const ImpactFeatureDetails = () => {
+const ImpactFeatureDetails = data => {
   const styles = useStyles();
+  const noData = !data.data;
+  const actualData = data?.data?.impacts;
 
   const [tab, setTab] = useState(0);
 
@@ -268,44 +270,51 @@ const ImpactFeatureDetails = () => {
             aria-label="Impact details by feature"
             className={styles.tabs}
           >
-            {data.map(item => (
-              <Tab key={item} className={styles.tab} label={item.name} />
-            ))}
+            {noData
+              ? null
+              : actualData.map(item => (
+                  <Tab key={item} className={styles.tab} label={item.name} />
+                ))}
           </Tabs>
           {/* right-hand table rendered here, most negative first */}
-          {data.map((item, index) => {
-            const sortedImpacts = item.impacts.sort((a, b) =>
-              a.strength >= b.strength ? 1 : -1,
-            );
-            const fields = sortedImpacts.map(impact => [
-              getCell(impact.name),
-              getCell(impact.effect),
-              getStrengthText(styles, impact.strength),
-              getCell(impact.notification),
-            ]);
-            return (
-              <TablePanel
-                key={item}
-                value={tab}
-                index={index}
-                className={styles.tablepanel}
-              >
-                <TableContainer component={Paper} className={styles.container}>
-                  <Table className={styles.table}>
-                    <TableBody className={styles.body}>
-                      {fields.map(row => {
-                        return (
-                          <TableRow key={row} className={styles.row}>
-                            {row}
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </TablePanel>
-            );
-          })}
+          {noData
+            ? null
+            : actualData.map((item, index) => {
+                const sortedImpacts = [...item.impacts].sort((a, b) =>
+                  a.strength >= b.strength ? 1 : -1,
+                );
+                const fields = sortedImpacts.map(impact => [
+                  getCell(impact.name),
+                  getCell(impact.effect),
+                  getStrengthText(styles, impact.strength),
+                  getCell(impact.notification),
+                ]);
+                return (
+                  <TablePanel
+                    key={item}
+                    value={tab}
+                    index={index}
+                    className={styles.tablepanel}
+                  >
+                    <TableContainer
+                      component={Paper}
+                      className={styles.container}
+                    >
+                      <Table className={styles.table}>
+                        <TableBody className={styles.body}>
+                          {fields.map(row => {
+                            return (
+                              <TableRow key={row} className={styles.row}>
+                                {row}
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </TablePanel>
+                );
+              })}
         </div>
       </Grid>
     </ChartWrapper>

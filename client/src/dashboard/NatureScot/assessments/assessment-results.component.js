@@ -33,7 +33,7 @@ const AssessmentResults = ({ results }) => (
     </Grid>
     <Grid container item xs={6} spacing={3}></Grid>
     <Grid container item xs={6} spacing={3}>
-      <ImpactFeatureDetails />
+      <ImpactFeatureDetails data={results} />
     </Grid>
   </Grid>
 );
