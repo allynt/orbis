@@ -15,6 +15,9 @@ const stopsData = {
   '100%': '#f03b30',
 };
 
+/**
+ * @param {{ chartData: { x: string, y: number }[] }} props
+ */
 const GradientBarChart = ({ chartData }) => (
   <VictoryBar
     data={chartData}
@@ -27,6 +30,9 @@ const GradientBarChart = ({ chartData }) => (
   />
 );
 
+/**
+ * @param {{ data: { type: string, impact: number }[] }} props
+ */
 const ImpactSummaryChart = ({ data }) => {
   const theme = useChartTheme();
 
