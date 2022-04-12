@@ -4,7 +4,7 @@ from factory.faker import (Faker as FactoryFaker,)
 
 from faker import Faker
 
-from datetime import date, datetime, timedelta
+from datetime import timedelta
 
 from astrosat.tests.utils import optional_declaration
 
@@ -14,12 +14,7 @@ from orbs.eco_an_alba.models import Proposal
 
 fake = Faker()
 
-today = date.today()
-tomorrow = date.today() + timedelta(days=1)
-midnight_today = datetime.combine(today, datetime.min.time())
-midnight_tomorrow = datetime.combine(tomorrow, datetime.min.time())
-
-report_state = {
+REPORT = {
     "summary": [
         {
             "type": "Habitat",
@@ -67,9 +62,12 @@ class ProposalFactory(factory.django.DjangoModelFactory):
 
     proposal_description = FactoryFaker("text")
 
-    proposal_start_date = midnight_today
-    proposal_end_date = midnight_tomorrow
+    proposal_start_date = FactoryFaker("date_time_this_month", after_now=True)
 
     proposal_activities = ["Activity 1", "Activity 2"]
 
-    report_state = json.dumps(report_state)
+    report_state = REPORT
+
+    @factory.lazy_attribute
+    def proposal_end_date(self):
+        return self.proposal_start_date + timedelta(days=7)
