@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  Button,
   CloseIcon,
   Dialog,
   IconButton,
@@ -11,6 +12,7 @@ import {
 
 import AssessmentResults from '../assessments/assessment-results.component';
 import { TabPanel } from '../assessments/impact-feature-details-nav.component';
+import YesNoDialog from '../assessments/yes-no-dialog.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +24,9 @@ const useStyles = makeStyles(theme => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-end',
     height: '100%',
+    minHeight: '20rem',
     margin: 20,
   },
   overviewHighlightedText: {
@@ -32,6 +36,15 @@ const useStyles = makeStyles(theme => ({
   },
   overviewText: {
     fontSize: '1rem',
+  },
+  heading: {
+    padding: '4rem',
+  },
+  buttons: {
+    display: 'flex',
+    width: '80%',
+    justifyContent: 'space-evenly',
+    padding: '0 0 2rem 0',
   },
 }));
 
@@ -46,11 +59,16 @@ const AssessmentDialog = ({
   const styles = useStyles();
 
   const [tab, setTab] = useState(visibleTab);
+  const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
 
   const toggleTab = (event, tab) => setTab(tab);
 
   const handleClose = () => {
-    close();
+    setYesNoDialogVisible(true);
+  };
+
+  const handleYesNo = status => {
+    status ? close() : setYesNoDialogVisible(false);
   };
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
@@ -90,6 +108,26 @@ const AssessmentDialog = ({
           <AssessmentResults results={results} />
         </TabPanel>
       </div>
+
+      {yesNoDialogVisible ? (
+        <YesNoDialog
+          isOpen={yesNoDialogVisible}
+          close={() => setYesNoDialogVisible(false)}
+        >
+          <h3 className={styles.heading}>
+            Are you sure you want to leave this page?
+          </h3>
+
+          <div className={styles.buttons}>
+            <Button onClick={() => handleYesNo(true)} size="small">
+              Yes
+            </Button>
+            <Button onClick={() => handleYesNo(false)} size="small">
+              No
+            </Button>
+          </div>
+        </YesNoDialog>
+      ) : null}
     </Dialog>
   );
 };
