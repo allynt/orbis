@@ -3,6 +3,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.contrib.gis.db import models as gis_models
+# from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext as _
 
@@ -113,6 +114,8 @@ class Proposal(gis_models.Model):
     )
 
     # Form fields
+    proposal_geometry = gis_models.GeometryField(null=False, blank=False, help_text=_('Geometry of the proposal'))
+
     proposal_description = models.TextField(
         null=True,
         blank=True,
@@ -133,7 +136,7 @@ class Proposal(gis_models.Model):
     )
 
     proposal_activities = ArrayField(
-        models.CharField(
+        models.JSONField(
             max_length=255,
             blank=True,
         ),
@@ -141,6 +144,8 @@ class Proposal(gis_models.Model):
         blank=True,
         help_text=_('Activities associated with the proposal')
     )
+
+    report_generation_date = models.DateTimeField(null=True, blank=True, help_text=_('Date the report was generated'))
 
     report_state = models.JSONField(
         null=True,

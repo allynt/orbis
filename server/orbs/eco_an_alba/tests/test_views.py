@@ -3,6 +3,8 @@ import json
 
 from django.urls import reverse
 
+from django.contrib.gis.geos import GEOSGeometry
+
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -10,17 +12,14 @@ from astrosat_users.tests.utils import *
 
 from .factories import *
 
+
 @pytest.mark.django_db
 class TestProposalViewSet:
-
     def test_list_proposals(self):
         user = UserFactory()
         _, key = create_auth_token(user)
 
-        proposals = [
-            ProposalFactory(owner=user)
-            for _ in range(10)
-        ]
+        proposals = [ProposalFactory(owner=user) for _ in range(10)]
 
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION=f"Token {key}")
@@ -54,6 +53,7 @@ class TestProposalViewSet:
             "created": proposal.created,
             "modified": proposal.modified,
             "name": proposal.name,
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
         }
 
         client = APIClient()
@@ -78,6 +78,7 @@ class TestProposalViewSet:
             "modified": proposal.modified,
             "name": proposal.name,
             "description": proposal.description,
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
             "proposal_description": proposal.proposal_description,
             "proposal_start_date": proposal.proposal_start_date,
             "proposal_end_date": proposal.proposal_end_date,
@@ -108,7 +109,8 @@ class TestProposalViewSet:
             "created": proposal.created,
             "modified": proposal.modified,
             "name": proposal.name,
-            "description": proposal.description,
+            "description": "changed description",
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
             "proposal_description": proposal.proposal_description,
         }
 
@@ -122,7 +124,8 @@ class TestProposalViewSet:
 
         proposal.refresh_from_db()
         assert proposal.description == proposal_data["description"]
-        assert proposal.proposal_description == proposal_data["proposal_description"]
+        assert proposal.proposal_description == proposal_data[
+            "proposal_description"]
 
     def test_delete_proposal(self):
         user = UserFactory()

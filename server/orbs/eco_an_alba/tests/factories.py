@@ -1,4 +1,6 @@
 import json
+
+from attr import Factory
 import factory
 from factory.faker import (Faker as FactoryFaker,)
 
@@ -6,6 +8,7 @@ from faker import Faker
 
 from datetime import timedelta
 
+from astrosat.tests.providers import GeometryProvider
 from astrosat.tests.utils import optional_declaration
 
 from astrosat_users.tests.factories import UserFactory
@@ -13,6 +16,8 @@ from astrosat_users.tests.factories import UserFactory
 from orbs.eco_an_alba.models import Proposal
 
 fake = Faker()
+
+FactoryFaker.add_provider(GeometryProvider)
 
 REPORT = {
     "summary": [
@@ -60,11 +65,17 @@ class ProposalFactory(factory.django.DjangoModelFactory):
 
     owner = factory.SubFactory(UserFactory)
 
+    geometry = FactoryFaker("polygon")
+
     proposal_description = FactoryFaker("text")
 
     proposal_start_date = FactoryFaker("date_time_this_month", after_now=True)
 
-    proposal_activities = ["Activity 1", "Activity 2"]
+    proposal_activities = [{
+        "label": "Activity 1", "code": "activity1"
+    }, {
+        "label": "Activity 2", "code": "activity2"
+    }]
 
     report_state = REPORT
 
