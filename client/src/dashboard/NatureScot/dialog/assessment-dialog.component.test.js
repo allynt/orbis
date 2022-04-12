@@ -150,7 +150,7 @@ describe('AssessmentDialog', () => {
     expect(
       screen.getByRole('group', { name: /select activities/i }),
     ).toBeInTheDocument();
-  });
+  }, 70000);
 
   xit('should enable the `run impact assessment` button', async () => {
     render(
