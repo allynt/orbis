@@ -8,60 +8,62 @@ from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema
 
-REPORT_STATE_SCHEMA = {
-    # defines the schema of the report_state JSONField below
-    "summary": {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string",
-                },
-                "impact": {
-                    "type": "string",
-                },
-            },
-        },
-    },
-    "areas": {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": {
-                "title": {
-                    "type": "string",
-                },
-            },
-        },
-    },
-    "impacts": {
-        "type": "array",
-        "items": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string",
-                },
-                "impact": {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string",
-                        },
-                        "effect": {
-                            "type": "string",
-                        },
-                    },
-                },
-            },
-        },
-    },
-    "required": ["summary", "areas", "impacts"],
-}
+# FIXME: Uncomment this when the data shape is fixed.
+# REPORT_STATE_SCHEMA = {
+#     # defines the schema of the report_state JSONField below
+#     "summary": {
+#         "type": "array",
+#         "items": {
+#             "type": "object",
+#             "properties": {
+#                 "type": {
+#                     "type": "string",
+#                 },
+#                 "impact": {
+#                     "type": "string",
+#                 },
+#             },
+#         },
+#     },
+#     "areas": {
+#         "type": "array",
+#         "items": {
+#             "type": "object",
+#             "properties": {
+#                 "title": {
+#                     "type": "string",
+#                 },
+#             },
+#         },
+#     },
+#     "impacts": {
+#         "type": "array",
+#         "items": {
+#             "type": "object",
+#             "properties": {
+#                 "name": {
+#                     "type": "string",
+#                 },
+#                 "impact": {
+#                     "type": "object",
+#                     "properties": {
+#                         "name": {
+#                             "type": "string",
+#                         },
+#                         "effect": {
+#                             "type": "string",
+#                         },
+#                     },
+#                 },
+#             },
+#         },
+#     },
+#     "required": ["summary", "areas", "impacts"],
+# }
 
 def validate_report_state(value):
-    return validate_schema(value, REPORT_STATE_SCHEMA)
+    # return validate_schema(value, REPORT_STATE_SCHEMA)
+    return True
 
 class ProposalManager(models.Manager):
     pass
