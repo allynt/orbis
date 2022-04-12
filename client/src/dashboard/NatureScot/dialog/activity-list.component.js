@@ -6,7 +6,6 @@ import {
   ListItem,
   ListItemText,
   Box,
-  useTheme,
 } from '@astrosat/astrosat-ui';
 
 import { Button } from '@material-ui/core';
@@ -15,9 +14,6 @@ const useStyles = makeStyles(theme => ({
   List: {
     overflow: 'scroll',
     bgcolor: '#f00',
-  },
-  highlightedActivity: {
-    fontWeight: 'bold',
   },
   normalActivity: {
     fontWeight: 'normal',
@@ -39,7 +35,6 @@ const ActivityList = ({
   onDelete,
 }) => {
   const styles = useStyles();
-  const theme = useTheme();
 
   // notify parent via callbacks
 
@@ -66,16 +61,7 @@ const ActivityList = ({
               button
               onClick={() => onItemSelection(activity)}
             >
-              <ListItemText
-                id={labelId}
-                primary={activity.label}
-                primaryTypographyProps={{
-                  style: {
-                    color: theme.palette.primary.main,
-                    fontWeight: activity.proposed ? 'bold' : 'normal',
-                  },
-                }}
-              />
+              <ListItemText id={labelId} primary={activity.label} />
               {activity.userDefined ? (
                 <Button
                   onClick={() => onItemDelete(activity)}

@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: '0.8125rem',
     fontWeight: 800,
     fontStyle: 'italic',
+    padding: '0 0.5rem 0 0.5rem',
   },
 }));
 

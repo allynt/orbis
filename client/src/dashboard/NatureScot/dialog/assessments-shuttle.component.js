@@ -3,10 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
-  Checkbox,
   Divider,
-  FormControlLabel,
-  FormGroup,
   Grid,
   makeStyles,
   MagnifierIcon,
@@ -99,7 +96,7 @@ const useStyles = makeStyles(theme => ({
     borderBottomLeftRadius: '50px',
     borderBottomRightRadius: '50px',
     position: 'relative',
-    bottom: '9px',
+    bottom: '4px',
   },
   capsuleLine: {
     border: '2px solid yellow',
@@ -157,7 +154,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [rightSelected, setRightSelected] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
-  const [onlyProposals, setOnlyProposals] = useState(true);
   const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
   const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
 
@@ -180,11 +176,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         return item.label.match(finder);
       });
     }
-    // proposals filter
-    if (onlyProposals) {
-      filterList.push(item => item.proposed);
-    }
-
     // get filtered list by applying filter functions
     return left.filter(item =>
       filterList.map(filterFunc => filterFunc(item)).every(x => x),
@@ -192,9 +183,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   };
 
   const handleSearch = searchText => setSearchString(searchText);
-
-  const getCountAvailableProposals = () =>
-    getFilteredLeft().filter(item => item.proposed).length;
 
   const selectItemOnLeft = object => {
     if (!leftSelected.find(item => item.label === object.label)) {
@@ -322,23 +310,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               </Typography>
             </Grid>
             <Divider />
-            <Grid xs={12}>
-              <FormGroup className={styles.checkbox}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      defaultChecked
-                      onChange={() => setOnlyProposals(!onlyProposals)}
-                    />
-                  }
-                  label={
-                    <Typography className={styles.highlightText}>
-                      {`Show suggested activities only (${getCountAvailableProposals()} available)`}
-                    </Typography>
-                  }
-                />
-              </FormGroup>
-            </Grid>
+            <Grid xs={12}></Grid>
             <Divider />
             <Grid
               container
@@ -488,7 +460,9 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           xs={5}
         >
           <Button
-            startIcon={<ArrowBackIos size="small" />}
+            startIcon={
+              <ArrowBackIos className={styles.removeAllIcon} size="small" />
+            }
             size="small"
             variant="text"
             onClick={() => removeAll()}

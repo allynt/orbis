@@ -41,13 +41,13 @@ const useStyles = makeStyles(theme => ({
   row: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: '3rem',
+    marginTop: '2rem',
   },
   dateRange: {
     width: '50%',
   },
   fieldset: {
-    margin: '2rem 0',
+    margin: '2rem 0 0 0',
   },
   field: {
     padding: '2rem',
@@ -72,21 +72,17 @@ const DescriptionInput = ({ register }) => {
             </span>
           </p>
 
-          <p className={styles.strapline}>
-            Please describe your development or change here
-          </p>
-
           <TextField
             id="description"
             name="description"
             {...register('description')}
+            label="Please describe your development or change here"
             InputProps={{
               disableUnderline: true,
               className: styles.input,
               'data-testid': 'description',
             }}
             maxLength={150}
-            focused
           />
         </div>
       </FieldWrapper>
