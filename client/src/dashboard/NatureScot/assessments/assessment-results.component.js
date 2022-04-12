@@ -8,7 +8,10 @@ import ImpactFeatureDetailsNav from '../assessments/impact-feature-details-nav.c
 import { ImpactSummaryChart } from '../charts/gradient-bar-chart/gradient-bar-chart.component';
 import { NatureScotCustomLegend } from '../nature-scot-custom-legend/nature-scot-custom-legend.component';
 
-const AssessmentResults = ({ results }) => {
+/**
+ * @param {{ results: object }} props
+ */
+const AssessmentResults = ({ results = {} }) => {
   const { summary } = results;
   return (
     <Grid container spacing={5}>
