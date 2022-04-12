@@ -8,19 +8,8 @@ import ImpactFeatureDetailsNav from '../assessments/impact-feature-details-nav.c
 import { ImpactSummaryChart } from '../charts/gradient-bar-chart/gradient-bar-chart.component';
 import { NatureScotCustomLegend } from '../nature-scot-custom-legend/nature-scot-custom-legend.component';
 
-const testData = [
-  { type: 'Habitat', impact: 3 },
-  { type: 'Geomorphology', impact: 1 },
-  { type: 'Soils', impact: -1 },
-  { type: 'Geology', impact: -2 },
-  { type: 'Hydrology', impact: 2 },
-  { type: 'Connectivity', impact: 0.05 },
-  { type: 'Biodiversity', impact: 2 },
-  { type: 'Species', impact: -3 },
-];
-
 const AssessmentResults = ({ results }) => {
-  console.log('results: ', results);
+  const { summary } = results;
   return (
     <Grid container spacing={5}>
       <Grid container item xs={6} spacing={3}>
@@ -31,7 +20,7 @@ const AssessmentResults = ({ results }) => {
             your proposal where there is a high or medium negative impact.
           </Typography>
           <NatureScotCustomLegend />
-          <ImpactSummaryChart data={testData} />
+          <ImpactSummaryChart data={summary} />
         </ChartWrapper>
       </Grid>
       <Grid container item xs={6} spacing={3}>
