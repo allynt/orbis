@@ -20,7 +20,6 @@ import {
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
-import data from 'dashboard/mock-data/NatureScot/activity-feature-mock';
 
 const useStyles = makeStyles(theme => ({
   root: {
