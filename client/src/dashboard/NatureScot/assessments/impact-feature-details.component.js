@@ -217,6 +217,10 @@ const ImpactFeatureDetails = () => {
     }
   };
 
+  const getCell = value => {
+    return <TableCell className={styles.tablecell}>{value}</TableCell>;
+  };
+
   const toggleTab = (event, tab) => setTab(tab);
 
   return (
@@ -273,6 +277,12 @@ const ImpactFeatureDetails = () => {
             const sortedImpacts = item.impacts.sort((a, b) =>
               a.strength >= b.strength ? 1 : -1,
             );
+            const fields = sortedImpacts.map(impact => [
+              getCell(impact.name),
+              getCell(impact.effect),
+              getStrengthText(styles, impact.strength),
+              getCell(impact.notification),
+            ]);
             return (
               <TablePanel
                 key={item}
@@ -283,20 +293,13 @@ const ImpactFeatureDetails = () => {
                 <TableContainer component={Paper} className={styles.container}>
                   <Table className={styles.table}>
                     <TableBody className={styles.body}>
-                      {sortedImpacts.map(impact => (
-                        <TableRow key={impact} className={styles.row}>
-                          <TableCell className={styles.tablecell}>
-                            {impact.name}
-                          </TableCell>
-                          <TableCell className={styles.tablecell}>
-                            {impact.effect}
-                          </TableCell>
-                          {getStrengthText(styles, impact.strength)}
-                          <TableCell className={styles.tablecell}>
-                            {impact.notification}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {fields.map(row => {
+                        return (
+                          <TableRow key={row} className={styles.row}>
+                            {row}
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </TableContainer>
