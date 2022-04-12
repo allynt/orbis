@@ -46,52 +46,57 @@ const ImpactSummaryChart = ({ data }) => {
 
   return (
     <StyledParentSize>
-      {({ width }) => (
-        <>
-          <svg style={{ height: 0 }}>
-            <defs>
-              <linearGradient
-                id="gradient"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="rotate(90)"
-              >
-                {Object.entries(stopsData).map(([perc, color]) => (
-                  <stop key={perc} offset={perc} stopColor={color} />
-                ))}
-              </linearGradient>
-            </defs>
-          </svg>
-          <VictoryChart
-            domainPadding={{ x: 40, y: 10 }}
-            padding={{ left: 0, top: 0, bottom: 90, right: 0 }}
-            animate={{ duration: 1000, animationWhitelist: ['data'] }}
-            theme={theme}
-            width={width}
-            height={width / 1.778}
-          >
-            <VictoryAxis
-              offsetY={90}
-              tickLabelComponent={
-                <VictoryLabel angle={45} textAnchor="start" />
-              }
-              style={{
-                tickLabels: {
-                  fontSize: 14,
-                  fill: '#fff',
-                  marginRight: '1rem',
-                },
-              }}
-            />
-            <VictoryAxis
-              dependentAxis
-              domain={[-3, 3]}
-              crossAxis={false}
-              tickFormat={() => ''}
-            />
-            {GradientBarChart({ chartData })}
-          </VictoryChart>
-        </>
-      )}
+      {({ width }) => {
+        const height = width / 1.778;
+        return (
+          <>
+            <svg style={{ height: 0 }}>
+              <defs>
+                <linearGradient
+                  id="gradient"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform={`rotate(90) scale(${
+                    1 / (width / height)
+                  } 1)`}
+                >
+                  {Object.entries(stopsData).map(([perc, color]) => (
+                    <stop key={perc} offset={perc} stopColor={color} />
+                  ))}
+                </linearGradient>
+              </defs>
+            </svg>
+            <VictoryChart
+              domainPadding={{ x: 40, y: 10 }}
+              padding={{ left: 0, top: 0, bottom: 90, right: 0 }}
+              animate={{ duration: 1000, animationWhitelist: ['data'] }}
+              theme={theme}
+              width={width}
+              height={height}
+            >
+              <VictoryAxis
+                offsetY={90}
+                tickLabelComponent={
+                  <VictoryLabel angle={45} textAnchor="start" />
+                }
+                style={{
+                  tickLabels: {
+                    fontSize: 14,
+                    fill: '#fff',
+                    marginRight: '1rem',
+                  },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={[-3, 3]}
+                crossAxis={false}
+                tickFormat={() => ''}
+              />
+              {GradientBarChart({ chartData })}
+            </VictoryChart>
+          </>
+        );
+      }}
     </StyledParentSize>
   );
 };
