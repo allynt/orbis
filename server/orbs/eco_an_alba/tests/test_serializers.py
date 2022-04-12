@@ -1,4 +1,3 @@
-from yaml import serialize
 import pytest
 
 from orbs.eco_an_alba.tests.factories import ProposalFactory, UserFactory
