@@ -59,9 +59,6 @@ class ProposalFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Proposal
 
-    created = midnight_today
-    modified = midnight_today
-
     name = FactoryFaker("pretty_sentence", nb_words=3)
 
     description = optional_declaration(FactoryFaker("text"), chance=50)
