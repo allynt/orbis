@@ -11,8 +11,8 @@ import { NatureScotCustomLegend } from '../nature-scot-custom-legend/nature-scot
 /**
  * @param {{ results: object }} props
  */
-const AssessmentResults = ({ results = {} }) => {
-  const { summary } = results;
+const AssessmentResults = ({ results }) => {
+  const { summary } = results ?? {};
   return (
     <Grid container spacing={5}>
       <Grid container item xs={6} spacing={3}>
