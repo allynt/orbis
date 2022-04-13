@@ -2,11 +2,12 @@ import React from 'react';
 
 import { render, screen } from 'test/test-utils';
 
+import { RESULTS } from '../../mock-data/NatureScot/assessment-results.js';
 import AssessmentResults from './assessment-results.component';
 
 describe('Assessment Results', () => {
   it('should render a grid of charts', () => {
-    render(<AssessmentResults />);
+    render(<AssessmentResults results={RESULTS} />);
 
     // Chart titles
     expect(
