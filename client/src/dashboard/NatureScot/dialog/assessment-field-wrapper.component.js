@@ -9,9 +9,10 @@ const useStyles = makeStyles(theme => ({
     borderRadius: theme.shape.borderRadius,
   },
   legend: {
-    fontSize: 10,
+    fontSize: '0.8125rem',
     fontWeight: 800,
     fontStyle: 'italic',
+    padding: '0 0.5rem 0 0.5rem',
   },
 }));
 

@@ -18,7 +18,7 @@ export const initialState = {
 
 export const fetchImpactActivities = createAsyncThunk(
   `${name}/fetchImpactActivities`,
-  async (form, { getState, rejectWithValue }) => {
+  async (props, { getState, rejectWithValue }) => {
     const apiSourceId = 'ns/proxy/activities/latest';
 
     const {
@@ -31,7 +31,7 @@ export const fetchImpactActivities = createAsyncThunk(
     try {
       const data = await apiClient.natureScot.getImpactData(
         `/${apiSourceId}/`,
-        form,
+        {},
         {
           headers: {
             Authorization: `Bearer ${authToken}`,

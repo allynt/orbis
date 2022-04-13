@@ -3,13 +3,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
-  Checkbox,
   Divider,
-  FormControlLabel,
-  FormGroup,
   Grid,
   makeStyles,
-  SearchIcon,
+  MagnifierIcon,
   TextField,
   Typography,
 } from '@astrosat/astrosat-ui';
@@ -18,8 +15,8 @@ import {
   AddCircle,
   ArrowBack,
   ArrowForward,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
+  ArrowBackIos,
+  ArrowForwardIos,
 } from '@material-ui/icons';
 
 import ActivityList from './activity-list.component';
@@ -56,44 +53,38 @@ const useStyles = makeStyles(theme => ({
   placeholder: {
     backgroundColor: theme.palette.background.default,
     borderRadius: '5px',
-    width: '30ch',
+    width: '90%',
     height: '2rem',
-    padding: '3px',
+    paddingLeft: '1rem',
   },
   listTitle: {
     padding: '1rem',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
   highlightText: {
     color: '#f6be00',
   },
   nudge: {
-    marginLeft: '1rem',
-  },
-  searchField: {
-    margin: '0rem',
-    paddingTop: '1rem',
-    paddingBottom: '0rem',
+    marginLeft: '0.75rem',
   },
   nudge2: {
     marginLeft: '1rem',
     marginBottom: '0.5rem',
   },
-  inputbox: {
-    width: '80%',
-  },
   circle: {
     borderRadius: '50%',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: theme.palette.text.primary,
     width: '2rem',
     height: '2rem',
-    color: '#333f48',
+    color: theme.palette.secondary.main,
     margin: '0rem 0.5rem',
     padding: '0.1rem',
+    cursor: 'pointer',
   },
   capsuleTop: {
     width: '3rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     borderTopLeftRadius: '50px',
     borderTopRightRadius: '50px',
     position: 'relative',
@@ -101,11 +92,11 @@ const useStyles = makeStyles(theme => ({
   },
   capsuleBottom: {
     width: '3rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     borderBottomLeftRadius: '50px',
     borderBottomRightRadius: '50px',
     position: 'relative',
-    bottom: '9px',
+    bottom: '4px',
   },
   capsuleLine: {
     border: '2px solid yellow',
@@ -113,18 +104,44 @@ const useStyles = makeStyles(theme => ({
   },
   capsuleBox: {
     height: '2.6rem',
-    backgroundColor: '#5d666e',
+    backgroundColor: theme.palette.background.paper,
     zIndex: 9999,
   },
   chooseAllButton: {
     marginTop: '1em',
-    backgroundColor: '#333f48',
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff',
   },
   removeAllButton: {
     marginTop: '1em',
-    backgroundColor: '#333f48',
+    backgroundColor: theme.palette.secondary.main,
     color: '#fff',
+  },
+  plusIcon: {
+    marginRight: '0.75rem',
+    cursor: 'pointer',
+  },
+  newActivity: {
+    color: theme.palette.primary.main,
+  },
+  checkbox: {
+    paddingBottom: '10px',
+    paddingTop: '10px',
+    marginLeft: '1rem',
+  },
+  filterField: {
+    paddingBottom: '1rem',
+    marginLeft: '0.75rem',
+  },
+  blueCircle: {
+    borderRadius: '50%',
+    backgroundColor: theme.palette.info.main,
+    width: '2rem',
+    height: '2rem',
+    color: theme.palette.secondary.main,
+    margin: '0rem 0.5rem',
+    padding: '0.1rem',
+    cursor: 'pointer',
   },
 }));
 
@@ -137,11 +154,17 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [rightSelected, setRightSelected] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [newActivityText, setNewActivityText] = useState('');
-  const [onlyProposals, setOnlyProposals] = useState(false);
+  const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
+  const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
   useEffect(() => setLeft(data), [data]);
+
+  useEffect(() => {
+    setChooseAllDisabledButton(left.length === 0);
+    setRemoveAllDisabledButton(right.length === 0);
+  }, [left, setChooseAllDisabledButton, right, setRemoveAllDisabledButton]);
 
   const getFilteredLeft = () => {
     let filterList = [];
@@ -153,21 +176,13 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         return item.label.match(finder);
       });
     }
-    // proposals filter
-    if (onlyProposals) {
-      filterList.push(item => item.proposed);
-    }
-
     // get filtered list by applying filter functions
     return left.filter(item =>
       filterList.map(filterFunc => filterFunc(item)).every(x => x),
     );
   };
 
-  const handleSearch = searchtext => setSearchString(searchtext);
-
-  const getCountAvailableProposals = () =>
-    getFilteredLeft().filter(item => item.proposed).length;
+  const handleSearch = searchText => setSearchString(searchText);
 
   const selectItemOnLeft = object => {
     if (!leftSelected.find(item => item.label === object.label)) {
@@ -295,22 +310,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               </Typography>
             </Grid>
             <Divider />
-            <Grid xs={12}>
-              <FormGroup className={styles.nudge}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onChange={() => setOnlyProposals(!onlyProposals)}
-                    />
-                  }
-                  label={
-                    <Typography className={styles.highlightText}>
-                      {`Proposed Activities (${getCountAvailableProposals()} available)`}
-                    </Typography>
-                  }
-                />
-              </FormGroup>
-            </Grid>
+            <Grid xs={12}></Grid>
             <Divider />
             <Grid
               container
@@ -319,21 +319,18 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               wrap="nowrap"
               className={styles.nudge}
             >
-              <SearchIcon fontSize="small" />
+              <MagnifierIcon fontSize="small" color="primary" />
               <TextField
-                id="search"
-                name="search"
+                id="filter-activities"
                 margin="normal"
-                placeholder="type ahead..."
-                variant="filled"
+                label="Type ahead..."
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.nudge}
+                className={styles.filterField}
                 value={searchString}
                 onChange={e => handleSearch(e.target.value)}
-                focused
               />
             </Grid>
             <Divider />
@@ -345,6 +342,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             />
           </Card>
         </Grid>
+
         {/* arrows in middle */}
         <Grid
           container
@@ -359,16 +357,22 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Grid xs={12} className={styles.capsuleBox}>
               <ArrowForward
-                className={styles.circle}
+                className={`${styles.circle} ${
+                  leftSelected.length > 0 ? styles.blueCircle : ''
+                }`}
                 onClick={() => chooseSelected()}
                 fontSize="large"
+                data-testid="choose activity"
               />
             </Grid>
             <Grid xs={12} className={styles.capsuleBox}>
               <ArrowBack
-                className={styles.circle}
+                className={`${styles.circle} ${
+                  rightSelected.length > 0 ? styles.blueCircle : ''
+                }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
+                data-testid="choose selected"
               />
             </Grid>
             <Grid xs={12} className={styles.capsuleBottom}>
@@ -393,21 +397,24 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               wrap="nowrap"
               className={styles.nudge2}
             >
-              <AddCircle onClick={addActivity} fontSize="small" />
+              <AddCircle
+                onClick={addActivity}
+                fontSize="small"
+                className={`${styles.plusIcon} ${
+                  newActivityText ? styles.newActivity : ''
+                }`}
+              />
               <TextField
-                id="search"
-                name="search"
+                id="add-activity"
                 margin="normal"
                 value={newActivityText}
-                placeholder="Add a new Activity"
+                label="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
                 }}
-                className={styles.searchField}
                 maxLength={50}
                 onChange={e => setNewActivityText(e.target.value)}
-                focused
               />
             </Grid>
             <Divider />
@@ -420,6 +427,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             />
           </Card>
         </Grid>
+
         {/* footer left 'choose all' */}
         <Grid
           container
@@ -429,10 +437,12 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           xs={5}
         >
           <Button
-            endIcon={<ArrowRightOutlined size="medium" />}
+            endIcon={<ArrowForwardIos size="small" />}
             onClick={() => chooseAll()}
             className={styles.chooseAllButton}
             size="small"
+            variant="text"
+            disabled={chooseAllDisabledButton}
           >
             Choose all
           </Button>
@@ -440,6 +450,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
         <Grid xs={2}>
           <Typography variant="h2">&nbsp;</Typography>
         </Grid>
+
         {/* footer right 'remove all' */}
         <Grid
           container
@@ -449,10 +460,14 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           xs={5}
         >
           <Button
-            startIcon={<ArrowLeftOutlined size="medium" />}
+            startIcon={
+              <ArrowBackIos className={styles.removeAllIcon} size="small" />
+            }
             size="small"
+            variant="text"
             onClick={() => removeAll()}
             className={styles.removeAllButton}
+            disabled={removeAllDisabledButton}
           >
             Remove all
           </Button>
