@@ -90,7 +90,7 @@ const DescriptionInput = ({ register }) => {
   );
 };
 
-const DateRange = ({ onChange }) => {
+const DateRange = ({ startDate, endDate, onChange }) => {
   const styles = useStyles();
   const title = 'Describe Your Development or Change';
 
@@ -104,7 +104,11 @@ const DateRange = ({ onChange }) => {
           </p>
 
           <div className={styles.dateRange}>
-            <DateRangeFilter onSubmit={onChange} minDate="today" />
+            <DateRangeFilter
+              onSubmit={onChange}
+              minDate={startDate ?? now}
+              maxDate={endDate ?? now}
+            />
           </div>
         </div>
       </FieldWrapper>
@@ -112,7 +116,7 @@ const DateRange = ({ onChange }) => {
   );
 };
 
-const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
+const AssessmentDialogForm = ({ onSubmit, initialFormState }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -121,24 +125,23 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
     setIsAssessmentSubmitButtonDisabled,
   ] = useState(true);
 
-  const activities = useSelector(impactActivitiesSelector);
+  const activitiesList = useSelector(impactActivitiesSelector);
 
-  const { register, handleSubmit, getValues, setValue, watch } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      startDate: null,
-      endDate: null,
-      activities: [],
-      geometry: selectedAoi?.geometry,
-    },
-    resolver: yupResolver(validationSchema),
-  });
+  const { register, handleSubmit, getValues, setValue, watch, formState } =
+    useForm({
+      mode: 'onChange',
+      defaultValues: initialFormState,
+      resolver: yupResolver(validationSchema),
+    });
+
+  const { startDate, endDate, activities } = formState;
 
   const handleDateRangeSelection = range => {
     setValue('startDate', range.startDate, { shouldValidate: true });
     setValue('endDate', range.endDate, { shouldValidate: true });
   };
 
+  // TODO: is this necessary?
   const doSubmit = form => onSubmit(form);
 
   useEffect(() => {
@@ -165,14 +168,22 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
       </Form.Row>
 
       <Form.Row>
-        <DateRange onChange={handleDateRangeSelection} />
+        <DateRange
+          startDate={startDate}
+          endDate={endDate}
+          onChange={handleDateRangeSelection}
+        />
       </Form.Row>
 
       <Form.Row>
         <div className={styles.fieldset}>
           <FieldWrapper title="Select activities">
             <div className={styles.field}>
-              <AssessmentsShuttle setValue={setValue} data={activities} />
+              <AssessmentsShuttle
+                setValue={setValue}
+                data={activitiesList}
+                initialActivities={activities}
+              />
             </div>
           </FieldWrapper>
 

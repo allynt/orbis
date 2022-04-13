@@ -142,11 +142,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssessmentsShuttle = ({ setValue, data }) => {
+const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const styles = useStyles();
 
   const [left, setLeft] = useState(data);
-  const [right, setRight] = useState([]);
+  const [right, setRight] = useState(initialActivities ?? []);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
   const [searchString, setSearchString] = useState('');
