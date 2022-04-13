@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Grid, Typography } from '@astrosat/astrosat-ui';
-
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { Grid } from '@astrosat/astrosat-ui';
 
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
 import ImpactFeatureDetails from './impact-feature-details.component';
+import ProtectedAreasList from './protected-areas-list.component';
 
 /**
  * @param {{ results: object }} props
@@ -16,14 +15,7 @@ const AssessmentResults = ({ results }) => (
       <ImpactSummary data={results?.summary} />
     </Grid>
     <Grid container item xs={6} spacing={3}>
-      <ChartWrapper title="Protected Areas" info="Protected Areas Description">
-        <Typography>
-          Your area of interest overlaps with or is nearby the following
-          designated protected areas:
-        </Typography>
-
-        <Typography>LIST</Typography>
-      </ChartWrapper>
+      <ProtectedAreasList areas={results?.areas} />
     </Grid>
     <Grid container item xs={6} spacing={3}></Grid>
     <Grid container item xs={6} spacing={3}>

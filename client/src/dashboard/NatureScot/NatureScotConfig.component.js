@@ -37,6 +37,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     marginRight: '2rem',
   },
+  tabbed: {
+    display: 'flex',
+  },
 }));
 
 const PANELS = {
@@ -130,18 +133,21 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   return (
     <div className={styles.wrapper}>
-      <Tabs
-        variant="standard"
-        scrollButtons="on"
-        value={visibleTab}
-        onChange={(_event, value) => setVisibleTab(value)}
-      >
-        <Tab className={styles.tab} label="Dashboard" value={PANELS.data} />
-        <Tab
-          className={styles.tab}
-          label="Assessments"
-          value={PANELS.assessments}
-        />
+      <div className={styles.tabbed}>
+        <Tabs
+          variant="standard"
+          scrollButtons="on"
+          value={visibleTab}
+          onChange={(_event, value) => setVisibleTab(value)}
+        >
+          <Tab className={styles.tab} label="Dashboard" value={PANELS.data} />
+          <Tab
+            className={styles.tab}
+            label="Assessments"
+            value={PANELS.assessments}
+          />
+        </Tabs>
+
         <Button
           onClick={() => setIsAssessmentDialogVisible(true)}
           className={styles.assessmentButton}
@@ -149,8 +155,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         >
           Start Impact Assessment
         </Button>
-      </Tabs>
-
+      </div>
       {visibleTab === PANELS.data && (
         <Charts sourceId={sourceId} selectedAoi={selectedAoi} />
       )}

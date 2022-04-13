@@ -65,94 +65,12 @@ describe('AssessmentDialog', () => {
     // Only one panel visible.
     expect(screen.getAllByRole('tabpanel').length).toBe(1);
 
-    const button = screen.getByRole('button', { name: /show activities/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
-
     expect(
-      screen.queryByRole('button', { name: /run impact assessment/i }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('should enable the `show activities` button', async () => {
-    render(
-      <AssessmentDialog
-        open={true}
-        close={close}
-        onSubmit={onSubmit}
-        visibleTab={0}
-      />,
-    );
-
-    const button = screen.getByRole('button', { name: /show activities/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
-
-    userEvent.type(
-      screen.getByTestId('description').firstChild,
-      'build something',
-    );
-
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const day = now.getDate();
-    const date = `${day}/${month + 1}/${year}`;
-    userEvent.type(screen.getByRole('textbox', { name: /start date/i }), date);
-    userEvent.type(screen.getByRole('textbox', { name: /end date/i }), date);
-
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /show activities/i }),
-      ).toBeEnabled(),
-    );
-  });
-
-  it('should show the activities panel when the `show activities` button enabled and clicked', async () => {
-    render(
-      <AssessmentDialog
-        open={true}
-        close={close}
-        onSubmit={onSubmit}
-        visibleTab={0}
-      />,
-    );
-
-    const button = screen.getByRole('button', { name: /show activities/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
-
-    userEvent.type(
-      screen.getByTestId('description').firstChild,
-      'build something',
-    );
-
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const day = now.getDate();
-    const date = `${day}/${month + 1}/${year}`;
-    userEvent.type(screen.getByRole('textbox', { name: /start date/i }), date);
-    userEvent.type(screen.getByRole('textbox', { name: /end date/i }), date);
-
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /show activities/i }),
-      ).toBeEnabled(),
-    );
-
-    userEvent.click(screen.getByRole('button', { name: /show activities/i }));
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /hide activities/i }),
-      ).toBeInTheDocument(),
-    );
-    expect(
-      screen.getByRole('group', { name: /select activities/i }),
+      screen.getByRole('button', { name: /run impact assessment/i }),
     ).toBeInTheDocument();
-  }, 70000);
+  });
 
-  xit('should enable the `run impact assessment` button', async () => {
+  it('should enable the `run impact assessment` button', async () => {
     render(
       <Provider
         store={mockStore({
@@ -173,10 +91,6 @@ describe('AssessmentDialog', () => {
       </Provider>,
     );
 
-    const button = screen.getByRole('button', { name: /show activities/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
-
     userEvent.type(
       screen.getByTestId('description').firstChild,
       'build something',
@@ -190,18 +104,6 @@ describe('AssessmentDialog', () => {
     userEvent.type(screen.getByRole('textbox', { name: /start date/i }), date);
     userEvent.type(screen.getByRole('textbox', { name: /end date/i }), date);
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /show activities/i }),
-      ).toBeEnabled(),
-    );
-
-    userEvent.click(screen.getByRole('button', { name: /show activities/i }));
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /hide activities/i }),
-      ).toBeInTheDocument(),
-    );
     expect(
       screen.getByRole('group', { name: /select activities/i }),
     ).toBeInTheDocument();
@@ -220,9 +122,23 @@ describe('AssessmentDialog', () => {
         screen.getByRole('button', { name: /run impact assessment/i }),
       ).toBeEnabled(),
     );
-  }, 70000);
+  });
 
-  xit('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
+  it.only('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
+    const selectedAoi = {
+      name: 'Test AOI',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [0, 0],
+          [0, 1],
+          [1, 1],
+          [1, 0],
+          [0, 0],
+        ],
+      },
+    };
+
     render(
       <Provider
         store={mockStore({
@@ -239,13 +155,10 @@ describe('AssessmentDialog', () => {
           close={close}
           onSubmit={onSubmit}
           visibleTab={0}
+          selectedAoi={selectedAoi}
         />
       </Provider>,
     );
-
-    const button = screen.getByRole('button', { name: /show activities/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
 
     userEvent.type(
       screen.getByTestId('description').firstChild,
@@ -260,18 +173,6 @@ describe('AssessmentDialog', () => {
     userEvent.type(screen.getByRole('textbox', { name: /start date/i }), date);
     userEvent.type(screen.getByRole('textbox', { name: /end date/i }), date);
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /show activities/i }),
-      ).toBeEnabled(),
-    );
-
-    userEvent.click(screen.getByRole('button', { name: /show activities/i }));
-    await waitFor(() =>
-      expect(
-        screen.getByRole('button', { name: /hide activities/i }),
-      ).toBeInTheDocument(),
-    );
     expect(
       screen.getByRole('group', { name: /select activities/i }),
     ).toBeInTheDocument();
@@ -298,7 +199,7 @@ describe('AssessmentDialog', () => {
     const form = {
       activities: [{ id: 2, label: 'Test Activity 2', proposed: false }],
       description: 'build something',
-      geometry: undefined,
+      geometry: selectedAoi.geometry,
     };
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining(form)),

@@ -98,12 +98,12 @@ const ProtectedFeatureList = ({ features }) => {
 
   return (
     <List>
-      {features?.map(({ id, icon, title, description, type }) => {
+      {features?.map(({ id, icon, title, description, type }, i) => {
         const status = STATUSES.find(status => status.type === type);
 
         return (
           <ListItem
-            key={id}
+            key={`${i}-${type}-${title}`}
             className={styles.listItem}
             onClick={() =>
               console.log('List item clicked: ', {
@@ -124,12 +124,17 @@ const ProtectedFeatureList = ({ features }) => {
                 primaryTypographyProps={{ variant: 'h4', component: 'span' }}
                 primary={title}
                 secondary={
-                  <div className={styles.strapline}>
-                    <Typography className={styles.straplineLabel}>
+                  <>
+                    <Typography
+                      component="span"
+                      className={styles.straplineLabel}
+                    >
                       Description:
                     </Typography>
-                    <Typography variant="h4">{description}</Typography>
-                  </div>
+                    <Typography component="span" variant="h4">
+                      {description}
+                    </Typography>
+                  </>
                 }
               />
             </div>
