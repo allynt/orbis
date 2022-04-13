@@ -147,10 +147,10 @@ const TablePanel = ({ value, index, children, ...rest }) => (
   </div>
 );
 
-const ImpactFeatureDetails = data => {
+const ImpactFeatureDetails = ({ data }) => {
   const styles = useStyles();
-  const noData = !data.data;
-  const actualData = data?.data?.impacts;
+  const noData = !data;
+  const actualData = data?.impacts;
 
   const [tab, setTab] = useState(0);
 
@@ -268,6 +268,7 @@ const ImpactFeatureDetails = data => {
             onChange={toggleTab}
             aria-label="Impact details by feature"
             className={styles.tabs}
+            role="tab"
           >
             {noData
               ? null
