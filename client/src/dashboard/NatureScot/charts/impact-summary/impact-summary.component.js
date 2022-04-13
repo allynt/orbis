@@ -41,7 +41,7 @@ const ImpactSummary = ({ data }) => {
       <StyledParentSize>
         {({ width }) => {
           const height = width / 1.778,
-            scale = 0.41;
+            scale = height / 1130;
           return (
             <>
               <svg style={{ height: 0 }}>
