@@ -116,13 +116,10 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const [isActivitiesButtonDisabled, setIsActivitiesButtonDisabled] =
-    useState(true);
   const [
     isAssessmentSubmitButtonDisabled,
     setIsAssessmentSubmitButtonDisabled,
   ] = useState(true);
-  const [areActivitiesVisible, setAreActivitiesVisible] = useState(false);
 
   const activities = useSelector(impactActivitiesSelector);
 
@@ -142,20 +139,10 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
     setValue('endDate', range.endDate, { shouldValidate: true });
   };
 
-  const handleFetchActivities = () => {
-    const form = getValues();
-    dispatch(fetchImpactActivities(form));
-    setAreActivitiesVisible(!areActivitiesVisible);
-  };
-
   const doSubmit = form => onSubmit(form);
 
   useEffect(() => {
     const subscription = watch(value => {
-      setIsActivitiesButtonDisabled(
-        !value?.description || !value?.startDate || !value?.endDate,
-      );
-
       setIsAssessmentSubmitButtonDisabled(
         !value?.description ||
           !value?.startDate ||
@@ -166,6 +153,10 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    dispatch(fetchImpactActivities());
+  }, [dispatch]);
 
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
@@ -178,33 +169,20 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
       </Form.Row>
 
       <Form.Row>
-        <div className={styles.row}>
-          <Button
-            onClick={() => handleFetchActivities()}
-            disabled={isActivitiesButtonDisabled}
-          >
-            {areActivitiesVisible ? 'Hide' : 'Show'} activities
-          </Button>
+        <div className={styles.fieldset}>
+          <FieldWrapper title="Select activities">
+            <div className={styles.field}>
+              <AssessmentsShuttle setValue={setValue} data={activities} />
+            </div>
+          </FieldWrapper>
+
+          <div className={styles.row}>
+            <Button type="submit" disabled={isAssessmentSubmitButtonDisabled}>
+              Run impact assessment
+            </Button>
+          </div>
         </div>
       </Form.Row>
-
-      {areActivitiesVisible ? (
-        <Form.Row>
-          <div className={styles.fieldset}>
-            <FieldWrapper title="Select activities">
-              <div className={styles.field}>
-                <AssessmentsShuttle setValue={setValue} data={activities} />
-              </div>
-            </FieldWrapper>
-
-            <div className={styles.row}>
-              <Button type="submit" disabled={isAssessmentSubmitButtonDisabled}>
-                Run impact assessment
-              </Button>
-            </div>
-          </div>
-        </Form.Row>
-      ) : null}
     </Form>
   );
 };
