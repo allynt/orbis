@@ -2,7 +2,7 @@ import React from 'react';
 
 import { styled, Typography } from '@astrosat/astrosat-ui';
 
-import { LEGEND_DATA } from '../nature-scotland.constants';
+import { IMPACT_SUMMARY_LEGEND_DATA } from '../../nature-scotland.constants';
 
 const LegendContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,7 +33,7 @@ const Icon = styled('span')(({ fill }) => ({
 
 const NatureScotCustomLegend = () => (
   <LegendContainer>
-    {Object.entries(LEGEND_DATA).map(([label, fill]) => (
+    {Object.entries(IMPACT_SUMMARY_LEGEND_DATA).map(([label, fill]) => (
       <LegendItem key={label}>
         <Icon fill={fill} />
         <Typography variant="body1">{label}</Typography>

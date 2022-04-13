@@ -42,6 +42,7 @@ const AssessmentDialog = ({
   onSubmit,
   results,
   selectedAoi,
+  hasResults,
 }) => {
   const styles = useStyles();
 
@@ -70,7 +71,7 @@ const AssessmentDialog = ({
 
         <Tabs value={tab} onChange={toggleTab}>
           <Tab label="Form" />
-          <Tab label="Results" />
+          <Tab label="Results" disabled={!results} />
         </Tabs>
 
         <TabPanel value={tab} index={0}>
