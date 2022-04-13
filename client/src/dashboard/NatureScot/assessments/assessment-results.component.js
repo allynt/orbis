@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Grid, Typography } from '@astrosat/astrosat-ui';
-
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import { Grid } from '@astrosat/astrosat-ui';
 
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
 import ImpactFeatureDetails from './impact-feature-details.component';
