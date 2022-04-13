@@ -24,9 +24,7 @@ const useStyles = makeStyles(theme => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-end',
     height: '100%',
-    minHeight: '20rem',
     margin: 20,
   },
   overviewHighlightedText: {
@@ -68,7 +66,12 @@ const AssessmentDialog = ({
   };
 
   const handleYesNo = status => {
-    status ? close() : setYesNoDialogVisible(false);
+    if (status) {
+      setYesNoDialogVisible(false);
+      close();
+    } else {
+      setYesNoDialogVisible(false);
+    }
   };
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
