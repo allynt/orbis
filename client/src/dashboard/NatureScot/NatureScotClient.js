@@ -5,11 +5,13 @@ export class NatureScotClient extends SubClient {
     super('/proxy/data');
   }
 
-  async getImpactData(url, options = {}) {
+  async getImpactData(url, form = {}, options = {}) {
     const response = await this.makeAuthenticatedRequest(url, {
       ...options,
       method: 'POST',
+      body: JSON.stringify(form),
     });
+
     return response.json();
   }
 }

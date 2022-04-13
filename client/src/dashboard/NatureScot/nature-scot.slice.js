@@ -31,6 +31,7 @@ export const fetchImpactActivities = createAsyncThunk(
     try {
       const data = await apiClient.natureScot.getImpactData(
         `/${apiSourceId}/`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
