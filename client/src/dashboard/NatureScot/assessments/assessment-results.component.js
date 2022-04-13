@@ -4,8 +4,8 @@ import { Grid, Typography } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import ImpactFeatureDetailsNav from '../assessments/impact-feature-details-nav.component';
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
+import ImpactFeatureDetails from './impact-feature-details.component';
 
 /**
  * @param {{ results: object }} props
@@ -27,12 +27,7 @@ const AssessmentResults = ({ results }) => (
     </Grid>
     <Grid container item xs={6} spacing={3}></Grid>
     <Grid container item xs={6} spacing={3}>
-      <ChartWrapper
-        title="Impact Detail By Feature"
-        info="Impact Detail By Feature Description"
-      >
-        <ImpactFeatureDetailsNav results={results} />
-      </ChartWrapper>
+      <ImpactFeatureDetails data={results} />
     </Grid>
   </Grid>
 );

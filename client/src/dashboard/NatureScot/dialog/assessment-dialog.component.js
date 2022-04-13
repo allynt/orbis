@@ -10,8 +10,9 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { TabPanel } from 'dashboard/NatureScot/tab-panel';
+
 import AssessmentResults from '../assessments/assessment-results.component';
-import { TabPanel } from '../assessments/impact-feature-details-nav.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
 import AssessmentDialogForm from './assessment-dialog-form';
 

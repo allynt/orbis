@@ -5,7 +5,7 @@ import { render, screen } from 'test/test-utils';
 import AssessmentResults from './assessment-results.component';
 
 describe('Assessment Results', () => {
-  it('should a grid of charts', () => {
+  it('should render a grid of charts', () => {
     render(<AssessmentResults />);
 
     // Chart titles
