@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
     overflow: 'scroll',
     bgcolor: '#f00',
   },
-  highlightedActivity: {
-    fontWeight: 'bold',
-  },
   normalActivity: {
     fontWeight: 'normal',
   },
@@ -64,15 +61,7 @@ const ActivityList = ({
               button
               onClick={() => onItemSelection(activity)}
             >
-              <ListItemText
-                id={labelId}
-                primary={activity.label}
-                primaryTypographyProps={{
-                  style: {
-                    fontWeight: activity.proposed ? 'bold' : 'normal',
-                  },
-                }}
-              />
+              <ListItemText id={labelId} primary={activity.label} />
               {activity.userDefined ? (
                 <Button
                   onClick={() => onItemDelete(activity)}
