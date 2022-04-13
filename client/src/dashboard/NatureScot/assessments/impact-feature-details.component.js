@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
   },
   container: {
-    height: '15rem',
+    height: '25rem',
     width: '100%',
     margin: 0,
     padding: 0,
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabpanel: {
     width: '80%',
-    height: '15rem',
+    height: '25rem',
     padding: 0,
   },
   '& .MuiTabs-scroller': {},
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     backgroundColor: '#333f48',
-    height: '15rem',
+    height: '25rem',
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
       fontSize: 12,
