@@ -2,7 +2,9 @@ import json
 
 from attr import Factory
 import factory
-from factory.faker import (Faker as FactoryFaker,)
+from factory.faker import (
+    Faker as FactoryFaker,
+)
 
 from faker import Faker
 
@@ -20,40 +22,29 @@ fake = Faker()
 FactoryFaker.add_provider(GeometryProvider)
 
 REPORT = {
-    "summary": [
-        {
-            "type": "Habitat",
-            "impact": 3
-        },
-        {
-            "type": "Geomorphology",
-            "impact": 1
-        }
-    ],
-    "areas": [
-        {
-            "title": "Title 1",
-        },
-        {
-            "title": "Title 2",
-        }
-    ],
-    "impacts": [
-        {
-            "name": "Breeding Birds",
-            "impact": [
-                {
-                    "name": "Habitat",
-                    "effect": "Loss",
-                },
-                {
-                    "name": "Habitat",
-                    "effect": "Loss",
-                }
-            ]
-        }
-    ]
+    "summary": [{
+        "type": "Habitat", "impact": 3
+    }, {
+        "type": "Geomorphology", "impact": 1
+    }],
+    "areas": [{
+        "title": "Title 1",
+    }, {
+        "title": "Title 2",
+    }],
+    "impacts": [{
+        "name":
+            "Breeding Birds",
+        "impact": [{
+            "name": "Habitat",
+            "effect": "Loss",
+        }, {
+            "name": "Habitat",
+            "effect": "Loss",
+        }]
+    }]
 }
+
 
 class ProposalFactory(factory.django.DjangoModelFactory):
     class Meta:

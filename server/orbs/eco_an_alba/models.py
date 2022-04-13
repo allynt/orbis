@@ -62,21 +62,25 @@ from astrosat.utils import validate_schema
 #     "required": ["summary", "areas", "impacts"],
 # }
 
+
 def validate_report_state(value):
     # return validate_schema(value, REPORT_STATE_SCHEMA)
     return True
 
+
 class ProposalManager(models.Manager):
     pass
 
+
 class ProposalQuerySet(models.QuerySet):
     pass
+
 
 class Proposal(gis_models.Model):
     class Meta:
         verbose_name = _('Proposal')
         verbose_name_plural = _('Proposals')
-        ordering = ('-created',)
+        ordering = ('-created', )
         constraints = [
             models.UniqueConstraint(
                 fields=["name", "owner"],
@@ -99,9 +103,7 @@ class Proposal(gis_models.Model):
     )
 
     description = models.TextField(
-        null=True,
-        blank=True,
-        help_text=_('Description of the proposal')
+        null=True, blank=True, help_text=_('Description of the proposal')
     )
 
     owner = models.ForeignKey(
@@ -114,7 +116,9 @@ class Proposal(gis_models.Model):
     )
 
     # Form fields
-    proposal_geometry = gis_models.GeometryField(null=False, blank=False, help_text=_('Geometry of the proposal'))
+    geometry = gis_models.GeometryField(
+        null=True, blank=True, help_text=_('Geometry of the proposal')
+    )
 
     proposal_description = models.TextField(
         null=True,
@@ -124,15 +128,11 @@ class Proposal(gis_models.Model):
 
     # The date the proposal was created.
     proposal_start_date = models.DateTimeField(
-        null=True,
-        blank=True,
-        help_text=_('Start date of the proposal')
+        null=True, blank=True, help_text=_('Start date of the proposal')
     )
 
     proposal_end_date = models.DateTimeField(
-        null=True,
-        blank=True,
-        help_text=_('End date of the proposal')
+        null=True, blank=True, help_text=_('End date of the proposal')
     )
 
     proposal_activities = ArrayField(
@@ -145,13 +145,17 @@ class Proposal(gis_models.Model):
         help_text=_('Activities associated with the proposal')
     )
 
-    report_generation_date = models.DateTimeField(null=True, blank=True, help_text=_('Date the report was generated'))
+    report_generation_date = models.DateTimeField(
+        null=True, blank=True, help_text=_('Date the report was generated')
+    )
 
     report_state = models.JSONField(
         null=True,
         blank=True,
         validators=[validate_report_state],
-        help_text=_('JSON representation of the impact assessment report associated with the proposal')
+        help_text=_(
+            'JSON representation of the impact assessment report associated with the proposal'
+        )
     )
 
     def __str__(self) -> str:
