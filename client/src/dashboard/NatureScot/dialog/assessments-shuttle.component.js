@@ -173,7 +173,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
     if (searchString) {
       filterList.push(item => {
         const finder = new RegExp(`.*${searchString}.*`, 'i');
-        return item.label.match(finder);
+        return item.title.match(finder);
       });
     }
     // get filtered list by applying filter functions
@@ -185,29 +185,29 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const handleSearch = searchText => setSearchString(searchText);
 
   const selectItemOnLeft = object => {
-    if (!leftSelected.find(item => item.label === object.label)) {
+    if (!leftSelected.find(item => item.title === object.title)) {
       setLeftSelected([
         ...leftSelected,
-        left.find(item => item.label === object.label),
+        left.find(item => item.title === object.title),
       ]);
     } else {
       // already selected, remove from selection
       setLeftSelected([
-        ...leftSelected.filter(item => item.label !== object.label),
+        ...leftSelected.filter(item => item.title !== object.title),
       ]);
     }
   };
 
   const selectItemOnRight = object => {
-    if (!rightSelected.find(item => item.label === object.label)) {
+    if (!rightSelected.find(item => item.title === object.title)) {
       setRightSelected([
         ...rightSelected,
-        right.find(item => item.label === object.label),
+        right.find(item => item.title === object.title),
       ]);
     } else {
       // already selected, remove from selection
       setRightSelected([
-        ...rightSelected.filter(item => item.label !== object.label),
+        ...rightSelected.filter(item => item.title !== object.title),
       ]);
     }
   };
@@ -264,8 +264,8 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const addActivity = () => {
     if (!newActivityText) return;
     const newActivity = {
-      value: 100, // TODO: need to think about this. Not used for now, label more important
-      label: newActivityText,
+      value: 100, // TODO: need to think about this. Not used for now, title more important
+      title: newActivityText,
       proposed: false,
       userDefined: true,
     };
@@ -275,7 +275,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
 
   const deleteActivity = activity =>
     setRight(
-      right.filter(eachActivity => eachActivity.label !== activity.label),
+      right.filter(eachActivity => eachActivity.title !== activity.title),
     );
 
   return (
@@ -323,7 +323,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               <TextField
                 id="filter-activities"
                 margin="normal"
-                label="Type ahead..."
+                title="Type ahead..."
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
@@ -409,7 +409,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 id="add-activity"
                 margin="normal"
                 value={newActivityText}
-                label="Add a new Activity"
+                title="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },

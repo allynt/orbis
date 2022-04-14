@@ -43,16 +43,16 @@ const ActivityList = ({
   const onItemDelete = activity => onDelete(activity);
 
   const isSelected = activity =>
-    selectedActivityList.find(item => item.label === activity.label);
+    selectedActivityList.find(item => item.title === activity.title);
 
   return (
     <Box sx={{ height: '20rem', overflow: 'auto' }}>
       <List dense component="ul">
         {activityList.map(activity => {
-          const labelId = `${name}-${activity}-label`;
+          const titleId = `${name}-${activity}-title`;
           return (
             <ListItem
-              key={activity.label}
+              key={activity.title}
               className={
                 isSelected(activity)
                   ? styles.selectedActivity
@@ -61,7 +61,7 @@ const ActivityList = ({
               button
               onClick={() => onItemSelection(activity)}
             >
-              <ListItemText id={labelId} primary={activity.label} />
+              <ListItemText id={titleId} primary={activity.title} />
               {activity.userDefined ? (
                 <Button
                   onClick={() => onItemDelete(activity)}
