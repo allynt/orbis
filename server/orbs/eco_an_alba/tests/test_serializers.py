@@ -4,7 +4,6 @@ from django.contrib.gis.geos import GEOSGeometry
 
 from orbs.eco_an_alba.tests.factories import ProposalFactory, UserFactory
 
-from orbs.eco_an_alba.models import Proposal
 from orbs.eco_an_alba.serializers import ProposalSerializer
 
 
@@ -13,10 +12,8 @@ class TestProposalSerializer:
     def test_proposal_serialization(self):
         user = UserFactory()
         proposal = ProposalFactory(owner=user)
-        print(f"Factory: {proposal}\n\n", flush=True)
 
         serializer = ProposalSerializer(proposal)
-        print(f"Serializer: {serializer.data}", flush=True)
 
         assert proposal.name == serializer.data["name"]
 
@@ -27,7 +24,18 @@ class TestProposalSerializer:
             "modified": proposal.modified,
             "name": proposal.name,
             "owner": proposal.owner.uuid,
-            "geometry": proposal.geometry,
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
+            "proposal_description": proposal.proposal_description,
+            "proposal_start_date": proposal.proposal_start_date,
+            "proposal_end_date": proposal.proposal_end_date,
+            "proposal_activities": [{
+                "title": "Activity 1", "code": "activity1"
+            }, {
+                "title": "Activity 2", "code": "activity2"
+            }, {
+                "title": "Activity 3", "code": "activity3"
+            }],
+            "report_state": proposal.report_state,
         }
 
         serializer = ProposalSerializer(data=proposal_data)
@@ -42,9 +50,18 @@ class TestProposalSerializer:
             "modified": proposal.modified,
             "name": proposal.name,
             "owner": proposal.owner.uuid,
-            "geometry": proposal.geometry,
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
+            "proposal_description": proposal.proposal_description,
             "proposal_start_date": "2020-01-01T00:00:00.000Z",
             "proposal_end_date": "2019-01-01T00:00:00.000Z",
+            "proposal_activities": [{
+                "title": "Activity 1", "code": "activity1"
+            }, {
+                "title": "Activity 2", "code": "activity2"
+            }, {
+                "title": "Activity 3", "code": "activity3"
+            }],
+            "report_state": proposal.report_state,
         }
 
         serializer = ProposalSerializer(data=proposal_data)
@@ -55,33 +72,31 @@ class TestProposalSerializer:
     def test_proposal_duplicate_activities(self):
         proposal = ProposalFactory.build(owner=UserFactory())
         proposal_data = {
-            "created":
-                proposal.created,
-            "modified":
-                proposal.modified,
-            "name":
-                proposal.name,
-            "owner":
-                proposal.owner.uuid,
-            "geometry":
-                GEOSGeometry(proposal.geometry).geojson,
+            "created": proposal.created,
+            "modified": proposal.modified,
+            "name": proposal.name,
+            "owner": proposal.owner.uuid,
+            "geometry": GEOSGeometry(proposal.geometry).geojson,
+            "proposal_description": proposal.proposal_description,
+            "proposal_start_date": proposal.proposal_start_date,
+            "proposal_end_date": proposal.proposal_end_date,
             "proposal_activities": [{
-                "label": "Activity 1", "code": "activity1"
+                "title": "Activity 1", "code": "activity1"
             }, {
-                "label": "Activity 2", "code": "activity2"
+                "title": "Activity 2", "code": "activity2"
             }, {
-                "label": "Activity 1", "code": "activity1"
+                "title": "Activity 1", "code": "activity1"
             }, {
-                "label": "Activity 1", "code": "activity1"
+                "title": "Activity 1", "code": "activity1"
             }, {
-                "label": "Activity 3", "code": "activity3"
+                "title": "Activity 3", "code": "activity3"
             }, {
-                "label": "Activity 3", "code": "activity3"
+                "title": "Activity 3", "code": "activity3"
             }],
+            "report_state": proposal.report_state,
         }
 
         serializer = ProposalSerializer(data=proposal_data)
         assert not serializer.is_valid()
         assert serializer.errors['proposal_activities'][
-            0
-        ] == "Duplicate activities found: [('Activity 1', 'activity1'), ('Activity 3', 'activity3')]"
+            0] == "Duplicate activities: Activity 1, Activity 3"

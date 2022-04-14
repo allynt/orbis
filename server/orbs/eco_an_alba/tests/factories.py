@@ -1,12 +1,9 @@
 import json
 
-from attr import Factory
 import factory
 from factory.faker import (
     Faker as FactoryFaker,
 )
-
-from faker import Faker
 
 from datetime import timedelta
 
@@ -16,8 +13,6 @@ from astrosat.tests.utils import optional_declaration
 from astrosat_users.tests.factories import UserFactory
 
 from orbs.eco_an_alba.models import Proposal
-
-fake = Faker()
 
 FactoryFaker.add_provider(GeometryProvider)
 
@@ -50,7 +45,7 @@ class ProposalFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Proposal
 
-    name = FactoryFaker("pretty_sentence", nb_words=3)
+    name = FactoryFaker("sentence", nb_words=3)
 
     description = optional_declaration(FactoryFaker("text"), chance=50)
 
@@ -63,9 +58,9 @@ class ProposalFactory(factory.django.DjangoModelFactory):
     proposal_start_date = FactoryFaker("date_time_this_month", after_now=True)
 
     proposal_activities = [{
-        "label": "Activity 1", "code": "activity1"
+        "title": "Activity 1", "code": "activity1"
     }, {
-        "label": "Activity 2", "code": "activity2"
+        "title": "Activity 2", "code": "activity2"
     }]
 
     report_state = REPORT

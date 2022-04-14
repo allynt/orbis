@@ -48,13 +48,16 @@ class ProposalSerializer(serializers.ModelSerializer):
         return validated_data
 
     def validate_proposal_activities(self, proposal_activities):
-        activity_tuples = [
-            tuple(activity.values()) for activity in proposal_activities
+        activity_texts = [
+            activity.get("title") for activity in proposal_activities
         ]
-        counts = Counter(activity_tuples)
-        duplicates = [key for key in counts.keys() if counts[key] > 1]
+        activity_duplicates = [
+            key for key, value in Counter(activity_texts).items() if value > 1
+        ]
 
-        if len(duplicates):
+        if activity_duplicates:
             raise serializers.ValidationError(
-                f"Duplicate activities found: {duplicates}"
+                f"Duplicate activities: {', '.join(activity_duplicates)}"
             )
+
+        return proposal_activities

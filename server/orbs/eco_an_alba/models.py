@@ -3,8 +3,6 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.contrib.gis.db import models as gis_models
-# from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext as _
 
 from astrosat.utils import validate_schema
@@ -62,10 +60,31 @@ from astrosat.utils import validate_schema
 #     "required": ["summary", "areas", "impacts"],
 # }
 
+# defines the schema of the report_state JSONField below
+PROPOSAL_ACTIVITIES_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "code": {
+                "type": "string",
+            },
+            "title": {
+                "type": "string",
+            },
+        },
+        "required": ["code", "title"],
+    },
+}
+
 
 def validate_report_state(value):
     # return validate_schema(value, REPORT_STATE_SCHEMA)
     return True
+
+
+def validate_proposal_activities(value):
+    return validate_schema(value, PROPOSAL_ACTIVITIES_SCHEMA)
 
 
 class ProposalManager(models.Manager):
@@ -117,41 +136,33 @@ class Proposal(gis_models.Model):
 
     # Form fields
     geometry = gis_models.GeometryField(
-        null=True, blank=True, help_text=_('Geometry of the proposal')
+        null=False, blank=False, help_text=_('Geometry of the proposal')
     )
 
     proposal_description = models.TextField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         help_text=_('Description of the work being proposed')
     )
 
-    # The date the proposal was created.
     proposal_start_date = models.DateTimeField(
-        null=True, blank=True, help_text=_('Start date of the proposal')
+        null=False, blank=False, help_text=_('Start date of the proposal')
     )
 
     proposal_end_date = models.DateTimeField(
-        null=True, blank=True, help_text=_('End date of the proposal')
+        null=False, blank=False, help_text=_('End date of the proposal')
     )
 
-    proposal_activities = ArrayField(
-        models.JSONField(
-            max_length=255,
-            blank=True,
-        ),
-        null=True,
-        blank=True,
+    proposal_activities = models.JSONField(
+        null=False,
+        blank=False,
+        validators=[validate_proposal_activities],
         help_text=_('Activities associated with the proposal')
     )
 
-    report_generation_date = models.DateTimeField(
-        null=True, blank=True, help_text=_('Date the report was generated')
-    )
-
     report_state = models.JSONField(
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
         validators=[validate_report_state],
         help_text=_(
             'JSON representation of the impact assessment report associated with the proposal'
@@ -159,4 +170,5 @@ class Proposal(gis_models.Model):
     )
 
     def __str__(self) -> str:
-        return self.name
+        # return self.name
+        return f"[NAME: {self.name}, OWNER: {self.owner}, DESCRIPTION: {self.description}, GEOMETRY: {self.geometry}, START DATE: {self.proposal_start_date}, END DATE: {self.proposal_end_date}, ACTIVITIES: {self.proposal_activities}, REPORT STATE: {self.report_state}]"
