@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme => ({
   },
   nudge: {
     marginLeft: '0.75rem',
+    marginBottom: '0.9rem',
   },
   nudge2: {
     marginLeft: '1rem',
@@ -156,6 +157,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [newActivityText, setNewActivityText] = useState('');
   const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
   const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
+  const [removeSelectedDisabled, setRemoveSelectedDisabled] = useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
@@ -164,7 +166,15 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   useEffect(() => {
     setChooseAllDisabledButton(left.length === 0);
     setRemoveAllDisabledButton(right.length === 0);
-  }, [left, setChooseAllDisabledButton, right, setRemoveAllDisabledButton]);
+    setRemoveSelectedDisabled(rightSelected.every(item => item.userDefined));
+  }, [
+    left,
+    setChooseAllDisabledButton,
+    right,
+    setRemoveAllDisabledButton,
+    setRemoveSelectedDisabled,
+    rightSelected,
+  ]);
 
   const getFilteredLeft = () => {
     let filterList = [];
@@ -364,16 +374,21 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 onClick={() => chooseSelected()}
                 fontSize="large"
                 data-testid="choose activity"
+                cursor="pointer"
               />
             </Grid>
             <Grid item xs={12} className={styles.capsuleBox}>
               <ArrowBack
                 className={`${styles.circle} ${
-                  rightSelected.length > 0 ? styles.blueCircle : ''
+                  rightSelected.length > 0 && !removeSelectedDisabled
+                    ? styles.blueCircle
+                    : ''
                 }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
                 data-testid="choose selected"
+                pointerEvents={removeSelectedDisabled ? 'none' : 'auto'}
+                cursor="pointer"
               />
             </Grid>
             <Grid item xs={12} className={styles.capsuleBottom}>
