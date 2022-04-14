@@ -62,7 +62,7 @@ const ActivityList = ({
               onClick={() => onItemSelection(activity)}
             >
               <ListItemText id={titleId} primary={activity.title} />
-              {activity.userDefined ? (
+              {!activity.code ? (
                 <Button
                   onClick={() => onItemDelete(activity)}
                   xs={2}
