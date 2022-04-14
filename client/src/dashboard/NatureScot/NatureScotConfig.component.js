@@ -47,7 +47,6 @@ const PANELS = {
   assessments: 'assessments',
 };
 
-// const ASSESSMENT_DATA = [];
 const ASSESSMENT_DATA = [
   {
     id: 1,
@@ -125,6 +124,7 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [visibleTab, setVisibleTab] = useState(PANELS.data);
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
+  const [selectedAssessment, setSelectedAssessment] = useState(null);
 
   const [initialFormState, setInitialFormState] = useState({
     startDate: null,
@@ -133,12 +133,15 @@ const NatureScotDashboard = ({ sourceId }) => {
     geometry: selectedAoi?.geometry,
   });
 
-  console.log('initialFormState: ', initialFormState);
-
   const submitAssessment = form => {
     setInitialFormState(prev => ({ ...prev, ...form }));
     dispatch(fetchImpactAssessment(form));
     setAssessmentDialogTab(1);
+  };
+
+  const handleEditAssessment = id => {
+    const assessment = ASSESSMENT_DATA.find(datum => datum.id === id);
+    setSelectedAssessment(assessment);
   };
 
   return (
@@ -170,7 +173,10 @@ const NatureScotDashboard = ({ sourceId }) => {
         <Charts sourceId={sourceId} selectedAoi={selectedAoi} />
       )}
       {visibleTab === PANELS.assessments && (
-        <AssessmentTable data={ASSESSMENT_DATA} />
+        <AssessmentTable
+          data={ASSESSMENT_DATA}
+          handleEditAssessment={handleEditAssessment}
+        />
       )}
 
       <AssessmentDialog
@@ -180,6 +186,14 @@ const NatureScotDashboard = ({ sourceId }) => {
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
         initialFormState={initialFormState}
+      />
+
+      <AssessmentDialog
+        visibleTab={assessmentDialogTab}
+        results={selectedAssessment}
+        onSubmit={() => console.log('Submitted!')}
+        close={() => setSelectedAssessment(null)}
+        open={!!selectedAssessment}
       />
     </div>
   );

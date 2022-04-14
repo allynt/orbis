@@ -4,12 +4,12 @@ export const AOI_BUFFER = 10000; // 10 km specified as metres
 export const QUERY_RESPONSE_LIMIT = 500;
 
 export const IMPACT_SUMMARY_LEGEND_DATA = {
-  'High +ve': '#7ef664',
-  'Low -ve': '#eda46c',
-  'Medium +ve': '#b3d567',
-  'Medium -ve': '#f67971',
-  'Low +ve': '#c7d99f',
-  'High -ve': '#ff544A',
+  'High positive': '#7ef664',
+  'Low negative': '#eda46c',
+  'Medium positive': '#b3d567',
+  'Medium negative': '#f67971',
+  'Low positive': '#c7d99f',
+  'High negative': '#ff544a',
   Neutral: '#d8c06a',
 };
 
@@ -20,5 +20,5 @@ export const GRADIENT_STOPS = {
   '50%': '#d8c06a',
   '60%': '#eda46c',
   '70%': '#f67971',
-  '100%': '#f03b30',
+  '100%': '#ff544a',
 };

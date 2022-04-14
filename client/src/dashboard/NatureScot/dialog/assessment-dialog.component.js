@@ -59,11 +59,16 @@ const AssessmentDialog = ({
 
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
+  const [yesNoDialogIsDirty, setYesNoDialogIsDirty] = useState(false);
 
   const toggleTab = (event, tab) => setTab(tab);
 
   const handleClose = () => {
-    setYesNoDialogVisible(true);
+    if (yesNoDialogIsDirty) {
+      setYesNoDialogVisible(true);
+    } else {
+      close();
+    }
   };
 
   const handleYesNo = status => {
@@ -108,6 +113,7 @@ const AssessmentDialog = ({
           <AssessmentDialogForm
             onSubmit={onSubmit}
             initialFormState={initialFormState}
+            setYesNoDialogIsDirty={setYesNoDialogIsDirty}
           />
         </TabPanel>
 
@@ -116,7 +122,7 @@ const AssessmentDialog = ({
         </TabPanel>
       </div>
 
-      {yesNoDialogVisible ? (
+      {yesNoDialogVisible && yesNoDialogIsDirty ? (
         <YesNoDialog
           isOpen={yesNoDialogVisible}
           close={() => setYesNoDialogVisible(false)}

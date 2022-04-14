@@ -17,8 +17,8 @@ import {
 import { FieldWrapper } from './assessment-field-wrapper.component';
 import AssessmentsShuttle from './assessments-shuttle.component';
 
-const now = new Date();
-const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const NOW = new Date();
+const midnight = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate());
 
 const validationSchema = yup.object({
   description: yup.string().min(3, 'Description must be at least 3 characters'),
@@ -94,6 +94,13 @@ const DateRange = ({ startDate, endDate, onChange }) => {
   const styles = useStyles();
   const title = 'Describe Your Development or Change';
 
+  const today = NOW.toISOString();
+
+  const range = {
+    startDate: startDate ?? today,
+    endDate: endDate ?? today,
+  };
+
   return (
     <div className={styles.fieldset}>
       <FieldWrapper title={title}>
@@ -104,11 +111,7 @@ const DateRange = ({ startDate, endDate, onChange }) => {
           </p>
 
           <div className={styles.dateRange}>
-            <DateRangeFilter
-              onSubmit={onChange}
-              minDate={startDate ?? now}
-              maxDate={endDate ?? now}
-            />
+            <DateRangeFilter onSubmit={onChange} range={range} />
           </div>
         </div>
       </FieldWrapper>
@@ -116,7 +119,11 @@ const DateRange = ({ startDate, endDate, onChange }) => {
   );
 };
 
-const AssessmentDialogForm = ({ onSubmit, initialFormState }) => {
+const AssessmentDialogForm = ({
+  onSubmit,
+  initialFormState,
+  setYesNoDialogIsDirty,
+}) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -127,22 +134,44 @@ const AssessmentDialogForm = ({ onSubmit, initialFormState }) => {
 
   const activitiesList = useSelector(impactActivitiesSelector);
 
-  const { register, handleSubmit, getValues, setValue, watch, formState } =
-    useForm({
-      mode: 'onChange',
-      defaultValues: initialFormState,
-      resolver: yupResolver(validationSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+    formState: { isDirty },
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: initialFormState,
+    resolver: yupResolver(validationSchema),
+  });
 
-  const { startDate, endDate, activities } = formState;
+  const { startDate, endDate, activities } = getValues();
 
-  const handleDateRangeSelection = range => {
-    setValue('startDate', range.startDate, { shouldValidate: true });
-    setValue('endDate', range.endDate, { shouldValidate: true });
+  const handleDateRangeSelection = ({ startDate, endDate }) => {
+    setValue('startDate', startDate, { shouldValidate: true });
+    setValue('endDate', endDate, { shouldValidate: true });
   };
 
   // TODO: is this necessary?
-  const doSubmit = form => onSubmit(form);
+  const doSubmit = form => {
+    const { startDate, endDate } = form;
+    // This is here because for some reason, ISO dates get spit out of
+    // the form in the wrong format.
+    const processedForm = {
+      ...form,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    };
+
+    onSubmit(processedForm);
+  };
+
+  useEffect(
+    () => setYesNoDialogIsDirty(isDirty),
+    [isDirty, setYesNoDialogIsDirty],
+  );
 
   useEffect(() => {
     const subscription = watch(value => {

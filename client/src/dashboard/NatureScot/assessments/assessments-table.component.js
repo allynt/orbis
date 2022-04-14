@@ -29,7 +29,7 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentTable = ({ data }) => {
+const AssessmentTable = ({ data, handleEditAssessment }) => {
   const styles = useStyles();
 
   const [assessments, setAssessments] = useState([]);
@@ -91,23 +91,19 @@ const AssessmentTable = ({ data }) => {
         Header: '',
         accessor: 'null',
         id: 'button',
-        Cell: ({ value }) => (
+        Cell: ({
+          cell: {
+            row: { id },
+          },
+        }) => (
           <div className={styles.actions}>
             <Button
               size="small"
               variant="text"
               className={styles.actionButton}
-              onClick={event => console.log('View Clicked: ', value, event)}
+              onClick={() => handleEditAssessment(Number(id))}
             >
-              View
-            </Button>
-            <Button
-              size="small"
-              variant="text"
-              className={styles.actionButton}
-              onClick={event => console.log('Modify Clicked: ', value, event)}
-            >
-              Modify
+              View/Modify
             </Button>
           </div>
         ),
