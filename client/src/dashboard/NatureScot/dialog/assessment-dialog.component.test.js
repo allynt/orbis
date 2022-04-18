@@ -76,8 +76,8 @@ describe('AssessmentDialog', () => {
         store={mockStore({
           natureScotDashboard: {
             activities: [
-              { id: 1, label: 'Test Activity 1', proposed: true },
-              { id: 2, label: 'Test Activity 2', proposed: false },
+              { title: 'Test Activity 1', code: 'activity1' },
+              { title: 'Test Activity 2', code: 'activity2' },
             ],
           },
         })}
@@ -124,7 +124,7 @@ describe('AssessmentDialog', () => {
     );
   });
 
-  it.only('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
+  it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
     const selectedAoi = {
       name: 'Test AOI',
       geometry: {
@@ -144,8 +144,8 @@ describe('AssessmentDialog', () => {
         store={mockStore({
           natureScotDashboard: {
             activities: [
-              { id: 1, label: 'Test Activity 1', proposed: true },
-              { id: 2, label: 'Test Activity 2', proposed: false },
+              { title: 'Test Activity 1', code: 'activity1' },
+              { title: 'Test Activity 2', code: 'activity2' },
             ],
           },
         })}
@@ -197,7 +197,7 @@ describe('AssessmentDialog', () => {
     );
 
     const form = {
-      activities: [{ id: 2, label: 'Test Activity 2', proposed: false }],
+      activities: [{ title: 'Test Activity 2', code: 'activity2' }],
       description: 'build something',
       geometry: selectedAoi.geometry,
     };
