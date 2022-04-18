@@ -21,6 +21,7 @@ import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
+import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
 import ImpactFeatureDetailsLegend from './impact-feature-details-legend';
 import NeutralIcon from './neutral-icon';
 
@@ -99,27 +100,27 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #333f48',
   },
   minus2: {
-    color: '#f67971',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
     border: '1px solid #333f48',
   },
   minus1: {
-    color: '#eda46c',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
     border: '1px solid #333f48',
   },
   zero: {
-    color: '#d8c06a',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
     border: '1px solid #333f48',
   },
   plus1: {
-    color: '#c7d99f',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
     border: '1px solid #333f48',
   },
   plus2: {
-    color: '#b3d567',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
     border: '1px solid #333f48',
   },
   plus3: {
-    color: '#7ef664',
+    color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
     border: '1px solid #333f48',
   },
   headerone: {

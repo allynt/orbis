@@ -4,6 +4,7 @@ import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
+import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
 import NeutralIcon from './neutral-icon';
 
 const useStyles = makeStyles(theme => ({
@@ -11,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     padding: '5px',
   },
   container: {
-    border: '1px solid #333f48',
+    //border: '1px solid ' + theme.palette.primary.main,
     margin: '1rem',
     padding: '0.5rem ',
     alignContent: 'center', //TODO : why this not working
@@ -25,38 +26,32 @@ const useStyles = makeStyles(theme => ({
     left: '3px',
   },
   minus3: {
-    color: '#ff544A',
+    color: '#ff544A', // keeping this corrected value from Areti
   },
   minus2: {
-    color: '#f67971',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
   },
   minus1: {
-    color: '#eda46c',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
   },
   zero: {
-    color: '#d8c06a',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
   },
   plus1: {
-    color: '#c7d99f',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
   },
   plus2: {
-    color: '#b3d567',
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
   },
   plus3: {
-    color: '#7ef664',
+    color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
   },
 }));
 
 const ImpactFeatureDetailsLegend = () => {
   const styles = useStyles();
   return (
-    <Grid
-      className={styles.container}
-      container
-      wrap="wrap"
-      direction="row"
-      // alignItems="center"
-    >
+    <Grid className={styles.container} container wrap="wrap" direction="row">
       <Grid className={styles.plus3} xs={3}>
         <AddCircle />
         <AddCircle />
@@ -69,7 +64,6 @@ const ImpactFeatureDetailsLegend = () => {
         <span className={styles.label}>Medium Positive</span>
       </Grid>
       <Grid className={styles.plus1} xs={3}>
-        <AddCircle />
         <AddCircle />
         <span className={styles.label}>Low Positive</span>
       </Grid>

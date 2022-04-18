@@ -98,10 +98,6 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '4px',
   },
-  capsuleLine: {
-    border: '2px solid yellow',
-    backgroundColor: '#f00',
-  },
   capsuleBox: {
     height: '2.6rem',
     backgroundColor: theme.palette.background.paper,
@@ -339,7 +335,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div className="{styles.capsuleLine}">
+          <div>
             <Grid item xs={12} className={styles.capsuleTop}>
               &nbsp;
             </Grid>
