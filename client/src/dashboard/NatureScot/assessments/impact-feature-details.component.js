@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   },
   tabs: {
     backgroundColor: '#333f48',
-    height: '25rem',
+    //height: '25rem',
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
       fontSize: 12,
@@ -142,11 +142,7 @@ const useStyles = makeStyles(theme => ({
 // This is a slightly modified version of TabPanel
 const TablePanel = ({ value, index, children, ...rest }) => (
   <div role="tabpanel" hidden={value !== index} {...rest}>
-    {value === index && (
-      <Box sx={{ padding: 0 }} p={3}>
-        {children}
-      </Box>
-    )}
+    {value === index && <Box sx={{ padding: 0 }}>{children}</Box>}
   </div>
 );
 
