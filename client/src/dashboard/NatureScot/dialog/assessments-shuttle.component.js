@@ -99,10 +99,6 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     bottom: '4px',
   },
-  capsuleLine: {
-    border: '2px solid yellow',
-    backgroundColor: '#f00',
-  },
   capsuleBox: {
     height: '2.6rem',
     backgroundColor: theme.palette.background.paper,
@@ -149,7 +145,15 @@ const useStyles = makeStyles(theme => ({
 const AssessmentsShuttle = ({ setValue, data }) => {
   const styles = useStyles();
 
-  const [left, setLeft] = useState(data);
+  console.log('data', data);
+  const data2 = data.map(item => ({
+    ...item,
+    title: item.label,
+    code: item.value,
+  }));
+  console.log('data2', data2);
+
+  const [left, setLeft] = useState(data2);
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
@@ -157,7 +161,8 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [newActivityText, setNewActivityText] = useState('');
   const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
   const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
-  const [removeSelectedDisabled, setRemoveSelectedDisabled] = useState(true);
+  const [userActivityNonSelectable, setUserActivityNonSelectable] =
+    useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
@@ -166,13 +171,13 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   useEffect(() => {
     setChooseAllDisabledButton(left.length === 0);
     setRemoveAllDisabledButton(right.length === 0);
-    setRemoveSelectedDisabled(rightSelected.every(item => item.userDefined));
+    setUserActivityNonSelectable(rightSelected.every(item => !item.code));
   }, [
     left,
     setChooseAllDisabledButton,
     right,
     setRemoveAllDisabledButton,
-    setRemoveSelectedDisabled,
+    setUserActivityNonSelectable,
     rightSelected,
   ]);
 
@@ -349,7 +354,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div className="{styles.capsuleLine}">
+          <div>
             <Grid item xs={12} className={styles.capsuleTop}>
               &nbsp;
             </Grid>
@@ -367,14 +372,14 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             <Grid item xs={12} className={styles.capsuleBox}>
               <ArrowBack
                 className={`${styles.circle} ${
-                  rightSelected.length > 0 && !removeSelectedDisabled
+                  rightSelected.length > 0 && !userActivityNonSelectable
                     ? styles.blueCircle
                     : ''
                 }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
                 data-testid="choose selected"
-                pointerEvents={removeSelectedDisabled ? 'none' : 'auto'}
+                pointerEvents={userActivityNonSelectable ? 'none' : 'auto'}
                 cursor="pointer"
               />
             </Grid>
