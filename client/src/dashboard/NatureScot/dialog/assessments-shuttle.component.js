@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme => ({
   },
   nudge: {
     marginLeft: '0.75rem',
+    marginBottom: '0.9rem',
   },
   nudge2: {
     marginLeft: '1rem',
@@ -97,10 +98,6 @@ const useStyles = makeStyles(theme => ({
     borderBottomRightRadius: '50px',
     position: 'relative',
     bottom: '4px',
-  },
-  capsuleLine: {
-    border: '2px solid yellow',
-    backgroundColor: '#f00',
   },
   capsuleBox: {
     height: '2.6rem',
@@ -156,6 +153,8 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const [newActivityText, setNewActivityText] = useState('');
   const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
   const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
+  const [userActivityNonSelectable, setUserActivityNonSelectable] =
+    useState(true);
 
   useEffect(() => setValue('activities', right), [right, setValue]);
 
@@ -164,7 +163,15 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   useEffect(() => {
     setChooseAllDisabledButton(left.length === 0);
     setRemoveAllDisabledButton(right.length === 0);
-  }, [left, setChooseAllDisabledButton, right, setRemoveAllDisabledButton]);
+    setUserActivityNonSelectable(rightSelected.every(item => !item.code));
+  }, [
+    left,
+    setChooseAllDisabledButton,
+    right,
+    setRemoveAllDisabledButton,
+    setUserActivityNonSelectable,
+    rightSelected,
+  ]);
 
   const getFilteredLeft = () => {
     let filterList = [];
@@ -200,10 +207,11 @@ const AssessmentsShuttle = ({ setValue, data }) => {
 
   const selectItemOnRight = object => {
     if (!rightSelected.find(item => item.title === object.title)) {
-      setRightSelected([
+      const newList = [
         ...rightSelected,
         right.find(item => item.title === object.title),
-      ]);
+      ];
+      setRightSelected(newList.filter(item => item.code)); // strip out user added from selection
     } else {
       // already selected, remove from selection
       setRightSelected([
@@ -339,7 +347,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div className="{styles.capsuleLine}">
+          <div>
             <Grid item xs={12} className={styles.capsuleTop}>
               &nbsp;
             </Grid>
@@ -351,16 +359,21 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 onClick={() => chooseSelected()}
                 fontSize="large"
                 data-testid="choose activity"
+                cursor="pointer"
               />
             </Grid>
             <Grid item xs={12} className={styles.capsuleBox}>
               <ArrowBack
                 className={`${styles.circle} ${
-                  rightSelected.length > 0 ? styles.blueCircle : ''
+                  rightSelected.length > 0 && !userActivityNonSelectable
+                    ? styles.blueCircle
+                    : ''
                 }`}
                 onClick={() => removeSelected()}
                 fontSize="small"
                 data-testid="choose selected"
+                pointerEvents={userActivityNonSelectable ? 'none' : 'auto'}
+                cursor="pointer"
               />
             </Grid>
             <Grid item xs={12} className={styles.capsuleBottom}>
@@ -407,7 +420,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Divider />
             <ActivityList
-              // name="selected_activities"
               activityList={right}
               selectedActivityList={rightSelected}
               onSelect={selectItemOnRight}
