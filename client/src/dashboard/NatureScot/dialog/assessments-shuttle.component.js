@@ -145,15 +145,7 @@ const useStyles = makeStyles(theme => ({
 const AssessmentsShuttle = ({ setValue, data }) => {
   const styles = useStyles();
 
-  console.log('data', data);
-  const data2 = data.map(item => ({
-    ...item,
-    title: item.label,
-    code: item.value,
-  }));
-  console.log('data2', data2);
-
-  const [left, setLeft] = useState(data2);
+  const [left, setLeft] = useState(data);
   const [right, setRight] = useState([]);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
@@ -215,10 +207,11 @@ const AssessmentsShuttle = ({ setValue, data }) => {
 
   const selectItemOnRight = object => {
     if (!rightSelected.find(item => item.title === object.title)) {
-      setRightSelected([
+      const newList = [
         ...rightSelected,
         right.find(item => item.title === object.title),
-      ]);
+      ];
+      setRightSelected(newList.filter(item => item.code)); // strip out user added from selection
     } else {
       // already selected, remove from selection
       setRightSelected([
@@ -427,7 +420,6 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Divider />
             <ActivityList
-              // name="selected_activities"
               activityList={right}
               selectedActivityList={rightSelected}
               onSelect={selectItemOnRight}
