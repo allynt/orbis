@@ -183,7 +183,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
     if (searchString) {
       filterList.push(item => {
         const finder = new RegExp(`.*${searchString}.*`, 'i');
-        return item.label.match(finder);
+        return item.title.match(finder);
       });
     }
     // get filtered list by applying filter functions
@@ -195,29 +195,29 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const handleSearch = searchText => setSearchString(searchText);
 
   const selectItemOnLeft = object => {
-    if (!leftSelected.find(item => item.label === object.label)) {
+    if (!leftSelected.find(item => item.title === object.title)) {
       setLeftSelected([
         ...leftSelected,
-        left.find(item => item.label === object.label),
+        left.find(item => item.title === object.title),
       ]);
     } else {
       // already selected, remove from selection
       setLeftSelected([
-        ...leftSelected.filter(item => item.label !== object.label),
+        ...leftSelected.filter(item => item.title !== object.title),
       ]);
     }
   };
 
   const selectItemOnRight = object => {
-    if (!rightSelected.find(item => item.label === object.label)) {
+    if (!rightSelected.find(item => item.title === object.title)) {
       setRightSelected([
         ...rightSelected,
-        right.find(item => item.label === object.label),
+        right.find(item => item.title === object.title),
       ]);
     } else {
       // already selected, remove from selection
       setRightSelected([
-        ...rightSelected.filter(item => item.label !== object.label),
+        ...rightSelected.filter(item => item.title !== object.title),
       ]);
     }
   };
@@ -243,10 +243,10 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const removeAll = () => {
     // move all items visible in right list to right,
     // irrespective of selection
-    const rightToMove = right.filter(item => !item.userDefined);
+    const rightToMove = right.filter(item => !!item.code);
     setLeft([...left, ...rightToMove]);
     setRightSelected([]);
-    setRight(right.filter(item => item.userDefined));
+    setRight(right.filter(item => !item.code));
     clearSelections();
   };
 
@@ -260,13 +260,8 @@ const AssessmentsShuttle = ({ setValue, data }) => {
 
   const removeSelected = () => {
     // move selected from right list to left list,
-    setLeft([
-      ...left,
-      ...rightSelected.filter(item => item && !item.userDefined),
-    ]);
-    setRight(
-      right.filter(item => !rightSelected.includes(item) || item.userDefined),
-    );
+    setLeft([...left, ...rightSelected.filter(item => item && !!item.code)]);
+    setRight(right.filter(item => !rightSelected.includes(item) || !item.code));
     setRightSelected([]);
     clearSelections();
   };
@@ -274,10 +269,8 @@ const AssessmentsShuttle = ({ setValue, data }) => {
   const addActivity = () => {
     if (!newActivityText) return;
     const newActivity = {
-      value: 100, // TODO: need to think about this. Not used for now, label more important
-      label: newActivityText,
-      proposed: false,
-      userDefined: true,
+      title: newActivityText,
+      code: null,
     };
     setRight([...right, newActivity]);
     setNewActivityText('');
@@ -285,30 +278,24 @@ const AssessmentsShuttle = ({ setValue, data }) => {
 
   const deleteActivity = activity =>
     setRight(
-      right.filter(eachActivity => eachActivity.label !== activity.label),
+      right.filter(eachActivity => eachActivity.title !== activity.title),
     );
 
   return (
     <>
       <p>
-        This section is to select the activities that you may undertake as part
-        of your change or development. Doing this will allow the system to
-        provide you with a more targeted impact assessment report.
+        The purpose of this section is to call out the activities that you may
+        undertake as part of your change or development. Doing this will allow
+        the system to provide you with a more targeted impact assessment report.
       </p>
       <p>
-        The available activities list on the left provides a list of activities
-        you may undertake as part of your development. Checking the 'Proposed
-        Activities' box will allow you to see the activities usually associated
-        with the change or development you have described. Unchecking this box
-        will allow you to see all available activities in the list. You can use
-        the type-ahead feature to find an activity.
-      </p>
-      <p>
-        Select your activities from the Available Activities list and click on
-        the 'forward' arrow to add them to your Selected Activities list.
-        Similarly, you can remove an activity from your Selected Activities list
-        by clicking the 'backward' arrow. You can also add a new activity, not
-        in the list, by typing it into the top of the Selected Activities box.
+        The Available Activities list on the left, provides a list of activities
+        that you may undertake as part of your development. Select your
+        activities from the Available Activities list and click on the "forward"
+        arrow to add them to your Selected Activities list. Similarly, you can
+        remove an activity from your Selected Activities list by clicking the
+        "backward" arrow. You can also add a new activity, not on the list, by
+        typing it into the top of the Selected Activities box.
       </p>
       <Grid container>
         {/* left list (available activities) */}
@@ -333,7 +320,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
               <TextField
                 id="filter-activities"
                 margin="normal"
-                label="Type ahead..."
+                title="Type ahead..."
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
@@ -345,7 +332,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Divider />
             <ActivityList
-              name="proposed_activities"
+              // name="proposed_activities"
               activityList={getFilteredLeft()}
               selectedActivityList={leftSelected}
               onSelect={selectItemOnLeft}
@@ -424,7 +411,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
                 id="add-activity"
                 margin="normal"
                 value={newActivityText}
-                label="Add a new Activity"
+                title="Add a new Activity"
                 InputProps={{
                   disableUnderline: true,
                   classes: { input: styles.placeholder },
@@ -435,7 +422,7 @@ const AssessmentsShuttle = ({ setValue, data }) => {
             </Grid>
             <Divider />
             <ActivityList
-              name="selected_activities"
+              // name="selected_activities"
               activityList={right}
               selectedActivityList={rightSelected}
               onSelect={selectItemOnRight}
