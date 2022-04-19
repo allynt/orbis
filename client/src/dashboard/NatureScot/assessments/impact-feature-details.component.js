@@ -17,13 +17,11 @@ import {
   Grid,
 } from '@astrosat/astrosat-ui';
 
-import { AddCircle, RemoveCircle } from '@material-ui/icons';
-
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
 import ImpactFeatureDetailsLegend from './impact-feature-details-legend';
-import NeutralIcon from './neutral-icon';
+import ScoringDisplay from './scoring-display';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -153,53 +151,11 @@ const ImpactFeatureDetails = ({ data }) => {
 
   const [tab, setTab] = useState(0);
 
-  // strength table cell defined here. Showing rows of + or - icons
-  const getStrengthText = (styles, strength) => {
-    const colorScale = [
-      styles.minus3,
-      styles.minus2,
-      styles.minus1,
-      styles.zero,
-      styles.plus1,
-      styles.plus2,
-      styles.plus3,
-    ];
-    let starArray = [];
-    for (let i = 0; i < Math.abs(strength); i++) {
-      starArray.push('*');
-    }
-    const strengthIndex = strength + 3;
-
-    // custom SVG for neutral. Not ideal, but desired icon was not in v4 MUI...
-    if (strength === 0) {
-      return (
-        <TableCell align="center" className={colorScale[strengthIndex]}>
-          <NeutralIcon />
-        </TableCell>
-      );
-    }
-    if (strength < 0) {
-      return (
-        <TableCell align="center" className={colorScale[strengthIndex]}>
-          {starArray.map(item => (
-            <RemoveCircle />
-          ))}
-        </TableCell>
-      );
-    } else {
-      return (
-        <TableCell align="center" className={colorScale[strengthIndex]}>
-          {starArray.map(item => (
-            <AddCircle />
-          ))}
-        </TableCell>
-      );
-    }
-  };
-
   const getCell = value => {
     return <TableCell className={styles.tablecell}>{value}</TableCell>;
   };
+
+  const getScoreCell = value => <ScoringDisplay score={value} />;
 
   const toggleTab = (event, tab) => setTab(tab);
 
@@ -271,7 +227,7 @@ const ImpactFeatureDetails = ({ data }) => {
                 const fields = sortedImpacts.map(impact => [
                   getCell(impact.name),
                   getCell(impact.effect),
-                  getStrengthText(styles, impact.strength),
+                  getScoreCell(impact.strength),
                   getCell(impact.notification),
                 ]);
                 return (
