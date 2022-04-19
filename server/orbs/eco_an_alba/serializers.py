@@ -3,7 +3,7 @@ from collections import Counter
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
-from rest_framework_gis import serializers as gis_serializers
+from rest_framework_gis.serializers import GeometryField
 
 from astrosat.views import SwaggerCurrentUserDefault
 
@@ -32,6 +32,12 @@ class ProposalSerializer(serializers.ModelSerializer):
         slug_field="uuid",
         queryset=get_user_model().objects.all(),
         default=SwaggerCurrentUserDefault(),
+    )
+
+    geometry = GeometryField(
+        precision=Proposal.PRECISION,
+        remove_duplicates=True,
+        required=True,
     )
 
     def validate(self, data):

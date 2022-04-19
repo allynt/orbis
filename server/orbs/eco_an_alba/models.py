@@ -67,7 +67,7 @@ PROPOSAL_ACTIVITIES_SCHEMA = {
         "type": "object",
         "properties": {
             "code": {
-                "type": "string",
+                "type": ["string", "null"],
             },
             "title": {
                 "type": "string",
@@ -106,6 +106,8 @@ class Proposal(gis_models.Model):
                 name="unique_name_owner",
             ),
         ]
+
+    PRECISION = 12
 
     objects = ProposalManager.from_queryset(ProposalQuerySet)()
 
