@@ -9,7 +9,7 @@ export const IMPACT_SUMMARY_LEGEND_DATA = {
   'Medium +ve': '#b3d567',
   'Medium -ve': '#f67971',
   'Low +ve': '#c7d99f',
-  'High -ve': '#f03b30',
+  'High -ve': '#ff544A',
   Neutral: '#d8c06a',
 };
 

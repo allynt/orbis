@@ -69,8 +69,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'left',
   },
   tabs: {
-    backgroundColor: '#333f48',
-    //height: '25rem',
+    backgroundColor: theme.palette.background.paper,
     border: 0,
     '& .MuiButtonBase-root.MuiTab-root': {
       fontSize: 12,
@@ -92,11 +91,11 @@ const useStyles = makeStyles(theme => ({
       border: '0px',
       width: 0,
       display: 'none',
-      backgroundColor: '#333f48',
+      backgroundColor: theme.palette.background.paper,
     },
   },
   minus3: {
-    color: '#ff544A',
+    color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
     border: '1px solid #333f48',
   },
   minus2: {
