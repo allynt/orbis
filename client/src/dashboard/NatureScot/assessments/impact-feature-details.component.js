@@ -21,10 +21,7 @@ import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import {
-  IMPACT_SUMMARY_LEGEND_DATA,
-  GREY_BORDER,
-} from '../nature-scotland.constants';
+import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
 import ImpactFeatureDetailsLegend from './impact-feature-details-legend';
 import NeutralIcon from './neutral-icon';
 
@@ -52,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     width: '80%',
   },
   grid: {
-    border: '5px solid #333f48',
+    border: '5px solid ' + theme.palette.secondary.main,
     borderRadius: '3px',
   },
   tabpanel: {
@@ -99,31 +96,31 @@ const useStyles = makeStyles(theme => ({
   },
   minus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   minus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   minus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   zero: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
   headerone: {
     backgroundColor: '#3e4952',
@@ -138,7 +135,7 @@ const useStyles = makeStyles(theme => ({
   tablecell: {
     width: '25%',
     fontSize: '0.8rem',
-    border: GREY_BORDER,
+    border: `1px solid ${theme.palette.secondary.main}`,
   },
 }));
 
