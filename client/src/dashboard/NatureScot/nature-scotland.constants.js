@@ -22,3 +22,5 @@ export const GRADIENT_STOPS = {
   '70%': '#f67971',
   '100%': '#f03b30',
 };
+
+export const GREY_BORDER = '1px solid #333f48';

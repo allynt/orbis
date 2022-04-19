@@ -12,21 +12,19 @@ const useStyles = makeStyles(theme => ({
     padding: '5px',
   },
   container: {
-    //border: '1px solid ' + theme.palette.primary.main,
     margin: '1rem',
     padding: '0.5rem ',
-    alignContent: 'center', //TODO : why this not working
     alignItems: 'center',
   },
   label: {
     fontSize: '0.7rem',
     color: '#fff',
-    position: 'relative', // TODO: must be better way to center than this
+    position: 'relative',
     top: '-6px',
     left: '3px',
   },
   minus3: {
-    color: '#ff544A', // keeping this corrected value from Areti
+    color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
   },
   minus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],

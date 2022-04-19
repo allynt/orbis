@@ -21,7 +21,10 @@ import { AddCircle, RemoveCircle } from '@material-ui/icons';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
+import {
+  IMPACT_SUMMARY_LEGEND_DATA,
+  GREY_BORDER,
+} from '../nature-scotland.constants';
 import ImpactFeatureDetailsLegend from './impact-feature-details-legend';
 import NeutralIcon from './neutral-icon';
 
@@ -96,31 +99,31 @@ const useStyles = makeStyles(theme => ({
   },
   minus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   minus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   minus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   zero: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   plus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   plus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   plus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
   headerone: {
     backgroundColor: '#3e4952',
@@ -135,7 +138,7 @@ const useStyles = makeStyles(theme => ({
   tablecell: {
     width: '25%',
     fontSize: '0.8rem',
-    border: '1px solid #333f48',
+    border: GREY_BORDER,
   },
 }));
 
