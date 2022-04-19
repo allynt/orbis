@@ -42,79 +42,77 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const activities = [
-  {
-    label: 'Removal of geological specimens',
-    proposed: true,
-    value: 3,
-  },
-  {
-    label:
-      'Construction, removal or destruction of roads, tracks, walls, fences, hardstands, banks, ditches or other earthworks',
-    proposed: true,
-    value: 5,
-  },
-];
-
 const PANELS = {
   data: 'data',
   assessments: 'assessments',
 };
 
+const activities = [
+  { title: 'Graze more sheep', code: 'grazingSheepMore' },
+  { title: 'Graze less sheep', code: 'grazingSheepMore' },
+];
+
 const ASSESSMENT_DATA = [
   {
     id: 1,
     description: 'Construct campsite',
-    startDate: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
+    startDate: '2023-01-01T00:00:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:00:00.000Z',
     version: '1st',
     activities,
   },
   {
     id: 2,
     description: 'Raise Building',
-    startDate: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
+    startDate: '2023-01-01T00:42:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:42:00.000Z',
     version: '2nd',
     activities,
   },
   {
     id: 3,
     description: 'Some Building',
-    startDate: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
+    startDate: '2023-01-01T00:00:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:00:00.000Z',
     version: '1st',
     activities,
   },
   {
     id: 4,
     description: 'Another Building',
-    startDate: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
+    startDate: '2023-01-01T00:42:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:42:00.000Z',
     version: '2nd',
     activities,
   },
   {
     id: 5,
     description: 'Shopping Mall',
-    startDate: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
+    startDate: '2023-01-01T00:00:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:00:00.000Z',
     version: '1st',
     activities,
   },
   {
     id: 6,
     description: 'Hospital',
-    startDate: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
+    startDate: '2023-01-01T00:42:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:42:00.000Z',
     version: '2nd',
     activities,
   },
   {
     id: 7,
     description: 'Skateboard Park',
-    startDate: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
+    startDate: '2023-01-01T00:00:00.000Z',
+    endDate: '2023-02-03T00:00:00.000Z',
+    time: '2023-01-01T00:00:00.000Z',
     version: '1st',
     activities,
   },
@@ -122,6 +120,7 @@ const ASSESSMENT_DATA = [
     id: 8,
     description: 'Old Folks Home',
     startDate: '2000-01-01T00:42:00.000Z',
+    endDate: '2000-02-03T00:00:00.000Z',
     time: '2000-01-01T00:42:00.000Z',
     version: '2nd',
     activities,
@@ -130,6 +129,7 @@ const ASSESSMENT_DATA = [
     id: 9,
     description: 'Easter Road',
     startDate: '2000-01-01T00:00:00.000Z',
+    endDate: '2000-02-03T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
     activities,
@@ -148,13 +148,15 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
 
-  const [initialFormState, setInitialFormState] = useState({
+  const initialState = {
     description: '',
     startDate: null,
     endDate: null,
     activities: [],
     geometry: selectedAoi?.geometry,
-  });
+  };
+
+  const [initialFormState, setInitialFormState] = useState(initialState);
 
   const submitAssessment = form => {
     setInitialFormState(prev => ({ ...prev, ...form }));
@@ -193,7 +195,10 @@ const NatureScotDashboard = ({ sourceId }) => {
         </Tabs>
 
         <Button
-          onClick={() => setIsAssessmentDialogVisible(true)}
+          onClick={() => {
+            setInitialFormState(initialState);
+            setIsAssessmentDialogVisible(true);
+          }}
           className={styles.assessmentButton}
           color="secondary"
         >

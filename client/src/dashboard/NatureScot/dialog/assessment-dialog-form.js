@@ -158,6 +158,15 @@ const AssessmentDialogForm = ({
     setValue('endDate', endDate, options);
   };
 
+  const doSubmit = ({ startDate, endDate, ...rest }) => {
+    const processedForm = {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      ...rest,
+    };
+    onSubmit(processedForm);
+  };
+
   // disables showing of YesNo dialog if form has been changed
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
 
@@ -179,7 +188,7 @@ const AssessmentDialogForm = ({
   }, [dispatch]);
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
         <DescriptionInput register={register} />
       </Form.Row>
