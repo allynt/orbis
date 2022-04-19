@@ -47,6 +47,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ * visibleTab: number,
+ * open: boolean,
+ * close: function,
+ * onSubmit: function,
+ * results: object[],
+ * initialFormState?: object
+ * }} props
+ */
 const AssessmentDialog = ({
   visibleTab,
   open = false,
@@ -59,12 +69,12 @@ const AssessmentDialog = ({
 
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
-  const [yesNoDialogIsDirty, setYesNoDialogIsDirty] = useState(false);
+  const [formIsDirty, setFormIsDirty] = useState(false);
 
   const toggleTab = (event, tab) => setTab(tab);
 
   const handleClose = () => {
-    if (yesNoDialogIsDirty) {
+    if (formIsDirty) {
       setYesNoDialogVisible(true);
     } else {
       close();
@@ -113,7 +123,7 @@ const AssessmentDialog = ({
           <AssessmentDialogForm
             onSubmit={onSubmit}
             initialFormState={initialFormState}
-            setYesNoDialogIsDirty={setYesNoDialogIsDirty}
+            setFormIsDirty={setFormIsDirty}
           />
         </TabPanel>
 
@@ -122,7 +132,7 @@ const AssessmentDialog = ({
         </TabPanel>
       </div>
 
-      {yesNoDialogVisible && yesNoDialogIsDirty ? (
+      {yesNoDialogVisible && formIsDirty ? (
         <YesNoDialog
           isOpen={yesNoDialogVisible}
           close={() => setYesNoDialogVisible(false)}

@@ -67,13 +67,13 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
       },
       {
         Header: 'Assessment Name',
-        accessor: 'name',
-        id: 'name',
+        accessor: 'description',
+        id: 'description',
       },
       {
         Header: 'Date',
-        accessor: 'date',
-        id: 'date',
+        accessor: 'startDate',
+        id: 'startDate',
         Cell: ({ value }) => format(new Date(value), DATE_FORMAT),
       },
       {

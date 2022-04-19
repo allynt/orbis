@@ -42,6 +42,20 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const activities = [
+  {
+    label: 'Removal of geological specimens',
+    proposed: true,
+    value: 3,
+  },
+  {
+    label:
+      'Construction, removal or destruction of roads, tracks, walls, fences, hardstands, banks, ditches or other earthworks',
+    proposed: true,
+    value: 5,
+  },
+];
+
 const PANELS = {
   data: 'data',
   assessments: 'assessments',
@@ -50,66 +64,75 @@ const PANELS = {
 const ASSESSMENT_DATA = [
   {
     id: 1,
-    name: 'Construct campsite',
-    date: '2000-01-01T00:00:00.000Z',
+    description: 'Construct campsite',
+    startDate: '2000-01-01T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
+    activities,
   },
   {
     id: 2,
-    name: 'Raise Building',
-    date: '2000-01-01T00:42:00.000Z',
+    description: 'Raise Building',
+    startDate: '2000-01-01T00:42:00.000Z',
     time: '2000-01-01T00:42:00.000Z',
     version: '2nd',
+    activities,
   },
   {
     id: 3,
-    name: 'Some Building',
-    date: '2000-01-01T00:00:00.000Z',
+    description: 'Some Building',
+    startDate: '2000-01-01T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
+    activities,
   },
   {
     id: 4,
-    name: 'Another Building',
-    date: '2000-01-01T00:42:00.000Z',
+    description: 'Another Building',
+    startDate: '2000-01-01T00:42:00.000Z',
     time: '2000-01-01T00:42:00.000Z',
     version: '2nd',
+    activities,
   },
   {
     id: 5,
-    name: 'Shopping Mall',
-    date: '2000-01-01T00:00:00.000Z',
+    description: 'Shopping Mall',
+    startDate: '2000-01-01T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
+    activities,
   },
   {
     id: 6,
-    name: 'Hospital',
-    date: '2000-01-01T00:42:00.000Z',
+    description: 'Hospital',
+    startDate: '2000-01-01T00:42:00.000Z',
     time: '2000-01-01T00:42:00.000Z',
     version: '2nd',
+    activities,
   },
   {
     id: 7,
-    name: 'Skateboard Park',
-    date: '2000-01-01T00:00:00.000Z',
+    description: 'Skateboard Park',
+    startDate: '2000-01-01T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
+    activities,
   },
   {
     id: 8,
-    name: 'Old Folks Home',
-    date: '2000-01-01T00:42:00.000Z',
+    description: 'Old Folks Home',
+    startDate: '2000-01-01T00:42:00.000Z',
     time: '2000-01-01T00:42:00.000Z',
     version: '2nd',
+    activities,
   },
   {
     id: 9,
-    name: 'Easter Road',
-    date: '2000-01-01T00:00:00.000Z',
+    description: 'Easter Road',
+    startDate: '2000-01-01T00:00:00.000Z',
     time: '2000-01-01T00:00:00.000Z',
     version: '1st',
+    activities,
   },
 ];
 
@@ -124,9 +147,9 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [visibleTab, setVisibleTab] = useState(PANELS.data);
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
-  const [selectedAssessment, setSelectedAssessment] = useState(null);
 
   const [initialFormState, setInitialFormState] = useState({
+    description: '',
     startDate: null,
     endDate: null,
     activities: [],
@@ -141,7 +164,15 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   const handleEditAssessment = id => {
     const assessment = ASSESSMENT_DATA.find(datum => datum.id === id);
-    setSelectedAssessment(assessment);
+    const { description, startDate, endDate, activities } = assessment;
+    setInitialFormState(prev => ({
+      ...prev,
+      description,
+      startDate,
+      endDate,
+      activities,
+    }));
+    setIsAssessmentDialogVisible(true);
   };
 
   return (
@@ -186,14 +217,6 @@ const NatureScotDashboard = ({ sourceId }) => {
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
         initialFormState={initialFormState}
-      />
-
-      <AssessmentDialog
-        visibleTab={assessmentDialogTab}
-        results={selectedAssessment}
-        onSubmit={() => console.log('Submitted!')}
-        close={() => setSelectedAssessment(null)}
-        open={!!selectedAssessment}
       />
     </div>
   );
