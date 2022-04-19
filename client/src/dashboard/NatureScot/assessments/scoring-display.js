@@ -11,35 +11,28 @@ import NeutralIcon from './neutral-icon';
 const useStyles = makeStyles(theme => ({
   minus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   minus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   minus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   zero: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus1: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus2: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
   plus3: {
     color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
   },
 }));
 
-const ScoringDisplay = ({ score }) => {
+const ScoringDisplay = ({ score, legend }) => {
   // takes an integer score in range [-3,3] and renders out a series of icons
   // wrapped in a table cell, with colour styles applied.
 
@@ -55,18 +48,28 @@ const ScoringDisplay = ({ score }) => {
       styles.plus2,
       styles.plus3,
     ];
+    const legends = [
+      'High negative',
+      'Medium negative',
+      'Low negative',
+      'Neutral',
+      'Low positive',
+      'Medium positive',
+      'High positive',
+    ];
     let starArray = [];
     for (let i = 0; i < Math.abs(strength); i++) {
       starArray.push('*');
     }
-    console.log(`${strength}`, starArray);
     const strengthIndex = strength + 3;
+    const legendString = legends[strengthIndex];
 
     // custom SVG for neutral. Not ideal, but desired icon was not in v4 MUI...
     if (strength === 0) {
       return (
         <TableCell align="center" className={colorScale[strengthIndex]}>
           <NeutralIcon />
+          <span>{legend ? legendString : null}</span>
         </TableCell>
       );
     }
@@ -76,6 +79,7 @@ const ScoringDisplay = ({ score }) => {
           {starArray.map(item => (
             <RemoveCircle key={item} />
           ))}
+          <span>{legend ? legendString : null}</span>
         </TableCell>
       );
     } else {
@@ -84,6 +88,7 @@ const ScoringDisplay = ({ score }) => {
           {starArray.map(item => (
             <AddCircle key={item} />
           ))}
+          <span>{legend ? legendString : null}</span>
         </TableCell>
       );
     }

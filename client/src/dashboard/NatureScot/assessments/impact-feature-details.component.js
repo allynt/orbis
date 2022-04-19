@@ -19,7 +19,6 @@ import {
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
 import ImpactFeatureDetailsLegend from './impact-feature-details-legend';
 import ScoringDisplay from './scoring-display';
 
@@ -92,34 +91,6 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
     },
   },
-  minus3: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  minus2: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  minus1: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  zero: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  plus1: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  plus2: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
-  plus3: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
-    border: `1px solid ${theme.palette.secondary.main}`,
-  },
   headerone: {
     backgroundColor: '#3e4952',
     width: '25%',
@@ -155,7 +126,7 @@ const ImpactFeatureDetails = ({ data }) => {
     return <TableCell className={styles.tablecell}>{value}</TableCell>;
   };
 
-  const getScoreCell = value => <ScoringDisplay score={value} />;
+  const getScoreCell = value => <ScoringDisplay score={value} legend={false} />;
 
   const toggleTab = (event, tab) => setTab(tab);
 
