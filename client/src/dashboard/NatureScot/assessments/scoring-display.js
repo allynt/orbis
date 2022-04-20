@@ -5,7 +5,10 @@ import { TableCell } from '@astrosat/astrosat-ui';
 import { AddCircle, RemoveCircle } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 
-import { IMPACT_SUMMARY_LEGEND_DATA } from '../nature-scotland.constants';
+import {
+  IMPACT_SUMMARY_LEGEND_DATA,
+  SCORE_LEGENDS,
+} from '../nature-scotland.constants';
 import NeutralIcon from './neutral-icon';
 
 const useStyles = makeStyles(theme => ({
@@ -48,21 +51,13 @@ const ScoringDisplay = ({ score, legend }) => {
       styles.plus2,
       styles.plus3,
     ];
-    const legends = [
-      'High negative',
-      'Medium negative',
-      'Low negative',
-      'Neutral',
-      'Low positive',
-      'Medium positive',
-      'High positive',
-    ];
+
     let starArray = [];
     for (let i = 0; i < Math.abs(strength); i++) {
       starArray.push('*');
     }
     const strengthIndex = strength + 3;
-    const legendString = legends[strengthIndex];
+    const legendString = SCORE_LEGENDS[strengthIndex];
 
     // custom SVG for neutral. Not ideal, but desired icon was not in v4 MUI...
     if (strength === 0) {

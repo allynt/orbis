@@ -130,7 +130,7 @@ const ImpactFeatureDetails = ({ data }) => {
 
   const toggleTab = (event, tab) => setTab(tab);
 
-  return (
+  return noData ? null : (
     <ChartWrapper
       title="Impact Detail By Feature"
       info="This widget provides detailed impact information relating to your proposal."
@@ -182,11 +182,9 @@ const ImpactFeatureDetails = ({ data }) => {
             className={styles.tabs}
             role="tab"
           >
-            {noData
-              ? null
-              : actualData.map(item => (
-                  <Tab key={item} className={styles.tab} label={item.name} />
-                ))}
+            {actualData.map(item => (
+              <Tab key={item} className={styles.tab} label={item.name} />
+            ))}
           </Tabs>
           {/* right-hand table rendered here, most negative first */}
           {noData

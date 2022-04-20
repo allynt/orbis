@@ -26,13 +26,9 @@ const ImpactFeatureDetailsLegend = () => {
   const styles = useStyles();
   return (
     <Grid className={styles.container} container wrap="wrap" direction="row">
-      <ScoringDisplay score={3} legend={true} />
-      <ScoringDisplay score={2} legend={true} />
-      <ScoringDisplay score={1} legend={true} />
-      <ScoringDisplay score={0} legend={true} />
-      <ScoringDisplay score={-1} legend={true} />
-      <ScoringDisplay score={-2} legend={true} />
-      <ScoringDisplay score={-3} legend={true} />
+      {[3, 2, 1, 0, -1, -2, -3].map(score => (
+        <ScoringDisplay key={`legend_${score}`} score={score} legend={true} />
+      ))}
     </Grid>
   );
 };

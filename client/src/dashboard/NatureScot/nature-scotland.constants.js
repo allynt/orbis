@@ -22,3 +22,13 @@ export const GRADIENT_STOPS = {
   '70%': '#f67971',
   '100%': '#f03b30',
 };
+
+export const SCORE_LEGENDS = [
+  'High negative',
+  'Medium negative',
+  'Low negative',
+  'Neutral',
+  'Low positive',
+  'Medium positive',
+  'High positive',
+];
