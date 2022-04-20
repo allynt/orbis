@@ -22,6 +22,7 @@ class TestProposalSerializer:
         proposal_data = {
             "created": proposal.created,
             "modified": proposal.modified,
+            "report_generated": proposal.report_generated,
             "name": proposal.name,
             "owner": proposal.owner.uuid,
             "geometry": GEOSGeometry(proposal.geometry).geojson,
@@ -48,6 +49,7 @@ class TestProposalSerializer:
         proposal_data = {
             "created": proposal.created,
             "modified": proposal.modified,
+            "report_generated": proposal.report_generated,
             "name": proposal.name,
             "owner": proposal.owner.uuid,
             "geometry": GEOSGeometry(proposal.geometry).geojson,
@@ -66,6 +68,7 @@ class TestProposalSerializer:
 
         serializer = ProposalSerializer(data=proposal_data)
         assert not serializer.is_valid()
+        print(f"ERRORS: {serializer.errors}", flush=True)
         assert serializer.errors['non_field_errors'][
             0] == "Proposal start date must be before proposal end date"
 
