@@ -14,8 +14,6 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { center } from '@turf/turf';
-
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 import ScoringDisplay from './scoring-display';
@@ -72,8 +70,7 @@ const AssessmentActivityImpacts = ({ data }) => {
     >
       {/* preamble */}
       <Typography variant="body1">
-        The table below shows the impact of your proposal in more detail. Click
-        a feature to see more information about the impacts on that feature.
+        The table below shows the impact of your proposal in more detail.
       </Typography>
       <br />
       {noData ? null : (
