@@ -70,6 +70,8 @@ const AssessmentDialog = ({
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
   const [formIsDirty, setFormIsDirty] = useState(false);
+  const [impactAssessmentFormData, setImpactAssessmentFormData] =
+    useState(null);
 
   const toggleTab = (event, tab) => setTab(tab);
 
@@ -83,6 +85,11 @@ const AssessmentDialog = ({
     } else {
       setYesNoDialogVisible(false);
     }
+  };
+
+  const handleSubmit = form => {
+    setImpactAssessmentFormData(form);
+    onSubmit(form);
   };
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
@@ -116,14 +123,17 @@ const AssessmentDialog = ({
             Applications should continue to be made to NatureScot.
           </p>
           <AssessmentDialogForm
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             initialFormState={initialFormState}
             setFormIsDirty={setFormIsDirty}
           />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults results={results} />
+          <AssessmentResults
+            results={results}
+            impactAssessmentForm={impactAssessmentFormData}
+          />
         </TabPanel>
       </div>
 

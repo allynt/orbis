@@ -11,6 +11,24 @@ import AssessmentDialog from './assessment-dialog.component';
 
 const mockStore = createMockStore([thunk]);
 
+const initialState = {
+  description: '',
+  startDate: null,
+  endDate: null,
+  activities: [],
+  geometry: {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [0, 0],
+      ],
+    ],
+  },
+};
+
 describe('AssessmentDialog', () => {
   let close = null;
   let onSubmit = null;
@@ -47,6 +65,7 @@ describe('AssessmentDialog', () => {
         close={close}
         onSubmit={onSubmit}
         visibleTab={0}
+        initialFormState={initialState}
       />,
     );
 
@@ -87,6 +106,7 @@ describe('AssessmentDialog', () => {
           close={close}
           onSubmit={onSubmit}
           visibleTab={0}
+          initialFormState={initialState}
         />
       </Provider>,
     );
@@ -122,7 +142,7 @@ describe('AssessmentDialog', () => {
         screen.getByRole('button', { name: /run impact assessment/i }),
       ).toBeEnabled(),
     );
-  });
+  }, 70000);
 
   it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
     const selectedAoi = {
@@ -155,7 +175,7 @@ describe('AssessmentDialog', () => {
           close={close}
           onSubmit={onSubmit}
           visibleTab={0}
-          selectedAoi={selectedAoi}
+          initialFormState={{ ...initialState, geometry: selectedAoi.geometry }}
         />
       </Provider>,
     );

@@ -3,9 +3,12 @@ import React, { useMemo, useState } from 'react';
 import { Button, Checkbox, makeStyles } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
+import { useDispatch } from 'react-redux';
 import { useSortBy } from 'react-table';
 
 import { Table } from 'components/table/table.component';
+
+import { deleteProposal } from '../nature-scot.slice';
 
 const useStyles = makeStyles(theme => ({
   actions: {
@@ -31,8 +34,9 @@ const FORMATS = {
 
 const AssessmentTable = ({ data, handleEditAssessment }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
 
-  const [assessments, setAssessments] = useState([]);
+  const [selectedAssessments, setSelectedAssessments] = useState([]);
 
   const columns = useMemo(
     () => [
@@ -41,25 +45,25 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
         accessor: 'id',
         id: 'id',
         Cell: ({ row }) => {
-          const isChecked = assessments.find(
+          const isChecked = selectedAssessments.find(
             assessment => assessment.id === row.original.id,
           );
 
           return (
             <Checkbox
               checked={isChecked}
-              onClick={event => {
-                const assessmentExists = assessments.find(
+              onClick={() => {
+                const assessmentExists = selectedAssessments.find(
                   assessment => assessment.id === row.original.id,
                 );
 
                 const newAssessments = assessmentExists
-                  ? assessments.filter(
+                  ? selectedAssessments.filter(
                       assessment => assessment.id !== assessmentExists.id,
                     )
-                  : [...assessments, row.original];
+                  : [...selectedAssessments, row.original];
 
-                setAssessments(newAssessments);
+                setSelectedAssessments(newAssessments);
               }}
             />
           );
@@ -67,35 +71,28 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
       },
       {
         Header: 'Assessment Name',
-        accessor: 'description',
-        id: 'description',
+        accessor: 'name',
+        id: 'name',
       },
       {
         Header: 'Date',
-        accessor: 'startDate',
-        id: 'startDate',
+        accessor: 'modified',
+        id: 'modifiedDate',
         Cell: ({ value }) => format(new Date(value), DATE_FORMAT),
       },
       {
         Header: 'Time',
-        accessor: 'time',
-        id: 'time',
+        accessor: 'modified',
+        id: 'modifiedTime',
         Cell: ({ value }) => format(new Date(value), TIME_FORMAT),
-      },
-      {
-        Header: 'Version',
-        accessor: 'version',
-        id: 'version',
       },
       {
         Header: '',
         accessor: 'null',
         id: 'button',
         Cell: ({
-          cell: {
-            row: {
-              original: { id },
-            },
+          row: {
+            original: { id },
           },
         }) => {
           return (
@@ -104,7 +101,7 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
                 size="small"
                 variant="text"
                 className={styles.actionButton}
-                onClick={() => handleEditAssessment(Number(id))}
+                onClick={() => handleEditAssessment(id)}
               >
                 View/Modify
               </Button>
@@ -113,13 +110,23 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
         },
       },
     ],
-    [assessments, styles.actions, styles.actionButton],
+    [
+      selectedAssessments,
+      styles.actions,
+      styles.actionButton,
+      handleEditAssessment,
+    ],
   );
 
-  const exportAs = type => console.log('Export: ', assessments, ' as: ', type);
+  const exportAs = type =>
+    console.log('Export: ', selectedAssessments, ' as: ', type);
 
   const deleteAssessment = () =>
-    console.log('Delete Impact Assessment: ', assessments);
+    selectedAssessments.forEach(assessment =>
+      dispatch(deleteProposal(assessment)),
+    );
+
+  const isAssessmentSelected = selectedAssessments.length > 0;
 
   return (
     <div>
@@ -148,21 +155,21 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
         <Button
           onClick={() => exportAs(FORMATS.PDF)}
           size="small"
-          disabled={assessments.length < 1}
+          disabled={!isAssessmentSelected}
         >
           Export as PDF
         </Button>
         <Button
           onClick={() => exportAs(FORMATS.CSV)}
           size="small"
-          disabled={assessments.length < 1}
+          disabled={!isAssessmentSelected}
         >
           Export as CSV
         </Button>
         <Button
           onClick={() => deleteAssessment()}
           size="small"
-          disabled={assessments.length < 1}
+          disabled={!isAssessmentSelected}
         >
           Delete
         </Button>
