@@ -136,7 +136,7 @@ const AssessmentDialogForm = ({
     setIsAssessmentSubmitButtonDisabled,
   ] = useState(true);
 
-  const activitiesList = useSelector(impactActivitiesSelector);
+  const activities = useSelector(impactActivitiesSelector);
 
   const {
     register,
@@ -150,7 +150,11 @@ const AssessmentDialogForm = ({
     resolver: yupResolver(validationSchema),
   });
 
-  const { activities, startDate, endDate } = initialFormState;
+  const {
+    activities: selectedActivities,
+    startDate,
+    endDate,
+  } = initialFormState;
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = { shouldValidate: true, shouldDirty: true };
@@ -207,8 +211,8 @@ const AssessmentDialogForm = ({
             <div className={styles.field}>
               <AssessmentsShuttle
                 setValue={setValue}
-                data={activitiesList}
-                initialActivities={activities}
+                data={activities}
+                initialActivities={selectedActivities}
               />
             </div>
           </FieldWrapper>

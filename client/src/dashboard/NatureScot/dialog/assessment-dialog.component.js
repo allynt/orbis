@@ -73,13 +73,8 @@ const AssessmentDialog = ({
 
   const toggleTab = (event, tab) => setTab(tab);
 
-  const handleClose = () => {
-    if (formIsDirty) {
-      setYesNoDialogVisible(true);
-    } else {
-      close();
-    }
-  };
+  const handleClose = () =>
+    formIsDirty ? setYesNoDialogVisible(true) : close();
 
   const handleYesNo = status => {
     if (status) {

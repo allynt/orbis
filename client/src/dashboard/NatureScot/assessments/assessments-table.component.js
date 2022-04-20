@@ -93,20 +93,24 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
         id: 'button',
         Cell: ({
           cell: {
-            row: { id },
+            row: {
+              original: { id },
+            },
           },
-        }) => (
-          <div className={styles.actions}>
-            <Button
-              size="small"
-              variant="text"
-              className={styles.actionButton}
-              onClick={() => handleEditAssessment(Number(id))}
-            >
-              View/Modify
-            </Button>
-          </div>
-        ),
+        }) => {
+          return (
+            <div className={styles.actions}>
+              <Button
+                size="small"
+                variant="text"
+                className={styles.actionButton}
+                onClick={() => handleEditAssessment(Number(id))}
+              >
+                View/Modify
+              </Button>
+            </div>
+          );
+        },
       },
     ],
     [assessments, styles.actions, styles.actionButton],
