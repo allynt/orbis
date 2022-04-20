@@ -47,25 +47,34 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * @param {{
+ * visibleTab: number,
+ * open: boolean,
+ * close: function,
+ * onSubmit: function,
+ * results: object[],
+ * initialFormState?: object
+ * }} props
+ */
 const AssessmentDialog = ({
   visibleTab,
   open = false,
   close,
   onSubmit,
   results,
-  selectedAoi,
-  hasResults,
+  initialFormState,
 }) => {
   const styles = useStyles();
 
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
+  const [formIsDirty, setFormIsDirty] = useState(false);
 
   const toggleTab = (event, tab) => setTab(tab);
 
-  const handleClose = () => {
-    setYesNoDialogVisible(true);
-  };
+  const handleClose = () =>
+    formIsDirty ? setYesNoDialogVisible(true) : close();
 
   const handleYesNo = status => {
     if (status) {
@@ -106,7 +115,11 @@ const AssessmentDialog = ({
             </span>
             Applications should continue to be made to NatureScot.
           </p>
-          <AssessmentDialogForm onSubmit={onSubmit} selectedAoi={selectedAoi} />
+          <AssessmentDialogForm
+            onSubmit={onSubmit}
+            initialFormState={initialFormState}
+            setFormIsDirty={setFormIsDirty}
+          />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
@@ -114,7 +127,7 @@ const AssessmentDialog = ({
         </TabPanel>
       </div>
 
-      {yesNoDialogVisible ? (
+      {yesNoDialogVisible && formIsDirty ? (
         <YesNoDialog
           isOpen={yesNoDialogVisible}
           close={() => setYesNoDialogVisible(false)}

@@ -90,10 +90,10 @@ const DescriptionInput = ({ register }) => {
   );
 };
 
-const DateRange = ({ onChange }) => {
+const DateRange = ({ startDate, endDate, onChange }) => {
   const styles = useStyles();
   const title = 'Describe Your Development or Change';
-
+  const range = !!startDate && !!endDate ? { startDate, endDate } : null;
   return (
     <div className={styles.fieldset}>
       <FieldWrapper title={title}>
@@ -104,7 +104,11 @@ const DateRange = ({ onChange }) => {
           </p>
 
           <div className={styles.dateRange}>
-            <DateRangeFilter onSubmit={onChange} minDate="today" />
+            <DateRangeFilter
+              minDate="today"
+              range={range}
+              onSubmit={onChange}
+            />
           </div>
         </div>
       </FieldWrapper>
@@ -112,7 +116,18 @@ const DateRange = ({ onChange }) => {
   );
 };
 
-const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
+/**
+ * @param {{
+ * onSubmit: function,
+ * initialFormState: object,
+ * setFormIsDirty: function
+ * }} props
+ */
+const AssessmentDialogForm = ({
+  onSubmit,
+  initialFormState,
+  setFormIsDirty,
+}) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -123,23 +138,41 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
 
   const activities = useSelector(impactActivitiesSelector);
 
-  const { register, handleSubmit, getValues, setValue, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { isDirty },
+  } = useForm({
     mode: 'onChange',
-    defaultValues: {
-      startDate: null,
-      endDate: null,
-      activities: [],
-      geometry: selectedAoi?.geometry,
-    },
+    defaultValues: initialFormState,
     resolver: yupResolver(validationSchema),
   });
 
-  const handleDateRangeSelection = range => {
-    setValue('startDate', range.startDate, { shouldValidate: true });
-    setValue('endDate', range.endDate, { shouldValidate: true });
+  const {
+    activities: selectedActivities,
+    startDate,
+    endDate,
+  } = initialFormState;
+
+  const handleDateRangeSelection = ({ startDate, endDate }) => {
+    const options = { shouldValidate: true, shouldDirty: true };
+    setValue('startDate', startDate, options);
+    setValue('endDate', endDate, options);
   };
 
-  const doSubmit = form => onSubmit(form);
+  const doSubmit = ({ startDate, endDate, ...rest }) => {
+    const processedForm = {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      ...rest,
+    };
+    onSubmit(processedForm);
+  };
+
+  // disables showing of YesNo dialog if form has been changed
+  useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
 
   useEffect(() => {
     const subscription = watch(value => {
@@ -165,14 +198,22 @@ const AssessmentDialogForm = ({ onSubmit, selectedAoi }) => {
       </Form.Row>
 
       <Form.Row>
-        <DateRange onChange={handleDateRangeSelection} />
+        <DateRange
+          startDate={startDate}
+          endDate={endDate}
+          onChange={handleDateRangeSelection}
+        />
       </Form.Row>
 
       <Form.Row>
         <div className={styles.fieldset}>
           <FieldWrapper title="Select activities">
             <div className={styles.field}>
-              <AssessmentsShuttle setValue={setValue} data={activities} />
+              <AssessmentsShuttle
+                setValue={setValue}
+                data={activities}
+                initialActivities={selectedActivities}
+              />
             </div>
           </FieldWrapper>
 

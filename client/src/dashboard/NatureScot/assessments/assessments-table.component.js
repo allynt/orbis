@@ -29,7 +29,7 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentTable = ({ data }) => {
+const AssessmentTable = ({ data, handleEditAssessment }) => {
   const styles = useStyles();
 
   const [assessments, setAssessments] = useState([]);
@@ -67,13 +67,13 @@ const AssessmentTable = ({ data }) => {
       },
       {
         Header: 'Assessment Name',
-        accessor: 'name',
-        id: 'name',
+        accessor: 'description',
+        id: 'description',
       },
       {
         Header: 'Date',
-        accessor: 'date',
-        id: 'date',
+        accessor: 'startDate',
+        id: 'startDate',
         Cell: ({ value }) => format(new Date(value), DATE_FORMAT),
       },
       {
@@ -91,26 +91,26 @@ const AssessmentTable = ({ data }) => {
         Header: '',
         accessor: 'null',
         id: 'button',
-        Cell: ({ value }) => (
-          <div className={styles.actions}>
-            <Button
-              size="small"
-              variant="text"
-              className={styles.actionButton}
-              onClick={event => console.log('View Clicked: ', value, event)}
-            >
-              View
-            </Button>
-            <Button
-              size="small"
-              variant="text"
-              className={styles.actionButton}
-              onClick={event => console.log('Modify Clicked: ', value, event)}
-            >
-              Modify
-            </Button>
-          </div>
-        ),
+        Cell: ({
+          cell: {
+            row: {
+              original: { id },
+            },
+          },
+        }) => {
+          return (
+            <div className={styles.actions}>
+              <Button
+                size="small"
+                variant="text"
+                className={styles.actionButton}
+                onClick={() => handleEditAssessment(Number(id))}
+              >
+                View/Modify
+              </Button>
+            </div>
+          );
+        },
       },
     ],
     [assessments, styles.actions, styles.actionButton],

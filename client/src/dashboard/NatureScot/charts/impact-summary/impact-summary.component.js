@@ -7,6 +7,7 @@ import { VictoryChart, VictoryBar, VictoryAxis, VictoryLabel } from 'victory';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 
 import { GRADIENT_STOPS } from '../../nature-scotland.constants';
 import { NatureScotCustomLegend } from './impact-summary-legend.component';
@@ -23,7 +24,12 @@ const ImpactSummary = ({ data }) => {
 
   useEffect(() => {
     if (!!data) {
-      setChartData(data?.map(({ type, impact }) => ({ x: type, y: impact })));
+      setChartData(
+        data?.map(({ type, impact }) => ({
+          x: type,
+          y: impact === 0 ? 0.1 : impact,
+        })),
+      );
     }
   }, [data]);
 
@@ -86,6 +92,8 @@ const ImpactSummary = ({ data }) => {
                 />
                 <VictoryBar
                   data={chartData}
+                  labelComponent={FlyoutTooltip()}
+                  labels={({ datum }) => `Impact: ${datum.y}`}
                   style={{
                     data: {
                       fill: 'url(#gradient)',
