@@ -107,6 +107,7 @@ LOCAL_APPS = [
     "maps",  # (mapping tools)
     "tasks",  # (task management)
     "orbis",  # (this app)
+    "orbs.eco_an_alba",  # (orb-specific app)
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
