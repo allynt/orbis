@@ -9,7 +9,7 @@ export const IMPACT_SUMMARY_LEGEND_DATA = {
   'Medium positive': '#b3d567',
   'Medium negative': '#f67971',
   'Low positive': '#c7d99f',
-  'High negative': '#ff544a',
+  'High negative': '#f03b30',
   Neutral: '#d8c06a',
 };
 
@@ -20,5 +20,5 @@ export const GRADIENT_STOPS = {
   '50%': '#d8c06a',
   '60%': '#eda46c',
   '70%': '#f67971',
-  '100%': '#ff544a',
+  '100%': '#f03b30',
 };
