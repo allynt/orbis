@@ -11,6 +11,8 @@ import AssessmentDialog from './assessment-dialog.component';
 
 const mockStore = createMockStore([thunk]);
 
+jest.setTimeout(60000);
+
 describe('AssessmentDialog', () => {
   let close = null;
   let onSubmit = null;

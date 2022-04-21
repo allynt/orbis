@@ -20,6 +20,6 @@ describe('Assessment Results', () => {
       screen.getByRole('heading', { name: /impact detail by feature/i }),
     ).toBeInTheDocument();
 
-    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(3);
+    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
   });
 });

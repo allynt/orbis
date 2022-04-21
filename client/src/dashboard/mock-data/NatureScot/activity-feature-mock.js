@@ -1,5 +1,5 @@
 const mockdata = {
-  impacts: [
+  activities: [
     {
       name: 'Breeding Bird Assemblage',
       impacts: [

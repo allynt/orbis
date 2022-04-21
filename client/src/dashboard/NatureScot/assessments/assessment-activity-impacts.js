@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   bulletpoint: {
     margin: '1rem',
   },
-  mrc: {
+  mayrequireconsent: {
     fontWeight: 800,
     textAlign: 'center',
   },
@@ -102,7 +102,7 @@ const AssessmentActivityImpacts = ({ data }) => {
                 [activity.impacts[0]].map(item => (
                   <TableRow key={activity}>
                     <TableCell>{activity.title}</TableCell>
-                    <TableCell className={styles.mrc}>
+                    <TableCell className={styles.mayrequireconsent}>
                       {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                     </TableCell>
                     {impactColumns.map(column => (

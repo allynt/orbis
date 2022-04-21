@@ -107,7 +107,7 @@ export const RESULTS = {
       ],
     },
   ],
-  impacts: [
+  activities: [
     {
       name: 'Breeding Bird Assemblage',
       impacts: [
