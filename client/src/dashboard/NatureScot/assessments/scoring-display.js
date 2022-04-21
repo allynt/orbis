@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ScoringDisplay = ({ score, legend }) => {
+const ScoringDisplay = ({ score, legend = false }) => {
   // takes an integer score in range [-3,3] and renders out a series of icons
   // wrapped in a table cell, with colour styles applied.
 

@@ -24,9 +24,10 @@ const useStyles = makeStyles(theme => ({
 
 const ImpactFeatureDetailsLegend = () => {
   const styles = useStyles();
+  const scoreValues = [3, 2, 1, 0, -1, -2, -3];
   return (
     <Grid className={styles.container} container wrap="wrap" direction="row">
-      {[3, 2, 1, 0, -1, -2, -3].map(score => (
+      {scoreValues.map(score => (
         <ScoringDisplay key={`legend_${score}`} score={score} legend={true} />
       ))}
     </Grid>

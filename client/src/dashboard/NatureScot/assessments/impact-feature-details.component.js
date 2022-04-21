@@ -126,7 +126,7 @@ const ImpactFeatureDetails = ({ data }) => {
     return <TableCell className={styles.tablecell}>{value}</TableCell>;
   };
 
-  const getScoreCell = value => <ScoringDisplay score={value} legend={false} />;
+  const getScoreCell = value => <ScoringDisplay score={value} />;
 
   const toggleTab = (event, tab) => setTab(tab);
 
@@ -136,7 +136,7 @@ const ImpactFeatureDetails = ({ data }) => {
       info="This widget provides detailed impact information relating to your proposal."
     >
       {/* preamble */}
-      <Typography variant="body1">
+      <Typography>
         The table below shows the impact of your proposal in more detail. Click
         a feature to see more information about the impacts on that feature.
       </Typography>

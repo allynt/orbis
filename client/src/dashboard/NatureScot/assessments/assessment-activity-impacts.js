@@ -63,6 +63,7 @@ const AssessmentActivityImpacts = ({ data }) => {
   // table
   const styles = useStyles();
   const noData = !data;
+  const impactColumns = [0, 1, 2, 3, 4];
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
@@ -97,16 +98,16 @@ const AssessmentActivityImpacts = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((activity, index) =>
+              {data.map(activity =>
                 [activity.impacts[0]].map(item => (
                   <TableRow key={activity}>
                     <TableCell>{activity.title}</TableCell>
                     <TableCell className={styles.mrc}>
                       {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                     </TableCell>
-                    {[0, 1, 2, 3, 4].map(column => (
+                    {impactColumns.map(column => (
                       <ScoringDisplay
-                        key={`cell_${activity.title}_${column}`}
+                        key={`${activity.title}_${column}`}
                         score={item.impacts[column].score}
                         legend={false}
                       />
