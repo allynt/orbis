@@ -1,5 +1,5 @@
 export const MOCKIMPACTS = {
-  impacts: [
+  activities: [
     {
       title: 'Start grazing cattle',
       activityCode: 'grazingCattleStart',
@@ -8,41 +8,34 @@ export const MOCKIMPACTS = {
       operationMayRequireConsent: true,
       impacts: [
         {
-          activity: 'livestock_largeAnimals',
-          title: 'Large animals',
+          category: 'Biodiversity',
+          description: 'Slightly negative',
+          score: -1,
+          impact: -0.06,
+        },
+        {
+          category: 'Chemical',
+          description: 'No impact',
+          score: 0,
+          impact: 0,
+        },
+        {
+          category: 'People',
+          description: 'Minor or no positive impact',
+          score: 0,
+          impact: 0.006,
+        },
+        {
+          category: 'Soil, Water, Air',
+          description: 'Minor or no negative impact',
+          score: 0,
+          impact: -0.045,
+        },
+        {
+          category: 'Environmental',
           description: 'Negative',
-          impacts: [
-            {
-              category: 'Biodiversity',
-              description: 'Slightly negative',
-              score: -1,
-              impact: -0.06,
-            },
-            {
-              category: 'Chemical',
-              description: 'No impact',
-              score: 0,
-              impact: 0,
-            },
-            {
-              category: 'People',
-              description: 'Minor or no positive impact',
-              score: 0,
-              impact: 0.006,
-            },
-            {
-              category: 'Soil, Water, Air',
-              description: 'Minor or no negative impact',
-              score: 0,
-              impact: -0.045,
-            },
-            {
-              category: 'Environmental',
-              description: 'Negative',
-              score: -2,
-              impact: -0.1,
-            },
-          ],
+          score: -2,
+          impact: -0.1,
         },
       ],
       possibleMitigations: [
@@ -60,41 +53,34 @@ export const MOCKIMPACTS = {
       operationMayRequireConsent: null,
       impacts: [
         {
-          activity: 'livestock_mediumAnimals',
-          title: 'Medium animals',
+          category: 'Biodiversity',
+          description: 'Slightly negative',
+          score: -2,
+          impact: -2.06,
+        },
+        {
+          category: 'Chemical',
+          description: 'No impact',
+          score: 1,
+          impact: 1,
+        },
+        {
+          category: 'People',
+          description: 'Minor or no positive impact',
+          score: 1,
+          impact: 1.006,
+        },
+        {
+          category: 'Soil, Water, Air',
+          description: 'Minor or no negative impact',
+          score: 3,
+          impact: -3.045,
+        },
+        {
+          category: 'Environmental',
           description: 'Negative',
-          impacts: [
-            {
-              category: 'Biodiversity',
-              description: 'Slightly negative',
-              score: -2,
-              impact: -2.06,
-            },
-            {
-              category: 'Chemical',
-              description: 'No impact',
-              score: 1,
-              impact: 1,
-            },
-            {
-              category: 'People',
-              description: 'Minor or no positive impact',
-              score: 1,
-              impact: 1.006,
-            },
-            {
-              category: 'Soil, Water, Air',
-              description: 'Minor or no negative impact',
-              score: 3,
-              impact: -3.045,
-            },
-            {
-              category: 'Environmental',
-              description: 'Negative',
-              score: -2,
-              impact: -0.1,
-            },
-          ],
+          score: -2,
+          impact: -0.1,
         },
       ],
       possibleMitigations: [

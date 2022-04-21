@@ -19,7 +19,7 @@ const AssessmentResults = ({ results }) => (
       <ProtectedAreasList areas={results?.areas} />
     </Grid>
     <Grid container item xs={12} spacing={3}>
-      <AssessmentActivityImpacts data={results?.impacts} />
+      <AssessmentActivityImpacts data={results?.activities} />
     </Grid>
     <Grid container item xs={6} spacing={3}>
       <ImpactFeatureDetails data={results} />

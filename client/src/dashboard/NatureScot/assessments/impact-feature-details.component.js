@@ -118,7 +118,7 @@ const TablePanel = ({ value, index, children, ...rest }) => (
 const ImpactFeatureDetails = ({ data }) => {
   const styles = useStyles();
   const noData = !data;
-  const actualData = data?.activities;
+  const actualData = data?.oldactivities;
 
   const [tab, setTab] = useState(0);
 
