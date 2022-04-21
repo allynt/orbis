@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
+import { SCORE_VALUES } from '../nature-scotland.constants';
 import ScoringDisplay from './scoring-display';
 
 const useStyles = makeStyles(theme => ({
@@ -24,10 +25,10 @@ const useStyles = makeStyles(theme => ({
 
 const ImpactFeatureDetailsLegend = () => {
   const styles = useStyles();
-  const scoreValues = [3, 2, 1, 0, -1, -2, -3];
+
   return (
     <Grid className={styles.container} container wrap="wrap" direction="row">
-      {scoreValues.map(score => (
+      {SCORE_VALUES.map(score => (
         <ScoringDisplay key={`legend_${score}`} score={score} legend={true} />
       ))}
     </Grid>

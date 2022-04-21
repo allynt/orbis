@@ -16,6 +16,7 @@ import {
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
+import { IMPACT_COLUMNS } from '../nature-scotland.constants';
 import ScoringDisplay from './scoring-display';
 
 const useStyles = makeStyles(theme => ({
@@ -63,14 +64,13 @@ const AssessmentActivityImpacts = ({ data }) => {
   // table
   const styles = useStyles();
   const noData = !data;
-  const impactColumns = [0, 1, 2, 3, 4];
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
       info="This widget provides detailed impact information relating to your proposal for each activity"
     >
       {/* preamble */}
-      <Typography variant="body1">
+      <Typography>
         The table below shows the impact of your proposal in more detail.
       </Typography>
       <br />
@@ -105,7 +105,7 @@ const AssessmentActivityImpacts = ({ data }) => {
                     <TableCell className={styles.mayrequireconsent}>
                       {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                     </TableCell>
-                    {impactColumns.map(column => (
+                    {IMPACT_COLUMNS.map(column => (
                       <ScoringDisplay
                         key={`${activity.title}_${column}`}
                         score={item.impacts[column].score}
