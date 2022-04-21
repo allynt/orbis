@@ -64,9 +64,8 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   const initialState = {
     description: '',
-    startDate: null,
-    endDate: null,
-    reportGenerated: null,
+    startDate: undefined,
+    endDate: undefined,
     activities: [],
     geometry: selectedAoi?.geometry,
   };

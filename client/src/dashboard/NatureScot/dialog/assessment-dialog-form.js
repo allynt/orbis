@@ -138,6 +138,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     watch,
     formState: { isDirty },
   } = useForm({
@@ -163,6 +164,14 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
     onSubmit(processedForm);
   };
 
+  // TODO: still enables button when dates invalid?
+  // checks form values are all filled on initial render
+  useEffect(() => {
+    if (Object.values(getValues()).some(v => !v)) {
+      setIsAssessmentSubmitButtonDisabled(false);
+    }
+  }, []);
+
   // disables showing of YesNo dialog if form has been changed
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
 
@@ -175,7 +184,6 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
           value.activities.length === 0,
       );
     });
-
     return () => subscription.unsubscribe();
   }, [watch]);
 
