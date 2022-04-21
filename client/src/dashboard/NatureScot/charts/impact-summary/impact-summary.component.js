@@ -13,21 +13,21 @@ import { GRADIENT_STOPS } from '../../nature-scotland.constants';
 import { NatureScotCustomLegend } from './impact-summary-legend.component';
 
 /**
- * @param {{ data: { type: string, impact: number }[] }} props
+ * @param {{ data: { category: string, score: number }[] }} props
  */
 const ImpactSummary = ({ data }) => {
   const theme = useChartTheme();
 
   const [chartData, setChartData] = useState(
-    data?.map(({ type }) => ({ x: type, y: 0 })),
+    data?.map(({ category }) => ({ x: category, y: 0 })),
   );
 
   useEffect(() => {
     if (!!data) {
       setChartData(
-        data?.map(({ type, impact }) => ({
-          x: type,
-          y: impact === 0 ? 0.1 : impact,
+        data?.map(({ category, score }) => ({
+          x: category,
+          y: score === 0 ? 0.1 : score,
         })),
       );
     }
@@ -93,7 +93,7 @@ const ImpactSummary = ({ data }) => {
                 <VictoryBar
                   data={chartData}
                   labelComponent={FlyoutTooltip()}
-                  labels={({ datum }) => `Impact: ${datum.y}`}
+                  labels={({ datum: { y } }) => `Impact: ${y === 0.1 ? 0 : y}`}
                   style={{
                     data: {
                       fill: 'url(#gradient)',
