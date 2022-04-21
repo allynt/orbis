@@ -115,6 +115,7 @@ class Proposal(gis_models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+    report_generated = models.DateTimeField(null=False, blank=False)
 
     name = models.CharField(
         max_length=64,

@@ -17,6 +17,7 @@ class ProposalSerializer(serializers.ModelSerializer):
             "id",
             "created",
             "modified",
+            "report_generated",
             "name",
             "description",
             "owner",

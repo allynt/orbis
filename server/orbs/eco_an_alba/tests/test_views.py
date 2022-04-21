@@ -51,6 +51,7 @@ class TestProposalViewSet:
         proposal_data = {
             "created": proposal.created,
             "modified": proposal.modified,
+            "report_generated": proposal.report_generated,
             "name": proposal.name,
             "description": proposal.description,
             "geometry": GEOSGeometry(proposal.geometry).geojson,
@@ -83,6 +84,7 @@ class TestProposalViewSet:
         proposal_data = {
             "created": proposal.created,
             "modified": proposal.modified,
+            "report_generated": proposal.report_generated,
             "name": proposal.name,
             "description": proposal.description,
             "geometry": GEOSGeometry(proposal.geometry).geojson,

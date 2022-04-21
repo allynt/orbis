@@ -68,3 +68,7 @@ class ProposalFactory(factory.django.DjangoModelFactory):
     @factory.lazy_attribute
     def proposal_end_date(self):
         return self.proposal_start_date + timedelta(days=7)
+
+    @factory.lazy_attribute
+    def report_generated(self):
+        return self.proposal_start_date
