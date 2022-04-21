@@ -66,6 +66,7 @@ const NatureScotDashboard = ({ sourceId }) => {
     description: '',
     startDate: null,
     endDate: null,
+    reportGenerated: null,
     activities: [],
     geometry: selectedAoi?.geometry,
   };
@@ -86,6 +87,7 @@ const NatureScotDashboard = ({ sourceId }) => {
       description: assessment.proposal_description,
       startDate: assessment.proposal_start_date,
       endDate: assessment.proposal_end_date,
+      reportGenerated: assessment.report_generated,
       activities: assessment.proposal_activities,
     }));
     setIsAssessmentDialogVisible(true);

@@ -7,8 +7,10 @@ import {
   DialogTitle,
   Grid,
   makeStyles,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
+import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
@@ -24,6 +26,9 @@ const useStyles = makeStyles(theme => ({
       margin: '1rem',
     },
   },
+  reportGenerated: {
+    padding: '1rem',
+  },
 }));
 
 const FORMATS = {
@@ -34,6 +39,9 @@ const FORMATS = {
 const AssessmentResults = ({ results, formState }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
+  const now = formState.reportGenerated
+    ? new Date(formState.reportGenerated)
+    : new Date();
 
   const [selectedAssessments, setSelectedAssessments] = useState([]);
   const [saveProposalFormOpen, setSaveProposalFormOpen] = useState(false);
@@ -51,12 +59,17 @@ const AssessmentResults = ({ results, formState }) => {
         proposal_start_date: formState.startDate,
         proposal_end_date: formState.endDate,
         proposal_activities: formState.activities,
+        report_generated: now.toISOString(),
         report_state: results,
       }),
     );
 
   return (
     <>
+      <Typography variant="h4" className={styles.reportGenerated}>
+        Report generated at: {format(now, 'PPPPpp')}
+      </Typography>
+
       <Grid container spacing={5}>
         <Grid item xs={6}>
           <ImpactSummary data={results?.summary} />

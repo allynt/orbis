@@ -15,6 +15,7 @@ const initialState = {
   description: '',
   startDate: null,
   endDate: null,
+  reportGenerated: null,
   activities: [],
   geometry: {
     type: 'Polygon',
