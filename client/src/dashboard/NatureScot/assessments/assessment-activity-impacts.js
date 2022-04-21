@@ -64,11 +64,6 @@ const AssessmentActivityImpacts = ({ data }) => {
   // table
   const styles = useStyles();
   const noData = !data;
-  data.map(activity => {
-    activity.impacts.map(item => {
-      console.log('item', item);
-    });
-  });
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
