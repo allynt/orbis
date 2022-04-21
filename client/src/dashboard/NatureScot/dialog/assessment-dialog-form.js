@@ -167,7 +167,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
   // TODO: still enables button when dates invalid?
   // checks form values are all filled on initial render
   useEffect(() => {
-    if (Object.values(getValues()).some(v => !v)) {
+    if (Object.values(getValues()).every(v => !!v)) {
       setIsAssessmentSubmitButtonDisabled(false);
     }
   }, []);
