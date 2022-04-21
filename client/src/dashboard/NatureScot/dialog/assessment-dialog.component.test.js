@@ -65,7 +65,7 @@ describe('AssessmentDialog', () => {
         close={close}
         onSubmit={onSubmit}
         visibleTab={0}
-        initialFormState={initialState}
+        formState={initialState}
       />,
     );
 
@@ -106,7 +106,7 @@ describe('AssessmentDialog', () => {
           close={close}
           onSubmit={onSubmit}
           visibleTab={0}
-          initialFormState={initialState}
+          formState={initialState}
         />
       </Provider>,
     );
@@ -175,7 +175,7 @@ describe('AssessmentDialog', () => {
           close={close}
           onSubmit={onSubmit}
           visibleTab={0}
-          initialFormState={{ ...initialState, geometry: selectedAoi.geometry }}
+          formState={{ ...initialState, geometry: selectedAoi.geometry }}
         />
       </Provider>,
     );

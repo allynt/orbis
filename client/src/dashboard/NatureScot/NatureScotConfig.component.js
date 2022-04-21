@@ -70,10 +70,10 @@ const NatureScotDashboard = ({ sourceId }) => {
     geometry: selectedAoi?.geometry,
   };
 
-  const [initialFormState, setInitialFormState] = useState(initialState);
+  const [formState, setFormState] = useState(initialState);
 
   const submitAssessment = form => {
-    setInitialFormState(prev => ({ ...prev, ...form }));
+    setFormState(prev => ({ ...prev, ...form }));
     dispatch(fetchImpactAssessment(form));
     setAssessmentDialogTab(1);
   };
@@ -81,7 +81,7 @@ const NatureScotDashboard = ({ sourceId }) => {
   const handleEditAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
 
-    setInitialFormState(prev => ({
+    setFormState(prev => ({
       ...prev,
       description: assessment.proposal_description,
       startDate: assessment.proposal_start_date,
@@ -112,7 +112,7 @@ const NatureScotDashboard = ({ sourceId }) => {
 
         <Button
           onClick={() => {
-            setInitialFormState(initialState);
+            setFormState(initialState);
             setIsAssessmentDialogVisible(true);
           }}
           className={styles.assessmentButton}
@@ -137,7 +137,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
-        initialFormState={initialFormState}
+        formState={formState}
       />
     </div>
   );

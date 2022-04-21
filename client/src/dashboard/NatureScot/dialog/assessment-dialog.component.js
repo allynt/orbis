@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
  * close: function,
  * onSubmit: function,
  * results: object[],
- * initialFormState?: object
+ * formState?: object
  * }} props
  */
 const AssessmentDialog = ({
@@ -63,15 +63,13 @@ const AssessmentDialog = ({
   close,
   onSubmit,
   results,
-  initialFormState,
+  formState,
 }) => {
   const styles = useStyles();
 
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
   const [formIsDirty, setFormIsDirty] = useState(false);
-  const [impactAssessmentFormData, setImpactAssessmentFormData] =
-    useState(null);
 
   const toggleTab = (event, tab) => setTab(tab);
 
@@ -87,10 +85,7 @@ const AssessmentDialog = ({
     }
   };
 
-  const handleSubmit = form => {
-    setImpactAssessmentFormData(form);
-    onSubmit(form);
-  };
+  const handleSubmit = form => onSubmit(form);
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
 
@@ -124,16 +119,13 @@ const AssessmentDialog = ({
           </p>
           <AssessmentDialogForm
             onSubmit={handleSubmit}
-            initialFormState={initialFormState}
+            formState={formState}
             setFormIsDirty={setFormIsDirty}
           />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults
-            results={results}
-            impactAssessmentForm={impactAssessmentFormData}
-          />
+          <AssessmentResults results={results} formState={formState} />
         </TabPanel>
       </div>
 

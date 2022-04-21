@@ -31,7 +31,7 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentResults = ({ results, impactAssessmentForm }) => {
+const AssessmentResults = ({ results, formState }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -46,11 +46,11 @@ const AssessmentResults = ({ results, impactAssessmentForm }) => {
       // @ts-ignore
       saveProposal({
         ...form,
-        geometry: impactAssessmentForm.geometry,
-        proposal_description: impactAssessmentForm.description,
-        proposal_start_date: impactAssessmentForm.startDate,
-        proposal_end_date: impactAssessmentForm.endDate,
-        proposal_activities: impactAssessmentForm.activities,
+        geometry: formState.geometry,
+        proposal_description: formState.description,
+        proposal_start_date: formState.startDate,
+        proposal_end_date: formState.endDate,
+        proposal_activities: formState.activities,
         report_state: results,
       }),
     );

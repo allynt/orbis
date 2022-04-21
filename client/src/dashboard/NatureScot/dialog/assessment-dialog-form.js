@@ -119,15 +119,11 @@ const DateRange = ({ startDate, endDate, onChange }) => {
 /**
  * @param {{
  * onSubmit: function,
- * initialFormState: object,
+ * formState: object,
  * setFormIsDirty: function
  * }} props
  */
-const AssessmentDialogForm = ({
-  onSubmit,
-  initialFormState,
-  setFormIsDirty,
-}) => {
+const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -146,15 +142,11 @@ const AssessmentDialogForm = ({
     formState: { isDirty },
   } = useForm({
     mode: 'onChange',
-    defaultValues: initialFormState,
+    defaultValues: formState,
     resolver: yupResolver(validationSchema),
   });
 
-  const {
-    activities: selectedActivities,
-    startDate,
-    endDate,
-  } = initialFormState;
+  const { activities: selectedActivities, startDate, endDate } = formState;
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = { shouldValidate: true, shouldDirty: true };
