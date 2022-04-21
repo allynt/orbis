@@ -97,11 +97,17 @@ const AreaListItem = ({ onClick, openSections, area }) => {
 
   return (
     <ListItem button onClick={onClick}>
-      {openSections.includes(area.title) ? (
-        <TriangleIcon className={clsx(styles.icon, { [styles.open]: true })} />
-      ) : (
-        <TriangleIcon className={clsx(styles.icon, { [styles.open]: false })} />
-      )}
+      {area.areas.length > 0 ? (
+        openSections.includes(area.title) ? (
+          <TriangleIcon
+            className={clsx(styles.icon, { [styles.open]: true })}
+          />
+        ) : (
+          <TriangleIcon
+            className={clsx(styles.icon, { [styles.open]: false })}
+          />
+        )
+      ) : null}
       <div className={styles.heading}>
         <span className={styles.strapline}>
           <ListItemText
@@ -268,30 +274,32 @@ const ProtectedAreasList = ({ areas }) => {
                   area={area}
                 />
 
-                <Collapse
-                  in={openSections.includes(area.title)}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <List component="div" disablePadding>
-                    <ListItem button className={styles.row}>
-                      {area.areas.map(section => (
-                        <div className={styles.section} key={section.name}>
-                          <SectionListItem
-                            onClick={() => handleClick(section.name)}
-                            openSections={openSections}
-                            section={section}
-                          />
+                {area.areas.length > 0 ? (
+                  <Collapse
+                    in={openSections.includes(area.title)}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List component="div" disablePadding>
+                      <ListItem button className={styles.row}>
+                        {area.areas.map(section => (
+                          <div className={styles.section} key={section.name}>
+                            <SectionListItem
+                              onClick={() => handleClick(section.name)}
+                              openSections={openSections}
+                              section={section}
+                            />
 
-                          <SectionCollapse
-                            openSections={openSections}
-                            section={section}
-                          />
-                        </div>
-                      ))}
-                    </ListItem>
-                  </List>
-                </Collapse>
+                            <SectionCollapse
+                              openSections={openSections}
+                              section={section}
+                            />
+                          </div>
+                        ))}
+                      </ListItem>
+                    </List>
+                  </Collapse>
+                ) : null}
               </div>
             ))
           : null}
