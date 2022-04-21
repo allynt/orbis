@@ -104,7 +104,7 @@ const AssessmentActivityImpacts = ({ data }) => {
                   <TableCell className={styles.mayrequireconsent}>
                     {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                   </TableCell>
-                  {[activity.impacts].map(item => (
+                  {activity.impacts.map(item => (
                     <ScoringDisplay
                       key={`${activity.title}_${item.score}`}
                       score={item.score}
