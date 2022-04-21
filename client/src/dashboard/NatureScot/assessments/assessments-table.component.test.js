@@ -8,20 +8,22 @@ const ASSESSMENT_DATA = [
   {
     id: 1,
     name: 'Construct campsite',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
+    modified: '2000-01-01T00:00:00.000Z',
   },
   {
     id: 2,
     name: 'Raise Building',
-    date: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
-    version: '2nd',
+    modified: '2000-01-01T00:42:00.000Z',
   },
 ];
 
 describe('AssessmentTable', () => {
+  let handleEditAssessment = null;
+
+  beforeEach(() => {
+    handleEditAssessment = jest.fn();
+  });
+
   it('should show no data message', () => {
     render(<AssessmentTable data={[]} />);
 
@@ -29,7 +31,12 @@ describe('AssessmentTable', () => {
   });
 
   it('should show data', () => {
-    render(<AssessmentTable data={ASSESSMENT_DATA} />);
+    render(
+      <AssessmentTable
+        data={ASSESSMENT_DATA}
+        handleEditAssessment={handleEditAssessment}
+      />,
+    );
 
     ASSESSMENT_DATA.forEach(assessment => {
       expect(screen.getByText(assessment.name)).toBeInTheDocument();

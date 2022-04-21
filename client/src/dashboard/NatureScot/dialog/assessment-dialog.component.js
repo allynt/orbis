@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
  * close: function,
  * onSubmit: function,
  * results: object[],
- * initialFormState?: object
+ * formState?: object
  * }} props
  */
 const AssessmentDialog = ({
@@ -63,7 +63,7 @@ const AssessmentDialog = ({
   close,
   onSubmit,
   results,
-  initialFormState,
+  formState,
 }) => {
   const styles = useStyles();
 
@@ -84,6 +84,8 @@ const AssessmentDialog = ({
       setYesNoDialogVisible(false);
     }
   };
+
+  const handleSubmit = form => onSubmit(form);
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
 
@@ -116,14 +118,14 @@ const AssessmentDialog = ({
             Applications should continue to be made to NatureScot.
           </p>
           <AssessmentDialogForm
-            onSubmit={onSubmit}
-            initialFormState={initialFormState}
+            onSubmit={handleSubmit}
+            formState={formState}
             setFormIsDirty={setFormIsDirty}
           />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults results={results} />
+          <AssessmentResults results={results} formState={formState} />
         </TabPanel>
       </div>
 

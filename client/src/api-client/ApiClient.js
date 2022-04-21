@@ -1,4 +1,5 @@
 import { NatureScotClient } from 'dashboard/NatureScot/NatureScotClient';
+import { ProposalsClient } from 'dashboard/NatureScot/ProposalsClient';
 
 import { AoiClient } from './AoisClient';
 import { AppClient } from './AppClient';
@@ -42,6 +43,7 @@ export class ApiClient {
     'storage',
     'aois',
     'natureScot',
+    'proposals',
   ];
 
   constructor() {
@@ -58,6 +60,7 @@ export class ApiClient {
     this.storage = new StorageClient();
     this.aois = new AoiClient();
     this.natureScot = new NatureScotClient();
+    this.proposals = new ProposalsClient();
 
     this.apiHost =
       process.env.NODE_ENV === 'development'
