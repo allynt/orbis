@@ -31,7 +31,7 @@ class IRImpactAssessmentAdapter(BaseProxyDataAdapter):
 
         # Get mock impacts-by-features data to merge with live API data,
         # if it exists.
-        if bool(self.proxy.proxy_extra_content) is not False:
+        if self.proxy.proxy_extra_content is not None:
             processed_data["impacts_by_feature"] = json.load(
                 self.proxy.proxy_extra_content
             )
