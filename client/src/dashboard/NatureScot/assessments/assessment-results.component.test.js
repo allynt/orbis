@@ -18,9 +18,9 @@ describe('Assessment Results', () => {
       screen.getByRole('heading', { name: /protected areas/i }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: /impact detail by feature/i }),
+      screen.getByRole('heading', { name: /Impact Detail By Activity/i }),
     ).toBeInTheDocument();
 
-    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(3);
+    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
   });
 });

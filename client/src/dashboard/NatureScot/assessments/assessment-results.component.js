@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
 import { saveProposal } from '../nature-scot.slice';
+import AssessmentActivityImpacts from './assessment-activity-impacts';
 import ImpactFeatureDetails from './impact-feature-details.component';
 import ProtectedAreasList from './protected-areas-list.component';
 import SaveProposalForm from './save-proposal-form.component';
@@ -78,8 +79,12 @@ const AssessmentResults = ({ results, formState }) => {
           <ProtectedAreasList areas={results?.areas} />
         </Grid>
         <Grid container item xs={6} spacing={3}></Grid>
+        <Grid container item xs={12} spacing={3}>
+          <AssessmentActivityImpacts data={results?.activities} />
+        </Grid>
+        <Grid container item xs={6} spacing={3}></Grid>
         <Grid container item xs={6} spacing={3}>
-          <ImpactFeatureDetails data={results} />
+          <ImpactFeatureDetails data={results?.impactsByFeature} />
         </Grid>
         <Grid className={styles.buttons} container item xs={6} spacing={3}>
           <Button onClick={() => exportAs(FORMATS.PDF)} size="small">

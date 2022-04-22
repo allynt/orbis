@@ -36,7 +36,7 @@ const NatureScotCustomLegend = () => (
     {Object.entries(IMPACT_SUMMARY_LEGEND_DATA).map(([label, fill]) => (
       <LegendItem key={label}>
         <Icon fill={fill} />
-        <Typography variant="body1">{label}</Typography>
+        <Typography>{label}</Typography>
       </LegendItem>
     ))}
   </LegendContainer>

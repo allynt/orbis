@@ -88,7 +88,7 @@ describe('AssessmentDialog', () => {
     expect(
       screen.getByRole('button', { name: /run impact assessment/i }),
     ).toBeInTheDocument();
-  });
+  }, 60000);
 
   it('should enable the `run impact assessment` button', async () => {
     render(

@@ -32,7 +32,7 @@ describe('Impact Feature Details', () => {
   });
   describe('Feature Detail Nav', () => {
     it('should display a tab list', () => {
-      render(<ImpactFeatureDetails data={mockdata} />);
+      render(<ImpactFeatureDetails data={mockdata?.impactsByFeature} />);
 
       expect(
         screen.getByRole('tablist', { name: /impact details by feature/i }),
@@ -46,7 +46,7 @@ describe('Impact Feature Details', () => {
     });
 
     it('should switch between tabs', () => {
-      render(<ImpactFeatureDetails data={mockdata} />);
+      render(<ImpactFeatureDetails data={mockdata?.impactsByFeature} />);
 
       expect(
         screen.getByRole('tab', { name: /Breeding Bird Assemblage/i }),
