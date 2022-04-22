@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
@@ -127,30 +127,35 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const [
-    isAssessmentSubmitButtonDisabled,
-    setIsAssessmentSubmitButtonDisabled,
-  ] = useState(true);
-
   const activities = useSelector(impactActivitiesSelector);
 
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
-    watch,
-    formState: { isDirty },
+    trigger,
+    formState: { isDirty, errors, isValid },
   } = useForm({
     mode: 'onChange',
     defaultValues: formState,
     resolver: yupResolver(validationSchema),
   });
 
-  const { activities: selectedActivities, startDate, endDate } = formState;
+  useEffect(() => {
+    trigger();
+  }, [trigger]);
+
+  const {
+    activities: selectedActivities,
+    startDate,
+    endDate,
+  } = formState;
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
-    const options = { shouldValidate: true, shouldDirty: true };
+    const options = {
+      shouldValidate: true,
+      shouldDirty: true,
+    };
     setValue('startDate', startDate, options);
     setValue('endDate', endDate, options);
   };
@@ -164,28 +169,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
     onSubmit(processedForm);
   };
 
-  // TODO: still enables button when dates invalid?
-  // checks form values are all filled on initial render
-  useEffect(() => {
-    if (Object.values(getValues()).every(v => !!v)) {
-      setIsAssessmentSubmitButtonDisabled(false);
-    }
-  }, []);
-
-  // disables showing of YesNo dialog if form has been changed
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
-
-  useEffect(() => {
-    const subscription = watch(value => {
-      setIsAssessmentSubmitButtonDisabled(
-        !value?.description ||
-          !value?.startDate ||
-          !value?.endDate ||
-          value.activities.length === 0,
-      );
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   useEffect(() => {
     dispatch(fetchImpactActivities());
@@ -218,7 +202,10 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
           </FieldWrapper>
 
           <div className={styles.row}>
-            <Button type="submit" disabled={isAssessmentSubmitButtonDisabled}>
+            <Button
+              type="submit"
+              disabled={Object.keys(errors).length > 0 || !isValid}
+            >
               Run impact assessment
             </Button>
           </div>
