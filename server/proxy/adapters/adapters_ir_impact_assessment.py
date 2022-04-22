@@ -96,6 +96,10 @@ class IRImpactAssessmentAdapter(BaseProxyDataAdapter):
 
             processed_data["areas"].append(area_data)
 
+        processed_data["areas"].sort(
+            key=lambda val: CATEGORIES_ORDER[val["category"]]
+        )
+
         return processed_data
 
     @property
