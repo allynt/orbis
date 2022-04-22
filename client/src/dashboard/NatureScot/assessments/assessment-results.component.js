@@ -79,8 +79,12 @@ const AssessmentResults = ({ results, formState }) => {
           <ProtectedAreasList areas={results?.areas} />
         </Grid>
         <Grid container item xs={6} spacing={3}></Grid>
+        <Grid container item xs={12} spacing={3}>
+          <AssessmentActivityImpacts data={results?.activities} />
+        </Grid>
+        <Grid container item xs={6} spacing={3}></Grid>
         <Grid container item xs={6} spacing={3}>
-          <ImpactFeatureDetails data={results} />
+          <ImpactFeatureDetails data={results?.impactsByFeature} />
         </Grid>
         <Grid className={styles.buttons} container item xs={6} spacing={3}>
           <Button onClick={() => exportAs(FORMATS.PDF)} size="small">
