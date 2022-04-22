@@ -11,8 +11,6 @@ import AssessmentDialog from './assessment-dialog.component';
 
 const mockStore = createMockStore([thunk]);
 
-jest.setTimeout(60000);
-
 describe('AssessmentDialog', () => {
   let close = null;
   let onSubmit = null;
@@ -70,7 +68,7 @@ describe('AssessmentDialog', () => {
     expect(
       screen.getByRole('button', { name: /run impact assessment/i }),
     ).toBeInTheDocument();
-  });
+  }, 60000);
 
   it('should enable the `run impact assessment` button', async () => {
     render(
@@ -124,7 +122,7 @@ describe('AssessmentDialog', () => {
         screen.getByRole('button', { name: /run impact assessment/i }),
       ).toBeEnabled(),
     );
-  });
+  }, 60000);
 
   it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
     const selectedAoi = {

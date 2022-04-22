@@ -4,7 +4,7 @@ import { Grid } from '@astrosat/astrosat-ui';
 
 import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
 import AssessmentActivityImpacts from './assessment-activity-impacts';
-//import ImpactFeatureDetails from './impact-feature-details.component';
+import ImpactFeatureDetails from './impact-feature-details.component';
 import ProtectedAreasList from './protected-areas-list.component';
 
 /**
@@ -21,9 +21,9 @@ const AssessmentResults = ({ results }) => (
     <Grid container item xs={12} spacing={3}>
       <AssessmentActivityImpacts data={results?.activities} />
     </Grid>
-    {/* <Grid container item xs={6} spacing={3}>
+    <Grid container item xs={6} spacing={3}>
       <ImpactFeatureDetails data={results?.impactsByFeature} />
-    </Grid> */}
+    </Grid>
   </Grid>
 );
 
