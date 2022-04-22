@@ -16,7 +16,6 @@ import {
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
-import { IMPACT_COLUMNS } from '../nature-scotland.constants';
 import ScoringDisplay from './scoring-display';
 
 const useStyles = makeStyles(theme => ({
@@ -112,15 +111,13 @@ const AssessmentActivityImpacts = ({ data }) => {
                     />
                   ))}
                   <TableCell>
-                    {
-                      <ul>
-                        {activity.possibleMitigations.map(item => (
-                          <li className={styles.bulletpoint} key={item}>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    }
+                    <ul>
+                      {activity.possibleMitigations.map(item => (
+                        <li className={styles.bulletpoint} key={item}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </TableCell>
                 </TableRow>
               ))}

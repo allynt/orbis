@@ -107,7 +107,7 @@ export const RESULTS = {
       ],
     },
   ],
-  oldactivities: [
+  impactsByFeature: [
     {
       name: 'Breeding Bird Assemblage',
       impacts: [

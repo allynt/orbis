@@ -16,10 +16,10 @@ describe('Assessment Results', () => {
     expect(
       screen.getByRole('heading', { name: /protected areas/i }),
     ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole('heading', { name: /impact detail by feature/i }),
-    // ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Impact Detail By Activity/i }),
+    ).toBeInTheDocument();
 
-    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
+    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(3);
   });
 });

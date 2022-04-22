@@ -118,7 +118,6 @@ const TablePanel = ({ value, index, children, ...rest }) => (
 const ImpactFeatureDetails = ({ data }) => {
   const styles = useStyles();
   const noData = !data;
-  const actualData = data?.oldactivities;
 
   const [tab, setTab] = useState(0);
 
@@ -182,14 +181,14 @@ const ImpactFeatureDetails = ({ data }) => {
             className={styles.tabs}
             role="tab"
           >
-            {actualData.map(item => (
+            {data.map(item => (
               <Tab key={item} className={styles.tab} label={item.name} />
             ))}
           </Tabs>
           {/* right-hand table rendered here, most negative first */}
           {noData
             ? null
-            : actualData.map((item, index) => {
+            : data.map((item, index) => {
                 const sortedImpacts = [...item.impacts].sort((a, b) =>
                   a.strength >= b.strength ? 1 : -1,
                 );
