@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, makeStyles, Tab, Tabs } from '@astrosat/astrosat-ui';
 
@@ -11,7 +11,9 @@ import Charts from './charts/charts.component';
 import AssessmentDialog from './dialog/assessment-dialog.component';
 import {
   fetchImpactAssessment,
+  fetchProposals,
   impactAssessmentSelector,
+  proposalsSelector,
 } from './nature-scot.slice';
 
 const useStyles = makeStyles(theme => ({
@@ -47,89 +49,51 @@ const PANELS = {
   assessments: 'assessments',
 };
 
-// const ASSESSMENT_DATA = [];
-const ASSESSMENT_DATA = [
-  {
-    id: 1,
-    name: 'Construct campsite',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
-  },
-  {
-    id: 2,
-    name: 'Raise Building',
-    date: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
-    version: '2nd',
-  },
-  {
-    id: 3,
-    name: 'Some Building',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
-  },
-  {
-    id: 4,
-    name: 'Another Building',
-    date: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
-    version: '2nd',
-  },
-  {
-    id: 5,
-    name: 'Shopping Mall',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
-  },
-  {
-    id: 6,
-    name: 'Hospital',
-    date: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
-    version: '2nd',
-  },
-  {
-    id: 7,
-    name: 'Skateboard Park',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
-  },
-  {
-    id: 8,
-    name: 'Old Folks Home',
-    date: '2000-01-01T00:42:00.000Z',
-    time: '2000-01-01T00:42:00.000Z',
-    version: '2nd',
-  },
-  {
-    id: 9,
-    name: 'Easter Road',
-    date: '2000-01-01T00:00:00.000Z',
-    time: '2000-01-01T00:00:00.000Z',
-    version: '1st',
-  },
-];
-
 const NatureScotDashboard = ({ sourceId }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
+
+  const selectedAoi = useSelector(selectedAoiSelector);
+  const impactAssessment = useSelector(impactAssessmentSelector);
+  const proposals = useSelector(proposalsSelector);
 
   const [assessmentDialogTab, setAssessmentDialogTab] = useState(0);
   const [visibleTab, setVisibleTab] = useState(PANELS.data);
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
 
-  const selectedAoi = useSelector(selectedAoiSelector);
-  const impactAssessment = useSelector(impactAssessmentSelector);
+  const initialState = {
+    description: '',
+    startDate: null,
+    endDate: null,
+    reportGenerated: null,
+    activities: [],
+    geometry: selectedAoi?.geometry,
+  };
+
+  const [formState, setFormState] = useState(initialState);
 
   const submitAssessment = form => {
+    setFormState(prev => ({ ...prev, ...form }));
     dispatch(fetchImpactAssessment(form));
     setAssessmentDialogTab(1);
   };
+
+  const handleEditAssessment = id => {
+    const assessment = proposals.find(proposal => proposal.id === id);
+
+    setFormState(prev => ({
+      ...prev,
+      description: assessment.proposal_description,
+      startDate: assessment.proposal_start_date,
+      endDate: assessment.proposal_end_date,
+      reportGenerated: assessment.report_generated,
+      activities: assessment.proposal_activities,
+    }));
+    setIsAssessmentDialogVisible(true);
+  };
+
+  useEffect(() => dispatch(fetchProposals()), [dispatch]);
 
   return (
     <div className={styles.wrapper}>
@@ -149,7 +113,10 @@ const NatureScotDashboard = ({ sourceId }) => {
         </Tabs>
 
         <Button
-          onClick={() => setIsAssessmentDialogVisible(true)}
+          onClick={() => {
+            setFormState(initialState);
+            setIsAssessmentDialogVisible(true);
+          }}
           className={styles.assessmentButton}
           color="secondary"
         >
@@ -160,7 +127,10 @@ const NatureScotDashboard = ({ sourceId }) => {
         <Charts sourceId={sourceId} selectedAoi={selectedAoi} />
       )}
       {visibleTab === PANELS.assessments && (
-        <AssessmentTable data={ASSESSMENT_DATA} />
+        <AssessmentTable
+          data={proposals}
+          handleEditAssessment={handleEditAssessment}
+        />
       )}
 
       <AssessmentDialog
@@ -169,7 +139,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
-        selectedAoi={selectedAoi}
+        formState={formState}
       />
     </div>
   );

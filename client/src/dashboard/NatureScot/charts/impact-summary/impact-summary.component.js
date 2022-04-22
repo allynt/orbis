@@ -7,23 +7,29 @@ import { VictoryChart, VictoryBar, VictoryAxis, VictoryLabel } from 'victory';
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
+import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 
 import { GRADIENT_STOPS } from '../../nature-scotland.constants';
 import { NatureScotCustomLegend } from './impact-summary-legend.component';
 
 /**
- * @param {{ data: { type: string, impact: number }[] }} props
+ * @param {{ data: { category: string, score: number }[] }} props
  */
 const ImpactSummary = ({ data }) => {
   const theme = useChartTheme();
 
   const [chartData, setChartData] = useState(
-    data?.map(({ type }) => ({ x: type, y: 0 })),
+    data?.map(({ category }) => ({ x: category, y: 0 })),
   );
 
   useEffect(() => {
     if (!!data) {
-      setChartData(data?.map(({ type, impact }) => ({ x: type, y: impact })));
+      setChartData(
+        data?.map(({ category, score }) => ({
+          x: category,
+          y: score === 0 ? 0.1 : score,
+        })),
+      );
     }
   }, [data]);
 
@@ -86,6 +92,8 @@ const ImpactSummary = ({ data }) => {
                 />
                 <VictoryBar
                   data={chartData}
+                  labelComponent={FlyoutTooltip()}
+                  labels={({ datum: { y } }) => `Impact: ${y === 0.1 ? 0 : y}`}
                   style={{
                     data: {
                       fill: 'url(#gradient)',
