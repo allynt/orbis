@@ -156,10 +156,9 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const [userActivityNonSelectable, setUserActivityNonSelectable] =
     useState(true);
 
-  useEffect(
-    () => setValue('activities', right, { shouldDirty: true }),
-    [right, setValue],
-  );
+  useEffect(() => {
+    setValue('activities', right, { shouldDirty: true, shouldValidate: true });
+  }, [right, setValue]);
 
   useEffect(() => setLeft(data), [data]);
 

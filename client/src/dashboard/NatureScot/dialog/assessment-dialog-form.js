@@ -136,7 +136,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
     trigger,
     formState: { isDirty, errors, isValid },
   } = useForm({
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: formState,
     resolver: yupResolver(validationSchema),
   });
@@ -145,11 +145,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
     trigger();
   }, [trigger]);
 
-  const {
-    activities: selectedActivities,
-    startDate,
-    endDate,
-  } = formState;
+  const { activities: selectedActivities, startDate, endDate } = formState;
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = {

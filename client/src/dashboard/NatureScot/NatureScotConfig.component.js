@@ -80,7 +80,6 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   const handleEditAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
-
     setFormState(prev => ({
       ...prev,
       description: assessment.proposal_description,
@@ -88,7 +87,9 @@ const NatureScotDashboard = ({ sourceId }) => {
       endDate: assessment.proposal_end_date,
       reportGenerated: assessment.report_generated,
       activities: assessment.proposal_activities,
+      results: assessment.report_state,
     }));
+    setAssessmentDialogTab(1);
     setIsAssessmentDialogVisible(true);
   };
 
@@ -114,6 +115,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         <Button
           onClick={() => {
             setFormState(initialState);
+            setAssessmentDialogTab(0);
             setIsAssessmentDialogVisible(true);
           }}
           className={styles.assessmentButton}
@@ -134,7 +136,7 @@ const NatureScotDashboard = ({ sourceId }) => {
 
       <AssessmentDialog
         visibleTab={assessmentDialogTab}
-        results={impactAssessment}
+        results={formState.results ?? impactAssessment}
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
