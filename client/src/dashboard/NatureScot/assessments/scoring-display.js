@@ -13,25 +13,25 @@ import NeutralIcon from './neutral-icon';
 
 const useStyles = makeStyles(theme => ({
   minus3: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['High -ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['High negative'],
   },
   minus2: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Medium -ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium negative'],
   },
   minus1: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Low -ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low negative'],
   },
   zero: {
     color: IMPACT_SUMMARY_LEGEND_DATA['Neutral'],
   },
   plus1: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Low +ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['Low positive'],
   },
   plus2: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['Medium +ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['Medium positive'],
   },
   plus3: {
-    color: IMPACT_SUMMARY_LEGEND_DATA['High +ve'],
+    color: IMPACT_SUMMARY_LEGEND_DATA['High positive'],
   },
 }));
 
