@@ -13,11 +13,18 @@ import {
 import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 
-import { ImpactSummary } from '../charts/impact-summary/impact-summary.component';
+import {
+  ImpactSummary,
+  ImpactSummarySkeleton,
+} from '../charts/impact-summary/impact-summary.component';
 import { saveProposal } from '../nature-scot.slice';
-import AssessmentActivityImpacts from './assessment-activity-impacts';
+import AssessmentActivityImpacts, {
+  AssessmentActivityImpactsSkeleton,
+} from './assessment-activity-impacts';
 import ImpactFeatureDetails from './impact-feature-details.component';
-import ProtectedAreasList from './protected-areas-list.component';
+import ProtectedAreasList, {
+  ProtectedAreasListSkeleton,
+} from './protected-areas-list.component';
 import SaveProposalForm from './save-proposal-form.component';
 
 const useStyles = makeStyles(theme => ({
@@ -76,18 +83,32 @@ const AssessmentResults = ({ results, formState }) => {
 
       <Grid container spacing={5}>
         <Grid item xs={6}>
-          <ImpactSummary data={results?.summary} />
+          {!results ? (
+            <ImpactSummarySkeleton />
+          ) : (
+            <ImpactSummary data={results?.summary} />
+          )}
         </Grid>
-        <Grid container item xs={6} spacing={3}>
-          <ProtectedAreasList areas={results?.areas} />
+        <Grid container item xs={6}>
+          {!results ? (
+            <ProtectedAreasListSkeleton />
+          ) : (
+            <ProtectedAreasList areas={results?.areas} />
+          )}
         </Grid>
-        <Grid container item xs={6} spacing={3}></Grid>
         <Grid container item xs={12} spacing={3}>
-          <AssessmentActivityImpacts data={results?.activities} />
+          <AssessmentActivityImpactsSkeleton />
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          {!results ? (
+            <AssessmentActivityImpactsSkeleton />
+          ) : (
+            <AssessmentActivityImpacts data={results?.activities} />
+          )}
         </Grid>
         <Grid container item xs={6} spacing={3}></Grid>
         <Grid container item xs={6} spacing={3}>
-          <ImpactFeatureDetails data={results?.impactsByFeature} />
+          <ImpactFeatureDetails data={results?.impacts_by_feature} />
         </Grid>
         <Grid className={styles.buttons} container item xs={6} spacing={3}>
           <Button onClick={() => exportAs(FORMATS.PDF)} size="small">

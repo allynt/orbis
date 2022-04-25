@@ -4,6 +4,7 @@ import React from 'react';
 
 import {
   makeStyles,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -14,7 +15,10 @@ import {
   Typography,
 } from '@astrosat/astrosat-ui';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 
 import { IMPACT_COLUMNS } from '../nature-scotland.constants';
 import ScoringDisplay from './scoring-display';
@@ -57,6 +61,28 @@ const useStyles = makeStyles(theme => ({
   mayrequireconsent: {
     fontWeight: 800,
     textAlign: 'center',
+  },
+}));
+
+const skeletonStyles = makeStyles(theme => ({
+  areas: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '5px solid #333f48',
+    marginTop: '5rem',
+    '& *': {
+      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
+    },
+  },
+  text: {
+    color: 'red',
+    backgroundColor: 'green',
+  },
+  cell: {
+    color: 'red',
+    backgroundColor: 'green',
   },
 }));
 
@@ -157,6 +183,28 @@ const AssessmentActivityImpacts = ({ data }) => {
         </TableContainer>
       )}
     </ChartWrapper>
+  );
+};
+
+export const AssessmentActivityImpactsSkeleton = () => {
+  const styles = skeletonStyles();
+
+  return (
+    <ChartWrapperSkeleton>
+      <div className={styles.areas}>
+        <Skeleton variant="rect" width={1730} height={80}>
+          <Skeleton
+            variant="text"
+            width={300}
+            classes={{ root: styles.cell }}
+          />
+        </Skeleton>
+        <Skeleton variant="rect" width={1730} height={80} />
+        <Skeleton variant="rect" width={1730} height={80} />
+        <Skeleton variant="rect" width={1730} height={80} />
+        <Skeleton variant="rect" width={1730} height={80} />
+      </div>
+    </ChartWrapperSkeleton>
   );
 };
 

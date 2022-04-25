@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +20,10 @@ import {
 
 import clsx from 'clsx';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     border: 'solid 3px #333f48',
     borderRadius: '0.2rem',
     boxShadow: '2px 2px 5px #333f48',
-    height: '300px',
+    maxHeight: '550px',
     overflow: 'auto',
   },
   strapline: {
@@ -89,6 +93,20 @@ const useStyles = makeStyles(theme => ({
   },
   heading: {
     width: '100%',
+  },
+}));
+
+const skeletonStyles = makeStyles(theme => ({
+  areas: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '5px solid #333f48',
+    marginTop: '5rem',
+    '& *': {
+      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
+    },
   },
 }));
 
@@ -305,6 +323,22 @@ const ProtectedAreasList = ({ areas }) => {
           : null}
       </List>
     </ChartWrapper>
+  );
+};
+
+export const ProtectedAreasListSkeleton = () => {
+  const styles = skeletonStyles();
+
+  return (
+    <ChartWrapperSkeleton>
+      <div className={styles.areas}>
+        <Skeleton variant="rect" width={810} height={80} />
+        <Skeleton variant="rect" width={810} height={80} />
+        <Skeleton variant="rect" width={810} height={80} />
+        <Skeleton variant="rect" width={810} height={80} />
+        <Skeleton variant="rect" width={810} height={80} />
+      </div>
+    </ChartWrapperSkeleton>
   );
 };
 

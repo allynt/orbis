@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-import { Typography } from '@astrosat/astrosat-ui';
+import { Skeleton, Typography, makeStyles } from '@astrosat/astrosat-ui';
 
 import { VictoryChart, VictoryBar, VictoryAxis, VictoryLabel } from 'victory';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 import { StyledParentSize } from 'dashboard/charts/styled-parent-size.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 import FlyoutTooltip from 'dashboard/WalthamForest/FlyoutTooltip';
 
 import { GRADIENT_STOPS } from '../../nature-scotland.constants';
 import { NatureScotCustomLegend } from './impact-summary-legend.component';
+
+const skeletonStyles = makeStyles(theme => ({
+  legend: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    padding: '0.5rem 0 0.5rem 0',
+  },
+}));
 
 /**
  * @param {{ data: { category: string, score: number }[] }} props
@@ -108,6 +119,20 @@ const ImpactSummary = ({ data }) => {
       </StyledParentSize>
     </ChartWrapper>
   ) : null;
+};
+
+export const ImpactSummarySkeleton = () => {
+  const styles = skeletonStyles();
+
+  return (
+    <ChartWrapperSkeleton>
+      <div className={styles.legend}>
+        <Skeleton variant="rect" width={400} height={60} />
+      </div>
+
+      <Skeleton variant="rect" width={840} height={500} />
+    </ChartWrapperSkeleton>
+  );
 };
 
 export { ImpactSummary };
