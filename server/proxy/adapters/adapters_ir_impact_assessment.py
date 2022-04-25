@@ -1,3 +1,4 @@
+import itertools
 import json
 
 from proxy.adapters.adapters_base import BaseProxyDataAdapter
@@ -10,7 +11,7 @@ CATEGORIES_ORDER = {
     "RAMSAR": 3,
     "GCR": 4,
     "LNR": 5,
-    "CNTRYPK": 6
+    "CNTRYPK": 6,
 }
 
 
@@ -96,9 +97,24 @@ class IRImpactAssessmentAdapter(BaseProxyDataAdapter):
 
             processed_data["areas"].append(area_data)
 
-        processed_data["areas"].sort(
-            key=lambda val: CATEGORIES_ORDER[val["category"]]
+        # Sort and then group the areas by category.
+        category_key = lambda area: area["category"]
+
+        sorted_grouped_areas = []
+
+        grouped_areas = [(key, list(group)) for key,
+                         group in itertools.groupby(
+                             sorted(processed_data["areas"], key=category_key),
+                             key=category_key
+                         )]
+        grouped_areas.sort(
+            key=lambda grouped_area: CATEGORIES_ORDER.
+            get(grouped_area[0], len(CATEGORIES_ORDER))
         )
+        for key, group in grouped_areas:
+            sorted_grouped_areas += group
+
+        processed_data["areas"] = sorted_grouped_areas
 
         return processed_data
 
