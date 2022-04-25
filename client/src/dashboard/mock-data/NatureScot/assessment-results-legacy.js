@@ -1,4 +1,4 @@
-export const MOCKDATA = {
+export const RESULTS = {
   summary: [
     {
       code: 'biodiversityImpacts',
@@ -37,7 +37,7 @@ export const MOCKDATA = {
       activityCode: 'grazingSheepStart',
       relatedToOperationRequiringConsent: true,
       orcCode: '2',
-      operationMayRequireConsent: null,
+      operationMayRequireConsent: false,
       habitatRegulationsAssessmentRequired: true,
       description: 'Highly negative',
       totalImpact: -28.12093621093753,
@@ -134,7 +134,7 @@ export const MOCKDATA = {
       activityCode: 'grazingCattleMore',
       relatedToOperationRequiringConsent: true,
       orcCode: '2',
-      operationMayRequireConsent: null,
+      operationMayRequireConsent: true,
       habitatRegulationsAssessmentRequired: true,
       description: 'Highly negative',
       totalImpact: -29.095939003906267,
