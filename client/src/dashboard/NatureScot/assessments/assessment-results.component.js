@@ -50,7 +50,7 @@ const AssessmentResults = ({ results, formState }) => {
   const exportAs = type =>
     console.log('Export: ', selectedAssessments, ' as: ', type);
 
-  const saveAssessment = form =>
+  const saveAssessment = form => {
     dispatch(
       // @ts-ignore
       saveProposal({
@@ -64,6 +64,9 @@ const AssessmentResults = ({ results, formState }) => {
         report_state: results,
       }),
     );
+
+    setSaveProposalFormOpen(false);
+  };
 
   return (
     <>
