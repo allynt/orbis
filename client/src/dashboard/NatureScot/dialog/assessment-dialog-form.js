@@ -163,6 +163,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
       ...rest,
     };
     onSubmit(processedForm);
+    setFormIsDirty(false);
   };
 
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
