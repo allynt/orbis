@@ -1,0 +1,276 @@
+export const MOCKDATA = {
+  summary: [
+    {
+      code: 'biodiversityImpacts',
+      category: 'Biodiversity',
+      score: -1,
+      impact: -0.14,
+    },
+    {
+      code: 'chemicalImpacts',
+      category: 'Chemical',
+      score: 0,
+      impact: 0,
+    },
+    {
+      code: 'peopleImpacts',
+      category: 'People',
+      score: 0,
+      impact: -0.006,
+    },
+    {
+      code: 'soilWaterAirImpacts',
+      category: 'Soil, Water, Air',
+      score: -2,
+      impact: -0.21500000000000002,
+    },
+    {
+      code: 'environmentalImpacts',
+      category: 'Environmental',
+      score: -7,
+      impact: -0.41000000000000003,
+    },
+  ],
+  activities: [
+    {
+      title: 'Start grazing sheep',
+      activityCode: 'grazingSheepStart',
+      relatedToOperationRequiringConsent: true,
+      orcCode: '2',
+      operationMayRequireConsent: null,
+      habitatRegulationsAssessmentRequired: true,
+      description: 'Highly negative',
+      totalImpact: -28.12093621093753,
+      impacts: [
+        {
+          activity: 'agriculture_grazingLand',
+          title: 'Grazing land',
+          description: 'Negative',
+          impacts: [
+            {
+              code: 'biodiversityImpacts',
+              category: 'Biodiversity',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.02,
+            },
+            {
+              code: 'chemicalImpacts',
+              category: 'Chemical',
+              description: 'No impact',
+              score: 0,
+              impact: 0,
+            },
+            {
+              code: 'peopleImpacts',
+              category: 'People',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.006,
+            },
+            {
+              code: 'soilWaterAirImpacts',
+              category: 'Soil, Water, Air',
+              description: 'Slightly negative',
+              score: -1,
+              impact: -0.065,
+            },
+            {
+              code: 'environmentalImpacts',
+              category: 'Environmental',
+              description: 'Negative',
+              score: -2,
+              impact: -0.13,
+            },
+          ],
+        },
+        {
+          activity: 'livestock_smallAnimals',
+          title: 'Small animals',
+          description: 'Negative',
+          impacts: [
+            {
+              code: 'biodiversityImpacts',
+              category: 'Biodiversity',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.04,
+            },
+            {
+              code: 'chemicalImpacts',
+              category: 'Chemical',
+              description: 'No impact',
+              score: 0,
+              impact: 0,
+            },
+            {
+              code: 'peopleImpacts',
+              category: 'People',
+              description: 'No impact',
+              score: 0,
+              impact: 0,
+            },
+            {
+              code: 'soilWaterAirImpacts',
+              category: 'Soil, Water, Air',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.04,
+            },
+            {
+              code: 'environmentalImpacts',
+              category: 'Environmental',
+              description: 'Slightly negative',
+              score: -1,
+              impact: -0.05,
+            },
+          ],
+        },
+      ],
+      possibleMitigations: ['Consider ...', 'Alternatively, consider ...'],
+    },
+    {
+      title: 'Graze more cattle',
+      activityCode: 'grazingCattleMore',
+      relatedToOperationRequiringConsent: true,
+      orcCode: '2',
+      operationMayRequireConsent: null,
+      habitatRegulationsAssessmentRequired: true,
+      description: 'Highly negative',
+      totalImpact: -29.095939003906267,
+      impacts: [
+        {
+          activity: 'agriculture_grazingLand',
+          title: 'Grazing land',
+          description: 'Negative',
+          impacts: [
+            {
+              code: 'biodiversityImpacts',
+              category: 'Biodiversity',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.02,
+            },
+            {
+              code: 'chemicalImpacts',
+              category: 'Chemical',
+              description: 'No impact',
+              score: 0,
+              impact: 0,
+            },
+            {
+              code: 'peopleImpacts',
+              category: 'People',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.006,
+            },
+            {
+              code: 'soilWaterAirImpacts',
+              category: 'Soil, Water, Air',
+              description: 'Slightly negative',
+              score: -1,
+              impact: -0.065,
+            },
+            {
+              code: 'environmentalImpacts',
+              category: 'Environmental',
+              description: 'Negative',
+              score: -2,
+              impact: -0.13,
+            },
+          ],
+        },
+        {
+          activity: 'livestock_largeAnimals',
+          title: 'Large animals',
+          description: 'Negative',
+          impacts: [
+            {
+              code: 'biodiversityImpacts',
+              category: 'Biodiversity',
+              description: 'Slightly negative',
+              score: -1,
+              impact: -0.06,
+            },
+            {
+              code: 'chemicalImpacts',
+              category: 'Chemical',
+              description: 'No impact',
+              score: 0,
+              impact: 0,
+            },
+            {
+              code: 'peopleImpacts',
+              category: 'People',
+              description: 'Minor or no positive impact',
+              score: 0,
+              impact: 0.006,
+            },
+            {
+              code: 'soilWaterAirImpacts',
+              category: 'Soil, Water, Air',
+              description: 'Minor or no negative impact',
+              score: 0,
+              impact: -0.045,
+            },
+            {
+              code: 'environmentalImpacts',
+              category: 'Environmental',
+              description: 'Negative',
+              score: -2,
+              impact: -0.1,
+            },
+          ],
+        },
+      ],
+      possibleMitigations: ['Consider ...', 'Alternatively, consider ...'],
+    },
+  ],
+  areas: [],
+  impacts_by_feature: [
+    {
+      name: 'Breeding Bird Assemblage',
+      impacts: [
+        {
+          name: 'Woodland Thinning',
+          effect: 'disturbance',
+          strength: -2,
+          notification:
+            'Mitigation : undertake woodland thinning outside of the nesting season',
+        },
+        {
+          name: 'Outhouse construction',
+          effect: 'disruption',
+          strength: -3,
+          notification:
+            'Mitigation : undertake outhouse construction outside of the nesting season',
+        },
+        {
+          name: 'Outhouse construction',
+          effect: 'disruption',
+          strength: -1,
+          notification:
+            'Protection: Proposal location is adjacent to SSSI 1186 Moorfoot Hills citing breeding bird assemblage as a protected feature.',
+        },
+      ],
+    },
+    {
+      name: 'Watersources',
+      impacts: [
+        {
+          name: 'Build a culvert',
+          effect: 'disturbance',
+          strength: 3,
+          notification: 'Mitigation : build a culvert to divert watercourse',
+        },
+        {
+          name: 'Build well',
+          effect: 'disruption',
+          strength: -3,
+          notification: 'Mitigation : build a well to extract water',
+        },
+      ],
+    },
+  ],
+};
