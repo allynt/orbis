@@ -1,1132 +1,917 @@
 export const ACTIVITIES = [
   {
-    value: 1,
-    label: 'Accumulation of organic material',
-    proposed: true,
+    code: 1,
+    title: 'Accumulation of organic material',
   },
   {
-    value: 2,
-    label: 'Physical alteration of a water body',
-    proposed: false,
+    code: 2,
+    title: 'Physical alteration of a water body',
   },
   {
-    value: 3,
-    label: 'Removal of geological specimens',
-    proposed: true,
+    code: 3,
+    title: 'Removal of geological specimens',
   },
   {
-    value: 4,
-    label: 'Fossil collection',
-    proposed: false,
+    code: 4,
+    title: 'Fossil collection',
   },
   {
-    value: 5,
-    label:
+    code: 5,
+    title:
       'Construction, removal or destruction of roads, tracks, walls, fences, hardstands, banks, ditches or other earthworks',
-    proposed: true,
   },
   {
-    value: 6,
-    label:
+    code: 6,
+    title:
       'Laying, maintenance or removal of pipelines and cables, above or below ground',
-    proposed: false,
   },
   {
-    value: 7,
-    label: 'Infilling of ditches, drains, ponds, pools, marshes or pits',
-    proposed: true,
+    code: 7,
+    title: 'Infilling of ditches, drains, ponds, pools, marshes or pits',
   },
   {
-    value: 8,
-    label:
+    code: 8,
+    title:
       'The destruction, displacement, removal or cutting of any plant or plant remains',
-    proposed: false,
   },
   {
-    value: 9,
-    label: 'Dumping, spreading or discharge of any materials',
-    proposed: true,
+    code: 9,
+    title: 'Dumping, spreading or discharge of any materials',
   },
   {
-    value: 10,
-    label: 'Dumping/spreading/storage of materials',
-    proposed: false,
+    code: 10,
+    title: 'Dumping/spreading/storage of materials',
   },
   {
-    value: 11,
-    label: 'Tree surgery, felling or removal of roadside trees and vegetation',
-    proposed: true,
+    code: 11,
+    title: 'Tree surgery, felling or removal of roadside trees and vegetation',
   },
   {
-    value: 12,
-    label: 'Harvesting or collecting of other wild plants and animals',
-    proposed: false,
+    code: 12,
+    title: 'Harvesting or collecting of other wild plants and animals',
   },
   {
-    value: 13,
-    label:
+    code: 13,
+    title:
       'The introduction or release into the site of any wild, feral or domestic animal, plant or seed',
-    proposed: true,
   },
   {
-    value: 14,
-    label: 'Changing extent of invasive native species',
-    proposed: false,
+    code: 14,
+    title: 'Changing extent of invasive native species',
   },
   {
-    value: 15,
-    label: 'Changing extent of invasive non-native species',
-    proposed: true,
+    code: 15,
+    title: 'Changing extent of invasive non-native species',
   },
   {
-    value: 16,
-    label: 'The killing or removal of any wild animal',
-    proposed: false,
+    code: 16,
+    title: 'The killing or removal of any wild animal',
   },
   {
-    value: 17,
-    label: 'Use of vehicles (or watercraft)',
-    proposed: true,
+    code: 17,
+    title: 'Use of vehicles (or watercraft)',
   },
   {
-    value: 18,
-    label: 'Creating or causing air emissions (including greenhouse gasses)',
-    proposed: false,
+    code: 18,
+    title: 'Creating or causing air emissions (including greenhouse gasses)',
   },
   {
-    value: 19,
-    label: 'Creating or causing sewage',
-    proposed: true,
+    code: 19,
+    title: 'Creating or causing sewage',
   },
   {
-    value: 20,
-    label:
+    code: 20,
+    title:
       'Creating or causing run-off from roads and parking plots as well as fertilizers and pesticides used for urban vegetation',
-    proposed: false,
   },
   {
-    value: 21,
-    label: 'Change of flow regulation in a watercourse',
-    proposed: true,
+    code: 21,
+    title: 'Change of flow regulation in a watercourse',
   },
   {
-    value: 22,
-    label: 'Restricting access',
-    proposed: false,
+    code: 22,
+    title: 'Restricting access',
   },
   {
-    value: 23,
-    label: 'Abstraction of water for use in agriculture or animal husbandry',
-    proposed: true,
+    code: 23,
+    title: 'Abstraction of water for use in agriculture or animal husbandry',
   },
   {
-    value: 24,
-    label: 'Burning for agriculture',
-    proposed: false,
+    code: 24,
+    title: 'Burning for agriculture',
   },
   {
-    value: 25,
-    label: 'Suppression of fire for agriculture',
-    proposed: true,
+    code: 25,
+    title: 'Suppression of fire for agriculture',
   },
   {
-    value: 26,
-    label: 'Conversion of non-agricultural land to agricultural use',
-    proposed: false,
+    code: 26,
+    title: 'Conversion of non-agricultural land to agricultural use',
   },
   {
-    value: 27,
-    label: 'Conversion of agricultural land to other agricultural use',
-    proposed: true,
+    code: 27,
+    title: 'Conversion of agricultural land to other agricultural use',
   },
   {
-    value: 28,
-    label: 'Drainage for use as agricultural land',
-    proposed: false,
+    code: 28,
+    title: 'Drainage for use as agricultural land',
   },
   {
-    value: 29,
-    label: 'Livestock farming (without grazing)',
-    proposed: true,
+    code: 29,
+    title: 'Livestock farming (without grazing)',
   },
   {
-    value: 30,
-    label: 'Changes to stock feeding practices',
-    proposed: false,
+    code: 30,
+    title: 'Changes to stock feeding practices',
   },
   {
-    value: 31,
-    label: 'Application of manure, fertilisers and lime',
-    proposed: true,
+    code: 31,
+    title: 'Application of manure, fertilisers and lime',
   },
   {
-    value: 32,
-    label:
+    code: 32,
+    title:
       'Application of synthetic (mineral) fertilisers on agricultural land',
-    proposed: false,
   },
   {
-    value: 33,
-    label: 'Application of natural fertilisers on agricultural land',
-    proposed: true,
+    code: 33,
+    title: 'Application of natural fertilisers on agricultural land',
   },
   {
-    value: 34,
-    label: 'Increased grazing by livestock',
-    proposed: false,
+    code: 34,
+    title: 'Increased grazing by livestock',
   },
   {
-    value: 35,
-    label: 'Reduced grazing by livestock',
-    proposed: true,
+    code: 35,
+    title: 'Reduced grazing by livestock',
   },
   {
-    value: 36,
-    label: 'Harvesting of crops and cutting of croplands',
-    proposed: false,
+    code: 36,
+    title: 'Harvesting of crops and cutting of croplands',
   },
   {
-    value: 37,
-    label: 'Introduction and spread of new crops (including GMOs)',
-    proposed: true,
+    code: 37,
+    title: 'Introduction and spread of new crops (including GMOs)',
   },
   {
-    value: 38,
-    label: 'Irrigation of agricultural land',
-    proposed: false,
+    code: 38,
+    title: 'Irrigation of agricultural land',
   },
   {
-    value: 39,
-    label: 'Development and operation of dams for agriculture',
-    proposed: true,
+    code: 39,
+    title: 'Development and operation of dams for agriculture',
   },
   {
-    value: 40,
-    label:
+    code: 40,
+    title:
       'Modification of hydrological flow or physical alteration of water bodies for agriculture (excluding development and operation of dams)',
-    proposed: false,
   },
   {
-    value: 41,
-    label: 'Introduction of mowing or cutting of grasslands',
-    proposed: true,
+    code: 41,
+    title: 'Introduction of mowing or cutting of grasslands',
   },
   {
-    value: 42,
-    label: 'Use of pest control methods',
-    proposed: false,
+    code: 42,
+    title: 'Use of pest control methods',
   },
   {
-    value: 43,
-    label: 'Use of plant protection chemicals in agriculture',
-    proposed: true,
+    code: 43,
+    title: 'Use of plant protection chemicals in agriculture',
   },
   {
-    value: 44,
-    label: 'Application of pesticides, including herbicides (weedkillers)',
-    proposed: false,
+    code: 44,
+    title: 'Application of pesticides, including herbicides (weedkillers)',
   },
   {
-    value: 45,
-    label: 'Use of physical plant protection in agriculture',
-    proposed: true,
+    code: 45,
+    title: 'Use of physical plant protection in agriculture',
   },
   {
-    value: 46,
-    label: 'Introduction of livestock production',
-    proposed: false,
+    code: 46,
+    title: 'Introduction of livestock production',
   },
   {
-    value: 47,
-    label: 'Introduction of pig production',
-    proposed: true,
+    code: 47,
+    title: 'Introduction of pig production',
   },
   {
-    value: 48,
-    label: 'Introduction of poultry production',
-    proposed: false,
+    code: 48,
+    title: 'Introduction of poultry production',
   },
   {
-    value: 49,
-    label: 'Changes in terrain and surface of agricultural areas',
-    proposed: true,
+    code: 49,
+    title: 'Changes in terrain and surface of agricultural areas',
   },
   {
-    value: 50,
-    label: 'Reseeding of grasslands and other semi-natural habitats',
-    proposed: false,
+    code: 50,
+    title: 'Reseeding of grasslands and other semi-natural habitats',
   },
   {
-    value: 51,
-    label: 'Changing tillage practices (e.g. ploughing) in agriculture',
-    proposed: true,
+    code: 51,
+    title: 'Changing tillage practices (e.g. ploughing) in agriculture',
   },
   {
-    value: 52,
-    label:
+    code: 52,
+    title:
       'Cultivation, including ploughing, rotovating, harrowing and re-seeding',
-    proposed: false,
   },
   {
-    value: 53,
-    label: 'Trampling (of ground)',
-    proposed: true,
+    code: 53,
+    title: 'Trampling (of ground)',
   },
   {
-    value: 54,
-    label: 'Change to waste management practices in agriculture',
-    proposed: false,
+    code: 54,
+    title: 'Change to waste management practices in agriculture',
   },
   {
-    value: 55,
-    label:
+    code: 55,
+    title:
       'Abandonment of management/use of agricultural and agroforestry systems (except grassland)',
-    proposed: true,
   },
   {
-    value: 56,
-    label:
+    code: 56,
+    title:
       'Abandonment of grassland management (e.g. cessation of grazing or mowing)',
-    proposed: false,
   },
   {
-    value: 57,
-    label:
+    code: 57,
+    title:
       'Conversion from mixed farming and agroforestry systems to specialised (e.g. single crop) production',
-    proposed: true,
   },
   {
-    value: 58,
-    label: 'Cork extraction and forest exploitation excluding logging',
-    proposed: false,
+    code: 58,
+    title: 'Cork extraction and forest exploitation excluding logging',
   },
   {
-    value: 59,
-    label: 'Abandonment of freshwater aquaculture',
-    proposed: true,
+    code: 59,
+    title: 'Abandonment of freshwater aquaculture',
   },
   {
-    value: 60,
-    label: 'Abandonment of marine aquaculture.',
-    proposed: false,
+    code: 60,
+    title: 'Abandonment of marine aquaculture.',
   },
   {
-    value: 61,
-    label: 'Commercial bait digging in intertidal areas',
-    proposed: true,
+    code: 61,
+    title: 'Commercial bait digging in intertidal areas',
   },
   {
-    value: 62,
-    label: 'Freshwater aquaculture',
-    proposed: false,
+    code: 62,
+    title: 'Freshwater aquaculture',
   },
   {
-    value: 63,
-    label: 'Marine aquaculture',
-    proposed: true,
+    code: 63,
+    title: 'Marine aquaculture',
   },
   {
-    value: 64,
-    label: 'Modification of coastal conditions for marine aquaculture',
-    proposed: false,
+    code: 64,
+    title: 'Modification of coastal conditions for marine aquaculture',
   },
   {
-    value: 65,
-    label:
+    code: 65,
+    title:
       'Introduction and spread of species (including GMOs) in freshwater aquaculture',
-    proposed: true,
   },
   {
-    value: 66,
-    label:
+    code: 66,
+    title:
       'Introduction and spread of species (including GMOs) in marine aquaculture',
-    proposed: false,
   },
   {
-    value: 67,
-    label: 'Aquaculture - finfish',
-    proposed: true,
+    code: 67,
+    title: 'Aquaculture - finfish',
   },
   {
-    value: 68,
-    label: 'Aquaculture - shellfish',
-    proposed: false,
+    code: 68,
+    title: 'Aquaculture - shellfish',
   },
   {
-    value: 69,
-    label:
+    code: 69,
+    title:
       'Development and maintenance of beach areas for tourism and recreation incl. beach nourishment and beach cleaning',
-    proposed: true,
   },
   {
-    value: 70,
-    label: 'Mechanical beach cleaning',
-    proposed: false,
+    code: 70,
+    title: 'Mechanical beach cleaning',
   },
   {
-    value: 71,
-    label: 'Flood defence/coastal defence works',
-    proposed: true,
+    code: 71,
+    title: 'Flood defence/coastal defence works',
   },
   {
-    value: 72,
-    label: 'Beach replenishment',
-    proposed: false,
+    code: 72,
+    title: 'Beach replenishment',
   },
   {
-    value: 73,
-    label:
+    code: 73,
+    title:
       'Deposition and treatment of waste/garbage from commercial and industrial facilities',
-    proposed: true,
   },
   {
-    value: 74,
-    label:
+    code: 74,
+    title:
       'Construction or development of reservoirs and dams for industrial or commercial development',
-    proposed: false,
   },
   {
-    value: 75,
-    label:
+    code: 75,
+    title:
       'Construction or development of reservoirs and dams for residential or recreational development',
-    proposed: true,
   },
   {
-    value: 76,
-    label:
+    code: 76,
+    title:
       'Construction or modification (e.g. of housing and settlements) in existing urban or recreational areas',
-    proposed: false,
   },
   {
-    value: 77,
-    label:
+    code: 77,
+    title:
       'Conversion from other land uses to commercial / industrial areas (excluding drainage and modification of coastline, estuary and coastal conditions)',
-    proposed: true,
   },
   {
-    value: 78,
-    label:
+    code: 78,
+    title:
       'Drainage, land reclamation or conversion of wetlands, marshes, bogs, etc. to industrial/commercial areas',
-    proposed: false,
   },
   {
-    value: 79,
-    label:
+    code: 79,
+    title:
       'Drainage, land reclamation and conversion of wetlands, marshes, bogs, etc. to settlement or recreational areas',
-    proposed: true,
   },
   {
-    value: 80,
-    label: 'Creating artifical reef offshore',
-    proposed: false,
+    code: 80,
+    title: 'Creating artifical reef offshore',
   },
   {
-    value: 81,
-    label: 'Cable or pipeline laying',
-    proposed: true,
+    code: 81,
+    title: 'Cable or pipeline laying',
   },
   {
-    value: 82,
-    label:
+    code: 82,
+    title:
       'Modification of coastline, estuary and coastal conditions for development, use and protection of residential, commercial, industrial and recreational infrastructure',
-    proposed: false,
   },
   {
-    value: 83,
-    label:
+    code: 83,
+    title:
       'Construction or modification of commercial / industrial infrastructure in existing commercial / industrial areas',
-    proposed: true,
   },
   {
-    value: 84,
-    label:
+    code: 84,
+    title:
       'Erection of sea defences or coast protection works, including cliff or landslip drainage or stabilisation measures',
-    proposed: false,
   },
   {
-    value: 85,
-    label: 'Coastal defence & land claim',
-    proposed: true,
+    code: 85,
+    title: 'Coastal defence & land claim',
   },
   {
-    value: 86,
-    label: 'Offshore (oil & gas platforms)',
-    proposed: false,
+    code: 86,
+    title: 'Offshore (oil & gas platforms)',
   },
   {
-    value: 87,
-    label: 'Coastal (ports, marinas, leisure facilities)',
-    proposed: true,
+    code: 87,
+    title: 'Coastal (ports, marinas, leisure facilities)',
   },
   {
-    value: 88,
-    label: 'Offshore (wind turbines)',
-    proposed: false,
+    code: 88,
+    title: 'Offshore (wind turbines)',
   },
   {
-    value: 89,
-    label: 'Reclamation of land from sea, estuary or marsh',
-    proposed: true,
+    code: 89,
+    title: 'Reclamation of land from sea, estuary or marsh',
   },
   {
-    value: 90,
-    label:
+    code: 90,
+    title:
       'Erection of permanent or temporary structures, or the undertaking of engineering works, including drilling',
-    proposed: false,
   },
   {
-    value: 91,
-    label:
+    code: 91,
+    title:
       'Conversion of forest or non-forest habitats into short rotation coppices',
-    proposed: true,
   },
   {
-    value: 92,
-    label:
+    code: 92,
+    title:
       'Conversion of agricultural or non-agricultural habitats into areas of agricultural production of renewable energy stocks',
-    proposed: false,
   },
   {
-    value: 93,
-    label: 'Electricity and heat production',
-    proposed: true,
+    code: 93,
+    title: 'Electricity and heat production',
   },
   {
-    value: 94,
-    label: 'Energy production and transmission activities',
-    proposed: false,
+    code: 94,
+    title: 'Energy production and transmission activities',
   },
   {
-    value: 95,
-    label:
+    code: 95,
+    title:
       'Abstraction of surface and ground water for energy production (excluding hydropower)',
-    proposed: true,
   },
   {
-    value: 96,
-    label:
+    code: 96,
+    title:
       'Development and operation of energy production plants (including bioenergy plants, fossil and nuclear energy plants)',
-    proposed: false,
   },
   {
-    value: 97,
-    label: 'Geothermal power generation (including infrastructure)',
-    proposed: true,
+    code: 97,
+    title: 'Geothermal power generation (including infrastructure)',
   },
   {
-    value: 98,
-    label:
+    code: 98,
+    title:
       'Hydropower (dams, weirs, run-off-the-river), including infrastructure',
-    proposed: false,
   },
   {
-    value: 99,
-    label: 'Solar power, including infrastructure',
-    proposed: true,
+    code: 99,
+    title: 'Solar power, including infrastructure',
   },
   {
-    value: 100,
-    label: 'Wind, wave and tidal power, including infrastructure',
-    proposed: false,
+    code: 100,
+    title: 'Wind, wave and tidal power, including infrastructure',
   },
   {
-    value: 101,
-    label: 'Energy production - at sea (wind & wave turbines)',
-    proposed: true,
+    code: 101,
+    title: 'Energy production - at sea (wind & wave turbines)',
   },
   {
-    value: 102,
-    label:
+    code: 102,
+    title:
       'Construction, operation and maintenance of power lines and communication infrastructure',
-    proposed: false,
   },
   {
-    value: 103,
-    label:
+    code: 103,
+    title:
       'Construction and operation of oil and gas pipelines in both the marine and terrestrial environment',
-    proposed: true,
   },
   {
-    value: 104,
-    label: 'Mining and quarrying',
-    proposed: false,
+    code: 104,
+    title: 'Mining and quarrying',
   },
   {
-    value: 105,
-    label: 'Extraction - quarrying',
-    proposed: true,
+    code: 105,
+    title: 'Extraction - quarrying',
   },
   {
-    value: 106,
-    label: 'Extraction - sand & gravel',
-    proposed: false,
+    code: 106,
+    title: 'Extraction - sand & gravel',
   },
   {
-    value: 107,
-    label: 'Abstraction of water for quarry processing',
-    proposed: true,
+    code: 107,
+    title: 'Abstraction of water for quarry processing',
   },
   {
-    value: 108,
-    label: 'Abandonment or conversion of saltpans',
-    proposed: false,
+    code: 108,
+    title: 'Abandonment or conversion of saltpans',
   },
   {
-    value: 109,
-    label: 'Peat extraction',
-    proposed: true,
+    code: 109,
+    title: 'Peat extraction',
   },
   {
-    value: 110,
-    label: 'Maerl extraction',
-    proposed: false,
+    code: 110,
+    title: 'Maerl extraction',
   },
   {
-    value: 111,
-    label: 'Mineral extraction',
-    proposed: true,
+    code: 111,
+    title: 'Mineral extraction',
   },
   {
-    value: 112,
-    label: 'Coal mining',
-    proposed: false,
+    code: 112,
+    title: 'Coal mining',
   },
   {
-    value: 113,
-    label: 'Other mining and extraction',
-    proposed: true,
+    code: 113,
+    title: 'Other mining and extraction',
   },
   {
-    value: 114,
-    label: 'Oil and gas extraction',
-    proposed: false,
+    code: 114,
+    title: 'Oil and gas extraction',
   },
   {
-    value: 115,
-    label: 'Oil and gas product manufacturing and distribution',
-    proposed: true,
+    code: 115,
+    title: 'Oil and gas product manufacturing and distribution',
   },
   {
-    value: 116,
-    label: 'Salt extraction',
-    proposed: false,
+    code: 116,
+    title: 'Salt extraction',
   },
   {
-    value: 117,
-    label: 'Geotechnical surveying',
-    proposed: true,
+    code: 117,
+    title: 'Geotechnical surveying',
   },
   {
-    value: 118,
-    label: 'Geological Core extraction',
-    proposed: false,
+    code: 118,
+    title: 'Geological Core extraction',
   },
   {
-    value: 119,
-    label: 'Seismic survey',
-    proposed: true,
+    code: 119,
+    title: 'Seismic survey',
   },
   {
-    value: 120,
-    label: 'Depositing of dredged materials from marine extraction',
-    proposed: false,
+    code: 120,
+    title: 'Depositing of dredged materials from marine extraction',
   },
   {
-    value: 121,
-    label: 'Depositing of inert materials from terrestrial extraction',
-    proposed: true,
+    code: 121,
+    title: 'Depositing of inert materials from terrestrial extraction',
   },
   {
-    value: 122,
-    label: 'Quarry waste disposal',
-    proposed: false,
+    code: 122,
+    title: 'Quarry waste disposal',
   },
   {
-    value: 123,
-    label: 'Fishing - benthic trawling',
-    proposed: true,
+    code: 123,
+    title: 'Fishing - benthic trawling',
   },
   {
-    value: 124,
-    label: 'Professional freshwater fishing and shellfish harvesting',
-    proposed: false,
+    code: 124,
+    title: 'Professional freshwater fishing and shellfish harvesting',
   },
   {
-    value: 125,
-    label:
+    code: 125,
+    title:
       'Professional and recreational marine fishing and shellfish harvesting',
-    proposed: true,
   },
   {
-    value: 126,
-    label: 'Recreational freshwater fishing and shellfish harvesting',
-    proposed: false,
+    code: 126,
+    title: 'Recreational freshwater fishing and shellfish harvesting',
   },
   {
-    value: 127,
-    label: 'Fishing - recreational',
-    proposed: true,
+    code: 127,
+    title: 'Fishing - recreational',
   },
   {
-    value: 128,
-    label: 'Fishing - set netting',
-    proposed: false,
+    code: 128,
+    title: 'Fishing - set netting',
   },
   {
-    value: 129,
-    label: 'Fishing - hydraulic dredging',
-    proposed: true,
+    code: 129,
+    title: 'Fishing - hydraulic dredging',
   },
   {
-    value: 130,
-    label: 'Fishing - pelagic trawling',
-    proposed: false,
+    code: 130,
+    title: 'Fishing - pelagic trawling',
   },
   {
-    value: 131,
-    label: 'Fishing - potting/creeling',
-    proposed: true,
+    code: 131,
+    title: 'Fishing - potting/creeling',
   },
   {
-    value: 132,
-    label:
+    code: 132,
+    title:
       'Commercial and non-professional harvesting of wild marine macro- and micro-algae',
-    proposed: false,
   },
   {
-    value: 133,
-    label: 'Seaweed harvesting',
-    proposed: true,
+    code: 133,
+    title: 'Seaweed harvesting',
   },
   {
-    value: 134,
-    label: 'Fishing - shellfish harvesting',
-    proposed: false,
+    code: 134,
+    title: 'Fishing - shellfish harvesting',
   },
   {
-    value: 135,
-    label: 'Forestry - other',
-    proposed: true,
+    code: 135,
+    title: 'Forestry - other',
   },
   {
-    value: 136,
-    label: 'Forestry - burning',
-    proposed: false,
+    code: 136,
+    title: 'Forestry - burning',
   },
   {
-    value: 137,
-    label: 'Forestry - fire suppression',
-    proposed: true,
+    code: 137,
+    title: 'Forestry - fire suppression',
   },
   {
-    value: 138,
-    label: 'Forestry - conversion to (Afforestation)',
-    proposed: false,
+    code: 138,
+    title: 'Forestry - conversion to (Afforestation)',
   },
   {
-    value: 139,
-    label:
+    code: 139,
+    title:
       'Forestry - use of synthetic fertilisers, including liming of forest soils',
-    proposed: true,
   },
   {
-    value: 140,
-    label: 'Forestry - application of natural fertilisers',
-    proposed: false,
+    code: 140,
+    title: 'Forestry - application of natural fertilisers',
   },
   {
-    value: 141,
-    label: 'Forestry - logging without replanting or natural regrowth',
-    proposed: true,
+    code: 141,
+    title: 'Forestry - logging without replanting or natural regrowth',
   },
   {
-    value: 142,
-    label: 'Forestry - clear-cutting, removal of all trees',
-    proposed: false,
+    code: 142,
+    title: 'Forestry - clear-cutting, removal of all trees',
   },
   {
-    value: 143,
-    label: 'Forestry - logging (excluding clear cutting) of individual trees',
-    proposed: true,
+    code: 143,
+    title: 'Forestry - logging (excluding clear cutting) of individual trees',
   },
   {
-    value: 144,
-    label:
+    code: 144,
+    title:
       'Forestry - shortening of logging rotations or other activities like thinning aimed at earlier logging',
-    proposed: false,
   },
   {
-    value: 145,
-    label: 'Forestry - removal of old trees (excluding dead or dying trees)',
-    proposed: true,
+    code: 145,
+    title: 'Forestry - removal of old trees (excluding dead or dying trees)',
   },
   {
-    value: 146,
-    label: 'Forestry - abandonment of traditional forest management',
-    proposed: false,
+    code: 146,
+    title: 'Forestry - abandonment of traditional forest management',
   },
   {
-    value: 147,
-    label: 'Changes in tree and/or woodland management',
-    proposed: true,
+    code: 147,
+    title: 'Changes in tree and/or woodland management',
   },
   {
-    value: 148,
-    label:
+    code: 148,
+    title:
       'Forestry - modification of hydrological conditions, or physical alteration of water bodies and drainage for forestry (including dams)',
-    proposed: false,
   },
   {
-    value: 149,
-    label: 'Forestry operations',
-    proposed: true,
+    code: 149,
+    title: 'Forestry operations',
   },
   {
-    value: 150,
-    label:
+    code: 150,
+    title:
       'Forestry - use of plant protection chemicals (e.g. pesticides, fungicides,  pheromones or repulsives).',
-    proposed: false,
   },
   {
-    value: 151,
-    label:
+    code: 151,
+    title:
       'Forestry - use of other (non-chemical) pest control methods in forestry',
-    proposed: true,
   },
   {
-    value: 152,
-    label:
+    code: 152,
+    title:
       'Forestry - use of physical plant protection, excluding tree layer thinning',
-    proposed: false,
   },
   {
-    value: 153,
-    label:
+    code: 153,
+    title:
       'Forestry - replanting with or introducing non-native or non-typical species (including new species and GMOs)',
-    proposed: true,
   },
   {
-    value: 154,
-    label:
+    code: 154,
+    title:
       'Construction and maintenance of logging roads and tracks and wood transport within forest',
-    proposed: false,
   },
   {
-    value: 155,
-    label: 'Forestry - thinning of tree layer',
-    proposed: true,
+    code: 155,
+    title: 'Forestry - thinning of tree layer',
   },
   {
-    value: 156,
-    label: 'Hunting (including for game management)',
-    proposed: false,
+    code: 156,
+    title: 'Hunting (including for game management)',
   },
   {
-    value: 157,
-    label: 'Game or fisheries management',
-    proposed: true,
+    code: 157,
+    title: 'Game or fisheries management',
   },
   {
-    value: 158,
-    label: 'Game and fisheries processing - waste disposal',
-    proposed: false,
+    code: 158,
+    title: 'Game and fisheries processing - waste disposal',
   },
   {
-    value: 159,
-    label: 'Health care and clinical',
-    proposed: true,
+    code: 159,
+    title: 'Health care and clinical',
   },
   {
-    value: 160,
-    label: 'Leatherworking',
-    proposed: false,
+    code: 160,
+    title: 'Leatherworking',
   },
   {
-    value: 161,
-    label: 'Metalworking',
-    proposed: true,
+    code: 161,
+    title: 'Metalworking',
   },
   {
-    value: 162,
-    label: 'Manufacturing',
-    proposed: false,
+    code: 162,
+    title: 'Manufacturing',
   },
   {
-    value: 163,
-    label: 'Tyre working',
-    proposed: true,
+    code: 163,
+    title: 'Tyre working',
   },
   {
-    value: 164,
-    label: 'Scotch whisky manufacture',
-    proposed: false,
+    code: 164,
+    title: 'Scotch whisky manufacture',
   },
   {
-    value: 165,
-    label:
+    code: 165,
+    title:
       'Abstraction of ground and surface waters (including marine) for commercial/industrial use (excluding energy)',
-    proposed: true,
   },
   {
-    value: 166,
-    label: 'Commercial and public premises, development and use',
-    proposed: false,
+    code: 166,
+    title: 'Commercial and public premises, development and use',
   },
   {
-    value: 167,
-    label: 'Drinks manufacture',
-    proposed: true,
+    code: 167,
+    title: 'Drinks manufacture',
   },
   {
-    value: 168,
-    label: 'Textiles and apparel manufacture',
-    proposed: false,
+    code: 168,
+    title: 'Textiles and apparel manufacture',
   },
   {
-    value: 169,
-    label: 'Food manufacture and processing',
-    proposed: true,
+    code: 169,
+    title: 'Food manufacture and processing',
   },
   {
-    value: 170,
-    label:
+    code: 170,
+    title:
       'Packaging manufacturing, reuse and reprocessing (including MRF, export, reprocessing, Civic Amenity Sites, bulking and storage)',
-    proposed: false,
   },
   {
-    value: 171,
-    label: 'Industrial and commercial activities and structures',
-    proposed: true,
+    code: 171,
+    title: 'Industrial and commercial activities and structures',
   },
   {
-    value: 172,
-    label:
+    code: 172,
+    title:
       'Discharges of industrial waste water into surface and ground waters',
-    proposed: false,
   },
   {
-    value: 173,
-    label: 'Materials recovery',
-    proposed: true,
+    code: 173,
+    title: 'Materials recovery',
   },
   {
-    value: 174,
-    label: 'Strategic infrastructure (transport and utilities)',
-    proposed: false,
+    code: 174,
+    title: 'Strategic infrastructure (transport and utilities)',
   },
   {
-    value: 175,
-    label: 'Burning (except muirburn)',
-    proposed: true,
+    code: 175,
+    title: 'Burning (except muirburn)',
   },
   {
-    value: 176,
-    label: 'Maintenance activities',
-    proposed: false,
+    code: 176,
+    title: 'Maintenance activities',
   },
   {
-    value: 177,
-    label: 'Modification of natural or man-made features',
-    proposed: true,
+    code: 177,
+    title: 'Modification of natural or man-made features',
   },
   {
-    value: 178,
-    label:
+    code: 178,
+    title:
       'Removal of small landscape features for agricultural land parcel consolidation (hedges, stone walls, rushes, open ditches, springs, solitary trees, etc.)',
-    proposed: false,
   },
   {
-    value: 179,
-    label: 'Removal of dead and dying trees, including debris',
-    proposed: true,
+    code: 179,
+    title: 'Removal of dead and dying trees, including debris',
   },
   {
-    value: 180,
-    label:
+    code: 180,
+    title:
       'Tillage practices in forestry and other soil management practices in forestry',
-    proposed: false,
   },
   {
-    value: 181,
-    label: 'Defence activities regulated by SEPA',
-    proposed: true,
+    code: 181,
+    title: 'Defence activities regulated by SEPA',
   },
   {
-    value: 182,
-    label: 'Abandonment of terrestrial military or similar exercises',
-    proposed: false,
+    code: 182,
+    title: 'Abandonment of terrestrial military or similar exercises',
   },
   {
-    value: 183,
-    label: 'Military - disposal or storage of materials',
-    proposed: true,
+    code: 183,
+    title: 'Military - disposal or storage of materials',
   },
   {
-    value: 184,
-    label: 'Military or police activities',
-    proposed: false,
+    code: 184,
+    title: 'Military or police activities',
   },
   {
-    value: 185,
-    label: 'Recreational - blue and green space',
-    proposed: true,
+    code: 185,
+    title: 'Recreational - blue and green space',
   },
   {
-    value: 186,
-    label: 'Recreational - unregulated activities',
-    proposed: false,
+    code: 186,
+    title: 'Recreational - unregulated activities',
   },
   {
-    value: 187,
-    label: 'Recreational: Sports, tourism and leisure activities',
-    proposed: true,
+    code: 187,
+    title: 'Recreational: Sports, tourism and leisure activities',
   },
   {
-    value: 188,
-    label: 'Recreational activities',
-    proposed: false,
+    code: 188,
+    title: 'Recreational activities',
   },
   {
-    value: 189,
-    label:
+    code: 189,
+    title:
       'Creation or development of sports, tourism and leisure infrastructure (outside the urban or recreational areas)',
-    proposed: true,
   },
   {
-    value: 190,
-    label: 'Use of lead ammunition or fishing weights',
-    proposed: false,
+    code: 190,
+    title: 'Use of lead ammunition or fishing weights',
   },
   {
-    value: 191,
-    label: 'Intrusive and destructive research and monitoring activities',
-    proposed: true,
+    code: 191,
+    title: 'Intrusive and destructive research and monitoring activities',
   },
   {
-    value: 192,
-    label: 'Housing / residential',
-    proposed: false,
+    code: 192,
+    title: 'Housing / residential',
   },
   {
-    value: 193,
-    label:
+    code: 193,
+    title:
       'Conversion from other land uses to housing, settlement or recreational areas',
-    proposed: true,
   },
   {
-    value: 194,
-    label:
+    code: 194,
+    title:
       'Roads, paths, railroads and related infrastructure (e.g. bridges, viaducts, tunnels)',
-    proposed: false,
   },
   {
-    value: 195,
-    label:
+    code: 195,
+    title:
       'Shipping lanes, ferry lanes and anchorage infrastructure (e.g. canalisation, dredging)',
-    proposed: true,
   },
   {
-    value: 196,
-    label: 'Shipping lanes, ferry lanes: Other',
-    proposed: false,
+    code: 196,
+    title: 'Shipping lanes, ferry lanes: Other',
   },
   {
-    value: 197,
-    label: 'Shipping lanes and ferry lanes: Transport operations',
-    proposed: true,
+    code: 197,
+    title: 'Shipping lanes and ferry lanes: Transport operations',
   },
   {
-    value: 198,
-    label:
+    code: 198,
+    title:
       'Aviation: Flight paths of planes, helicopter and other non-leisure aircrafts',
-    proposed: false,
   },
   {
-    value: 199,
-    label: 'Land transport activities',
-    proposed: true,
+    code: 199,
+    title: 'Land transport activities',
   },
   {
-    value: 200,
-    label: 'Landfill',
-    proposed: false,
+    code: 200,
+    title: 'Landfill',
   },
   {
-    value: 201,
-    label:
+    code: 201,
+    title:
       'Discharge of urban waste water (excluding storm overflows and/or urban run-offs)',
-    proposed: true,
   },
   {
-    value: 202,
-    label: 'Navigational dredging waste disposal',
-    proposed: false,
+    code: 202,
+    title: 'Navigational dredging waste disposal',
   },
   {
-    value: 203,
-    label: 'Water abstraction and usage',
-    proposed: true,
+    code: 203,
+    title: 'Water abstraction and usage',
   },
   {
-    value: 204,
-    label: 'Morphological alteration of watercourses',
-    proposed: false,
+    code: 204,
+    title: 'Morphological alteration of watercourses',
   },
   {
-    value: 205,
-    label: 'Development and operation of dams',
-    proposed: true,
+    code: 205,
+    title: 'Development and operation of dams',
   },
   {
-    value: 206,
-    label: 'Drainage: Artificial drains',
-    proposed: false,
+    code: 206,
+    title: 'Drainage: Artificial drains',
   },
   {
-    value: 207,
-    label: 'Drainage: Management of aquatic and bank vegetation',
-    proposed: true,
+    code: 207,
+    title: 'Drainage: Management of aquatic and bank vegetation',
   },
   {
-    value: 208,
-    label: 'Drainage: Landfill, land reclamation and drying',
-    proposed: false,
+    code: 208,
+    title: 'Drainage: Landfill, land reclamation and drying',
   },
   {
-    value: 209,
-    label: 'Drainage: Modification of flooding regimes',
-    proposed: true,
+    code: 209,
+    title: 'Drainage: Modification of flooding regimes',
   },
   {
-    value: 210,
-    label: 'Water management',
-    proposed: false,
+    code: 210,
+    title: 'Water management',
   },
   {
-    value: 211,
-    label:
+    code: 211,
+    title:
       'Other modification of hydrological conditions for industrial or commercial development',
-    proposed: true,
   },
   {
-    value: 212,
-    label: 'Modification of hydrological flow',
-    proposed: false,
+    code: 212,
+    title: 'Modification of hydrological flow',
   },
   {
-    value: 213,
-    label:
+    code: 213,
+    title:
       'Other modification of hydrological conditions for residential or recreational development',
-    proposed: true,
   },
   {
-    value: 214,
-    label: 'Modification of the structure of water courses',
-    proposed: false,
+    code: 214,
+    title: 'Modification of the structure of water courses',
   },
   {
-    value: 215,
-    label: 'Water supply and waste water activities',
-    proposed: true,
+    code: 215,
+    title: 'Water supply and waste water activities',
   },
 ];
