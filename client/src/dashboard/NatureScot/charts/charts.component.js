@@ -26,7 +26,9 @@ import {
   NearestProtectedAreas,
   NearestProtectedAreasSkeleton,
 } from './nearest-protected-areas';
-import ProtectedFeature from './protected-feature/protected-feature.component';
+import ProtectedFeature, {
+  ProtectedFeatureSkeleton,
+} from './protected-feature/protected-feature.component';
 
 const useStyles = makeStyles(theme => ({
   subRow: {
@@ -202,11 +204,15 @@ const Charts = ({ sourceId, selectedAoi }) => {
       </Grid>
 
       <Grid item className={styles.item}>
-        <ProtectedFeature
-          buttons={BUTTONS}
-          features={protectedFeatures}
-          onSubmit={() => console.log('Category Clicked')}
-        />
+        {Object.keys(protectedFeatures).length === 0 ? (
+          <ProtectedFeatureSkeleton />
+        ) : (
+          <ProtectedFeature
+            buttons={BUTTONS}
+            features={protectedFeatures}
+            onSubmit={() => console.log('Category Clicked')}
+          />
+        )}
       </Grid>
 
       <Grid item className={styles.item}>

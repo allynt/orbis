@@ -30,7 +30,7 @@ const skeletonStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     border: '5px solid #333f48',
-    marginTop: '5rem',
+    marginTop: '2rem',
     '& *': {
       margin: '0.5rem 0.5rem 0.5rem 0.5rem',
     },
