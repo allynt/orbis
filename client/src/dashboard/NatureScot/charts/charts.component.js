@@ -19,7 +19,9 @@ import { getAuthTokenForSource } from 'utils/tokens';
 
 import { ChartWrapper } from '../../charts/chart-wrapper.component';
 import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from '../nature-scotland.constants';
-import AreaOfficeContactDetails from './area-office-contact-details.component';
+import AreaOfficeContactDetails, {
+  AreaOfficeContactDetailsSkeleton,
+} from './area-office-contact-details.component';
 import {
   NearestProtectedAreas,
   NearestProtectedAreasSkeleton,
@@ -208,7 +210,11 @@ const Charts = ({ sourceId, selectedAoi }) => {
       </Grid>
 
       <Grid item className={styles.item}>
-        <AreaOfficeContactDetails contactDetails={contactDetails} />
+        {Object.keys(contactDetails).length === 0 ? (
+          <AreaOfficeContactDetailsSkeleton />
+        ) : (
+          <AreaOfficeContactDetails contactDetails={contactDetails} />
+        )}
       </Grid>
     </Grid>
   );
