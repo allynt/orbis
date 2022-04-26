@@ -63,11 +63,13 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
           <Grid container direction="column">
             {area_office_address?.map(item => (
               <Grid key={item} item>
-                <Typography variant="body1" key={item}>
-                  {item}
-                </Typography>
+                <Typography key={item}>{item}</Typography>
               </Grid>
-            )) ?? NO_DATA}
+            )) ?? (
+              <Grid>
+                <Typography>{NO_DATA}</Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid item xs={6}>
