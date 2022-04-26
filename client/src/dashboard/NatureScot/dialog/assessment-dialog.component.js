@@ -85,7 +85,10 @@ const AssessmentDialog = ({
     }
   };
 
-  const handleSubmit = form => onSubmit(form);
+  const handleSubmit = form => {
+    onSubmit(form);
+    setTab(1);
+  };
 
   useEffect(() => setTab(visibleTab), [visibleTab, setTab]);
 
