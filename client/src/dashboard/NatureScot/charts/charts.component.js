@@ -20,7 +20,10 @@ import { getAuthTokenForSource } from 'utils/tokens';
 import { ChartWrapper } from '../../charts/chart-wrapper.component';
 import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from '../nature-scotland.constants';
 import AreaOfficeContactDetails from './area-office-contact-details.component';
-import { NearestProtectedAreas } from './nearest-protected-areas';
+import {
+  NearestProtectedAreas,
+  NearestProtectedAreasSkeleton,
+} from './nearest-protected-areas';
 import ProtectedFeature from './protected-feature/protected-feature.component';
 
 const useStyles = makeStyles(theme => ({
@@ -125,7 +128,7 @@ const Charts = ({ sourceId, selectedAoi }) => {
         </Grid>
       </Grid>
     ),
-    [],
+    [styles.subRow],
   );
 
   useEffect(() => {
@@ -171,21 +174,29 @@ const Charts = ({ sourceId, selectedAoi }) => {
   return (
     <Grid container className={styles.dashboard}>
       <Grid item className={styles.item}>
-        <NearestProtectedAreas data={nearestProtectedAreas} />
+        {nearestProtectedAreas.length === 0 ? (
+          <NearestProtectedAreasSkeleton />
+        ) : (
+          <NearestProtectedAreas data={nearestProtectedAreas} />
+        )}
       </Grid>
 
       <Grid item className={styles.item}>
-        <ChartWrapper
-          title="List of Casework"
-          info="An expandable table of each relevant casework."
-        >
-          <ExpandableTable
-            columns={COLUMNS}
-            data={caseworks}
-            pluginHooks={[useSortBy]}
-            renderRowSubComponent={renderRowSubComponent}
-          />
-        </ChartWrapper>
+        {caseworks.length === 0 ? (
+          <NearestProtectedAreasSkeleton />
+        ) : (
+          <ChartWrapper
+            title="List of Casework"
+            info="An expandable table of each relevant casework."
+          >
+            <ExpandableTable
+              columns={COLUMNS}
+              data={caseworks}
+              pluginHooks={[useSortBy]}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+          </ChartWrapper>
+        )}
       </Grid>
 
       <Grid item className={styles.item}>
