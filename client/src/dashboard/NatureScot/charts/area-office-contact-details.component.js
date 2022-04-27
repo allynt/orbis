@@ -42,19 +42,19 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
           <Typography variant="h4">Area Office :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body1">{area_office ?? NO_DATA}</Typography>
+          <Typography>{area_office ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Name :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body1">{area_name ?? NO_DATA}</Typography>
+          <Typography>{area_name ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Telephone Number :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body1">{telephone_number ?? NO_DATA}</Typography>
+          <Typography>{telephone_number ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Area Office Address :</Typography>
@@ -62,27 +62,21 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
         <Grid item xs={6}>
           <Grid container direction="column">
             {area_office_address?.map(item => (
-              <Grid key={item} item>
-                <Typography key={item}>{item}</Typography>
-              </Grid>
-            )) ?? (
-              <Grid>
-                <Typography>{NO_DATA}</Typography>
-              </Grid>
-            )}
+              <Typography key={item}>{item}</Typography>
+            )) ?? <Typography>{NO_DATA}</Typography>}
           </Grid>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Postcode :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body1">{postcode ?? NO_DATA}</Typography>
+          <Typography>{postcode ?? NO_DATA}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography variant="h4">Email :</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body1" className={styles.value}>
+          <Typography className={styles.value}>
             {!!email ? (
               <Link
                 target="_blank"
