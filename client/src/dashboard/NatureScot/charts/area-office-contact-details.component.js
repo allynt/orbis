@@ -31,17 +31,6 @@ const skeletonStyles = makeStyles(theme => ({
     alignItems: 'center',
     border: '5px solid #333f48',
     marginTop: '2rem',
-    '& *': {
-      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
-    },
-  },
-  text: {
-    color: 'red',
-    backgroundColor: 'green',
-  },
-  cell: {
-    color: 'red',
-    backgroundColor: 'green',
   },
 }));
 

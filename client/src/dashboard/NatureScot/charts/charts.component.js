@@ -54,6 +54,11 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 'auto',
     marginRight: '2rem',
   },
+  areas: {
+    '& *': {
+      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
+    },
+  },
 }));
 
 const BUTTONS = [
@@ -106,24 +111,12 @@ const Charts = ({ sourceId, selectedAoi }) => {
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <Grid className={styles.subRow} container>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Casework Title:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Site Name:</Typography>
         </Grid>
         <Grid item xs={9}>
           <Typography>{row.original.site_name}</Typography>
         </Grid>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Site Type:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Casework Decision:</Typography>
         </Grid>

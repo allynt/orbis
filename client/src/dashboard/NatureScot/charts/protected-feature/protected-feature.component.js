@@ -48,9 +48,6 @@ const skeletonStyles = makeStyles(theme => ({
     alignItems: 'flex-end',
     border: '5px solid #333f48',
     marginTop: '2rem',
-    '& *': {
-      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
-    },
   },
   text: {
     color: 'red',

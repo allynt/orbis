@@ -19,17 +19,6 @@ const skeletonStyles = makeStyles(theme => ({
     alignItems: 'center',
     border: '5px solid #333f48',
     marginTop: '2rem',
-    '& *': {
-      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
-    },
-  },
-  text: {
-    color: 'red',
-    backgroundColor: 'green',
-  },
-  cell: {
-    color: 'red',
-    backgroundColor: 'green',
   },
 }));
 
@@ -90,11 +79,7 @@ export const NearestProtectedAreasSkeleton = () => {
     <ChartWrapperSkeleton>
       <div className={styles.areas}>
         <Skeleton variant="rect" width={'100%'} height={40}>
-          <Skeleton
-            variant="text"
-            width={300}
-            classes={{ root: styles.cell }}
-          />
+          <Skeleton variant="text" width={300} />
         </Skeleton>
         <Skeleton variant="rect" width={'100%'} height={40} />
         <Skeleton variant="rect" width={'100%'} height={40} />

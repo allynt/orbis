@@ -104,9 +104,6 @@ const skeletonStyles = makeStyles(theme => ({
     alignItems: 'center',
     border: '5px solid #333f48',
     marginTop: '5rem',
-    '& *': {
-      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
-    },
   },
 }));
 
