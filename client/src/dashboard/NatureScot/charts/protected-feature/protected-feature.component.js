@@ -1,8 +1,11 @@
 import React from 'react';
 
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles, Skeleton, Typography } from '@astrosat/astrosat-ui';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 import { GaugeChart } from 'dashboard/charts/gauge/gauge.component';
 
 import ProtectedFeatureButtonGroup from './protected-feature-button-group.component';
@@ -37,6 +40,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const skeletonStyles = makeStyles(theme => ({
+  areas: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    border: '5px solid #333f48',
+    marginTop: '2rem',
+  },
+  text: {
+    color: 'red',
+    backgroundColor: 'green',
+  },
+  cell: {
+    color: 'red',
+    backgroundColor: 'green',
+  },
+}));
+
 const ProtectedFeature = ({ buttons, features, onSubmit }) => {
   const styles = useStyles();
 
@@ -63,6 +85,17 @@ const ProtectedFeature = ({ buttons, features, onSubmit }) => {
         </Grid>
       </Grid>
     </ChartWrapper>
+  );
+};
+
+export const ProtectedFeatureSkeleton = () => {
+  const styles = skeletonStyles();
+  return (
+    <ChartWrapperSkeleton>
+      <div className={styles.areas}>
+        <Skeleton variant="rect" width={'50%'} height={'15rem'} />
+      </div>
+    </ChartWrapperSkeleton>
   );
 };
 

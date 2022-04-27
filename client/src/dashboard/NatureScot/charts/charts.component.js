@@ -19,9 +19,16 @@ import { getAuthTokenForSource } from 'utils/tokens';
 
 import { ChartWrapper } from '../../charts/chart-wrapper.component';
 import { AOI_BUFFER, QUERY_RESPONSE_LIMIT } from '../nature-scotland.constants';
-import AreaOfficeContactDetails from './area-office-contact-details.component';
-import { NearestProtectedAreas } from './nearest-protected-areas';
-import ProtectedFeature from './protected-feature/protected-feature.component';
+import AreaOfficeContactDetails, {
+  AreaOfficeContactDetailsSkeleton,
+} from './area-office-contact-details.component';
+import {
+  NearestProtectedAreas,
+  NearestProtectedAreasSkeleton,
+} from './nearest-protected-areas';
+import ProtectedFeature, {
+  ProtectedFeatureSkeleton,
+} from './protected-feature/protected-feature.component';
 
 const useStyles = makeStyles(theme => ({
   subRow: {
@@ -46,6 +53,11 @@ const useStyles = makeStyles(theme => ({
   assessmentButton: {
     marginLeft: 'auto',
     marginRight: '2rem',
+  },
+  areas: {
+    '& *': {
+      margin: '0.5rem 0.5rem 0.5rem 0.5rem',
+    },
   },
 }));
 
@@ -99,24 +111,12 @@ const Charts = ({ sourceId, selectedAoi }) => {
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <Grid className={styles.subRow} container>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Casework Title:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Site Name:</Typography>
         </Grid>
         <Grid item xs={9}>
           <Typography>{row.original.site_name}</Typography>
         </Grid>
-        {/* <Grid item xs={3}>
-          <Typography variant="h4">Site Type:</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <Typography>{row.original.name}</Typography>
-        </Grid> */}
         <Grid item xs={3}>
           <Typography variant="h4">Casework Decision:</Typography>
         </Grid>
@@ -125,7 +125,7 @@ const Charts = ({ sourceId, selectedAoi }) => {
         </Grid>
       </Grid>
     ),
-    [],
+    [styles.subRow],
   );
 
   useEffect(() => {
@@ -171,33 +171,49 @@ const Charts = ({ sourceId, selectedAoi }) => {
   return (
     <Grid container className={styles.dashboard}>
       <Grid item className={styles.item}>
-        <NearestProtectedAreas data={nearestProtectedAreas} />
+        {nearestProtectedAreas.length === 0 ? (
+          <NearestProtectedAreasSkeleton />
+        ) : (
+          <NearestProtectedAreas data={nearestProtectedAreas} />
+        )}
       </Grid>
 
       <Grid item className={styles.item}>
-        <ChartWrapper
-          title="List of Casework"
-          info="An expandable table of each relevant casework."
-        >
-          <ExpandableTable
-            columns={COLUMNS}
-            data={caseworks}
-            pluginHooks={[useSortBy]}
-            renderRowSubComponent={renderRowSubComponent}
+        {caseworks.length === 0 ? (
+          <NearestProtectedAreasSkeleton />
+        ) : (
+          <ChartWrapper
+            title="List of Casework"
+            info="An expandable table of each relevant casework."
+          >
+            <ExpandableTable
+              columns={COLUMNS}
+              data={caseworks}
+              pluginHooks={[useSortBy]}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+          </ChartWrapper>
+        )}
+      </Grid>
+
+      <Grid item className={styles.item}>
+        {Object.keys(protectedFeatures).length === 0 ? (
+          <ProtectedFeatureSkeleton />
+        ) : (
+          <ProtectedFeature
+            buttons={BUTTONS}
+            features={protectedFeatures}
+            onSubmit={() => console.log('Category Clicked')}
           />
-        </ChartWrapper>
+        )}
       </Grid>
 
       <Grid item className={styles.item}>
-        <ProtectedFeature
-          buttons={BUTTONS}
-          features={protectedFeatures}
-          onSubmit={() => console.log('Category Clicked')}
-        />
-      </Grid>
-
-      <Grid item className={styles.item}>
-        <AreaOfficeContactDetails contactDetails={contactDetails} />
+        {Object.keys(contactDetails).length === 0 ? (
+          <AreaOfficeContactDetailsSkeleton />
+        ) : (
+          <AreaOfficeContactDetails contactDetails={contactDetails} />
+        )}
       </Grid>
     </Grid>
   );

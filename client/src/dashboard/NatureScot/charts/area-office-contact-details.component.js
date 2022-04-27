@@ -1,8 +1,17 @@
 import React from 'react';
 
-import { makeStyles, Grid, Link, Typography } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  Grid,
+  Link,
+  Typography,
+  Skeleton,
+} from '@astrosat/astrosat-ui';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from '../../charts/chart-wrapper.component';
 
 const NO_DATA = 'No Data';
 
@@ -14,9 +23,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const skeletonStyles = makeStyles(theme => ({
+  areas: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '5px solid #333f48',
+    marginTop: '2rem',
+  },
+}));
+
 const AreaOfficeContactDetails = ({ contactDetails }) => {
   const styles = useStyles();
-
   if (!contactDetails) return null;
 
   const {
@@ -92,6 +111,17 @@ const AreaOfficeContactDetails = ({ contactDetails }) => {
         </Grid>
       </Grid>
     </ChartWrapper>
+  );
+};
+
+export const AreaOfficeContactDetailsSkeleton = () => {
+  const styles = skeletonStyles();
+  return (
+    <ChartWrapperSkeleton>
+      <div className={styles.areas}>
+        <Skeleton variant="rect" width={'100%'} height={'15rem'} />
+      </div>
+    </ChartWrapperSkeleton>
   );
 };
 
