@@ -33,6 +33,7 @@ const ScaleControl = styled(ReactMapGlScaleControl)({
  *   editableLayer: import('@nebula.gl/layers').EditableGeoJsonLayer
  *   drawAoiLayer: import('@nebula.gl/layers').EditableGeoJsonLayer,
  *   drawSatelliteAoiLayer: import('@nebula.gl/layers').EditableGeoJsonLayer,
+ *   transformRequest: function
  * }} TopMapProps
  */
 
@@ -51,6 +52,7 @@ export const TopMap = React.memo(
     editableLayer,
     drawAoiLayer,
     drawSatelliteAoiLayer,
+    transformRequest,
   }) => {
     const { setViewState } = useMap();
 
@@ -71,6 +73,7 @@ export const TopMap = React.memo(
         reuseMaps={true}
         preserveDrawingBuffer={true}
         mapboxApiAccessToken={mapboxApiAccessToken}
+        transformRequest={transformRequest}
       >
         <DeckGL
           ref={deckRef}

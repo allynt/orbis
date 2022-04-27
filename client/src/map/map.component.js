@@ -12,6 +12,7 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { isDrawingSatelliteAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
+import { transformOSDataRequests } from '../map-style/mapStyle.utils';
 import { BottomMap } from './bottom-map.component';
 import { ButtonControls } from './controls/button-controls.component';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
@@ -204,6 +205,7 @@ const Map = ({
         getCursor={getBottomMapCursor}
         mapStyle={selectedMapStyle?.bottomMapStyle}
         mapboxApiAccessToken={accessToken}
+        transformRequest={transformOSDataRequests}
       />
       <TopMap
         mapStyle={selectedMapStyle?.topMapStyle}
@@ -218,6 +220,7 @@ const Map = ({
         editableLayer={editableLayer}
         drawAoiLayer={drawAoiLayer}
         drawSatelliteAoiLayer={drawSatelliteAoiLayer}
+        transformRequest={transformOSDataRequests}
       />
     </div>
   );

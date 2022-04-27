@@ -4,6 +4,7 @@ import lightImg from './light.png';
 import lightWebP from './light.webp';
 import { default as dark } from './orbis-dark.json';
 import { default as light } from './orbis-light.json';
+import { default as os } from './orbis-os.json';
 import { default as satellite } from './orbis-satellite-streets.json';
 import { default as streets } from './orbis-streets.json';
 import satelliteImg from './satellite.png';
@@ -46,6 +47,11 @@ export const styles = {
   },
   streets: {
     style: streets,
+    img: streetsImg,
+    webp: streetsWebP,
+  },
+  os: {
+    style: os,
     img: streetsImg,
     webp: streetsWebP,
   },

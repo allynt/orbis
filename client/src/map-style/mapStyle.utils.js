@@ -41,3 +41,26 @@ export const createBottomMapStyle = (mapStyle, topMapLayerGroups) => {
 
   return { ...mapStyle, layers: filteredLayers };
 };
+
+const apiKey = '';
+/**
+ * Transform the URL if it matches an OS Data request, to include the API key
+ * and Spatial Referencing System to be used.
+ *
+ * @param {string} url - Map data URL to possibly transform
+ *
+ * @return {object} - The transformed URL
+ */
+export const transformOSDataRequests = url => {
+  if (url.includes('api.os.uk')) {
+    if (!/[?&]key=/.test(url)) {
+      url += `?key=${apiKey}`;
+    }
+
+    return {
+      url: url + '&srs=3857',
+    };
+  }
+
+  return { url };
+};
