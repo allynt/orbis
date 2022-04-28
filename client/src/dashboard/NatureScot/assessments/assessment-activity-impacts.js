@@ -113,61 +113,31 @@ const AssessmentActivityImpacts = ({ data }) => {
                 </TableCell>
               </TableRow>
             </TableHead>
-            {/* <TableBody>
-              {data.map(activity => (
-                  <TableRow key={activity}>
-                    <TableCell>{activity.title}</TableCell>
-                    <TableCell className={styles.mayrequireconsent}>
-                      {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
-                    </TableCell>
-                    {activity.impacts.map(item => (
-                      <ScoringDisplay
-                        key={`${activity.title}_${item.score}`}
-                        score={item.score}
-                        legend={false}
-                      />
-                    ))}
-                    <TableCell>
-                      <ul>
-                        {activity.possibleMitigations.map(item => (
-                          <li className={styles.bulletpoint} key={item}>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody> */}
             <TableBody>
-              {data.map(activity =>
-                [activity.impacts[0]].map(item => (
-                  <TableRow key={activity}>
-                    <TableCell>{activity.title}</TableCell>
-                    <TableCell className={styles.mayrequireconsent}>
-                      {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
-                    </TableCell>
-                    {IMPACT_COLUMNS.map(column => (
-                      <ScoringDisplay
-                        key={`${activity.title}_${column}`}
-                        score={item.impacts[column].score}
-                        legend={false}
-                      />
-                    ))}
-                    <TableCell>
-                      {
-                        <ul>
-                          {activity.possibleMitigations.map(item => (
-                            <li className={styles.bulletpoint} key={item}>
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      }
-                    </TableCell>
-                  </TableRow>
-                )),
-              )}
+              {data.map(activity => (
+                <TableRow key={activity}>
+                  <TableCell>{activity.title}</TableCell>
+                  <TableCell className={styles.mayrequireconsent}>
+                    {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
+                  </TableCell>
+                  {activity.summary.map(item => (
+                    <ScoringDisplay
+                      key={`${activity.title}_${item.score}`}
+                      score={item.score}
+                      legend={false}
+                    />
+                  ))}
+                  <TableCell>
+                    <ul>
+                      {activity.possibleMitigations.map(item => (
+                        <li className={styles.bulletpoint} key={item}>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
