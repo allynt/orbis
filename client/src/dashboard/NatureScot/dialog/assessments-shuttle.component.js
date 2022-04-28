@@ -145,7 +145,12 @@ const useStyles = makeStyles(theme => ({
 const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const styles = useStyles();
 
-  const [left, setLeft] = useState(data);
+  const filtered = data.filter(
+    activity =>
+      !initialActivities.some(selected => selected.code === activity.code),
+  );
+
+  const [left, setLeft] = useState(initialActivities ? filtered : []);
   const [right, setRight] = useState(initialActivities ?? []);
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
@@ -176,6 +181,8 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   ]);
 
   const getFilteredLeft = () => {
+    // applies a chain of filters. Sets up an array of filter functions
+    // which are applied one after the other.
     let filterList = [];
 
     // regex filter
@@ -185,6 +192,12 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         return item.title.match(finder);
       });
     }
+
+    // function to filter out items in left which are in right
+    filterList.push(
+      item => !right.some(selected => selected.code === item.code),
+    );
+
     // get filtered list by applying filter functions
     return left.filter(item =>
       filterList.map(filterFunc => filterFunc(item)).every(x => x),

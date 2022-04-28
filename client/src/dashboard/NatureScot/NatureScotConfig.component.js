@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   tab: {},
   assessmentButton: {
     marginLeft: 'auto',
-    marginRight: '2rem',
+    marginRight: '3rem',
   },
   tabbed: {
     display: 'flex',

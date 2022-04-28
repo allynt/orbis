@@ -10,12 +10,17 @@ import {
   makeStyles,
 } from '@astrosat/astrosat-ui';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { TabPanel } from 'dashboard/NatureScot/tab-panel';
 
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
+import {
+  impactActivitiesSelector,
+  fetchImpactActivities,
+} from '../nature-scot.slice';
 import AssessmentDialogForm from './assessment-dialog-form';
-
 const useStyles = makeStyles(theme => ({
   closeButton: {
     position: 'absolute',
@@ -66,6 +71,13 @@ const AssessmentDialog = ({
   formState,
 }) => {
   const styles = useStyles();
+
+  const dispatch = useDispatch();
+
+  const activities = useSelector(impactActivitiesSelector);
+  useEffect(() => {
+    dispatch(fetchImpactActivities());
+  }, [dispatch]);
 
   const [tab, setTab] = useState(visibleTab);
   const [yesNoDialogVisible, setYesNoDialogVisible] = useState(false);
@@ -124,6 +136,7 @@ const AssessmentDialog = ({
             onSubmit={handleSubmit}
             formState={formState}
             setFormIsDirty={setFormIsDirty}
+            activities={activities}
           />
         </TabPanel>
 

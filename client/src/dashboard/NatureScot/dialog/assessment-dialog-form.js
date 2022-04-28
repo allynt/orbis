@@ -121,13 +121,16 @@ const DateRange = ({ startDate, endDate, onChange }) => {
  * onSubmit: function,
  * formState: object,
  * setFormIsDirty: function
+ * activities: object[]
  * }} props
  */
-const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
+const AssessmentDialogForm = ({
+  onSubmit,
+  formState,
+  setFormIsDirty,
+  activities,
+}) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
-
-  const activities = useSelector(impactActivitiesSelector);
 
   const {
     register,
@@ -167,10 +170,6 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
   };
 
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
-
-  useEffect(() => {
-    dispatch(fetchImpactActivities());
-  }, [dispatch]);
 
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
