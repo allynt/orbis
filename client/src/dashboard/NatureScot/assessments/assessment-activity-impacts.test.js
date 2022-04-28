@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from 'test/test-utils';
 
-import { RESULTS } from '../../mock-data/NatureScot/assessment-results-legacy';
+import { RESULTS } from '../../mock-data/NatureScot/assessment-results';
 import AssessmentActivityImpacts from './assessment-activity-impacts';
 
 describe('Assessment Activity Impacts', () => {

@@ -76,7 +76,7 @@ const ImpactSummary = ({ data }) => {
               </svg>
               <VictoryChart
                 domainPadding={{ x: 40, y: 25 }}
-                padding={{ left: 0, top: 0, bottom: 95, right: 0 }}
+                padding={{ left: 0, top: 0, bottom: 95, right: 30 }}
                 animate={{ duration: 1000, animationWhitelist: ['data'] }}
                 theme={theme}
                 width={width}
