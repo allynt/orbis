@@ -20,7 +20,6 @@ import {
   ChartWrapperSkeleton,
 } from 'dashboard/charts/chart-wrapper.component';
 
-import { IMPACT_COLUMNS } from '../nature-scotland.constants';
 import ScoringDisplay from './scoring-display';
 
 const useStyles = makeStyles(theme => ({
@@ -115,14 +114,14 @@ const AssessmentActivityImpacts = ({ data }) => {
             </TableHead>
             <TableBody>
               {data.map(activity => (
-                <TableRow key={activity}>
+                <TableRow key={activity.title}>
                   <TableCell>{activity.title}</TableCell>
                   <TableCell className={styles.mayrequireconsent}>
                     {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                   </TableCell>
                   {activity.summary.map(item => (
                     <ScoringDisplay
-                      key={`${activity.title}_${item.score}`}
+                      key={`${activity.title}_${item.category}`}
                       score={item.score}
                       legend={false}
                     />

@@ -71,8 +71,8 @@ const ScoringDisplay = ({ score, legend = false }) => {
     if (strength < 0) {
       return (
         <TableCell align="center" className={colorScale[strengthIndex]}>
-          {starArray.map(item => (
-            <RemoveCircle key={item} />
+          {starArray.map((item, index) => (
+            <RemoveCircle key={index} />
           ))}
           <span>{legend ? legendString : null}</span>
         </TableCell>
