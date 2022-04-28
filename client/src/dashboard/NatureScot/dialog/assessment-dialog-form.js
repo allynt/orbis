@@ -121,13 +121,16 @@ const DateRange = ({ startDate, endDate, onChange }) => {
  * onSubmit: function,
  * formState: object,
  * setFormIsDirty: function
+ * activities: object[]
  * }} props
  */
-const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
+const AssessmentDialogForm = ({
+  onSubmit,
+  formState,
+  setFormIsDirty,
+  activities,
+}) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
-
-  const activities = useSelector(impactActivitiesSelector);
 
   const {
     register,
@@ -146,6 +149,23 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
   }, [trigger]);
 
   const { activities: selectedActivities, startDate, endDate } = formState;
+
+  // filter activities
+  console.log('selectedActivities', selectedActivities);
+  console.log('activities', activities);
+  // sanitise list before passing down
+
+  let filteredActivities = [];
+  if (selectedActivities.length > 0) {
+    // this is never true? why?
+    console.log('Filtering list');
+    filteredActivities = activities.filter(
+      item => !selectedActivities.includes(item),
+    );
+    console.log('Filtered', filteredActivities);
+  } else {
+    filteredActivities = [...activities];
+  }
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = {
@@ -168,10 +188,6 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
 
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
 
-  useEffect(() => {
-    dispatch(fetchImpactActivities());
-  }, [dispatch]);
-
   return (
     <Form onSubmit={handleSubmit(doSubmit)}>
       <Form.Row>
@@ -192,7 +208,7 @@ const AssessmentDialogForm = ({ onSubmit, formState, setFormIsDirty }) => {
             <div className={styles.field}>
               <AssessmentsShuttle
                 setValue={setValue}
-                data={activities}
+                data={filteredActivities}
                 initialActivities={selectedActivities}
               />
             </div>

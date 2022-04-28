@@ -50,7 +50,7 @@ const ImpactSummary = ({ data }) => {
       info="This widget provides an overall summary of the impact of your proposal. "
     >
       <Typography>
-        The chart below shows the overall impact of your proposal against eight
+        The chart below shows the overall impact of your proposal against five
         categories of impact. You may wish to reconsider aspects of your
         proposal where there is a high or medium negative impact.
       </Typography>

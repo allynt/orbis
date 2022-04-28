@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '900px',
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.default,
+    border: `1px solid #5d666e`,
   },
   arrow: {
     color: theme.palette.background.default,
