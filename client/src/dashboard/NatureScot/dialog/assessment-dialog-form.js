@@ -150,11 +150,6 @@ const AssessmentDialogForm = ({
 
   const { activities: selectedActivities, startDate, endDate } = formState;
 
-  const filteredActivities = activities.filter(
-    activity =>
-      !selectedActivities.some(selected => selected.code === activity.code),
-  );
-
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = {
       shouldValidate: true,
@@ -196,7 +191,7 @@ const AssessmentDialogForm = ({
             <div className={styles.field}>
               <AssessmentsShuttle
                 setValue={setValue}
-                data={filteredActivities}
+                data={activities}
                 initialActivities={selectedActivities}
               />
             </div>
