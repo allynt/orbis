@@ -105,7 +105,11 @@ const AssessmentResults = ({ results, formState }) => {
         </Grid>
         <Grid container item xs={6}></Grid>
         <Grid container item xs={6}>
-          <ImpactFeatureDetails data={results?.impacts_by_feature} />
+          {!results ? (
+            <AssessmentActivityImpactsSkeleton />
+          ) : (
+            <ImpactFeatureDetails data={results?.impacts_by_feature} />
+          )}
         </Grid>
 
         <Grid className={styles.buttons} container item xs={6}>
