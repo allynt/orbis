@@ -79,6 +79,7 @@ const AssessmentActivityImpacts = ({ data }) => {
   // table
   const styles = useStyles();
   const noData = !data;
+
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
@@ -114,29 +115,29 @@ const AssessmentActivityImpacts = ({ data }) => {
             </TableHead>
             {/* <TableBody>
               {data.map(activity => (
-                <TableRow key={activity}>
-                  <TableCell>{activity.title}</TableCell>
-                  <TableCell className={styles.mayrequireconsent}>
-                    {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
-                  </TableCell>
-                  {activity.impacts.map(item => (
-                    <ScoringDisplay
-                      key={`${activity.title}_${item.score}`}
-                      score={item.score}
-                      legend={false}
-                    />
-                  ))}
-                  <TableCell>
-                    <ul>
-                      {activity.possibleMitigations.map(item => (
-                        <li className={styles.bulletpoint} key={item}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </TableCell>
-                </TableRow>
-              ))}
+                  <TableRow key={activity}>
+                    <TableCell>{activity.title}</TableCell>
+                    <TableCell className={styles.mayrequireconsent}>
+                      {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
+                    </TableCell>
+                    {activity.impacts.map(item => (
+                      <ScoringDisplay
+                        key={`${activity.title}_${item.score}`}
+                        score={item.score}
+                        legend={false}
+                      />
+                    ))}
+                    <TableCell>
+                      <ul>
+                        {activity.possibleMitigations.map(item => (
+                          <li className={styles.bulletpoint} key={item}>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody> */}
             <TableBody>
               {data.map(activity =>
