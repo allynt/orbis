@@ -75,9 +75,7 @@ const AssessmentDialog = ({
   const dispatch = useDispatch();
 
   const activities = useSelector(impactActivitiesSelector);
-  console.log('activities is ', activities);
   useEffect(() => {
-    console.log('fetching activities again...');
     dispatch(fetchImpactActivities());
   }, [dispatch]);
 

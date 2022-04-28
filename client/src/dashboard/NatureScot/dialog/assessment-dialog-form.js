@@ -150,22 +150,10 @@ const AssessmentDialogForm = ({
 
   const { activities: selectedActivities, startDate, endDate } = formState;
 
-  // filter activities
-  console.log('selectedActivities', selectedActivities);
-  console.log('activities', activities);
-  // sanitise list before passing down
-
-  let filteredActivities = [];
-  if (selectedActivities.length > 0) {
-    // this is never true? why?
-    console.log('Filtering list');
-    filteredActivities = activities.filter(
-      item => !selectedActivities.includes(item),
-    );
-    console.log('Filtered', filteredActivities);
-  } else {
-    filteredActivities = [...activities];
-  }
+  const filteredActivities = activities.filter(
+    activity =>
+      !selectedActivities.some(selected => selected.code === activity.code),
+  );
 
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = {
