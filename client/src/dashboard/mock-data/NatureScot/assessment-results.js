@@ -159,6 +159,38 @@ export const RESULTS = {
       description: 'Negative',
       totalImpact: -14.199754218750002,
       operationMayRequireConsent: true,
+      summary: [
+        {
+          code: 'biodiversityImpacts',
+          category: 'Biodiversity',
+          score: -1,
+          impact: -0.08,
+        },
+        {
+          code: 'chemicalImpacts',
+          category: 'Chemical',
+          score: 0,
+          impact: 0,
+        },
+        {
+          code: 'peopleImpacts',
+          category: 'People',
+          score: 0,
+          impact: 0,
+        },
+        {
+          code: 'soilWaterAirImpacts',
+          category: 'Soil, Water, Air',
+          score: -1,
+          impact: -0.11,
+        },
+        {
+          code: 'environmentalImpacts',
+          category: 'Environmental',
+          score: -4,
+          impact: -0.23,
+        },
+      ],
       impacts: [
         {
           category: 'Biodiversity',
@@ -204,6 +236,38 @@ export const RESULTS = {
       description: 'Negative',
       totalImpact: -14.199754218750002,
       operationMayRequireConsent: null,
+      summary: [
+        {
+          code: 'biodiversityImpacts',
+          category: 'Biodiversity',
+          score: 0,
+          impact: -0.06,
+        },
+        {
+          code: 'chemicalImpacts',
+          category: 'Chemical',
+          score: 0,
+          impact: 0,
+        },
+        {
+          code: 'peopleImpacts',
+          category: 'People',
+          score: 0,
+          impact: -0.006,
+        },
+        {
+          code: 'soilWaterAirImpacts',
+          category: 'Soil, Water, Air',
+          score: -1,
+          impact: -0.10500000000000001,
+        },
+        {
+          code: 'environmentalImpacts',
+          category: 'Environmental',
+          score: -3,
+          impact: -0.18,
+        },
+      ],
       impacts: [
         {
           category: 'Biodiversity',
