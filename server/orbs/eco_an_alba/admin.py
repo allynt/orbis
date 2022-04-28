@@ -14,3 +14,7 @@ class ProposalAdmin(gis_admin.ModelAdmin):
             "widget": JSONAdminWidget
         },
     }
+    list_display = (
+        "name",
+        "modified",
+    )
