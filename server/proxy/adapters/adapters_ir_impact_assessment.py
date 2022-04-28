@@ -26,7 +26,7 @@ class IRImpactAssessmentAdapter(BaseProxyDataAdapter):
         """
         processed_data = {
             "summary": raw_data["summary"],
-            "activities": raw_data["impacts"],
+            "activities": raw_data["activities"],
             "areas": [],
         }
 
