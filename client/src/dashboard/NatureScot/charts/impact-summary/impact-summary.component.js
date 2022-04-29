@@ -127,10 +127,8 @@ export const ImpactSummarySkeleton = () => {
   return (
     <ChartWrapperSkeleton>
       <div className={styles.legend}>
-        <Skeleton variant="rect" width={400} height={60} />
+        <Skeleton variant="rect" width={'50%'} height={'15rem'} />
       </div>
-
-      <Skeleton variant="rect" width={840} height={500} />
     </ChartWrapperSkeleton>
   );
 };

@@ -151,13 +151,13 @@ export const AssessmentActivityImpactsSkeleton = () => {
   return (
     <ChartWrapperSkeleton>
       <div className={styles.areas}>
-        <Skeleton variant="rect" width={1730} height={80}>
-          <Skeleton variant="text" width={300} />
+        <Skeleton variant="rect" width={'100%'} height={'12rem'}>
+          <Skeleton variant="text" width={'100%'} />
         </Skeleton>
-        <Skeleton variant="rect" width={1730} height={80} />
-        <Skeleton variant="rect" width={1730} height={80} />
-        <Skeleton variant="rect" width={1730} height={80} />
-        <Skeleton variant="rect" width={1730} height={80} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
       </div>
     </ChartWrapperSkeleton>
   );

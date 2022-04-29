@@ -329,11 +329,11 @@ export const ProtectedAreasListSkeleton = () => {
   return (
     <ChartWrapperSkeleton>
       <div className={styles.areas}>
-        <Skeleton variant="rect" width={810} height={80} />
-        <Skeleton variant="rect" width={810} height={80} />
-        <Skeleton variant="rect" width={810} height={80} />
-        <Skeleton variant="rect" width={810} height={80} />
-        <Skeleton variant="rect" width={810} height={80} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
+        <Skeleton variant="rect" width={'100%'} height={'2rem'} />
       </div>
     </ChartWrapperSkeleton>
   );
