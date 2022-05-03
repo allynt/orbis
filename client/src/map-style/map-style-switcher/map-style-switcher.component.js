@@ -5,11 +5,6 @@ import { LayersIcon, Tooltip, makeStyles } from '@astrosat/astrosat-ui';
 import { MapControlButton, ImageList, ImageListItem } from 'components';
 
 /**
- * @param {{
- *   mapStyles: import('map-style/styles').MapStyles
- *   selectedMapStyle?: import('map-style/styles').MapStyleKey
- *   onInputChange?: (newStyle: import('map-style/styles').MapStyleKey) => void
- * }} props
  */
 export const StyleSwitcherContent = ({
   onInputChange,
@@ -42,13 +37,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {{
- *   defaultOpen?: boolean
- *   mapStyles: import('map-style/styles').MapStyles
- *   selectedMapStyle?: import('map-style/styles').MapStyleKey
- *   selectMapStyle?: (newStyle: import('map-style/styles').MapStyleKey) => void
- *   className?: string
- * }} props
  */
 const MapStyleSwitcher = ({
   defaultOpen = false,

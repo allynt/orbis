@@ -4,21 +4,8 @@ import {
   createBottomMapStyle,
   createTopMapStyle,
 } from 'map-style/mapStyle.utils';
-import { styles as mapStyles } from 'map-style/styles';
 
 /**
- * @typedef {{
- *   selectedMapStyle: import('map-style/styles').MapStyleKey
- *   mapStyles: import('map-style/styles').MapStyles
- *   topMapLayerGroups: import('map-style/constants').LayerGroupSlug[]
- *   isCompareMode: boolean
- *   isLoading: boolean
- *   saveMap: boolean
- * }} MapState
- */
-
-/**
- * @type {MapState}
  */
 export const initialState = {
   selectedMapStyle: 'dark',
