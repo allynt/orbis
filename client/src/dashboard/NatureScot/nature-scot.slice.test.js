@@ -14,7 +14,7 @@ import reducer, {
   updateProposal,
   deleteProposal,
   selectProposal,
-  impactActivitiesSelector,
+  impactAvailableActivitiesSelector,
   impactAssessmentSelector,
   proposalsSelector,
   selectedProposalSelector,
@@ -789,7 +789,7 @@ describe('Nature Scot Slice', () => {
       it('should return an empty array if no impact activities is present', () => {
         const state = {};
 
-        const result = impactActivitiesSelector(state);
+        const result = impactAvailableActivitiesSelector(state);
 
         expect(result).toEqual([]);
       });
@@ -798,7 +798,7 @@ describe('Nature Scot Slice', () => {
         const state = {
           natureScotDashboard: {},
         };
-        const result = impactActivitiesSelector(state);
+        const result = impactAvailableActivitiesSelector(state);
 
         expect(result).toEqual([]);
       });
@@ -821,7 +821,7 @@ describe('Nature Scot Slice', () => {
           },
         };
 
-        const result = impactActivitiesSelector(state);
+        const result = impactAvailableActivitiesSelector(state);
 
         expect(result).toBe(state.natureScotDashboard.activities);
       });

@@ -13,6 +13,7 @@ const name = 'natureScotDashboard';
 export const initialState = {
   isLoading: false,
   error: null,
+  availableActivities: null,
   activities: null,
   impactAssessment: null,
   proposals: null,
@@ -22,7 +23,7 @@ export const initialState = {
 export const fetchImpactActivities = createAsyncThunk(
   `${name}/fetchImpactActivities`,
   async (props, { getState, rejectWithValue }) => {
-    const apiSourceId = 'ns/proxy/activities/latest';
+    const apiSourceId = 'ns/proxy/available-activities/latest';
 
     const {
       data: { tokens },
@@ -35,6 +36,47 @@ export const fetchImpactActivities = createAsyncThunk(
       const data = await apiClient.natureScot.getImpactData(
         `/${apiSourceId}/`,
         {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      return data;
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        data: { requests },
+      } = getState();
+      return requests?.fetchImpactAssessment !== 'pending';
+    },
+  },
+);
+
+export const searchImpactActivities = createAsyncThunk(
+  `${name}/searchImpactActivities`,
+  async (form, { getState, rejectWithValue }) => {
+    const apiSourceId = 'ns/proxy/activities/latest';
+
+    const {
+      data: { tokens },
+    } = getState();
+    const authToken = getAuthTokenForSource(tokens, {
+      source_id: apiSourceId,
+    });
+
+    try {
+      const data = await apiClient.natureScot.getImpactData(
+        `/${apiSourceId}/`,
+        form,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -230,10 +272,17 @@ const natureScotSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchImpactActivities.fulfilled, (state, { payload }) => {
-        state.activities = payload;
+        state.availableActivities = payload;
         state.error = null;
       })
       .addCase(fetchImpactActivities.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+      .addCase(searchImpactActivities.fulfilled, (state, { payload }) => {
+        state.activities = payload;
+        state.error = null;
+      })
+      .addCase(searchImpactActivities.rejected, (state, { payload }) => {
         state.error = payload;
       })
       .addCase(fetchImpactAssessment.fulfilled, (state, { payload }) => {
@@ -295,6 +344,11 @@ const natureScotSlice = createSlice({
 export const { setSelectedProposal } = natureScotSlice.actions;
 
 const baseSelector = state => state?.natureScotDashboard;
+
+export const impactAvailableActivitiesSelector = createSelector(
+  baseSelector,
+  state => state?.availableActivities ?? [],
+);
 
 export const impactActivitiesSelector = createSelector(
   baseSelector,
