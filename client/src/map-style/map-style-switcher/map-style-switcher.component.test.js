@@ -11,10 +11,10 @@ describe('MapStyle Switcher Component', () => {
   let selectedMapStyle = null;
 
   const MAP_STYLE_DATA = {
-    streets: {},
-    light: {},
-    dark: {},
-    satellite: {},
+    streets: { name: 'Streets', thumbnail: 'streets.jpg' },
+    light: { name: 'Light', thumbnail: 'light.jpg' },
+    dark: { name: 'Dark', thumbnail: 'dark.jpg' },
+    satellite: { name: 'Satellite', thumbnail: 'satellite.jpg' },
   };
 
   beforeEach(() => {

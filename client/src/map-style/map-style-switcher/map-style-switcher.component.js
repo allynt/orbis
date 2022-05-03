@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { LayersIcon, Tooltip, makeStyles } from '@astrosat/astrosat-ui';
 
 import { MapControlButton, ImageList, ImageListItem } from 'components';
-import { toTitleCase } from 'utils/text';
 
 /**
  * @param {{
@@ -18,13 +17,13 @@ export const StyleSwitcherContent = ({
   mapStyles,
 }) => (
   <ImageList name="mapStyle" onChange={onInputChange} value={selectedMapStyle}>
-    {Object.entries(mapStyles).map(([styleKey, { img }]) => (
+    {Object.entries(mapStyles).map(([styleKey, { name, thumbnail }]) => (
       <ImageListItem
         key={styleKey}
         value={styleKey}
-        text={toTitleCase(styleKey)}
-        src={img}
-        alt={toTitleCase(styleKey)}
+        text={name}
+        src={`${window?._env_?.REACT_APP_API_HOST}${thumbnail}`}
+        alt={name}
       />
     ))}
   </ImageList>
