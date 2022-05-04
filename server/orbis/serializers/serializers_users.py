@@ -111,4 +111,6 @@ class OrbisUserSerializer(AstrosatUsersUserSerializer):
             customer__in=obj.customer_users.values_list("customer", flat=True)
         ).distinct()
 
-        return CustomerMapStyleSerializer(map_styles, many=True).data
+        return CustomerMapStyleSerializer(
+            map_styles, many=True, context=self.context
+        ).data

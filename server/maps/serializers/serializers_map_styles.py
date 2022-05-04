@@ -25,4 +25,10 @@ class CustomerMapStyleSerializer(serializers.ModelSerializer):
         return json.load(obj.map_style.style)
 
     def get_thumbnail(self, obj):
+        url = obj.map_style.thumbnail.url
+        request = self.context.get("request")
+
+        if request is not None:
+            return request.build_absolute_uri(url)
+
         return obj.map_style.thumbnail.url
