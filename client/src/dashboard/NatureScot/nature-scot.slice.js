@@ -352,7 +352,7 @@ export const impactAvailableActivitiesSelector = createSelector(
 
 export const impactActivitiesSelector = createSelector(
   baseSelector,
-  state => state?.activities ?? [],
+  state => state?.activities ?? null,
 );
 
 export const impactAssessmentSelector = createSelector(

@@ -54,7 +54,7 @@ const ActivityList = ({
   return (
     <div className={styles.container}>
       <List dense>
-        {activityList.map(activity => {
+        {activityList?.map(activity => {
           return (
             <ListItem
               button

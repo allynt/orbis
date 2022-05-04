@@ -18,38 +18,17 @@ import {
   ArrowForwardIos,
 } from '@material-ui/icons';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+  searchImpactActivities,
+  impactActivitiesSelector,
+} from 'dashboard/NatureScot/nature-scot.slice';
+import { useDebounce } from 'hooks/useDebounce';
 
 import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
-  actions: {
-    display: 'flex',
-  },
-  actionButton: {
-    padding: 'unset',
-  },
-  buttons: {
-    '& > *': {
-      margin: '1rem',
-    },
-  },
-  fieldset: {
-    border: '4px solid',
-    borderColor: theme.palette.background.paper,
-  },
-  outlined: {
-    padding: '3px',
-    borderRadius: '5px',
-    backgroundColor: '#323e47',
-    border: '1px solid black',
-  },
-  legend: {
-    fontSize: 10,
-    fontWeight: 800,
-  },
-  descriptionText: {
-    fontSize: 14,
-  },
   placeholder: {
     backgroundColor: theme.palette.background.default,
     borderRadius: '5px',
@@ -61,9 +40,6 @@ const useStyles = makeStyles(theme => ({
     padding: '1rem',
     textTransform: 'uppercase',
     textAlign: 'center',
-  },
-  highlightText: {
-    color: '#f6be00',
   },
   arrowIcon: {
     borderRadius: '50%',
@@ -77,80 +53,73 @@ const useStyles = makeStyles(theme => ({
   arrowIconActive: {
     backgroundColor: theme.palette.info.main,
   },
-  chooseAllButton: {
-    marginTop: '1em',
-    backgroundColor: theme.palette.secondary.main,
+  footerButton: {
+    backgroundColor: 'transparent',
     color: '#fff',
-  },
-  removeAllButton: {
-    marginTop: '1em',
-    backgroundColor: theme.palette.secondary.main,
-    color: '#fff',
-  },
-  plusIcon: {
-    marginRight: '0.75rem',
-    cursor: 'pointer',
   },
   newActivity: {
     color: theme.palette.primary.main,
-  },
-  checkbox: {
-    paddingBottom: '10px',
-    paddingTop: '10px',
-    marginLeft: '1rem',
   },
   inputIcon: {
     margin: '0.5rem',
   },
   filterField: {
-    margin: '1rem 0',
+    marginBottom: '1rem',
   },
 }));
 
 const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
 
-  const filtered = data.filter(
-    activity =>
-      !initialActivities.some(selected => selected.code === activity.code),
-  );
+  const debouncedSearch = useDebounce(value => {
+    (async () => {
+      await dispatch(searchImpactActivities({ query: value }));
+    })();
+  }, 500);
+
+  const typeAheadActivities = useSelector(impactActivitiesSelector);
+
+  // filter any initial activities from left list,
+  // as they are passed to right list instead
+  const filteredActivities = !!initialActivities
+    ? data.filter(datum => !initialActivities.includes(datum))
+    : data;
 
   const [searchString, setSearchString] = useState('');
-  const [typeAheadResults, setTypeAheadResults] = useState();
-
-  const [left, setLeft] = useState(initialActivities ? filtered : []);
-  const [right, setRight] = useState(initialActivities ?? []);
-
-  const [leftSelected, setLeftSelected] = useState([]);
-  const [rightSelected, setRightSelected] = useState([]);
+  const [typeAheadResults, setTypeAheadResults] = useState(typeAheadActivities);
 
   const [newActivityText, setNewActivityText] = useState('');
+
+  const [left, setLeft] = useState(filteredActivities);
+  const [leftSelected, setLeftSelected] = useState([]);
+
+  const [right, setRight] = useState(initialActivities ?? []);
+  const [rightSelected, setRightSelected] = useState([]);
 
   // add activities list to parent form to be tracked, submitted
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
   }, [right, setValue]);
 
+  // Type-ahead request to API
   useEffect(() => {
     if (!searchString || searchString === '') {
       setTypeAheadResults(null);
+    } else {
+      debouncedSearch(searchString);
     }
-    // fire off type ahead from here
-  }, [searchString]);
-
-  useEffect(() => setLeft(data), [data]);
-
-  const userActivityNonSelectable = rightSelected.every(item => !item.code);
+  }, [searchString, typeAheadActivities, debouncedSearch]);
 
   /**
    * @param {{title: string, code: string|null}} selectedActivity
    */
   const selectActivityOnLeft = selectedActivity => {
-    // not selected, select
+    // if not selected, select
     if (!leftSelected.includes(selectedActivity)) {
       setLeftSelected(prev => [...prev, selectedActivity]);
     } else {
-      // already selected, remove from selection
+      // if already selected, unselect
       setLeftSelected(
         leftSelected.filter(activity => activity !== selectedActivity),
       );
@@ -159,18 +128,18 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
 
   const clearSelections = () => {
     // called after any shuttling between lists
+
+    // TODO: do we want to be doing all this?
+
     setLeftSelected([]);
     setRightSelected([]);
     setSearchString('');
+    setNewActivityText('');
   };
 
   const chooseAll = () => {
-    // move all items visible in left list to right (filters applied),
-    // irrespective of selection
-    setLeftSelected([]);
+    setLeft([]);
     setRight(prev => [...prev, ...left]);
-    setRightSelected([]);
-    setLeft(left.filter(item => !left.includes(item)));
     clearSelections();
   };
 
@@ -188,16 +157,6 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     // user clicks choose all, move all selected to right
     // and remove from left
     setRight(prev => [...prev, ...leftSelected]);
-    clearSelections();
-  };
-
-  const removeSelected = () => {
-    // move selected from right list to left list,
-    setLeft(prev => [...prev, ...rightSelected.filter(item => !!item.code)]);
-    setRight(prev =>
-      prev.filter(item => !rightSelected.includes(item) || !item.code),
-    );
-    setRightSelected([]);
     clearSelections();
   };
 
@@ -252,17 +211,14 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               className={styles.inputIcon}
             />
             <TextField
-              // still need id and title?
-              id="filter-activities"
-              title="Type ahead..."
               label="Type ahead..."
+              className={styles.filterField}
+              value={searchString}
+              onChange={({ target: { value } }) => setSearchString(value)}
               InputProps={{
                 disableUnderline: true,
                 classes: { input: styles.placeholder },
               }}
-              className={styles.filterField}
-              value={searchString}
-              onChange={({ target: { value } }) => setSearchString(value)}
             />
           </Grid>
           <Divider />
@@ -278,7 +234,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           container
           item
           alignItems="center"
-          justifyContent="space-around"
+          justifyContent="center"
           wrap="nowrap"
           xs={2}
         >
@@ -295,47 +251,42 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         </Grid>
 
         {/* right list (selected activities) */}
-        <Grid item xs={5}>
-          <Card>
-            <Grid item xs={12}>
-              <Typography className={styles.listTitle} variant="h2">
-                Selected Activities
-              </Typography>
-            </Grid>
-            <Divider />
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-around"
-              wrap="nowrap"
-            >
-              <AddCircle
-                onClick={addActivity}
-                fontSize="small"
-                className={`${styles.inputIcon} ${
-                  newActivityText ? styles.newActivity : ''
-                }`}
-              />
-              <TextField
-                id="add-activity"
-                margin="normal"
-                value={newActivityText}
-                title="Add a new Activity"
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { input: styles.placeholder },
-                }}
-                maxLength={50}
-                onChange={e => setNewActivityText(e.target.value)}
-              />
-            </Grid>
-            <Divider />
-            <ActivityList
-              activityList={right}
-              selectedActivityList={rightSelected}
-              onDelete={deleteActivity}
+        <Grid item xs={5} component={Card}>
+          <Typography className={styles.listTitle} variant="h2">
+            Selected Activities
+          </Typography>
+          <Divider />
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-around"
+            wrap="nowrap"
+          >
+            <AddCircle
+              onClick={addActivity}
+              fontSize="small"
+              className={clsx(
+                styles.inputIcon,
+                newActivityText && styles.newActivity,
+              )}
             />
-          </Card>
+            <TextField
+              label="Add a new activity..."
+              value={newActivityText}
+              onChange={({ target: { value } }) => setNewActivityText(value)}
+              InputProps={{
+                disableUnderline: true,
+                classes: { input: styles.placeholder },
+              }}
+              maxLength={50}
+            />
+          </Grid>
+          <Divider />
+          <ActivityList
+            activityList={right}
+            selectedActivityList={rightSelected}
+            onDelete={deleteActivity}
+          />
         </Grid>
 
         {/* footer left 'choose all' */}
@@ -349,8 +300,8 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         >
           <Button
             endIcon={<ArrowForwardIos size="small" />}
-            onClick={() => chooseAll()}
-            className={styles.chooseAllButton}
+            onClick={chooseAll}
+            className={styles.footerButton}
             size="small"
             variant="text"
             disabled={left.length === 0}
@@ -358,9 +309,9 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
             Choose all
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          <Typography variant="h2">&nbsp;</Typography>
-        </Grid>
+
+        {/* For even spacing */}
+        <Grid item xs={2} />
 
         {/* footer right 'remove all' */}
         <Grid
@@ -372,13 +323,11 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           xs={5}
         >
           <Button
-            startIcon={
-              <ArrowBackIos className={styles.removeAllIcon} size="small" />
-            }
+            startIcon={<ArrowBackIos size="small" />}
             size="small"
             variant="text"
-            onClick={() => removeAll()}
-            className={styles.removeAllButton}
+            onClick={removeAll}
+            className={styles.footerButton}
             disabled={right.length === 0}
           >
             Remove all
