@@ -19,6 +19,7 @@ class MapStyle(models.Model):
     name = models.CharField(
         blank=False,
         null=False,
+        unique=True,
         max_length=255,
         help_text="Name of the map style."
     )
@@ -58,7 +59,7 @@ class CustomerMapStyle(models.Model):
     customer = models.ForeignKey(
         Customer,
         on_delete=models.CASCADE,
-        related_name="customer",
+        related_name="customer_map_styles",
         help_text="The customer that uses this map style.",
     )
     map_style = models.ForeignKey(
