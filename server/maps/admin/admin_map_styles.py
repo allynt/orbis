@@ -11,5 +11,4 @@ class MapStyleAdmin(admin.ModelAdmin):
         "thumbnail",
     )
     list_display = ("name", )
-    list_filter = ("name", )
     search_fields = ("name", )
