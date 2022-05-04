@@ -17,7 +17,7 @@ export const StyleSwitcherContent = ({
         key={styleKey}
         value={styleKey}
         text={name}
-        src={`${window?._env_?.REACT_APP_API_HOST}${thumbnail}`}
+        src={thumbnail}
         alt={name}
       />
     ))}
