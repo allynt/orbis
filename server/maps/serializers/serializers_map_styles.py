@@ -31,4 +31,4 @@ class CustomerMapStyleSerializer(serializers.ModelSerializer):
         if request is not None:
             return request.build_absolute_uri(url)
 
-        return obj.map_style.thumbnail.url
+        return url
