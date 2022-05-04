@@ -65,14 +65,6 @@ const useStyles = makeStyles(theme => ({
   highlightText: {
     color: '#f6be00',
   },
-  nudge: {
-    marginLeft: '0.75rem',
-    marginBottom: '0.9rem',
-  },
-  nudge2: {
-    marginLeft: '1rem',
-    marginBottom: '0.5rem',
-  },
   circle: {
     borderRadius: '50%',
     backgroundColor: theme.palette.text.primary,
@@ -126,9 +118,11 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '10px',
     marginLeft: '1rem',
   },
+  inputIcon: {
+    margin: '0.5rem',
+  },
   filterField: {
-    paddingBottom: '1rem',
-    marginLeft: '0.75rem',
+    margin: '1rem 0',
   },
   blueCircle: {
     borderRadius: '50%',
@@ -150,20 +144,36 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
       !initialActivities.some(selected => selected.code === activity.code),
   );
 
+  const [searchString, setSearchString] = useState('');
+  const [typeAheadResults, setTypeAheadResults] = useState();
+
   const [left, setLeft] = useState(initialActivities ? filtered : []);
   const [right, setRight] = useState(initialActivities ?? []);
+
   const [leftSelected, setLeftSelected] = useState([]);
   const [rightSelected, setRightSelected] = useState([]);
-  const [searchString, setSearchString] = useState('');
+
   const [newActivityText, setNewActivityText] = useState('');
+
+  // TODO: these can jsut be the bools, no useEffects or state
   const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
   const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
+
+  // TODO: This can also just use expression
   const [userActivityNonSelectable, setUserActivityNonSelectable] =
     useState(true);
 
+  // add activities list to parent form to be tracked, submitted
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
   }, [right, setValue]);
+
+  useEffect(() => {
+    if (!searchString || searchString === '') {
+      setTypeAheadResults(null);
+    }
+    // fire off type ahead from here
+  }, [searchString]);
 
   useEffect(() => setLeft(data), [data]);
 
@@ -180,57 +190,49 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     rightSelected,
   ]);
 
-  const getFilteredLeft = () => {
-    // applies a chain of filters. Sets up an array of filter functions
-    // which are applied one after the other.
-    let filterList = [];
+  /**
+   * @param {{title: string, code: string|null}} selectedActivity
+   */
+  const selectActivityOnLeft = selectedActivity => {
+    // this needs to be refactored to copy, not move
+    // and also block from selecting twice
+    // the check in the if can just be moved to the rightSelected
 
-    // regex filter
-    if (searchString) {
-      filterList.push(item => {
-        const finder = new RegExp(`.*${searchString}.*`, 'i');
-        return item.title.match(finder);
-      });
-    }
-
-    // function to filter out items in left which are in right
-    filterList.push(
-      item => !right.some(selected => selected.code === item.code),
-    );
-
-    // get filtered list by applying filter functions
-    return left.filter(item =>
-      filterList.map(filterFunc => filterFunc(item)).every(x => x),
-    );
-  };
-
-  const handleSearch = searchText => setSearchString(searchText);
-
-  const selectItemOnLeft = object => {
-    if (!leftSelected.find(item => item.title === object.title)) {
+    if (
+      !leftSelected.find(activity => activity.title === selectedActivity.title)
+    ) {
       setLeftSelected([
         ...leftSelected,
-        left.find(item => item.title === object.title),
+        left.find(activity => activity.title === selectedActivity.title),
       ]);
     } else {
       // already selected, remove from selection
       setLeftSelected([
-        ...leftSelected.filter(item => item.title !== object.title),
+        ...leftSelected.filter(
+          activity => activity.title !== selectedActivity.title,
+        ),
       ]);
     }
   };
 
-  const selectItemOnRight = object => {
-    if (!rightSelected.find(item => item.title === object.title)) {
+  /**
+   * @param {{title: string, code: string|null}} selectedActivity
+   */
+  const selectActivityOnRight = selectedActivity => {
+    if (
+      !rightSelected.find(activity => activity.title === selectedActivity.title)
+    ) {
       const newList = [
         ...rightSelected,
-        right.find(item => item.title === object.title),
+        right.find(activity => activity.title === selectedActivity.title),
       ];
-      setRightSelected(newList.filter(item => item.code)); // strip out user added from selection
+      setRightSelected(newList.filter(activity => activity.code)); // strip out user added from selection
     } else {
       // already selected, remove from selection
       setRightSelected([
-        ...rightSelected.filter(item => item.title !== object.title),
+        ...rightSelected.filter(
+          activity => activity.title !== selectedActivity.title,
+        ),
       ]);
     }
   };
@@ -245,11 +247,10 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const chooseAll = () => {
     // move all items visible in left list to right (filters applied),
     // irrespective of selection
-    const filteredLeft = getFilteredLeft();
     setLeftSelected([]);
-    setRight([...right, ...filteredLeft]);
+    setRight([...right, ...left]);
     setRightSelected([]);
-    setLeft(left.filter(item => !filteredLeft.includes(item)));
+    setLeft(left.filter(item => !left.includes(item)));
     clearSelections();
   };
 
@@ -289,10 +290,13 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     setNewActivityText('');
   };
 
-  const deleteActivity = activity =>
-    setRight(
-      right.filter(eachActivity => eachActivity.title !== activity.title),
+  const deleteActivity = selectedActivity => {
+    const filteredRight = right.filter(
+      activity => activity.title !== selectedActivity.title,
     );
+
+    setRight(filteredRight);
+  };
 
   return (
     <>
@@ -312,45 +316,42 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
       </p>
       <Grid container>
         {/* left list (available activities) */}
-        <Grid item xs={5}>
-          <Card>
-            <Grid item xs={12}>
-              <Typography className={styles.listTitle} variant="h2">
-                Available Activities
-              </Typography>
-            </Grid>
-            <Divider />
-            <Grid item xs={12}></Grid>
-            <Divider />
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-between"
-              wrap="nowrap"
-              className={styles.nudge}
-            >
-              <MagnifierIcon fontSize="small" color="primary" />
-              <TextField
-                id="filter-activities"
-                margin="normal"
-                title="Type ahead..."
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { input: styles.placeholder },
-                }}
-                className={styles.filterField}
-                value={searchString}
-                onChange={e => handleSearch(e.target.value)}
-              />
-            </Grid>
-            <Divider />
-            <ActivityList
-              // name="proposed_activities"
-              activityList={getFilteredLeft()}
-              selectedActivityList={leftSelected}
-              onSelect={selectItemOnLeft}
+        <Grid item component={Card} xs={5}>
+          <Typography className={styles.listTitle} variant="h2">
+            Available Activities
+          </Typography>
+          <Divider />
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            wrap="nowrap"
+          >
+            <MagnifierIcon
+              fontSize="small"
+              color="primary"
+              className={styles.inputIcon}
             />
-          </Card>
+            <TextField
+              // still need id and title?
+              id="filter-activities"
+              title="Type ahead..."
+              label="Type ahead..."
+              InputProps={{
+                disableUnderline: true,
+                classes: { input: styles.placeholder },
+              }}
+              className={styles.filterField}
+              value={searchString}
+              onChange={({ target: { value } }) => setSearchString(value)}
+            />
+          </Grid>
+          <Divider />
+          <ActivityList
+            activityList={typeAheadResults ?? left}
+            selectedActivityList={leftSelected}
+            onSelect={selectActivityOnLeft}
+          />
         </Grid>
 
         {/* arrows in middle */}
@@ -411,12 +412,11 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               alignItems="center"
               justifyContent="space-around"
               wrap="nowrap"
-              className={styles.nudge2}
             >
               <AddCircle
                 onClick={addActivity}
                 fontSize="small"
-                className={`${styles.plusIcon} ${
+                className={`${styles.inputIcon} ${
                   newActivityText ? styles.newActivity : ''
                 }`}
               />
@@ -437,7 +437,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
             <ActivityList
               activityList={right}
               selectedActivityList={rightSelected}
-              onSelect={selectItemOnRight}
+              onSelect={selectActivityOnRight}
               onDelete={deleteActivity}
             />
           </Card>
