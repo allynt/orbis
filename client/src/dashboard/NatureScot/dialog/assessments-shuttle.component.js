@@ -13,11 +13,11 @@ import {
 
 import {
   AddCircle,
-  ArrowBack,
   ArrowForward,
   ArrowBackIos,
   ArrowForwardIos,
 } from '@material-ui/icons';
+import clsx from 'clsx';
 
 import ActivityList from './activity-list.component';
 
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
   highlightText: {
     color: '#f6be00',
   },
-  circle: {
+  arrowIcon: {
     borderRadius: '50%',
     backgroundColor: theme.palette.text.primary,
     width: '2rem',
@@ -73,28 +73,9 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.secondary.main,
     margin: '0rem 0.5rem',
     padding: '0.1rem',
-    cursor: 'pointer',
   },
-  capsuleTop: {
-    width: '3rem',
-    backgroundColor: theme.palette.background.paper,
-    borderTopLeftRadius: '50px',
-    borderTopRightRadius: '50px',
-    position: 'relative',
-    top: '0px',
-  },
-  capsuleBottom: {
-    width: '3rem',
-    backgroundColor: theme.palette.background.paper,
-    borderBottomLeftRadius: '50px',
-    borderBottomRightRadius: '50px',
-    position: 'relative',
-    bottom: '4px',
-  },
-  capsuleBox: {
-    height: '2.6rem',
-    backgroundColor: theme.palette.background.paper,
-    zIndex: 9999,
+  arrowIconActive: {
+    backgroundColor: theme.palette.info.main,
   },
   chooseAllButton: {
     marginTop: '1em',
@@ -124,16 +105,6 @@ const useStyles = makeStyles(theme => ({
   filterField: {
     margin: '1rem 0',
   },
-  blueCircle: {
-    borderRadius: '50%',
-    backgroundColor: theme.palette.info.main,
-    width: '2rem',
-    height: '2rem',
-    color: theme.palette.secondary.main,
-    margin: '0rem 0.5rem',
-    padding: '0.1rem',
-    cursor: 'pointer',
-  },
 }));
 
 const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
@@ -155,14 +126,6 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
 
   const [newActivityText, setNewActivityText] = useState('');
 
-  // TODO: these can jsut be the bools, no useEffects or state
-  const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
-  const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
-
-  // TODO: This can also just use expression
-  const [userActivityNonSelectable, setUserActivityNonSelectable] =
-    useState(true);
-
   // add activities list to parent form to be tracked, submitted
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
@@ -177,63 +140,20 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
 
   useEffect(() => setLeft(data), [data]);
 
-  useEffect(() => {
-    setChooseAllDisabledButton(left.length === 0);
-    setRemoveAllDisabledButton(right.length === 0);
-    setUserActivityNonSelectable(rightSelected.every(item => !item.code));
-  }, [
-    left,
-    setChooseAllDisabledButton,
-    right,
-    setRemoveAllDisabledButton,
-    setUserActivityNonSelectable,
-    rightSelected,
-  ]);
+  const userActivityNonSelectable = rightSelected.every(item => !item.code);
 
   /**
    * @param {{title: string, code: string|null}} selectedActivity
    */
   const selectActivityOnLeft = selectedActivity => {
-    // this needs to be refactored to copy, not move
-    // and also block from selecting twice
-    // the check in the if can just be moved to the rightSelected
-
-    if (
-      !leftSelected.find(activity => activity.title === selectedActivity.title)
-    ) {
-      setLeftSelected([
-        ...leftSelected,
-        left.find(activity => activity.title === selectedActivity.title),
-      ]);
+    // not selected, select
+    if (!leftSelected.includes(selectedActivity)) {
+      setLeftSelected(prev => [...prev, selectedActivity]);
     } else {
       // already selected, remove from selection
-      setLeftSelected([
-        ...leftSelected.filter(
-          activity => activity.title !== selectedActivity.title,
-        ),
-      ]);
-    }
-  };
-
-  /**
-   * @param {{title: string, code: string|null}} selectedActivity
-   */
-  const selectActivityOnRight = selectedActivity => {
-    if (
-      !rightSelected.find(activity => activity.title === selectedActivity.title)
-    ) {
-      const newList = [
-        ...rightSelected,
-        right.find(activity => activity.title === selectedActivity.title),
-      ];
-      setRightSelected(newList.filter(activity => activity.code)); // strip out user added from selection
-    } else {
-      // already selected, remove from selection
-      setRightSelected([
-        ...rightSelected.filter(
-          activity => activity.title !== selectedActivity.title,
-        ),
-      ]);
+      setLeftSelected(
+        leftSelected.filter(activity => activity !== selectedActivity),
+      );
     }
   };
 
@@ -248,7 +168,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     // move all items visible in left list to right (filters applied),
     // irrespective of selection
     setLeftSelected([]);
-    setRight([...right, ...left]);
+    setRight(prev => [...prev, ...left]);
     setRightSelected([]);
     setLeft(left.filter(item => !left.includes(item)));
     clearSelections();
@@ -267,15 +187,16 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const chooseSelected = () => {
     // user clicks choose all, move all selected to right
     // and remove from left
-    setRight([...right, ...leftSelected.map(item => item)]);
-    setLeft(left.filter(item => !leftSelected.includes(item)));
+    setRight(prev => [...prev, ...leftSelected]);
     clearSelections();
   };
 
   const removeSelected = () => {
     // move selected from right list to left list,
-    setLeft([...left, ...rightSelected.filter(item => item && !!item.code)]);
-    setRight(right.filter(item => !rightSelected.includes(item) || !item.code));
+    setLeft(prev => [...prev, ...rightSelected.filter(item => !!item.code)]);
+    setRight(prev =>
+      prev.filter(item => !rightSelected.includes(item) || !item.code),
+    );
     setRightSelected([]);
     clearSelections();
   };
@@ -286,16 +207,14 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
       title: newActivityText,
       code: null,
     };
-    setRight([...right, newActivity]);
+    setRight(prev => [...prev, newActivity]);
     setNewActivityText('');
   };
 
   const deleteActivity = selectedActivity => {
-    const filteredRight = right.filter(
-      activity => activity.title !== selectedActivity.title,
+    setRight(prev =>
+      prev.filter(activity => activity.title !== selectedActivity.title),
     );
-
-    setRight(filteredRight);
   };
 
   return (
@@ -363,39 +282,16 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           wrap="nowrap"
           xs={2}
         >
-          <div>
-            <Grid item xs={12} className={styles.capsuleTop}>
-              &nbsp;
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBox}>
-              <ArrowForward
-                className={`${styles.circle} ${
-                  leftSelected.length > 0 ? styles.blueCircle : ''
-                }`}
-                onClick={() => chooseSelected()}
-                fontSize="large"
-                data-testid="choose activity"
-                cursor="pointer"
-              />
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBox}>
-              <ArrowBack
-                className={`${styles.circle} ${
-                  rightSelected.length > 0 && !userActivityNonSelectable
-                    ? styles.blueCircle
-                    : ''
-                }`}
-                onClick={() => removeSelected()}
-                fontSize="small"
-                data-testid="choose selected"
-                pointerEvents={userActivityNonSelectable ? 'none' : 'auto'}
-                cursor="pointer"
-              />
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBottom}>
-              &nbsp;
-            </Grid>
-          </div>
+          <ArrowForward
+            className={clsx(
+              styles.arrowIcon,
+              leftSelected.length > 0 && styles.arrowIconActive,
+            )}
+            onClick={() => chooseSelected()}
+            fontSize="large"
+            data-testid="choose activity"
+            cursor="pointer"
+          />
         </Grid>
 
         {/* right list (selected activities) */}
@@ -437,7 +333,6 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
             <ActivityList
               activityList={right}
               selectedActivityList={rightSelected}
-              onSelect={selectActivityOnRight}
               onDelete={deleteActivity}
             />
           </Card>
@@ -458,7 +353,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
             className={styles.chooseAllButton}
             size="small"
             variant="text"
-            disabled={chooseAllDisabledButton}
+            disabled={left.length === 0}
           >
             Choose all
           </Button>
@@ -484,7 +379,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
             variant="text"
             onClick={() => removeAll()}
             className={styles.removeAllButton}
-            disabled={removeAllDisabledButton}
+            disabled={right.length === 0}
           >
             Remove all
           </Button>

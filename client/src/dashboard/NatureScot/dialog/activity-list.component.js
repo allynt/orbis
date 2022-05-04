@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *  activityList: {title: string, code: string|null}[],
  *  selectedActivityList: {title: string, code: string|null}[],
- *  onSelect: (selectedActivity: {title: string, code: string|null}) => void,
+ *  onSelect?: (selectedActivity: {title: string, code: string|null}) => void,
  *  onDelete?: (selectedActivity: {title: string, code: string|null}) => void
  * }} props
  */
