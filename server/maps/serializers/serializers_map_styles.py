@@ -7,18 +7,6 @@ from rest_framework import serializers
 from maps.models import MapStyle, CustomerMapStyle
 
 
-class MapStyleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MapStyle
-        fields = (
-            "id",
-            "name",
-            "style",
-            "thumbnail",
-            "api_key",
-        )
-
-
 class CustomerMapStyleSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerMapStyle
