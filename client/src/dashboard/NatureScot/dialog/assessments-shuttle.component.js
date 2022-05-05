@@ -68,7 +68,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
+/**
+ * @param {{
+ *  setValue: function
+ *  availableActivities: {title: string, code: string}[]
+ *  initialActivities: {title: string, code: string|null}[]
+ * }} props
+ */
+const AssessmentsShuttle = ({
+  setValue,
+  availableActivities,
+  initialActivities,
+}) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -78,7 +89,6 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
 
   const [newActivityText, setNewActivityText] = useState('');
 
-  const [left, setLeft] = useState(data);
   const [leftSelected, setLeftSelected] = useState([]);
 
   const [right, setRight] = useState(initialActivities ?? []);
@@ -102,10 +112,18 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     }
   }, [typeAheadQuery, debouncedSearch]);
 
+  const reset = () => {
+    // TODO: do we want to be doing all this?
+    setLeftSelected([]);
+    setRightSelected([]);
+    setTypeAheadQuery('');
+    setNewActivityText('');
+  };
+
   /**
    * @param {{title: string, code: string|null}} selectedActivity
    */
-  const selectActivityOnLeft = selectedActivity => {
+  const selectActivity = selectedActivity => {
     // if not selected, select
     if (!leftSelected.includes(selectedActivity)) {
       setLeftSelected(prev => [...prev, selectedActivity]);
@@ -117,35 +135,20 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     }
   };
 
-  const clearSelections = () => {
-    // called after any shuttling between lists
-
-    // TODO: do we want to be doing all this?
-
-    setLeftSelected([]);
-    setRightSelected([]);
-    setTypeAheadQuery('');
-    setNewActivityText('');
+  const moveSelected = () => {
+    const filterAlreadySelected = leftSelected.filter(
+      activity => !right.includes(activity),
+    );
+    setRight(prev => [...prev, ...filterAlreadySelected]);
+    reset();
   };
 
-  const chooseAll = () => {
-    // Move all from left
-    setLeft([]);
-    setRight(prev => [...prev, ...left]);
-    clearSelections();
+  const moveAll = () => {
+    setRight(availableActivities);
+    reset();
   };
 
-  const removeAll = () => {
-    // Remove all from right
-    setRight([]);
-    clearSelections();
-  };
-
-  const chooseSelected = () => {
-    // Copy all selected to right
-    setRight(prev => [...prev, ...leftSelected]);
-    clearSelections();
-  };
+  const removeAll = () => setRight([]);
 
   const addActivity = () => {
     if (!newActivityText) {
@@ -156,6 +159,9 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
     }
   };
 
+  /**
+   * @param {{title: string, code: string|null}} selectedActivity
+   */
   const deleteActivity = selectedActivity =>
     setRight(prev =>
       prev.filter(activity => activity.title !== selectedActivity.title),
@@ -208,9 +214,11 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           </Grid>
           <Divider />
           <ActivityList
-            activityList={!!typeAheadQuery ? typeAheadActivities : left}
+            activityList={
+              !!typeAheadQuery ? typeAheadActivities : availableActivities
+            }
             selectedActivityList={leftSelected}
-            onSelect={selectActivityOnLeft}
+            onSelect={selectActivity}
           />
         </Grid>
 
@@ -228,7 +236,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               styles.arrowIcon,
               leftSelected.length > 0 && styles.arrowIconActive,
             )}
-            onClick={chooseSelected}
+            onClick={moveSelected}
             fontSize="large"
             data-testid="choose activity"
             cursor="pointer"
@@ -285,11 +293,11 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         >
           <Button
             endIcon={<ArrowForwardIos size="small" />}
-            onClick={chooseAll}
+            onClick={moveAll}
             className={styles.footerButton}
             size="small"
             variant="text"
-            disabled={left.length === 0}
+            disabled={leftSelected.length === 0}
           >
             Choose all
           </Button>

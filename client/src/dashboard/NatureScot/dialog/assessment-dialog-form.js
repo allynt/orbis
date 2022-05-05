@@ -191,7 +191,7 @@ const AssessmentDialogForm = ({
             <div className={styles.field}>
               <AssessmentsShuttle
                 setValue={setValue}
-                data={activities}
+                availableActivities={activities}
                 initialActivities={selectedActivities}
               />
             </div>
