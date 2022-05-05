@@ -31,13 +31,13 @@ import ActivityList from './activity-list.component';
 const useStyles = makeStyles(theme => ({
   placeholder: {
     backgroundColor: theme.palette.background.default,
-    borderRadius: '5px',
+    borderRadius: theme.shape.borderRadius,
     width: '90%',
     height: '2rem',
-    paddingLeft: '1rem',
+    paddingLeft: theme.spacing(2),
   },
   listTitle: {
-    padding: '1rem',
+    padding: theme.spacing(2),
     textTransform: 'uppercase',
     textAlign: 'center',
   },
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     width: '2rem',
     height: '2rem',
     color: theme.palette.secondary.main,
-    margin: '0rem 0.5rem',
+    margin: `0 ${theme.spacing(1)}`,
     padding: '0.1rem',
   },
   arrowIconActive: {
@@ -55,16 +55,16 @@ const useStyles = makeStyles(theme => ({
   },
   footerButton: {
     backgroundColor: 'transparent',
-    color: '#fff',
+    color: theme.palette.common.white,
   },
   newActivity: {
     color: theme.palette.primary.main,
   },
   inputIcon: {
-    margin: '0.5rem',
+    margin: theme.spacing(1),
   },
   filterField: {
-    marginBottom: '1rem',
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -72,44 +72,41 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const debouncedSearch = useDebounce(value => {
-    (async () => {
-      await dispatch(searchImpactActivities({ query: value }));
-    })();
-  }, 500);
-
   const typeAheadActivities = useSelector(impactActivitiesSelector);
 
-  // filter any initial activities from left list,
-  // as they are passed to right list instead
-  const filteredActivities = !!initialActivities
-    ? data.filter(datum => !initialActivities.includes(datum))
-    : data;
-
-  const [searchString, setSearchString] = useState('');
-  const [typeAheadResults, setTypeAheadResults] = useState(typeAheadActivities);
+  const [typeAheadQuery, setTypeAheadQuery] = useState('');
+  const [typeAheadResults, setTypeAheadResults] = useState(null);
 
   const [newActivityText, setNewActivityText] = useState('');
 
-  const [left, setLeft] = useState(filteredActivities);
+  const [left, setLeft] = useState(data);
   const [leftSelected, setLeftSelected] = useState([]);
+  console.log('left: ', left);
 
   const [right, setRight] = useState(initialActivities ?? []);
   const [rightSelected, setRightSelected] = useState([]);
+
+  const debouncedSearch = useDebounce(
+    value =>
+      (async () => await dispatch(searchImpactActivities({ query: value })))(),
+    500,
+  );
 
   // add activities list to parent form to be tracked, submitted
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
   }, [right, setValue]);
 
+  useEffect(() => {
+    setTypeAheadResults(typeAheadActivities);
+  }, [typeAheadActivities]);
+
   // Type-ahead request to API
   useEffect(() => {
-    if (!searchString || searchString === '') {
-      setTypeAheadResults(null);
-    } else {
-      debouncedSearch(searchString);
+    if (!!typeAheadQuery) {
+      debouncedSearch(typeAheadQuery);
     }
-  }, [searchString, typeAheadActivities, debouncedSearch]);
+  }, [typeAheadQuery, debouncedSearch]);
 
   /**
    * @param {{title: string, code: string|null}} selectedActivity
@@ -133,48 +130,42 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
 
     setLeftSelected([]);
     setRightSelected([]);
-    setSearchString('');
+    setTypeAheadQuery('');
     setNewActivityText('');
   };
 
   const chooseAll = () => {
+    // Move all from left
     setLeft([]);
     setRight(prev => [...prev, ...left]);
     clearSelections();
   };
 
   const removeAll = () => {
-    // move all items visible in right list to right,
-    // irrespective of selection
-    const rightToMove = right.filter(item => !!item.code);
-    setLeft([...left, ...rightToMove]);
-    setRightSelected([]);
-    setRight(right.filter(item => !item.code));
+    // Remove all from right
+    setRight([]);
     clearSelections();
   };
 
   const chooseSelected = () => {
-    // user clicks choose all, move all selected to right
-    // and remove from left
+    // Copy all selected to right
     setRight(prev => [...prev, ...leftSelected]);
     clearSelections();
   };
 
   const addActivity = () => {
-    if (!newActivityText) return;
-    const newActivity = {
-      title: newActivityText,
-      code: null,
-    };
-    setRight(prev => [...prev, newActivity]);
-    setNewActivityText('');
+    if (!newActivityText) {
+      return;
+    } else {
+      setRight(prev => [...prev, { title: newActivityText, code: null }]);
+      setNewActivityText('');
+    }
   };
 
-  const deleteActivity = selectedActivity => {
+  const deleteActivity = selectedActivity =>
     setRight(prev =>
       prev.filter(activity => activity.title !== selectedActivity.title),
     );
-  };
 
   return (
     <>
@@ -211,10 +202,10 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               className={styles.inputIcon}
             />
             <TextField
-              label="Type ahead..."
+              label="Search for Activities"
               className={styles.filterField}
-              value={searchString}
-              onChange={({ target: { value } }) => setSearchString(value)}
+              value={typeAheadQuery}
+              onChange={({ target: { value } }) => setTypeAheadQuery(value)}
               InputProps={{
                 disableUnderline: true,
                 classes: { input: styles.placeholder },
@@ -243,7 +234,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               styles.arrowIcon,
               leftSelected.length > 0 && styles.arrowIconActive,
             )}
-            onClick={() => chooseSelected()}
+            onClick={chooseSelected}
             fontSize="large"
             data-testid="choose activity"
             cursor="pointer"
@@ -271,7 +262,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
               )}
             />
             <TextField
-              label="Add a new activity..."
+              label="Add a new activity"
               value={newActivityText}
               onChange={({ target: { value } }) => setNewActivityText(value)}
               InputProps={{

@@ -51,40 +51,42 @@ const ActivityList = ({
   onDelete,
 }) => {
   const styles = useStyles();
+  console.log('activityList: ', activityList);
   return (
     <div className={styles.container}>
       <List dense>
-        {activityList?.map(activity => {
-          return (
-            <ListItem
-              button
-              key={activity.title}
-              className={styles.listItem}
-              selected={selectedActivityList.includes(activity)}
-              onClick={() => onSelect(activity)}
-            >
-              <ListItemText id={activity.code} primary={activity.title} />
-              {!!onDelete ? (
-                <Button
-                  onClick={() => onDelete(activity)}
-                  variant="text"
-                  className={styles.deleteButton}
-                >
-                  <ListItemText
-                    primary="Delete"
-                    primaryTypographyProps={{
-                      style: {
-                        width: '10%',
-                        textDecoration: 'underline',
-                        color: '#f6be00',
-                      },
-                    }}
-                  />
-                </Button>
-              ) : null}
-            </ListItem>
-          );
-        })}
+        {activityList?.map(activity => (
+          <ListItem
+            button
+            key={activity.code}
+            className={styles.listItem}
+            selected={selectedActivityList.includes(activity)}
+            onClick={() => onSelect(activity)}
+          >
+            <ListItemText
+              id={activity.code}
+              primary={activity.title ?? activity.activity}
+            />
+            {!!onDelete ? (
+              <Button
+                onClick={() => onDelete(activity)}
+                variant="text"
+                className={styles.deleteButton}
+              >
+                <ListItemText
+                  primary="Delete"
+                  primaryTypographyProps={{
+                    style: {
+                      width: '10%',
+                      textDecoration: 'underline',
+                      color: '#f6be00',
+                    },
+                  }}
+                />
+              </Button>
+            ) : null}
+          </ListItem>
+        ))}
       </List>
     </div>
   );
