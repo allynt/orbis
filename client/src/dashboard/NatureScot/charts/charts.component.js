@@ -98,7 +98,19 @@ const Charts = ({ sourceId, selectedAoi }) => {
   const [nearestProtectedAreas, setNearestProtectedAreas] = useState([]);
   const [caseworks, setCaseworks] = useState([]);
   const [protectedFeatures, setProtectedFeatures] = useState([]);
-  const [contactDetails, setContactDetails] = useState({});
+  const [contactDetails, setContactDetails] = useState({
+    area_name: 'East Highland',
+    area_office_address: [
+      'Great Glen House',
+      '',
+      'Leachkin Road',
+      '',
+      'Inverness',
+    ],
+    postcode: 'IV3 8NW',
+    telephone_number: '01463 725 000',
+    email: 'ENQUIRIES@Nature.scot',
+  });
 
   const source = useSelector(dataSourceByIdSelector(sourceId));
   const authTokens = useSelector(selectDataToken);
@@ -152,7 +164,7 @@ const Charts = ({ sourceId, selectedAoi }) => {
 
         setNearestProtectedAreas(response.protected_areas);
         setCaseworks(response.casework);
-        setContactDetails(response.contact_details?.[0]);
+        // setContactDetails(response.contact_details?.[0]);
         setProtectedFeatures(response.protected_features);
       } catch (error) {
         const { message, status } = error;
