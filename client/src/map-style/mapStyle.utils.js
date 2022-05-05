@@ -41,3 +41,29 @@ export const createBottomMapStyle = (mapStyle, topMapLayerGroups) => {
 
   return { ...mapStyle, layers: filteredLayers };
 };
+
+/**
+ * Transform the URL if it matches an OS Data request, to include the API key
+ * and Spatial Referencing System to be used.
+ *
+ * @param {string} url - Map data URL to possibly transform
+ * @param {object} mapStyles - MapStyle data, including API Key, if necessary
+ *
+ * @return {object} - The transformed URL
+ */
+export const transformOSDataRequests = (url, mapStyles) => {
+  if (url.includes('api.os.uk')) {
+    const mapStyle = Object.values(mapStyles).find(
+      mapStyle => mapStyle.name === 'OS',
+    );
+    if (!/[?&]key=/.test(url)) {
+      url += `?key=${mapStyle.api_key}`;
+    }
+
+    return {
+      url: url + '&srs=3857',
+    };
+  }
+
+  return { url };
+};

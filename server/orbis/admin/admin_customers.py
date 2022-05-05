@@ -11,7 +11,17 @@ from django.utils.html import format_html
 from astrosat_users.admin import CustomerAdmin as AstrosatUserCustomerAdmin
 from astrosat_users.models import Customer as AstrosatUserCustomer
 
+from maps.models import CustomerMapStyle
+
 from orbis.models import LicencedCustomer, Orb
+
+
+class MapStyleAdminInline(admin.TabularInline):
+    model = CustomerMapStyle
+
+    extra = 0
+    fields = ("api_key", "map_style")
+    verbose_name_plural = "Map Styles"
 
 
 class CustomerAdmin(AstrosatUserCustomerAdmin):
@@ -41,6 +51,8 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
     readonly_fields = AstrosatUserCustomerAdmin.readonly_fields + (
         "get_grant_licences_for_detail_display",
     )
+
+    inlines = (MapStyleAdminInline, )
 
     ###################
     # detail displays #

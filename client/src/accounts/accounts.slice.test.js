@@ -126,7 +126,11 @@ describe('Accounts Slice', () => {
     });
 
     it('should dispatch fetch user success action.', async () => {
-      const user = { username: 'testusername', email: 'testusername@test.com' };
+      const user = {
+        username: 'testusername',
+        email: 'testusername@test.com',
+        map_styles: [{ name: 'Satellite' }],
+      };
 
       server.use(
         rest.get('*/api/users/:userId', (req, res, ctx) => {

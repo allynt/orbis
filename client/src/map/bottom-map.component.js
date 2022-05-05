@@ -18,7 +18,8 @@ import ReactMapGl from 'react-map-gl';
  *  layers: any[],
  *  getCursor: (interactiveState: import('@deck.gl/core/lib/deck').InteractiveState) => string,
  *  mapStyle: import('mapbox-gl').Style,
- *  mapboxApiAccessToken: string
+ *  mapboxApiAccessToken: string,
+ *  transformRequest: function
  * }} BottomMapProps
  */
 
@@ -49,6 +50,7 @@ export const BottomMap = React.memo(
     getCursor,
     mapStyle,
     mapboxApiAccessToken,
+    transformRequest,
   }) => (
     <DeckGL
       ref={deckRef}
@@ -73,6 +75,7 @@ export const BottomMap = React.memo(
         reuseMaps={true}
         preserveDrawingBuffer={true}
         mapboxApiAccessToken={mapboxApiAccessToken}
+        transformRequest={transformRequest}
       />
     </DeckGL>
   ),

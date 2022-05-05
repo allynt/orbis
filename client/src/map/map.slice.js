@@ -4,26 +4,12 @@ import {
   createBottomMapStyle,
   createTopMapStyle,
 } from 'map-style/mapStyle.utils';
-import { styles as mapStyles } from 'map-style/styles';
 
 /**
- * @typedef {{
- *   selectedMapStyle: import('map-style/styles').MapStyleKey
- *   mapStyles: import('map-style/styles').MapStyles
- *   topMapLayerGroups: import('map-style/constants').LayerGroupSlug[]
- *   isCompareMode: boolean
- *   isLoading: boolean
- *   saveMap: boolean
- * }} MapState
- */
-
-/**
- * @type {MapState}
  */
 export const initialState = {
   selectedMapStyle: 'dark',
-  // @ts-ignore
-  mapStyles,
+  mapStyles: null,
   topMapLayerGroups: ['label'],
   isCompareMode: false,
   saveMap: false,
@@ -34,11 +20,9 @@ const mapSlice = createSlice({
   name: 'map',
   initialState,
   reducers: {
-    /** @type { import('@reduxjs/toolkit').CaseReducer<
-     *   MapState,
-     *   import('@reduxjs/toolkit').PayloadAction<
-     *     import('map-style/styles').MapStyleKey
-     *   >>} */
+    setMapStyles: (state, { payload }) => {
+      state.mapStyles = payload;
+    },
     selectMapStyle: (state, { payload }) => {
       state.selectedMapStyle = payload;
     },
@@ -54,8 +38,13 @@ const mapSlice = createSlice({
   },
 });
 
-export const { selectMapStyle, toggleCompareMode, saveMap, setIsLoading } =
-  mapSlice.actions;
+export const {
+  setMapStyles,
+  selectMapStyle,
+  toggleCompareMode,
+  saveMap,
+  setIsLoading,
+} = mapSlice.actions;
 
 /**
  * @param {import('typings').RootState} state
@@ -91,6 +80,7 @@ export const selectedMapStyleSelector = createSelector(
   map =>
     map?.selectedMapStyle && {
       id: map.selectedMapStyle,
+      apiKey: map.mapStyles[map.selectedMapStyle].api_key,
       topMapStyle: createTopMapStyle(
         map.mapStyles[map.selectedMapStyle].style,
         map.topMapLayerGroups,

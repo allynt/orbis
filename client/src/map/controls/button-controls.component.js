@@ -22,14 +22,6 @@ const ISOMETRIC_PITCH = 35;
 
 export const ButtonControls = React.memo(
   /**
-   * @param {{
-   *  drawingToolsEnabled: boolean
-   *  setDrawingToolsEnabled: React.Dispatch<boolean>
-   *  setDrawMode: React.Dispatch<import('drawing-tools/drawing-tools.config').EditMode>
-   *  drawMode: import('drawing-tools/drawing-tools.config').EditMode
-   *  updateViewState: (newViewState: import('MapContext').ViewState) => void
-   *  selectedMapStyleId: import('map-style/styles').MapStyleKey
-   * }} props
    */
   ({
     drawingToolsEnabled,

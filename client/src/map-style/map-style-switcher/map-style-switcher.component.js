@@ -3,14 +3,8 @@ import React, { useState } from 'react';
 import { LayersIcon, Tooltip, makeStyles } from '@astrosat/astrosat-ui';
 
 import { MapControlButton, ImageList, ImageListItem } from 'components';
-import { toTitleCase } from 'utils/text';
 
 /**
- * @param {{
- *   mapStyles: import('map-style/styles').MapStyles
- *   selectedMapStyle?: import('map-style/styles').MapStyleKey
- *   onInputChange?: (newStyle: import('map-style/styles').MapStyleKey) => void
- * }} props
  */
 export const StyleSwitcherContent = ({
   onInputChange,
@@ -18,13 +12,13 @@ export const StyleSwitcherContent = ({
   mapStyles,
 }) => (
   <ImageList name="mapStyle" onChange={onInputChange} value={selectedMapStyle}>
-    {Object.entries(mapStyles).map(([styleKey, { img }]) => (
+    {Object.entries(mapStyles).map(([styleKey, { name, thumbnail }]) => (
       <ImageListItem
         key={styleKey}
         value={styleKey}
-        text={toTitleCase(styleKey)}
-        src={img}
-        alt={toTitleCase(styleKey)}
+        text={name}
+        src={thumbnail}
+        alt={name}
       />
     ))}
   </ImageList>
@@ -43,13 +37,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
- * @param {{
- *   defaultOpen?: boolean
- *   mapStyles: import('map-style/styles').MapStyles
- *   selectedMapStyle?: import('map-style/styles').MapStyleKey
- *   selectMapStyle?: (newStyle: import('map-style/styles').MapStyleKey) => void
- *   className?: string
- * }} props
  */
 const MapStyleSwitcher = ({
   defaultOpen = false,
