@@ -239,6 +239,14 @@ export const login = createAsyncThunk(
           dispatch(push('/'));
           break;
       }
+
+      const mapStyles = user.map_styles.reduce((acc, value) => {
+        acc[value.name.toLowerCase()] = value;
+        return acc;
+      }, {});
+
+      await dispatch(setMapStyles(mapStyles));
+
       return { userKey, user };
     } catch (error) {
       /** @type {import('api-client').ResponseError<{user?: import('typings').PartialUser}>} */
