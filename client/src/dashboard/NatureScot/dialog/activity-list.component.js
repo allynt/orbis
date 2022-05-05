@@ -51,7 +51,6 @@ const ActivityList = ({
   onDelete,
 }) => {
   const styles = useStyles();
-  console.log('activityList: ', activityList);
   return (
     <div className={styles.container}>
       <List dense>

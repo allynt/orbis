@@ -75,13 +75,11 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   const typeAheadActivities = useSelector(impactActivitiesSelector);
 
   const [typeAheadQuery, setTypeAheadQuery] = useState('');
-  const [typeAheadResults, setTypeAheadResults] = useState(null);
 
   const [newActivityText, setNewActivityText] = useState('');
 
   const [left, setLeft] = useState(data);
   const [leftSelected, setLeftSelected] = useState([]);
-  console.log('left: ', left);
 
   const [right, setRight] = useState(initialActivities ?? []);
   const [rightSelected, setRightSelected] = useState([]);
@@ -96,10 +94,6 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
   }, [right, setValue]);
-
-  useEffect(() => {
-    setTypeAheadResults(typeAheadActivities);
-  }, [typeAheadActivities]);
 
   // Type-ahead request to API
   useEffect(() => {
@@ -214,7 +208,7 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           </Grid>
           <Divider />
           <ActivityList
-            activityList={typeAheadResults ?? left}
+            activityList={!!typeAheadQuery ? typeAheadActivities : left}
             selectedActivityList={leftSelected}
             onSelect={selectActivityOnLeft}
           />
