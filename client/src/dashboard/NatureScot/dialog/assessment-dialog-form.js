@@ -4,16 +4,11 @@ import { Button, makeStyles, TextField } from '@astrosat/astrosat-ui';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import { Form } from 'components';
 import { DateRangeFilter } from 'map/orbs/components/date-range-filter/date-range-filter.component';
 
-import {
-  impactActivitiesSelector,
-  fetchImpactActivities,
-} from '../nature-scot.slice';
 import { FieldWrapper } from './assessment-field-wrapper.component';
 import AssessmentsShuttle from './assessments-shuttle.component';
 

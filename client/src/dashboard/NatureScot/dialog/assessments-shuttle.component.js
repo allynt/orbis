@@ -29,17 +29,22 @@ import { useDebounce } from 'hooks/useDebounce';
 import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
-  placeholder: {
-    backgroundColor: theme.palette.background.default,
-    borderRadius: theme.shape.borderRadius,
-    width: '90%',
-    height: '2rem',
-    paddingLeft: theme.spacing(2),
-  },
   listTitle: {
     padding: theme.spacing(2),
     textTransform: 'uppercase',
     textAlign: 'center',
+  },
+  searchField: {
+    padding: theme.spacing(1),
+  },
+  input: {
+    backgroundColor: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    height: '2rem',
+    paddingLeft: theme.spacing(2),
+  },
+  inputIcon: {
+    marginRight: theme.spacing(1),
   },
   arrowIcon: {
     borderRadius: '50%',
@@ -53,18 +58,12 @@ const useStyles = makeStyles(theme => ({
   arrowIconActive: {
     backgroundColor: theme.palette.info.main,
   },
-  footerButton: {
-    backgroundColor: 'transparent',
-    color: theme.palette.common.white,
-  },
   newActivity: {
     color: theme.palette.primary.main,
   },
-  inputIcon: {
-    margin: theme.spacing(1),
-  },
-  filterField: {
-    marginBottom: theme.spacing(2),
+  footerButton: {
+    backgroundColor: 'transparent',
+    color: theme.palette.common.white,
   },
 }));
 
@@ -195,6 +194,7 @@ const AssessmentsShuttle = ({
             alignItems="center"
             justifyContent="space-between"
             wrap="nowrap"
+            className={styles.searchField}
           >
             <MagnifierIcon
               fontSize="small"
@@ -203,12 +203,11 @@ const AssessmentsShuttle = ({
             />
             <TextField
               label="Search for Activities"
-              className={styles.filterField}
               value={typeAheadQuery}
               onChange={({ target: { value } }) => setTypeAheadQuery(value)}
               InputProps={{
                 disableUnderline: true,
-                classes: { input: styles.placeholder },
+                classes: { input: styles.input },
               }}
             />
           </Grid>
@@ -269,7 +268,7 @@ const AssessmentsShuttle = ({
               onChange={({ target: { value } }) => setNewActivityText(value)}
               InputProps={{
                 disableUnderline: true,
-                classes: { input: styles.placeholder },
+                classes: { input: styles.input },
               }}
               maxLength={50}
             />
@@ -297,7 +296,7 @@ const AssessmentsShuttle = ({
             className={styles.footerButton}
             size="small"
             variant="text"
-            disabled={leftSelected.length === 0}
+            disabled={availableActivities.length === 0}
           >
             Choose all
           </Button>
