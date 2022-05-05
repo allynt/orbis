@@ -35,7 +35,7 @@ export const ClickedFeaturesSummary = ({
   const { viewState, setViewState, bottomDeckRef } = useMap();
 
   const handleFeatureClick = feature => {
-    const viewport = bottomDeckRef.current.viewports[0];
+    const viewport = bottomDeckRef.current.deck;
 
     const newViewState = createViewstateForFeature({
       feature,
