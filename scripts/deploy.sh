@@ -55,9 +55,11 @@ set -x
 
 cd ./deploy/
 
-$TERRAFORM_BINARY init
-$TERRAFORM_BINARY workspace new "${TERRAFORM_WORKSPACE}" || true
-$TERRAFORM_BINARY workspace select "${TERRAFORM_WORKSPACE}"
-$TERRAFORM_BINARY init
-$TERRAFORM_BINARY plan -var "environment=${ENVIRONMENT}" -var "instance=${INSTANCE}" -var "tag=${TAG}" -out="$PWD/deploy.plan"
-$TERRAFORM_BINARY apply -auto-approve "$PWD/deploy.plan"
+# Environment/Instance are passed to terragrunt as env vars
+export ENVIRONMENT
+export INSTANCE
+
+terragrunt init
+terragrunt workspace select "${TERRAFORM_WORKSPACE}" || terragrunt workspace new "${TERRAFORM_WORKSPACE}"
+terragrunt init
+terragrunt apply -auto-approve -var "tag=${TAG}"
