@@ -112,10 +112,8 @@ const AssessmentsShuttle = ({
   }, [typeAheadQuery, debouncedSearch]);
 
   const reset = () => {
-    // TODO: do we want to be doing all this?
     setLeftSelected([]);
     setRightSelected([]);
-    setTypeAheadQuery('');
     setNewActivityText('');
   };
 
@@ -203,6 +201,7 @@ const AssessmentsShuttle = ({
             />
             <TextField
               label="Search for Activities"
+              placeholder="Search for Activities"
               value={typeAheadQuery}
               onChange={({ target: { value } }) => setTypeAheadQuery(value)}
               InputProps={{
@@ -237,7 +236,7 @@ const AssessmentsShuttle = ({
             )}
             onClick={moveSelected}
             fontSize="large"
-            data-testid="choose activity"
+            data-testid="arrow-icon"
             cursor="pointer"
           />
         </Grid>
@@ -257,6 +256,7 @@ const AssessmentsShuttle = ({
             <AddCircle
               onClick={addActivity}
               fontSize="small"
+              data-testid="cross-icon"
               className={clsx(
                 styles.inputIcon,
                 newActivityText && styles.newActivity,
@@ -264,6 +264,7 @@ const AssessmentsShuttle = ({
             />
             <TextField
               label="Add a new activity"
+              placeholder="Add a new activity"
               value={newActivityText}
               onChange={({ target: { value } }) => setNewActivityText(value)}
               InputProps={{

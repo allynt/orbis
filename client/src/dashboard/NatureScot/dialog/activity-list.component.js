@@ -60,12 +60,9 @@ const ActivityList = ({
             key={activity.code}
             className={styles.listItem}
             selected={selectedActivityList.includes(activity)}
-            onClick={() => onSelect(activity)}
+            onClick={() => onSelect?.(activity)}
           >
-            <ListItemText
-              id={activity.code}
-              primary={activity.title ?? activity.activity}
-            />
+            <ListItemText id={activity.code} primary={activity.title} />
             {!!onDelete ? (
               <Button
                 onClick={() => onDelete(activity)}
