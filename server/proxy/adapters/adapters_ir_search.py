@@ -57,6 +57,29 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             json.dumps(raw_data["buffered"])
         ) if "buffered" in raw_data else None
 
+        # extract contact_details...
+        office = raw_data["organisation"]["office"]
+        processed_data["contact_details"].append({
+            "area_office": office.get("building", None),
+            "area_name":
+                raw_data.get("organisation").get("region", None),
+            "area_office_address":
+                # yapf: disable
+                filter(
+                    None,
+                    [
+                        office.get(key)
+                        for key in ["building", "number", "street", "district", "town"]
+                    ]
+                ),
+            "postcode":
+                office.get("postcode", None),
+            "telephone_number":
+                office.get("telephone", None),
+            "email":
+                office.get("email", None),
+        })
+
         for suggestion in raw_data.get("suggestions", []):
 
             suggestion_bbox = Polygon.from_bbox(
@@ -72,28 +95,6 @@ class IRSearchAdapter(BaseProxyDataAdapter):
             suggestion_center = Point(
                 suggestion["center"]
             ) if "center" in suggestion else None
-
-            # extract contact_details...
-            for contact in suggestion.get("natureScotOffices", []):
-                processed_data["contact_details"].append({
-                    "area_name":
-                        contact.get("area", {}).get("name", None),
-                    "area_office_address":
-                        # yapf: disable
-                        filter(
-                            None,
-                            [
-                                contact.get("office", {}).get(key)
-                                for key in ["building", "number", "street", "district", "town"]
-                            ]
-                        ),
-                    "postcode":
-                        contact.get("office", {}).get("postcode", None),
-                    "telephone_number":
-                        contact.get("office", {}).get("telephone", None),
-                    "email":
-                        contact.get("office", {}).get("email", None),
-                })
 
             # extract casework...
             for casework in suggestion.get("casework", []):
@@ -127,8 +128,8 @@ class IRSearchAdapter(BaseProxyDataAdapter):
                     aoi_buffered.intersects(suggestion_bbox)
                     if aoi_buffered and suggestion_bbox else None,
                 "distance":
-                    round(bng_aoi.distance(bng_suggestion_bbox) / 1000, 2)
-                    if bng_aoi and bng_suggestion_bbox else None
+                    round(bng_aoi.distance(bng_suggestion_bbox) /
+                          1000, 2) if bng_aoi and bng_suggestion_bbox else None
             })
 
             # extract protected_features...
