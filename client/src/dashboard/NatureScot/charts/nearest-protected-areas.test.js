@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { render, screen } from 'test/test-utils';
+import { render, screen, within } from 'test/test-utils';
 
 import { NearestProtectedAreas } from './nearest-protected-areas';
 
 const data = [
   { name: 'Loch Lomond', type: 'National Park', distance: 4 },
-  { name: 'Drumnadrochit', type: 'Protected Area', distance: 8 },
   { name: 'Ardnamurchan', type: 'Aviemore Place', distance: 12 },
+  { name: 'Drumnadrochit', type: 'Protected Area', distance: 8 },
 ];
 
 describe('< NearestProtectedAreas/>', () => {
@@ -45,5 +45,16 @@ describe('< NearestProtectedAreas/>', () => {
     expect(
       screen.getByRole('heading', { name: 'Nearest Protected Areas' }),
     ).toBeInTheDocument();
+  });
+
+  it('should render distance data with increasing distance value', () => {
+    render(<NearestProtectedAreas data={data} />);
+    const distances = data.map(element => element.distance);
+    const sorted = distances.sort((a, b) => a - b);
+    const rowValues = screen.getAllByRole('row');
+    rowValues.shift();
+    rowValues.forEach((rowValue, i) => {
+      expect(within(rowValue).getByRole('cell', { name: `${sorted[i]} km` }));
+    });
   });
 });

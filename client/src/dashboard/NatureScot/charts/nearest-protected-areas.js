@@ -60,9 +60,9 @@ const NearestProtectedAreas = ({ data }) => {
         tableOptions={{
           initialState: {
             sortBy: [
+              { id: 'distance', desc: false },
               { id: 'name', desc: false },
               { id: 'type', desc: false },
-              { id: 'distance', desc: false },
             ],
           },
           disableSortRemove: true,
