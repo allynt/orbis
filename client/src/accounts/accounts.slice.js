@@ -96,7 +96,7 @@ export const fetchCurrentUser = createAsyncThunk(
     try {
       const user = await apiClient.users.getCurrentUser();
 
-      const mapStyles = user.map_styles.reduce((acc, value) => {
+      const mapStyles = user?.map_styles?.reduce((acc, value) => {
         acc[value.name.toLowerCase()] = value;
         return acc;
       }, {});
@@ -240,7 +240,7 @@ export const login = createAsyncThunk(
           break;
       }
 
-      const mapStyles = user.map_styles.reduce((acc, value) => {
+      const mapStyles = user?.map_styles?.reduce((acc, value) => {
         acc[value.name.toLowerCase()] = value;
         return acc;
       }, {});
