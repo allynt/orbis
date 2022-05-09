@@ -8,6 +8,7 @@ import { waitFor } from 'test/test-utils';
 
 import reducer, {
   fetchImpactActivities,
+  searchImpactActivities,
   fetchImpactAssessment,
   fetchProposals,
   saveProposal,
@@ -15,6 +16,7 @@ import reducer, {
   deleteProposal,
   selectProposal,
   impactAvailableActivitiesSelector,
+  impactActivitiesSelector,
   impactAssessmentSelector,
   proposalsSelector,
   selectedProposalSelector,
@@ -36,7 +38,7 @@ describe('Nature Scot Slice', () => {
       it('should dispatch fetch impact activities failure action', async () => {
         server.use(
           rest.post(
-            '*/api/proxy/data/ns/proxy/activities/latest/',
+            '*/api/proxy/data/ns/proxy/available-activities/latest/',
             (req, res, ctx) => {
               return res(ctx.status(401, 'Test Error'));
             },
@@ -78,7 +80,7 @@ describe('Nature Scot Slice', () => {
 
         server.use(
           rest.post(
-            '*/api/proxy/data/ns/proxy/activities/latest/',
+            '*/api/proxy/data/ns/proxy/available-activities/latest/',
             (req, res, ctx) => {
               return res(ctx.status(200), ctx.json(payload));
             },
@@ -164,6 +166,66 @@ describe('Nature Scot Slice', () => {
         };
 
         await store.dispatch(fetchImpactAssessment(form));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    describe('Type-Ahead', () => {
+      let store = null;
+
+      beforeEach(() => {
+        store = mockStore({
+          data: { tokens: { 'ns/proxy/impact/latest': 'test-token' } },
+        });
+      });
+
+      it('should dispatch search impact activities failure action', async () => {
+        server.use(
+          rest.post(
+            '*/api/proxy/data/ns/proxy/activities/latest/',
+            (req, res, ctx) => {
+              return res(ctx.status(401, 'Test Error'));
+            },
+          ),
+        );
+
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: searchImpactActivities.rejected.type,
+            payload: { message: '401 Test Error' },
+          }),
+        ]);
+
+        const form = { query: 'test-query' };
+
+        await store.dispatch(searchImpactActivities(form));
+
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should dispatch search impact activities success action', async () => {
+        const payload = {};
+
+        server.use(
+          rest.post(
+            '*/api/proxy/data/ns/proxy/activities/latest/',
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(payload));
+            },
+          ),
+        );
+
+        const expectedActions = expect.arrayContaining([
+          expect.objectContaining({
+            type: searchImpactActivities.fulfilled.type,
+            payload,
+          }),
+        ]);
+
+        const form = { query: 'test-query' };
+
+        await store.dispatch(searchImpactActivities(form));
 
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -508,6 +570,7 @@ describe('Nature Scot Slice', () => {
       beforeState = {
         isLoading: false,
         error: null,
+        activities: null,
         impactAssessment: null,
         proposals: null,
         selectedProposal: null,
@@ -548,7 +611,7 @@ describe('Nature Scot Slice', () => {
 
         server.use(
           rest.post(
-            '*/api/proxy/data/ns/proxy/activities/latest',
+            '*/api/proxy/data/ns/proxy/available-activities/latest',
             (req, res, ctx) => {
               return res(ctx.status(200), ctx.json(payload));
             },
@@ -560,12 +623,12 @@ describe('Nature Scot Slice', () => {
           payload,
         });
 
-        expect(actualState.activities).toEqual(payload);
+        expect(actualState.availableActivities).toEqual(payload);
       });
     });
 
     describe('Fetch Impact Assessment', () => {
-      it('should update the sources in state, when failed to retrieve impact assessment', () => {
+      it('should update the error in state, when failed to retrieve impact assessment', () => {
         const error = { message: 'Test Impact Assessment Error' };
 
         const actualState = reducer(beforeState, {
@@ -584,6 +647,34 @@ describe('Nature Scot Slice', () => {
               areas: [],
               impacts: [],
             },
+          },
+        };
+
+        const actualState = reducer(beforeState, {
+          type: fetchImpactAssessment.fulfilled.type,
+          payload,
+        });
+
+        expect(actualState.impactAssessment).toEqual(payload);
+      });
+    });
+
+    describe('Search Impact Activities', () => {
+      it('should update the error in state, when failed to retrieve search results', () => {
+        const error = { message: 'Test Search Activities Error' };
+
+        const actualState = reducer(beforeState, {
+          type: searchImpactActivities.rejected.type,
+          payload: error,
+        });
+
+        expect(actualState.error).toEqual(error);
+      });
+
+      it('should update the activities in state, when successfully retrieved search results', () => {
+        const payload = {
+          natureScotDashboard: {
+            activities: [{ title: 'test-title', code: '123' }],
           },
         };
 
@@ -785,8 +876,8 @@ describe('Nature Scot Slice', () => {
       };
     });
 
-    describe('Impact Activities', () => {
-      it('should return an empty array if no impact activities is present', () => {
+    describe('Available Impact Activities', () => {
+      it('should return an empty array if no impact activities are present', () => {
         const state = {};
 
         const result = impactAvailableActivitiesSelector(state);
@@ -794,13 +885,55 @@ describe('Nature Scot Slice', () => {
         expect(result).toEqual([]);
       });
 
-      it('should return an empty array if no impact activities is present', () => {
+      it('should return an empty array if no impact activities are present', () => {
         const state = {
           natureScotDashboard: {},
         };
         const result = impactAvailableActivitiesSelector(state);
 
         expect(result).toEqual([]);
+      });
+
+      it('should return the impact activities results', () => {
+        const state = {
+          natureScotDashboard: {
+            availableActivities: [
+              {
+                value: 1,
+                label: 'Accumulation of organic material',
+                proposed: true,
+              },
+              {
+                value: 2,
+                label: 'Physical alteration of a water body',
+                proposed: false,
+              },
+            ],
+          },
+        };
+
+        const result = impactAvailableActivitiesSelector(state);
+
+        expect(result).toBe(state.natureScotDashboard.availableActivities);
+      });
+    });
+
+    describe('Searched Impact Activities', () => {
+      it('should return null if no impact activities are present', () => {
+        const state = {};
+
+        const result = impactActivitiesSelector(state);
+
+        expect(result).toBeNull();
+      });
+
+      it('should return null if no impact activities are present', () => {
+        const state = {
+          natureScotDashboard: {},
+        };
+        const result = impactActivitiesSelector(state);
+
+        expect(result).toBeNull();
       });
 
       it('should return the impact activities results', () => {
@@ -821,7 +954,7 @@ describe('Nature Scot Slice', () => {
           },
         };
 
-        const result = impactAvailableActivitiesSelector(state);
+        const result = impactActivitiesSelector(state);
 
         expect(result).toBe(state.natureScotDashboard.activities);
       });
