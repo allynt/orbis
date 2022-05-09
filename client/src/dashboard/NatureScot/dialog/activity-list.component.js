@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   },
   List: {
     overflow: 'scroll',
-    //TODO: same with this one
     bgcolor: '#f00',
   },
   deleteButton: {
@@ -26,7 +25,6 @@ const useStyles = makeStyles(theme => ({
   },
   listItem: {
     '&$selected': {
-      // TODO: where does this color come from?
       backgroundColor: '#7c8990',
     },
     '&:hover': {
