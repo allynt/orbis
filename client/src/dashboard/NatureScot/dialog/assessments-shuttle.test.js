@@ -2,7 +2,7 @@ import React from 'react';
 
 import fetch from 'jest-fetch-mock';
 
-import { render, screen, userEvent, waitFor } from 'test/test-utils';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import AssessmentsShuttle from './assessments-shuttle.component';
 
@@ -54,7 +54,7 @@ describe('AssessmentsShuttle', () => {
     expect(screen.getAllByText('title-1').length).toEqual(2);
   });
 
-  it('transfers all activities from left to right', () => {
+  it('transfers all available activities from left to right', () => {
     setup({ initialActivities: null });
     const titles = ['title-1', 'title-2', 'title-3'];
 
@@ -67,6 +67,17 @@ describe('AssessmentsShuttle', () => {
     titles.forEach(title =>
       expect(screen.getAllByText(title).length).toEqual(2),
     );
+  });
+
+  it('Transfers all search result activities from left to right', () => {
+    fetch.once(JSON.stringify([]));
+    setup({ state: typeAheadState });
+
+    userEvent.type(screen.getByPlaceholderText('Search for Activities'), 'a');
+    expect(screen.getAllByText('result-2').length).toEqual(1);
+
+    userEvent.click(screen.getByRole('button', { name: 'Choose all' }));
+    expect(screen.getAllByText('result-2').length).toEqual(2);
   });
 
   it('only transfers left not already in right', () => {
@@ -121,19 +132,15 @@ describe('AssessmentsShuttle', () => {
 
   it('reverts to defaults when no search text', () => {
     fetch.once(JSON.stringify([]));
-    setup({ state: typeAheadState });
+    setup({ state: typeAheadState, initialActivities: null });
 
     userEvent.type(screen.getByPlaceholderText('Search for Activities'), 'a');
-    waitFor(() => {
-      expect(screen.getByText('result-1')).toBeInTheDocument();
-      expect(screen.getByText('title-1')).not.toBeInTheDocument();
-    });
+    expect(screen.getByText('result-1')).toBeInTheDocument();
+    expect(screen.queryByText('title-1')).not.toBeInTheDocument();
 
     userEvent.clear(screen.getByPlaceholderText('Search for Activities'));
-    waitFor(() => {
-      expect(screen.getByText('title-1')).toBeInTheDocument();
-      expect(screen.getByText('result-1')).not.toBeInTheDocument();
-    });
+    expect(screen.getByText('title-1')).toBeInTheDocument();
+    expect(screen.queryByText('result-1')).not.toBeInTheDocument();
   });
 
   it('adds custom activities', () => {

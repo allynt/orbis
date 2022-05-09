@@ -93,6 +93,10 @@ const AssessmentsShuttle = ({
   const [right, setRight] = useState(initialActivities ?? []);
   const [rightSelected, setRightSelected] = useState([]);
 
+  const activitiesToDisplay = !!typeAheadQuery
+    ? typeAheadActivities
+    : availableActivities;
+
   const debouncedSearch = useDebounce(
     value =>
       (async () => await dispatch(searchImpactActivities({ query: value })))(),
@@ -141,7 +145,7 @@ const AssessmentsShuttle = ({
   };
 
   const moveAll = () => {
-    setRight(availableActivities);
+    setRight(activitiesToDisplay);
     reset();
   };
 
@@ -212,9 +216,7 @@ const AssessmentsShuttle = ({
           </Grid>
           <Divider />
           <ActivityList
-            activityList={
-              !!typeAheadQuery ? typeAheadActivities : availableActivities
-            }
+            activityList={activitiesToDisplay}
             selectedActivityList={leftSelected}
             onSelect={selectActivity}
           />
