@@ -6,6 +6,8 @@ import { render, screen, userEvent } from 'test/test-utils';
 
 import AssessmentsShuttle from './assessments-shuttle.component';
 
+//TODO: msw and getByText
+
 const typeAheadState = {
   natureScotDashboard: {
     activities: new Array(3).fill(undefined).map((_, i) => ({
@@ -43,15 +45,19 @@ describe('AssessmentsShuttle', () => {
     expect(screen.getByText('Available Activities')).toBeInTheDocument();
   });
 
-  it('copies individual activities from left to right', () => {
+  it.only('copies individual activities from left to right', () => {
     setup({ initialActivities: null });
 
-    expect(screen.getAllByText('title-1').length).toEqual(1);
+    expect(screen.getAllByRole('button', { name: 'title-1' }).length).toEqual(
+      1,
+    );
 
-    userEvent.click(screen.getByText('title-1'));
-    userEvent.click(screen.getByTestId('arrow-icon'));
+    userEvent.click(screen.getByRole('button', { name: 'title-1' }));
+    userEvent.click(screen.getByTestId('choose-activity'));
 
-    expect(screen.getAllByText('title-1').length).toEqual(2);
+    expect(screen.getAllByRole('button', { name: 'title-1' }).length).toEqual(
+      2,
+    );
   });
 
   it('transfers all available activities from left to right', () => {
@@ -149,7 +155,7 @@ describe('AssessmentsShuttle', () => {
       screen.getByPlaceholderText('Add a new activity'),
       'test activity',
     );
-    userEvent.click(screen.getByTestId('cross-icon'));
+    userEvent.click(screen.getByTestId('add-activity'));
 
     expect(screen.getByText('test activity')).toBeInTheDocument();
   });
@@ -158,7 +164,7 @@ describe('AssessmentsShuttle', () => {
     const { setValue } = setup({ initialActivities: null });
 
     userEvent.click(screen.getByText('title-1'));
-    userEvent.click(screen.getByTestId('arrow-icon'));
+    userEvent.click(screen.getByTestId('choose-activity'));
 
     expect(setValue).toHaveBeenCalled();
   });

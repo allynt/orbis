@@ -26,6 +26,7 @@ import {
 } from 'dashboard/NatureScot/nature-scot.slice';
 import { useDebounce } from 'hooks/useDebounce';
 
+import { TYPE_AHEAD_DEBOUNCE } from '../nature-scotland.constants';
 import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
@@ -100,7 +101,7 @@ const AssessmentsShuttle = ({
   const debouncedSearch = useDebounce(
     value =>
       (async () => await dispatch(searchImpactActivities({ query: value })))(),
-    500,
+    TYPE_AHEAD_DEBOUNCE,
   );
 
   // add activities list to parent form to be tracked, submitted
@@ -238,7 +239,7 @@ const AssessmentsShuttle = ({
             )}
             onClick={moveSelected}
             fontSize="large"
-            data-testid="arrow-icon"
+            data-testid="choose-activity"
             cursor="pointer"
           />
         </Grid>
@@ -254,11 +255,12 @@ const AssessmentsShuttle = ({
             alignItems="center"
             justifyContent="space-around"
             wrap="nowrap"
+            className={styles.searchField}
           >
             <AddCircle
               onClick={addActivity}
               fontSize="small"
-              data-testid="cross-icon"
+              data-testid="add-activity"
               className={clsx(
                 styles.inputIcon,
                 newActivityText && styles.newActivity,

@@ -35,3 +35,5 @@ export const SCORE_LEGENDS = [
 
 export const IMPACT_COLUMNS = [0, 1, 2, 3, 4];
 export const SCORE_VALUES = [3, 2, 1, 0, -1, -2, -3];
+
+export const TYPE_AHEAD_DEBOUNCE = 500;
