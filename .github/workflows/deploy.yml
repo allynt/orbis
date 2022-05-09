@@ -2,6 +2,7 @@ name: Deploy
 
 on:
   deployment: {}
+  workflow_dispatch:
 
 # Seperate but identical jobs are unfortunately required for testing/staging/production
 # because they have to each run inside their respective environment clusters

@@ -79,7 +79,7 @@ const renderComponent = (
       value={{
         viewState: {},
         setViewState,
-        bottomDeckRef: { current: { viewports: [{ width: 0, height: 0 }] } },
+        bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
       }}
     >
       <AnalysisPanelProvider

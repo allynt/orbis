@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { mapboxTokenSelector } from 'app.slice';
 import { isLoadingSelector as bookmarksLoadingSelector } from 'bookmarks/bookmarks.slice';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { mapStylesSelector } from 'map/map.slice';
 import { useMap } from 'MapContext';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { isDrawingSatelliteAoiSelector } from 'satellites/satellites.slice';
 import { useSatellitesLayers } from 'satellites/useSatellitesLayers';
 
+import { transformOSDataRequests } from '../map-style/mapStyle.utils';
 import { BottomMap } from './bottom-map.component';
 import { ButtonControls } from './controls/button-controls.component';
 import { ExtrusionScaleSlider } from './controls/extrusion-scale-slider/extrusion-scale-slider.component';
@@ -107,6 +109,7 @@ const Map = ({
     setViewState,
     updateViewState,
   } = useMap();
+  const mapStyles = useSelector(mapStylesSelector);
   const extrudedMode = useSelector(state => extrudedModeSelector(state?.orbs));
   const extrusionScale = useSelector(state =>
     extrusionScaleSelector(state?.orbs),
@@ -165,6 +168,8 @@ const Map = ({
   const topMapIsController =
     drawingToolsEnabled || isDrawingSatelliteAoi || isDrawingAoi;
 
+  const transformRequest = url => transformOSDataRequests(url, mapStyles);
+
   return (
     <div className={styles.map}>
       <LoadMask
@@ -204,6 +209,7 @@ const Map = ({
         getCursor={getBottomMapCursor}
         mapStyle={selectedMapStyle?.bottomMapStyle}
         mapboxApiAccessToken={accessToken}
+        transformRequest={transformRequest}
       />
       <TopMap
         mapStyle={selectedMapStyle?.topMapStyle}
@@ -218,6 +224,7 @@ const Map = ({
         editableLayer={editableLayer}
         drawAoiLayer={drawAoiLayer}
         drawSatelliteAoiLayer={drawSatelliteAoiLayer}
+        transformRequest={transformRequest}
       />
     </div>
   );

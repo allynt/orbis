@@ -16,6 +16,9 @@ from orbis.models import (
 )
 from orbis.serializers import OrbSerializer
 
+from maps.models import CustomerMapStyle
+from maps.serializers import CustomerMapStyleSerializer
+
 
 class OrbisUserFeedbackRecordSerializer(serializers.ModelSerializer):
     """
@@ -80,9 +83,13 @@ class OrbisUserSerializer(AstrosatUsersUserSerializer):
     """
     class Meta:
         model = User
-        fields = AstrosatUsersUserSerializer.Meta.fields + ["orbs"]
+        fields = AstrosatUsersUserSerializer.Meta.fields + [
+            "orbs", "map_styles"
+        ]
 
     orbs = serializers.SerializerMethodField()
+
+    map_styles = serializers.SerializerMethodField()
 
     @swagger_serializer_method(serializer_or_field=OrbSerializer(many=True))
     def get_orbs(self, obj):
@@ -94,3 +101,16 @@ class OrbisUserSerializer(AstrosatUsersUserSerializer):
             )
         ).distinct()
         return OrbSerializer(orbs, many=True).data
+
+    @swagger_serializer_method(
+        serializer_or_field=CustomerMapStyleSerializer(many=True)
+    )
+    def get_map_styles(self, obj):
+        # return all map styles that this user has access to...
+        map_styles = CustomerMapStyle.objects.filter(
+            customer__in=obj.customer_users.values_list("customer", flat=True)
+        ).distinct()
+
+        return CustomerMapStyleSerializer(
+            map_styles, many=True, context=self.context
+        ).data

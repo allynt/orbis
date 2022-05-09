@@ -1,3 +1,12 @@
+## [2.36.1](https://github.com/astrosat/orbis/compare/v2.36.0...v2.36.1) (2022-05-05)
+
+
+### Bug Fixes
+
+* **deploy:** Switch to Reusable deploy component [ORB-598] ([#1631](https://github.com/astrosat/orbis/issues/1631)) ([109e6d8](https://github.com/astrosat/orbis/commit/109e6d8e56e8e3bf76fb25bf61c18d56469498e3))
+* **deploy:** Tweak Cache-Control Headers ([#1627](https://github.com/astrosat/orbis/issues/1627)) ([997fa0b](https://github.com/astrosat/orbis/commit/997fa0bc7ca5514a2879fc40106ea8f3c8482e7a))
+* **frontend:** Temporarily hard-code contact details ([#1632](https://github.com/astrosat/orbis/issues/1632)) ([a50fb13](https://github.com/astrosat/orbis/commit/a50fb136deb1f2dd135ce14197287167ccad1c56))
+
 # [2.36.0](https://github.com/astrosat/orbis/compare/v2.35.0...v2.36.0) (2022-04-29)
 
 

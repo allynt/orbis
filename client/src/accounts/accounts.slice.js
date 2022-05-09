@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 
 import apiClient from 'api-client';
 import { bookmarksSelector, fetchBookmarks } from 'bookmarks/bookmarks.slice';
+import { setMapStyles } from 'map/map.slice';
 import {
   selectCurrentCustomer,
   setCurrentCustomer,
@@ -94,6 +95,14 @@ export const fetchCurrentUser = createAsyncThunk(
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
       const user = await apiClient.users.getCurrentUser();
+
+      const mapStyles = user.map_styles.reduce((acc, value) => {
+        acc[value.name.toLowerCase()] = value;
+        return acc;
+      }, {});
+
+      await dispatch(setMapStyles(mapStyles));
+
       if (!bookmarksSelector(getState())) {
         await dispatch(fetchBookmarks());
       }

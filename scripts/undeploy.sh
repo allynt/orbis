@@ -50,9 +50,11 @@ set -x
 
 cd ./deploy/
 
-$TERRAFORM_BINARY init
-$TERRAFORM_BINARY workspace select "${TERRAFORM_WORKSPACE}"
-$TERRAFORM_BINARY init
-$TERRAFORM_BINARY destroy -auto-approve -var "environment=${ENVIRONMENT}" -var "instance=${INSTANCE}" -var "tag=dummy"
-$TERRAFORM_BINARY workspace select default
-$TERRAFORM_BINARY workspace delete "${TERRAFORM_WORKSPACE}"
+# Environment/Instance are passed to terragrunt as env vars
+export ENVIRONMENT
+export INSTANCE
+
+terragrunt init
+terragrunt workspace select "${TERRAFORM_WORKSPACE}" || terragrunt workspace new "${TERRAFORM_WORKSPACE}"
+terragrunt init
+terragrunt destroy -auto-approve -var "tag=dummy"
