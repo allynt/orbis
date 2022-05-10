@@ -1,3 +1,40 @@
+# [2.37.0](https://github.com/astrosat/orbis/compare/v2.36.1...v2.37.0) (2022-05-10)
+
+
+### Bug Fixes
+
+* **backend:** Fix missing map style thumbnail during development ([b7c4aa1](https://github.com/astrosat/orbis/commit/b7c4aa1f24fec5d7dd756e17f9843ea9f2a85eb5))
+* **backend:** Make map style name unique ([76e81df](https://github.com/astrosat/orbis/commit/76e81dfd1a1517ea71a2cd044911729c26f954d2))
+* **backend:** Remove filter on map styles ([ad063aa](https://github.com/astrosat/orbis/commit/ad063aa2621b3b2da5fac59b39fc6d8c8f1fb7cb))
+* **backend:** Remove unused map style serializer ([911662e](https://github.com/astrosat/orbis/commit/911662e48ce85a1751cda2d74e38c1efe7b4a008))
+* **backend:** Update backend to extract newest data for contact details ([81c55a3](https://github.com/astrosat/orbis/commit/81c55a3d8d8e252b348073270db43eeb6ba2819f))
+* **deploy:** Upgrade Deployment Component ([#1635](https://github.com/astrosat/orbis/issues/1635)) ([1e550cc](https://github.com/astrosat/orbis/commit/1e550cc3aea3a6dbcdd7900c1638615f4b6c49bd))
+* **frontend:** add meta tags ([34418d5](https://github.com/astrosat/orbis/commit/34418d5dce65c6f0098bcdddf53928ae1d883212))
+* **frontend:** Display message when no protected areas data ([afa6a57](https://github.com/astrosat/orbis/commit/afa6a579660f3d97da6903205c92fff10717cb48))
+* **frontend:** Fix broken clicked feature test ([7be0bdb](https://github.com/astrosat/orbis/commit/7be0bdb2a871afe1bef400fc3a7d6eca9a10de8d))
+* **frontend:** Fix clicking pill button not zooming ([7dd0db4](https://github.com/astrosat/orbis/commit/7dd0db4673f28b5152c2100d727540b97c75a324))
+* **frontend:** Fix map style tests when logging in ([075306a](https://github.com/astrosat/orbis/commit/075306a4dd08a6516e662169d010595368826f02))
+* **frontend:** merge with the master branch ([972e350](https://github.com/astrosat/orbis/commit/972e350db33250b05af4c0b6db35e6a1606f4397))
+* **frontend:** merge with the master branch ([37d706a](https://github.com/astrosat/orbis/commit/37d706a4f01930f0c62cb927e8bf4253c7d42e66))
+* **frontend:** protected areas are sorted by distance by default ([ab2a70a](https://github.com/astrosat/orbis/commit/ab2a70a11ba0021842f56a77c40b74ceb5c82918))
+* **frontend:** Remove old hard-coded styling data ([161680a](https://github.com/astrosat/orbis/commit/161680a509d2253aafe0437566e941d1ffea431f))
+* **frontend:** Set mapstyles on login ([4a57ff6](https://github.com/astrosat/orbis/commit/4a57ff66490eff85edc64fd67789608052bb6678))
+* **frontend:** Simplify return line ([e1e2f24](https://github.com/astrosat/orbis/commit/e1e2f244820dcf7a7b61db11f467afc799bbe09c))
+* **frontend:** Space chart wrapped items better ([abc5d31](https://github.com/astrosat/orbis/commit/abc5d3198d48a50377bea2b5d4d001e9b6e1ac7a))
+* **frontend:** Update URL to map style thumbnail ([7a4dc54](https://github.com/astrosat/orbis/commit/7a4dc549f4f6f63c71b10312cc4ee185339978de))
+* **frontend:** Use map styles from API ([7c2f0c1](https://github.com/astrosat/orbis/commit/7c2f0c151cd2f2d69ad1d86c9b74dc593eb2068f))
+
+
+### Features
+
+* **backend:** Get map styles from server ([ed4c2a8](https://github.com/astrosat/orbis/commit/ed4c2a897b411ef8eff506483b066ab36a8038a5))
+* **frontend:** Add OS Vector Tiles as basemap ([8e67cf4](https://github.com/astrosat/orbis/commit/8e67cf49323a05b8866d003cbcecc462e7e18ed3))
+
+
+### Reverts
+
+* Revert "fix(frontend): Temporarily hard-code contact details (#1632)" ([a1848eb](https://github.com/astrosat/orbis/commit/a1848eb5c3d96888191d82d2af510de9621824cb)), closes [#1632](https://github.com/astrosat/orbis/issues/1632)
+
 ## [2.36.1](https://github.com/astrosat/orbis/compare/v2.36.0...v2.36.1) (2022-05-05)
 
 
