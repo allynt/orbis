@@ -160,7 +160,9 @@ export const updateProposal = createAsyncThunk(
       proposal_start_date: proposal.proposal_start_date,
       proposal_end_date: proposal.proposal_end_date,
       proposal_activities: proposal.proposal_activities,
-      report_state: proposal.report_state,
+      report_state: JSON.stringify(proposal.report_state),
+      geometry: JSON.stringify(proposal.geometry),
+      report_generated: proposal.report_generated,
     };
 
     try {

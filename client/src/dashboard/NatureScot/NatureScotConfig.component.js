@@ -82,6 +82,7 @@ const NatureScotDashboard = ({ sourceId }) => {
     const assessment = proposals.find(proposal => proposal.id === id);
     setFormState(prev => ({
       ...prev,
+      id: assessment.id,
       description: assessment.proposal_description,
       startDate: assessment.proposal_start_date,
       endDate: assessment.proposal_end_date,

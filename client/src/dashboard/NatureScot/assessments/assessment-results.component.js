@@ -17,7 +17,7 @@ import {
   ImpactSummary,
   ImpactSummarySkeleton,
 } from '../charts/impact-summary/impact-summary.component';
-import { saveProposal } from '../nature-scot.slice';
+import { saveProposal, updateProposal } from '../nature-scot.slice';
 import AssessmentActivityImpacts, {
   AssessmentActivityImpactsSkeleton,
 } from './assessment-activity-impacts';
@@ -75,6 +75,26 @@ const AssessmentResults = ({ results, formState }) => {
     setSaveProposalFormOpen(false);
   };
 
+  const updateAssessment = form => {
+    dispatch(
+      // @ts-ignore
+      updateProposal({
+        ...form,
+        geometry: form.geometry,
+        proposal_description: form.description,
+        proposal_start_date: form.startDate,
+        proposal_end_date: form.endDate,
+        proposal_activities: JSON.stringify(form.activities),
+        report_generated: now.toISOString(),
+        report_state: results,
+      }),
+    );
+    console.warn('Updated assessment');
+  };
+
+  const saveOrUpdateAssessment = form =>
+    !formState.id ? setSaveProposalFormOpen(true) : updateAssessment(form);
+
   return (
     <>
       <Typography variant="h4" className={styles.reportGenerated}>
@@ -97,11 +117,12 @@ const AssessmentResults = ({ results, formState }) => {
           )}
         </Grid>
         <Grid container item xs={12}>
-          {!results ? (
-            <AssessmentActivityImpactsSkeleton />
-          ) : (
+          {
+            !results ? <AssessmentActivityImpactsSkeleton /> : null
+            /* {(
             <AssessmentActivityImpacts data={results?.activities} />
-          )}
+          )} */
+          }
         </Grid>
         <Grid container item xs={6}></Grid>
         <Grid container item xs={6}>
@@ -119,8 +140,11 @@ const AssessmentResults = ({ results, formState }) => {
           <Button onClick={() => exportAs(FORMATS.CSV)} size="small">
             Export as CSV
           </Button>
-          <Button onClick={() => setSaveProposalFormOpen(true)} size="small">
-            Save
+          <Button
+            onClick={() => saveOrUpdateAssessment(formState)}
+            size="small"
+          >
+            {!formState.id ? 'Save' : 'Update'}
           </Button>
         </Grid>
       </Grid>
