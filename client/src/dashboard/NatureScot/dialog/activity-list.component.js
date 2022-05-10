@@ -54,8 +54,8 @@ const ActivityList = ({
       <List dense>
         {activityList?.map(activity => (
           <ListItem
-            button
             key={activity.code}
+            aria-label={activity.title}
             className={styles.listItem}
             selected={selectedActivityList.includes(activity)}
             onClick={() => onSelect?.(activity)}

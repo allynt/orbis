@@ -3,9 +3,8 @@ import React from 'react';
 import { rest } from 'msw';
 
 import { server } from 'mocks/server';
-import { render, screen, userEvent } from 'test/test-utils';
+import { render, screen, userEvent, within } from 'test/test-utils';
 
-import { SEARCH_ACTIVITIES_URL } from '../nature-scotland.constants';
 import AssessmentsShuttle from './assessments-shuttle.component';
 
 const typeAheadState = {
@@ -36,7 +35,12 @@ const setup = ({
     />,
     { state },
   );
-  return { ...utils, setValue };
+
+  const rightActivityList = screen.getByRole('heading', {
+    name: 'Selected Activities',
+  }).parentElement;
+
+  return { ...utils, setValue, rightActivityList };
 };
 
 describe('AssessmentsShuttle', () => {
@@ -46,80 +50,109 @@ describe('AssessmentsShuttle', () => {
   });
 
   it('copies individual activities from left to right', () => {
-    setup({ initialActivities: null });
+    const { rightActivityList } = setup({ initialActivities: null });
 
-    expect(screen.getAllByRole('button', { name: 'title-1' }).length).toEqual(
-      1,
-    );
+    expect(
+      within(rightActivityList).queryByRole('listitem', { name: 'title-1' }),
+    ).not.toBeInTheDocument();
 
-    userEvent.click(screen.getByRole('button', { name: 'title-1' }));
+    userEvent.click(screen.getByRole('listitem', { name: 'title-1' }));
     userEvent.click(screen.getByTestId('choose-activity'));
 
-    // TODO: here
-    expect(screen.getAllByText('title-1').length).toEqual(2);
+    expect(
+      within(rightActivityList).queryByRole('listitem', { name: 'title-1' }),
+    ).toBeInTheDocument();
   });
 
   it('transfers all available activities from left to right', () => {
-    setup({ initialActivities: null });
+    const { rightActivityList } = setup({ initialActivities: null });
     const titles = ['title-1', 'title-2', 'title-3'];
 
     titles.forEach(title =>
-      expect(screen.getAllByRole('button', { name: title }).length).toEqual(1),
+      expect(
+        within(rightActivityList).queryByRole('listitem', { name: title }),
+      ).not.toBeInTheDocument(),
     );
 
     userEvent.click(screen.getByRole('button', { name: 'Choose all' }));
 
-    // TODO: here
     titles.forEach(title =>
-      expect(screen.getAllByText(title).length).toEqual(2),
+      expect(
+        within(rightActivityList).getByRole('listitem', { name: title }),
+      ).toBeInTheDocument(),
     );
   });
 
   it('Transfers all search result activities from left to right', () => {
     server.use(
-      rest.get(SEARCH_ACTIVITIES_URL, (req, res, ctx) => res(ctx.status(200))),
+      rest.post(
+        '*/api/proxy/data/ns/proxy/activities/latest/',
+        (req, res, ctx) => res(ctx.status(200)),
+      ),
     );
 
-    setup({ state: typeAheadState });
+    const { rightActivityList } = setup({ state: typeAheadState });
 
     userEvent.type(screen.getByPlaceholderText('Search for Activities'), 'a');
-    expect(screen.getAllByRole('button', { name: 'result-2' }).length).toEqual(
-      1,
-    );
+
+    expect(
+      within(rightActivityList).queryByRole('listitem', { name: 'result-2' }),
+    ).not.toBeInTheDocument();
 
     userEvent.click(screen.getByRole('button', { name: 'Choose all' }));
-    // TODO: here
-    expect(screen.getAllByText('result-2').length).toEqual(2);
+
+    expect(
+      within(rightActivityList).getByRole('listitem', { name: 'result-2' }),
+    ).toBeInTheDocument();
   });
 
-  it('only transfers left not already in right', () => {
-    setup({ initialActivities: [{ title: 'title-2', code: '2' }] });
+  it('only transfers from left not already in right', () => {
+    const { rightActivityList } = setup({
+      initialActivities: [{ title: 'title-2', code: '2' }],
+    });
 
-    expect(screen.getAllByRole('button', { name: 'title-2' }).length).toEqual(
-      1,
+    const nonSelectedTitles = ['title-1', 'title-3'];
+
+    nonSelectedTitles.forEach(title =>
+      expect(
+        within(rightActivityList).queryByRole('listitem', { name: title }),
+      ).not.toBeInTheDocument(),
     );
+
+    expect(
+      within(rightActivityList).getAllByRole('listitem', { name: 'title-2' })
+        .length,
+    ).toEqual(1);
 
     userEvent.click(screen.getByRole('button', { name: 'Choose all' }));
 
-    // TODO: here
-    expect(screen.getAllByText('title-2').length).toEqual(2);
+    ['title-2', ...nonSelectedTitles].forEach(title =>
+      expect(
+        within(rightActivityList).queryAllByRole('listitem', { name: title })
+          .length,
+      ).toEqual(1),
+    );
   });
 
   it('deletes from right', () => {
-    setup({ initialActivities: [{ title: 'title-2', code: '2' }] });
+    const { rightActivityList } = setup({
+      initialActivities: [
+        { title: 'title-1', code: '1' },
+        { title: 'title-2', code: '2' },
+      ],
+    });
 
-    // TODO: here
-    expect(screen.getAllByText('title-2').length).toEqual(2);
+    const listItem = within(rightActivityList).getByRole('listitem', {
+      name: 'title-2',
+    });
 
-    userEvent.click(screen.getByRole('button', { name: 'Delete' }));
-
-    expect(screen.getAllByRole('button', { name: 'title-2' }).length).toEqual(
-      1,
-    );
+    expect(listItem).toBeInTheDocument();
+    userEvent.click(within(listItem).getByRole('button', { name: 'Delete' }));
+    expect(listItem).not.toBeInTheDocument();
   });
 
   it('deletes all from right', () => {
-    setup({
+    const { rightActivityList } = setup({
       initialActivities: [
         { title: 'title-2', code: '2' },
         { title: 'title-3', code: '3' },
@@ -128,52 +161,62 @@ describe('AssessmentsShuttle', () => {
 
     const titles = ['title-2', 'title-3'];
 
-    // TODO: here
     titles.forEach(title =>
-      expect(screen.getAllByText(title).length).toEqual(2),
+      expect(
+        within(rightActivityList).getByRole('listitem', { name: title }),
+      ).toBeInTheDocument(),
     );
 
     userEvent.click(screen.getByRole('button', { name: 'Remove all' }));
 
     titles.forEach(title =>
-      expect(screen.getAllByRole('button', { name: title }).length).toEqual(1),
+      expect(
+        within(rightActivityList).queryByRole('listitem', { name: title }),
+      ).not.toBeInTheDocument(),
     );
   });
 
   it('replaces default activities with type-ahead', () => {
     server.use(
-      rest.get(SEARCH_ACTIVITIES_URL, (req, res, ctx) => res(ctx.status(200))),
+      rest.post(
+        '*/api/proxy/data/ns/proxy/activities/latest/',
+        (req, res, ctx) => res(ctx.status(200)),
+      ),
     );
 
     setup({ state: typeAheadState });
 
+    expect(
+      screen.queryByRole('listitem', { name: 'result-1' }),
+    ).not.toBeInTheDocument();
+
     userEvent.type(screen.getByPlaceholderText('Search for Activities'), 'a');
 
     expect(
-      screen.getByRole('button', { name: 'result-1' }),
+      screen.getByRole('listitem', { name: 'result-1' }),
     ).toBeInTheDocument();
   });
 
   it('reverts to defaults when no search text', () => {
     server.use(
-      rest.get(SEARCH_ACTIVITIES_URL, (req, res, ctx) => res(ctx.status(200))),
+      rest.post(
+        '*/api/proxy/data/ns/proxy/activities/latest/',
+        (req, res, ctx) => res(ctx.status(200)),
+      ),
     );
 
     setup({ state: typeAheadState, initialActivities: null });
 
     userEvent.type(screen.getByPlaceholderText('Search for Activities'), 'a');
+
     expect(
-      screen.getByRole('button', { name: 'result-1' }),
+      screen.getByRole('listitem', { name: 'result-1' }),
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: 'title-1' }),
-    ).not.toBeInTheDocument();
 
     userEvent.clear(screen.getByPlaceholderText('Search for Activities'));
-    expect(screen.getByRole('button', { name: 'title-1' })).toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'result-1' }),
-    ).not.toBeInTheDocument();
+      screen.getByRole('listitem', { name: 'title-1' }),
+    ).toBeInTheDocument();
   });
 
   it('adds custom activities', () => {
@@ -187,20 +230,20 @@ describe('AssessmentsShuttle', () => {
     userEvent.click(screen.getByTestId('add-activity'));
 
     expect(
-      screen.getByRole('button', { name: 'test activity Delete' }),
+      screen.getByRole('listitem', { name: 'test activity' }),
     ).toBeInTheDocument();
   });
 
   it('calls setValue when activities are added', () => {
     const { setValue } = setup({ initialActivities: null });
 
-    userEvent.click(screen.getByRole('button', { name: 'title-1' }));
+    userEvent.click(screen.getByRole('listitem', { name: 'title-1' }));
     userEvent.click(screen.getByTestId('choose-activity'));
 
     expect(setValue).toHaveBeenCalled();
   });
 
-  it('calls setValue when activities are removed', () => {
+  it('calls setValue when an activity is removed', () => {
     const { setValue } = setup({});
     userEvent.click(screen.getAllByRole('button', { name: 'Delete' })[0]);
     expect(setValue).toHaveBeenCalled();
