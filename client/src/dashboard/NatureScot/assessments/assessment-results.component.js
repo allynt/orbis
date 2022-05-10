@@ -89,7 +89,6 @@ const AssessmentResults = ({ results, formState }) => {
         report_state: results,
       }),
     );
-    console.warn('Updated assessment');
   };
 
   const saveOrUpdateAssessment = form =>
@@ -117,12 +116,11 @@ const AssessmentResults = ({ results, formState }) => {
           )}
         </Grid>
         <Grid container item xs={12}>
-          {
-            !results ? <AssessmentActivityImpactsSkeleton /> : null
-            /* {(
-            <AssessmentActivityImpacts data={results?.activities} />
-          )} */
-          }
+          {!results ? (
+            <AssessmentActivityImpactsSkeleton />
+          ) : (
+            <AssessmentActivityImpactsSkeleton />
+          )}
         </Grid>
         <Grid container item xs={6}></Grid>
         <Grid container item xs={6}>

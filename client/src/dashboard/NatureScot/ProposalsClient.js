@@ -34,7 +34,12 @@ export class ProposalsClient extends SubClient {
   async updateProposal(proposal) {
     const formData = new FormData();
     Object.keys(proposal).forEach(key => formData.set(key, proposal[key]));
-
+    formData.set('geometry', JSON.stringify(proposal['geometry']));
+    formData.set(
+      'proposal_activities',
+      JSON.stringify(proposal['proposal_activities']),
+    );
+    formData.set('report_state', JSON.stringify(proposal['report_state']));
     const response = await this.makeAuthenticatedRequest(`/${proposal.id}/`, {
       method: 'PUT',
       body: formData,
