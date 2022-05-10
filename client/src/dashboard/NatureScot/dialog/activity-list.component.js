@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { makeStyles, List, ListItem, Button } from '@astrosat/astrosat-ui';
+import {
+  makeStyles,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+} from '@astrosat/astrosat-ui';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -13,9 +19,6 @@ const useStyles = makeStyles(theme => ({
   },
   deleteButton: {
     padding: '0 1rem',
-    width: '10%',
-    textDecoration: 'underline',
-    color: '#f6be00',
   },
   normalActivity: {
     fontWeight: 'normal',
@@ -57,14 +60,23 @@ const ActivityList = ({
             selected={selectedActivityList.includes(activity)}
             onClick={() => onSelect?.(activity)}
           >
-            {activity.title}
+            <ListItemText id={activity.code} primary={activity.title} />
             {!!onDelete ? (
               <Button
                 onClick={() => onDelete(activity)}
                 variant="text"
                 className={styles.deleteButton}
               >
-                Delete
+                <ListItemText
+                  primary="Delete"
+                  primaryTypographyProps={{
+                    style: {
+                      width: '10%',
+                      textDecoration: 'underline',
+                      color: '#f6be00',
+                    },
+                  }}
+                />
               </Button>
             ) : null}
           </ListItem>

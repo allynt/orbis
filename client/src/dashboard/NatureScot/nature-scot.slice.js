@@ -8,6 +8,11 @@ import { NotificationManager } from 'react-notifications';
 import apiClient from 'api-client';
 import { getAuthTokenForSource } from 'utils/tokens';
 
+import {
+  AVAILABLE_ACTIVITIES_URL,
+  SEARCH_ACTIVITIES_URL,
+} from './nature-scotland.constants';
+
 const name = 'natureScotDashboard';
 
 export const initialState = {
@@ -23,18 +28,16 @@ export const initialState = {
 export const fetchImpactActivities = createAsyncThunk(
   `${name}/fetchImpactActivities`,
   async (props, { getState, rejectWithValue }) => {
-    const apiSourceId = 'ns/proxy/available-activities/latest';
-
     const {
       data: { tokens },
     } = getState();
     const authToken = getAuthTokenForSource(tokens, {
-      source_id: apiSourceId,
+      source_id: AVAILABLE_ACTIVITIES_URL,
     });
 
     try {
       const data = await apiClient.natureScot.getImpactData(
-        `/${apiSourceId}/`,
+        `/${AVAILABLE_ACTIVITIES_URL}/`,
         {},
         {
           headers: {
@@ -64,18 +67,16 @@ export const fetchImpactActivities = createAsyncThunk(
 export const searchImpactActivities = createAsyncThunk(
   `${name}/searchImpactActivities`,
   async (form, { getState, rejectWithValue }) => {
-    const apiSourceId = 'ns/proxy/activities/latest';
-
     const {
       data: { tokens },
     } = getState();
     const authToken = getAuthTokenForSource(tokens, {
-      source_id: apiSourceId,
+      source_id: SEARCH_ACTIVITIES_URL,
     });
 
     try {
       const data = await apiClient.natureScot.getImpactData(
-        `/${apiSourceId}/`,
+        `/${SEARCH_ACTIVITIES_URL}/`,
         form,
         {
           headers: {
