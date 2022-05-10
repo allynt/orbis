@@ -197,7 +197,7 @@ const Charts = ({ sourceId, selectedAoi }) => {
       </Grid>
 
       <Grid item className={styles.item}>
-        {Object.keys(protectedFeatures).length === 0 ? (
+        {Object.keys(protectedFeatures ?? {}).length === 0 ? (
           <ProtectedFeatureSkeleton />
         ) : (
           <ProtectedFeature
@@ -209,7 +209,7 @@ const Charts = ({ sourceId, selectedAoi }) => {
       </Grid>
 
       <Grid item className={styles.item}>
-        {Object.keys(contactDetails).length === 0 ? (
+        {Object.keys(contactDetails ?? {}).length === 0 ? (
           <AreaOfficeContactDetailsSkeleton />
         ) : (
           <AreaOfficeContactDetails contactDetails={contactDetails} />
