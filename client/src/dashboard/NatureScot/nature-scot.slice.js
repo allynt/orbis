@@ -65,6 +65,8 @@ export const fetchImpactAssessment = createAsyncThunk(
   async (form, { getState, rejectWithValue }) => {
     const apiSourceId = 'ns/proxy/impact/latest';
 
+    const { description, ...restOfForm } = form;
+
     const {
       data: { tokens },
     } = getState();
@@ -75,7 +77,7 @@ export const fetchImpactAssessment = createAsyncThunk(
     try {
       const data = await apiClient.natureScot.getImpactData(
         `/${apiSourceId}/`,
-        form,
+        restOfForm,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
