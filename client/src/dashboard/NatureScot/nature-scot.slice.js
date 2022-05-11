@@ -65,6 +65,15 @@ export const fetchImpactAssessment = createAsyncThunk(
   async (form, { getState, rejectWithValue }) => {
     const apiSourceId = 'ns/proxy/impact/latest';
 
+    // Filter description property, so that
+    // it is not dispatched to IR api.
+    const filteredForm = {
+      startDate: form.startDate,
+      endDate: form.endDate,
+      activities: form.activities,
+      geometry: form.geometry,
+    };
+
     const {
       data: { tokens },
     } = getState();
@@ -75,7 +84,7 @@ export const fetchImpactAssessment = createAsyncThunk(
     try {
       const data = await apiClient.natureScot.getImpactData(
         `/${apiSourceId}/`,
-        form,
+        filteredForm,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
