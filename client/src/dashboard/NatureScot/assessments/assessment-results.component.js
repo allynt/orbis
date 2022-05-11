@@ -84,7 +84,7 @@ const AssessmentResults = ({ results, formState }) => {
         proposal_description: form.description,
         proposal_start_date: form.startDate,
         proposal_end_date: form.endDate,
-        proposal_activities: JSON.stringify(form.activities),
+        proposal_activities: form.activities,
         report_generated: now.toISOString(),
         report_state: results,
       }),
