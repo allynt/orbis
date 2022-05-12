@@ -1,9 +1,9 @@
 import React from 'react';
 
+import TabPanel from 'dashboard/shared-components/tab-panel.component';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import mockdata from '../../mock-data/NatureScot/activity-feature-mock';
-import { TabPanel } from '../tab-panel';
 import ImpactFeatureDetails from './impact-feature-details.component';
 
 describe('Impact Feature Details', () => {

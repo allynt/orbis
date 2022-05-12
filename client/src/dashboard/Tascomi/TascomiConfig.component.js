@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
-import { Tabs, Tab, makeStyles } from '@astrosat/astrosat-ui';
+import { Tabs, Tab } from '@astrosat/astrosat-ui';
 
-import DashboardWrapper from 'dashboard/dashboard-wrapper.component';
-import { TabPanel } from 'dashboard/NatureScot/tab-panel';
+import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
+import TabPanel from 'dashboard/shared-components/tab-panel.component';
 
-const TABS = {
-  1: '1',
-  2: '2',
-};
-
-const useStyles = makeStyles(theme => ({}));
+import ProjectInfo from './project-info/project-info.component';
+import Timeline from './timeline/timeline.component';
 
 /**
  * @param {{
@@ -20,25 +16,25 @@ const useStyles = makeStyles(theme => ({}));
  */
 const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
   <Tabs value={visibleTab} onChange={(_event, value) => setVisibleTab(value)}>
-    <Tab label="Panel 1" value={TABS.one} />
-    <Tab label="Panel 2" value={TABS.two} />
+    <Tab label="Project Info" value={1} />
+    <Tab label="Timeline" value={2} />
   </Tabs>
 );
 
 const TascomiDashboard = ({ sourceId }) => {
-  const styles = useStyles({});
   const [visibleTab, setVisibleTab] = useState(0);
   return (
     <DashboardWrapper
+      isTabs
       HeaderComponent={
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
     >
       <TabPanel value={visibleTab} index={0}>
-        Panel 1
+        <ProjectInfo />
       </TabPanel>
       <TabPanel value={visibleTab} index={1}>
-        Panel 2
+        <Timeline />
       </TabPanel>
     </DashboardWrapper>
   );
