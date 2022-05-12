@@ -26,7 +26,7 @@ import {
 } from 'dashboard/NatureScot/nature-scot.slice';
 import { useDebounce } from 'hooks/useDebounce';
 
-import { TYPE_AHEAD_DEBOUNCE } from '../nature-scotland.constants';
+import { DEBOUNCE_TIMEOUT } from '../nature-scotland.constants';
 import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
@@ -101,7 +101,7 @@ const AssessmentsShuttle = ({
   const debouncedSearch = useDebounce(
     value =>
       (async () => await dispatch(searchImpactActivities({ query: value })))(),
-    TYPE_AHEAD_DEBOUNCE,
+    DEBOUNCE_TIMEOUT,
   );
 
   // add activities list to parent form to be tracked, submitted
