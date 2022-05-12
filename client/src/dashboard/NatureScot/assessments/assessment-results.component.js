@@ -119,7 +119,7 @@ const AssessmentResults = ({ results, formState }) => {
           {!results ? (
             <AssessmentActivityImpactsSkeleton />
           ) : (
-            <AssessmentActivityImpactsSkeleton />
+            <AssessmentActivityImpacts data={results?.activities} />
           )}
         </Grid>
         <Grid container item xs={6}></Grid>
