@@ -22,7 +22,7 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
 );
 
 const TascomiDashboard = ({ sourceId }) => {
-  const [visibleTab, setVisibleTab] = useState(0);
+  const [visibleTab, setVisibleTab] = useState(1);
   return (
     <DashboardWrapper
       isTabs
@@ -30,10 +30,10 @@ const TascomiDashboard = ({ sourceId }) => {
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
     >
-      <TabPanel value={visibleTab} index={0}>
+      <TabPanel value={visibleTab} index={1}>
         <ProjectInfo />
       </TabPanel>
-      <TabPanel value={visibleTab} index={1}>
+      <TabPanel value={visibleTab} index={2}>
         <Timeline />
       </TabPanel>
     </DashboardWrapper>
