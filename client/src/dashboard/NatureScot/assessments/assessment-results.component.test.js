@@ -21,7 +21,7 @@ describe('Assessment Results', () => {
       screen.getByRole('tab', { name: /Impact Details By Feature/i }),
     ).toBeInTheDocument();
 
-    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(3);
+    expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
   });
 
   it('should render button as save if no id', () => {
