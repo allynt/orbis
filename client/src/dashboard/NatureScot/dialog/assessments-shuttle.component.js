@@ -180,10 +180,9 @@ const AssessmentsShuttle = ({
         The Available Activities list on the left, provides a list of activities
         that you may undertake as part of your development. Select your
         activities from the Available Activities list and click on the "forward"
-        arrow to add them to your Selected Activities list. Similarly, you can
-        remove an activity from your Selected Activities list by clicking the
-        "backward" arrow. You can also add a new activity, not on the list, by
-        typing it into the top of the Selected Activities box.
+        arrow to add them to your Selected Activities list. You can also add a
+        new activity, not on the list, by typing it into the top of the Selected
+        Activities box.
       </p>
       <Grid container>
         {/* left list (available activities) */}
