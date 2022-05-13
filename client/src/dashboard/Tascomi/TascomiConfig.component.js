@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Tabs, Tab } from '@astrosat/astrosat-ui';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import TabPanel from 'components/tab-panel.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 
+import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
 import ProjectInfo from './project-info/project-info.component';
 import Timeline from './timeline/timeline.component';
 
@@ -21,8 +24,22 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
   </Tabs>
 );
 
-const TascomiDashboard = ({ sourceId }) => {
+const url = '/wfc/mock/affordable_housing_delivery/v1';
+const datasetName = 'test-name';
+const apiSourceId = 'wfc/proxy/affordable_housing_delivery/latest';
+
+const TascomiDashboard = ({ sourceId, applicationId }) => {
+  const dispatch = useDispatch();
+  const featureData = useSelector(chartDataSelector(sourceId, datasetName));
   const [visibleTab, setVisibleTab] = useState(1);
+
+  useEffect(() => {
+    if (!featureData) {
+      // @ts-ignore
+      dispatch(fetchDashboardData({ sourceId, datasetName, url, apiSourceId }));
+    }
+  }, [featureData]);
+
   return (
     <DashboardWrapper
       isTabs
@@ -31,10 +48,10 @@ const TascomiDashboard = ({ sourceId }) => {
       }
     >
       <TabPanel value={visibleTab} index={1}>
-        <ProjectInfo />
+        <ProjectInfo data={featureData} />
       </TabPanel>
       <TabPanel value={visibleTab} index={2}>
-        <Timeline />
+        <Timeline data={featureData} />
       </TabPanel>
     </DashboardWrapper>
   );
