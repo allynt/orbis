@@ -17,6 +17,8 @@ import { TabPanel } from 'dashboard/NatureScot/tab-panel';
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
 import {
+  saveProposal,
+  updateProposal,
   impactActivitiesSelector,
   fetchImpactActivities,
 } from '../nature-scot.slice';
@@ -73,6 +75,44 @@ const AssessmentDialog = ({
   const styles = useStyles();
 
   const dispatch = useDispatch();
+
+  const updateAssessment = form => {
+    const now = formState.reportGenerated
+      ? new Date(formState.reportGenerated)
+      : new Date();
+    dispatch(
+      // @ts-ignore
+      updateProposal({
+        ...form,
+        geometry: form.geometry,
+        proposal_description: form.description,
+        proposal_start_date: form.startDate,
+        proposal_end_date: form.endDate,
+        proposal_activities: form.activities,
+        report_generated: now.toISOString(),
+        report_state: results,
+      }),
+    );
+  };
+
+  const saveAssessment = form => {
+    const now = formState.reportGenerated
+      ? new Date(formState.reportGenerated)
+      : new Date();
+    dispatch(
+      // @ts-ignore
+      saveProposal({
+        ...form,
+        geometry: formState.geometry,
+        proposal_description: formState.description,
+        proposal_start_date: formState.startDate,
+        proposal_end_date: formState.endDate,
+        proposal_activities: formState.activities,
+        report_generated: now.toISOString(),
+        report_state: results,
+      }),
+    );
+  };
 
   const activities = useSelector(impactActivitiesSelector);
   useEffect(() => {
@@ -141,7 +181,12 @@ const AssessmentDialog = ({
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults results={results} formState={formState} />
+          <AssessmentResults
+            results={results}
+            formState={formState}
+            updateAssessment={updateAssessment}
+            saveAssessment={saveAssessment}
+          />
         </TabPanel>
       </div>
 

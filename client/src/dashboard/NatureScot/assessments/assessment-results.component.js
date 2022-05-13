@@ -11,13 +11,11 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import { useDispatch } from 'react-redux';
 
 import {
   ImpactSummary,
   ImpactSummarySkeleton,
 } from '../charts/impact-summary/impact-summary.component';
-import { saveProposal, updateProposal } from '../nature-scot.slice';
 import AssessmentActivityImpacts, {
   AssessmentActivityImpactsSkeleton,
 } from './assessment-activity-impacts';
@@ -44,9 +42,13 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentResults = ({ results, formState }) => {
+const AssessmentResults = ({
+  results,
+  formState,
+  updateAssessment,
+  saveAssessment,
+}) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
   const now = formState.reportGenerated
     ? new Date(formState.reportGenerated)
     : new Date();
@@ -57,38 +59,9 @@ const AssessmentResults = ({ results, formState }) => {
   const exportAs = type =>
     console.log('Export: ', selectedAssessments, ' as: ', type);
 
-  const saveAssessment = form => {
-    dispatch(
-      // @ts-ignore
-      saveProposal({
-        ...form,
-        geometry: formState.geometry,
-        proposal_description: formState.description,
-        proposal_start_date: formState.startDate,
-        proposal_end_date: formState.endDate,
-        proposal_activities: formState.activities,
-        report_generated: now.toISOString(),
-        report_state: results,
-      }),
-    );
-
+  const saveAssessmentAndCloseDialog = form => {
+    saveAssessment(form);
     setSaveProposalFormOpen(false);
-  };
-
-  const updateAssessment = form => {
-    dispatch(
-      // @ts-ignore
-      updateProposal({
-        ...form,
-        geometry: form.geometry,
-        proposal_description: form.description,
-        proposal_start_date: form.startDate,
-        proposal_end_date: form.endDate,
-        proposal_activities: form.activities,
-        report_generated: now.toISOString(),
-        report_state: results,
-      }),
-    );
   };
 
   const saveOrUpdateAssessment = form =>
@@ -160,7 +133,7 @@ const AssessmentResults = ({ results, formState }) => {
           Name Your Assessment
         </DialogTitle>
         <DialogContent>
-          <SaveProposalForm onSubmit={saveAssessment} />
+          <SaveProposalForm onSubmit={saveAssessmentAndCloseDialog} />
         </DialogContent>
       </Dialog>
     </>
