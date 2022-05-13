@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Tabs, Tab } from '@astrosat/astrosat-ui';
 
+import TabPanel from 'components/tab-panel.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
-import TabPanel from 'dashboard/shared-components/tab-panel.component';
 
 import ProjectInfo from './project-info/project-info.component';
 import Timeline from './timeline/timeline.component';

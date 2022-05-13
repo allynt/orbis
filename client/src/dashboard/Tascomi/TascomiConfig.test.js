@@ -21,7 +21,13 @@ describe('TascomiConfig', () => {
     // TODO: will need updated once components are fleshed out.
 
     expect(screen.getByText('Project Info Component')).toBeInTheDocument();
+    expect(screen.queryByText('Timeline Component')).not.toBeInTheDocument();
+
     userEvent.click(screen.getByRole('tab', { name: 'Timeline' }));
+
     expect(screen.getByText('Timeline Component')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Project Info Component'),
+    ).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TabPanel from 'dashboard/shared-components/tab-panel.component';
+import TabPanel from 'components/tab-panel.component';
 import { render, screen, userEvent } from 'test/test-utils';
 
 import mockdata from '../../mock-data/NatureScot/activity-feature-mock';

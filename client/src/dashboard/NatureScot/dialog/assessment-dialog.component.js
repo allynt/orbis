@@ -12,7 +12,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import TabPanel from 'dashboard/shared-components/tab-panel.component';
+import TabPanel from 'components/tab-panel.component';
 
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
