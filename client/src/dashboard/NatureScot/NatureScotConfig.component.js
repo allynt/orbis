@@ -99,6 +99,24 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   useEffect(() => dispatch(fetchProposals()), [dispatch]);
 
+  if (proposals) {
+    proposals.forEach(item => {
+      return;
+    });
+  }
+
+  const chooseAppropriateAssessment = () => {
+    return formState.id
+      ? impactAssessment ?? formState.results
+      : formState.results ?? impactAssessment;
+  };
+
+  // check geometries are the same
+  const compareGeometries = (geometry1, geometry2) => {
+    if (!geometry1 || !geometry2) return false;
+    return JSON.stringify(geometry1) === JSON.stringify(geometry2);
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.tabbed}>
@@ -133,14 +151,16 @@ const NatureScotDashboard = ({ sourceId }) => {
       )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable
-          data={proposals}
+          data={proposals.filter(item =>
+            compareGeometries(item.geometry, selectedAoi?.geometry),
+          )} // TODO filter this list to only match on AOI?
           handleEditAssessment={handleEditAssessment}
         />
       )}
 
       <AssessmentDialog
         visibleTab={assessmentDialogTab}
-        results={formState.results ?? impactAssessment}
+        results={chooseAppropriateAssessment()}
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}

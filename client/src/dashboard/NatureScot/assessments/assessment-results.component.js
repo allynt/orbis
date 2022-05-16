@@ -65,7 +65,7 @@ const AssessmentResults = ({
   };
 
   const saveOrUpdateAssessment = form =>
-    !formState.id ? setSaveProposalFormOpen(true) : updateAssessment(form);
+    !formState.id ? saveAssessment(form) : updateAssessment(form);
 
   return (
     <>

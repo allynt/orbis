@@ -84,7 +84,7 @@ describe('Assessment Results', () => {
     expect(mockUpdateAssessment).toHaveBeenCalledWith(formState);
   });
 
-  xit('if there is no id, clicking save button calls save function', () => {
+  it('if there is no id, clicking save button calls save function', () => {
     // TODO find why this test is failing even though the previous one passes
     const mockSaveAssesment = jest.fn();
     const mockUpdateAssessment = jest.fn();
