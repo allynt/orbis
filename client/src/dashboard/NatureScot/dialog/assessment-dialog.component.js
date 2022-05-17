@@ -95,7 +95,7 @@ const AssessmentDialog = ({
         report_state: results,
       }),
     );
-    closeForm();
+    closeForm({ clear: true, close: true });
   };
 
   const saveAssessment = form => {
@@ -115,7 +115,7 @@ const AssessmentDialog = ({
         report_state: results,
       }),
     );
-    closeForm();
+    closeForm({ clear: true, close: true });
   };
 
   const activities = useSelector(impactActivitiesSelector);

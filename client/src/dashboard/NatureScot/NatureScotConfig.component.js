@@ -63,10 +63,15 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
 
-  const closeForm = () => {
-    // Close form and clear out assessment
-    dispatch(clearImpactAssessment());
-    setIsAssessmentDialogVisible(false);
+  const closeForm = options => {
+    const { clear, close } = options;
+    // Close form and/or clear out assessment
+    if (clear) {
+      dispatch(clearImpactAssessment());
+    }
+    if (close) {
+      setIsAssessmentDialogVisible(false);
+    }
   };
 
   const initialState = {
