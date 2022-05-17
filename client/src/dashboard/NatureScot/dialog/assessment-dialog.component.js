@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
  * onSubmit: function,
  * results: object[],
  * formState?: object
+ * closeForm: function,
  * }} props
  */
 const AssessmentDialog = ({
@@ -71,15 +72,16 @@ const AssessmentDialog = ({
   onSubmit,
   results,
   formState,
+  closeForm,
 }) => {
   const styles = useStyles();
-
   const dispatch = useDispatch();
 
   const updateAssessment = form => {
     const now = formState.reportGenerated
       ? new Date(formState.reportGenerated)
       : new Date();
+
     dispatch(
       // @ts-ignore
       updateProposal({
@@ -93,6 +95,7 @@ const AssessmentDialog = ({
         report_state: results,
       }),
     );
+    closeForm();
   };
 
   const saveAssessment = form => {
@@ -112,6 +115,7 @@ const AssessmentDialog = ({
         report_state: results,
       }),
     );
+    closeForm();
   };
 
   const activities = useSelector(impactActivitiesSelector);

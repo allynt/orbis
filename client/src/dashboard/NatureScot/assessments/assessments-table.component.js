@@ -133,7 +133,7 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
       <Table
         data={data}
         columns={columns}
-        noDataMessage="No saved Assessments"
+        noDataMessage="No saved Assessments for this Area of Interest"
         pluginHooks={[useSortBy]}
         getCellProps={cell => ({
           width: cell.column.id === 'id' ? '10%' : '30%',

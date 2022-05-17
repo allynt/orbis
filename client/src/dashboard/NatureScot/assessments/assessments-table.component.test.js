@@ -27,7 +27,9 @@ describe('AssessmentTable', () => {
   it('should show no data message', () => {
     render(<AssessmentTable data={[]} />);
 
-    expect(screen.getByText('No saved Assessments')).toBeInTheDocument();
+    expect(
+      screen.getByText('No saved Assessments for this Area of Interest'),
+    ).toBeInTheDocument();
   });
 
   it('should show data', () => {

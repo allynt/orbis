@@ -10,6 +10,7 @@ import AssessmentTable from './assessments/assessments-table.component';
 import Charts from './charts/charts.component';
 import AssessmentDialog from './dialog/assessment-dialog.component';
 import {
+  clearImpactAssessment,
   fetchImpactAssessment,
   fetchProposals,
   impactAssessmentSelector,
@@ -62,6 +63,12 @@ const NatureScotDashboard = ({ sourceId }) => {
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
 
+  const closeForm = () => {
+    // Close form and clear out assessment
+    dispatch(clearImpactAssessment());
+    setIsAssessmentDialogVisible(false);
+  };
+
   const initialState = {
     description: '',
     startDate: undefined,
@@ -81,8 +88,9 @@ const NatureScotDashboard = ({ sourceId }) => {
   const handleEditAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
     setFormState(prev => ({
-      ...prev,
+      // ...prev,
       id: assessment.id,
+      geometry: assessment.geometry,
       created: assessment.created,
       modified: assessment.modified,
       name: assessment.name,
@@ -98,18 +106,6 @@ const NatureScotDashboard = ({ sourceId }) => {
   };
 
   useEffect(() => dispatch(fetchProposals()), [dispatch]);
-
-  if (proposals) {
-    proposals.forEach(item => {
-      return;
-    });
-  }
-
-  const chooseAppropriateAssessment = () => {
-    return formState.id
-      ? impactAssessment ?? formState.results
-      : formState.results ?? impactAssessment;
-  };
 
   // check geometries are the same
   const compareGeometries = (geometry1, geometry2) => {
@@ -160,11 +156,12 @@ const NatureScotDashboard = ({ sourceId }) => {
 
       <AssessmentDialog
         visibleTab={assessmentDialogTab}
-        results={chooseAppropriateAssessment()}
+        results={impactAssessment ?? formState.results}
         onSubmit={submitAssessment}
         close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
         formState={formState}
+        closeForm={closeForm}
       />
     </div>
   );

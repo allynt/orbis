@@ -229,6 +229,9 @@ const natureScotSlice = createSlice({
     setSelectedProposal: (state, { payload }) => {
       state.selectedProposal = payload;
     },
+    clearImpactAssessment: state => {
+      state.impactAssessment = null;
+    },
   },
   extraReducers: builder => {
     builder
@@ -295,7 +298,8 @@ const natureScotSlice = createSlice({
   },
 });
 
-export const { setSelectedProposal } = natureScotSlice.actions;
+export const { setSelectedProposal, clearImpactAssessment } =
+  natureScotSlice.actions;
 
 const baseSelector = state => state?.natureScotDashboard;
 
