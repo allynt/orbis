@@ -14,15 +14,11 @@ ICONS = [
 ]
 
 STATUSES = {
-    "Pre-Approved": [
-        "Allowed",
+    "Pre-Approval": [
         "Appeal Received",
         "Application under consideration",
         "Called in by Secretary of State",
         "Comment Issued",
-        "Closed",
-        "Declined to determine",
-        "Dismissed",
         "Appeal in progress",
         "Insufficient fee",
         "No objection to Proposal (OBS only)",
@@ -30,25 +26,30 @@ STATUSES = {
         "Objection raised to proposal (OBS only)",
         "Opinion issued",
         "Pre-application advice case completed",
-        "Split decision",
-        "Unknown",
-        "Withdrawn",
         "Application Received",
-        "Quashed",
         "Referred to Mayor",
     ],
-    "Approved": ["Approved", ],
+    "Approved": [
+        "Approved",
+        "Split decision",
+        "Allowed",
+    ],
     "Commenced": ["Commenced", ],
     "Completed": ["Completed", ],
     "Superseded / Legacy": [
         "Superseded",
         "Pending Legacy Record",
     ],
-    "Lapsed / Revoked": [
+    "Lapsed / Refused": [
         "Lapsed",
         "Revoked",
         "Application Invalid",
         "Refused",
+        "Quashed",
+        "Withdrawn",
+        "Closed",
+        "Decline to determine",
+        "Dismissed",
     ],
 }
 
@@ -80,26 +81,45 @@ class PldAdapter(BaseProxyDataAdapter):
             )
 
             properties = {
-                "Project ID": rd["_id"],
-                "UPRN": source["uprn"],
-                "Address": f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
-                "Description": source["description"],
-                "Status Category": status_category,
-                "Status": status,
-                "Development Type": source["development_type"],
-                "Total Number of Units": source["application_details"]["residential_details"]["total_no_proposed_residential_units"],
-                "icon": icon_id,
-                "decision_date": f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
+                "Project ID":
+                    rd["_id"],
+                "UPRN":
+                    source["uprn"],
+                "Address":
+                    f"{source['site_name']}, {source['street_name']}, {source['postcode']}",
+                "Description":
+                    source["description"],
+                "Status Category":
+                    status_category,
+                "Status":
+                    status,
+                "Development Type":
+                    source["development_type"],
+                "Total Number of Units":
+                    source["application_details"]["residential_details"]
+                    ["total_no_proposed_residential_units"],
+                "icon":
+                    icon_id,
+                "decision_date":
+                    f"{datetime.strptime(source['decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z",
             }
 
             if source.get("actual_commencement_date"):
-                properties["actual_commencement_date"] = f"{datetime.strptime(source['actual_commencement_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+                properties[
+                    "actual_commencement_date"
+                ] = f"{datetime.strptime(source['actual_commencement_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
             if source.get("actual_completion_date"):
-                properties["actual_completion_date"] = f"{datetime.strptime(source['actual_completion_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+                properties[
+                    "actual_completion_date"
+                ] = f"{datetime.strptime(source['actual_completion_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
             if source.get("appeal_decision_date"):
-                properties["appeal_decision_date"] = f"{datetime.strptime(source['appeal_decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+                properties[
+                    "appeal_decision_date"
+                ] = f"{datetime.strptime(source['appeal_decision_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
             if source.get("lapsed_date"):
-                properties["lapsed_date"] = f"{datetime.strptime(source['lapsed_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
+                properties[
+                    "lapsed_date"
+                ] = f"{datetime.strptime(source['lapsed_date'], DATE_FORMAT).isoformat(timespec='milliseconds')}Z"
 
             # yapf: disable
             processed_data["features"].append({
