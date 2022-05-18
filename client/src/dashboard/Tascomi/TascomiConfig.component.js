@@ -24,7 +24,7 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
   </Tabs>
 );
 
-const url = '/wfc/mock/affordable_housing_delivery/v1';
+const url = '/wfc/proxy/affordable_housing_delivery/latest';
 const datasetName = 'test-name';
 const apiSourceId = 'wfc/proxy/affordable_housing_delivery/latest';
 
