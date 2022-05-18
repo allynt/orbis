@@ -111,7 +111,7 @@ export const CheckboxFilters = ({
             <ListItemIcon style={{ minWidth: 'max-content' }}>
               <Checkbox
                 tabIndex={-1}
-                checked={checked}
+                checked={checked || false}
                 inputProps={{ 'aria-labelledby': labelId }}
               />
             </ListItemIcon>
