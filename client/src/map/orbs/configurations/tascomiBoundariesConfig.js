@@ -11,33 +11,28 @@ const LINE_WIDTH_SELECTED = 3;
 const COLORS = [
   {
     id: 'Strategic Location',
-    pattern: 'hatch-3',
     color: [183, 134, 199, 255],
   },
   {
     id: 'Ward',
-    pattern: 'hatch-4',
     color: [235, 185, 126, 255],
   },
   {
     id: 'CIL Charging Zone',
-    pattern: 'hatch-1',
     color: [78, 120, 162, 255],
   },
   {
     id: 'NCIL',
-    pattern: null,
     color: [247, 22, 36, 255],
   },
   {
     id: 'Highams Park Neighbourhood Plan',
-    pattern: 'hatch-2',
     color: [82, 171, 81, 255],
   },
 ];
 
 /**
- * Configuration of the Nature Scotland - Protected Areas dataset.
+ * Configuration of the WFC - Area Boundaries dataset.
  *
  * @param {object} {
  *   id,
@@ -102,7 +97,7 @@ const configuration = ({
   const getFilterValue = feature =>
     filterValue?.includes(feature.properties.Type) ? 1 : 0;
 
-  // Configuration object for the MVTLayer, used for Protected Areas data.
+  // Configuration object for the MVTLayer, used for Area Boundaries data.
   return {
     id,
     data,
