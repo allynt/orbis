@@ -6,15 +6,21 @@ import { RESULTS } from '../../mock-data/NatureScot/assessment-results.js';
 import AssessmentResults from './assessment-results.component';
 
 describe('Assessment Results', () => {
+  let formState = {};
+  const mockSave = jest.fn();
+  const mockUpdate = jest.fn();
+
+  beforeEach(() => {
+    formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
+  });
+
   it('should render a grid of charts', () => {
-    const formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
-    const mockFunction = jest.fn();
     render(
       <AssessmentResults
         results={RESULTS}
         formState={formState}
-        updateAssessment={mockFunction}
-        saveAssessment={mockFunction}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
       />,
     );
 
@@ -33,76 +39,66 @@ describe('Assessment Results', () => {
   });
 
   it('should render button as save if no id', () => {
-    const formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
-    const mockFunction = jest.fn();
     render(
       <AssessmentResults
         results={RESULTS}
         formState={formState}
-        updateAssessment={mockFunction}
-        saveAssessment={mockFunction}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
       />,
     );
     expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
   });
 
   it('should render button as save if no id', () => {
-    const mockFunction = jest.fn();
-    const formState = {
+    formState = {
+      ...formState,
       id: 'this_should_be_a_GUID_added_by_django',
-      reportGenerated: '2020-01-01T00:00:00.000Z',
     };
     render(
       <AssessmentResults
         results={RESULTS}
         formState={formState}
-        updateAssessment={mockFunction}
-        saveAssessment={mockFunction}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
       />,
     );
     expect(screen.getByRole('button', { name: /update/i })).toBeInTheDocument();
   });
 
   it('if there is an id, clicking update button calls update function', () => {
-    const mockSaveAssesment = jest.fn();
-    const mockUpdateAssessment = jest.fn();
-    const formState = {
+    formState = {
+      ...formState,
       id: 'this_should_be_a_GUID_added_by_django',
-      reportGenerated: '2020-01-01T00:00:00.000Z',
     };
     render(
       <AssessmentResults
         results={RESULTS}
         formState={formState}
-        updateAssessment={mockUpdateAssessment}
-        saveAssessment={mockSaveAssesment}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
       />,
     );
-    const callToAction = screen.getByRole('button', { name: /update/i });
-    expect(callToAction).toBeInTheDocument();
-    userEvent.click(callToAction);
-    expect(mockUpdateAssessment).toHaveBeenCalledWith(formState);
+    const updateButton = screen.getByRole('button', { name: /update/i });
+    expect(updateButton).toBeInTheDocument();
+    userEvent.click(updateButton);
+    expect(mockUpdate).toHaveBeenCalledWith(formState);
   });
 
   xit('if there is no id, clicking save button calls save function', () => {
     // TODO find why this test is failing even though the previous one passes
     // was able to get this to work by bypassing the form, but this breaks
     // the front-end.
-    const mockSaveAssesment = jest.fn();
-    const mockUpdateAssessment = jest.fn();
-    const formState = {
-      reportGenerated: '2020-01-01T00:00:00.000Z',
-    };
     render(
       <AssessmentResults
         results={RESULTS}
         formState={formState}
-        updateAssessment={mockUpdateAssessment}
-        saveAssessment={mockSaveAssesment}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
       />,
     );
     screen.debug(screen.getByRole('button', { name: /save/i }));
     userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(mockSaveAssesment).toHaveBeenCalled();
+    expect(mockSave).toHaveBeenCalled();
   });
 });

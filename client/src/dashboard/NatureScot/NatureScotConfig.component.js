@@ -93,7 +93,6 @@ const NatureScotDashboard = ({ sourceId }) => {
   const handleEditAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
     setFormState(prev => ({
-      // ...prev,
       id: assessment.id,
       geometry: assessment.geometry,
       created: assessment.created,

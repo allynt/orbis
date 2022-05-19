@@ -18,17 +18,15 @@ const ASSESSMENT_DATA = [
 ];
 
 describe('AssessmentTable', () => {
-  let handleEditAssessment = null;
-
-  beforeEach(() => {
-    handleEditAssessment = jest.fn();
-  });
+  let handleEditAssessment = jest.fn();
 
   it('should show no data message', () => {
-    render(<AssessmentTable data={[]} />);
+    render(
+      <AssessmentTable data={[]} handleEditAssessment={handleEditAssessment} />,
+    );
 
     expect(
-      screen.getByText('No saved Assessments for this Area of Interest'),
+      screen.getByRole('cell', { name: /no saved assessments/i }),
     ).toBeInTheDocument();
   });
 
@@ -46,7 +44,12 @@ describe('AssessmentTable', () => {
   });
 
   it('should show buttons', () => {
-    render(<AssessmentTable data={ASSESSMENT_DATA} />);
+    render(
+      <AssessmentTable
+        data={ASSESSMENT_DATA}
+        handleEditAssessment={handleEditAssessment}
+      />,
+    );
 
     const pdfButton = screen.getByRole('button', { name: /export as pdf/i });
     const csvButton = screen.getByRole('button', { name: /export as csv/i });

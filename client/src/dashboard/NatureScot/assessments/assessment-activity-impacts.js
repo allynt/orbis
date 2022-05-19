@@ -79,7 +79,6 @@ const AssessmentActivityImpacts = ({ data }) => {
   const styles = useStyles();
   const noData = !data;
 
-  const filteredData = data ? data.filter(activity => !!activity.title) : [];
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
@@ -114,7 +113,7 @@ const AssessmentActivityImpacts = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData.map(activity => (
+              {data.map(activity => (
                 <TableRow key={activity.title}>
                   <TableCell>{activity.title}</TableCell>
                   <TableCell className={styles.mayrequireconsent}>
