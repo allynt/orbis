@@ -48,6 +48,12 @@ const configuration = ({
       const dateType = filterRange?.dateType
         ? filterRange.dateType
         : 'decision_date';
+
+      // If feature doesn't have the date type chosen, reject it.
+      if (!feature.properties[dateType]) {
+        return false;
+      }
+
       if (
         dateRangeFilter.startDate &&
         feature.properties[dateType] < dateRangeFilter.startDate
