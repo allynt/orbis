@@ -68,5 +68,5 @@ describe('<Storage />', () => {
 
     userEvent.click(screen.getByRole('button', { name: 'Yes' }));
     await waitFor(() => expect(screen.getByRole('dialog')).not.toBeVisible());
-  });
+  }, 70000);
 });
