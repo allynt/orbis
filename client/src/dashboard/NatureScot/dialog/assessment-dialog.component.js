@@ -17,7 +17,7 @@ import TabPanel from 'components/tab-panel.component';
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
 import {
-  impactActivitiesSelector,
+  impactAvailableActivitiesSelector,
   fetchImpactActivities,
 } from '../nature-scot.slice';
 import AssessmentDialogForm from './assessment-dialog-form';
@@ -74,7 +74,7 @@ const AssessmentDialog = ({
 
   const dispatch = useDispatch();
 
-  const activities = useSelector(impactActivitiesSelector);
+  const activities = useSelector(impactAvailableActivitiesSelector);
   useEffect(() => {
     dispatch(fetchImpactActivities());
   }, [dispatch]);

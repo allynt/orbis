@@ -8,11 +8,17 @@ import { NotificationManager } from 'react-notifications';
 import apiClient from 'api-client';
 import { getAuthTokenForSource } from 'utils/tokens';
 
+import {
+  AVAILABLE_ACTIVITIES_URL,
+  SEARCH_ACTIVITIES_URL,
+} from './nature-scotland.constants';
+
 const name = 'natureScotDashboard';
 
 export const initialState = {
   isLoading: false,
   error: null,
+  availableActivities: null,
   activities: null,
   impactAssessment: null,
   proposals: null,
@@ -22,19 +28,56 @@ export const initialState = {
 export const fetchImpactActivities = createAsyncThunk(
   `${name}/fetchImpactActivities`,
   async (props, { getState, rejectWithValue }) => {
-    const apiSourceId = 'ns/proxy/activities/latest';
-
     const {
       data: { tokens },
     } = getState();
     const authToken = getAuthTokenForSource(tokens, {
-      source_id: apiSourceId,
+      source_id: AVAILABLE_ACTIVITIES_URL,
     });
 
     try {
       const data = await apiClient.natureScot.getImpactData(
-        `/${apiSourceId}/`,
+        `/${AVAILABLE_ACTIVITIES_URL}/`,
         {},
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      return data;
+    } catch (error) {
+      /** @type {import('api-client').ResponseError} */
+      const { message, status } = error;
+      return rejectWithValue({ message: `${status} ${message}` });
+    }
+  },
+  {
+    condition: (_, { getState }) => {
+      const {
+        data: { requests },
+      } = getState();
+      return requests?.fetchImpactAssessment !== 'pending';
+    },
+  },
+);
+
+export const searchImpactActivities = createAsyncThunk(
+  `${name}/searchImpactActivities`,
+  async (form, { getState, rejectWithValue }) => {
+    const {
+      data: { tokens },
+    } = getState();
+    const authToken = getAuthTokenForSource(tokens, {
+      source_id: SEARCH_ACTIVITIES_URL,
+    });
+
+    try {
+      const data = await apiClient.natureScot.getImpactData(
+        `/${SEARCH_ACTIVITIES_URL}/`,
+        form,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -239,10 +282,17 @@ const natureScotSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchImpactActivities.fulfilled, (state, { payload }) => {
-        state.activities = payload;
+        state.availableActivities = payload;
         state.error = null;
       })
       .addCase(fetchImpactActivities.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+      .addCase(searchImpactActivities.fulfilled, (state, { payload }) => {
+        state.activities = payload;
+        state.error = null;
+      })
+      .addCase(searchImpactActivities.rejected, (state, { payload }) => {
         state.error = payload;
       })
       .addCase(fetchImpactAssessment.fulfilled, (state, { payload }) => {
@@ -305,9 +355,14 @@ export const { setSelectedProposal } = natureScotSlice.actions;
 
 const baseSelector = state => state?.natureScotDashboard;
 
+export const impactAvailableActivitiesSelector = createSelector(
+  baseSelector,
+  state => state?.availableActivities ?? [],
+);
+
 export const impactActivitiesSelector = createSelector(
   baseSelector,
-  state => state?.activities ?? [],
+  state => state?.activities ?? null,
 );
 
 export const impactAssessmentSelector = createSelector(
