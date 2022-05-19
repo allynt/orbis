@@ -11,7 +11,6 @@ import {
 
 import { useDebounce } from 'hooks/useDebounce';
 
-import SidePanelListItem from '../../../mission-control/side-panel/side-panel-list-item.component';
 import { zoomToArea } from '../aoi-utils';
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +96,7 @@ const Typeahead = ({
   };
 
   const onSuggestionSelected = suggestion => {
-    setName(suggestion);
+    setName(suggestion.title);
     setIsNameSelected(true);
     setResults([]);
     onSelectedSuggestionClick(suggestion);
@@ -107,7 +106,7 @@ const Typeahead = ({
     <div className={styles.typeaheadGroup}>
       <TextField
         onChange={handleInputChange}
-        value={name.title || ''}
+        value={name || ''}
         autoFocus
         placeholder="Search by name area, postcode, grid reference"
       />
