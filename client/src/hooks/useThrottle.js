@@ -5,8 +5,8 @@ import { throttle } from 'lodash';
 /**
  * A generic hook to let you use the lodash throttle feature on your functions.
  *
- * @param callback - The callback function to execute.
- * @param delay - The delay to use when throttling.
+ * @param {function} callback - The callback function to execute.
+ * @param {number} delay - The delay to use when throttling.
  *
  * @returns A throttled callback function that can be executed.
  */
