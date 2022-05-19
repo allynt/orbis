@@ -44,7 +44,7 @@ MapContext.displayName = 'MapContext';
  * @param {{children: React.ReactNode}} props
  * @returns {JSX.Element} MapContextProvider
  */
-export const MapProvider = props => {
+export const MapProvider = ({ value, ...rest }) => {
   const topMapRef = useRef(null);
   const bottomMapRef = useRef(null);
   const topDeckRef = useRef(null);
@@ -73,8 +73,9 @@ export const MapProvider = props => {
         viewState,
         setViewState,
         updateViewState,
+        ...value,
       }}
-      {...props}
+      {...rest}
     />
   );
 };

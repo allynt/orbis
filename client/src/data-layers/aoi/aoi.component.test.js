@@ -41,24 +41,23 @@ describe('AOI Component', () => {
 
   it('should display the panel', () => {
     render(
-      <MapContext.Provider
-        value={{
+      <Aoi
+        onDrawAoiClick={onDrawAoiClick}
+        onSubmit={onSubmit}
+        aoiDrawMode={aoiDrawMode}
+        setAoiDrawMode={setAoiDrawMode}
+        fetchAois={fetchAois}
+        selectAoi={selectAoi}
+        editAoiDetails={editAoiDetails}
+        deleteAoi={deleteAoi}
+      />,
+      {
+        mapParams: {
           viewState: {},
           setViewState,
           bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
-        }}
-      >
-        <Aoi
-          onDrawAoiClick={onDrawAoiClick}
-          onSubmit={onSubmit}
-          aoiDrawMode={aoiDrawMode}
-          setAoiDrawMode={setAoiDrawMode}
-          fetchAois={fetchAois}
-          selectAoi={selectAoi}
-          editAoiDetails={editAoiDetails}
-          deleteAoi={deleteAoi}
-        />
-      </MapContext.Provider>,
+        },
+      },
     );
 
     expect(screen.getByRole('heading', { name: 'Search' })).toBeInTheDocument();
@@ -79,24 +78,23 @@ describe('AOI Component', () => {
   describe('Draw AOI Tools', () => {
     it('should call `onDrawAoiClick` function when `AOI Mode` button clicked', () => {
       render(
-        <MapContext.Provider
-          value={{
+        <Aoi
+          onDrawAoiClick={onDrawAoiClick}
+          onSubmit={onSubmit}
+          aoiDrawMode={aoiDrawMode}
+          setAoiDrawMode={setAoiDrawMode}
+          fetchAois={fetchAois}
+          selectAoi={selectAoi}
+          editAoiDetails={editAoiDetails}
+          deleteAoi={deleteAoi}
+        />,
+        {
+          mapParams: {
             viewState: {},
             setViewState,
             bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
-          }}
-        >
-          <Aoi
-            onDrawAoiClick={onDrawAoiClick}
-            onSubmit={onSubmit}
-            aoiDrawMode={aoiDrawMode}
-            setAoiDrawMode={setAoiDrawMode}
-            fetchAois={fetchAois}
-            selectAoi={selectAoi}
-            editAoiDetails={editAoiDetails}
-            deleteAoi={deleteAoi}
-          />
-        </MapContext.Provider>,
+          },
+        },
       );
 
       userEvent.click(screen.getByRole('button', { name: 'Circle' }));
@@ -106,25 +104,24 @@ describe('AOI Component', () => {
 
     it('should show dialog when `Save` button clicked', async () => {
       render(
-        <MapContext.Provider
-          value={{
+        <Aoi
+          onDrawAoiClick={onDrawAoiClick}
+          onSubmit={onSubmit}
+          aoiDrawMode={aoiDrawMode}
+          setAoiDrawMode={setAoiDrawMode}
+          fetchAois={fetchAois}
+          selectAoi={selectAoi}
+          editAoiDetails={editAoiDetails}
+          deleteAoi={deleteAoi}
+        />,
+        {
+          state: state,
+          mapParams: {
             viewState: {},
             setViewState,
             bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
-          }}
-        >
-          <Aoi
-            onDrawAoiClick={onDrawAoiClick}
-            onSubmit={onSubmit}
-            aoiDrawMode={aoiDrawMode}
-            setAoiDrawMode={setAoiDrawMode}
-            fetchAois={fetchAois}
-            selectAoi={selectAoi}
-            editAoiDetails={editAoiDetails}
-            deleteAoi={deleteAoi}
-          />
-        </MapContext.Provider>,
-        { state: state },
+          },
+        },
       );
 
       userEvent.click(screen.getByRole('button', { name: 'Save' }));
