@@ -152,9 +152,11 @@ const NatureScotDashboard = ({ sourceId }) => {
       )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable
-          data={proposals.filter(item =>
-            compareGeometries(item.geometry, selectedAoi?.geometry),
-          )} // TODO filter this list to only match on AOI?
+          data={proposals.filter(
+            item => true,
+            // below filters out on AOI user selected in the map
+            // compareGeometries(item.geometry, selectedAoi?.geometry),
+          )}
           handleEditAssessment={handleEditAssessment}
         />
       )}

@@ -105,7 +105,7 @@ const DateRange = ({ startDate, endDate, onChange }) => {
 
           <div className={styles.dateRange}>
             <DateRangeFilter
-              minDate="today"
+              minDate={startDate ?? 'today'}
               range={range}
               onSubmit={onChange}
             />
