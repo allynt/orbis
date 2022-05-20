@@ -139,6 +139,7 @@ const AssessmentTable = ({ data, openSavedAssessment }) => {
       <Table
         data={data}
         columns={columns}
+        // TODO: is this correct?
         noDataMessage="No saved Assessments"
         pluginHooks={[useSortBy]}
         getCellProps={cell => ({

@@ -9,6 +9,7 @@ describe('Assessment Results', () => {
   let formState = {};
   const mockSave = jest.fn();
   const mockUpdate = jest.fn();
+  const reportGeneratedTimestamp = new Date();
 
   beforeEach(() => {
     formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
@@ -17,10 +18,11 @@ describe('Assessment Results', () => {
   it('should render a grid of charts', () => {
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
 
@@ -42,10 +44,11 @@ describe('Assessment Results', () => {
   it('should render button as save if no id', () => {
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
     expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
@@ -58,10 +61,11 @@ describe('Assessment Results', () => {
     };
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
     expect(screen.getByRole('button', { name: /update/i })).toBeInTheDocument();
@@ -76,9 +80,10 @@ describe('Assessment Results', () => {
 
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdateAssessment}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
 
@@ -94,12 +99,12 @@ describe('Assessment Results', () => {
 
     render(
       <AssessmentResults
-        timestamp={new Date()}
-        results={RESULTS}
+        impactAssessment={RESULTS}
         saveAssessment={mockSaveAssessment}
         formState={{
           reportGenerated: '2020-01-01T00:00:00.000Z',
         }}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
 
