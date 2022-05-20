@@ -113,6 +113,7 @@ const AssessmentActivityImpacts = ({ data }) => {
               </TableRow>
             </TableHead>
             <TableBody>
+              {/* TODO: check this is correct */}
               {data.map(activity => (
                 <TableRow key={activity.title}>
                   <TableCell>{activity.title}</TableCell>

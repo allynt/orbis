@@ -143,7 +143,11 @@ describe('AssessmentDialog', () => {
   it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
     const state = {
       natureScotDashboard: {
+<<<<<<< HEAD
         availableActivities: [
+=======
+        activities: [
+>>>>>>> 1220-rory-tests
           { title: 'Test Activity 1', code: 'activity1' },
           { title: 'Test Activity 2', code: 'activity2' },
         ],
@@ -222,4 +226,16 @@ describe('AssessmentDialog', () => {
       expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining(form)),
     );
   }, 70000);
+
+  it('should use fetched display fetched results if present', () => {
+    render(
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+        formState={initialState}
+      />,
+    );
+  });
 });

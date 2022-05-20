@@ -18,11 +18,15 @@ const ASSESSMENT_DATA = [
 ];
 
 describe('AssessmentTable', () => {
-  let handleEditAssessment = jest.fn();
+  let openSavedAssessment = null;
+
+  beforeEach(() => {
+    openSavedAssessment = jest.fn();
+  });
 
   it('should show no data message', () => {
     render(
-      <AssessmentTable data={[]} handleEditAssessment={handleEditAssessment} />,
+      <AssessmentTable data={[]} openSavedAssessment={openSavedAssessment} />,
     );
 
     expect(
@@ -34,7 +38,7 @@ describe('AssessmentTable', () => {
     render(
       <AssessmentTable
         data={ASSESSMENT_DATA}
-        handleEditAssessment={handleEditAssessment}
+        openSavedAssessment={openSavedAssessment}
       />,
     );
 
@@ -47,7 +51,7 @@ describe('AssessmentTable', () => {
     render(
       <AssessmentTable
         data={ASSESSMENT_DATA}
-        handleEditAssessment={handleEditAssessment}
+        openSavedAssessment={openSavedAssessment}
       />,
     );
 

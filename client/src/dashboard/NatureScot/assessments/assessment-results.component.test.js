@@ -9,6 +9,7 @@ describe('Assessment Results', () => {
   let formState = {};
   const mockSave = jest.fn();
   const mockUpdate = jest.fn();
+  const reportGeneratedTimestamp = new Date();
 
   beforeEach(() => {
     formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
@@ -17,10 +18,11 @@ describe('Assessment Results', () => {
   it('should render a grid of charts', () => {
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
 
@@ -35,16 +37,18 @@ describe('Assessment Results', () => {
       screen.getByRole('tab', { name: /Impact Details By Feature/i }),
     ).toBeInTheDocument();
 
+    // TODO: toHaveLength()
     expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
   });
 
   it('should render button as save if no id', () => {
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
     expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
@@ -57,48 +61,64 @@ describe('Assessment Results', () => {
     };
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
     expect(screen.getByRole('button', { name: /update/i })).toBeInTheDocument();
   });
 
   it('if there is an id, clicking update button calls update function', () => {
-    formState = {
-      ...formState,
-      id: 'this_should_be_a_GUID_added_by_django',
-    };
+    const mockUpdateAssessment = jest.fn(),
+      formState = {
+        id: 'this_should_be_a_GUID_added_by_django',
+        reportGenerated: '2020-01-01T00:00:00.000Z',
+      };
+
     render(
       <AssessmentResults
-        results={RESULTS}
+        impactAssessment={RESULTS}
         formState={formState}
-        updateAssessment={mockUpdate}
-        saveAssessment={mockSave}
+        updateAssessment={mockUpdateAssessment}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
+
     const updateButton = screen.getByRole('button', { name: /update/i });
     expect(updateButton).toBeInTheDocument();
     userEvent.click(updateButton);
-    expect(mockUpdate).toHaveBeenCalledWith(formState);
+
+    expect(mockUpdateAssessment).toHaveBeenCalledWith(formState);
   });
 
-  xit('if there is no id, clicking save button calls save function', () => {
-    // TODO find why this test is failing even though the previous one passes
-    // was able to get this to work by bypassing the form, but this breaks
-    // the front-end.
+  it.only('if there is no id, clicking save button calls save function', () => {
+    const mockSaveAssessment = jest.fn();
+
     render(
       <AssessmentResults
-        results={RESULTS}
-        formState={formState}
-        updateAssessment={mockUpdate}
-        saveAssessment={mockSave}
+        impactAssessment={RESULTS}
+        saveAssessment={mockSaveAssessment}
+        formState={{
+          reportGenerated: '2020-01-01T00:00:00.000Z',
+        }}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
-    screen.debug(screen.getByRole('button', { name: /save/i }));
+
+    // Save button on results page
     userEvent.click(screen.getByRole('button', { name: /save/i }));
-    expect(mockSave).toHaveBeenCalled();
+
+    // Save button in yes/no dialog
+    const dialogSaveButton = screen.getByTestId('proposal-save-button');
+
+    expect(dialogSaveButton).toBeInTheDocument();
+    userEvent.click(dialogSaveButton);
+
+    const expected = {};
+
+    expect(mockSaveAssessment).toHaveBeenCalled();
   });
 });

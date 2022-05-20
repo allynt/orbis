@@ -42,16 +42,23 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
+/**
+ * @param {{
+ *  impactAssessment: object,
+ *  formState: object,
+ *  updateAssessment: function,
+ *  saveAssessment: function,
+ *  reportGeneratedTimestamp: DateRange<string>
+ * }} props
+ */
 const AssessmentResults = ({
-  results,
+  impactAssessment,
   formState,
   updateAssessment,
   saveAssessment,
+  reportGeneratedTimestamp,
 }) => {
   const styles = useStyles();
-  const now = formState.reportGenerated
-    ? new Date(formState.reportGenerated)
-    : new Date();
 
   const [selectedAssessments, setSelectedAssessments] = useState([]);
   const [saveProposalFormOpen, setSaveProposalFormOpen] = useState(false);
@@ -59,49 +66,63 @@ const AssessmentResults = ({
   const exportAs = type =>
     console.log('Export: ', selectedAssessments, ' as: ', type);
 
+  /** @param {object} form */
   const saveAssessmentAndCloseDialog = form => {
-    saveAssessment(form);
+    saveAssessment({
+      ...form,
+      impactAssessment,
+      report_generated: reportGeneratedTimestamp.toISOString(),
+    });
     setSaveProposalFormOpen(false);
   };
 
+  /** @param {object} form */
   const saveOrUpdateAssessment = form => {
-    !formState.id ? setSaveProposalFormOpen(true) : updateAssessment(form);
+    !formState.id
+      ? setSaveProposalFormOpen(true)
+      : updateAssessment({
+          ...form,
+          impactAssessment,
+          report_generated: reportGeneratedTimestamp.toISOString(),
+        });
   };
 
   return (
     <>
-      <Typography variant="h4" className={styles.reportGenerated}>
-        Report generated at: {format(now, 'PPPPpp')}
-      </Typography>
+      {!!reportGeneratedTimestamp ? (
+        <Typography variant="h4" className={styles.reportGenerated}>
+          Report generated at: {format(reportGeneratedTimestamp, 'PPPPpp')}
+        </Typography>
+      ) : null}
 
       <Grid container spacing={5}>
         <Grid item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <ImpactSummarySkeleton />
           ) : (
-            <ImpactSummary data={results?.summary} />
+            <ImpactSummary data={impactAssessment?.summary} />
           )}
         </Grid>
         <Grid container item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <ProtectedAreasListSkeleton />
           ) : (
-            <ProtectedAreasList areas={results?.areas} />
+            <ProtectedAreasList areas={impactAssessment?.areas} />
           )}
         </Grid>
         <Grid container item xs={12}>
-          {!results ? (
+          {!impactAssessment ? (
             <AssessmentActivityImpactsSkeleton />
           ) : (
-            <AssessmentActivityImpacts data={results?.activities} />
+            <AssessmentActivityImpacts data={impactAssessment?.activities} />
           )}
         </Grid>
         <Grid container item xs={6}></Grid>
         <Grid container item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <AssessmentActivityImpactsSkeleton />
           ) : (
-            <ImpactFeatureDetails data={results?.impacts_by_feature} />
+            <ImpactFeatureDetails data={impactAssessment?.impacts_by_feature} />
           )}
         </Grid>
 
