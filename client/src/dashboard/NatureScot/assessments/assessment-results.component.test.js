@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, userEvent, within } from 'test/test-utils';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { RESULTS } from '../../mock-data/NatureScot/assessment-results.js';
 import AssessmentResults from './assessment-results.component';
