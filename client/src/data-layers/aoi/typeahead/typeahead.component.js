@@ -114,7 +114,6 @@ const Typeahead = ({
       {results.suggestions?.length > 0 ? (
         <List className={styles.typeaheadListGroup}>
           {!isNameSelected &&
-            results?.suggestions?.length > 1 &&
             results?.suggestions?.map(result => {
               let name = null;
               if (
