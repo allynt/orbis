@@ -124,7 +124,9 @@ const Typeahead = ({
                   ? `${result.title} - ${result.localAuthority.name}`
                   : result.title;
               } else if (result.type === 'protected-area') {
-                name = `${result.title} - ${result.code}`;
+                name = result.code
+                  ? `${result.title} - ${result.code}`
+                  : result.title;
               } else if (result.type === 'place') {
                 name = `${result.title} - ${result.localAuthority}`;
               } else if (
@@ -138,7 +140,7 @@ const Typeahead = ({
 
               return (
                 <ListItem
-                  key={name}
+                  key={`${name}-${result.type}`}
                   className={styles.typeaheadListGroupItem}
                   onClick={() => onSuggestionSelected(result)}
                   aria-label="listitem"
