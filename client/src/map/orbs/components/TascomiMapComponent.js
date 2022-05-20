@@ -53,19 +53,22 @@ const TascomiMapComponent = ({
         propertiesToPick={propertiesToPick}
         labelMapping={labelMapping}
         dateFormat={dateFormat}
-      >
-        <div className={styles.bodyFooter}>
-          <Button
-            onClick={() =>
-              dispatch(
-                push(`dashboard?source_id=astrosat/tascomi/dashboard/latest`),
-              )
-            }
-          >
-            View Project
-          </Button>
-        </div>
-      </FeatureDetail>
+        postFeatureComponent={feature => (
+          <div className={styles.bodyFooter}>
+            <Button
+              onClick={() => {
+                dispatch(
+                  push(
+                    `dashboard?source_id=astrosat/tascomi/dashboard/latest&application_id=${feature['Application number']}`,
+                  ),
+                );
+              }}
+            >
+              View Project
+            </Button>
+          </div>
+        )}
+      ></FeatureDetail>
     </Popup>
   );
 };

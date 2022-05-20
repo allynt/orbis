@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const sourceId = searchParams.get('source_id');
+  const applicationId = searchParams.get('application_id');
   const source = useSelector(dataSourceByIdSelector(sourceId));
 
   const dashboardComponentDefinition =
@@ -84,7 +85,7 @@ const Dashboard = () => {
         </Sidebar>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <React.Suspense fallback={<LoadMaskFallback />}>
-            <Dashboard sourceId={sourceId} />
+            <Dashboard sourceId={sourceId} applicationId={applicationId} />
           </React.Suspense>
         </ErrorBoundary>
       </Box>

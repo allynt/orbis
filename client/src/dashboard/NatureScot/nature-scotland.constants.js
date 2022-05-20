@@ -35,3 +35,8 @@ export const SCORE_LEGENDS = [
 
 export const IMPACT_COLUMNS = [0, 1, 2, 3, 4];
 export const SCORE_VALUES = [3, 2, 1, 0, -1, -2, -3];
+
+export const DEBOUNCE_TIMEOUT = 500;
+
+export const AVAILABLE_ACTIVITIES_URL = 'ns/proxy/available-activities/latest';
+export const SEARCH_ACTIVITIES_URL = 'ns/proxy/activities/latest';

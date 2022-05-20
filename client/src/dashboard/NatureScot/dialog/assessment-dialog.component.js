@@ -12,14 +12,14 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { TabPanel } from 'dashboard/NatureScot/tab-panel';
+import TabPanel from 'components/tab-panel.component';
 
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
 import {
   saveProposal,
   updateProposal,
-  impactActivitiesSelector,
+  impactAvailableActivitiesSelector,
   fetchImpactActivities,
 } from '../nature-scot.slice';
 import AssessmentDialogForm from './assessment-dialog-form';
@@ -117,8 +117,8 @@ const AssessmentDialog = ({
     );
     closeForm({ clear: true, close: true });
   };
+  const activities = useSelector(impactAvailableActivitiesSelector);
 
-  const activities = useSelector(impactActivitiesSelector);
   useEffect(() => {
     dispatch(fetchImpactActivities());
   }, [dispatch]);

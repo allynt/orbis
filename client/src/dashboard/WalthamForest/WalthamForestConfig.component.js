@@ -171,7 +171,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         alignItems="center"
         className={styles.header}
       >
-        <Typography variant="h2">IMO / PO Dashboard</Typography>
+        <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
         <Button size="small" onClick={() => setTargetDialogVisible(true)}>
           Add Targets
         </Button>

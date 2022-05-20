@@ -13,285 +13,160 @@ import {
 
 import {
   AddCircle,
-  ArrowBack,
   ArrowForward,
   ArrowBackIos,
   ArrowForwardIos,
 } from '@material-ui/icons';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  searchImpactActivities,
+  impactActivitiesSelector,
+} from 'dashboard/NatureScot/nature-scot.slice';
+import { useDebounce } from 'hooks/useDebounce';
+
+import { DEBOUNCE_TIMEOUT } from '../nature-scotland.constants';
 import ActivityList from './activity-list.component';
 
 const useStyles = makeStyles(theme => ({
-  actions: {
-    display: 'flex',
-  },
-  actionButton: {
-    padding: 'unset',
-  },
-  buttons: {
-    '& > *': {
-      margin: '1rem',
-    },
-  },
-  fieldset: {
-    border: '4px solid',
-    borderColor: theme.palette.background.paper,
-  },
-  outlined: {
-    padding: '3px',
-    borderRadius: '5px',
-    backgroundColor: '#323e47',
-    border: '1px solid black',
-  },
-  legend: {
-    fontSize: 10,
-    fontWeight: 800,
-  },
-  descriptionText: {
-    fontSize: 14,
-  },
-  placeholder: {
-    backgroundColor: theme.palette.background.default,
-    borderRadius: '5px',
-    width: '90%',
-    height: '2rem',
-    paddingLeft: '1rem',
-  },
   listTitle: {
-    padding: '1rem',
+    padding: theme.spacing(2),
     textTransform: 'uppercase',
     textAlign: 'center',
   },
-  highlightText: {
-    color: '#f6be00',
+  searchField: {
+    padding: theme.spacing(1),
   },
-  nudge: {
-    marginLeft: '0.75rem',
-    marginBottom: '0.9rem',
+  input: {
+    backgroundColor: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
+    height: '2rem',
+    paddingLeft: theme.spacing(2),
   },
-  nudge2: {
-    marginLeft: '1rem',
-    marginBottom: '0.5rem',
+  inputIcon: {
+    marginRight: theme.spacing(1),
   },
-  circle: {
+  arrowIcon: {
     borderRadius: '50%',
     backgroundColor: theme.palette.text.primary,
     width: '2rem',
     height: '2rem',
     color: theme.palette.secondary.main,
-    margin: '0rem 0.5rem',
+    margin: `0 ${theme.spacing(1)}`,
     padding: '0.1rem',
-    cursor: 'pointer',
   },
-  capsuleTop: {
-    width: '3rem',
-    backgroundColor: theme.palette.background.paper,
-    borderTopLeftRadius: '50px',
-    borderTopRightRadius: '50px',
-    position: 'relative',
-    top: '0px',
-  },
-  capsuleBottom: {
-    width: '3rem',
-    backgroundColor: theme.palette.background.paper,
-    borderBottomLeftRadius: '50px',
-    borderBottomRightRadius: '50px',
-    position: 'relative',
-    bottom: '4px',
-  },
-  capsuleBox: {
-    height: '2.6rem',
-    backgroundColor: theme.palette.background.paper,
-    zIndex: 9999,
-  },
-  chooseAllButton: {
-    marginTop: '1em',
-    backgroundColor: theme.palette.secondary.main,
-    color: '#fff',
-  },
-  removeAllButton: {
-    marginTop: '1em',
-    backgroundColor: theme.palette.secondary.main,
-    color: '#fff',
-  },
-  plusIcon: {
-    marginRight: '0.75rem',
-    cursor: 'pointer',
+  arrowIconActive: {
+    backgroundColor: theme.palette.info.main,
   },
   newActivity: {
     color: theme.palette.primary.main,
   },
-  checkbox: {
-    paddingBottom: '10px',
-    paddingTop: '10px',
-    marginLeft: '1rem',
-  },
-  filterField: {
-    paddingBottom: '1rem',
-    marginLeft: '0.75rem',
-  },
-  blueCircle: {
-    borderRadius: '50%',
-    backgroundColor: theme.palette.info.main,
-    width: '2rem',
-    height: '2rem',
-    color: theme.palette.secondary.main,
-    margin: '0rem 0.5rem',
-    padding: '0.1rem',
-    cursor: 'pointer',
+  footerButton: {
+    backgroundColor: 'transparent',
+    color: theme.palette.common.white,
   },
 }));
 
-const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
+/**
+ * @param {{
+ *  setValue: function
+ *  availableActivities: {title: string, code: string}[]
+ *  initialActivities: {title: string, code: string|null}[]
+ * }} props
+ */
+const AssessmentsShuttle = ({
+  setValue,
+  availableActivities,
+  initialActivities,
+}) => {
   const styles = useStyles();
+  const dispatch = useDispatch();
 
-  const filtered = data.filter(
-    activity =>
-      !initialActivities.some(selected => selected.code === activity.code),
+  const typeAheadActivities = useSelector(impactActivitiesSelector);
+
+  const [typeAheadQuery, setTypeAheadQuery] = useState('');
+
+  const [newActivityText, setNewActivityText] = useState('');
+
+  const [leftSelected, setLeftSelected] = useState([]);
+
+  const [right, setRight] = useState(initialActivities ?? []);
+  const [rightSelected, setRightSelected] = useState([]);
+
+  const activitiesToDisplay = !!typeAheadQuery
+    ? typeAheadActivities
+    : availableActivities;
+
+  const debouncedSearch = useDebounce(
+    value =>
+      (async () => await dispatch(searchImpactActivities({ query: value })))(),
+    DEBOUNCE_TIMEOUT,
   );
 
-  const [left, setLeft] = useState(initialActivities ? filtered : []);
-  const [right, setRight] = useState(initialActivities ?? []);
-  const [leftSelected, setLeftSelected] = useState([]);
-  const [rightSelected, setRightSelected] = useState([]);
-  const [searchString, setSearchString] = useState('');
-  const [newActivityText, setNewActivityText] = useState('');
-  const [chooseAllDisabledButton, setChooseAllDisabledButton] = useState(false);
-  const [removeAllDisabledButton, setRemoveAllDisabledButton] = useState(true);
-  const [userActivityNonSelectable, setUserActivityNonSelectable] =
-    useState(true);
-
+  // add activities list to parent form to be tracked, submitted
   useEffect(() => {
     setValue('activities', right, { shouldDirty: true, shouldValidate: true });
   }, [right, setValue]);
 
-  useEffect(() => setLeft(data), [data]);
-
+  // Type-ahead request to API
   useEffect(() => {
-    setChooseAllDisabledButton(left.length === 0);
-    setRemoveAllDisabledButton(right.length === 0);
-    setUserActivityNonSelectable(rightSelected.every(item => !item.code));
-  }, [
-    left,
-    setChooseAllDisabledButton,
-    right,
-    setRemoveAllDisabledButton,
-    setUserActivityNonSelectable,
-    rightSelected,
-  ]);
-
-  const getFilteredLeft = () => {
-    // applies a chain of filters. Sets up an array of filter functions
-    // which are applied one after the other.
-    let filterList = [];
-
-    // regex filter
-    if (searchString) {
-      filterList.push(item => {
-        const finder = new RegExp(`.*${searchString}.*`, 'i');
-        return item.title.match(finder);
-      });
+    if (!!typeAheadQuery) {
+      debouncedSearch(typeAheadQuery);
     }
+  }, [typeAheadQuery, debouncedSearch]);
 
-    // function to filter out items in left which are in right
-    filterList.push(
-      item => !right.some(selected => selected.code === item.code),
-    );
-
-    // get filtered list by applying filter functions
-    return left.filter(item =>
-      filterList.map(filterFunc => filterFunc(item)).every(x => x),
-    );
-  };
-
-  const handleSearch = searchText => setSearchString(searchText);
-
-  const selectItemOnLeft = object => {
-    if (!leftSelected.find(item => item.title === object.title)) {
-      setLeftSelected([
-        ...leftSelected,
-        left.find(item => item.title === object.title),
-      ]);
-    } else {
-      // already selected, remove from selection
-      setLeftSelected([
-        ...leftSelected.filter(item => item.title !== object.title),
-      ]);
-    }
-  };
-
-  const selectItemOnRight = object => {
-    if (!rightSelected.find(item => item.title === object.title)) {
-      const newList = [
-        ...rightSelected,
-        right.find(item => item.title === object.title),
-      ];
-      setRightSelected(newList.filter(item => item.code)); // strip out user added from selection
-    } else {
-      // already selected, remove from selection
-      setRightSelected([
-        ...rightSelected.filter(item => item.title !== object.title),
-      ]);
-    }
-  };
-
-  const clearSelections = () => {
-    // called after any shuttling between lists
+  const reset = () => {
     setLeftSelected([]);
     setRightSelected([]);
-    setSearchString('');
-  };
-
-  const chooseAll = () => {
-    // move all items visible in left list to right (filters applied),
-    // irrespective of selection
-    const filteredLeft = getFilteredLeft();
-    setLeftSelected([]);
-    setRight([...right, ...filteredLeft]);
-    setRightSelected([]);
-    setLeft(left.filter(item => !filteredLeft.includes(item)));
-    clearSelections();
-  };
-
-  const removeAll = () => {
-    // move all items visible in right list to right,
-    // irrespective of selection
-    const rightToMove = right.filter(item => !!item.code);
-    setLeft([...left, ...rightToMove]);
-    setRightSelected([]);
-    setRight(right.filter(item => !item.code));
-    clearSelections();
-  };
-
-  const chooseSelected = () => {
-    // user clicks choose all, move all selected to right
-    // and remove from left
-    setRight([...right, ...leftSelected.map(item => item)]);
-    setLeft(left.filter(item => !leftSelected.includes(item)));
-    clearSelections();
-  };
-
-  const removeSelected = () => {
-    // move selected from right list to left list,
-    setLeft([...left, ...rightSelected.filter(item => item && !!item.code)]);
-    setRight(right.filter(item => !rightSelected.includes(item) || !item.code));
-    setRightSelected([]);
-    clearSelections();
-  };
-
-  const addActivity = () => {
-    if (!newActivityText) return;
-    const newActivity = {
-      title: newActivityText,
-      code: null,
-    };
-    setRight([...right, newActivity]);
     setNewActivityText('');
   };
 
-  const deleteActivity = activity =>
-    setRight(
-      right.filter(eachActivity => eachActivity.title !== activity.title),
+  /**
+   * @param {{title: string, code: string|null}} selectedActivity
+   */
+  const selectActivity = selectedActivity => {
+    // if not selected, select
+    if (!leftSelected.includes(selectedActivity)) {
+      setLeftSelected(prev => [...prev, selectedActivity]);
+    } else {
+      // if already selected, unselect
+      setLeftSelected(
+        leftSelected.filter(activity => activity !== selectedActivity),
+      );
+    }
+  };
+
+  const moveSelected = () => {
+    const filterAlreadySelected = leftSelected.filter(
+      activity => !right.includes(activity),
+    );
+    setRight(prev => [...prev, ...filterAlreadySelected]);
+    reset();
+  };
+
+  const moveAll = () => {
+    setRight(activitiesToDisplay);
+    reset();
+  };
+
+  const removeAll = () => setRight([]);
+
+  const addActivity = () => {
+    if (!newActivityText) {
+      return;
+    } else {
+      setRight(prev => [...prev, { title: newActivityText, code: null }]);
+      setNewActivityText('');
+    }
+  };
+
+  /**
+   * @param {{title: string, code: string|null}} selectedActivity
+   */
+  const deleteActivity = selectedActivity =>
+    setRight(prev =>
+      prev.filter(activity => activity.title !== selectedActivity.title),
     );
 
   return (
@@ -305,52 +180,46 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         The Available Activities list on the left, provides a list of activities
         that you may undertake as part of your development. Select your
         activities from the Available Activities list and click on the "forward"
-        arrow to add them to your Selected Activities list. Similarly, you can
-        remove an activity from your Selected Activities list by clicking the
-        "backward" arrow. You can also add a new activity, not on the list, by
-        typing it into the top of the Selected Activities box.
+        arrow to add them to your Selected Activities list. You can also add a
+        new activity, not on the list, by typing it into the top of the Selected
+        Activities box.
       </p>
       <Grid container>
         {/* left list (available activities) */}
-        <Grid item xs={5}>
-          <Card>
-            <Grid item xs={12}>
-              <Typography className={styles.listTitle} variant="h2">
-                Available Activities
-              </Typography>
-            </Grid>
-            <Divider />
-            <Grid item xs={12}></Grid>
-            <Divider />
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-between"
-              wrap="nowrap"
-              className={styles.nudge}
-            >
-              <MagnifierIcon fontSize="small" color="primary" />
-              <TextField
-                id="filter-activities"
-                margin="normal"
-                title="Type ahead..."
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { input: styles.placeholder },
-                }}
-                className={styles.filterField}
-                value={searchString}
-                onChange={e => handleSearch(e.target.value)}
-              />
-            </Grid>
-            <Divider />
-            <ActivityList
-              // name="proposed_activities"
-              activityList={getFilteredLeft()}
-              selectedActivityList={leftSelected}
-              onSelect={selectItemOnLeft}
+        <Grid item component={Card} xs={5}>
+          <Typography className={styles.listTitle} variant="h2">
+            Available Activities
+          </Typography>
+          <Divider />
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            wrap="nowrap"
+            className={styles.searchField}
+          >
+            <MagnifierIcon
+              fontSize="small"
+              color="primary"
+              className={styles.inputIcon}
             />
-          </Card>
+            <TextField
+              label="Search for Activities"
+              placeholder="Search for Activities"
+              value={typeAheadQuery}
+              onChange={({ target: { value } }) => setTypeAheadQuery(value)}
+              InputProps={{
+                disableUnderline: true,
+                classes: { input: styles.input },
+              }}
+            />
+          </Grid>
+          <Divider />
+          <ActivityList
+            activityList={activitiesToDisplay}
+            selectedActivityList={leftSelected}
+            onSelect={selectActivity}
+          />
         </Grid>
 
         {/* arrows in middle */}
@@ -358,89 +227,62 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           container
           item
           alignItems="center"
-          justifyContent="space-around"
+          justifyContent="center"
           wrap="nowrap"
           xs={2}
         >
-          <div>
-            <Grid item xs={12} className={styles.capsuleTop}>
-              &nbsp;
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBox}>
-              <ArrowForward
-                className={`${styles.circle} ${
-                  leftSelected.length > 0 ? styles.blueCircle : ''
-                }`}
-                onClick={() => chooseSelected()}
-                fontSize="large"
-                data-testid="choose activity"
-                cursor="pointer"
-              />
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBox}>
-              <ArrowBack
-                className={`${styles.circle} ${
-                  rightSelected.length > 0 && !userActivityNonSelectable
-                    ? styles.blueCircle
-                    : ''
-                }`}
-                onClick={() => removeSelected()}
-                fontSize="small"
-                data-testid="choose selected"
-                pointerEvents={userActivityNonSelectable ? 'none' : 'auto'}
-                cursor="pointer"
-              />
-            </Grid>
-            <Grid item xs={12} className={styles.capsuleBottom}>
-              &nbsp;
-            </Grid>
-          </div>
+          <ArrowForward
+            className={clsx(
+              styles.arrowIcon,
+              leftSelected.length > 0 && styles.arrowIconActive,
+            )}
+            onClick={moveSelected}
+            fontSize="large"
+            data-testid="choose-activity"
+            cursor="pointer"
+          />
         </Grid>
 
         {/* right list (selected activities) */}
-        <Grid item xs={5}>
-          <Card>
-            <Grid item xs={12}>
-              <Typography className={styles.listTitle} variant="h2">
-                Selected Activities
-              </Typography>
-            </Grid>
-            <Divider />
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="space-around"
-              wrap="nowrap"
-              className={styles.nudge2}
-            >
-              <AddCircle
-                onClick={addActivity}
-                fontSize="small"
-                className={`${styles.plusIcon} ${
-                  newActivityText ? styles.newActivity : ''
-                }`}
-              />
-              <TextField
-                id="add-activity"
-                margin="normal"
-                value={newActivityText}
-                title="Add a new Activity"
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { input: styles.placeholder },
-                }}
-                maxLength={50}
-                onChange={e => setNewActivityText(e.target.value)}
-              />
-            </Grid>
-            <Divider />
-            <ActivityList
-              activityList={right}
-              selectedActivityList={rightSelected}
-              onSelect={selectItemOnRight}
-              onDelete={deleteActivity}
+        <Grid item xs={5} component={Card}>
+          <Typography className={styles.listTitle} variant="h2">
+            Selected Activities
+          </Typography>
+          <Divider />
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-around"
+            wrap="nowrap"
+            className={styles.searchField}
+          >
+            <AddCircle
+              onClick={addActivity}
+              fontSize="small"
+              data-testid="add-activity"
+              className={clsx(
+                styles.inputIcon,
+                newActivityText && styles.newActivity,
+              )}
             />
-          </Card>
+            <TextField
+              label="Add a new activity"
+              placeholder="Add a new activity"
+              value={newActivityText}
+              onChange={({ target: { value } }) => setNewActivityText(value)}
+              InputProps={{
+                disableUnderline: true,
+                classes: { input: styles.input },
+              }}
+              maxLength={50}
+            />
+          </Grid>
+          <Divider />
+          <ActivityList
+            activityList={right}
+            selectedActivityList={rightSelected}
+            onDelete={deleteActivity}
+          />
         </Grid>
 
         {/* footer left 'choose all' */}
@@ -454,18 +296,18 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
         >
           <Button
             endIcon={<ArrowForwardIos size="small" />}
-            onClick={() => chooseAll()}
-            className={styles.chooseAllButton}
+            onClick={moveAll}
+            className={styles.footerButton}
             size="small"
             variant="text"
-            disabled={chooseAllDisabledButton}
+            disabled={availableActivities.length === 0}
           >
             Choose all
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          <Typography variant="h2">&nbsp;</Typography>
-        </Grid>
+
+        {/* For even spacing */}
+        <Grid item xs={2} />
 
         {/* footer right 'remove all' */}
         <Grid
@@ -477,14 +319,12 @@ const AssessmentsShuttle = ({ setValue, data, initialActivities }) => {
           xs={5}
         >
           <Button
-            startIcon={
-              <ArrowBackIos className={styles.removeAllIcon} size="small" />
-            }
+            startIcon={<ArrowBackIos size="small" />}
             size="small"
             variant="text"
-            onClick={() => removeAll()}
-            className={styles.removeAllButton}
-            disabled={removeAllDisabledButton}
+            onClick={removeAll}
+            className={styles.footerButton}
+            disabled={right.length === 0}
           >
             Remove all
           </Button>
