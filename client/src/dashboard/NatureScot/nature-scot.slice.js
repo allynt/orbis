@@ -22,7 +22,7 @@ export const initialState = {
 export const fetchImpactActivities = createAsyncThunk(
   `${name}/fetchImpactActivities`,
   async (props, { getState, rejectWithValue }) => {
-    const apiSourceId = 'ns/proxy/activities/latest';
+    const apiSourceId = 'ns/proxy/available-activities/latest';
 
     const {
       data: { tokens },
@@ -243,7 +243,10 @@ const natureScotSlice = createSlice({
         state.error = payload;
       })
       .addCase(fetchImpactAssessment.fulfilled, (state, { payload }) => {
-        state.impactAssessment = payload;
+        state.impactAssessment = {
+          results: payload,
+          reportGenerated: new Date().toISOString(),
+        };
         state.error = null;
       })
       .addCase(fetchImpactAssessment.rejected, (state, { payload }) => {

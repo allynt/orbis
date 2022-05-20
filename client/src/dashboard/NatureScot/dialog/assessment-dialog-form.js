@@ -120,8 +120,9 @@ const DateRange = ({ startDate, endDate, onChange }) => {
  * @param {{
  * onSubmit: function,
  * formState: object,
- * setFormIsDirty: function
- * activities: object[]
+ * setFormIsDirty: function,
+ * activities: object[],
+ * setReportGeneratedTimestamp: function
  * }} props
  */
 const AssessmentDialogForm = ({
@@ -129,6 +130,7 @@ const AssessmentDialogForm = ({
   formState,
   setFormIsDirty,
   activities,
+  setReportGeneratedTimestamp,
 }) => {
   const styles = useStyles();
 
@@ -150,6 +152,12 @@ const AssessmentDialogForm = ({
 
   const { activities: selectedActivities, startDate, endDate } = formState;
 
+  /**
+   * @param {{
+   *  startDate: DateRange<string>,
+   *  endDate: DateRange<string>
+   * }} props
+   */
   const handleDateRangeSelection = ({ startDate, endDate }) => {
     const options = {
       shouldValidate: true,
@@ -159,6 +167,13 @@ const AssessmentDialogForm = ({
     setValue('endDate', endDate, options);
   };
 
+  /**
+   * @param {{
+   *  startDate: DateRange<string>,
+   *  endDate: DateRange<string>,
+   *  rest: any
+   * }} props
+   */
   const doSubmit = ({ startDate, endDate, ...rest }) => {
     const processedForm = {
       startDate: startDate.toISOString(),
@@ -166,9 +181,12 @@ const AssessmentDialogForm = ({
       ...rest,
     };
     onSubmit(processedForm);
+    setReportGeneratedTimestamp(new Date());
     setFormIsDirty(false);
   };
 
+  // This is not part of react-hook-form, it is a standard local state
+  // boolean to determine whether or not the yes/no dialog should open
   useEffect(() => setFormIsDirty(isDirty), [isDirty, setFormIsDirty]);
 
   return (

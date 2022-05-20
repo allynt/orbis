@@ -52,7 +52,11 @@ const SaveProposalForm = ({ onSubmit }) => {
         />
       </Grid>
       <Grid item container direction="column" alignItems="center">
-        <Button type="submit" color="secondary">
+        <Button
+          type="submit"
+          color="secondary"
+          data-testid="proposal-save-button"
+        >
           Save
         </Button>
       </Grid>

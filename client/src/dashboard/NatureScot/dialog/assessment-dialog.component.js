@@ -60,9 +60,8 @@ const useStyles = makeStyles(theme => ({
  * open: boolean,
  * close: function,
  * onSubmit: function,
- * results: object[],
+ * impactAssessment: object,
  * formState?: object
- * closeForm: function,
  * }} props
  */
 const AssessmentDialog = ({
@@ -70,18 +69,19 @@ const AssessmentDialog = ({
   open = false,
   close,
   onSubmit,
-  results,
+  impactAssessment,
   formState,
-  closeForm,
 }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const updateAssessment = form => {
-    const now = formState.reportGenerated
-      ? new Date(formState.reportGenerated)
-      : new Date();
+  // TODO: this is breaking save, what was it before?
+  const [reportGeneratedTimestamp, setReportGeneratedTimestamp] = useState(
+    !!formState.reportGenerated ? new Date(formState.reportGenerated) : null,
+  );
 
+  /** @param {object} form */
+  const updateAssessment = form => {
     dispatch(
       // @ts-ignore
       updateProposal({
@@ -91,17 +91,14 @@ const AssessmentDialog = ({
         proposal_start_date: form.startDate,
         proposal_end_date: form.endDate,
         proposal_activities: form.activities,
-        report_generated: now.toISOString(),
-        report_state: results,
+        report_generated: form.reportGenerated,
+        report_state: form.impactAssessment,
       }),
     );
-    closeForm({ clear: true, close: true });
   };
 
+  /** @param {object} form */
   const saveAssessment = form => {
-    const now = formState.reportGenerated
-      ? new Date(formState.reportGenerated)
-      : new Date();
     dispatch(
       // @ts-ignore
       saveProposal({
@@ -111,11 +108,10 @@ const AssessmentDialog = ({
         proposal_start_date: formState.startDate,
         proposal_end_date: formState.endDate,
         proposal_activities: formState.activities,
-        report_generated: now.toISOString(),
-        report_state: results,
+        report_generated: form.reportGenerated,
+        report_state: form.impactAssessment,
       }),
     );
-    closeForm({ clear: true, close: true });
   };
 
   const activities = useSelector(impactActivitiesSelector);
@@ -152,6 +148,7 @@ const AssessmentDialog = ({
     <Dialog fullScreen open={open} onClose={handleClose}>
       <IconButton
         size="small"
+        aria-label="impact-dialog-close-icon"
         className={styles.closeButton}
         onClick={handleClose}
       >
@@ -163,7 +160,7 @@ const AssessmentDialog = ({
 
         <Tabs value={tab} onChange={toggleTab}>
           <Tab label="Form" />
-          <Tab label="Results" disabled={!results} />
+          <Tab label="Results" disabled={!impactAssessment} />
         </Tabs>
 
         <TabPanel value={tab} index={0}>
@@ -181,15 +178,17 @@ const AssessmentDialog = ({
             formState={formState}
             setFormIsDirty={setFormIsDirty}
             activities={activities}
+            setReportGeneratedTimestamp={setReportGeneratedTimestamp}
           />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
           <AssessmentResults
-            results={results}
+            impactAssessment={impactAssessment}
             formState={formState}
             updateAssessment={updateAssessment}
             saveAssessment={saveAssessment}
+            reportGeneratedTimestamp={reportGeneratedTimestamp}
           />
         </TabPanel>
       </div>

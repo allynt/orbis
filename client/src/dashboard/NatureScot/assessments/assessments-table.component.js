@@ -32,7 +32,13 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentTable = ({ data, handleEditAssessment }) => {
+/**
+ * @param {{
+ *  data: object[],
+ *  openSavedAssessment: function
+ * }} props
+ */
+const AssessmentTable = ({ data, openSavedAssessment }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
@@ -101,7 +107,7 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
                 size="small"
                 variant="text"
                 className={styles.actionButton}
-                onClick={() => handleEditAssessment(id)}
+                onClick={() => openSavedAssessment(id)}
               >
                 View/Modify
               </Button>
@@ -114,7 +120,7 @@ const AssessmentTable = ({ data, handleEditAssessment }) => {
       selectedAssessments,
       styles.actions,
       styles.actionButton,
-      handleEditAssessment,
+      openSavedAssessment,
     ],
   );
 

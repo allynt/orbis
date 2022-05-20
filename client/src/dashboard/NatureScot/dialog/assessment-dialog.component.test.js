@@ -1,15 +1,8 @@
 import React from 'react';
 
-import { Provider } from 'react-redux';
-import createMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { render, screen, waitFor, userEvent } from 'test/test-utils';
 
-import { render, screen, waitFor } from 'test/test-utils';
-
-import { userEvent } from '../../../test/test-utils';
 import AssessmentDialog from './assessment-dialog.component';
-
-const mockStore = createMockStore([thunk]);
 
 const initialState = {
   description: '',
@@ -91,25 +84,24 @@ describe('AssessmentDialog', () => {
   }, 60000);
 
   it('should enable the `run impact assessment` button', async () => {
+    const state = {
+      natureScotDashboard: {
+        activities: [
+          { title: 'Test Activity 1', code: 'activity1' },
+          { title: 'Test Activity 2', code: 'activity2' },
+        ],
+      },
+    };
+
     render(
-      <Provider
-        store={mockStore({
-          natureScotDashboard: {
-            activities: [
-              { title: 'Test Activity 1', code: 'activity1' },
-              { title: 'Test Activity 2', code: 'activity2' },
-            ],
-          },
-        })}
-      >
-        <AssessmentDialog
-          open={true}
-          close={close}
-          onSubmit={onSubmit}
-          visibleTab={0}
-          formState={initialState}
-        />
-      </Provider>,
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+        formState={initialState}
+      />,
+      { state },
     );
 
     userEvent.type(
@@ -146,6 +138,15 @@ describe('AssessmentDialog', () => {
   }, 70000);
 
   it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
+    const state = {
+      natureScotDashboard: {
+        activities: [
+          { title: 'Test Activity 1', code: 'activity1' },
+          { title: 'Test Activity 2', code: 'activity2' },
+        ],
+      },
+    };
+
     const selectedAoi = {
       name: 'Test AOI',
       geometry: {
@@ -161,24 +162,14 @@ describe('AssessmentDialog', () => {
     };
 
     render(
-      <Provider
-        store={mockStore({
-          natureScotDashboard: {
-            activities: [
-              { title: 'Test Activity 1', code: 'activity1' },
-              { title: 'Test Activity 2', code: 'activity2' },
-            ],
-          },
-        })}
-      >
-        <AssessmentDialog
-          open={true}
-          close={close}
-          onSubmit={onSubmit}
-          visibleTab={0}
-          formState={{ ...initialState, geometry: selectedAoi.geometry }}
-        />
-      </Provider>,
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+        formState={{ ...initialState, geometry: selectedAoi.geometry }}
+      />,
+      { state },
     );
 
     userEvent.type(
@@ -226,4 +217,16 @@ describe('AssessmentDialog', () => {
       expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining(form)),
     );
   }, 70000);
+
+  it('should use fetched display fetched results if present', () => {
+    render(
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+        formState={initialState}
+      />,
+    );
+  });
 });

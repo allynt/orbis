@@ -50,29 +50,21 @@ const PANELS = {
   assessments: 'assessments',
 };
 
+/**
+ * @param {{ sourceId: string }} props
+ */
 const NatureScotDashboard = ({ sourceId }) => {
   const styles = useStyles();
   const dispatch = useDispatch();
 
   const selectedAoi = useSelector(selectedAoiSelector);
-  const impactAssessment = useSelector(impactAssessmentSelector);
+  const generatedImpactAssessment = useSelector(impactAssessmentSelector);
   const proposals = useSelector(proposalsSelector);
 
   const [assessmentDialogTab, setAssessmentDialogTab] = useState(0);
   const [visibleTab, setVisibleTab] = useState(PANELS.data);
   const [isAssessmentDialogVisible, setIsAssessmentDialogVisible] =
     useState(false);
-
-  const closeForm = options => {
-    const { clear, close } = options;
-    // Close form and/or clear out assessment
-    if (clear) {
-      dispatch(clearImpactAssessment());
-    }
-    if (close) {
-      setIsAssessmentDialogVisible(false);
-    }
-  };
 
   const initialState = {
     description: '',
@@ -82,18 +74,32 @@ const NatureScotDashboard = ({ sourceId }) => {
     geometry: selectedAoi?.geometry,
   };
 
+  /** @type {[any, React.Dispatch<any>]} */
   const [formState, setFormState] = useState(initialState);
 
-  const submitAssessment = form => {
+  const impactAssessment = generatedImpactAssessment ?? formState.results;
+
+  const handleStartImpactAssessment = () => {
+    setFormState(initialState);
+    setAssessmentDialogTab(0);
+    setIsAssessmentDialogVisible(true);
+  };
+
+  /** @param {object} form */
+  const handleRunImpactAssessment = form => {
+    // TODO: remove prev spread?
     setFormState(prev => ({ ...prev, ...form }));
     dispatch(fetchImpactAssessment(form));
     setAssessmentDialogTab(1);
   };
 
-  const handleEditAssessment = id => {
+  /** @param {string} id */
+  const handleOpenSavedAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
-    setFormState(prev => ({
-      id: assessment.id,
+
+    // TODO: no spread, so effectively hardcoding properties?
+    setFormState({
+      id,
       geometry: assessment.geometry,
       created: assessment.created,
       modified: assessment.modified,
@@ -104,17 +110,28 @@ const NatureScotDashboard = ({ sourceId }) => {
       reportGenerated: assessment.report_generated,
       activities: assessment.proposal_activities,
       results: assessment.report_state,
-    }));
+    });
+
     setAssessmentDialogTab(1);
     setIsAssessmentDialogVisible(true);
   };
 
   useEffect(() => dispatch(fetchProposals()), [dispatch]);
 
-  // check geometries are the same
+  /**
+   * check geometries are the same
+   * @param {{type: string, coordinates: array}} geometry1
+   * @param {{type: string, coordinates: array}} geometry2
+   * @returns {boolean}
+   */
   const compareGeometries = (geometry1, geometry2) => {
     if (!geometry1 || !geometry2) return false;
     return JSON.stringify(geometry1) === JSON.stringify(geometry2);
+  };
+
+  const close = () => {
+    dispatch(clearImpactAssessment());
+    setIsAssessmentDialogVisible(false);
   };
 
   return (
@@ -135,11 +152,7 @@ const NatureScotDashboard = ({ sourceId }) => {
         </Tabs>
 
         <Button
-          onClick={() => {
-            setFormState(initialState);
-            setAssessmentDialogTab(0);
-            setIsAssessmentDialogVisible(true);
-          }}
+          onClick={handleStartImpactAssessment}
           className={styles.assessmentButton}
           color="secondary"
         >
@@ -151,23 +164,20 @@ const NatureScotDashboard = ({ sourceId }) => {
       )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable
-          data={proposals.filter(
-            item => true,
-            // below filters out on AOI user selected in the map
-            // compareGeometries(item.geometry, selectedAoi?.geometry),
+          data={proposals.filter(item =>
+            compareGeometries(item.geometry, selectedAoi?.geometry),
           )}
-          handleEditAssessment={handleEditAssessment}
+          openSavedAssessment={handleOpenSavedAssessment}
         />
       )}
 
       <AssessmentDialog
         visibleTab={assessmentDialogTab}
-        results={impactAssessment ?? formState.results}
-        onSubmit={submitAssessment}
-        close={() => setIsAssessmentDialogVisible(false)}
         open={isAssessmentDialogVisible}
+        close={close}
+        onSubmit={handleRunImpactAssessment}
+        impactAssessment={impactAssessment}
         formState={formState}
-        closeForm={closeForm}
       />
     </div>
   );
