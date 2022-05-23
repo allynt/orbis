@@ -54,7 +54,6 @@ const useStyles = makeStyles(theme => ({
 
 const DescriptionInput = ({ register }) => {
   const styles = useStyles();
-
   return (
     <div className={styles.fieldset}>
       <FieldWrapper title="Describe Your Development or Change">

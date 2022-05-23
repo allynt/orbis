@@ -87,7 +87,6 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   /** @param {object} form */
   const handleRunImpactAssessment = form => {
-    // TODO: remove prev spread?
     setFormState(prev => ({ ...prev, ...form }));
     dispatch(fetchImpactAssessment(form));
     setAssessmentDialogTab(1);
@@ -96,8 +95,6 @@ const NatureScotDashboard = ({ sourceId }) => {
   /** @param {string} id */
   const handleOpenSavedAssessment = id => {
     const assessment = proposals.find(proposal => proposal.id === id);
-
-    // TODO: no spread, so effectively hardcoding properties?
     setFormState({
       id,
       geometry: assessment.geometry,
@@ -164,9 +161,7 @@ const NatureScotDashboard = ({ sourceId }) => {
       )}
       {visibleTab === PANELS.assessments && (
         <AssessmentTable
-          data={proposals.filter(item =>
-            compareGeometries(item.geometry, selectedAoi?.geometry),
-          )}
+          data={proposals}
           openSavedAssessment={handleOpenSavedAssessment}
         />
       )}

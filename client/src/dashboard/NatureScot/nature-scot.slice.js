@@ -302,10 +302,7 @@ const natureScotSlice = createSlice({
         state.error = payload;
       })
       .addCase(fetchImpactAssessment.fulfilled, (state, { payload }) => {
-        state.impactAssessment = {
-          results: payload,
-          reportGenerated: new Date().toISOString(),
-        };
+        state.impactAssessment = payload;
         state.error = null;
       })
       .addCase(fetchImpactAssessment.rejected, (state, { payload }) => {

@@ -66,26 +66,30 @@ const AssessmentResults = ({
   const exportAs = type =>
     console.log('Export: ', selectedAssessments, ' as: ', type);
 
-  /** @param {object} form */
-  const saveAssessmentAndCloseDialog = form => {
+  /**
+   * @param {{
+   * name: string,
+   * description?: string
+   * }} newSaveForm
+   */
+  const saveAssessmentAndCloseDialog = newSaveForm => {
     saveAssessment({
-      ...form,
+      ...formState,
+      ...newSaveForm,
       impactAssessment,
-      report_generated: reportGeneratedTimestamp.toISOString(),
+      reportGenerated: reportGeneratedTimestamp.toISOString(),
     });
     setSaveProposalFormOpen(false);
   };
 
-  /** @param {object} form */
-  const saveOrUpdateAssessment = form => {
+  const saveOrUpdateAssessment = () =>
     !formState.id
       ? setSaveProposalFormOpen(true)
       : updateAssessment({
-          ...form,
+          ...formState,
           impactAssessment,
-          report_generated: reportGeneratedTimestamp.toISOString(),
+          reportGenerated: reportGeneratedTimestamp.toISOString(),
         });
-  };
 
   return (
     <>
@@ -133,10 +137,7 @@ const AssessmentResults = ({
           <Button onClick={() => exportAs(FORMATS.CSV)} size="small">
             Export as CSV
           </Button>
-          <Button
-            onClick={() => saveOrUpdateAssessment(formState)}
-            size="small"
-          >
+          <Button onClick={() => saveOrUpdateAssessment()} size="small">
             {!formState.id ? 'Save' : 'Update'}
           </Button>
         </Grid>

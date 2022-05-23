@@ -75,13 +75,12 @@ const AssessmentDialog = ({
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  // TODO: this is breaking save, what was it before?
   const [reportGeneratedTimestamp, setReportGeneratedTimestamp] = useState(
     !!formState.reportGenerated ? new Date(formState.reportGenerated) : null,
   );
 
   /** @param {object} form */
-  const updateAssessment = form => {
+  const updateAssessment = form =>
     dispatch(
       // @ts-ignore
       updateProposal({
@@ -95,24 +94,23 @@ const AssessmentDialog = ({
         report_state: form.impactAssessment,
       }),
     );
-  };
 
   /** @param {object} form */
-  const saveAssessment = form => {
+  const saveAssessment = form =>
     dispatch(
       // @ts-ignore
       saveProposal({
         ...form,
-        geometry: formState.geometry,
-        proposal_description: formState.description,
-        proposal_start_date: formState.startDate,
-        proposal_end_date: formState.endDate,
-        proposal_activities: formState.activities,
+        geometry: form.geometry,
+        proposal_description: form.description,
+        proposal_start_date: form.startDate,
+        proposal_end_date: form.endDate,
+        proposal_activities: form.activities,
         report_generated: form.reportGenerated,
         report_state: form.impactAssessment,
       }),
     );
-  };
+
   const activities = useSelector(impactAvailableActivitiesSelector);
 
   useEffect(() => {
