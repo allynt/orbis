@@ -109,6 +109,9 @@ const Typeahead = ({
         value={name || ''}
         autoFocus
         placeholder="Search by name area, postcode, grid reference"
+        InputProps={{
+          startAdornment: isLoading ? <CircularProgress size={20} /> : null,
+        }}
       />
 
       {results.suggestions?.length > 0 ? (
@@ -149,15 +152,6 @@ const Typeahead = ({
                 </ListItem>
               );
             })}
-          {!results.length && isLoading && (
-            <div className="typeahead-spinner-container">
-              <CircularProgress
-                data-testid="typeahead-spinner"
-                color="inherit"
-                size={20}
-              />
-            </div>
-          )}
         </List>
       ) : null}
     </div>
