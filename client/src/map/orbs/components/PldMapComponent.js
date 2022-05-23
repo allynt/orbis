@@ -31,8 +31,14 @@ const PldMapComponent = ({ source }) => {
     >
       <FeatureDetail
         features={pickedObjects.map(obj => obj.properties)}
-        propertiesToOmit={['icon', 'decision_date', 'Status Category']}
+        propertiesToOmit={['icon', 'Status Category']}
         title={pickedObjects[0].properties['Development Type']}
+        labelMapping={{
+          decision_date: 'Approval Date',
+          actual_commencement_date: 'Commencement Date',
+          actual_completion_date: 'Completion Date',
+          lapsed_date: 'Lapsed Date',
+        }}
       />
     </Popup>
   );
