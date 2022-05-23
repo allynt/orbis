@@ -136,6 +136,12 @@ describe('Assessment Results', () => {
       'test-name',
     );
 
+    // Give mandatory description
+    userEvent.type(
+      screen.getByRole('textbox', { name: 'Add Description' }),
+      'test-name',
+    );
+
     // Save button in yes/no dialog
     const dialogSaveButton = screen.getByTestId('proposal-save-button');
 
@@ -144,7 +150,7 @@ describe('Assessment Results', () => {
 
     const expected = {
       name: 'test-name',
-      description: '',
+      description: 'test-name',
       formStateProperty1: 'formState-property-1',
       reportGenerated: '2020-01-01T00:00:00.000Z',
       impactAssessment: {

@@ -8,7 +8,7 @@ import * as yup from 'yup';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
-  description: yup.string(),
+  description: yup.string().required('Description is required'),
 });
 
 const SaveProposalForm = ({ onSubmit }) => {
@@ -34,7 +34,6 @@ const SaveProposalForm = ({ onSubmit }) => {
           id="name"
           name="name"
           label="Add Name"
-          required
           {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
@@ -47,6 +46,7 @@ const SaveProposalForm = ({ onSubmit }) => {
           name="description"
           label="Add Description"
           multiline
+          required
           rows={3}
           {...register('description')}
         />
