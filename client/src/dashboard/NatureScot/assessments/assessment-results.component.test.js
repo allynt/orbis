@@ -1,18 +1,21 @@
 import React from 'react';
 
-import { render, screen, userEvent } from 'test/test-utils';
+import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
 import { RESULTS } from '../../mock-data/NatureScot/assessment-results.js';
 import AssessmentResults from './assessment-results.component';
 
 describe('Assessment Results', () => {
-  let formState = {};
-  const mockSave = jest.fn();
-  const mockUpdate = jest.fn();
-  const reportGeneratedTimestamp = new Date();
+  let formState = null;
+  let mockSave = null;
+  let mockUpdate = null;
+  // TODO: needed?
+  const reportGeneratedTimestamp = new Date('2020-01-01T00:00:00.000Z');
 
   beforeEach(() => {
-    formState = { reportGenerated: '2020-01-01T00:00:00.000Z' };
+    formState = { reportGenerated: reportGeneratedTimestamp };
+    mockSave = jest.fn();
+    mockUpdate = jest.fn();
   });
 
   it('should render a grid of charts', () => {
@@ -72,17 +75,29 @@ describe('Assessment Results', () => {
   });
 
   it('if there is an id, clicking update button calls update function', () => {
-    const mockUpdateAssessment = jest.fn(),
-      formState = {
-        id: 'this_should_be_a_GUID_added_by_django',
-        reportGenerated: '2020-01-01T00:00:00.000Z',
-      };
+    const savedAssessmentResults = {
+      property1: 'assessment-property-1',
+    };
+
+    const formState = {
+      id: 123,
+      formStateProperty1: 'formState-property-1',
+    };
+
+    const expected = {
+      id: 123,
+      formStateProperty1: 'formState-property-1',
+      reportGenerated: '2020-01-01T00:00:00.000Z',
+      impactAssessment: {
+        property1: 'assessment-property-1',
+      },
+    };
 
     render(
       <AssessmentResults
-        impactAssessment={RESULTS}
+        impactAssessment={savedAssessmentResults}
         formState={formState}
-        updateAssessment={mockUpdateAssessment}
+        updateAssessment={mockUpdate}
         reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
@@ -91,34 +106,54 @@ describe('Assessment Results', () => {
     expect(updateButton).toBeInTheDocument();
     userEvent.click(updateButton);
 
-    expect(mockUpdateAssessment).toHaveBeenCalledWith(formState);
+    expect(mockUpdate).toHaveBeenCalledWith(expected);
   });
 
-  it.only('if there is no id, clicking save button calls save function', () => {
-    const mockSaveAssessment = jest.fn();
+  it('if there is no id, clicking save button calls save function', async () => {
+    const savedAssessmentResults = {
+      property1: 'assessment-property-1',
+    };
+
+    const formState = {
+      formStateProperty1: 'formState-property-1',
+    };
 
     render(
       <AssessmentResults
-        impactAssessment={RESULTS}
-        saveAssessment={mockSaveAssessment}
-        formState={{
-          reportGenerated: '2020-01-01T00:00:00.000Z',
-        }}
+        impactAssessment={savedAssessmentResults}
+        saveAssessment={mockSave}
         reportGeneratedTimestamp={reportGeneratedTimestamp}
+        formState={formState}
       />,
     );
 
     // Save button on results page
     userEvent.click(screen.getByRole('button', { name: /save/i }));
 
+    // Give mandatory name
+    userEvent.type(
+      screen.getByRole('textbox', { name: 'Add Name' }),
+      'test-name',
+    );
+
     // Save button in yes/no dialog
     const dialogSaveButton = screen.getByTestId('proposal-save-button');
 
-    expect(dialogSaveButton).toBeInTheDocument();
+    expect(dialogSaveButton).toBeEnabled();
     userEvent.click(dialogSaveButton);
 
-    const expected = {};
+    const expected = {
+      name: 'test-name',
+      description: '',
+      formStateProperty1: 'formState-property-1',
+      reportGenerated: '2020-01-01T00:00:00.000Z',
+      impactAssessment: {
+        property1: 'assessment-property-1',
+      },
+    };
 
-    expect(mockSaveAssessment).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockSave).toHaveBeenCalledWith(expected);
+    });
   });
 });

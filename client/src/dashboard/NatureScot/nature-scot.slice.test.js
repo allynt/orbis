@@ -583,11 +583,6 @@ describe('Nature Scot Slice', () => {
       expect(actualState).toEqual(expect.objectContaining(beforeState));
     });
 
-    // TODO: actions tests
-    describe('setSelectedProposal', () => {});
-
-    describe('clearImpactAssessment', () => {});
-
     describe('Fetch Impact Activities', () => {
       it('should update the sources in state, when failed to retrieve impact activities', () => {
         const error = { message: 'Test Impact Activities Error' };
