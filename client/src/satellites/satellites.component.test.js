@@ -162,7 +162,7 @@ describe('Satellites', () => {
           ]),
         ),
       );
-    });
+    }, 70000);
 
     it('Shows an error if the aoi is too large', () => {
       render(<Satellites />, {

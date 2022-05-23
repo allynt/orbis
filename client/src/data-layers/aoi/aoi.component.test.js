@@ -1,8 +1,11 @@
 import React from 'react';
 
+import { MapContext } from 'MapContext';
 import { render, screen, userEvent, waitFor } from 'test/test-utils';
 
 import Aoi from './aoi.component';
+
+const PLACEHOLDER_TEXT = 'Search by name area, postcode, grid reference';
 
 describe('AOI Component', () => {
   let onDrawAoiClick = null;
@@ -13,6 +16,7 @@ describe('AOI Component', () => {
   let selectAoi = null;
   let editAoiDetails = null;
   let deleteAoi = null;
+  let setViewState = null;
 
   let state = null;
 
@@ -25,6 +29,8 @@ describe('AOI Component', () => {
     selectAoi = jest.fn();
     editAoiDetails = jest.fn();
     deleteAoi = jest.fn();
+
+    setViewState = jest.fn();
 
     state = {
       aois: {
@@ -45,6 +51,13 @@ describe('AOI Component', () => {
         editAoiDetails={editAoiDetails}
         deleteAoi={deleteAoi}
       />,
+      {
+        mapParams: {
+          viewState: {},
+          setViewState,
+          bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
+        },
+      },
     );
 
     expect(screen.getByRole('heading', { name: 'Search' })).toBeInTheDocument();
@@ -58,48 +71,66 @@ describe('AOI Component', () => {
     expect(screen.getByRole('button', { name: 'Circle' })).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+
+    expect(screen.getByPlaceholderText(PLACEHOLDER_TEXT)).toBeInTheDocument();
   });
 
-  it('should call `onDrawAoiClick` function when `AOI Mode` button clicked', () => {
-    render(
-      <Aoi
-        onDrawAoiClick={onDrawAoiClick}
-        onSubmit={onSubmit}
-        aoiDrawMode={aoiDrawMode}
-        setAoiDrawMode={setAoiDrawMode}
-        fetchAois={fetchAois}
-        selectAoi={selectAoi}
-        editAoiDetails={editAoiDetails}
-        deleteAoi={deleteAoi}
-      />,
-    );
+  describe('Draw AOI Tools', () => {
+    it('should call `onDrawAoiClick` function when `AOI Mode` button clicked', () => {
+      render(
+        <Aoi
+          onDrawAoiClick={onDrawAoiClick}
+          onSubmit={onSubmit}
+          aoiDrawMode={aoiDrawMode}
+          setAoiDrawMode={setAoiDrawMode}
+          fetchAois={fetchAois}
+          selectAoi={selectAoi}
+          editAoiDetails={editAoiDetails}
+          deleteAoi={deleteAoi}
+        />,
+        {
+          mapParams: {
+            viewState: {},
+            setViewState,
+            bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
+          },
+        },
+      );
 
-    userEvent.click(screen.getByRole('button', { name: 'Circle' }));
+      userEvent.click(screen.getByRole('button', { name: 'Circle' }));
 
-    expect(onDrawAoiClick).toHaveBeenCalled();
-  });
+      expect(onDrawAoiClick).toHaveBeenCalled();
+    });
 
-  it('should show dialog when `Save` button clicked', async () => {
-    render(
-      <Aoi
-        onDrawAoiClick={onDrawAoiClick}
-        onSubmit={onSubmit}
-        aoiDrawMode={aoiDrawMode}
-        setAoiDrawMode={setAoiDrawMode}
-        fetchAois={fetchAois}
-        selectAoi={selectAoi}
-        editAoiDetails={editAoiDetails}
-        deleteAoi={deleteAoi}
-      />,
-      { state: state },
-    );
+    it('should show dialog when `Save` button clicked', async () => {
+      render(
+        <Aoi
+          onDrawAoiClick={onDrawAoiClick}
+          onSubmit={onSubmit}
+          aoiDrawMode={aoiDrawMode}
+          setAoiDrawMode={setAoiDrawMode}
+          fetchAois={fetchAois}
+          selectAoi={selectAoi}
+          editAoiDetails={editAoiDetails}
+          deleteAoi={deleteAoi}
+        />,
+        {
+          state: state,
+          mapParams: {
+            viewState: {},
+            setViewState,
+            bottomDeckRef: { current: { deck: [{ width: 0, height: 0 }] } },
+          },
+        },
+      );
 
-    userEvent.click(screen.getByRole('button', { name: 'Save' }));
+      userEvent.click(screen.getByRole('button', { name: 'Save' }));
 
-    await waitFor(() =>
-      expect(
-        screen.getByRole('heading', { name: 'Name Your Aoi' }),
-      ).toBeInTheDocument(),
-    );
+      await waitFor(() =>
+        expect(
+          screen.getByRole('heading', { name: 'Name Your Aoi' }),
+        ).toBeInTheDocument(),
+      );
+    });
   });
 });

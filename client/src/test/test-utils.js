@@ -17,16 +17,20 @@ const mockStore = createMockStore([thunk]);
  *  & {
  *      state?: import('typings').RecursivePartial<import('react-redux').DefaultRootState>
  *      history?: import('history').MemoryHistoryBuildOptions
+ *      mapParams?: object
  *    }
  * )} options
  */
-function render(ui, { state = {}, history: historyOptions, ...options } = {}) {
+function render(
+  ui,
+  { state = {}, history: historyOptions, mapParams = {}, ...options } = {},
+) {
   const store = mockStore(state);
   const history = createMemoryHistory(historyOptions);
   const Wrapper = ({ children }) => (
     <Provider store={store}>
       <HistoryRouter history={history}>
-        <MapProvider>{children}</MapProvider>
+        <MapProvider value={mapParams}>{children}</MapProvider>
       </HistoryRouter>
     </Provider>
   );

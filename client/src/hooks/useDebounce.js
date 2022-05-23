@@ -5,8 +5,8 @@ import { debounce } from 'lodash';
 /**
  * A generic hook to let you use the lodash debounce feature on your functions.
  *
- * @param callback - The callback function to execute.
- * @param delay - The delay to use when debouncing.
+ * @param {function} callback - The callback function to execute.
+ * @param {number} delay - The delay to use when debouncing.
  *
  * @returns A debounced callback function that can be executed.
  */

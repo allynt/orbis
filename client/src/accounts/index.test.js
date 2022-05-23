@@ -136,7 +136,7 @@ describe('Accounts index', () => {
           ]),
         ),
       );
-    });
+    }, 70000);
   });
 
   describe(`${REGISTER_CUSTOMER_ORDER}`, () => {
@@ -167,7 +167,7 @@ describe('Accounts index', () => {
           expect.objectContaining({ type: placeOrder.fulfilled.type }),
         );
       });
-    });
+    }, 70000);
   });
 
   describe(`${LOGIN}`, () => {
