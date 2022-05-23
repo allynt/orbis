@@ -50,7 +50,7 @@ const Typeahead = ({
 }) => {
   const styles = useStyles();
 
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [isNameSelected, setIsNameSelected] = useState(false);
@@ -86,7 +86,7 @@ const Typeahead = ({
 
     // clean previous results, as would be the case if we get
     // the results from a server.
-    setResults([]);
+    setResults(null);
 
     if (value.length > 1) {
       setIsLoading(true);
@@ -114,7 +114,19 @@ const Typeahead = ({
         }}
       />
 
-      {results.suggestions?.length > 0 ? (
+      {name && !isLoading && !results ? (
+        <List className={styles.typeaheadListGroup}>
+          <ListItem
+            key="nothing"
+            className={styles.typeaheadListGroupItem}
+            aria-label="listitem"
+          >
+            No Results Found
+          </ListItem>
+        </List>
+      ) : null}
+
+      {results?.suggestions?.length > 0 ? (
         <List className={styles.typeaheadListGroup}>
           {!isNameSelected &&
             results?.suggestions?.map(result => {
