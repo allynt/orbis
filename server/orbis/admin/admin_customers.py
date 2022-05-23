@@ -52,7 +52,7 @@ class CustomerAdmin(AstrosatUserCustomerAdmin):
         "get_grant_licences_for_detail_display",
     )
 
-    inlines = (MapStyleAdminInline, )
+    inlines = AstrosatUserCustomerAdmin.inlines + (MapStyleAdminInline, )
 
     ###################
     # detail displays #
