@@ -161,8 +161,12 @@ export class ColorScale {
     const colorValue = color(this.#scale(value));
     switch (format) {
       case 'array':
-        const { r, g, b } = colorValue.rgb();
-        return [r, g, b];
+        let rgbValue = [0, 0, 0];
+        if (colorValue) {
+          const { r, g, b } = colorValue.rgb();
+          rgbValue = [r, g, b];
+        }
+        return rgbValue;
       case 'rgb':
         return colorValue.formatRgb();
       case 'hex':
