@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *  activityList: {title: string, code: string|null}[],
- *  selectedActivityList: {title: string, code: string|null}[],
+ *  selectedActivityList?: {title: string, code: string|null}[],
  *  onSelect?: (selectedActivity: {title: string, code: string|null}) => void,
  *  onDelete?: (selectedActivity: {title: string, code: string|null}) => void
  * }} props
@@ -54,10 +54,10 @@ const ActivityList = ({
       <List dense>
         {activityList?.map(activity => (
           <ListItem
-            key={activity.code}
+            key={`${activity.code}-${activity.title}`}
             aria-label={activity.title}
             className={styles.listItem}
-            selected={selectedActivityList.includes(activity)}
+            selected={selectedActivityList?.includes(activity) ?? false}
             onClick={() => onSelect?.(activity)}
           >
             <ListItemText id={activity.code} primary={activity.title} />
