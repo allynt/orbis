@@ -143,11 +143,7 @@ describe('AssessmentDialog', () => {
   it('should submit the form when the `run impact assessment` button is enabled and clicked', async () => {
     const state = {
       natureScotDashboard: {
-<<<<<<< HEAD
-        availableActivities: [
-=======
         activities: [
->>>>>>> 1220-rory-tests
           { title: 'Test Activity 1', code: 'activity1' },
           { title: 'Test Activity 2', code: 'activity2' },
         ],

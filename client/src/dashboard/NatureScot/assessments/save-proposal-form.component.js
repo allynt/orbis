@@ -19,6 +19,10 @@ const SaveProposalForm = ({ onSubmit }) => {
   } = useForm({
     defaultValues: { name: '', description: '' },
     resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+    },
   });
 
   return (

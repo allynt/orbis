@@ -72,6 +72,7 @@ const NatureScotDashboard = ({ sourceId }) => {
     endDate: undefined,
     activities: [],
     geometry: selectedAoi?.geometry,
+    reportGenerated: undefined,
   };
 
   /** @type {[any, React.Dispatch<any>]} */
@@ -80,7 +81,6 @@ const NatureScotDashboard = ({ sourceId }) => {
   const impactAssessment = generatedImpactAssessment ?? formState.results;
 
   const handleStartImpactAssessment = () => {
-    setFormState(initialState);
     setAssessmentDialogTab(0);
     setIsAssessmentDialogVisible(true);
   };
@@ -104,7 +104,7 @@ const NatureScotDashboard = ({ sourceId }) => {
       description: assessment.proposal_description,
       startDate: assessment.proposal_start_date,
       endDate: assessment.proposal_end_date,
-      reportGenerated: assessment.report_generated,
+      reportGenerated: assessment.report_generated.toString(),
       activities: assessment.proposal_activities,
       results: assessment.report_state,
     });
@@ -128,6 +128,7 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   const close = () => {
     dispatch(clearImpactAssessment());
+    setFormState(initialState);
     setIsAssessmentDialogVisible(false);
   };
 

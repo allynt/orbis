@@ -75,9 +75,14 @@ const AssessmentDialog = ({
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const [reportGeneratedTimestamp, setReportGeneratedTimestamp] = useState(
-    !!formState.reportGenerated ? new Date(formState.reportGenerated) : null,
-  );
+  const [reportGeneratedTimestamp, setReportGeneratedTimestamp] = useState();
+
+  useEffect(() => {
+    if (!!formState.reportGenerated) {
+      // @ts-ignore
+      setReportGeneratedTimestamp(new Date(formState.reportGenerated));
+    }
+  }, [formState]);
 
   /** @param {object} form */
   const updateAssessment = form =>

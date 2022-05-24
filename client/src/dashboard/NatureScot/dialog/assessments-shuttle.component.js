@@ -116,6 +116,14 @@ const AssessmentsShuttle = ({
     }
   }, [typeAheadQuery, debouncedSearch]);
 
+  /**
+   * @param {{title: string, code: string}[]} selectedActivities
+   */
+  const filterAlreadySelected = selectedActivities =>
+    selectedActivities.filter(activity =>
+      right.every(rightActivity => rightActivity.code !== activity.code),
+    );
+
   const reset = () => {
     setLeftSelected([]);
     setRightSelected([]);
@@ -138,15 +146,12 @@ const AssessmentsShuttle = ({
   };
 
   const moveSelected = () => {
-    const filterAlreadySelected = leftSelected.filter(
-      activity => !right.includes(activity),
-    );
-    setRight(prev => [...prev, ...filterAlreadySelected]);
+    setRight(prev => [...prev, ...filterAlreadySelected(leftSelected)]);
     reset();
   };
 
   const moveAll = () => {
-    setRight(activitiesToDisplay);
+    setRight(filterAlreadySelected(activitiesToDisplay));
     reset();
   };
 
