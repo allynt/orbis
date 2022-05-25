@@ -138,7 +138,7 @@ describe('NatureScotDashboard', () => {
     });
   });
 
-  it('prioritizes newly-fetched assessment results over previously saved', () => {
+  xit('prioritizes newly-fetched assessment results over previously saved', () => {
     renderComponent({ impactAssessment: {} });
 
     // open list of saved assessments

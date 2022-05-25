@@ -19,10 +19,6 @@ const SaveProposalForm = ({ onSubmit }) => {
   } = useForm({
     defaultValues: { name: '', description: '' },
     resolver: yupResolver(validationSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-    },
   });
 
   return (
@@ -53,7 +49,7 @@ const SaveProposalForm = ({ onSubmit }) => {
           multiline
           required
           rows={3}
-          error={!!errors.name}
+          error={!!errors.description}
           helperText={errors.description?.message}
           {...register('description')}
         />

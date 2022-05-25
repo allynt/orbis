@@ -57,7 +57,7 @@ describe('Assessment Results', () => {
     expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
   });
 
-  it('should render button as save if no id', () => {
+  it('should render button as update if there is an id', () => {
     formState = {
       ...formState,
       id: 'this_should_be_a_GUID_added_by_django',

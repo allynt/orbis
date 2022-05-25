@@ -203,23 +203,9 @@ export const saveProposal = createAsyncThunk(
 export const updateProposal = createAsyncThunk(
   `${name}/updateProposal`,
   async (proposal, { rejectWithValue }) => {
-    const proposalData = {
-      id: proposal.id,
-      created: proposal.created,
-      modified: proposal.modified,
-      name: proposal.name,
-      proposal_description: proposal.proposal_description,
-      proposal_start_date: proposal.proposal_start_date,
-      proposal_end_date: proposal.proposal_end_date,
-      proposal_activities: proposal.proposal_activities,
-      report_state: proposal.report_state,
-      geometry: proposal.geometry,
-      report_generated: proposal.report_generated,
-    };
-
     try {
       const updatedProposal = await apiClient.proposals.updateProposal(
-        proposalData,
+        proposal,
       );
 
       NotificationManager.success(

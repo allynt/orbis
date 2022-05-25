@@ -115,17 +115,6 @@ const NatureScotDashboard = ({ sourceId }) => {
 
   useEffect(() => dispatch(fetchProposals()), [dispatch]);
 
-  /**
-   * check geometries are the same
-   * @param {{type: string, coordinates: array}} geometry1
-   * @param {{type: string, coordinates: array}} geometry2
-   * @returns {boolean}
-   */
-  const compareGeometries = (geometry1, geometry2) => {
-    if (!geometry1 || !geometry2) return false;
-    return JSON.stringify(geometry1) === JSON.stringify(geometry2);
-  };
-
   const close = () => {
     dispatch(clearImpactAssessment());
     setFormState(initialState);
