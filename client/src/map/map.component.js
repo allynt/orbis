@@ -48,6 +48,10 @@ const useStyles = makeStyles(theme => ({
         outline: 'none',
         color: theme.palette.text.primary,
       },
+      '&--input:focus': {
+        outline: 'none',
+        color: theme.palette.text.primary,
+      },
       '& .suggestions': {
         backgroundColor: theme.palette.background.default,
         '& > .active > a': {
