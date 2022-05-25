@@ -39,6 +39,7 @@ describe('AssessmentDialog', () => {
         close={close}
         onSubmit={onSubmit}
         visibleTab={0}
+        formState={initialState}
       />,
     );
 
@@ -222,4 +223,16 @@ describe('AssessmentDialog', () => {
       expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining(form)),
     );
   }, 70000);
+
+  it('should use fetched display fetched results if present', () => {
+    render(
+      <AssessmentDialog
+        open={true}
+        close={close}
+        onSubmit={onSubmit}
+        visibleTab={0}
+        formState={initialState}
+      />,
+    );
+  });
 });

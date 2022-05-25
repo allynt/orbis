@@ -8,7 +8,7 @@ import * as yup from 'yup';
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
-  description: yup.string(),
+  description: yup.string().required('Description is required'),
 });
 
 const SaveProposalForm = ({ onSubmit }) => {
@@ -17,6 +17,7 @@ const SaveProposalForm = ({ onSubmit }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
+    defaultValues: { name: '', description: '' },
     resolver: yupResolver(validationSchema),
   });
 
@@ -34,7 +35,6 @@ const SaveProposalForm = ({ onSubmit }) => {
           id="name"
           name="name"
           label="Add Name"
-          required
           {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
@@ -47,12 +47,19 @@ const SaveProposalForm = ({ onSubmit }) => {
           name="description"
           label="Add Description"
           multiline
+          required
           rows={3}
+          error={!!errors.description}
+          helperText={errors.description?.message}
           {...register('description')}
         />
       </Grid>
       <Grid item container direction="column" alignItems="center">
-        <Button type="submit" color="secondary">
+        <Button
+          type="submit"
+          color="secondary"
+          data-testid="proposal-save-button"
+        >
           Save
         </Button>
       </Grid>

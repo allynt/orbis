@@ -282,47 +282,42 @@ const ProtectedAreasList = ({ areas }) => {
             aria-labelledby="nested-list-subheader"
             className={styles.root}
           >
-            {areas
-              ? areas.map(area => (
-                  <div key={area.title}>
-                    <AreaListItem
-                      onClick={() => handleClick(area.title)}
-                      openSections={openSections}
-                      area={area}
-                    />
+            {areas?.map(area => (
+              <div key={area.title}>
+                <AreaListItem
+                  onClick={() => handleClick(area.title)}
+                  openSections={openSections}
+                  area={area}
+                />
 
-                    {area.areas.length > 0 ? (
-                      <Collapse
-                        in={openSections.includes(area.title)}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <List component="div" disablePadding>
-                          <ListItem button className={styles.row}>
-                            {area.areas.map(section => (
-                              <div
-                                className={styles.section}
-                                key={section.name}
-                              >
-                                <SectionListItem
-                                  onClick={() => handleClick(section.name)}
-                                  openSections={openSections}
-                                  section={section}
-                                />
+                {area.areas.length > 0 ? (
+                  <Collapse
+                    in={openSections.includes(area.title)}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List component="div" disablePadding>
+                      <ListItem button className={styles.row}>
+                        {area.areas.map(section => (
+                          <div className={styles.section} key={section.name}>
+                            <SectionListItem
+                              onClick={() => handleClick(section.name)}
+                              openSections={openSections}
+                              section={section}
+                            />
 
-                                <SectionCollapse
-                                  openSections={openSections}
-                                  section={section}
-                                />
-                              </div>
-                            ))}
-                          </ListItem>
-                        </List>
-                      </Collapse>
-                    ) : null}
-                  </div>
-                ))
-              : null}
+                            <SectionCollapse
+                              openSections={openSections}
+                              section={section}
+                            />
+                          </div>
+                        ))}
+                      </ListItem>
+                    </List>
+                  </Collapse>
+                ) : null}
+              </div>
+            ))}
           </List>
         </>
       ) : (

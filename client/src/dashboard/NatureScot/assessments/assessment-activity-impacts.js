@@ -1,5 +1,3 @@
-// activity impacts table
-
 import React from 'react';
 
 import {
@@ -75,10 +73,7 @@ const skeletonStyles = makeStyles(theme => ({
 }));
 
 const AssessmentActivityImpacts = ({ data }) => {
-  // table
   const styles = useStyles();
-  const noData = !data;
-
   return (
     <ChartWrapper
       title="Impact Detail By Activity"
@@ -89,7 +84,7 @@ const AssessmentActivityImpacts = ({ data }) => {
         The table below shows the impact of your proposal in more detail.
       </Typography>
       <br />
-      {noData ? null : (
+      {!data ? null : (
         <TableContainer component={Paper}>
           <Table className={styles.table}>
             <TableHead>
@@ -119,7 +114,7 @@ const AssessmentActivityImpacts = ({ data }) => {
                   <TableCell className={styles.mayrequireconsent}>
                     {activity?.operationMayRequireConsent ? 'Yes' : 'n/a'}
                   </TableCell>
-                  {activity.summary.map(item => (
+                  {activity?.summary?.map(item => (
                     <ScoringDisplay
                       key={`${activity.title}_${item.category}`}
                       score={item.score}
@@ -128,7 +123,7 @@ const AssessmentActivityImpacts = ({ data }) => {
                   ))}
                   <TableCell>
                     <ul>
-                      {activity.possibleMitigations.map(item => (
+                      {activity?.possibleMitigations?.map(item => (
                         <li className={styles.bulletpoint} key={item}>
                           {item}
                         </li>

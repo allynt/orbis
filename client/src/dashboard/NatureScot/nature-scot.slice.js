@@ -203,26 +203,15 @@ export const saveProposal = createAsyncThunk(
 export const updateProposal = createAsyncThunk(
   `${name}/updateProposal`,
   async (proposal, { rejectWithValue }) => {
-    const updatedProposal = {
-      id: proposal.id,
-      created: proposal.created,
-      modified: proposal.modified,
-      name: proposal.name,
-      proposal_description: proposal.proposal_description,
-      proposal_start_date: proposal.proposal_start_date,
-      proposal_end_date: proposal.proposal_end_date,
-      proposal_activities: proposal.proposal_activities,
-      report_state: proposal.report_state,
-    };
-
     try {
-      const proposal = await apiClient.proposals.updateProposal({
-        ...updatedProposal,
-      });
+      const updatedProposal = await apiClient.proposals.updateProposal(
+        proposal,
+      );
+
       NotificationManager.success(
         `Successfully updated Proposal '${proposal.name}'`,
       );
-      return proposal;
+      return updatedProposal;
     } catch (error) {
       const { message, status } = error;
       NotificationManager.error(
@@ -277,6 +266,9 @@ const natureScotSlice = createSlice({
   reducers: {
     setSelectedProposal: (state, { payload }) => {
       state.selectedProposal = payload;
+    },
+    clearImpactAssessment: state => {
+      state.impactAssessment = null;
     },
   },
   extraReducers: builder => {
@@ -351,7 +343,8 @@ const natureScotSlice = createSlice({
   },
 });
 
-export const { setSelectedProposal } = natureScotSlice.actions;
+export const { setSelectedProposal, clearImpactAssessment } =
+  natureScotSlice.actions;
 
 const baseSelector = state => state?.natureScotDashboard;
 

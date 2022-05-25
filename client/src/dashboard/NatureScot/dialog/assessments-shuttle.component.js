@@ -92,7 +92,6 @@ const AssessmentsShuttle = ({
   const [leftSelected, setLeftSelected] = useState([]);
 
   const [right, setRight] = useState(initialActivities ?? []);
-  const [rightSelected, setRightSelected] = useState([]);
 
   const activitiesToDisplay = !!typeAheadQuery
     ? typeAheadActivities
@@ -116,9 +115,16 @@ const AssessmentsShuttle = ({
     }
   }, [typeAheadQuery, debouncedSearch]);
 
+  /**
+   * @param {{title: string, code: string}[]} activities
+   */
+  const filterAlreadySelected = activities =>
+    activities.filter(activity =>
+      right.every(rightActivity => rightActivity.title !== activity.title),
+    );
+
   const reset = () => {
     setLeftSelected([]);
-    setRightSelected([]);
     setNewActivityText('');
   };
 
@@ -138,15 +144,12 @@ const AssessmentsShuttle = ({
   };
 
   const moveSelected = () => {
-    const filterAlreadySelected = leftSelected.filter(
-      activity => !right.includes(activity),
-    );
-    setRight(prev => [...prev, ...filterAlreadySelected]);
+    setRight(prev => [...prev, ...filterAlreadySelected(leftSelected)]);
     reset();
   };
 
   const moveAll = () => {
-    setRight(activitiesToDisplay);
+    setRight(prev => [...prev, ...filterAlreadySelected(activitiesToDisplay)]);
     reset();
   };
 
@@ -278,11 +281,7 @@ const AssessmentsShuttle = ({
             />
           </Grid>
           <Divider />
-          <ActivityList
-            activityList={right}
-            selectedActivityList={rightSelected}
-            onDelete={deleteActivity}
-          />
+          <ActivityList activityList={right} onDelete={deleteActivity} />
         </Grid>
 
         {/* footer left 'choose all' */}

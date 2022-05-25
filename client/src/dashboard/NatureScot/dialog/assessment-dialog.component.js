@@ -17,6 +17,8 @@ import TabPanel from 'components/tab-panel.component';
 import AssessmentResults from '../assessments/assessment-results.component';
 import YesNoDialog from '../assessments/yes-no-dialog.component';
 import {
+  saveProposal,
+  updateProposal,
   impactAvailableActivitiesSelector,
   fetchImpactActivities,
 } from '../nature-scot.slice';
@@ -58,7 +60,7 @@ const useStyles = makeStyles(theme => ({
  * open: boolean,
  * close: function,
  * onSubmit: function,
- * results: object[],
+ * impactAssessment: object,
  * formState?: object
  * }} props
  */
@@ -67,14 +69,55 @@ const AssessmentDialog = ({
   open = false,
   close,
   onSubmit,
-  results,
+  impactAssessment,
   formState,
 }) => {
   const styles = useStyles();
-
   const dispatch = useDispatch();
 
+  const [reportGeneratedTimestamp, setReportGeneratedTimestamp] = useState();
+
+  useEffect(() => {
+    if (!!formState.reportGenerated) {
+      // @ts-ignore
+      setReportGeneratedTimestamp(new Date(formState.reportGenerated));
+    }
+  }, [formState]);
+
+  /** @param {object} form */
+  const updateAssessment = form =>
+    dispatch(
+      // @ts-ignore
+      updateProposal({
+        ...form,
+        geometry: form.geometry,
+        proposal_description: form.description,
+        proposal_start_date: form.startDate,
+        proposal_end_date: form.endDate,
+        proposal_activities: form.activities,
+        report_generated: form.reportGenerated,
+        report_state: form.impactAssessment,
+      }),
+    );
+
+  /** @param {object} form */
+  const saveAssessment = form =>
+    dispatch(
+      // @ts-ignore
+      saveProposal({
+        ...form,
+        geometry: form.geometry,
+        proposal_description: form.description,
+        proposal_start_date: form.startDate,
+        proposal_end_date: form.endDate,
+        proposal_activities: form.activities,
+        report_generated: form.reportGenerated,
+        report_state: form.impactAssessment,
+      }),
+    );
+
   const activities = useSelector(impactAvailableActivitiesSelector);
+
   useEffect(() => {
     dispatch(fetchImpactActivities());
   }, [dispatch]);
@@ -108,6 +151,7 @@ const AssessmentDialog = ({
     <Dialog fullScreen open={open} onClose={handleClose}>
       <IconButton
         size="small"
+        aria-label="impact-dialog-close-icon"
         className={styles.closeButton}
         onClick={handleClose}
       >
@@ -119,7 +163,7 @@ const AssessmentDialog = ({
 
         <Tabs value={tab} onChange={toggleTab}>
           <Tab label="Form" />
-          <Tab label="Results" disabled={!results} />
+          <Tab label="Results" disabled={!impactAssessment} />
         </Tabs>
 
         <TabPanel value={tab} index={0}>
@@ -137,11 +181,18 @@ const AssessmentDialog = ({
             formState={formState}
             setFormIsDirty={setFormIsDirty}
             activities={activities}
+            setReportGeneratedTimestamp={setReportGeneratedTimestamp}
           />
         </TabPanel>
 
         <TabPanel value={tab} index={1}>
-          <AssessmentResults results={results} formState={formState} />
+          <AssessmentResults
+            impactAssessment={impactAssessment}
+            formState={formState}
+            updateAssessment={updateAssessment}
+            saveAssessment={saveAssessment}
+            reportGeneratedTimestamp={reportGeneratedTimestamp}
+          />
         </TabPanel>
       </div>
 

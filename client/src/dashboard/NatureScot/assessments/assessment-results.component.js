@@ -11,13 +11,11 @@ import {
 } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
-import { useDispatch } from 'react-redux';
 
 import {
   ImpactSummary,
   ImpactSummarySkeleton,
 } from '../charts/impact-summary/impact-summary.component';
-import { saveProposal } from '../nature-scot.slice';
 import AssessmentActivityImpacts, {
   AssessmentActivityImpactsSkeleton,
 } from './assessment-activity-impacts';
@@ -44,12 +42,23 @@ const FORMATS = {
   CSV: 'CSV',
 };
 
-const AssessmentResults = ({ results, formState }) => {
+/**
+ * @param {{
+ *  impactAssessment: object,
+ *  formState: object,
+ *  updateAssessment: function,
+ *  saveAssessment: function,
+ *  reportGeneratedTimestamp: DateRange<string>
+ * }} props
+ */
+const AssessmentResults = ({
+  impactAssessment,
+  formState,
+  updateAssessment,
+  saveAssessment,
+  reportGeneratedTimestamp,
+}) => {
   const styles = useStyles();
-  const dispatch = useDispatch();
-  const now = formState.reportGenerated
-    ? new Date(formState.reportGenerated)
-    : new Date();
 
   const [selectedAssessments, setSelectedAssessments] = useState([]);
   const [saveProposalFormOpen, setSaveProposalFormOpen] = useState(false);
@@ -57,58 +66,67 @@ const AssessmentResults = ({ results, formState }) => {
   const exportAs = type =>
     console.log('Export: ', selectedAssessments, ' as: ', type);
 
-  const saveAssessment = form => {
-    dispatch(
-      // @ts-ignore
-      saveProposal({
-        ...form,
-        geometry: formState.geometry,
-        proposal_description: formState.description,
-        proposal_start_date: formState.startDate,
-        proposal_end_date: formState.endDate,
-        proposal_activities: formState.activities,
-        report_generated: now.toISOString(),
-        report_state: results,
-      }),
-    );
-
+  /**
+   * @param {{
+   * name: string,
+   * description?: string
+   * }} newSaveForm
+   */
+  const saveAssessmentAndCloseDialog = newSaveForm => {
+    saveAssessment({
+      ...formState,
+      ...newSaveForm,
+      impactAssessment,
+      reportGenerated: reportGeneratedTimestamp.toISOString(),
+    });
     setSaveProposalFormOpen(false);
   };
 
+  const saveOrUpdateAssessment = () =>
+    !formState.id
+      ? setSaveProposalFormOpen(true)
+      : updateAssessment({
+          ...formState,
+          impactAssessment,
+          reportGenerated: reportGeneratedTimestamp.toISOString(),
+        });
+
   return (
     <>
-      <Typography variant="h4" className={styles.reportGenerated}>
-        Report generated at: {format(now, 'PPPPpp')}
-      </Typography>
+      {!!reportGeneratedTimestamp ? (
+        <Typography variant="h4" className={styles.reportGenerated}>
+          Report generated at: {format(reportGeneratedTimestamp, 'PPPPpp')}
+        </Typography>
+      ) : null}
 
       <Grid container spacing={5}>
         <Grid item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <ImpactSummarySkeleton />
           ) : (
-            <ImpactSummary data={results?.summary} />
+            <ImpactSummary data={impactAssessment?.summary} />
           )}
         </Grid>
         <Grid container item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <ProtectedAreasListSkeleton />
           ) : (
-            <ProtectedAreasList areas={results?.areas} />
+            <ProtectedAreasList areas={impactAssessment?.areas} />
           )}
         </Grid>
         <Grid container item xs={12}>
-          {!results ? (
+          {!impactAssessment ? (
             <AssessmentActivityImpactsSkeleton />
           ) : (
-            <AssessmentActivityImpacts data={results?.activities} />
+            <AssessmentActivityImpacts data={impactAssessment?.activities} />
           )}
         </Grid>
         <Grid container item xs={6}></Grid>
         <Grid container item xs={6}>
-          {!results ? (
+          {!impactAssessment ? (
             <AssessmentActivityImpactsSkeleton />
           ) : (
-            <ImpactFeatureDetails data={results?.impacts_by_feature} />
+            <ImpactFeatureDetails data={impactAssessment?.impacts_by_feature} />
           )}
         </Grid>
 
@@ -119,8 +137,8 @@ const AssessmentResults = ({ results, formState }) => {
           <Button onClick={() => exportAs(FORMATS.CSV)} size="small">
             Export as CSV
           </Button>
-          <Button onClick={() => setSaveProposalFormOpen(true)} size="small">
-            Save
+          <Button onClick={() => saveOrUpdateAssessment()} size="small">
+            {!formState.id ? 'Save' : 'Update'}
           </Button>
         </Grid>
       </Grid>
@@ -138,7 +156,7 @@ const AssessmentResults = ({ results, formState }) => {
           Name Your Assessment
         </DialogTitle>
         <DialogContent>
-          <SaveProposalForm onSubmit={saveAssessment} />
+          <SaveProposalForm onSubmit={saveAssessmentAndCloseDialog} />
         </DialogContent>
       </Dialog>
     </>

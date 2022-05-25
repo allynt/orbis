@@ -140,8 +140,10 @@ const ImpactFeatureDetails = ({ data }) => {
         a feature to see more information about the impacts on that feature.
       </Typography>
       <Grid direction="row" container>
-        <Grid xs={2}>&nbsp;</Grid>
-        <Grid xs={10}>
+        <Grid item xs={2}>
+          &nbsp;
+        </Grid>
+        <Grid item xs={10}>
           <ImpactFeatureDetailsLegend />
         </Grid>
       </Grid>
