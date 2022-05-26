@@ -24,7 +24,7 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
   </Tabs>
 );
 
-const obj = {
+const options = {
   datasetName: 'TascomiDashboardData',
   url: '/astrosat/wfc/tascomi/latest/',
   apiSourceId: 'astrosat/wfc/tascomi/latest',
@@ -32,25 +32,27 @@ const obj = {
 
 const TascomiDashboard = ({ sourceId, applicationId }) => {
   const dispatch = useDispatch();
-  const featureData = useSelector(chartDataSelector(sourceId, obj.datasetName));
+  const featuresData = useSelector(
+    chartDataSelector(sourceId, options.datasetName),
+  );
   const [visibleTab, setVisibleTab] = useState(1);
 
   const [selectedFeature, setSelectedFeature] = useState(null);
 
   useEffect(() => {
-    if (!featureData) {
+    if (!featuresData) {
       // @ts-ignore
-      dispatch(fetchDashboardData({ sourceId, ...obj }));
+      dispatch(fetchDashboardData({ sourceId, ...options }));
     }
-  }, [dispatch, featureData, sourceId]);
+  }, [dispatch, featuresData, sourceId]);
 
   useEffect(() => {
     setSelectedFeature(
-      featureData?.properties.find(
+      featuresData?.properties.find(
         feature => feature['Application ID'] === +applicationId,
       ),
     );
-  }, [applicationId, featureData]);
+  }, [applicationId, featuresData]);
 
   return (
     <DashboardWrapper
