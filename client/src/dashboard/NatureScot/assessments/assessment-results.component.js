@@ -137,7 +137,14 @@ const AssessmentResults = ({
           <Button onClick={() => exportAs(FORMATS.CSV)} size="small">
             Export as CSV
           </Button>
-          <Button onClick={() => saveOrUpdateAssessment()} size="small">
+          <Button
+            disabled={
+              !impactAssessment.activities ||
+              impactAssessment.activities.length === 0
+            }
+            onClick={() => saveOrUpdateAssessment()}
+            size="small"
+          >
             {!formState.id ? 'Save' : 'Update'}
           </Button>
         </Grid>

@@ -40,7 +40,6 @@ describe('Assessment Results', () => {
       screen.getByRole('tab', { name: /Impact Details By Feature/i }),
     ).toBeInTheDocument();
 
-    // TODO: toHaveLength()
     expect(screen.getAllByRole('button', { name: /info/i }).length).toBe(4);
   });
 
@@ -77,6 +76,7 @@ describe('Assessment Results', () => {
   it('if there is an id, clicking update button calls update function', () => {
     const savedAssessmentResults = {
       property1: 'assessment-property-1',
+      activities: [{ name: 'Build a fence' }], // need this to enable button
     };
 
     const formState = {
@@ -90,6 +90,7 @@ describe('Assessment Results', () => {
       reportGenerated: '2020-01-01T00:00:00.000Z',
       impactAssessment: {
         property1: 'assessment-property-1',
+        activities: [{ name: 'Build a fence' }],
       },
     };
 
@@ -109,9 +110,48 @@ describe('Assessment Results', () => {
     expect(mockUpdate).toHaveBeenCalledWith(expected);
   });
 
+  it('should disable the save/update button if no activities are present', () => {
+    formState = {
+      ...formState,
+      id: 'this_should_be_a_GUID_added_by_django',
+    };
+    const MODIFIED_RESULTS = { ...RESULTS, activities: [] };
+    render(
+      <AssessmentResults
+        impactAssessment={MODIFIED_RESULTS}
+        formState={formState}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
+      />,
+    );
+    const updateButton = screen.getByRole('button', { name: /update/i });
+    expect(updateButton).toBeInTheDocument();
+    expect(updateButton).toBeDisabled();
+  });
+
+  it('should enable the save/update button if activities are present', () => {
+    formState = {
+      ...formState,
+      id: 'this_should_be_a_GUID_added_by_django',
+    };
+    render(
+      <AssessmentResults
+        impactAssessment={RESULTS}
+        formState={formState}
+        updateAssessment={mockUpdate}
+        saveAssessment={mockSave}
+        reportGeneratedTimestamp={reportGeneratedTimestamp}
+      />,
+    );
+    const updateButton = screen.getByRole('button', { name: /update/i });
+    expect(updateButton).toBeEnabled();
+  });
+
   it('if there is no id, clicking save button calls save function', async () => {
     const savedAssessmentResults = {
       property1: 'assessment-property-1',
+      activities: [{ name: 'Build a fence' }],
     };
 
     const formState = {
@@ -155,6 +195,7 @@ describe('Assessment Results', () => {
       reportGenerated: '2020-01-01T00:00:00.000Z',
       impactAssessment: {
         property1: 'assessment-property-1',
+        activities: [{ name: 'Build a fence' }],
       },
     };
 
