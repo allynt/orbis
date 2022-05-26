@@ -24,21 +24,33 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
   </Tabs>
 );
 
-const url = '/wfc/proxy/affordable_housing_delivery/latest';
-const datasetName = 'test-name';
-const apiSourceId = 'wfc/proxy/affordable_housing_delivery/latest';
+const obj = {
+  datasetName: 'TascomiDashboardData',
+  url: '/astrosat/wfc/tascomi/latest/',
+  apiSourceId: 'astrosat/wfc/tascomi/latest',
+};
 
 const TascomiDashboard = ({ sourceId, applicationId }) => {
   const dispatch = useDispatch();
-  const featureData = useSelector(chartDataSelector(sourceId, datasetName));
+  const featureData = useSelector(chartDataSelector(sourceId, obj.datasetName));
   const [visibleTab, setVisibleTab] = useState(1);
+
+  const [selectedFeature, setSelectedFeature] = useState(null);
 
   useEffect(() => {
     if (!featureData) {
       // @ts-ignore
-      dispatch(fetchDashboardData({ sourceId, datasetName, url, apiSourceId }));
+      dispatch(fetchDashboardData({ sourceId, ...obj }));
     }
-  }, [featureData]);
+  }, [dispatch, featureData, sourceId]);
+
+  useEffect(() => {
+    setSelectedFeature(
+      featureData?.properties.find(
+        feature => feature['Application ID'] === +applicationId,
+      ),
+    );
+  }, [applicationId, featureData]);
 
   return (
     <DashboardWrapper
@@ -48,10 +60,10 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
       }
     >
       <TabPanel value={visibleTab} index={1}>
-        <ProjectInfo data={featureData} />
+        <ProjectInfo selectedFeature={selectedFeature} />
       </TabPanel>
       <TabPanel value={visibleTab} index={2}>
-        <Timeline data={featureData} />
+        <Timeline timelineData={selectedFeature?.data} />
       </TabPanel>
     </DashboardWrapper>
   );
