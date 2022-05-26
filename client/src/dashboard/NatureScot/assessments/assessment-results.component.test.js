@@ -110,24 +110,21 @@ describe('Assessment Results', () => {
     expect(mockUpdate).toHaveBeenCalledWith(expected);
   });
 
-  it('should disable the save/update button if no activities are present', () => {
+  it('should disable the save/update button if no data is present', () => {
     formState = {
       ...formState,
       id: 'this_should_be_a_GUID_added_by_django',
     };
-    const MODIFIED_RESULTS = { ...RESULTS, activities: [] };
     render(
       <AssessmentResults
-        impactAssessment={MODIFIED_RESULTS}
+        impactAssessment={undefined}
         formState={formState}
         updateAssessment={mockUpdate}
         saveAssessment={mockSave}
         reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
-    const updateButton = screen.getByRole('button', { name: /update/i });
-    expect(updateButton).toBeInTheDocument();
-    expect(updateButton).toBeDisabled();
+    expect(screen.getByRole('button', { name: /update/i })).toBeDisabled();
   });
 
   it('should enable the save/update button if activities are present', () => {
@@ -144,8 +141,7 @@ describe('Assessment Results', () => {
         reportGeneratedTimestamp={reportGeneratedTimestamp}
       />,
     );
-    const updateButton = screen.getByRole('button', { name: /update/i });
-    expect(updateButton).toBeEnabled();
+    expect(screen.getByRole('button', { name: /update/i })).toBeEnabled();
   });
 
   it('if there is no id, clicking save button calls save function', async () => {

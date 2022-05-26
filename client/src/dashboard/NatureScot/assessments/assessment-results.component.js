@@ -138,10 +138,7 @@ const AssessmentResults = ({
             Export as CSV
           </Button>
           <Button
-            disabled={
-              !impactAssessment.activities ||
-              impactAssessment.activities.length === 0
-            }
+            disabled={!impactAssessment}
             onClick={() => saveOrUpdateAssessment()}
             size="small"
           >
