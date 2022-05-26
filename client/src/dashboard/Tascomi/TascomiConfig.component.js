@@ -36,7 +36,6 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
     chartDataSelector(sourceId, options.datasetName),
   );
   const [visibleTab, setVisibleTab] = useState(1);
-
   const [selectedFeature, setSelectedFeature] = useState(null);
 
   useEffect(() => {
@@ -47,12 +46,14 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
   }, [dispatch, featuresData, sourceId]);
 
   useEffect(() => {
-    setSelectedFeature(
-      featuresData?.properties.find(
-        feature => feature['Application ID'] === +applicationId,
-      ),
-    );
-  }, [applicationId, featuresData]);
+    if (!selectedFeature) {
+      setSelectedFeature(
+        featuresData?.properties.find(
+          feature => feature['Application ID'] === +applicationId,
+        ),
+      );
+    }
+  }, [applicationId, featuresData, selectedFeature]);
 
   return (
     <DashboardWrapper
@@ -61,12 +62,28 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
     >
-      <TabPanel value={visibleTab} index={1}>
-        <ProjectInfo selectedFeature={selectedFeature} />
-      </TabPanel>
-      <TabPanel value={visibleTab} index={2}>
-        <Timeline timelineData={selectedFeature?.data} />
-      </TabPanel>
+      {!!selectedFeature ? (
+        <>
+          <TabPanel value={visibleTab} index={1}>
+            <ProjectInfo selectedFeature={selectedFeature} />
+          </TabPanel>
+          <TabPanel value={visibleTab} index={2}>
+            <Timeline timelineData={selectedFeature?.data} />
+          </TabPanel>
+        </>
+      ) : (
+        <p
+          style={{
+            width: '100%',
+            padding: '2rem',
+            textAlign: 'center',
+          }}
+        >
+          {!featuresData
+            ? 'Loading...'
+            : 'No information found for this feature.'}
+        </p>
+      )}
     </DashboardWrapper>
   );
 };
