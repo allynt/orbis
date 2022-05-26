@@ -1,10 +1,10 @@
 import React from 'react';
 
 /**
- * @param {{ data: object }} props
+ * @param {{ selectedFeature: object }} props
  */
-const ProjectInfo = ({ data }) => {
-  console.log('DATA IN PROJECT INFO: ', data);
+const ProjectInfo = ({ selectedFeature }) => {
+  console.log('PROJECT INFO DATA: ', selectedFeature);
   return <div>Project Info Component</div>;
 };
 
