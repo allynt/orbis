@@ -1,10 +1,10 @@
 import React from 'react';
 
 /**
- * @param {{ data: object }} props
+ * @param {{ timelineData: object[] }} props
  */
-const Timeline = ({ data }) => {
-  console.log('DATA IN TIMELINE: ', data);
+const Timeline = ({ timelineData }) => {
+  console.log('TIMELINE DATA: ', timelineData);
   return <div>Timeline Component</div>;
 };
 
