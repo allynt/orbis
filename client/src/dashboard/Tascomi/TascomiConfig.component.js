@@ -36,7 +36,6 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
     chartDataSelector(sourceId, options.datasetName),
   );
   const [visibleTab, setVisibleTab] = useState(1);
-  const [selectedFeature, setSelectedFeature] = useState(null);
 
   useEffect(() => {
     if (!featuresData) {
@@ -45,15 +44,9 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
     }
   }, [dispatch, featuresData, sourceId]);
 
-  useEffect(() => {
-    if (!selectedFeature) {
-      setSelectedFeature(
-        featuresData?.properties.find(
-          feature => feature['Application ID'] === +applicationId,
-        ),
-      );
-    }
-  }, [applicationId, featuresData, selectedFeature]);
+  const selectedFeature = featuresData?.properties.find(
+    feature => feature['Application ID'] === +applicationId,
+  );
 
   return (
     <DashboardWrapper
