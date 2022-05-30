@@ -236,6 +236,7 @@ const dataSlice = createSlice({
     addSource: (state, { payload }) => {
       state.sources.push(payload);
     },
+    reset: () => initialState,
   },
   extraReducers: builder => {
     builder
@@ -288,7 +289,7 @@ const dataSlice = createSlice({
   },
 });
 
-export const { updateLayers, addSource } = dataSlice.actions;
+export const { reset, updateLayers, addSource } = dataSlice.actions;
 
 /**
  * @param {import('typings').RootState} state

@@ -5,7 +5,12 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import apiClient from 'api-client';
-import { bookmarksSelector, fetchBookmarks } from 'bookmarks/bookmarks.slice';
+import {
+  bookmarksSelector,
+  fetchBookmarks,
+  reset as resetBookmarks,
+} from 'bookmarks/bookmarks.slice';
+import { reset as resetSources } from 'data-layers/data-layers.slice';
 import { setMapStyles } from 'map/map.slice';
 import {
   selectCurrentCustomer,
@@ -271,10 +276,13 @@ export const logout = createAsyncThunk(
    *  {rejectValue: string[]}
    * >}
    */
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       await apiClient.authentication.logout();
       apiClient.userKey = '';
+      await dispatch(resetBookmarks());
+      await dispatch(reset());
+      await dispatch(resetSources());
       return;
     } catch (error) {
       const errors = await /** @type {import('api-client').ResponseError} */ (
@@ -408,6 +416,7 @@ const accountsSlice = createSlice({
     setUser: (state, { payload }) => {
       state.user = payload;
     },
+    reset: () => initialState,
   },
   extraReducers: builder => {
     builder.addCase(placeOrder.fulfilled, state => {
@@ -521,6 +530,6 @@ const persistConfig = {
   storage,
 };
 
-export const { setUser } = accountsSlice.actions;
+export const { reset, setUser } = accountsSlice.actions;
 
 export default persistReducer(persistConfig, accountsSlice.reducer);
