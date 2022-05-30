@@ -58,7 +58,10 @@ const ContentWrapper = ({ data }) => {
 const ProjectInfo = ({ selectedFeature }) => (
   <Grid container alignItems="flex-start" wrap="wrap" spacing={4}>
     <Grid item xs={6}>
-      <ChartWrapper title="Reference Numbers" info="Test info">
+      <ChartWrapper
+        title="Reference Numbers"
+        info="Data source: LBWF Tascomi Planning"
+      >
         <ContentWrapper
           data={{
             'Planning Application Reference Number':
@@ -70,7 +73,7 @@ const ProjectInfo = ({ selectedFeature }) => (
     </Grid>
 
     <Grid item xs={6}>
-      <ChartWrapper title="Location" info="Test info">
+      <ChartWrapper title="Location" info="Data source: LBWF Tascomi Planning">
         <ContentWrapper
           data={{
             Address: selectedFeature['Address'],
@@ -81,7 +84,10 @@ const ProjectInfo = ({ selectedFeature }) => (
     </Grid>
 
     <Grid item xs={6}>
-      <ChartWrapper title="Site Details" info="Test info">
+      <ChartWrapper
+        title="Site Details"
+        info="Data source: LBWF Tascomi Planning"
+      >
         <ContentWrapper
           data={{
             'Applicant Name': selectedFeature['Applicant name'],
@@ -104,7 +110,10 @@ const ProjectInfo = ({ selectedFeature }) => (
     </Grid>
 
     <Grid item xs={6}>
-      <ChartWrapper title="Dates" info="Test info">
+      <ChartWrapper
+        title="Dates"
+        info="Data sources: Tascomi, and Exacom ('S106 agreement date', 'S106 discharged date')"
+      >
         <ContentWrapper
           data={{
             'Received Date': selectedFeature['Received date'],
@@ -120,7 +129,7 @@ const ProjectInfo = ({ selectedFeature }) => (
     </Grid>
 
     <Grid item xs={6}>
-      <ChartWrapper title="CIL" info="Test info">
+      <ChartWrapper title="CIL" info="Data source: Exacom">
         <ContentWrapper
           data={{ 'CIL Liable': selectedFeature['CIL liable'] }}
         />
@@ -131,7 +140,7 @@ const ProjectInfo = ({ selectedFeature }) => (
     <Grid item xs={6} />
 
     <Grid item xs={6}>
-      <ChartWrapper title="S106" info="Test info">
+      <ChartWrapper title="S106" info="Data source: Exacom">
         <ContentWrapper
           data={{
             'S106 Liable': selectedFeature['S106 liable'],
