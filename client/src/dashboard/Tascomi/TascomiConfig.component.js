@@ -72,9 +72,7 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
             textAlign: 'center',
           }}
         >
-          {!featuresData
-            ? 'Loading...'
-            : 'No information found for this feature.'}
+          Loading...
         </p>
       )}
     </DashboardWrapper>

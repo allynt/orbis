@@ -59,7 +59,7 @@ const TascomiMapComponent = ({
               onClick={() => {
                 dispatch(
                   push(
-                    `dashboard?source_id=astrosat/tascomi/dashboard/latest&application_id=${feature['Application number']}`,
+                    `dashboard?source_id=astrosat/tascomi/dashboard/latest&application_id=${feature['Application ID']}`,
                   ),
                 );
               }}
