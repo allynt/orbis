@@ -15,6 +15,10 @@ import * as chromatic from 'd3-scale-chromatic';
  * | import('d3-scale').ScaleOrdinal} ScaleType
  */
 
+const ARRAY_BLACK = [0, 0, 0];
+const RGB_BLACK = 'rgb(0,0,0)';
+const HEX_BLACK = '#000000';
+
 export class ColorScale {
   /** @type {ScaleType} */
   #scale;
@@ -159,15 +163,28 @@ export class ColorScale {
    */
   get(value, format = this.#format) {
     const colorValue = color(this.#scale(value));
+    let colour = null;
     switch (format) {
       case 'array':
-        const { r, g, b } = colorValue.rgb();
-        return [r, g, b];
+        colour = ARRAY_BLACK;
+        if (colorValue) {
+          const { r, g, b } = colorValue.rgb();
+          colour = [r, g, b];
+        }
+        return colour;
       case 'rgb':
-        return colorValue.formatRgb();
+        colour = RGB_BLACK;
+        if (colorValue) {
+          colour = colorValue.formatRgb();
+        }
+        return colour;
       case 'hex':
       default:
-        return colorValue.formatHex();
+        colour = HEX_BLACK;
+        if (colorValue) {
+          colour = colorValue.formatHex();
+        }
+        return colour;
     }
   }
 
