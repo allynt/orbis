@@ -113,7 +113,6 @@ class ProxyDataSourceView(APIView):
                 return Response(processed_data)
 
         except Exception as e:
-            breakpoint()
             raise APIException(e)
 
     @swagger_auto_schema(**auto_schema_kwargs)
