@@ -19,6 +19,7 @@ const PldMapComponent = ({ source }) => {
     <Popup
       longitude={pickedObjects[0]?.geometry.coordinates[0]}
       latitude={pickedObjects[0]?.geometry.coordinates[1]}
+      dynamicPosition={true}
       onClose={() =>
         dispatch(
           setClickedFeatures({
