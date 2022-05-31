@@ -35,4 +35,14 @@ describe('ProjectInfo', () => {
       expect(screen.getByText(value)).toBeInTheDocument(),
     );
   });
+
+  it('formats dates', () => {
+    const selectedFeature = {
+      'Registered date': '2022-05-31T15:42:20.722Z',
+    };
+
+    render(<ProjectInfo selectedFeature={selectedFeature} />);
+
+    expect(screen.getByText('31/05/2022')).toBeInTheDocument();
+  });
 });

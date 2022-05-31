@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Grid, makeStyles } from '@astrosat/astrosat-ui';
 
+import { format } from 'date-fns';
+
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 
 const useStyles = makeStyles(theme => ({
@@ -12,38 +14,39 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     display: 'flex',
-    alignItems: 'center',
+    /** @param {{isNested: boolean}} props */
+    alignItems: ({ isNested }) => (isNested ? 'center' : 'flex-start'),
     flexWrap: 'nowrap',
-    padding: theme.spacing(2),
     '& > *': {
       width: '50%',
       textAlign: 'start',
     },
   },
   label: {
-    fontWeight: 'bold',
+    /** @param {{isNested: boolean}} props */
+    fontWeight: ({ isNested }) => (isNested ? 'normal' : 'bold'),
+    marginRight: theme.spacing(1),
   },
 }));
 
 /**
  * @param {object} data
  */
-const DataWrapper = ({ data }) => {
-  const styles = useStyles();
-  return Object.entries(data).map(([key, value]) => {
-    console.log('key: ', key);
-    console.log('value: ', value);
-    return (
-      <div key={key} className={styles.content}>
-        <div className={styles.label}>{key}: </div>
-        <div>{value ?? '-'}</div>
-      </div>
-    );
-  });
+const DataWrapper = ({ data, isNested = false }) => {
+  const styles = useStyles({ isNested });
+  return Object.entries(data).map(([key, value]) => (
+    <div key={key} className={styles.content}>
+      <div className={styles.label}>{key}: </div>
+      <div>{value ?? '-'}</div>
+    </div>
+  ));
 };
 
+/** @param {string} date */
+const formatDate = date => format(new Date(date), 'dd/MM/yyyy');
+
 /**
- * @param {object} data
+ * @param {{data: object}} props
  */
 const ContentWrapper = ({ data }) => {
   const styles = useStyles({});
@@ -54,7 +57,7 @@ const ContentWrapper = ({ data }) => {
       justifyContent="space-between"
       className={styles.contentWrapper}
     >
-      <DataWrapper data={data} />
+      <DataWrapper data={data} isNested={false} />
     </Grid>
   );
 };
@@ -107,12 +110,18 @@ const ProjectInfo = ({ selectedFeature }) => (
             'Site Tenure Mix (Gross)': !!selectedFeature[
               'Site Tenure Mix (Gross)'
             ] ? (
-              <DataWrapper data={selectedFeature['Site Tenure Mix (Gross)']} />
+              <DataWrapper
+                data={selectedFeature['Site Tenure Mix (Gross)']}
+                isNested
+              />
             ) : null,
             'Site Tenure Mix (Net)': !!selectedFeature[
               'Site Tenure Mix (Net)'
             ] ? (
-              <DataWrapper data={selectedFeature['Site Tenure Mix (Net)']} />
+              <DataWrapper
+                data={selectedFeature['Site Tenure Mix (Net)']}
+                isNested
+              />
             ) : null,
             'No. Bedrooms': null,
           }}
@@ -127,13 +136,27 @@ const ProjectInfo = ({ selectedFeature }) => (
       >
         <ContentWrapper
           data={{
-            'Received Date': selectedFeature['Received date'],
-            'Committee Date': selectedFeature['Committee date'],
-            'Decision Date': selectedFeature['Decision date'],
-            'Legal Agreement Date': selectedFeature['Legal agreement date'],
-            'S106 Agreement Date': selectedFeature['S106 agreement date'],
-            'Registration Date': selectedFeature['Registered date'],
-            'Lapsed Date': selectedFeature['Lapsed date'],
+            'Received Date': !!selectedFeature['Received date']
+              ? formatDate(selectedFeature['Received date'])
+              : null,
+            'Committee Date': !!selectedFeature['Committee date']
+              ? formatDate(selectedFeature['Committee date'])
+              : null,
+            'Decision Date': !!selectedFeature['Decision date']
+              ? formatDate(selectedFeature['Decision date'])
+              : null,
+            'Legal Agreement Date': !!selectedFeature['Legal agreement date']
+              ? formatDate(selectedFeature['Legal agreement date'])
+              : null,
+            'S106 Agreement Date': !!selectedFeature['S106 agreement date']
+              ? formatDate(selectedFeature['S106 agreement date'])
+              : null,
+            'Registration Date': !!selectedFeature['Registered date']
+              ? formatDate(selectedFeature['Registered date'])
+              : null,
+            'Lapsed Date': !!selectedFeature['Lapsed date']
+              ? formatDate(selectedFeature['Lapsed date'])
+              : null,
           }}
         />
       </ChartWrapper>
@@ -149,13 +172,13 @@ const ProjectInfo = ({ selectedFeature }) => (
 
     {/* for alignment in browser */}
     <Grid item xs={6} />
-
     <Grid item xs={6}>
       <ChartWrapper title="S106" info="Data source: Exacom">
         <ContentWrapper
           data={{
             'S106 Liable': selectedFeature['S106 liable'],
-            'S106 Conditions Discharged on Site': null,
+            'S106 Conditions Discharged on Site':
+              selectedFeature['S106 discharged date'],
           }}
         />
       </ChartWrapper>
