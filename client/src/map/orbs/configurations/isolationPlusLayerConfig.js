@@ -185,7 +185,7 @@ const configuration = ({
     if (info.object) {
       const value = getValue(info.object, selectedProperty, selectedTimestamp);
 
-      if (!value) {
+      if (!value && value !== 0) {
         return;
       }
     }
@@ -222,7 +222,7 @@ const configuration = ({
     if (info.object) {
       const value = getValue(info.object, selectedProperty, selectedTimestamp);
 
-      if (!value) {
+      if (!value && value !== 0) {
         return;
       }
     }
