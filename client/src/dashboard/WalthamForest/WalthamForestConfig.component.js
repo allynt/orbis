@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import exportToCsv from 'utils/exportToCsv';
 
 import {
   chartDataSelector,
@@ -40,6 +41,10 @@ const useStyles = makeStyles(theme => ({
   header: {
     padding: '2rem',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
+  },
+  headerButtons: {
+    display: 'flex',
+    gap: '1rem',
   },
   content: {
     display: 'flex',
@@ -163,6 +168,27 @@ const WalthamForestDashboard = ({ sourceId }) => {
     closeDialog();
   };
 
+  const handleExport = () => {
+    const data = [
+      [
+        {
+          col1: 'Column 1',
+          col2: 'Column 2',
+          col3: 'Column 3',
+        },
+      ],
+      [
+        {
+          col4: 'Column 4',
+          col5: 'Column 5',
+          col6: 'Column 6',
+        },
+      ],
+    ];
+
+    exportToCsv(data, 'test-filename');
+  };
+
   return (
     <div className={styles.dashboard}>
       <Grid
@@ -172,12 +198,17 @@ const WalthamForestDashboard = ({ sourceId }) => {
         className={styles.header}
       >
         <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
-        <Button size="small" onClick={() => setTargetDialogVisible(true)}>
-          Add Targets
-        </Button>
+        <div className={styles.headerButtons}>
+          <Button size="small" onClick={handleExport}>
+            Export
+          </Button>
+          <Button size="small" onClick={() => setTargetDialogVisible(true)}>
+            Add Targets
+          </Button>
+        </div>
       </Grid>
 
-      <div className={styles.content}>
+      {/* <div className={styles.content}>
         <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
@@ -245,7 +276,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           )}
         </DialogContent>
-      </Dialog>
+      </Dialog>*/}
     </div>
   );
 };
