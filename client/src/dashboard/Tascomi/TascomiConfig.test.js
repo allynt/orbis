@@ -54,14 +54,4 @@ describe('TascomiConfig', () => {
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
-
-  it('shows `not found` message if features in state but no feature', () => {
-    render(<TascomiDashboard sourceId="test-source-id" applicationId="123" />, {
-      state,
-    });
-
-    expect(
-      screen.getByText('No information found for this feature.'),
-    ).toBeInTheDocument();
-  });
 });

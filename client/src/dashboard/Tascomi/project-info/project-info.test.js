@@ -8,9 +8,18 @@ describe('ProjectInfo', () => {
   it('renders', () => {
     render(<ProjectInfo selectedFeature={{}} />);
 
-    expect(
-      screen.getByRole('heading', { name: 'Reference Numbers' }),
-    ).toBeInTheDocument();
+    const headers = [
+      'Reference Numbers',
+      'Location',
+      'Site Details',
+      'Dates',
+      'CIL',
+      'S106',
+    ];
+
+    headers.forEach(header =>
+      expect(screen.getByRole('heading', { name: header })).toBeInTheDocument(),
+    );
   });
 
   it('maps out keys passed', () => {

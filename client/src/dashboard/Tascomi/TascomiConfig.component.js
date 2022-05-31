@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Tab } from '@astrosat/astrosat-ui';
+import { Tabs, Tab, styled } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,6 +10,12 @@ import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.comp
 import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
 import ProjectInfo from './project-info/project-info.component';
 import Timeline from './timeline/timeline.component';
+
+const LoadingMessage = styled('p')(({ theme }) => ({
+  width: '100%',
+  padding: theme.spacing(4),
+  textAlign: 'center',
+}));
 
 /**
  * @param {{
@@ -65,15 +71,7 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
           </TabPanel>
         </>
       ) : (
-        <p
-          style={{
-            width: '100%',
-            padding: '2rem',
-            textAlign: 'center',
-          }}
-        >
-          Loading...
-        </p>
+        <LoadingMessage>Loading...</LoadingMessage>
       )}
     </DashboardWrapper>
   );
