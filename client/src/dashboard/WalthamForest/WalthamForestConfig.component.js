@@ -170,20 +170,36 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   const handleExport = () => {
     const data = [
-      [
-        {
-          col1: 'Column 1',
-          col2: 'Column 2',
-          col3: 'Column 3',
-        },
-      ],
-      [
-        {
-          col4: 'Column 4',
-          col5: 'Column 5',
-          col6: 'Column 6',
-        },
-      ],
+      {
+        title: 'Total Delivery',
+        data: [
+          {
+            'Graph Title': 'Total Housing Delivery',
+            'Data Type': 'Gross',
+            'Data Source': 'PLD',
+          },
+          {
+            'Graph Title': 'Total Housing Delivery',
+            'Data Type': 'Net',
+            'Data Source': 'Mock',
+          },
+        ],
+      },
+      {
+        title: 'Delivery By Tenure Type',
+        data: [
+          {
+            'Completion Date': '01/05/2014',
+            UPRN: 12345,
+            status: 'Completed',
+          },
+          {
+            'Completion Date': '02/05/2014',
+            UPRN: 67890,
+            status: 'Completed',
+          },
+        ],
+      },
     ];
 
     exportToCsv(data, 'test-filename');

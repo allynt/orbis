@@ -9,24 +9,17 @@ const EXTENSION = '.xlsx';
  * takes an array of sub-arrays and creates a document for each parent
  * array, and a separate worksheet for each sub array.
  *
- * @param {array[]} data
+ * @param {{title: string, data: object[]}[]} data
  * @param {string} filename
  */
 const exportToCsv = (data, filename) => {
-  const SheetNames = new Array(data.length)
-    .fill(undefined)
-    .map((_, i) => `Worksheet-${i + 1}`);
-
-  const Sheets = data
-    .map(datum => utils.json_to_sheet(datum))
-    .reduce(
-      (acc, worksheet, i) => ({ ...acc, [SheetNames[i]]: worksheet }),
-      {},
-    );
+  const sheets = data
+    .map(({ title, data }) => ({ title, data: utils.json_to_sheet(data) }))
+    .reduce((acc, { title, data }) => ({ ...acc, [title]: data }), {});
 
   const workbook = {
-    Sheets,
-    SheetNames,
+    Sheets: sheets,
+    SheetNames: data.map(datum => datum.title),
   };
 
   const fileBuffer = write(workbook, {
