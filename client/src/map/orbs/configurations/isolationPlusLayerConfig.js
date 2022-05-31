@@ -135,7 +135,9 @@ const configuration = ({
   const getFillOpacity = d => {
     const value = getValue(d, selectedProperty, selectedTimestamp);
 
-    if (!value) {
+    // Zero is a valid value, so we need to ensure we don't accidentally
+    // set it to transparent, in that situation.
+    if (!value && value !== 0) {
       return OPACITY_TRANSPARENT;
     }
 
