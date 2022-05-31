@@ -25,14 +25,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-/**@param {object} data */
-export const getTotals = (data = {}) => {
-  const values = Object.values(data);
-  return values.every(v => !v)
-    ? null
-    : values.reduce((acc, value) => (!value ? acc : (acc += +value)), 0);
+/**
+ * @param {object} data
+ */
+const DataWrapper = ({ data }) => {
+  const styles = useStyles();
+  return Object.entries(data).map(([key, value]) => {
+    console.log('key: ', key);
+    console.log('value: ', value);
+    return (
+      <div key={key} className={styles.content}>
+        <div className={styles.label}>{key}: </div>
+        <div>{value ?? '-'}</div>
+      </div>
+    );
+  });
 };
 
+/**
+ * @param {object} data
+ */
 const ContentWrapper = ({ data }) => {
   const styles = useStyles({});
   return (
@@ -42,12 +54,7 @@ const ContentWrapper = ({ data }) => {
       justifyContent="space-between"
       className={styles.contentWrapper}
     >
-      {Object.entries(data).map(([key, value]) => (
-        <div key={key} className={styles.content}>
-          <div className={styles.label}>{key}: </div>
-          <div>{value ?? '-'}</div>
-        </div>
-      ))}
+      <DataWrapper data={data} />
     </Grid>
   );
 };
@@ -97,12 +104,16 @@ const ProjectInfo = ({ selectedFeature }) => (
             'Number of Units (Gross)':
               selectedFeature['Number of units (Gross)'],
             'Number of Units (Net)': selectedFeature['Number of units (Net)'],
-            'Site Tenure Mix (Gross)': getTotals(
-              selectedFeature['Site Tenure Mix (Gross)'],
-            ),
-            'Site Tenure Mix (Net)': getTotals(
-              selectedFeature['Site Tenure Mix (Net)'],
-            ),
+            'Site Tenure Mix (Gross)': !!selectedFeature[
+              'Site Tenure Mix (Gross)'
+            ] ? (
+              <DataWrapper data={selectedFeature['Site Tenure Mix (Gross)']} />
+            ) : null,
+            'Site Tenure Mix (Net)': !!selectedFeature[
+              'Site Tenure Mix (Net)'
+            ] ? (
+              <DataWrapper data={selectedFeature['Site Tenure Mix (Net)']} />
+            ) : null,
             'No. Bedrooms': null,
           }}
         />
