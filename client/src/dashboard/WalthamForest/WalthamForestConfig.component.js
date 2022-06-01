@@ -13,7 +13,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import apiClient from 'api-client';
+import { selectDataToken } from 'data-layers/data-layers.slice';
 import exportToCsv from 'utils/exportToCsv';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import {
   chartDataSelector,
@@ -74,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
   const dispatch = useDispatch();
+
+  const authTokens = useSelector(selectDataToken);
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -168,41 +173,21 @@ const WalthamForestDashboard = ({ sourceId }) => {
     closeDialog();
   };
 
-  const handleExport = () => {
-    const data = [
-      {
-        title: 'Total Delivery',
-        data: [
-          {
-            'Graph Title': 'Total Housing Delivery',
-            'Data Type': 'Gross',
-            'Data Source': 'PLD',
-          },
-          {
-            'Graph Title': 'Total Housing Delivery',
-            'Data Type': 'Net',
-            'Data Source': 'Mock',
-          },
-        ],
-      },
-      {
-        title: 'Delivery By Tenure Type',
-        data: [
-          {
-            'Completion Date': '01/05/2014',
-            UPRN: 12345,
-            status: 'Completed',
-          },
-          {
-            'Completion Date': '02/05/2014',
-            UPRN: 67890,
-            status: 'Completed',
-          },
-        ],
-      },
-    ];
+  const handleExport = async () => {
+    const authToken = getAuthTokenForSource(authTokens, {
+      source_id: 'astrosat/wfc/export/latest',
+    });
 
-    exportToCsv(data, 'test-filename');
+    const url = '/astrosat/wfc/export/latest/';
+
+    const data = await apiClient.dashboard.getDashboardData(url, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    exportToCsv(data, 'wfc-dashboard-data');
   };
 
   return (
@@ -224,7 +209,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
         </div>
       </Grid>
 
-      {/* <div className={styles.content}>
+      <div className={styles.content}>
         <div className={styles.progressIndicators}>
           <ProgressIndicators
             totalData={totalHousingDelivery}
@@ -292,7 +277,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           )}
         </DialogContent>
-      </Dialog>*/}
+      </Dialog>
     </div>
   );
 };
