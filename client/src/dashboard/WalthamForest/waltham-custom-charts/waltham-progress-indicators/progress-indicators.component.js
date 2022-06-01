@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
+import { Text } from '@visx/text';
+
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
@@ -78,6 +80,55 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
     [past5YearsTotal, tenureCurrentYear, targets],
   );
 
+  const formatCenterDisplay = ({ percentage, radius, width, target, name }) => {
+    return !!percentage ? (
+      <>
+        <Text
+          width={radius}
+          textAnchor="middle"
+          verticalAnchor="end"
+          x={radius}
+          y={radius}
+          dy={-8}
+          style={{
+            fill: '#fff',
+            fontSize: `${width / 150}rem`,
+          }}
+        >
+          {`${Math.round(+percentage)}%`}
+        </Text>
+        <Text
+          width={radius}
+          textAnchor="middle"
+          verticalAnchor="start"
+          x={radius}
+          y={radius}
+          dy={8}
+          style={{
+            fill: '#fff',
+            fontSize: `${width / 400}rem`,
+          }}
+        >
+          {`Target ${target} Units`}
+        </Text>
+      </>
+    ) : (
+      <Text
+        width={radius}
+        textAnchor="middle"
+        verticalAnchor="middle"
+        x={radius}
+        y={radius}
+        style={{
+          fill: '#fff',
+          fontSize: `${width / 250}rem`,
+        }}
+      >
+        {`${name} Target Required`}
+      </Text>
+    );
+  };
+
   return (
     <>
       {!!targetData
@@ -91,6 +142,12 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
               <ProgressIndicatorChart
                 property={property}
                 color={chartTheme.colors[i]}
+                formatCenterDisplay={params =>
+                  formatCenterDisplay({
+                    ...params,
+                    ...property,
+                  })
+                }
               />
             </ChartWrapper>
           ))

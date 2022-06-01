@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import { Text } from '@visx/text';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
 const useStyles = makeStyles(theme => ({
@@ -37,15 +36,13 @@ const calculatePercentage = property => {
   return percentage;
 };
 
-const ProgressIndicatorChart = ({ property, color }) => {
+const ProgressIndicatorChart = ({ property, color, formatCenterDisplay }) => {
   const styles = useStyles({});
   const [percentage, setPercentage] = useState(null);
 
   useEffect(() => {
     setPercentage(calculatePercentage(property));
   }, [percentage, property]);
-
-  const { name, target } = property;
 
   const data = [
     { x: 1, y: percentage ?? 0 },
@@ -90,54 +87,13 @@ const ProgressIndicatorChart = ({ property, color }) => {
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={{ display: percentage }}>
-              {({ display }) =>
-                !!percentage ? (
-                  <>
-                    <Text
-                      width={radius}
-                      textAnchor="middle"
-                      verticalAnchor="end"
-                      x={radius}
-                      y={radius}
-                      dy={-8}
-                      style={{
-                        fill: '#fff',
-                        fontSize: `${width / 150}rem`,
-                      }}
-                    >
-                      {`${Math.round(+display)}%`}
-                    </Text>
-                    <Text
-                      width={radius}
-                      textAnchor="middle"
-                      verticalAnchor="start"
-                      x={radius}
-                      y={radius}
-                      dy={8}
-                      style={{
-                        fill: '#fff',
-                        fontSize: `${width / 400}rem`,
-                      }}
-                    >
-                      {`Target ${target} Units`}
-                    </Text>
-                  </>
-                ) : (
-                  <Text
-                    width={radius}
-                    textAnchor="middle"
-                    verticalAnchor="middle"
-                    x={radius}
-                    y={radius}
-                    style={{
-                      fill: '#fff',
-                      fontSize: `${width / 250}rem`,
-                    }}
-                  >
-                    {`${name} Target Required`}
-                  </Text>
-                )
+            <VictoryAnimation duration={1000} data={{ percentage }}>
+              {({ percentage }) =>
+                formatCenterDisplay({
+                  percentage,
+                  radius,
+                  width,
+                })
               }
             </VictoryAnimation>
           </svg>
