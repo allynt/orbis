@@ -1,3 +1,26 @@
+# [2.39.0](https://github.com/astrosat/orbis/compare/v2.38.0...v2.39.0) (2022-06-01)
+
+
+### Bug Fixes
+
+* **backend:** Remove dev code ([9d98216](https://github.com/astrosat/orbis/commit/9d982161ec5a49d6f164e28276a3fa920601efa6))
+* **frontend:** Default color to black ([a5e89e8](https://github.com/astrosat/orbis/commit/a5e89e8284c8fa3a367b869ac5687b1be3309913))
+* **frontend:** Default colour to black ([3f95f75](https://github.com/astrosat/orbis/commit/3f95f7542d74a30f84af4443cb33a799d696c2bb))
+* **frontend:** Fetch sources just after login ([92b49d8](https://github.com/astrosat/orbis/commit/92b49d84e00d2626f7ff447c9f9caaddbaa9ee61))
+* **frontend:** Fix hover/click of polygons ([7691ee4](https://github.com/astrosat/orbis/commit/7691ee4c57a6a5f33f0cb8a70026e4aa22cfdf91))
+* **frontend:** Improve resetting global state on logout ([4bd1c6d](https://github.com/astrosat/orbis/commit/4bd1c6de7832b6100a4e99a8b39563de66342dd8))
+* **frontend:** Make popup dynamically position themselves ([6428540](https://github.com/astrosat/orbis/commit/64285403d3829c8100263fc2b43488486bff546b))
+* **frontend:** Rename some variables ([5803832](https://github.com/astrosat/orbis/commit/580383210ac9616385f88ecaeadaf523b33b0387))
+* **frontend:** Set opacity correctly ([eeeec56](https://github.com/astrosat/orbis/commit/eeeec56461f3386d0ad70984b6179e03f38d137d))
+* **frontend:** Set the geocoder text color when focussed ([44bc05e](https://github.com/astrosat/orbis/commit/44bc05e8f81f4b40881f778211d27f70f9ccccbd))
+* **frontend:** Set transparent opacity ([5c4ed4a](https://github.com/astrosat/orbis/commit/5c4ed4a5baea61398ed24cfdcbd68d85919e1090))
+* **frontend:** Tascomi starting point, fetch data/filter by ID ([ebecd4f](https://github.com/astrosat/orbis/commit/ebecd4f08c1219749737a86dafba66687b1cbcd1))
+
+
+### Features
+
+* **frontend:** Add basics for H2Orb Dashboard ([c8ac9a5](https://github.com/astrosat/orbis/commit/c8ac9a5b8f86937a2003ad6fee2a74fcf6da5e85))
+
 # [2.38.0](https://github.com/astrosat/orbis/compare/v2.37.0...v2.38.0) (2022-05-25)
 
 
