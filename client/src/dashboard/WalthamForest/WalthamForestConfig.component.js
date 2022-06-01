@@ -174,17 +174,13 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   const handleExport = async () => {
-    const authToken = getAuthTokenForSource(authTokens, {
-      source_id: 'astrosat/wfc/export/latest',
-    });
+    const source_id = 'astrosat/wfc/export/latest';
 
-    const url = '/astrosat/wfc/export/latest/';
+    const authToken = getAuthTokenForSource(authTokens, { source_id });
+    const url = `/${source_id}/`;
 
     const data = await apiClient.dashboard.getDashboardData(url, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { Authorization: `Bearer ${authToken}` },
     });
 
     exportToCsv(data, 'wfc-dashboard-data');
