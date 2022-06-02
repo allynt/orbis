@@ -80,8 +80,8 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
     [past5YearsTotal, tenureCurrentYear, targets],
   );
 
-  const formatCenterDisplay = ({ percentage, radius, width, target, name }) => {
-    return !!percentage ? (
+  const formatCenterDisplay = ({ percentage, radius, width, target, name }) =>
+    !!percentage ? (
       <>
         <Text
           width={radius}
@@ -127,7 +127,6 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
         {`${name} Target Required`}
       </Text>
     );
-  };
 
   return (
     <>

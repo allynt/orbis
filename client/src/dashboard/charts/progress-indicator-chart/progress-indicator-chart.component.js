@@ -24,32 +24,53 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-// this prevents "Infinity%" values being shown, but calculates any
-// valid values, including zero
-const calculatePercentage = property => {
-  const { target, progress } = property;
-  let percentage = null;
-  if (target >= 0 && (!!progress || progress === 0)) {
-    percentage = target === 0 ? 100 : Math.round((progress / target) * 100);
-  }
+const DEFAULT_DOMAIN = { min: 0, max: 100 };
 
-  return percentage;
+/**
+ * this prevents "Infinity%" values being shown, but calculates any
+ * valid values, including zero
+ *
+ * @param {{target: number, progress: number}} property
+ * @param {number} min
+ * @returns {number}
+ */
+const calculatePercentage = (property, min) => {
+  const { target, progress } = property;
+
+  if (progress === min && target === min) {
+    return 100;
+  } else if (progress === min) {
+    return 0;
+  } else if (progress < min) {
+    return null;
+  } else if (target === min) {
+    return 100;
+  } else if (target > min) {
+    return Math.round((progress / target) * 100);
+  } else {
+    return null;
+  }
 };
 
-const ProgressIndicatorChart = ({ property, color, formatCenterDisplay }) => {
+const ProgressIndicatorChart = ({
+  property,
+  color,
+  formatCenterDisplay,
+  domain = DEFAULT_DOMAIN,
+}) => {
   const styles = useStyles({});
   const [percentage, setPercentage] = useState(null);
 
+  const { min, max } = domain;
+
   useEffect(() => {
-    setPercentage(calculatePercentage(property));
-  }, [percentage, property]);
+    setPercentage(calculatePercentage(property, min));
+  }, [percentage, property, min, max]);
 
   const data = [
     { x: 1, y: percentage ?? 0 },
     { x: 2, y: 100 - percentage ?? 0 },
   ];
-
-  // TODO: magic numbers in <Text /> components
 
   return (
     <ParentSize className={styles.parentSize}>
@@ -88,7 +109,7 @@ const ProgressIndicatorChart = ({ property, color, formatCenterDisplay }) => {
               }}
             />
             <VictoryAnimation duration={1000} data={{ percentage }}>
-              {({ percentage }) =>
+              {() =>
                 formatCenterDisplay({
                   percentage,
                   radius,
