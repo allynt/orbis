@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
@@ -24,54 +24,15 @@ const useStyles = makeStyles(theme => ({
   noTarget: {},
 }));
 
-const DEFAULT_DOMAIN = { min: 0, max: 100 };
-
 /**
- * this prevents "Infinity%" values being shown, but calculates any
- * valid values, including zero
- *
- * @param {{target: number, progress: number}} property
- * @param {number} min
- * @returns {number}
+ * @param {{
+ * color: string,
+ * chartData: {x: number, y: number}[],
+ * renderCenterDisplay: (props: any) => React.ReactElement
+ * }} props
  */
-const calculatePercentage = (property, min) => {
-  const { target, progress } = property;
-
-  if (progress === min && target === min) {
-    return 100;
-  } else if (progress === min) {
-    return 0;
-  } else if (progress < min) {
-    return null;
-  } else if (target === min) {
-    return 100;
-  } else if (target > min) {
-    return Math.round((progress / target) * 100);
-  } else {
-    return null;
-  }
-};
-
-const ProgressIndicatorChart = ({
-  property,
-  color,
-  formatCenterDisplay,
-  domain = DEFAULT_DOMAIN,
-}) => {
+const ProgressIndicatorChart = ({ color, chartData, renderCenterDisplay }) => {
   const styles = useStyles({});
-  const [percentage, setPercentage] = useState(null);
-
-  const { min, max } = domain;
-
-  useEffect(() => {
-    setPercentage(calculatePercentage(property, min));
-  }, [percentage, property, min, max]);
-
-  const data = [
-    { x: 1, y: percentage ?? 0 },
-    { x: 2, y: 100 - percentage ?? 0 },
-  ];
-
   return (
     <ParentSize className={styles.parentSize}>
       {({ width }) => {
@@ -97,7 +58,7 @@ const ProgressIndicatorChart = ({
               width={halfWidth}
               height={halfWidth}
               padding={0}
-              data={data}
+              data={chartData}
               innerRadius={radius - progressBarWidth}
               cornerRadius={progressBarWidth / 2}
               animate={{ duration: 1000 }}
@@ -108,10 +69,9 @@ const ProgressIndicatorChart = ({
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={{ percentage }}>
+            <VictoryAnimation duration={1000}>
               {() =>
-                formatCenterDisplay({
-                  percentage,
+                renderCenterDisplay({
                   radius,
                   width,
                 })

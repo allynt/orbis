@@ -18,6 +18,94 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /**
+ * this prevents "Infinity%" values being shown, but calculates any
+ * valid values, including zero
+ *
+ * @param {number} target
+ * @param {number} progress
+ * @returns {number}
+ */
+export const getPercentage = (target, progress) => {
+  if (progress === 0 && target === 0) {
+    return 100;
+  } else if (target === 0) {
+    return 100;
+  } else if (progress === 0) {
+    return 0;
+  } else if (!!progress && target > 0) {
+    return Math.round((progress / target) * 100);
+  } else {
+    return null;
+  }
+};
+
+/**
+ * takes the calculated percentage, as well as other props, and returns a
+ * responsive component to be displayed inside the progress indicator.
+ *
+ * @param {{
+ *  percentage: number|null,
+ *  target: number|undefined,
+ *  name: string,
+ *  radius: number,
+ *  width: number
+ * }} props
+ */
+export const renderCenterDisplay = ({
+  percentage,
+  target,
+  name,
+  radius,
+  width,
+}) =>
+  !!percentage ? (
+    <>
+      <Text
+        width={radius}
+        textAnchor="middle"
+        verticalAnchor="end"
+        x={radius}
+        y={radius}
+        dy={-8}
+        style={{
+          fill: '#fff',
+          fontSize: `${width / 150}rem`,
+        }}
+      >
+        {`${Math.round(+percentage)}%`}
+      </Text>
+      <Text
+        width={radius}
+        textAnchor="middle"
+        verticalAnchor="start"
+        x={radius}
+        y={radius}
+        dy={8}
+        style={{
+          fill: '#fff',
+          fontSize: `${width / 400}rem`,
+        }}
+      >
+        {`Target ${target} Units`}
+      </Text>
+    </>
+  ) : (
+    <Text
+      width={radius}
+      textAnchor="middle"
+      verticalAnchor="middle"
+      x={radius}
+      y={radius}
+      style={{
+        fill: '#fff',
+        fontSize: `${width / 250}rem`,
+      }}
+    >
+      {`${name} Target Required`}
+    </Text>
+  );
+
+/**
  * @param {{
  *   totalData: object
  *   tenureData: object
@@ -80,76 +168,37 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
     [past5YearsTotal, tenureCurrentYear, targets],
   );
 
-  const formatCenterDisplay = ({ percentage, radius, width, target, name }) =>
-    !!percentage ? (
-      <>
-        <Text
-          width={radius}
-          textAnchor="middle"
-          verticalAnchor="end"
-          x={radius}
-          y={radius}
-          dy={-8}
-          style={{
-            fill: '#fff',
-            fontSize: `${width / 150}rem`,
-          }}
-        >
-          {`${Math.round(+percentage)}%`}
-        </Text>
-        <Text
-          width={radius}
-          textAnchor="middle"
-          verticalAnchor="start"
-          x={radius}
-          y={radius}
-          dy={8}
-          style={{
-            fill: '#fff',
-            fontSize: `${width / 400}rem`,
-          }}
-        >
-          {`Target ${target} Units`}
-        </Text>
-      </>
-    ) : (
-      <Text
-        width={radius}
-        textAnchor="middle"
-        verticalAnchor="middle"
-        x={radius}
-        y={radius}
-        style={{
-          fill: '#fff',
-          fontSize: `${width / 250}rem`,
-        }}
-      >
-        {`${name} Target Required`}
-      </Text>
-    );
-
   return (
     <>
       {!!targetData
-        ? targetData.map((property, i) => (
-            <ChartWrapper
-              key={property.name}
-              title={property.title}
-              info={property.info}
-              classes={{ header: styles.header }}
-            >
-              <ProgressIndicatorChart
-                property={property}
-                color={chartTheme.colors[i]}
-                formatCenterDisplay={params =>
-                  formatCenterDisplay({
-                    ...params,
-                    ...property,
-                  })
-                }
-              />
-            </ChartWrapper>
-          ))
+        ? targetData.map(({ target, progress, title, name, info }, i) => {
+            const percentage = getPercentage(target, progress);
+            return (
+              <ChartWrapper
+                key={name}
+                title={title}
+                info={info}
+                classes={{ header: styles.header }}
+              >
+                <ProgressIndicatorChart
+                  color={chartTheme.colors[i]}
+                  chartData={[
+                    { x: 1, y: percentage },
+                    { x: 2, y: 100 - percentage },
+                  ]}
+                  renderCenterDisplay={({ radius, width }) =>
+                    renderCenterDisplay({
+                      target,
+                      name,
+                      percentage,
+                      radius,
+                      width,
+                    })
+                  }
+                />
+              </ChartWrapper>
+            );
+          })
         : null}
     </>
   );
