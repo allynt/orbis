@@ -13,22 +13,13 @@ const useStyles = makeStyles(theme => ({
   circle: {
     fill: theme.palette.background.default,
   },
-  text: {
-    fill: theme.palette.text.primary,
-    '&$value': { fontSize: theme.typography.pxToRem(48) },
-    '&$target': { fontSize: theme.typography.pxToRem(14) },
-    '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
-  },
-  value: {},
-  target: {},
-  noTarget: {},
 }));
 
 /**
  * @param {{
  * color: string,
  * chartData: {x: number, y: number}[],
- * renderCenterDisplay: (props: any) => React.ReactElement
+ * renderCenterDisplay: function
  * }} props
  */
 const ProgressIndicatorChart = ({ color, chartData, renderCenterDisplay }) => {
