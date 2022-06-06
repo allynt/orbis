@@ -1,10 +1,13 @@
 import React from 'react';
 
-import { Grid, makeStyles } from '@astrosat/astrosat-ui';
+import { Grid, Skeleton, makeStyles } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 
 const useStyles = makeStyles(theme => ({
   contentWrapper: {
@@ -186,6 +189,31 @@ const ProjectInfo = ({ selectedFeature }) => (
 
     {/* for alignment in browser */}
     <Grid item xs={6} />
+  </Grid>
+);
+
+export const ProjectInfoSkeleton = () => (
+  <Grid container alignItems="flex-start" wrap="wrap" spacing={4}>
+    <Grid item xs={6}>
+      <ChartWrapperSkeleton>
+        <Skeleton variant="rect" width={'100%'} height={'10rem'} />
+      </ChartWrapperSkeleton>
+    </Grid>
+    <Grid item xs={6}>
+      <ChartWrapperSkeleton>
+        <Skeleton variant="rect" width={'100%'} height={'10rem'} />
+      </ChartWrapperSkeleton>
+    </Grid>
+    <Grid item xs={6}>
+      <ChartWrapperSkeleton>
+        <Skeleton variant="rect" width={'100%'} height={'20rem'} />
+      </ChartWrapperSkeleton>
+    </Grid>
+    <Grid item xs={6}>
+      <ChartWrapperSkeleton>
+        <Skeleton variant="rect" width={'100%'} height={'20rem'} />
+      </ChartWrapperSkeleton>
+    </Grid>
   </Grid>
 );
 

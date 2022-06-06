@@ -5,10 +5,13 @@ import { Tabs, Tab, styled } from '@astrosat/astrosat-ui';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TabPanel from 'components/tab-panel.component';
+import { ChartWrapperSkeleton } from 'dashboard/charts/chart-wrapper.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 
 import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
-import ProjectInfo from './project-info/project-info.component';
+import ProjectInfo, {
+  ProjectInfoSkeleton,
+} from './project-info/project-info.component';
 import Timeline from './timeline/timeline.component';
 
 const LoadingMessage = styled('p')(({ theme }) => ({
@@ -61,18 +64,16 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
     >
-      {!!selectedFeature ? (
-        <>
-          <TabPanel value={visibleTab} index={1}>
-            <ProjectInfo selectedFeature={selectedFeature} />
-          </TabPanel>
-          <TabPanel value={visibleTab} index={2}>
-            <Timeline timelineData={selectedFeature?.data} />
-          </TabPanel>
-        </>
-      ) : (
-        <LoadingMessage>Loading...</LoadingMessage>
-      )}
+      <TabPanel value={visibleTab} index={1}>
+        {selectedFeature ? (
+          <ProjectInfo selectedFeature={selectedFeature} />
+        ) : (
+          <ProjectInfoSkeleton />
+        )}
+      </TabPanel>
+      <TabPanel value={visibleTab} index={2}>
+        <Timeline timelineData={selectedFeature?.data} />
+      </TabPanel>
     </DashboardWrapper>
   );
 };
