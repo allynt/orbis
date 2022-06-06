@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+import {
+  Grid,
+  makeStyles,
+  MenuItem,
+  Select,
+  Typography,
+} from '@astrosat/astrosat-ui';
 
 import { subYears } from 'date-fns';
 import { useSelector } from 'react-redux';
@@ -16,15 +22,20 @@ const useStyles = makeStyles(theme => ({
   dateHeading: {
     paddingBottom: '0.5rem',
   },
+  checkboxHeading: {
+    paddingBottom: '1rem',
+  },
 }));
 
 export const SidebarComponent = ({
   selectedLayer,
   dispatch,
-  dateType,
+  dateTypes,
   dateLabel,
 }) => {
   const styles = useStyles();
+
+  const [selectedDateType, setSelectedDateType] = useState(dateTypes[0].id);
 
   const [dateRange, setDateRange] = useState(null);
   const [latestDateString, setLatestDateString] = useState(null);
@@ -32,6 +43,7 @@ export const SidebarComponent = ({
   const filterValue = useSelector(state =>
     filterValueSelector(selectedLayer?.source_id)(state?.orbs),
   );
+
   const { startDate, endDate } = filterValue?.dateRange || {};
 
   const featureCollection = useSelector(state =>
@@ -41,14 +53,14 @@ export const SidebarComponent = ({
   // Figure out the latest date in the data.
   useEffect(() => {
     const dateString = featureCollection?.features.reduce((acc, feature) => {
-      if (feature.properties[dateType] > acc) {
-        acc = feature.properties[dateType];
+      if (feature.properties[selectedDateType] > acc) {
+        acc = feature.properties[selectedDateType];
       }
       return acc;
     }, '');
 
     setLatestDateString(dateString);
-  }, [featureCollection, dateType]);
+  }, [featureCollection, selectedDateType]);
 
   // When latest date changes, set the date range to be used.
   useEffect(() => {
@@ -67,6 +79,7 @@ export const SidebarComponent = ({
       setFilterValue({
         key: selectedLayer?.source_id,
         filterValue: {
+          ...filterValue,
           dateRange,
         },
       }),
@@ -91,6 +104,27 @@ export const SidebarComponent = ({
           {dateLabel}
         </Typography>
 
+        <Typography className={styles.dateHeading} variant="body1">
+          Please select the type of date before you select the specific date
+          range to apply.
+        </Typography>
+
+        <Select
+          value={selectedDateType}
+          onChange={({ target: { value } }) => {
+            setSelectedDateType(value);
+            handleChange('dateType')(value);
+          }}
+        >
+          {dateTypes.map(type => (
+            <MenuItem key={type.id} value={type.id}>
+              {type.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+
+      <Grid item>
         <DateRangeFilter
           onSubmit={handleChange('dateRange')}
           range={dateRange}
