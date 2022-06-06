@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.light,
   },
   timeline: {
-    margin: '1rem 0',
+    margin: `${theme.spacing(2)} 0`,
   },
   listItem: {
     backgroundColor: '#4e5d65',
@@ -48,18 +48,16 @@ const useStyles = makeStyles(theme => ({
   },
   open: {},
   strapline: {
-    marginTop: '1rem',
+    marginTop: theme.spacing(2),
   },
   additionalFields: {
     position: 'relative',
     top: '-0.5rem',
-    paddingTop: '1rem',
-    paddingLeft: '1rem',
+    padding: `${theme.spacing(2)} 0 ${theme.spacing(2)} ${theme.spacing(2)}`,
     backgroundColor: '#4e5d65',
     borderBottomLeftRadius: '0.3rem',
     borderBottomRightRadius: '0.3rem',
   },
-  cell: { padding: '0.3rem 0' },
 }));
 
 const skeletonStyles = makeStyles(theme => ({
@@ -150,15 +148,13 @@ const TimeLineAdditionalFields = ({ fields }) => {
         {Object.keys(fields).map(keyvalue => {
           return (
             <Grid key={fields[keyvalue]} item xs={6}>
-              <div className={styles.cell}>
-                <Typography
-                  variant="h4"
-                  component="span"
-                >{`${keyvalue}: `}</Typography>
-                <Typography component="span">
-                  {formatAdditionalField(keyvalue, fields[keyvalue])}
-                </Typography>
-              </div>
+              <Typography
+                variant="h4"
+                component="span"
+              >{`${keyvalue}: `}</Typography>
+              <Typography component="span">
+                {formatAdditionalField(keyvalue, fields[keyvalue])}
+              </Typography>
             </Grid>
           );
         })}
