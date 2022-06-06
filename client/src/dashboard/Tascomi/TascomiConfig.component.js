@@ -9,7 +9,9 @@ import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.comp
 
 import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
 import ProjectInfo from './project-info/project-info.component';
-import Timeline from './timeline/timeline.component';
+import TimeLineList, {
+  TimeLineListSkeleton,
+} from './timeline/timeline-list.component';
 
 /**
  * @param {{
@@ -57,6 +59,7 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
   return (
     <DashboardWrapper
       isTabs
+      title="TASCOMI PLANNING AND EXACOM"
       HeaderComponent={
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
@@ -65,7 +68,11 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
         <ProjectInfo selectedFeature={selectedFeature} />
       </TabPanel>
       <TabPanel value={visibleTab} index={2}>
-        <Timeline timelineData={selectedFeature?.data} />
+        {selectedFeature ? (
+          <TimeLineList selectedFeature={selectedFeature} />
+        ) : (
+          <TimeLineListSkeleton />
+        )}
       </TabPanel>
     </DashboardWrapper>
   );
