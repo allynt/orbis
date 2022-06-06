@@ -214,7 +214,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
           />
         </div>
 
-        {/* <WalthamHousingDelivery
+        <WalthamHousingDelivery
           totalHousingDeliveryChartData={
             totalHousingDelivery?.properties[0].data
           }
@@ -248,10 +248,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
             settings={settings}
             setDashboardSettings={setDashboardSettings}
           />
-        </div>*/}
+        </div>
       </div>
 
-      {/* <Dialog
+      <Dialog
         maxWidth="md"
         open={targetDialogVisible}
         onClose={closeDialog}
@@ -273,7 +273,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
             />
           )}
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 };
