@@ -182,9 +182,9 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
               >
                 <ProgressIndicatorChart
                   color={chartTheme.colors[i]}
-                  chartData={[
-                    { x: 1, y: percentage },
-                    { x: 2, y: 100 - percentage },
+                  data={[
+                    { x: 1, y: percentage ?? 0 },
+                    { x: 2, y: 100 - (percentage ?? 0) },
                   ]}
                   renderCenterDisplay={({ radius, width }) =>
                     renderCenterDisplay({

@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  * color: string,
- * chartData: {x: number, y: number}[],
+ * data: {x: number, y: number}[],
  * renderCenterDisplay: function
  * }} props
  */
-const ProgressIndicatorChart = ({ color, chartData, renderCenterDisplay }) => {
+const ProgressIndicatorChart = ({ color, data, renderCenterDisplay }) => {
   const styles = useStyles({});
   return (
     <ParentSize className={styles.parentSize}>
@@ -49,7 +49,7 @@ const ProgressIndicatorChart = ({ color, chartData, renderCenterDisplay }) => {
               width={halfWidth}
               height={halfWidth}
               padding={0}
-              data={chartData}
+              data={data}
               innerRadius={radius - progressBarWidth}
               cornerRadius={progressBarWidth / 2}
               animate={{ duration: 1000 }}
