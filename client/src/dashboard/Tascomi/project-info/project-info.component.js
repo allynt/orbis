@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Grid, Skeleton, makeStyles } from '@astrosat/astrosat-ui';
 
+import clsx from 'clsx';
 import { format } from 'date-fns';
 
 import {
@@ -17,32 +18,42 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     display: 'flex',
-    /** @param {{isNested: boolean}} props */
-    alignItems: ({ isNested }) => (isNested ? 'center' : 'flex-start'),
+    alignItems: 'center',
     flexWrap: 'nowrap',
     '& > *': {
       width: '50%',
       textAlign: 'start',
     },
   },
+  nestedComponent: {
+    alignItems: 'flex-start',
+  },
   label: {
-    /** @param {{isNested: boolean}} props */
-    fontWeight: ({ isNested }) => (isNested ? 'normal' : 'bold'),
+    fontWeight: 'bold',
     marginRight: theme.spacing(1),
   },
 }));
 
 /**
- * @param {object} data
+ * @param {{data: object}} props
  */
-const DataWrapper = ({ data, isNested = false }) => {
-  const styles = useStyles({ isNested });
-  return Object.entries(data).map(([key, value]) => (
-    <div key={key} className={styles.content}>
-      <div className={styles.label}>{key}: </div>
-      <div>{value ?? '-'}</div>
-    </div>
-  ));
+const DataWrapper = ({ data }) => {
+  const styles = useStyles();
+  return Object.entries(data).map(([key, value]) => {
+    const isNested = !!value && typeof value === 'object';
+    return (
+      <div
+        key={key}
+        className={clsx(
+          styles.content,
+          isNested ? styles.nestedComponent : null,
+        )}
+      >
+        <div className={styles.label}>{key}: </div>
+        <div>{value ?? '-'}</div>
+      </div>
+    );
+  });
 };
 
 /** @param {string} date */
@@ -60,7 +71,7 @@ const ContentWrapper = ({ data }) => {
       justifyContent="space-between"
       className={styles.contentWrapper}
     >
-      <DataWrapper data={data} isNested={false} />
+      <DataWrapper data={data} />
     </Grid>
   );
 };
@@ -113,18 +124,12 @@ const ProjectInfo = ({ selectedFeature }) => (
             'Site Tenure Mix (Gross)': !!selectedFeature[
               'Site Tenure Mix (Gross)'
             ] ? (
-              <DataWrapper
-                data={selectedFeature['Site Tenure Mix (Gross)']}
-                isNested
-              />
+              <DataWrapper data={selectedFeature['Site Tenure Mix (Gross)']} />
             ) : null,
             'Site Tenure Mix (Net)': !!selectedFeature[
               'Site Tenure Mix (Net)'
             ] ? (
-              <DataWrapper
-                data={selectedFeature['Site Tenure Mix (Net)']}
-                isNested
-              />
+              <DataWrapper data={selectedFeature['Site Tenure Mix (Net)']} />
             ) : null,
             'No. Bedrooms': null,
           }}
@@ -193,7 +198,13 @@ const ProjectInfo = ({ selectedFeature }) => (
 );
 
 export const ProjectInfoSkeleton = () => (
-  <Grid container alignItems="flex-start" wrap="wrap" spacing={4}>
+  <Grid
+    container
+    alignItems="flex-start"
+    wrap="wrap"
+    spacing={4}
+    data-testid="project-details-skeleton"
+  >
     <Grid item xs={6}>
       <ChartWrapperSkeleton>
         <Skeleton variant="rect" width={'100%'} height={'10rem'} />

@@ -47,11 +47,11 @@ describe('TascomiConfig', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows `loading` message if no data in global state', () => {
+  it('shows skeleton if no data in global state', () => {
     render(<TascomiDashboard sourceId="test-source-id" applicationId="456" />, {
       state: {},
     });
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByTestId('project-details-skeleton')).toBeInTheDocument();
   });
 });
