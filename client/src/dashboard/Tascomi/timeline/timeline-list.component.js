@@ -84,13 +84,16 @@ const formatAdditionalField = (key, value) => {
     : value;
 };
 
-const TimeLineListItem = ({ onClick, openSections, title, listItem }) => {
+const TimeLineListItem = ({
+  onClick,
+  openSections,
+  title,
+  listItem,
+  hasAdditionalFields,
+}) => {
   const styles = useStyles();
 
   const date = listItem.Date ? formatDate(new Date(listItem.Date)) : NO_DATE;
-  const hasAdditionalFields =
-    listItem.additional_fields &&
-    Object.keys(listItem.additional_fields).length > 0;
 
   return (
     <ListItem
@@ -191,6 +194,11 @@ const TimeLineList = ({ selectedFeature }) => {
             selectedFeature.data.map(timelineItem => {
               const title = `${timelineItem.Type} - ${timelineItem.Description}`;
 
+              // If there are additional fields, then we need to add a section
+              const hasAdditionalFields =
+                timelineItem.additional_fields &&
+                Object.keys(timelineItem.additional_fields).length > 0;
+
               return (
                 <div
                   key={`${title}-${timelineItem.Source}`}
@@ -201,9 +209,10 @@ const TimeLineList = ({ selectedFeature }) => {
                     openSections={openSections}
                     title={title}
                     listItem={timelineItem}
+                    hasAdditionalFields={hasAdditionalFields}
                   />
 
-                  {timelineItem.additional_fields ? (
+                  {hasAdditionalFields ? (
                     <Collapse
                       in={openSections.includes(title)}
                       timeout="auto"
