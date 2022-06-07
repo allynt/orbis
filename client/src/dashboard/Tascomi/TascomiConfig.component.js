@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Tab } from '@astrosat/astrosat-ui';
+import { Tabs, Tab, Typography, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,18 +13,39 @@ import TimeLineList, {
   TimeLineListSkeleton,
 } from './timeline/timeline-list.component';
 
+const useStyles = makeStyles(theme => ({
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: `0 ${theme.spacing(4)}`,
+  },
+}));
+
 /**
  * @param {{
  *  visibleTab: number
  *  setVisibleTab: function
  * }} props
  */
-const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
-  <Tabs value={visibleTab} onChange={(_event, value) => setVisibleTab(value)}>
-    <Tab label="Project Info" value={1} />
-    <Tab label="Timeline" value={2} />
-  </Tabs>
-);
+const TascomiHeader = ({ visibleTab, setVisibleTab }) => {
+  const styles = useStyles();
+
+  return (
+    <div className={styles.header}>
+      <Typography variant="h2">TASCOMI PLANNING AND EXACOM</Typography>
+
+      <Tabs
+        value={visibleTab}
+        onChange={(_event, value) => setVisibleTab(value)}
+      >
+        <Tab label="Project Info" value={1} />
+        <Tab label="Timeline" value={2} />
+      </Tabs>
+    </div>
+  );
+};
 
 const options = {
   datasetName: 'TascomiDashboardData',
@@ -59,7 +80,6 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
   return (
     <DashboardWrapper
       isTabs
-      title="TASCOMI PLANNING AND EXACOM"
       HeaderComponent={
         <TascomiHeader visibleTab={visibleTab} setVisibleTab={setVisibleTab} />
       }
