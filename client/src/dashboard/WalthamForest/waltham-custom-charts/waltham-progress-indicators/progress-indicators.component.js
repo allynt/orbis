@@ -13,6 +13,9 @@ import {
   PROGRESS_CHART_DATA,
   MIN_PERCENTAGE,
   MAX_PERCENTAGE,
+  PERCENT_FONT_DEVISOR,
+  TARGET_FONT_DEVISOR,
+  ERROR_FONT_DEVISOR,
 } from '../../waltham.constants';
 
 const useStyles = makeStyles(theme => ({
@@ -67,7 +70,7 @@ const renderCenterDisplay = ({ percentage, target, name, radius, width }) =>
         dy={-8}
         style={{
           fill: '#fff',
-          fontSize: `${width / 150}rem`,
+          fontSize: `${width / PERCENT_FONT_DEVISOR}rem`,
         }}
       >
         {`${Math.round(+percentage)}%`}
@@ -81,7 +84,7 @@ const renderCenterDisplay = ({ percentage, target, name, radius, width }) =>
         dy={8}
         style={{
           fill: '#fff',
-          fontSize: `${width / 400}rem`,
+          fontSize: `${width / TARGET_FONT_DEVISOR}rem`,
         }}
       >
         {`Target ${target} Units`}
@@ -96,7 +99,7 @@ const renderCenterDisplay = ({ percentage, target, name, radius, width }) =>
       y={radius}
       style={{
         fill: '#fff',
-        fontSize: `${width / 250}rem`,
+        fontSize: `${width / ERROR_FONT_DEVISOR}rem`,
       }}
     >
       {`${name} Target Required`}
