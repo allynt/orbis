@@ -177,3 +177,7 @@ export const ALL_TYPES = 'Show All';
 // start index not included, so must be one less than target number,
 // for example, 5-year range would be 4, like below.
 export const WALTHAM_FILTER_RANGE = 4;
+
+// percentages used in WFC progress indicators
+export const MIN_PERCENTAGE = 0;
+export const MAX_PERCENTAGE = 100;

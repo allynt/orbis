@@ -9,7 +9,11 @@ import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-char
 import { useChartTheme } from 'dashboard/useChartTheme';
 
 import { getUser5YearTotals, getPastYears } from '../../utils';
-import { PROGRESS_CHART_DATA } from '../../waltham.constants';
+import {
+  PROGRESS_CHART_DATA,
+  MIN_PERCENTAGE,
+  MAX_PERCENTAGE,
+} from '../../waltham.constants';
 
 const useStyles = makeStyles(theme => ({
   header: {
@@ -25,15 +29,15 @@ const useStyles = makeStyles(theme => ({
  * @param {number} progress
  * @returns {number}
  */
-export const getPercentage = (target, progress) => {
-  if (progress === 0 && target === 0) {
-    return 100;
-  } else if (target === 0) {
-    return 100;
-  } else if (progress === 0) {
-    return 0;
-  } else if (!!progress && target > 0) {
-    return Math.round((progress / target) * 100);
+const getPercentage = (target, progress) => {
+  if (progress === MIN_PERCENTAGE && target === MIN_PERCENTAGE) {
+    return MAX_PERCENTAGE;
+  } else if (target === MIN_PERCENTAGE) {
+    return MAX_PERCENTAGE;
+  } else if (progress === MIN_PERCENTAGE) {
+    return MIN_PERCENTAGE;
+  } else if (!!progress && target > MIN_PERCENTAGE) {
+    return Math.round((progress / target) * MAX_PERCENTAGE);
   } else {
     return null;
   }
@@ -51,13 +55,7 @@ export const getPercentage = (target, progress) => {
  *  width: number
  * }} props
  */
-export const renderCenterDisplay = ({
-  percentage,
-  target,
-  name,
-  radius,
-  width,
-}) =>
+const renderCenterDisplay = ({ percentage, target, name, radius, width }) =>
   !!percentage ? (
     <>
       <Text
@@ -183,8 +181,11 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
                 <ProgressIndicatorChart
                   color={chartTheme.colors[i]}
                   data={[
-                    { x: 1, y: percentage ?? 0 },
-                    { x: 2, y: 100 - (percentage ?? 0) },
+                    { x: 1, y: percentage ?? MIN_PERCENTAGE },
+                    {
+                      x: 2,
+                      y: MAX_PERCENTAGE - (percentage ?? MIN_PERCENTAGE),
+                    },
                   ]}
                   renderCenterDisplay={({ radius, width }) =>
                     renderCenterDisplay({
@@ -204,4 +205,4 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
   );
 };
 
-export { ProgressIndicators };
+export { ProgressIndicators, getPercentage, renderCenterDisplay };
