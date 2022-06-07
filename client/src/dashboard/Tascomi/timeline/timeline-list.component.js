@@ -188,29 +188,29 @@ const TimeLineList = ({ selectedFeature }) => {
         </Typography>
         <List component="nav" aria-labelledby="nested-list-subheader">
           {selectedFeature.data?.length > 0 ? (
-            selectedFeature.data.map(timeline => {
-              const title = `${timeline.Type} - ${timeline.Description}`;
+            selectedFeature.data.map(timelineItem => {
+              const title = `${timelineItem.Type} - ${timelineItem.Description}`;
 
               return (
                 <div
-                  key={`${title}-${timeline.Source}`}
+                  key={`${title}-${timelineItem.Source}`}
                   className={styles.timeline}
                 >
                   <TimeLineListItem
                     onClick={() => handleClick(title)}
                     openSections={openSections}
                     title={title}
-                    listItem={timeline}
+                    listItem={timelineItem}
                   />
 
-                  {timeline.additional_fields ? (
+                  {timelineItem.additional_fields ? (
                     <Collapse
                       in={openSections.includes(title)}
                       timeout="auto"
                       unmountOnExit
                     >
                       <TimeLineAdditionalFields
-                        fields={timeline.additional_fields}
+                        fields={timelineItem.additional_fields}
                       />
                     </Collapse>
                   ) : null}
