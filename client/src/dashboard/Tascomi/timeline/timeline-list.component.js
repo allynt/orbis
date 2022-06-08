@@ -28,6 +28,8 @@ const useStyles = makeStyles(theme => ({
     margin: `${theme.spacing(2)} 0`,
   },
   listItem: {
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: '#4e5d65',
     borderRadius: '0.3rem',
     '&:hover': {
@@ -35,9 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
     '&$open': {
       borderRadius: '0.3rem',
-      borderTop: '1px solid #cfa228',
-      borderLeft: '1px solid #cfa228',
-      borderRight: '1px solid #cfa228',
+      border: '1px solid #cfa228',
     },
   },
   chevrons: {
@@ -61,19 +61,14 @@ const useStyles = makeStyles(theme => ({
   strapline: {
     marginTop: theme.spacing(2),
   },
+  collapsable: {
+    width: '100%',
+  },
   additionalFields: {
-    position: 'relative',
-    top: '-0.5rem',
     padding: `${theme.spacing(2)} 0 ${theme.spacing(2)} ${theme.spacing(2)}`,
     backgroundColor: '#4e5d65',
     borderBottomLeftRadius: '0.3rem',
     borderBottomRightRadius: '0.3rem',
-    '&$open': {
-      borderRadius: '0.3rem',
-      borderBottom: '1px solid #cfa228',
-      borderLeft: '1px solid #cfa228',
-      borderRight: '1px solid #cfa228',
-    },
   },
 }));
 
@@ -108,6 +103,7 @@ const TimeLineListItem = ({
   timelineId,
   listItem,
   hasAdditionalFields,
+  children,
 }) => {
   const styles = useStyles();
 
@@ -162,27 +158,18 @@ const TimeLineListItem = ({
           </Grid>
         </Grid>
       </Grid>
+
+      {children}
     </ListItem>
   );
 };
 
-const TimeLineAdditionalFields = ({
-  fields,
-  hasAdditionalFields,
-  openSections,
-  timelineId,
-}) => {
+const TimeLineAdditionalFields = ({ fields }) => {
   const styles = useStyles();
 
   return (
     <>
-      <Grid
-        className={clsx(styles.additionalFields, {
-          [styles.open]:
-            hasAdditionalFields && openSections.includes(timelineId),
-        })}
-        container
-      >
+      <Grid className={styles.additionalFields} container>
         {Object.keys(fields).map(keyvalue => {
           return (
             <Grid key={fields[keyvalue]} item xs={6}>
@@ -244,22 +231,20 @@ const TimeLineList = ({ selectedFeature }) => {
                     timelineId={timelineId}
                     listItem={timelineItem}
                     hasAdditionalFields={hasAdditionalFields}
-                  />
-
-                  {hasAdditionalFields ? (
-                    <Collapse
-                      in={openSections.includes(timelineId)}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <TimeLineAdditionalFields
-                        fields={timelineItem.additional_fields}
-                        openSections={openSections}
-                        timelineId={timelineId}
-                        hasAdditionalFields={hasAdditionalFields}
-                      />
-                    </Collapse>
-                  ) : null}
+                  >
+                    {hasAdditionalFields ? (
+                      <Collapse
+                        className={styles.collapsable}
+                        in={openSections.includes(timelineId)}
+                        timeout="auto"
+                        unmountOnExit
+                      >
+                        <TimeLineAdditionalFields
+                          fields={timelineItem.additional_fields}
+                        />
+                      </Collapse>
+                    ) : null}
+                  </TimeLineListItem>
                 </div>
               );
             })
