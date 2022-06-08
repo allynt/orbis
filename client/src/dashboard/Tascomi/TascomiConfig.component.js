@@ -34,7 +34,7 @@ const TascomiHeader = ({ visibleTab, setVisibleTab }) => {
 
   return (
     <div className={styles.header}>
-      <Typography variant="h2">TASCOMI PLANNING AND EXACOM</Typography>
+      <Typography variant="h2">TASCOMI AND EXACOM</Typography>
 
       <Tabs
         value={visibleTab}
