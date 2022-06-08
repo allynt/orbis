@@ -33,6 +33,12 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: '#4e5d65',
     },
+    '&$open': {
+      borderRadius: '0.3rem',
+      borderTop: '1px solid #cfa228',
+      borderLeft: '1px solid #cfa228',
+      borderRight: '1px solid #cfa228',
+    },
   },
   icon: {
     fontSize: 'inherit',
@@ -57,6 +63,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#4e5d65',
     borderBottomLeftRadius: '0.3rem',
     borderBottomRightRadius: '0.3rem',
+    '&$open': {
+      borderRadius: '0.3rem',
+      borderBottom: '1px solid #cfa228',
+      borderLeft: '1px solid #cfa228',
+      borderRight: '1px solid #cfa228',
+    },
   },
 }));
 
@@ -99,7 +111,9 @@ const TimeLineListItem = ({
     <ListItem
       button
       onClick={onClick}
-      className={styles.listItem}
+      className={clsx(styles.listItem, {
+        [styles.open]: hasAdditionalFields && openSections.includes(title),
+      })}
       role="listitem"
     >
       <Grid container>
@@ -142,12 +156,22 @@ const TimeLineListItem = ({
   );
 };
 
-const TimeLineAdditionalFields = ({ fields }) => {
+const TimeLineAdditionalFields = ({
+  fields,
+  hasAdditionalFields,
+  openSections,
+  title,
+}) => {
   const styles = useStyles();
 
   return (
     <>
-      <Grid className={styles.additionalFields} container>
+      <Grid
+        className={clsx(styles.additionalFields, {
+          [styles.open]: hasAdditionalFields && openSections.includes(title),
+        })}
+        container
+      >
         {Object.keys(fields).map(keyvalue => {
           return (
             <Grid key={fields[keyvalue]} item xs={6}>
@@ -220,6 +244,9 @@ const TimeLineList = ({ selectedFeature }) => {
                     >
                       <TimeLineAdditionalFields
                         fields={timelineItem.additional_fields}
+                        openSections={openSections}
+                        title={title}
+                        hasAdditionalFields={hasAdditionalFields}
                       />
                     </Collapse>
                   ) : null}
