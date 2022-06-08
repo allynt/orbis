@@ -40,6 +40,11 @@ const useStyles = makeStyles(theme => ({
       borderRight: '1px solid #cfa228',
     },
   },
+  chevrons: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   icon: {
     fontSize: 'inherit',
     marginRight: theme.spacing(1),
@@ -118,24 +123,7 @@ const TimeLineListItem = ({
       role="listitem"
     >
       <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h4">{title}</Typography>
-        </Grid>
-        <Grid className={styles.strapline} item xs={6}>
-          <Typography
-            variant="h4"
-            component="span"
-          >{`${listItem['Date Type']}: `}</Typography>
-          <Typography component="span">{date}</Typography>
-        </Grid>
-        <Grid className={styles.strapline} item xs={5}>
-          <Typography variant="h4" component="span">
-            Source:{' '}
-          </Typography>
-          <Typography component="span">{listItem.Source}</Typography>
-        </Grid>
-
-        <Grid item xs={1}>
+        <Grid item xs={1} className={styles.chevrons}>
           {hasAdditionalFields ? (
             openSections.includes(timelineId) ? (
               <TriangleIcon
@@ -151,6 +139,27 @@ const TimeLineListItem = ({
               />
             )
           ) : null}
+        </Grid>
+
+        <Grid container item xs={11}>
+          <Grid item xs={12}>
+            <Typography variant="h4">{title}</Typography>
+          </Grid>
+
+          <Grid className={styles.strapline} item xs={5}>
+            <Typography
+              variant="h4"
+              component="span"
+            >{`${listItem['Date Type']}: `}</Typography>
+            <Typography component="span">{date}</Typography>
+          </Grid>
+
+          <Grid className={styles.strapline} item xs={5}>
+            <Typography variant="h4" component="span">
+              Source:{' '}
+            </Typography>
+            <Typography component="span">{listItem.Source}</Typography>
+          </Grid>
         </Grid>
       </Grid>
     </ListItem>
