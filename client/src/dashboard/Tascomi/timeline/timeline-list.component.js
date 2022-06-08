@@ -100,6 +100,7 @@ const TimeLineListItem = ({
   onClick,
   openSections,
   title,
+  timelineId,
   listItem,
   hasAdditionalFields,
 }) => {
@@ -112,7 +113,7 @@ const TimeLineListItem = ({
       button
       onClick={onClick}
       className={clsx(styles.listItem, {
-        [styles.open]: hasAdditionalFields && openSections.includes(title),
+        [styles.open]: hasAdditionalFields && openSections.includes(timelineId),
       })}
       role="listitem"
     >
@@ -136,7 +137,7 @@ const TimeLineListItem = ({
 
         <Grid item xs={1}>
           {hasAdditionalFields ? (
-            openSections.includes(title) ? (
+            openSections.includes(timelineId) ? (
               <TriangleIcon
                 className={clsx(styles.icon, { [styles.open]: true })}
                 role="opensection"
@@ -160,7 +161,7 @@ const TimeLineAdditionalFields = ({
   fields,
   hasAdditionalFields,
   openSections,
-  title,
+  timelineId,
 }) => {
   const styles = useStyles();
 
@@ -168,7 +169,8 @@ const TimeLineAdditionalFields = ({
     <>
       <Grid
         className={clsx(styles.additionalFields, {
-          [styles.open]: hasAdditionalFields && openSections.includes(title),
+          [styles.open]:
+            hasAdditionalFields && openSections.includes(timelineId),
         })}
         container
       >
@@ -217,6 +219,7 @@ const TimeLineList = ({ selectedFeature }) => {
           {selectedFeature.data?.length > 0 ? (
             selectedFeature.data.map(timelineItem => {
               const title = `${timelineItem.Type} - ${timelineItem.Description}`;
+              const timelineId = `${title}-${timelineItem.Date}`;
 
               // If there are additional fields, then we need to add a section
               const hasAdditionalFields =
@@ -224,28 +227,26 @@ const TimeLineList = ({ selectedFeature }) => {
                 Object.keys(timelineItem.additional_fields).length > 0;
 
               return (
-                <div
-                  key={`${title}-${timelineItem.Source}`}
-                  className={styles.timeline}
-                >
+                <div key={timelineId} className={styles.timeline}>
                   <TimeLineListItem
-                    onClick={() => handleClick(title)}
+                    onClick={() => handleClick(timelineId)}
                     openSections={openSections}
                     title={title}
+                    timelineId={timelineId}
                     listItem={timelineItem}
                     hasAdditionalFields={hasAdditionalFields}
                   />
 
                   {hasAdditionalFields ? (
                     <Collapse
-                      in={openSections.includes(title)}
+                      in={openSections.includes(timelineId)}
                       timeout="auto"
                       unmountOnExit
                     >
                       <TimeLineAdditionalFields
                         fields={timelineItem.additional_fields}
                         openSections={openSections}
-                        title={title}
+                        timelineId={timelineId}
                         hasAdditionalFields={hasAdditionalFields}
                       />
                     </Collapse>
