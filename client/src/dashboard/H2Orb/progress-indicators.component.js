@@ -13,22 +13,17 @@ const DATE_FORMAT = 'dd/MM/yyyy - HH:mm:ss';
 /**
  * Takes an object of data, for a number of individual ProgressIndicatorCharts.
  *
- * @param {object} { data } - Object of data to be used for each chart.
+ * @param {{data: object}} props // Object of data to be used for each chart.
  */
 const ProgressIndicators = ({ data }) => {
-  const chartTheme = useChartTheme();
-
+  const { colors } = useChartTheme();
   return (
     <Grid container spacing={3}>
-      {data?.map(indicator => (
+      {data?.map((indicator, i) => (
         <Grid key={indicator.name} item xs={12} md={3}>
           <ChartWrapper title={indicator.name} info={indicator.info}>
-            <ProgressIndicatorChart
-              property={indicator}
-              color={chartTheme.colors[0]}
-            />
+            <ProgressIndicatorChart {...indicator} color={colors[i]} />
           </ChartWrapper>
-
           <Typography>
             {/* Last reading taken at: {format(data.data_received_time, DATE_FORMAT)} */}
           </Typography>
