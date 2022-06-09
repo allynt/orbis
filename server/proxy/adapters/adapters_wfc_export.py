@@ -9,7 +9,6 @@ from .adapters_base import BaseProxyDataAdapter
 DEFAULT_PARAMS = {
     "start_date": "01/04/2013",
     "end_date": "31/03/2023",
-    "values_only": False,
     "widgets": ['totals', 'tenure', 'approvals', 'affordable'],
     "valid_tenures": [
         'Market for sale',
@@ -623,44 +622,12 @@ def get_housing_approvals_per_month_data(ha_df, mock_data=None, **params):
     # fetch housing approvals
     start_date = params.pop('start_date', DEFAULT_PARAMS['start_date'])
     end_date = params.pop('end_date', DEFAULT_PARAMS['end_date'])
-    values_only = params.pop('values_only', DEFAULT_PARAMS['values_only'])
 
     years = params.pop('approvals_years', None)
     if years is None:
         years = list(ha_df.decision_date.dt.year.unique())
 
     ha_df = ha_df.loc[ha_df.decision_date.dt.year.isin(years)].copy()
-
-    if values_only:
-        # only need to provide the monthly aggregated values
-        monthly = pd.DataFrame([{
-            1: "Jan",
-            2: "Feb",
-            3: "Mar",
-            4: "Apr",
-            5: "May",
-            6: "Jun",
-            7: "Jul",
-            8: "Aug",
-            9: "Sep",
-            10: "Oct",
-            11: "Nov",
-            12: "Dec"
-        }]).T.rename(columns={0: "Month"})
-        cumulative = monthly.copy()
-
-        for year in years:
-            apps = ha_df.loc[ha_df.decision_date.dt.year == year]
-            monthly[f"{year}"] = apps.groupby(
-                apps.decision_date.dt.month
-            )['lpa_app_no'].count().rename(index='month')
-            cumulative[f"{year}"] = monthly[f"{year}"].cumsum()
-
-        monthly["Type"] = "Monthly"
-        cumulative["Type"] = "Cumulative"
-        monthly = pd.concat([monthly, cumulative])
-
-        return monthly
 
     data = {}
     for year in years:
