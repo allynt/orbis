@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   additionalFields: {
-    padding: `${theme.spacing(2)} 0 ${theme.spacing(2)} ${theme.spacing(2)}`,
+    padding: `${theme.spacing(2)} 0 ${theme.spacing(2)} 0`,
     backgroundColor: '#4e5d65',
     borderBottomLeftRadius: '0.3rem',
     borderBottomRightRadius: '0.3rem',
@@ -168,11 +168,15 @@ const TimeLineAdditionalFields = ({ fields }) => {
   const styles = useStyles();
 
   return (
-    <>
-      <Grid className={styles.additionalFields} container>
+    <Grid container>
+      <Grid item xs={1}>
+        {' '}
+      </Grid>
+
+      <Grid container item xs={11} className={styles.additionalFields}>
         {Object.keys(fields).map(keyvalue => {
           return (
-            <Grid key={fields[keyvalue]} item xs={6}>
+            <Grid key={fields[keyvalue]} item xs={5}>
               <Typography
                 variant="h4"
                 component="span"
@@ -184,7 +188,7 @@ const TimeLineAdditionalFields = ({ fields }) => {
           );
         })}
       </Grid>
-    </>
+    </Grid>
   );
 };
 
