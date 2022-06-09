@@ -14,7 +14,7 @@ describe('TascomiConfig', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: /tascomi planning and exacom/i }),
+      screen.getByRole('heading', { name: /tascomi and exacom/i }),
     ).toBeInTheDocument();
 
     expect(
