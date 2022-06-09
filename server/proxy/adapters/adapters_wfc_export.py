@@ -137,11 +137,11 @@ def prepare_housing_delivery_data(df, **kwargs):
 
 
 def prepare_housing_approvals_data(df, **kwargs):
-    start_date = kwargs.pop('start_date', DEFAULT_PARAMS["start_date"])
-    end_date = kwargs.pop('end_date', DEFAULT_PARAMS["end_date"])
+    start_date = kwargs.pop('start_date', "2014-01-01")
+    end_date = kwargs.pop('end_date', "2019-12-31")
     valid_tenures = kwargs.pop("valid_tenures", DEFAULT_PARAMS["valid_tenures"])
 
-    # TODO: FILTER DATA
+    # begin filter data
 
     HOUSING_APPROVALS_COLUMNS = [
         "decision_date",
@@ -155,9 +155,12 @@ def prepare_housing_approvals_data(df, **kwargs):
         "street_name",
         "uprn",
     ]
-
-    # have to convert set to list since passing a set as an indexer is deprecated
     df = df[list(set(HOUSING_APPROVALS_COLUMNS) & set(df.columns))]
+    df["decision_date"] = pd.to_datetime(df["decision_date"], format="%d/%m/%Y")
+    df = df.loc[(df["decision_date"] >= start_date) &
+                (df["decision_date"] <= end_date)]
+
+    # end filter data
 
     # expand 'residential_details' and list each unit as an entry in the df
     df = pd.concat(
