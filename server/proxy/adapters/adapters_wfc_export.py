@@ -63,8 +63,8 @@ def prepare_housing_delivery_data(df, **kwargs):
 
     # TODO: FILTER DATA
 
-    start_date = kwargs.get("start_date", DEFAULT_PARAMS["start_date"])
-    end_date = kwargs.get("end_date", DEFAULT_PARAMS["end_date"])
+    start_date = kwargs.get("start_date", "01/01/2014")
+    end_date = kwargs.get("end_date", "31/03/2020")
     valid_tenures = kwargs.get("valid_tenures", DEFAULT_PARAMS["valid_tenures"])
 
     def _get_financial_year(dt):
@@ -73,6 +73,35 @@ def prepare_housing_delivery_data(df, **kwargs):
             return f"{year-1}-{year}"
         else:
             return f"{year}-{year+1}"
+
+    # begin filter data
+
+    HOUSING_DELIVERY_COLUMNS = [
+        "actual_completion_date",
+        "application_type_full",
+        "development_type",
+        "lpa_app_no",
+        "postcode",
+        "residential_details",
+        "site_name",
+        "source",
+        "status",
+        "street_name",
+        "uprn",
+    ]
+    df = df[list(set(HOUSING_DELIVERY_COLUMNS) & set(df.columns))]
+    # df["actual_completion_date"] = pd.to_datetime(
+    #     df["actual_completion_date"], format="%d/%m/%Y"
+    # )
+    # df = df.loc[(
+    #     df["actual_completion_date"] >=
+    #     pd.to_datetime(start_date, format="%d/%M/%Y")
+    # ) & (
+    #     df["actual_completion_date"] <=
+    #     pd.to_datetime(end_date, format="%d/%M/%Y")
+    # )]
+
+    # end filter data
 
     df["scheme_actual_completion_date"] = df["actual_completion_date"].copy()
     df = df.drop(columns=["actual_completion_date"])
