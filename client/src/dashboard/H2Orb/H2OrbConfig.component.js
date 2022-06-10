@@ -18,7 +18,7 @@ import ProgressIndicators from './progress-indicators.component';
 const DATE_FORMAT = 'dd-MM-yyyy';
 const START_DATE = format(new Date('2022-05-25'), DATE_FORMAT);
 const END_DATE = format(new Date(), DATE_FORMAT);
-const apiSourceId = 'astrosat/h2orb/indicators/latest';
+const API_SOURCE_ID = 'astrosat/h2orb/indicators/latest';
 
 const METADATA = {
   pH: {
@@ -140,6 +140,9 @@ const H2OrbDashboard = ({ sourceId }) => {
 
   // useInterval(() => {
   //   (async () => {
+  //     const apiSourceId =
+  //       source?.metadata?.application?.orbis?.dashboard_component
+  //         ?.apiSourceId ?? API_SOURCE_ID;
   //     const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
 
   //     const authToken = getAuthTokenForSource(dataTokens, {
