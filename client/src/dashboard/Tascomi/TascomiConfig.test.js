@@ -25,7 +25,7 @@ const state = {
       },
     },
   },
-}
+};
 
 describe('TascomiConfig', () => {
   it('renders the dashboard with tabs', () => {
@@ -53,7 +53,7 @@ describe('TascomiConfig', () => {
     );
 
     const regEx = /tascomi - Planning permission granted/i;
-    expect(screen.getByText('Project Info Component')).toBeInTheDocument();
+
     expect(
       screen.queryByRole('heading', {
         name: regEx,

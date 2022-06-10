@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { Grid, Skeleton, makeStyles } from '@astrosat/astrosat-ui';
+import { Grid, Skeleton, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { format } from 'date-fns';
 
 import {
   ChartWrapper,
   ChartWrapperSkeleton,
 } from 'dashboard/charts/chart-wrapper.component';
+import { formatDate } from 'utils/dates';
 
 const useStyles = makeStyles(theme => ({
   contentWrapper: {
@@ -17,9 +17,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
   },
   content: {
-    display: 'flex',
-    alignItems: 'center',
-    flexWrap: 'nowrap',
+    minHeight: '4ch',
     '& > *': {
       width: '50%',
       textAlign: 'start',
@@ -37,28 +35,6 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{data: object}} props
  */
-const DataWrapper = ({ data }) => {
-  const styles = useStyles();
-  return Object.entries(data).map(([key, value]) => {
-    const isNested = !!value && typeof value === 'object';
-    return (
-      <div
-        key={key}
-        className={clsx(styles.content, isNested ? styles.nestedContent : null)}
-      >
-        <span className={styles.label}>{key}: </span>
-        <span>{value ?? '-'}</span>
-      </div>
-    );
-  });
-};
-
-/** @param {string} date */
-const formatDate = date => format(new Date(date), 'dd/MM/yyyy');
-
-/**
- * @param {{data: object}} props
- */
 const ContentWrapper = ({ data }) => {
   const styles = useStyles({});
   return (
@@ -68,7 +44,29 @@ const ContentWrapper = ({ data }) => {
       justifyContent="space-between"
       className={styles.contentWrapper}
     >
-      <DataWrapper data={data} />
+      {Object.entries(data).map(([key, value]) => {
+        const isNested = !!value && typeof value === 'object';
+        return (
+          <Grid
+            item
+            container
+            alignItems="center"
+            wrap="nowrap"
+            key={key}
+            className={clsx(
+              styles.content,
+              isNested ? styles.nestedContent : null,
+            )}
+          >
+            <Grid item component={Typography} className={styles.label}>
+              {key}:{' '}
+            </Grid>
+            <Grid item component={Typography}>
+              {value ?? '-'}
+            </Grid>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
@@ -165,25 +163,25 @@ const ProjectInfo = ({ selectedFeature }) => {
           <ContentWrapper
             data={{
               'Received Date': !!selectedFeature['Received date']
-                ? formatDate(selectedFeature['Received date'])
+                ? formatDate(new Date(selectedFeature['Received date']))
                 : null,
               'Committee Date': !!selectedFeature['Committee date']
-                ? formatDate(selectedFeature['Committee date'])
+                ? formatDate(new Date(selectedFeature['Committee date']))
                 : null,
               'Decision Date': !!selectedFeature['Decision date']
-                ? formatDate(selectedFeature['Decision date'])
+                ? formatDate(new Date(selectedFeature['Decision date']))
                 : null,
               'Legal Agreement Date': !!selectedFeature['Legal agreement date']
-                ? formatDate(selectedFeature['Legal agreement date'])
+                ? formatDate(new Date(selectedFeature['Legal agreement date']))
                 : null,
               'S106 Agreement Date': !!selectedFeature['S106 agreement date']
-                ? formatDate(selectedFeature['S106 agreement date'])
+                ? formatDate(new Date(selectedFeature['S106 agreement date']))
                 : null,
               'Registration Date': !!selectedFeature['Registered date']
-                ? formatDate(selectedFeature['Registered date'])
+                ? formatDate(new Date(selectedFeature['Registered date']))
                 : null,
               'Lapsed Date': !!selectedFeature['Lapsed date']
-                ? formatDate(selectedFeature['Lapsed date'])
+                ? formatDate(new Date(selectedFeature['Lapsed date']))
                 : null,
             }}
           />
