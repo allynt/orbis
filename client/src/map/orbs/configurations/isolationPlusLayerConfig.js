@@ -30,6 +30,7 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
   OPACITY_FLAT = 150,
   OPACITY_EXTRUDED = OPACITY_FLAT,
   OPACITY_EXTRUDED_SELECTED = 255,
+  OPACITY_TRANSPARENT = 0,
   LINE_WIDTH = 0,
   LINE_WIDTH_SELECTED = 3,
   TRANSITION_DURATION = 150,
@@ -132,6 +133,14 @@ const configuration = ({
    * @returns {number}
    */
   const getFillOpacity = d => {
+    const value = getValue(d, selectedProperty, selectedTimestamp);
+
+    // Zero is a valid value, so we need to ensure we don't accidentally
+    // set it to transparent, in that situation.
+    if (!value && value !== 0) {
+      return OPACITY_TRANSPARENT;
+    }
+
     if (!extrudedMode || selectedProperty.type === 'discrete')
       return OPACITY_FLAT;
     if (!anySelected || (anySelected && isSelected(d)))
@@ -173,6 +182,14 @@ const configuration = ({
    * @param {{srcEvent: PointerEvent}} event
    */
   const onClick = (info, event) => {
+    if (info.object) {
+      const value = getValue(info.object, selectedProperty, selectedTimestamp);
+
+      if (!value && value !== 0) {
+        return;
+      }
+    }
+
     /* recreating info as a pure JSON object */
     /* rather than an object w/ nested classes */
     const payload = {
@@ -202,6 +219,14 @@ const configuration = ({
   };
 
   const onHover = info => {
+    if (info.object) {
+      const value = getValue(info.object, selectedProperty, selectedTimestamp);
+
+      if (!value && value !== 0) {
+        return;
+      }
+    }
+
     if (
       (info.object == null && !!hoveredFeatures?.[0]) ||
       info.object?.properties[source.metadata.index] !==

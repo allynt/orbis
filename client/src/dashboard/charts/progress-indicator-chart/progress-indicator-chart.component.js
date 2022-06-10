@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
-import { Text } from '@visx/text';
 import { VictoryAnimation, VictoryPie } from 'victory';
 
 const useStyles = makeStyles(theme => ({
@@ -14,46 +13,17 @@ const useStyles = makeStyles(theme => ({
   circle: {
     fill: theme.palette.background.default,
   },
-  text: {
-    fill: theme.palette.text.primary,
-    '&$value': { fontSize: theme.typography.pxToRem(48) },
-    '&$target': { fontSize: theme.typography.pxToRem(14) },
-    '&$noTarget': { fontSize: theme.typography.pxToRem(16) },
-  },
-  value: {},
-  target: {},
-  noTarget: {},
 }));
 
-// this prevents "Infinity%" values being shown, but calculates any
-// valid values, including zero
-const calculatePercentage = property => {
-  const { target, progress } = property;
-  let percentage = null;
-  if (target >= 0 && (!!progress || progress === 0)) {
-    percentage = target === 0 ? 100 : Math.round((progress / target) * 100);
-  }
-
-  return percentage;
-};
-
-const ProgressIndicatorChart = ({ property, color }) => {
+/**
+ * @param {{
+ * color: string,
+ * data: {x: number, y: number}[],
+ * renderCenterDisplay: function
+ * }} props
+ */
+const ProgressIndicatorChart = ({ color, data, renderCenterDisplay }) => {
   const styles = useStyles({});
-  const [percentage, setPercentage] = useState(null);
-
-  useEffect(() => {
-    setPercentage(calculatePercentage(property));
-  }, [percentage, property]);
-
-  const { name, target } = property;
-
-  const data = [
-    { x: 1, y: percentage ?? 0 },
-    { x: 2, y: 100 - percentage ?? 0 },
-  ];
-
-  // TODO: magic numbers in <Text /> components
-
   return (
     <ParentSize className={styles.parentSize}>
       {({ width }) => {
@@ -90,54 +60,12 @@ const ProgressIndicatorChart = ({ property, color }) => {
                 },
               }}
             />
-            <VictoryAnimation duration={1000} data={{ display: percentage }}>
-              {({ display }) =>
-                !!percentage ? (
-                  <>
-                    <Text
-                      width={radius}
-                      textAnchor="middle"
-                      verticalAnchor="end"
-                      x={radius}
-                      y={radius}
-                      dy={-8}
-                      style={{
-                        fill: '#fff',
-                        fontSize: `${width / 150}rem`,
-                      }}
-                    >
-                      {`${Math.round(+display)}%`}
-                    </Text>
-                    <Text
-                      width={radius}
-                      textAnchor="middle"
-                      verticalAnchor="start"
-                      x={radius}
-                      y={radius}
-                      dy={8}
-                      style={{
-                        fill: '#fff',
-                        fontSize: `${width / 400}rem`,
-                      }}
-                    >
-                      {`Target ${target} Units`}
-                    </Text>
-                  </>
-                ) : (
-                  <Text
-                    width={radius}
-                    textAnchor="middle"
-                    verticalAnchor="middle"
-                    x={radius}
-                    y={radius}
-                    style={{
-                      fill: '#fff',
-                      fontSize: `${width / 250}rem`,
-                    }}
-                  >
-                    {`${name} Target Required`}
-                  </Text>
-                )
+            <VictoryAnimation duration={1000}>
+              {() =>
+                renderCenterDisplay({
+                  radius,
+                  width,
+                })
               }
             </VictoryAnimation>
           </svg>

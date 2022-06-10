@@ -13,6 +13,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { userSelector } from 'accounts/accounts.selectors';
+import apiClient from 'api-client';
+import { selectDataToken } from 'data-layers/data-layers.slice';
+import exportToCsv from 'utils/exportToCsv';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 import {
   chartDataSelector,
@@ -40,6 +44,10 @@ const useStyles = makeStyles(theme => ({
   header: {
     padding: '2rem',
     borderBottom: `1px solid ${theme.palette.primary.main}`,
+  },
+  headerButtons: {
+    display: 'flex',
+    gap: '1rem',
   },
   content: {
     display: 'flex',
@@ -69,6 +77,8 @@ const useStyles = makeStyles(theme => ({
 const WalthamForestDashboard = ({ sourceId }) => {
   const styles = useStyles({});
   const dispatch = useDispatch();
+
+  const authTokens = useSelector(selectDataToken);
 
   // all data, including 'name', 'version', etc
   const approvalsGranted = useSelector(
@@ -163,6 +173,19 @@ const WalthamForestDashboard = ({ sourceId }) => {
     closeDialog();
   };
 
+  const handleExport = async () => {
+    const source_id = 'astrosat/wfc/export/latest';
+
+    const authToken = getAuthTokenForSource(authTokens, { source_id });
+    const url = `/${source_id}/`;
+
+    const data = await apiClient.dashboard.getDashboardData(url, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+    exportToCsv(data, 'wfc-dashboard-data');
+  };
+
   return (
     <div className={styles.dashboard}>
       <Grid
@@ -172,9 +195,14 @@ const WalthamForestDashboard = ({ sourceId }) => {
         className={styles.header}
       >
         <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
-        <Button size="small" onClick={() => setTargetDialogVisible(true)}>
-          Add Targets
-        </Button>
+        <div className={styles.headerButtons}>
+          <Button size="small" onClick={handleExport}>
+            Export
+          </Button>
+          <Button size="small" onClick={() => setTargetDialogVisible(true)}>
+            Add Targets
+          </Button>
+        </div>
       </Grid>
 
       <div className={styles.content}>

@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
 
-import { Tabs, Tab, styled } from '@astrosat/astrosat-ui';
+import { Tabs, Tab, Typography, makeStyles } from '@astrosat/astrosat-ui';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import TabPanel from 'components/tab-panel.component';
-import { ChartWrapperSkeleton } from 'dashboard/charts/chart-wrapper.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 
 import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
 import ProjectInfo, {
   ProjectInfoSkeleton,
 } from './project-info/project-info.component';
-import Timeline from './timeline/timeline.component';
+import TimeLineList, {
+  TimeLineListSkeleton,
+} from './timeline/timeline-list.component';
 
-const LoadingMessage = styled('p')(({ theme }) => ({
-  width: '100%',
-  padding: theme.spacing(4),
-  textAlign: 'center',
+const useStyles = makeStyles(theme => ({
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: `0 ${theme.spacing(4)}`,
+  },
 }));
 
 /**
@@ -26,12 +31,23 @@ const LoadingMessage = styled('p')(({ theme }) => ({
  *  setVisibleTab: function
  * }} props
  */
-const TascomiHeader = ({ visibleTab, setVisibleTab }) => (
-  <Tabs value={visibleTab} onChange={(_event, value) => setVisibleTab(value)}>
-    <Tab label="Project Info" value={1} />
-    <Tab label="Timeline" value={2} />
-  </Tabs>
-);
+const TascomiHeader = ({ visibleTab, setVisibleTab }) => {
+  const styles = useStyles();
+
+  return (
+    <div className={styles.header}>
+      <Typography variant="h2">TASCOMI AND EXACOM</Typography>
+
+      <Tabs
+        value={visibleTab}
+        onChange={(_event, value) => setVisibleTab(value)}
+      >
+        <Tab label="Project Info" value={1} />
+        <Tab label="Timeline" value={2} />
+      </Tabs>
+    </div>
+  );
+};
 
 const options = {
   datasetName: 'TascomiDashboardData',
@@ -65,14 +81,18 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
       }
     >
       <TabPanel value={visibleTab} index={1}>
-        {selectedFeature ? (
+        {!!selectedFeature ? (
           <ProjectInfo selectedFeature={selectedFeature} />
         ) : (
           <ProjectInfoSkeleton />
         )}
       </TabPanel>
       <TabPanel value={visibleTab} index={2}>
-        <Timeline timelineData={selectedFeature?.data} />
+        {!!selectedFeature ? (
+          <TimeLineList selectedFeature={selectedFeature} />
+        ) : (
+          <TimeLineListSkeleton />
+        )}
       </TabPanel>
     </DashboardWrapper>
   );

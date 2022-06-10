@@ -25,10 +25,14 @@ const configuration = ({ id, dispatch, setViewState, orbState, dateType }) => {
   const filteredData = {
     ...data,
     features: filter(data?.features, feature => {
-      if (!feature.properties[dateType]) return false;
+      const filterDateType = filterRange?.dateType
+        ? filterRange.dateType
+        : dateType;
 
-      if (dateRangeFilter.startDate && feature.properties[dateType]) {
-        const testDate = new Date(feature.properties[dateType]);
+      if (!feature.properties[filterDateType]) return false;
+
+      if (dateRangeFilter.startDate && feature.properties[filterDateType]) {
+        const testDate = new Date(feature.properties[filterDateType]);
         const interval = {
           start: new Date(dateRangeFilter.startDate),
           end: new Date(dateRangeFilter.endDate),

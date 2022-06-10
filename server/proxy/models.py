@@ -81,6 +81,7 @@ class ProxyDataSource(models.Model):
     class ProxyRequestStrategy(models.TextChoices):
         STORED_PARAMS_ONLY = "STORED_PARAMS_ONLY"
         REQUEST_ONLY = "REQUEST_ONLY"
+        MERGED_PARAMS = "MERGED_PARAMS"
 
     ProxyMethodType = models.TextChoices("MethodType", ["GET", "POST"])
 
@@ -239,6 +240,17 @@ class ProxyDataSource(models.Model):
         elif self.request_strategy == self.ProxyRequestStrategy.REQUEST_ONLY:
             upstream_query_params = request_query_params
             upstream_body_data = request_body_data
+
+        elif self.request_strategy == self.ProxyRequestStrategy.MERGED_PARAMS:
+            if self.proxy_method == "POST":
+                upstream_query_params = None
+                upstream_body_data = self.proxy_params
+                upstream_body_data.update(request_body_data)
+
+            else:
+                upstream_body_data = None
+                upstream_query_params = self.proxy_params
+                upstream_query_params.update(request_query_params)
 
         # TODO: REMOTE PAGINATION
         response = requests.request(
