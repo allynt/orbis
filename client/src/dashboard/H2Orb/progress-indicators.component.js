@@ -25,7 +25,8 @@ const ProgressIndicators = ({ data }) => {
             <ProgressIndicatorChart {...indicator} color={colors[i]} />
           </ChartWrapper>
           <Typography>
-            {/* Last reading taken at: {format(data.data_received_time, DATE_FORMAT)} */}
+            Last reading taken at: {indicator.dateUpdated}
+            {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
           </Typography>
         </Grid>
       ))}

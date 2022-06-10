@@ -101,8 +101,9 @@ const renderCenterDisplay = ({ percentage, width, radius, value, units }) => (
   </Text>
 );
 
-const transformData = data =>
-  Object.entries(data.payload.params).reduce((acc, [key, value]) => {
+const transformData = data => {
+  const dateUpdated = data.data_received_time;
+  return Object.entries(data.payload.params).reduce((acc, [key, value]) => {
     const { name, info, range, units } = METADATA[key];
     const percentage = getPercentage(range.min, range.max, value);
     const data = [
@@ -116,11 +117,13 @@ const transformData = data =>
         name,
         info,
         data,
+        dateUpdated,
         renderCenterDisplay: ({ width, radius }) =>
           renderCenterDisplay({ percentage, value, width, radius, units }),
       },
     ];
   }, []);
+};
 
 const H2OrbHeader = () => <h1>H2Orb Title</h1>;
 
@@ -144,60 +147,57 @@ const H2OrbDashboard = ({ sourceId }) => {
     source?.metadata?.application?.orbis?.dashboard_component?.delay * 1000 ||
     DEFAULT_DELAY;
 
-  // useInterval(() => {
-  //   (async () => {
-  //     const apiSourceId =
-  //       source?.metadata?.application?.orbis?.dashboard_component
-  //         ?.apiSourceId ?? API_SOURCE_ID;
-  //     const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
+  useInterval(() => {
+    (async () => {
+      const apiSourceId =
+        source?.metadata?.application?.orbis?.dashboard_component
+          ?.apiSourceId ?? API_SOURCE_ID;
+      const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
 
-  //     const authToken = getAuthTokenForSource(dataTokens, {
-  //       source_id: apiSourceId,
-  //     });
+      const authToken = getAuthTokenForSource(dataTokens, {
+        source_id: apiSourceId,
+      });
 
-  //     const response = await fetch(url, {
-  //       credentials: 'include',
-  //       headers: {
-  //         Authorization: `Bearer ${authToken}`,
-  //       },
-  //     });
+      const response = await fetch(url, {
+        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-  //     const data = await response.json();
-  //     console.log('DATA: ', data);
+      const data = await response.json();
 
-  //     const transformed = transformData(data[0]);
+      const transformed = transformData(data[0]);
 
-  //     setProgressIndicators(transformed);
-  //   })();
-  // }, delay);
+      setProgressIndicators(transformed);
+    })();
+  }, delay);
 
   // console.log('PROGRESS INDICATOR DATA', progressIndicators);
 
-  useEffect(() => {
-    const transformed = transformData({
-      application_name: 'AQUASENSE - AQUACULTURE',
-      client_id: '1151-1193-1217-1115',
-      data_received_time: '2022-05-25 16-32-20',
-      dev_eui: 'ea421ba0219bb8db',
-      gateway_name: 'aq_trial_ug_lkjp',
-      payload: {
-        $lati: 21.8553,
-        $long: 88.4258,
-        params: {
-          DO: 6.45,
-          EC: 419.91,
-          pH: 7.49,
-          temperature: 17.63,
-        },
-        timestamp: '345928983000',
-      },
-    });
+  // useEffect(() => {
+  //   const transformed = transformData({
+  //     application_name: 'AQUASENSE - AQUACULTURE',
+  //     client_id: '1151-1193-1217-1115',
+  //     data_received_time: '2022-05-25 16-32-20',
+  //     dev_eui: 'ea421ba0219bb8db',
+  //     gateway_name: 'aq_trial_ug_lkjp',
+  //     payload: {
+  //       $lati: 21.8553,
+  //       $long: 88.4258,
+  //       params: {
+  //         DO: 4.45,
+  //         EC: 790,
+  //         pH: 7.87,
+  //         temperature: 26.63,
+  //       },
+  //       timestamp: '345928983000',
+  //     },
+  //   });
 
-    console.log('TRANSFORMED: ', transformed);
-    setProgressIndicators(transformed);
-  }, []);
-
-  console.log('PROGRESS INDICATORS: ', progressIndicators);
+  //   console.log('TRANSFORMED: ', transformed);
+  //   setProgressIndicators(transformed);
+  // }, []);
 
   return (
     <DashboardWrapper isTabs HeaderComponent={<H2OrbHeader />}>
