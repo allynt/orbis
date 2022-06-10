@@ -24,6 +24,7 @@ const METADATA = {
   pH: {
     name: 'PH',
     info: 'PH Info',
+    units: 'pH',
     range: {
       min: 6,
       max: 9,
@@ -32,6 +33,7 @@ const METADATA = {
   temperature: {
     name: 'Temperature',
     info: 'Temperature Info',
+    units: '°C',
     range: {
       min: 10,
       max: 40,
@@ -40,6 +42,7 @@ const METADATA = {
   EC: {
     name: 'Electrical Conductivity',
     info: 'Electrical Conductivity Info',
+    units: 'µS/cm',
     range: {
       min: 150,
       max: 800,
@@ -48,6 +51,7 @@ const METADATA = {
   DO: {
     name: 'Disolved Oxygen',
     info: 'Disolved Oxygen Info',
+    units: 'mg/L',
     range: {
       min: 2,
       max: 11,
@@ -75,10 +79,12 @@ const getPercentage = (min, max, value) => {
  * @param {{
  *  percentage: number,
  *  width: number,
- *  radius: number
+ *  radius: number,
+ *  value: number,
+ *  units: string,
  * }} props
  */
-const renderCenterDisplay = ({ percentage, width, radius }) => (
+const renderCenterDisplay = ({ percentage, width, radius, value, units }) => (
   <Text
     width={radius}
     textAnchor="middle"
@@ -88,16 +94,16 @@ const renderCenterDisplay = ({ percentage, width, radius }) => (
     dy={10}
     style={{
       fill: '#fff',
-      fontSize: `${width / 150}rem`,
+      fontSize: `${width / 250}rem`,
     }}
   >
-    {`${percentage}%`}
+    {`${value} ${units}`}
   </Text>
 );
 
 const transformData = data =>
   Object.entries(data.payload.params).reduce((acc, [key, value]) => {
-    const { name, info, range } = METADATA[key];
+    const { name, info, range, units } = METADATA[key];
     const percentage = getPercentage(range.min, range.max, value);
     const data = [
       { x: 1, y: percentage ?? 0 },
@@ -111,7 +117,7 @@ const transformData = data =>
         info,
         data,
         renderCenterDisplay: ({ width, radius }) =>
-          renderCenterDisplay({ width, radius, percentage }),
+          renderCenterDisplay({ percentage, value, width, radius, units }),
       },
     ];
   }, []);
