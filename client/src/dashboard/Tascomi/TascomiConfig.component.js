@@ -8,7 +8,9 @@ import TabPanel from 'components/tab-panel.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 
 import { chartDataSelector, fetchDashboardData } from '../dashboard.slice';
-import ProjectInfo from './project-info/project-info.component';
+import ProjectInfo, {
+  ProjectInfoSkeleton,
+} from './project-info/project-info.component';
 import TimeLineList, {
   TimeLineListSkeleton,
 } from './timeline/timeline-list.component';
@@ -60,8 +62,6 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
   );
   const [visibleTab, setVisibleTab] = useState(1);
 
-  const [selectedFeature, setSelectedFeature] = useState(null);
-
   useEffect(() => {
     if (!featuresData) {
       // @ts-ignore
@@ -69,13 +69,9 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
     }
   }, [dispatch, featuresData, sourceId]);
 
-  useEffect(() => {
-    setSelectedFeature(
-      featuresData?.properties.find(
-        feature => feature['Application ID'] === +applicationId,
-      ),
-    );
-  }, [applicationId, featuresData]);
+  const selectedFeature = featuresData?.properties.find(
+    feature => feature['Application ID'] === +applicationId,
+  );
 
   return (
     <DashboardWrapper
@@ -85,10 +81,14 @@ const TascomiDashboard = ({ sourceId, applicationId }) => {
       }
     >
       <TabPanel value={visibleTab} index={1}>
-        <ProjectInfo selectedFeature={selectedFeature} />
+        {!!selectedFeature ? (
+          <ProjectInfo selectedFeature={selectedFeature} />
+        ) : (
+          <ProjectInfoSkeleton />
+        )}
       </TabPanel>
       <TabPanel value={visibleTab} index={2}>
-        {selectedFeature ? (
+        {!!selectedFeature ? (
           <TimeLineList selectedFeature={selectedFeature} />
         ) : (
           <TimeLineListSkeleton />

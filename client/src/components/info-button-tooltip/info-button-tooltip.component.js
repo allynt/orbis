@@ -19,10 +19,14 @@ const useStyles = makeStyles(theme => ({
     width: 'min-content',
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.default,
-    '&:hover, &:active, &:focus': {
+    '&:focus': {
+      backgroundColor: theme.palette.text.primary,
+    },
+    '&:hover, &:active, &$open': {
       backgroundColor: theme.palette.primary.main,
     },
   },
+  open: {},
   content: {
     fontWeight: 600,
   },
@@ -70,7 +74,11 @@ export const InfoButtonTooltip = ({
       >
         <IconButton
           color="inherit"
-          className={clsx(styles.infoButton, iconButtonClassName)}
+          className={clsx(
+            styles.infoButton,
+            isInfoVisible ? styles.open : null,
+            iconButtonClassName,
+          )}
           aria-label="Info"
           onClick={handleIconClick}
         >
