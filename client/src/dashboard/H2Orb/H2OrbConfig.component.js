@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Text } from '@visx/text';
-import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
 
 import apiClient from 'api-client';
@@ -13,53 +12,14 @@ import {
 import { useInterval } from 'hooks/useInterval';
 import { getAuthTokenForSource } from 'utils/tokens';
 
+import {
+  API_SOURCE_ID,
+  DEFAULT_DELAY,
+  END_DATE,
+  METADATA,
+  START_DATE,
+} from './H2Orb.constants';
 import ProgressIndicators from './progress-indicators.component';
-
-const DATE_FORMAT = 'dd-MM-yyyy';
-const START_DATE = format(new Date('2022-05-25'), DATE_FORMAT);
-const END_DATE = format(new Date(), DATE_FORMAT);
-const API_SOURCE_ID = 'astrosat/h2orb/indicators/latest';
-
-const METADATA = {
-  pH: {
-    name: 'pH',
-    info: 'pH Info',
-    units: '',
-    range: {
-      min: 6,
-      max: 9,
-    },
-  },
-  temperature: {
-    name: 'Temperature',
-    info: 'Temperature Info',
-    units: '°C',
-    range: {
-      min: 10,
-      max: 40,
-    },
-  },
-  EC: {
-    name: 'Electrical Conductivity',
-    info: 'Electrical Conductivity Info',
-    units: '',
-    range: {
-      min: 150,
-      max: 800,
-    },
-  },
-  DO: {
-    name: 'Dissolved Oxygen',
-    info: 'Dissolved Oxygen Info',
-    units: '',
-    range: {
-      min: 2,
-      max: 11,
-    },
-  },
-};
-
-const DEFAULT_DELAY = 60000; // 1 minute
 
 /**
  * Calculates a percentage based on a provided min and max

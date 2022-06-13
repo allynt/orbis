@@ -2,15 +2,16 @@ import React from 'react';
 
 import { Grid, makeStyles, Skeleton, Typography } from '@astrosat/astrosat-ui';
 
-import { format } from 'date-fns';
-
-import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
+import {
+  ChartWrapper,
+  ChartWrapperSkeleton,
+} from 'dashboard/charts/chart-wrapper.component';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-const DATE_FORMAT = 'dd/MM/yyyy - HH:mm:ss';
+import { METADATA } from './H2Orb.constants';
 
-const styles = makeStyles(theme => ({
+const skeletonStyles = makeStyles(theme => ({
   areas: {
     display: 'flex',
     flexDirection: 'column',
@@ -20,16 +21,41 @@ const styles = makeStyles(theme => ({
     margin: '2rem',
     padding: '2rem',
     gap: '2rem',
-    // width: '15rem',
-    // height: '15rem',
+  },
+  circle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '1rem 5rem',
+  },
+  gap: {
+    margin: '0.5rem',
   },
 }));
 
 const ProgressIndicatorSkeleton = () => {
+  const styles = skeletonStyles();
   return (
-    <div className={styles.areas}>
-      <Skeleton variant="rect" width={'15rem'} height={'15rem'} />
-    </div>
+    <Grid>
+      <Skeleton
+        className={styles.circle}
+        variant="circle"
+        width={'8rem'}
+        height={'8rem'}
+      />
+      <Skeleton
+        className={styles.gap}
+        variant="rect"
+        width={'15rem'}
+        height={'1rem'}
+      />
+      <Skeleton
+        className={styles.gap}
+        variant="rect"
+        width={'15rem'}
+        height={'1rem'}
+      />
+    </Grid>
   );
 };
 
@@ -40,6 +66,7 @@ const ProgressIndicatorSkeleton = () => {
  */
 const ProgressIndicators = ({ data }) => {
   const { colors } = useChartTheme();
+  const dialKeys = Array(Object.keys(METADATA))[0];
   return (
     <Grid alignItems="stretch" container spacing={3}>
       {data
@@ -60,7 +87,13 @@ const ProgressIndicators = ({ data }) => {
               </ChartWrapper>
             </Grid>
           ))
-        : [1, 2, 3, 4].map(num => <ProgressIndicatorSkeleton key={num} />)}
+        : dialKeys.map(num => (
+            <Grid alignItems="center" key={`skel_${num}`} item xs={12} md={3}>
+              <ChartWrapperSkeleton key={`skel_${num}`}>
+                <ProgressIndicatorSkeleton key={num} />
+              </ChartWrapperSkeleton>
+            </Grid>
+          ))}
     </Grid>
   );
 };
