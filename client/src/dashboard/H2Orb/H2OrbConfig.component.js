@@ -22,9 +22,9 @@ const API_SOURCE_ID = 'astrosat/h2orb/indicators/latest';
 
 const METADATA = {
   pH: {
-    name: 'PH',
-    info: 'PH Info',
-    units: 'pH',
+    name: 'pH',
+    info: 'pH Info',
+    units: '',
     range: {
       min: 6,
       max: 9,
@@ -42,16 +42,16 @@ const METADATA = {
   EC: {
     name: 'Electrical Conductivity',
     info: 'Electrical Conductivity Info',
-    units: 'µS/cm',
+    units: '',
     range: {
       min: 150,
       max: 800,
     },
   },
   DO: {
-    name: 'Disolved Oxygen',
-    info: 'Disolved Oxygen Info',
-    units: 'mg/L',
+    name: 'Dissolved Oxygen',
+    info: 'Dissolved Oxygen Info',
+    units: '',
     range: {
       min: 2,
       max: 11,
@@ -125,7 +125,7 @@ const transformData = data => {
   }, []);
 };
 
-const H2OrbHeader = () => <h1>H2Orb Title</h1>;
+const H2OrbHeader = () => <h1>H2Orb Dashboard</h1>;
 
 /**
  * Dashboard for H2Orb
@@ -149,9 +149,10 @@ const H2OrbDashboard = ({ sourceId }) => {
 
   useInterval(() => {
     (async () => {
-      const apiSourceId =
-        source?.metadata?.application?.orbis?.dashboard_component
-          ?.apiSourceId ?? API_SOURCE_ID;
+      // const apiSourceId =
+      //   source?.metadata?.application?.orbis?.dashboard_component
+      //     ?.apiSourceId ?? API_SOURCE_ID;
+      const apiSourceId = API_SOURCE_ID;
       const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
 
       const authToken = getAuthTokenForSource(dataTokens, {

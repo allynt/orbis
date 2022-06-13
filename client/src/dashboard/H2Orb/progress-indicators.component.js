@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Typography } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles, Skeleton, Typography } from '@astrosat/astrosat-ui';
 
 import { format } from 'date-fns';
 
@@ -10,6 +10,29 @@ import { useChartTheme } from 'dashboard/useChartTheme';
 
 const DATE_FORMAT = 'dd/MM/yyyy - HH:mm:ss';
 
+const styles = makeStyles(theme => ({
+  areas: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '5px solid #333f48',
+    margin: '2rem',
+    padding: '2rem',
+    gap: '2rem',
+    // width: '15rem',
+    // height: '15rem',
+  },
+}));
+
+const ProgressIndicatorSkeleton = () => {
+  return (
+    <div className={styles.areas}>
+      <Skeleton variant="rect" width={'15rem'} height={'15rem'} />
+    </div>
+  );
+};
+
 /**
  * Takes an object of data, for a number of individual ProgressIndicatorCharts.
  *
@@ -18,18 +41,26 @@ const DATE_FORMAT = 'dd/MM/yyyy - HH:mm:ss';
 const ProgressIndicators = ({ data }) => {
   const { colors } = useChartTheme();
   return (
-    <Grid container spacing={3}>
-      {data?.map((indicator, i) => (
-        <Grid key={indicator.name} item xs={12} md={3}>
-          <ChartWrapper title={indicator.name} info={indicator.info}>
-            <ProgressIndicatorChart {...indicator} color={colors[i]} />
-          </ChartWrapper>
-          <Typography>
-            Last reading taken at: {indicator.dateUpdated}
-            {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
-          </Typography>
-        </Grid>
-      ))}
+    <Grid alignItems="stretch" container spacing={3}>
+      {data
+        ? data?.map((indicator, i) => (
+            <Grid key={indicator.name} item xs={12} md={3}>
+              <ChartWrapper
+                titleSize="small"
+                title={indicator.name}
+                info={indicator.info}
+              >
+                <ProgressIndicatorChart {...indicator} color={colors[i]} />
+                <Typography>
+                  Last reading taken at:
+                  <br />
+                  {indicator.dateUpdated}
+                  {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
+                </Typography>
+              </ChartWrapper>
+            </Grid>
+          ))
+        : [1, 2, 3, 4].map(num => <ProgressIndicatorSkeleton key={num} />)}
     </Grid>
   );
 };
