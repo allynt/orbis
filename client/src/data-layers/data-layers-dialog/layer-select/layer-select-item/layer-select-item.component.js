@@ -23,10 +23,6 @@ const useStyles = makeStyles(theme => ({
   checkbox: {
     minWidth: '2rem',
   },
-  infoButton: {
-    backgroundColor: theme.palette.grey[600],
-    color: theme.palette.getContrastText(theme.palette.grey[600]),
-  },
   text: {
     margin: 0,
   },
@@ -67,10 +63,7 @@ const LayerSelectItem = ({ selected, source, onChange }) => {
       />
       {source?.metadata?.description && (
         <ListItemSecondaryAction className={styles.info}>
-          <InfoButtonTooltip
-            iconButtonClassName={styles.infoButton}
-            tooltipContent={source?.metadata?.description}
-          />
+          <InfoButtonTooltip tooltipContent={source?.metadata?.description} />
         </ListItemSecondaryAction>
       )}
     </ListItem>
