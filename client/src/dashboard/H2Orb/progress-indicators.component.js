@@ -88,7 +88,14 @@ const ProgressIndicators = ({ data }) => {
             </Grid>
           ))
         : dialKeys.map(num => (
-            <Grid alignItems="center" key={`skel_${num}`} item xs={12} md={3}>
+            <Grid
+              role="skeleton"
+              alignItems="center"
+              key={`skel_${num}`}
+              item
+              xs={12}
+              md={3}
+            >
               <ChartWrapperSkeleton key={`skel_${num}`}>
                 <ProgressIndicatorSkeleton key={num} />
               </ChartWrapperSkeleton>

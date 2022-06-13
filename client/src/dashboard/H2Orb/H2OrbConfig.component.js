@@ -30,7 +30,7 @@ import ProgressIndicators from './progress-indicators.component';
  * @param {number} value
  * @returns {number}
  */
-const getPercentage = (min, max, value) => {
+export const getPercentage = (min, max, value) => {
   const result = ((+value - min) / (max - min)) * 100;
   return +result.toFixed(1);
 };
