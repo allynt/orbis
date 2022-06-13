@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import {
   makeStyles,
+  CircularProgress,
   Grid,
   Typography,
   Button,
@@ -109,6 +110,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
   const [selectedDataset, setSelectedDataset] = useState(undefined);
   const [localTargets, setLocalTargets] = useState(targets);
   const [targetDialogVisible, setTargetDialogVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dashboardSettingsRef = useRef(dashboardSettings);
 
@@ -174,6 +176,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
   };
 
   const handleExport = async () => {
+    setIsLoading(true);
+
     const source_id = 'astrosat/wfc/export/latest';
 
     const authToken = getAuthTokenForSource(authTokens, { source_id });
@@ -184,6 +188,8 @@ const WalthamForestDashboard = ({ sourceId }) => {
     });
 
     exportToCsv(data, 'wfc-dashboard-data');
+
+    setIsLoading(false);
   };
 
   return (
@@ -196,8 +202,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
       >
         <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
         <div className={styles.headerButtons}>
-          <Button size="small" onClick={handleExport}>
-            Export
+          <Button size="small" onClick={handleExport}
+
+          >
+            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Export'}
           </Button>
           <Button size="small" onClick={() => setTargetDialogVisible(true)}>
             Add Targets
