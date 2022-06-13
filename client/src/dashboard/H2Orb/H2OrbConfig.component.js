@@ -149,10 +149,9 @@ const H2OrbDashboard = ({ sourceId }) => {
 
   useInterval(() => {
     (async () => {
-      // const apiSourceId =
-      //   source?.metadata?.application?.orbis?.dashboard_component
-      //     ?.apiSourceId ?? API_SOURCE_ID;
-      const apiSourceId = API_SOURCE_ID;
+      const apiSourceId =
+        source?.metadata?.application?.orbis?.dashboard_component
+          ?.apiSourceId ?? API_SOURCE_ID;
       const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
 
       const authToken = getAuthTokenForSource(dataTokens, {
