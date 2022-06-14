@@ -19,11 +19,9 @@ const renderComponent = () => {
     },
   };
 
-  const component = render(
-    <H2OrbDashboard sourceId="astrosat/h2orb/dashboard/latest" />,
-    { state },
-  );
-  return { ...component };
+  render(<H2OrbDashboard sourceId="astrosat/h2orb/dashboard/latest" />, {
+    state,
+  });
 };
 
 describe('H2Orb Dashboard', () => {
@@ -46,7 +44,13 @@ describe('H2Orb Dashboard', () => {
     ).toBeInTheDocument();
   });
 
-  describe('getPercentage()', () => {
+  it('should render skeletons if no data present', () => {
+    renderComponent();
+
+    expect(screen.getAllByRole('skeleton')).toHaveLength(4);
+  });
+
+  describe('getPercentage', () => {
     it('at minimum, should be 0', () => {
       expect(getPercentage(20, 100, 20)).toBe(0.0);
     });
