@@ -19,7 +19,7 @@ import {
   DATE_FORMAT_DISPLAY,
   DATE_PARSE_API,
   METADATA,
-} from './H2Orb.constants';
+} from './h2orb.constants';
 
 const useStyles = makeStyles(theme => ({
   date: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
  *
  * @param {{data: object}} props // Object of data to be used for each chart.
  */
-const H2OrbProgressIndicators = ({ data }) => {
+const ProgressIndicators = ({ data }) => {
   const { colors } = useChartTheme();
   const styles = useStyles();
   return (
@@ -65,7 +65,7 @@ const H2OrbProgressIndicators = ({ data }) => {
   );
 };
 
-export const H2OrbProgressIndicatorSkeletons = () => {
+export const ProgressIndicatorSkeletons = () => {
   const styles = useStyles();
   return (
     <Grid item container spacing={3}>
@@ -92,4 +92,4 @@ export const H2OrbProgressIndicatorSkeletons = () => {
   );
 };
 
-export default H2OrbProgressIndicators;
+export default ProgressIndicators;

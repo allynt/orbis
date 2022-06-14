@@ -1,4 +1,4 @@
-import { getPercentage } from './H2Orb-utils';
+import { getPercentage } from './h2orb.utils';
 
 describe('getPercentage', () => {
   it('at minimum, should be 0', () => {

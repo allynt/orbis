@@ -14,16 +14,17 @@ import {
 import { useInterval } from 'hooks/useInterval';
 import { getAuthTokenForSource } from 'utils/tokens';
 
-import H2OrbProgressIndicators from './H2Orb-progress-indicators.component';
-import H2OrbSkeletons from './H2Orb-skeletons';
-import { getPercentage } from './H2Orb-utils/H2Orb-utils';
 import {
   API_SOURCE_ID,
   DEFAULT_DELAY,
   END_DATE,
   METADATA,
   START_DATE,
-} from './H2Orb.constants';
+} from './h2orb.constants';
+import { getPercentage } from './h2orb.utils';
+import ProgressIndicators, {
+  ProgressIndicatorSkeletons,
+} from './progress-indicators.component';
 
 const useStyles = makeStyles(theme => ({
   dashboard: {
@@ -85,7 +86,7 @@ const transformData = data =>
     ];
   }, []);
 
-const H2OrbHeader = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
+const Header = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
 
 /**
  * Dashboard for H2Orb
@@ -132,7 +133,7 @@ const H2OrbDashboard = ({ sourceId }) => {
   }, delay);
 
   return (
-    <DashboardWrapper HeaderComponent={<H2OrbHeader />}>
+    <DashboardWrapper HeaderComponent={<Header />}>
       <Grid
         container
         direction="column"
@@ -140,9 +141,11 @@ const H2OrbDashboard = ({ sourceId }) => {
         className={styles.dashboard}
       >
         {!!progressIndicators ? (
-          <H2OrbProgressIndicators data={progressIndicators} />
+          <ProgressIndicators data={progressIndicators} />
         ) : (
-          <H2OrbSkeletons />
+          <Grid item container direction="column">
+            <ProgressIndicatorSkeletons />
+          </Grid>
         )}
       </Grid>
     </DashboardWrapper>
