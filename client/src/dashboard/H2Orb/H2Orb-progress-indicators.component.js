@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Grid, makeStyles, Typography, Skeleton } from '@astrosat/astrosat-ui';
 
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+
 import {
   ChartWrapper,
   ChartWrapperSkeleton,
@@ -12,7 +15,11 @@ import {
 } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-import { METADATA } from './H2Orb.constants';
+import {
+  DATE_FORMAT_DISPLAY,
+  DATE_PARSE_API,
+  METADATA,
+} from './H2Orb.constants';
 
 const useStyles = makeStyles(theme => ({
   date: {
@@ -44,8 +51,11 @@ const H2OrbProgressIndicators = ({ data }) => {
             <div className={styles.date}>
               <Typography>Last reading taken at:</Typography>
               <Typography>
-                {indicator.dateUpdated}
-                {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
+                {/* {indicator.dateUpdated} */}
+                {format(
+                  parse(indicator.dateUpdated, DATE_PARSE_API, new Date()),
+                  DATE_FORMAT_DISPLAY,
+                )}
               </Typography>
             </div>
           </ChartWrapper>
