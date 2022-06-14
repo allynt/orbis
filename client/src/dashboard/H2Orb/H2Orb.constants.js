@@ -11,6 +11,7 @@ export const METADATA = {
   pH: {
     name: 'pH',
     info: 'pH Info',
+    units: 'pH',
     range: {
       min: 6,
       max: 9,
@@ -28,6 +29,7 @@ export const METADATA = {
   EC: {
     name: 'Electrical Conductivity',
     info: 'Electrical Conductivity Info',
+    units: 'µS/cm',
     range: {
       min: 150,
       max: 800,
@@ -36,6 +38,7 @@ export const METADATA = {
   DO: {
     name: 'Dissolved Oxygen',
     info: 'Dissolved Oxygen Info',
+    units: 'mg/L',
     range: {
       min: 2,
       max: 11,
