@@ -2,16 +2,11 @@ import React from 'react';
 
 import { Grid, makeStyles, Skeleton, Typography } from '@astrosat/astrosat-ui';
 
-import {
-  ChartWrapper,
-  ChartWrapperSkeleton,
-} from 'dashboard/charts/chart-wrapper.component';
+import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
 import { ProgressIndicatorChart } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-import { METADATA } from './H2Orb.constants';
-
-const skeletonStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   areas: {
     display: 'flex',
     flexDirection: 'column',
@@ -25,18 +20,51 @@ const skeletonStyles = makeStyles(theme => ({
   circle: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    margin: '1rem 5rem',
+    margin: '1rem 3rem',
   },
   gap: {
     margin: '0.5rem',
   },
+  date: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
-const ProgressIndicatorSkeleton = () => {
-  const styles = skeletonStyles();
+/**
+ * Takes an object of data, for a number of individual ProgressIndicatorCharts.
+ *
+ * @param {{data: object}} props // Object of data to be used for each chart.
+ */
+const ProgressIndicators = ({ data }) => {
+  const { colors } = useChartTheme();
+  const styles = useStyles();
   return (
-    <Grid>
+    <Grid item container spacing={3}>
+      {data?.map((indicator, i) => (
+        <Grid key={indicator.name} item xs={12} md={3}>
+          <ChartWrapper
+            titleSize="small"
+            title={indicator.name}
+            info={indicator.info}
+          >
+            <ProgressIndicatorChart {...indicator} color={colors[i]} />
+            <Typography className={styles.date}>
+              Last reading taken at:
+              <br />
+              {indicator.dateUpdated}
+              {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
+            </Typography>
+          </ChartWrapper>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+export const ProgressIndicatorSkeleton = () => {
+  const styles = useStyles();
+  return (
+    <Grid item>
       <Skeleton
         className={styles.circle}
         variant="circle"
@@ -46,61 +74,15 @@ const ProgressIndicatorSkeleton = () => {
       <Skeleton
         className={styles.gap}
         variant="rect"
-        width={'15rem'}
+        width={'10rem'}
         height={'1rem'}
       />
       <Skeleton
         className={styles.gap}
         variant="rect"
-        width={'15rem'}
+        width={'10rem'}
         height={'1rem'}
       />
-    </Grid>
-  );
-};
-
-/**
- * Takes an object of data, for a number of individual ProgressIndicatorCharts.
- *
- * @param {{data: object}} props // Object of data to be used for each chart.
- */
-const ProgressIndicators = ({ data }) => {
-  const { colors } = useChartTheme();
-  const dialKeys = Array(Object.keys(METADATA))[0];
-  return (
-    <Grid alignItems="stretch" container spacing={3}>
-      {data
-        ? data?.map((indicator, i) => (
-            <Grid key={indicator.name} item xs={12} md={3}>
-              <ChartWrapper
-                titleSize="small"
-                title={indicator.name}
-                info={indicator.info}
-              >
-                <ProgressIndicatorChart {...indicator} color={colors[i]} />
-                <Typography>
-                  Last reading taken at:
-                  <br />
-                  {indicator.dateUpdated}
-                  {/* Last reading taken at: {format(indicator.dateUpdated, DATE_FORMAT)} */}
-                </Typography>
-              </ChartWrapper>
-            </Grid>
-          ))
-        : dialKeys.map(num => (
-            <Grid
-              role="skeleton"
-              alignItems="center"
-              key={`skel_${num}`}
-              item
-              xs={12}
-              md={3}
-            >
-              <ChartWrapperSkeleton key={`skel_${num}`}>
-                <ProgressIndicatorSkeleton key={num} />
-              </ChartWrapperSkeleton>
-            </Grid>
-          ))}
     </Grid>
   );
 };

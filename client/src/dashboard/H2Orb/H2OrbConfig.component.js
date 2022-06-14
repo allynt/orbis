@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
+import { Grid, makeStyles } from '@astrosat/astrosat-ui';
+
 import { Text } from '@visx/text';
 import { useSelector } from 'react-redux';
 
 import apiClient from 'api-client';
+import { ChartWrapperSkeleton } from 'dashboard/charts/chart-wrapper.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 import {
   selectDataToken,
@@ -19,7 +22,16 @@ import {
   METADATA,
   START_DATE,
 } from './H2Orb.constants';
-import ProgressIndicators from './progress-indicators.component';
+import { ProgressIndicatorsSkeleton } from './progress-indicators-skeleton';
+import ProgressIndicators, {
+  ProgressIndicatorSkeleton,
+} from './progress-indicators.component';
+
+const useStyles = makeStyles(theme => ({
+  body: {
+    padding: theme.spacing(4),
+  },
+}));
 
 /**
  * Calculates a percentage based on a provided min and max
@@ -44,7 +56,13 @@ export const getPercentage = (min, max, value) => {
  *  units: string,
  * }} props
  */
-const renderCenterDisplay = ({ percentage, width, radius, value, units }) => (
+const renderCenterDisplay = ({
+  percentage,
+  width,
+  radius,
+  value,
+  units = '',
+}) => (
   <Text
     width={radius}
     textAnchor="middle"
@@ -61,12 +79,11 @@ const renderCenterDisplay = ({ percentage, width, radius, value, units }) => (
   </Text>
 );
 
-const transformData = data => {
-  const dateUpdated = data.data_received_time;
-  return Object.entries(data.payload.params).reduce((acc, [key, value]) => {
+const transformData = data =>
+  Object.entries(data.payload.params).reduce((acc, [key, value]) => {
     const { name, info, range, units } = METADATA[key];
     const percentage = getPercentage(range.min, range.max, value);
-    const data = [
+    const datum = [
       { x: 1, y: percentage ?? 0 },
       { x: 2, y: 100 - (percentage ?? 0) },
     ];
@@ -76,14 +93,13 @@ const transformData = data => {
       {
         name,
         info,
-        data,
-        dateUpdated,
+        data: datum,
+        dateUpdated: data.data_received_time,
         renderCenterDisplay: ({ width, radius }) =>
           renderCenterDisplay({ percentage, value, width, radius, units }),
       },
     ];
   }, []);
-};
 
 const H2OrbHeader = () => <h1>H2Orb Dashboard</h1>;
 
@@ -98,6 +114,7 @@ const H2OrbHeader = () => <h1>H2Orb Dashboard</h1>;
  * @param {{ sourceId: string }} props
  */
 const H2OrbDashboard = ({ sourceId }) => {
+  const styles = useStyles();
   const [progressIndicators, setProgressIndicators] = useState(null);
 
   const dataTokens = useSelector(selectDataToken);
@@ -113,7 +130,6 @@ const H2OrbDashboard = ({ sourceId }) => {
         source?.metadata?.application?.orbis?.dashboard_component
           ?.apiSourceId ?? API_SOURCE_ID;
       const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
-
       const authToken = getAuthTokenForSource(dataTokens, {
         source_id: apiSourceId,
       });
@@ -133,35 +149,20 @@ const H2OrbDashboard = ({ sourceId }) => {
     })();
   }, delay);
 
-  // console.log('PROGRESS INDICATOR DATA', progressIndicators);
-
-  // useEffect(() => {
-  //   const transformed = transformData({
-  //     application_name: 'AQUASENSE - AQUACULTURE',
-  //     client_id: '1151-1193-1217-1115',
-  //     data_received_time: '2022-05-25 16-32-20',
-  //     dev_eui: 'ea421ba0219bb8db',
-  //     gateway_name: 'aq_trial_ug_lkjp',
-  //     payload: {
-  //       $lati: 21.8553,
-  //       $long: 88.4258,
-  //       params: {
-  //         DO: 4.45,
-  //         EC: 790,
-  //         pH: 7.87,
-  //         temperature: 26.63,
-  //       },
-  //       timestamp: '345928983000',
-  //     },
-  //   });
-
-  //   console.log('TRANSFORMED: ', transformed);
-  //   setProgressIndicators(transformed);
-  // }, []);
-
   return (
-    <DashboardWrapper isTabs HeaderComponent={<H2OrbHeader />}>
-      <ProgressIndicators data={progressIndicators} />
+    <DashboardWrapper HeaderComponent={<H2OrbHeader />}>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        className={styles.body}
+      >
+        {!!progressIndicators ? (
+          <ProgressIndicators data={progressIndicators} />
+        ) : (
+          <ProgressIndicatorsSkeleton />
+        )}
+      </Grid>
     </DashboardWrapper>
   );
 };
