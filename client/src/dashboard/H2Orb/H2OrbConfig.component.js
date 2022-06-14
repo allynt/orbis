@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Grid, makeStyles } from '@astrosat/astrosat-ui';
+import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
 
 import { Text } from '@visx/text';
 import { useSelector } from 'react-redux';
@@ -14,6 +14,9 @@ import {
 import { useInterval } from 'hooks/useInterval';
 import { getAuthTokenForSource } from 'utils/tokens';
 
+import H2OrbProgressIndicators from './H2Orb-progress-indicators.component';
+import H2OrbSkeletons from './H2Orb-skeletons';
+import { getPercentage } from './H2Orb-utils/H2Orb-utils';
 import {
   API_SOURCE_ID,
   DEFAULT_DELAY,
@@ -21,28 +24,12 @@ import {
   METADATA,
   START_DATE,
 } from './H2Orb.constants';
-import { ProgressIndicatorsSkeleton } from './progress-indicators-skeleton';
-import ProgressIndicators from './progress-indicators.component';
 
 const useStyles = makeStyles(theme => ({
-  body: {
+  dashboard: {
     padding: theme.spacing(4),
   },
 }));
-
-/**
- * Calculates a percentage based on a provided min and max
- * range and a data value.
- *
- * @param {number} min
- * @param {number} max
- * @param {number} value
- * @returns {number}
- */
-export const getPercentage = (min, max, value) => {
-  const result = ((+value - min) / (max - min)) * 100;
-  return +result.toFixed(1);
-};
 
 /**
  * @param {{
@@ -98,7 +85,7 @@ const transformData = data =>
     ];
   }, []);
 
-const H2OrbHeader = () => <h1>H2Orb Dashboard</h1>;
+const H2OrbHeader = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
 
 /**
  * Dashboard for H2Orb
@@ -150,12 +137,12 @@ const H2OrbDashboard = ({ sourceId }) => {
         container
         direction="column"
         alignItems="center"
-        className={styles.body}
+        className={styles.dashboard}
       >
         {!!progressIndicators ? (
-          <ProgressIndicators data={progressIndicators} />
+          <H2OrbProgressIndicators data={progressIndicators} />
         ) : (
-          <ProgressIndicatorsSkeleton />
+          <H2OrbSkeletons />
         )}
       </Grid>
     </DashboardWrapper>

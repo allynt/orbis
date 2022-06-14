@@ -3,7 +3,7 @@ import { format, sub } from 'date-fns';
 export const DATE_FORMAT = 'dd-MM-yyyy';
 export const START_DATE = format(sub(new Date(), { months: 2 }), DATE_FORMAT);
 export const END_DATE = format(new Date(), DATE_FORMAT);
-export const API_SOURCE_ID = 'astrosat/h2orb/indicators/latest';
+export const API_SOURCE_ID = 'astrosat/h2orb/indicators/fallback';
 
 export const METADATA = {
   pH: {
