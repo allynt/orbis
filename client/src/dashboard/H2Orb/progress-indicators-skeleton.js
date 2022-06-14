@@ -18,7 +18,8 @@ export const ProgressIndicatorsSkeleton = () => {
           key={`skel_${num}`}
           item
           xs={12}
-          md={3}
+          md={6}
+          lg={3}
         >
           <ChartWrapperSkeleton key={`skel_${num}`}>
             <ProgressIndicatorSkeleton key={num} />

@@ -6,7 +6,6 @@ import { Text } from '@visx/text';
 import { useSelector } from 'react-redux';
 
 import apiClient from 'api-client';
-import { ChartWrapperSkeleton } from 'dashboard/charts/chart-wrapper.component';
 import DashboardWrapper from 'dashboard/shared-components/dashboard-wrapper.component';
 import {
   selectDataToken,
@@ -23,9 +22,7 @@ import {
   START_DATE,
 } from './H2Orb.constants';
 import { ProgressIndicatorsSkeleton } from './progress-indicators-skeleton';
-import ProgressIndicators, {
-  ProgressIndicatorSkeleton,
-} from './progress-indicators.component';
+import ProgressIndicators from './progress-indicators.component';
 
 const useStyles = makeStyles(theme => ({
   body: {
@@ -142,9 +139,7 @@ const H2OrbDashboard = ({ sourceId }) => {
       });
 
       const data = await response.json();
-
       const transformed = transformData(data[0]);
-
       setProgressIndicators(transformed);
     })();
   }, delay);
