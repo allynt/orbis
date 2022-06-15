@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { format } from 'date-fns';
+import { Grid, makeStyles, Typography } from '@astrosat/astrosat-ui';
+
+import { Text } from '@visx/text';
 import { useSelector } from 'react-redux';
 
 import apiClient from 'api-client';
@@ -12,13 +14,79 @@ import {
 import { useInterval } from 'hooks/useInterval';
 import { getAuthTokenForSource } from 'utils/tokens';
 
-const H2OrbHeader = () => <h1>H2Orb Title</h1>;
-const DATE_FORMAT = 'dd-MM-yyyy';
-const START_DATE = format(new Date('2022-05-25'), DATE_FORMAT);
-const END_DATE = format(new Date(), DATE_FORMAT);
-const API_SOURCE_ID = 'astrosat/h2orb/indicators/latest';
+import {
+  API_SOURCE_ID,
+  DEFAULT_DELAY,
+  END_DATE,
+  METADATA,
+  START_DATE,
+} from './h2orb.constants';
+import { getPercentage } from './h2orb.utils';
+import ProgressIndicators, {
+  ProgressIndicatorSkeletons,
+} from './progress-indicators.component';
 
-const DEFAULT_DELAY = 60000; // 1 minute
+const useStyles = makeStyles(theme => ({
+  dashboard: {
+    padding: theme.spacing(4),
+  },
+}));
+
+/**
+ * @param {{
+ *  percentage: number,
+ *  width: number,
+ *  radius: number,
+ *  value: number,
+ *  units: string,
+ * }} props
+ */
+const renderCenterDisplay = ({
+  percentage,
+  width,
+  radius,
+  value,
+  units = '',
+}) => (
+  <Text
+    width={radius}
+    textAnchor="middle"
+    verticalAnchor="end"
+    x={radius}
+    y={radius}
+    dy={10}
+    style={{
+      fill: '#fff',
+      fontSize: `${width / 250}rem`,
+    }}
+  >
+    {`${value} ${units}`}
+  </Text>
+);
+
+const transformData = data =>
+  Object.entries(data.payload.params).reduce((acc, [key, value]) => {
+    const { name, info, range, units } = METADATA[key];
+    const percentage = getPercentage(range.min, range.max, value);
+    const datum = [
+      { x: 1, y: percentage ?? 0 },
+      { x: 2, y: 100 - (percentage ?? 0) },
+    ];
+
+    return [
+      ...acc,
+      {
+        name,
+        info,
+        data: datum,
+        dateUpdated: data.data_received_time,
+        renderCenterDisplay: ({ width, radius }) =>
+          renderCenterDisplay({ percentage, value, width, radius, units }),
+      },
+    ];
+  }, []);
+
+const Header = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
 
 /**
  * Dashboard for H2Orb
@@ -31,6 +99,7 @@ const DEFAULT_DELAY = 60000; // 1 minute
  * @param {{ sourceId: string }} props
  */
 const H2OrbDashboard = ({ sourceId }) => {
+  const styles = useStyles();
   const [progressIndicators, setProgressIndicators] = useState(null);
 
   const dataTokens = useSelector(selectDataToken);
@@ -46,7 +115,6 @@ const H2OrbDashboard = ({ sourceId }) => {
         source?.metadata?.application?.orbis?.dashboard_component
           ?.apiSourceId ?? API_SOURCE_ID;
       const url = `${apiClient.apiHost}/api/proxy/data/${apiSourceId}/?startDate=${START_DATE}&endDate=${END_DATE}`;
-
       const authToken = getAuthTokenForSource(dataTokens, {
         source_id: apiSourceId,
       });
@@ -59,17 +127,27 @@ const H2OrbDashboard = ({ sourceId }) => {
       });
 
       const data = await response.json();
-      console.log('DATA: ', data);
-
-      setProgressIndicators(data[0]);
+      const transformed = transformData(data[0]);
+      setProgressIndicators(transformed);
     })();
   }, delay);
 
-  console.log('PROGRESS INDICATOR DATA', progressIndicators);
-
   return (
-    <DashboardWrapper isTabs HeaderComponent={<H2OrbHeader />}>
-      <h1>H2Orb Dashboard Content</h1>
+    <DashboardWrapper HeaderComponent={<Header />}>
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        className={styles.dashboard}
+      >
+        {!!progressIndicators ? (
+          <ProgressIndicators data={progressIndicators} />
+        ) : (
+          <Grid item container direction="column">
+            <ProgressIndicatorSkeletons />
+          </Grid>
+        )}
+      </Grid>
     </DashboardWrapper>
   );
 };

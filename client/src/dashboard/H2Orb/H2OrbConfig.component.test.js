@@ -19,11 +19,9 @@ const renderComponent = () => {
     },
   };
 
-  const component = render(
-    <H2OrbDashboard sourceId="astrosat/h2orb/dashboard/latest" />,
-    { state },
-  );
-  return { ...component };
+  render(<H2OrbDashboard sourceId="astrosat/h2orb/dashboard/latest" />, {
+    state,
+  });
 };
 
 describe('H2Orb Dashboard', () => {
@@ -42,7 +40,13 @@ describe('H2Orb Dashboard', () => {
     renderComponent();
 
     expect(
-      screen.getByRole('heading', { name: 'H2Orb Dashboard Content' }),
+      screen.getByRole('heading', { name: 'H2Orb Dashboard' }),
     ).toBeInTheDocument();
+  });
+
+  it('should render skeletons if no data present', () => {
+    renderComponent();
+
+    expect(screen.getAllByRole('skeleton')).toHaveLength(4);
   });
 });

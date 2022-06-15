@@ -197,6 +197,8 @@ const ProgressIndicators = ({ totalData, tenureData, targets }) => {
                       percentage,
                       radius,
                       width,
+                      value: percentage,
+                      units: '%',
                     })
                   }
                 />

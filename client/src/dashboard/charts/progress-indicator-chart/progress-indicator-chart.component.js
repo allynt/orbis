@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '@astrosat/astrosat-ui';
+import { makeStyles, Skeleton } from '@astrosat/astrosat-ui';
 
 import { ParentSize } from '@visx/responsive';
 import { VictoryAnimation, VictoryPie } from 'victory';
@@ -12,6 +12,12 @@ const useStyles = makeStyles(theme => ({
   },
   circle: {
     fill: theme.palette.background.default,
+  },
+  skeleton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: `${theme.spacing(2)} 0`,
   },
 }));
 
@@ -75,4 +81,13 @@ const ProgressIndicatorChart = ({ color, data, renderCenterDisplay }) => {
   );
 };
 
-export { ProgressIndicatorChart };
+const ProgressIndicatorChartSkeleton = () => {
+  const styles = useStyles();
+  return (
+    <div className={styles.skeleton}>
+      <Skeleton variant="circle" width="8rem" height="8rem" />
+    </div>
+  );
+};
+
+export { ProgressIndicatorChart, ProgressIndicatorChartSkeleton };
