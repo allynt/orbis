@@ -1,3 +1,10 @@
+## [2.40.1](https://github.com/astrosat/orbis/compare/v2.40.0...v2.40.1) (2022-06-15)
+
+
+### Bug Fixes
+
+* **frontend:** Fix the source ID to use ([4ca80ca](https://github.com/astrosat/orbis/commit/4ca80ca6a02f7bd5d03430389b86547a32ce47a6))
+
 # [2.40.0](https://github.com/astrosat/orbis/compare/v2.39.0...v2.40.0) (2022-06-15)
 
 
