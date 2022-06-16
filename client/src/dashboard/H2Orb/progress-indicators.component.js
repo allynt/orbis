@@ -15,11 +15,7 @@ import {
 } from 'dashboard/charts/progress-indicator-chart/progress-indicator-chart.component';
 import { useChartTheme } from 'dashboard/useChartTheme';
 
-import {
-  DATE_FORMAT_DISPLAY,
-  DATE_PARSE_API,
-  METADATA,
-} from './h2orb.constants';
+import { DATE_DISPLAY_FORMAT, API_DATE_FORMAT } from './h2orb.constants';
 
 const useStyles = makeStyles(theme => ({
   date: {
@@ -53,8 +49,8 @@ const ProgressIndicators = ({ data }) => {
               <Typography>
                 {/* {indicator.dateUpdated} */}
                 {format(
-                  parse(indicator.dateUpdated, DATE_PARSE_API, new Date()),
-                  DATE_FORMAT_DISPLAY,
+                  parse(indicator.dateUpdated, API_DATE_FORMAT, new Date()),
+                  DATE_DISPLAY_FORMAT,
                 )}
               </Typography>
             </div>
@@ -65,12 +61,13 @@ const ProgressIndicators = ({ data }) => {
   );
 };
 
-export const ProgressIndicatorSkeletons = () => {
+export const ProgressIndicatorSkeletons = ({ indicatorTypes }) => {
   const styles = useStyles();
   return (
     <Grid item container spacing={3}>
-      {Object.keys(METADATA).map(key => (
+      {Object.keys(indicatorTypes).map(key => (
         <Grid
+          container
           role="skeleton"
           alignItems="center"
           key={key}

@@ -18,7 +18,6 @@ import {
   API_SOURCE_ID,
   DEFAULT_DELAY,
   END_DATE,
-  METADATA,
   START_DATE,
 } from './h2orb.constants';
 import { getPercentage } from './h2orb.utils';
@@ -41,13 +40,7 @@ const useStyles = makeStyles(theme => ({
  *  units: string,
  * }} props
  */
-const renderCenterDisplay = ({
-  percentage,
-  width,
-  radius,
-  value,
-  units = '',
-}) => (
+const renderCenterDisplay = ({ width, radius, value, units = '' }) => (
   <Text
     width={radius}
     textAnchor="middle"
@@ -64,10 +57,21 @@ const renderCenterDisplay = ({
   </Text>
 );
 
-const transformData = data =>
-  Object.entries(data.payload.params).reduce((acc, [key, value]) => {
-    const { name, info, range, units } = METADATA[key];
+const transformData = (data, indicatorTypes) =>
+  Object.keys(indicatorTypes).reduce((acc, key) => {
+    const value = data?.payload[key];
+
+    if (!value && value !== 0) {
+      console.warn(
+        `Cannot find data for ${key}. This suggests that there is a new measurement, or a measurement has changed name. This gauge will not be shown until the measurement has been added to the data, or this indicator type has been removed from the metadata.`,
+      );
+
+      return acc;
+    }
+
+    const { name, info, range, units } = indicatorTypes[key];
     const percentage = getPercentage(range.min, range.max, value);
+
     const datum = [
       { x: 1, y: percentage ?? 0 },
       { x: 2, y: 100 - (percentage ?? 0) },
@@ -109,6 +113,9 @@ const H2OrbDashboard = ({ sourceId }) => {
     source?.metadata?.application?.orbis?.dashboard_component?.delay * 1000 ||
     DEFAULT_DELAY;
 
+  const indicatorTypes =
+    source?.metadata?.application?.orbis?.dashboard_component?.indicators;
+
   useInterval(() => {
     (async () => {
       const apiSourceId =
@@ -127,7 +134,7 @@ const H2OrbDashboard = ({ sourceId }) => {
       });
 
       const data = await response.json();
-      const transformed = transformData(data[0]);
+      const transformed = transformData(data[0], indicatorTypes);
       setProgressIndicators(transformed);
     })();
   }, delay);
@@ -144,7 +151,7 @@ const H2OrbDashboard = ({ sourceId }) => {
           <ProgressIndicators data={progressIndicators} />
         ) : (
           <Grid item container direction="column">
-            <ProgressIndicatorSkeletons />
+            <ProgressIndicatorSkeletons indicatorTypes={indicatorTypes} />
           </Grid>
         )}
       </Grid>
