@@ -66,7 +66,6 @@ const Aoi = ({
 
   const [saveAoiFormOpen, setSaveAoiFormOpen] = useState(false);
   const [aoi, setAoi] = useState(null);
-  const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
   const aois = useSelector(aoiListSelector);
   const isAoiVisible = useSelector(aoiSelector);
@@ -78,8 +77,6 @@ const Aoi = ({
   );
 
   const handleSuggestionClick = suggestion => {
-    setSelectedSuggestion(suggestion);
-
     const viewport = bottomDeckRef.current.deck;
     zoomToArea(viewport, viewState, setViewState, suggestion);
   };

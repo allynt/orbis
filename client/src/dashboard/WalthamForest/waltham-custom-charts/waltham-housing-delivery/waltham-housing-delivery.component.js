@@ -6,8 +6,6 @@ import {
   MenuItem,
   Typography,
   makeStyles,
-  ToggleButtonGroup,
-  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -138,7 +136,7 @@ export const WalthamHousingDelivery = ({
     totalYear: settings?.totalYear ?? undefined,
   });
 
-  const { tenureType, tenureDataType, tenureYear, totalYear } = configuration;
+  const { tenureType, tenureYear, totalYear } = configuration;
 
   /**
    * @param {object} newSettings

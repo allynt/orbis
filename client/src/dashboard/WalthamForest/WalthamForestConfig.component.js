@@ -30,7 +30,6 @@ import {
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
-import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -202,10 +201,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
       >
         <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
         <div className={styles.headerButtons}>
-          <Button size="small" onClick={handleExport}
-
-          >
-            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Export'}
+          <Button size="small" onClick={handleExport}>
+            {isLoading ? (
+              <CircularProgress size={20} color="inherit" />
+            ) : (
+              'Export'
+            )}
           </Button>
           <Button size="small" onClick={() => setTargetDialogVisible(true)}>
             Add Targets

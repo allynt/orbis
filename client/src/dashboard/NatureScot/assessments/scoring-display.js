@@ -72,6 +72,7 @@ const ScoringDisplay = ({ score, legend = false }) => {
       return (
         <TableCell align="center" className={colorScale[strengthIndex]}>
           {starArray.map((item, index) => (
+            // eslint-disable-next-line react/no-array-index-key
             <RemoveCircle key={index} />
           ))}
           <span>{legend ? legendString : null}</span>
