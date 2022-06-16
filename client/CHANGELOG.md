@@ -1,3 +1,16 @@
+# [2.41.0](https://github.com/astrosat/orbis/compare/v2.40.1...v2.41.0) (2022-06-16)
+
+
+### Bug Fixes
+
+* **frontend:** Get indicators to display from config ([726d7b4](https://github.com/astrosat/orbis/commit/726d7b400762508032f25ef1803df9eda8320853))
+
+
+### Features
+
+* **frontend:** Emergency fix ([e1febcf](https://github.com/astrosat/orbis/commit/e1febcfe595f785a00aa62407632058433a74b08))
+* **frontend:** Minor refactor ([4dfd936](https://github.com/astrosat/orbis/commit/4dfd93630c5ee90557ebcd3c755402949a06ecea))
+
 ## [2.40.1](https://github.com/astrosat/orbis/compare/v2.40.0...v2.40.1) (2022-06-15)
 
 
