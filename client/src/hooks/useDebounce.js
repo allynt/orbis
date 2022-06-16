@@ -11,6 +11,7 @@ import { debounce } from 'lodash';
  * @returns A debounced callback function that can be executed.
  */
 export const useDebounce = (callback, delay) =>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useCallback(
     debounce((...args) => callback(...args), delay),
     [delay],

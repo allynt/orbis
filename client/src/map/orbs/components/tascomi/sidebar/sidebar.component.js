@@ -84,6 +84,8 @@ export const SidebarComponent = ({
         },
       }),
     );
+    // Disabling line as it is causing a never ending re-render loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange, selectedLayer, dispatch]);
 
   const handleChange = filter => newFilterValue =>
