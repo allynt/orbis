@@ -68,8 +68,10 @@ const transformData = data => {
   return Object.entries(data.payload).reduce((acc, [key, value]) => {
     if (!METADATA[key]) {
       // guard clause for where a new, unrecognised measurement comes through
-      console.error(`Cannot find metaData for ${key}`);
-      return [...acc];
+      console.warn(
+        `Cannot find metaData for ${key}. This suggests that there is a new measurement, or a measurement has changed name. This guage will not be shown until the measurement has been added to the metadata.`,
+      );
+      return acc;
     }
     const { name, info, range, units } = METADATA[key];
     const percentage = getPercentage(range.min, range.max, value);
