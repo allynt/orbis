@@ -64,10 +64,16 @@ const renderCenterDisplay = ({
   </Text>
 );
 
-const transformData = data =>
-  Object.entries(data.payload.params).reduce((acc, [key, value]) => {
+const transformData = data => {
+  return Object.entries(data.payload).reduce((acc, [key, value]) => {
+    if (!METADATA[key]) {
+      // guard clause for where a new, unrecognised measurement comes through
+      console.error(`Cannot find metaData for ${key}`);
+      return [...acc];
+    }
     const { name, info, range, units } = METADATA[key];
     const percentage = getPercentage(range.min, range.max, value);
+
     const datum = [
       { x: 1, y: percentage ?? 0 },
       { x: 2, y: 100 - (percentage ?? 0) },
@@ -85,6 +91,7 @@ const transformData = data =>
       },
     ];
   }, []);
+};
 
 const Header = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
 

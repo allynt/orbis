@@ -35,7 +35,16 @@ export const METADATA = {
       max: 800,
     },
   },
-  DO: {
+  // DO: {
+  //   name: 'Dissolved Oxygen',
+  //   info: 'Dissolved Oxygen Info',
+  //   units: '%',
+  //   range: {
+  //     min: 0,
+  //     max: 100,
+  //   },
+  // },
+  DO_mg_L: {
     name: 'Dissolved Oxygen',
     info: 'Dissolved Oxygen Info',
     units: 'mg/L',
