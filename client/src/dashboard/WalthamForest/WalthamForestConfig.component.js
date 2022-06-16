@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 
 import {
   makeStyles,
@@ -116,8 +116,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
   /**
    * @param {object} data
    */
-  const updateWalthamOrbState = data =>
-    dispatch(updateUserDashboardConfig({ user, sourceId, data }));
+  const updateWalthamOrbState = useCallback(
+    data => dispatch(updateUserDashboardConfig({ user, sourceId, data })),
+    [dispatch, sourceId, user],
+  );
 
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url, apiSourceId }) =>
@@ -128,7 +130,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   // 1. listener func must be reusable so that it can also be removed
   // 2. must check changes have been made to prevent firing every time
-  const saveSettingsHandler = () => {
+  const saveSettingsHandler = useCallback(() => {
     const changesMade = Object.values(dashboardSettingsRef.current).some(
       obj => !!Object.keys(obj).length,
     );
@@ -136,7 +138,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
     return changesMade
       ? updateWalthamOrbState(dashboardSettingsRef.current)
       : null;
-  };
+  }, [updateWalthamOrbState]);
 
   // update dashboardSettingsRef to be used in saving dashboard settings every
   // time dashboardSettings is updated
@@ -155,7 +157,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
       window.removeEventListener('beforeunload', saveSettingsHandler);
       saveSettingsHandler();
     };
-  }, []);
+  }, [saveSettingsHandler]);
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
