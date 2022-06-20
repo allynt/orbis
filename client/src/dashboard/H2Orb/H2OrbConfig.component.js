@@ -59,17 +59,27 @@ const renderCenterDisplay = ({ width, radius, value, units = '' }) => (
 
 const transformData = (data, indicatorTypes) => {
   // Reshape the data into a format that the ProgressIndicators component can use.
-  // Ensure the data is just an number
-  const dissolvedOxygen = +data?.payload?.DO_mg_L.split(' ')[0];
-
-  const transformed = {
+  let transformed = {
     ...data,
     payload: {
-      ...data.payload,
-      ...data?.payload?.params,
-      DO_mg_L: dissolvedOxygen,
+      ...(data?.payload ?? {}),
+      ...(data?.payload?.params ?? {}),
     },
   };
+
+  // Ensure the data value is just an number, not a string.
+  Object.keys(indicatorTypes).forEach(type => {
+    const indicatorValue = transformed.payload[type];
+
+    if (indicatorValue && indicatorValue !== 0) {
+      // check if value is a number
+      if (typeof indicatorValue === 'string') {
+        transformed.payload[type] = +indicatorValue.split(' ')[0];
+      } else {
+        transformed.payload[type] = indicatorValue;
+      }
+    }
+  });
 
   return Object.keys(indicatorTypes).reduce((acc, key) => {
     const value = transformed?.payload[key];
