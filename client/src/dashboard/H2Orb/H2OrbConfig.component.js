@@ -57,9 +57,18 @@ const renderCenterDisplay = ({ width, radius, value, units = '' }) => (
   </Text>
 );
 
-const transformData = (data, indicatorTypes) =>
-  Object.keys(indicatorTypes).reduce((acc, key) => {
-    const value = data?.payload[key];
+const transformData = (data, indicatorTypes) => {
+  // Reshape the data into a format that the ProgressIndicators component can use.
+  const transformed = {
+    ...data,
+    payload: {
+      ...data.payload,
+      ...data?.payload?.params,
+    },
+  };
+
+  return Object.keys(indicatorTypes).reduce((acc, key) => {
+    const value = transformed?.payload[key];
 
     if (!value && value !== 0) {
       console.warn(
@@ -83,12 +92,13 @@ const transformData = (data, indicatorTypes) =>
         name,
         info,
         data: datum,
-        dateUpdated: data.data_received_time,
+        dateUpdated: transformed.data_received_time,
         renderCenterDisplay: ({ width, radius }) =>
           renderCenterDisplay({ percentage, value, width, radius, units }),
       },
     ];
   }, []);
+};
 
 const Header = () => <Typography variant="h2">H2Orb Dashboard</Typography>;
 
