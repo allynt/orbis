@@ -1,3 +1,12 @@
+## [2.41.1](https://github.com/astrosat/orbis/compare/v2.41.0...v2.41.1) (2022-06-21)
+
+
+### Bug Fixes
+
+* **frontend:** Extract Dissolved Oxygen value ([7a8eab2](https://github.com/astrosat/orbis/commit/7a8eab21582b9c8f0fb6a5749fbc45af6969b2a7))
+* **frontend:** Fix data shape change for H2Orb ([39550a7](https://github.com/astrosat/orbis/commit/39550a7e4ccaedc5bdb187600be9982f2be0de58))
+* **frontend:** Improve quality of checks ([9273b24](https://github.com/astrosat/orbis/commit/9273b249feb935dceb7d988b39e48664ca76fbde))
+
 # [2.41.0](https://github.com/astrosat/orbis/compare/v2.40.1...v2.41.0) (2022-06-16)
 
 
