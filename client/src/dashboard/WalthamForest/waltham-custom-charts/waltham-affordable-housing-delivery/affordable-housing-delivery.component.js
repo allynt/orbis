@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { Grid, Typography } from '@astrosat/astrosat-ui';
 
@@ -105,17 +105,20 @@ const AffordableHousingDelivery = ({
   /**
    * @param {object} newSettings
    */
-  const updateDateFilter = newSettings => {
-    setConfiguration(prev => ({
-      ...prev,
-      ...newSettings,
-    }));
+  const updateDateFilter = useCallback(
+    newSettings => {
+      setConfiguration(prev => ({
+        ...prev,
+        ...newSettings,
+      }));
 
-    setDashboardSettings(prev => ({
-      ...prev,
-      settings: { ...prev.settings, ...newSettings },
-    }));
-  };
+      setDashboardSettings(prev => ({
+        ...prev,
+        settings: { ...prev.settings, ...newSettings },
+      }));
+    },
+    [setDashboardSettings],
+  );
 
   // setup/error catch for affordable housing chart
   useEffect(() => {
@@ -126,7 +129,7 @@ const AffordableHousingDelivery = ({
         affordableHousingTotalYear: timeline[timeline.length - 1],
       });
     }
-  }, [affordableHousingTotalYear, timeline]);
+  }, [affordableHousingTotalYear, timeline, updateDateFilter]);
 
   const AffordableHousingLineChart = ({ width }) => {
     if (!data) return null;

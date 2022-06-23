@@ -22,7 +22,12 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {import('@material-ui/core').TextFieldProps} props
  */
-export const TextField = ({ className, InputLabelProps, value = '', ...rest }) => {
+export const TextField = ({
+  className,
+  InputLabelProps,
+  value = '',
+  ...rest
+}) => {
   const styles = useStyles();
 
   return (

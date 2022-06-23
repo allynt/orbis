@@ -1,5 +1,6 @@
 import { color } from 'd3-color';
 import { scaleOrdinal, scaleSequential } from 'd3-scale';
+/*eslint import/namespace: ['error', { allowComputed: true }]*/
 import * as chromatic from 'd3-scale-chromatic';
 
 /** @typedef {'hex' | 'rgb' | 'array'} ColorFormat */
@@ -81,6 +82,7 @@ export class ColorScale {
 
   set color(color) {
     this.#color = color;
+
     if (typeof color === 'string') {
       if (this.isDiscrete()) {
         const schemeKey = Object.keys(chromatic).find(

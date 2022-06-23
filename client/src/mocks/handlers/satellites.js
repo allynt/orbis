@@ -5,7 +5,7 @@ import {
   satelliteScenes,
   savedSatelliteSearches,
   saveSatelliteSearch,
-  pinnedScenes,
+  // pinnedScenes,
 } from 'mocks/fixtures/satellites';
 
 const URL_PATH = '*/api/satellites/';

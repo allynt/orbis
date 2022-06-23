@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 
 import {
   Grid,
@@ -6,8 +6,6 @@ import {
   MenuItem,
   Typography,
   makeStyles,
-  ToggleButtonGroup,
-  ToggleButton,
 } from '@astrosat/astrosat-ui';
 
 import { ChartWrapper } from 'dashboard/charts/chart-wrapper.component';
@@ -138,22 +136,25 @@ export const WalthamHousingDelivery = ({
     totalYear: settings?.totalYear ?? undefined,
   });
 
-  const { tenureType, tenureDataType, tenureYear, totalYear } = configuration;
+  const { tenureType, tenureYear, totalYear } = configuration;
 
   /**
    * @param {object} newSettings
    */
-  const updateDateFilter = newSettings => {
-    setConfiguration(prev => ({
-      ...prev,
-      ...newSettings,
-    }));
+  const updateDateFilter = useCallback(
+    newSettings => {
+      setConfiguration(prev => ({
+        ...prev,
+        ...newSettings,
+      }));
 
-    setDashboardSettings(prev => ({
-      ...prev,
-      settings: { ...prev.settings, ...newSettings },
-    }));
-  };
+      setDashboardSettings(prev => ({
+        ...prev,
+        settings: { ...prev.settings, ...newSettings },
+      }));
+    },
+    [setDashboardSettings],
+  );
 
   /**
    * @param {string} value
@@ -216,7 +217,7 @@ export const WalthamHousingDelivery = ({
     } else {
       updateDateFilter({ totalYear: totalTimeline[totalTimeline.length - 1] });
     }
-  }, [totalYear, totalTimeline]);
+  }, [totalYear, totalTimeline, updateDateFilter]);
 
   // setup/error catch for tenure chart
   useEffect(() => {
@@ -227,7 +228,7 @@ export const WalthamHousingDelivery = ({
         tenureYear: tenureTimeline[tenureTimeline.length - 1],
       });
     }
-  }, [tenureYear, tenureTimeline]);
+  }, [tenureYear, tenureTimeline, updateDateFilter]);
 
   return (
     <Grid container direction="column" className={styles.container}>

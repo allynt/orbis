@@ -5,6 +5,7 @@ import {
   LightingEffect,
   _SunLight as SunLight,
 } from '@deck.gl/core';
+// eslint-disable-next-line import/no-named-as-default
 import DeckGL from '@deck.gl/react';
 import ReactMapGl from 'react-map-gl';
 

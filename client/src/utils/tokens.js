@@ -16,6 +16,8 @@ export const getAuthTokenForSource = (tokens, source) => {
     if (re.test(source.source_id)) {
       return key;
     }
+
+    return false;
   });
 
   return tokens[authToken];

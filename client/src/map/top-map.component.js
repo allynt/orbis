@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 
 import { styled } from '@astrosat/astrosat-ui';
 
+// eslint-disable-next-line import/no-named-as-default
 import DeckGL from '@deck.gl/react';
 import ReactMapGl, {
   ScaleControl as ReactMapGlScaleControl,

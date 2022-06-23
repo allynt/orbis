@@ -19,10 +19,12 @@ const CategoryHeader = styled(Typography)(({ theme }) => ({
  */
 export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
   <>
-    {selectedLayers?.map((selectedLayer, i) => {
-      if (selectedLayer.category)
+    {selectedLayers?.map(selectedLayer => {
+      if (selectedLayer.category) {
         return (
-          <React.Fragment key={`${selectedLayer.category}-${i}`}>
+          <React.Fragment
+            key={`${selectedLayer.category}-${selectedLayer.sources[0].source_id}`}
+          >
             <CategoryHeader>{selectedLayer.category}</CategoryHeader>
             <LayersList
               dispatch={dispatch}
@@ -31,6 +33,7 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => (
             />
           </React.Fragment>
         );
+      }
 
       const Component = sidebarComponents?.[selectedLayer.source_id];
       return (

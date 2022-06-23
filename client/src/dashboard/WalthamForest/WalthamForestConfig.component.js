@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 
 import {
   makeStyles,
@@ -30,7 +30,6 @@ import {
   TargetScreen,
 } from './target-dialog-screens/target-dialog-screens';
 import { AffordableHousingDelivery } from './waltham-custom-charts/waltham-affordable-housing-delivery/affordable-housing-delivery.component';
-import DeliverableSupplySummary from './waltham-custom-charts/waltham-deliverable-supply-summary/deliverable-supply-summary.component';
 import { HousingApprovalsComponent } from './waltham-custom-charts/waltham-housing-approvals/housing-approvals.component';
 import { WalthamHousingDelivery } from './waltham-custom-charts/waltham-housing-delivery/waltham-housing-delivery.component';
 import { ProgressIndicators } from './waltham-custom-charts/waltham-progress-indicators/progress-indicators.component';
@@ -117,8 +116,10 @@ const WalthamForestDashboard = ({ sourceId }) => {
   /**
    * @param {object} data
    */
-  const updateWalthamOrbState = data =>
-    dispatch(updateUserDashboardConfig({ user, sourceId, data }));
+  const updateWalthamOrbState = useCallback(
+    data => dispatch(updateUserDashboardConfig({ user, sourceId, data })),
+    [dispatch, sourceId, user],
+  );
 
   useEffect(() => {
     walthamApiMetadata.forEach(({ datasetName, url, apiSourceId }) =>
@@ -129,7 +130,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
 
   // 1. listener func must be reusable so that it can also be removed
   // 2. must check changes have been made to prevent firing every time
-  const saveSettingsHandler = () => {
+  const saveSettingsHandler = useCallback(() => {
     const changesMade = Object.values(dashboardSettingsRef.current).some(
       obj => !!Object.keys(obj).length,
     );
@@ -137,7 +138,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
     return changesMade
       ? updateWalthamOrbState(dashboardSettingsRef.current)
       : null;
-  };
+  }, [updateWalthamOrbState]);
 
   // update dashboardSettingsRef to be used in saving dashboard settings every
   // time dashboardSettings is updated
@@ -156,7 +157,7 @@ const WalthamForestDashboard = ({ sourceId }) => {
       window.removeEventListener('beforeunload', saveSettingsHandler);
       saveSettingsHandler();
     };
-  }, []);
+  }, [saveSettingsHandler]);
 
   const closeDialog = () => {
     setSelectedDataset(undefined);
@@ -202,10 +203,12 @@ const WalthamForestDashboard = ({ sourceId }) => {
       >
         <Typography variant="h2">LBWF Housing Delivery Dashboard</Typography>
         <div className={styles.headerButtons}>
-          <Button size="small" onClick={handleExport}
-
-          >
-            {isLoading ? <CircularProgress size={20} color="inherit" /> : 'Export'}
+          <Button size="small" onClick={handleExport}>
+            {isLoading ? (
+              <CircularProgress size={20} color="inherit" />
+            ) : (
+              'Export'
+            )}
           </Button>
           <Button size="small" onClick={() => setTargetDialogVisible(true)}>
             Add Targets

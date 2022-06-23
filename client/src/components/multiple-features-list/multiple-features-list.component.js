@@ -66,7 +66,7 @@ export const MultipleFeaturesList = ({
             classes={{ divider: styles.divider }}
             alignItems="center"
             divider={i < features.length - 1}
-            key={`feature-${i}`}
+            key={JSON.stringify(feature.properties)}
           >
             {!!primaryProperty ? (
               <Grid item xs>

@@ -60,6 +60,7 @@ const AssessmentResults = ({
 }) => {
   const styles = useStyles();
 
+  // eslint-disable-next-line no-unused-vars
   const [selectedAssessments, setSelectedAssessments] = useState([]);
   const [saveProposalFormOpen, setSaveProposalFormOpen] = useState(false);
 

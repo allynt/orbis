@@ -172,7 +172,14 @@ export const useToolbarItems = ({ dispatch }) => {
         },
       ),
     ],
-    [dispatch, hasSatellitesFeatureAccess, userHasUserRole],
+    [
+      dispatch,
+      hasSatellitesFeatureAccess,
+      userHasUserRole,
+      location,
+      navigate,
+      reduxDispatch,
+    ],
   );
 
   return items.sort((item1, item2) => item1.order - item2.order);
