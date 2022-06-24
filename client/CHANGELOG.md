@@ -1,3 +1,14 @@
+## [2.41.2](https://github.com/astrosat/orbis/compare/v2.41.1...v2.41.2) (2022-06-24)
+
+
+### Bug Fixes
+
+* **frontend:** Disable save/update button if no data ([89cc78a](https://github.com/astrosat/orbis/commit/89cc78a51576eca034d4109f3d2a567a46cfc094))
+* **frontend:** Fix warnings displayed for client code ([143047c](https://github.com/astrosat/orbis/commit/143047cbf0338c43cce3377c1d6dac2540295952))
+* **frontend:** PR review fixes ([ff351f8](https://github.com/astrosat/orbis/commit/ff351f85189368e66a7e3c88a80bc448135cf712))
+* **frontend:** Update hooks for Waltham Forest ([f9642fa](https://github.com/astrosat/orbis/commit/f9642faa60c190743af0d27dc03e5e493db702cb))
+* **frontend:** Update other hook dependencies ([c8bb94c](https://github.com/astrosat/orbis/commit/c8bb94c85e7cd2219e580b0a8366bf50bcb5c00d))
+
 ## [2.41.1](https://github.com/astrosat/orbis/compare/v2.41.0...v2.41.1) (2022-06-21)
 
 
