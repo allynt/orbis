@@ -18,6 +18,7 @@ import { Sliders } from './sliders.component';
  *  onRangeFilterChange: (value: [number, number]) => void
  *  clipRange?: [number, number]
  *  onClipRangeChange: (value: [number, number]) => void
+ *  tickDuration?: number
  * }} props
  */
 export const SelectedPropertyControls = ({
@@ -28,6 +29,7 @@ export const SelectedPropertyControls = ({
   onRangeFilterChange,
   clipRange,
   onClipRangeChange,
+  tickDuration,
 }) => (
   <>
     {selectedProperty.timeseries &&
@@ -58,6 +60,7 @@ export const SelectedPropertyControls = ({
           ).getTime()}
           onChange={onDateChange}
           value={selectedTimestamp}
+          tickDuration={tickDuration}
         />
       </Grid>
     ) : null}

@@ -56,6 +56,7 @@ const ValueLabelComponent = props => {
  *  onChange: (event: React.ChangeEvent<{}>, date: number) => void
  *  min?: number
  *  max?: number
+ *  tickDuration?: number
  * }} props
  */
 export const DateStepper = ({
@@ -65,6 +66,7 @@ export const DateStepper = ({
   onChange,
   min,
   max,
+  tickDuration = 1300,
 }) => {
   const styles = useStyles();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -75,7 +77,7 @@ export const DateStepper = ({
         dates[findIndex(dates, { value }) + 1]?.value || dates[0].value;
       const timeout = setTimeout(() => {
         onChange(undefined, next);
-      }, 1300);
+      }, tickDuration);
       return () => clearTimeout(timeout);
     }
   }, [value, isPlaying, onChange, dates]);

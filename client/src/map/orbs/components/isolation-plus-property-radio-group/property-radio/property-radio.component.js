@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
  *   categoryPath: string
  *   clipRange?: [number, number]
  *   onClipRangeChange: (value: [number, number]) => void
+ *   tickDuration?: number
  * }} props
  */
 const PropertyRadio = ({
@@ -44,6 +45,7 @@ const PropertyRadio = ({
   onClipRangeChange,
   selectedProperty,
   categoryPath,
+  tickDuration,
 }) => {
   const styles = useStyles();
   const selectedPropertyIsInGroup =
@@ -98,6 +100,7 @@ const PropertyRadio = ({
             onDateChange={onDateChange}
             clipRange={clipRange}
             onClipRangeChange={onClipRangeChange}
+            tickDuration={tickDuration}
           />
         </>
       )}

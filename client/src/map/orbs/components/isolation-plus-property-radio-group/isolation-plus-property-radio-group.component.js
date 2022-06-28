@@ -21,11 +21,13 @@ import PropertyRadio from './property-radio/property-radio.component';
  * @param {{
  *   selectedLayer: import('typings').Source
  *   dispatch: import('redux').Dispatch
+ *   tickDuration?: number
  * }} props
  */
 export const IsolationPlusPropertyRadioGroup = ({
   selectedLayer,
   dispatch,
+  tickDuration,
 }) => {
   const other = useSelector(state =>
     otherSelector(SHARED_STATE_KEY)(state?.orbs),
@@ -117,6 +119,7 @@ export const IsolationPlusPropertyRadioGroup = ({
           selectedTimestamp={selectedTimestamp}
           clipRange={clipRange}
           onClipRangeChange={handleClipRangeChange}
+          tickDuration={tickDuration}
         />
       ))}
     </>

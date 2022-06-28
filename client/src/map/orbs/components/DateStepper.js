@@ -13,6 +13,7 @@ import { DateStepper } from './date-stepper/date-stepper.component';
  *  min?: string
  *  max?: string
  *  stateKey?: string
+ *  tickDuration?: number
  * }>}
  * */
 const Stepper = ({
@@ -22,6 +23,7 @@ const Stepper = ({
   stateKey = selectedLayer.source_id,
   min,
   max,
+  tickDuration,
 }) => {
   const dispatch = useDispatch();
   const dates = datesProp.map(dateString => {
@@ -37,6 +39,7 @@ const Stepper = ({
       min={min ? new Date(min).getTime() : minBy(dates, 'value').value}
       max={max ? new Date(max).getTime() : maxBy(dates, 'value').value}
       value={other?.date}
+      tickDuration={tickDuration}
       onChange={(_, date) =>
         dispatch(
           setOther({
