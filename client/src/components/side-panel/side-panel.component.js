@@ -4,7 +4,7 @@ import { makeStyles, useTheme, Slide } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 
-const WIDTH = '20rem',
+const WIDTH = '22rem',
   BORDER_RADIUS = '1rem',
   WIDTH_NEGATIVE = `-${WIDTH}`,
   BORDER_RADIUS_NEGATIVE = `-${BORDER_RADIUS}`;
