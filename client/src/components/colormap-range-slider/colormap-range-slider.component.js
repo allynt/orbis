@@ -31,6 +31,7 @@ import { ColorScale } from 'utils/ColorScale';
 const useStyles = makeStyles(
   ({ palette, spacing, typography: { pxToRem } }) => ({
     root: {
+      width: '99%',
       height: pxToRem(42),
       paddingTop: spacing(2),
       paddingBottom: spacing(2),
