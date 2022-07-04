@@ -169,9 +169,6 @@ const Map = ({
     ],
   );
 
-  const topMapIsController =
-    drawingToolsEnabled || isDrawingSatelliteAoi || isDrawingAoi;
-
   const transformRequest = url => transformOSDataRequests(url, mapStyles);
 
   return (
@@ -201,7 +198,6 @@ const Map = ({
       <BottomMap
         deckRef={bottomDeckRef}
         mapRef={bottomMapRef}
-        controller={!topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
         layers={[
@@ -219,7 +215,6 @@ const Map = ({
         mapStyle={selectedMapStyle?.topMapStyle}
         mapRef={topMapRef}
         deckRef={topDeckRef}
-        controller={topMapIsController}
         viewState={viewState}
         onViewStateChange={handleViewStateChange}
         getCursor={getTopMapCursor}
