@@ -44,7 +44,7 @@ export const BottomMap = React.memo(
   ({
     deckRef,
     mapRef,
-    controller = true,
+    controller,
     viewState,
     onViewStateChange,
     layers = [],

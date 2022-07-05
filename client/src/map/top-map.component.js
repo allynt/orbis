@@ -44,7 +44,7 @@ export const TopMap = React.memo(
     mapStyle,
     mapRef,
     deckRef,
-    controller = true,
+    controller,
     viewState,
     onViewStateChange,
     getCursor,
