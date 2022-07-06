@@ -1,3 +1,18 @@
+# [2.42.0](https://github.com/astrosat/orbis/compare/v2.41.2...v2.42.0) (2022-07-06)
+
+
+### Bug Fixes
+
+* **frontend:** Increase sidebar width ([f208154](https://github.com/astrosat/orbis/commit/f2081547ced3a382ada9e9797ca43939e226dd80))
+* **frontend:** Make it so only one info section is visible at a time ([97aa703](https://github.com/astrosat/orbis/commit/97aa7035514e122c42455e85a0797c86374e038e))
+* **frontend:** Make tick duration configurable ([498ea4d](https://github.com/astrosat/orbis/commit/498ea4db867e135c2bd860195522b643fdd17b81))
+* **frontend:** Reduce width of the Color Map ([a1a0a95](https://github.com/astrosat/orbis/commit/a1a0a9593234c97abb964857679340f5775f2c87))
+
+
+### Features
+
+* **frontend:** Add a config to manage Timeseries Tiled Raster data ([c02f5d8](https://github.com/astrosat/orbis/commit/c02f5d849a3fbf5932cf77ec9b6f8f7674dfde17))
+
 ## [2.41.2](https://github.com/astrosat/orbis/compare/v2.41.1...v2.41.2) (2022-06-24)
 
 
