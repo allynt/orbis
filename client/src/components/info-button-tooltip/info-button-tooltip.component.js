@@ -51,7 +51,6 @@ export const InfoButtonTooltip = ({
    * @param {React.MouseEvent<HTMLButtonElement, MouseEvent>} e
    */
   const handleIconClick = e => {
-    e.stopPropagation();
     setIsInfoVisible(c => !c);
   };
 
