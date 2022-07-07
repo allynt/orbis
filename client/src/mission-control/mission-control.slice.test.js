@@ -1,9 +1,10 @@
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import { setUser } from 'accounts/accounts.slice';
 import { fetchSources } from 'data-layers/data-layers.slice';
+import { server } from 'mocks/server';
 
 import { USER_STATUS } from './mission-control.constants';
 import reducer, {
@@ -40,22 +41,19 @@ import reducer, {
 
 const mockStore = configureMockStore([thunk]);
 
-fetch.enableMocks();
-
 describe('Mission Control Slice', () => {
   describe('Actions', () => {
     let store = null;
 
     beforeEach(() => {
-      fetch.resetMocks();
-
       store = mockStore({
         accounts: { userKey: 'Test-User-Key', user: {} },
         missionControl: {
           isMissionControlDialogVisible: false,
           currentCustomer: {
+            id: 1,
             name: 'test-customer',
-            licences: [{ id: '1', orb: 'Rice' }],
+            licences: [{ id: 1, orb: 'Rice' }],
           },
           customerUsers: [],
         },
@@ -65,27 +63,23 @@ describe('Mission Control Slice', () => {
     describe('updateCustomer', () => {
       it('should dispatch update customer failure action.', async () => {
         const customer = {
+          id: 1,
           name: 'test_customer',
         };
 
-        fetch.mockResponse(
-          JSON.stringify({
-            errors: {
-              name: ['Test error message']
-            }
+        server.use(
+          rest.put(`*/api/customers/${customer.id}`, (req, res, ctx) => {
+            return res(
+              ctx.status(401),
+              ctx.json({ errors: { name: ['Test error message'] } }),
+            );
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
-
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
             type: updateCustomer.rejected.type,
-            payload: { message: '401 Test Error' },
+            payload: { message: '401 Unauthorized' },
           }),
         ]);
 
@@ -94,20 +88,28 @@ describe('Mission Control Slice', () => {
       });
 
       it('should dispatch update customer success action.', async () => {
-        const updatedCustomer = {
+        const customer = {
+          id: 1,
           name: 'test_customer',
         };
 
-        fetch.mockResponse(JSON.stringify(updatedCustomer));
+        server.use(
+          rest.get(`*/api/customers/${customer.id}/users/`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(customer));
+          }),
+          rest.put(`*/api/customers/${customer.id}`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(customer));
+          }),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
             type: 'missionControl/updateCustomerSuccess',
-            payload: { name: 'test_customer' },
+            payload: customer,
           }),
         ]);
 
-        await store.dispatch(updateCustomer(updatedCustomer));
+        await store.dispatch(updateCustomer(customer));
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
@@ -115,24 +117,23 @@ describe('Mission Control Slice', () => {
     describe('fetchCustomerUsers', () => {
       it('should dispatch fetch users failure action.', async () => {
         const customer = {
+          id: 1,
           name: 'test_customer',
         };
 
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
+        server.use(
+          rest.get(`*/api/customers/${customer.id}/users/`, (req, res, ctx) => {
+            return res(
+              ctx.status(401),
+              ctx.json({ errors: { name: ['Test error message'] } }),
+            );
           }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
         );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
             type: fetchCustomerUsers.rejected.type,
-            payload: { message: '401 Test Error' },
+            payload: { message: '401 Unauthorized' },
           }),
         ]);
 
@@ -142,6 +143,7 @@ describe('Mission Control Slice', () => {
 
       it('should dispatch fetch users success action.', async () => {
         const customer = {
+          id: 1,
           name: 'test_customer',
         };
 
@@ -154,7 +156,11 @@ describe('Mission Control Slice', () => {
           },
         ];
 
-        fetch.mockResponse(JSON.stringify(users));
+        server.use(
+          rest.get(`*/api/customers/${customer.id}/users/`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(users));
+          }),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
@@ -174,15 +180,24 @@ describe('Mission Control Slice', () => {
     describe('createCustomerUser', () => {
       describe('should dispatch create user failure action.', () => {
         it('on create user failure', async () => {
-          fetch.mockResponse(
-            JSON.stringify({
-              message: 'Test error message',
+          const customer = {
+            id: 1,
+            name: 'test_customer',
+          };
+          const url = `*/api/customers/${customer.id}/users/`;
+          server.use(
+            rest.post(url, (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
+            rest.get(url, (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
+            }),
           );
 
           const expectedActions = expect.arrayContaining([
@@ -191,7 +206,7 @@ describe('Mission Control Slice', () => {
             }),
             expect.objectContaining({
               type: createCustomerUser.rejected.type,
-              payload: { message: '401 Test Error' },
+              payload: { message: '401 Unauthorized' },
             }),
           ]);
 
@@ -204,16 +219,34 @@ describe('Mission Control Slice', () => {
         });
 
         it('on fetch customer failure', async () => {
-          fetch.once(JSON.stringify({ name: 'User' }));
-          fetch.once(
-            JSON.stringify({
-              message: 'Test error message',
+          const customer = {
+            id: 1,
+            name: 'test_customer',
+            customers: [{ id: 1, name: 'test_customer' }],
+          };
+
+          server.use(
+            rest.post(
+              `*/api/customers/${customer.id}/users/`,
+              (req, res, ctx) => {
+                return res(ctx.status(200), ctx.json({ name: 'User' }));
+              },
+            ),
+            rest.get(`*/api/customers/${customer.id}`, (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
             }),
-            {
-              ok: false,
-              status: 401,
-              statusText: 'Test Error',
-            },
+            rest.get(
+              `*/api/customers/${customer.id}/users/`,
+              (req, res, ctx) => {
+                return res(
+                  ctx.status(401),
+                  ctx.json({ errors: { name: ['Test error message'] } }),
+                );
+              },
+            ),
           );
 
           const expectedActions = expect.arrayContaining([
@@ -222,7 +255,7 @@ describe('Mission Control Slice', () => {
             }),
             expect.objectContaining({
               type: createCustomerUser.rejected.type,
-              payload: { message: '401 Test Error' },
+              payload: { message: '401 Unauthorized' },
             }),
           ]);
 
@@ -241,10 +274,26 @@ describe('Mission Control Slice', () => {
           licences: [],
         };
         const customer = {
+          id: 1,
           name: 'test-customer',
         };
 
-        fetch.once(JSON.stringify(user)).once(JSON.stringify(customer));
+        const customerUsersUrl = `*/api/customers/${customer.id}/users/`;
+        const customerUrl = `*/api/customers/${customer.id}`;
+        server.use(
+          rest.post(customerUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(user));
+          }),
+          rest.get(customerUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(customer));
+          }),
+          rest.post(customerUsersUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(user));
+          }),
+          rest.get(customerUsersUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(customer));
+          }),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
@@ -262,6 +311,7 @@ describe('Mission Control Slice', () => {
           accounts: { userKey: 'Test-User-Key' },
           missionControl: {
             currentCustomer: {
+              id: 2,
               name: 'test-customer',
               licences: [
                 { id: '1', orb: 'Rice' },
@@ -278,7 +328,7 @@ describe('Mission Control Slice', () => {
           licences: ['Rice', 'Oil'],
         };
         const expectedCustomerUser = {
-          id: '2',
+          id: 2,
           status: 'PENDING',
           type: 'MEMBER',
           licences: ['1', '3'],
@@ -287,7 +337,24 @@ describe('Mission Control Slice', () => {
             email: 'test.user@test.com',
           },
         };
-        fetch.mockResponse(JSON.stringify(expectedCustomerUser));
+
+        const customerUsersUrl = `*/api/customers/${expectedCustomerUser.id}/users/`;
+        const customerUrl = `*/api/customers/${expectedCustomerUser.id}`;
+        server.use(
+          rest.post(customerUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(expectedCustomerUser));
+          }),
+          rest.get(customerUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(expectedCustomerUser));
+          }),
+          rest.post(customerUsersUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(expectedCustomerUser));
+          }),
+          rest.get(customerUsersUrl, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(expectedCustomerUser));
+          }),
+        );
+
         const response = await store.dispatch(createCustomerUser(request));
         expect(response.payload.payload.user).toEqual(expectedCustomerUser); //@TODO reshaped data!
       });
@@ -296,11 +363,12 @@ describe('Mission Control Slice', () => {
     describe('updateCustomerUser', () => {
       it('should dispatch update user failure action.', async () => {
         const customer = {
+          id: 1,
           name: 'test_customer',
         };
 
         const user = {
-          id: '1',
+          id: 1,
           name: 'Test User',
           email: 'test.user@test.com',
         };
@@ -321,15 +389,16 @@ describe('Mission Control Slice', () => {
           },
         };
 
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
-          }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
+        server.use(
+          rest.put(
+            `*/api/customers/${customer.id}/users/${user.id}/`,
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
+            },
+          ),
         );
 
         const expectedActions = expect.arrayContaining([
@@ -338,7 +407,7 @@ describe('Mission Control Slice', () => {
           }),
           expect.objectContaining({
             type: updateCustomerUserFailure.type,
-            payload: { message: '401 Test Error' },
+            payload: { message: '401 Unauthorized' },
           }),
         ]);
 
@@ -349,11 +418,12 @@ describe('Mission Control Slice', () => {
 
       it('should dispatch update user success action.', async () => {
         const updatedCustomer = {
+          id: 1,
           name: 'test_customer',
         };
 
         const updatedCustomerUser = {
-          id: '1',
+          id: 1,
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
@@ -364,9 +434,17 @@ describe('Mission Control Slice', () => {
           },
         };
 
-        fetch
-          .once(JSON.stringify(updatedCustomerUser))
-          .once(JSON.stringify(updatedCustomer));
+        server.use(
+          rest.put(
+            `*/api/customers/${updatedCustomer.id}/users/${updatedCustomerUser.id}/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(updatedCustomerUser));
+            },
+          ),
+          rest.get(`*/api/customers/${updatedCustomer.id}`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(updatedCustomer));
+          }),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
@@ -387,29 +465,41 @@ describe('Mission Control Slice', () => {
 
       it("Should update the current user if it's the current user being updated", async () => {
         store = mockStore({
-          accounts: { userKey: '123', user: { id: '1', name: 'Something' } },
+          accounts: { userKey: '123', user: { id: 1, name: 'Something' } },
           missionControl: {
             isMissionControlDialogVisible: false,
             currentCustomer: {
+              id: 1,
               name: 'test-customer',
-              licences: [{ id: '1', orb: 'Rice' }],
+              licences: [{ id: 1, orb: 'Rice' }],
             },
             customerUsers: [],
           },
         });
 
         const updatedCustomerUser = {
-          user: { id: '1', name: 'Test Name' },
-          licences: [{ id: '1' }],
+          user: { id: 1, name: 'Test Name' },
+          licences: [{ id: 1 }],
         };
         const updatedCustomer = {
+          id: 1,
           name: 'test_customer',
         };
 
-        fetch
-          .once(JSON.stringify(updatedCustomerUser))
-          .once(JSON.stringify(updatedCustomer))
-          .once(JSON.stringify(updatedCustomerUser.user));
+        server.use(
+          rest.put(
+            `*/api/customers/${updatedCustomer.id}/users/${updatedCustomerUser.user.id}/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(updatedCustomerUser));
+            },
+          ),
+          rest.get(`*/api/customers/${updatedCustomer.id}`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(updatedCustomer));
+          }),
+          rest.get(`*/api/users/current`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(updatedCustomerUser.user));
+          }),
+        );
 
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
         expect(store.getActions()).toContainEqual(
@@ -425,35 +515,44 @@ describe('Mission Control Slice', () => {
           data: {},
           accounts: {
             userKey: '123',
-            user: { id: '1', name: 'Something', orbs: [{ name: 'Rice' }] },
+            user: { id: 1, name: 'Something', orbs: [{ name: 'Rice' }] },
           },
           missionControl: {
             currentCustomer: {
+              id: 1,
               name: 'test-customer',
-              licences: [{ id: '1', orb: 'Rice' }],
+              licences: [{ id: 1, orb: 'Rice' }],
             },
             customerUsers: [],
           },
         });
 
         const updatedCustomerUser = {
-          user: { id: '1', name: 'Test Name' },
-          licences: [{ id: '1' }, { id: '2' }],
+          user: { id: 1, name: 'Test Name' },
+          licences: [{ id: 1 }, { id: '2' }],
         };
         const updatedCustomer = {
+          id: 1,
           name: 'test_customer',
         };
 
-        fetch
-          .once(JSON.stringify(updatedCustomerUser))
-          .once(JSON.stringify(updatedCustomer))
-          .once(
-            JSON.stringify({
-              ...updatedCustomerUser.user,
-              orbs: [{ name: 'Forest' }],
-            }),
-          )
-          .once(JSON.stringify([]));
+        server.use(
+          rest.put(
+            `*/api/customers/${updatedCustomer.id}/users/${updatedCustomerUser.user.id}/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(updatedCustomerUser));
+            },
+          ),
+          rest.get(`*/api/customers/${updatedCustomer.id}`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(updatedCustomer));
+          }),
+          rest.get(`*/api/users/current`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(updatedCustomerUser.user));
+          }),
+          rest.get(`*/api/data/sources`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json({}));
+          }),
+        );
 
         await store.dispatch(updateCustomerUser(updatedCustomerUser));
         expect(store.getActions()).toContainEqual(
@@ -467,26 +566,27 @@ describe('Mission Control Slice', () => {
     describe('inviteCustomerUser', () => {
       it('should dispatch invite customer user failure action', async () => {
         const customerUser = {
-          id: '1',
+          id: 1,
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
           user: {
-            id: '1',
+            id: 1,
             name: 'Test User',
             email: 'test.user@test.com',
           },
         };
 
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
-          }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
+        server.use(
+          rest.post(
+            `*/api/customers/${customerUser.id}/users/${customerUser.user.id}/invite/`,
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
+            },
+          ),
         );
 
         const expectedActions = expect.arrayContaining([
@@ -495,7 +595,7 @@ describe('Mission Control Slice', () => {
           }),
           expect.objectContaining({
             type: inviteCustomerUserFailure.type,
-            payload: { message: '401 Test Error' },
+            payload: { message: '401 Unauthorized' },
           }),
         ]);
 
@@ -505,18 +605,31 @@ describe('Mission Control Slice', () => {
 
       it('should dispatch invite customer user success action', async () => {
         const invitedCustomerUser = {
-          id: '1',
+          id: 1,
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
           user: {
-            id: '1',
+            id: 1,
             name: 'Test User',
             email: 'test.user@test.com',
           },
         };
 
-        fetch.once(JSON.stringify(invitedCustomerUser));
+        server.use(
+          rest.post(
+            `*/api/customers/${invitedCustomerUser.id}/users/${invitedCustomerUser.user.id}/invite/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(invitedCustomerUser));
+            },
+          ),
+          rest.get(
+            `*/api/customers/${invitedCustomerUser.id}/users/${invitedCustomerUser.user.id}/invite/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(invitedCustomerUser));
+            },
+          ),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({
@@ -539,26 +652,27 @@ describe('Mission Control Slice', () => {
     describe('deleteCustomerUser', () => {
       it('should dispatch delete user failure action.', async () => {
         const customerUser = {
-          id: '1',
+          id: 1,
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
           user: {
-            id: '1',
+            id: 1,
             name: 'Test User',
             email: 'test.user@test.com',
           },
         };
 
-        fetch.mockResponse(
-          JSON.stringify({
-            message: 'Test error message',
-          }),
-          {
-            ok: false,
-            status: 401,
-            statusText: 'Test Error',
-          },
+        server.use(
+          rest.delete(
+            `*/api/customers/${customerUser.id}/users/${customerUser.user.id}/`,
+            (req, res, ctx) => {
+              return res(
+                ctx.status(401),
+                ctx.json({ errors: { name: ['Test error message'] } }),
+              );
+            },
+          ),
         );
 
         const expectedActions = expect.arrayContaining([
@@ -567,7 +681,7 @@ describe('Mission Control Slice', () => {
           }),
           expect.objectContaining({
             type: deleteCustomerUserFailure.type,
-            payload: { message: '401 Test Error' },
+            payload: { message: '401 Unauthorized' },
           }),
         ]);
 
@@ -581,21 +695,30 @@ describe('Mission Control Slice', () => {
         };
 
         const user = {
-          id: '1',
+          id: 1,
           name: 'Test User',
           email: 'test.user@test.com',
         };
 
         const customerUser = {
-          id: '1',
+          id: 1,
           status: 'PENDING',
           type: 'MEMBER',
           licences: [],
           user: user,
         };
 
-        fetch.once(JSON.stringify(user));
-        fetch.once(JSON.stringify(customer));
+        server.use(
+          rest.delete(
+            `*/api/customers/${customerUser.id}/users/${user.id}/`,
+            (req, res, ctx) => {
+              return res(ctx.status(200), ctx.json(user));
+            },
+          ),
+          rest.get(`*/api/customers/${customerUser.id}`, (req, res, ctx) => {
+            return res(ctx.status(200), ctx.json(customer));
+          }),
+        );
 
         const expectedActions = expect.arrayContaining([
           expect.objectContaining({

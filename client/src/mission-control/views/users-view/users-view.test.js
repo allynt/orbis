@@ -1,7 +1,8 @@
 import React from 'react';
 
-import fetch from 'jest-fetch-mock';
+import { rest } from 'msw';
 
+import { server } from 'mocks/server';
 import { render, waitFor, screen, userEvent } from 'test/test-utils';
 
 import UsersView from './users-view.component';
@@ -12,21 +13,18 @@ const setup = () =>
       accounts: { userKey: '123abc' },
       missionControl: {
         currentCustomer: {
-          id: '0',
+          id: 1,
           name: 'test-customer',
           title: 'Test Customer',
-          licences: [{ id: '1', orb: 'Rice' }],
+          licences: [{ id: 1, orb: 'Rice' }],
         },
         customerUsers: [],
       },
     },
   });
 
-fetch.enableMocks();
-
 describe('Users View', () => {
   beforeEach(() => {
-    fetch.resetMocks();
     setup();
   });
 
@@ -45,7 +43,12 @@ describe('Users View', () => {
   });
 
   it('Closes the Create User Dialog when the form is successfully submitted', async () => {
-    fetch.mockResponse(JSON.stringify({}));
+    server.use(
+      rest.post(`*/api/customers/1/users/`, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    );
+
     userEvent.click(screen.getByText('Create User'));
     userEvent.type(screen.getByLabelText('Email'), 'hello@test.com');
     userEvent.click(screen.getAllByText('Create User')[1]);
