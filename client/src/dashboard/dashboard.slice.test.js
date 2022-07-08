@@ -1,8 +1,4 @@
-import fetch from 'jest-fetch-mock';
-
 import reducer, { setChartData, chartDataSelector } from './dashboard.slice';
-
-fetch.enableMocks();
 
 describe('Dashboard Slice', () => {
   describe('reducer', () => {
