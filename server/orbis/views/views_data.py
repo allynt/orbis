@@ -203,7 +203,7 @@ class DataSourceView(APIView):
                 )
             data_sources += response.json()["results"]
 
-        # find all orbs that this user has a licence to...
+        # find all active orbs that this user has a licence to...
         orbs = Orb.objects.filter(
             is_active=True,
             licences__customer_user__in=user.customer_users.values_list(

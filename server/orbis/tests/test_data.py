@@ -10,7 +10,7 @@ from rest_framework.test import APIClient
 from astrosat.tests.utils import *
 from astrosat_users.tests.utils import *
 
-from orbis.utils import chunk_data_scopes, generate_data_token, validate_data_token
+from orbis.utils import chunk_data_scopes, generate_data_scopes, generate_data_token, validate_data_token
 
 from .factories import *
 from .utils import *
@@ -389,3 +389,43 @@ class TestDataSourceView:
 
         with django_assert_num_queries(N_QUERIES):
             client.get(url, {}, format="json")
+
+
+@pytest.mark.django_db
+class TestGenerateDataScopes:
+    def test_exclude_inactive_orbs(self, user, mock_storage):
+        """
+        Tests that a licence to an inactive orb will be ignored when generating data_scopes
+        """
+
+        N_SOURCES = 2
+
+        data_scopes = [
+            DataScopeFactory(
+                authority="authority",
+                namespace="namespace",
+                name=str(i),
+                version="*"
+            ) for i in range(N_SOURCES)
+        ]
+        orbs = [
+            OrbFactory(data_scopes=[data_scope]) for data_scope in data_scopes
+        ]
+
+        customer = CustomerFactory(logo=None)
+        customer.add_user(user, status="ACTIVE")
+        for orb in orbs:
+            customer.assign_licences(orb, customer.customer_users.all())
+
+        test_read_data_scopes = generate_data_scopes(user)["read"]
+
+        assert data_scopes[0].source_id_pattern in test_read_data_scopes
+        assert data_scopes[1].source_id_pattern in test_read_data_scopes
+
+        orbs[0].is_active = False
+        orbs[0].save()
+
+        test_read_data_scopes = generate_data_scopes(user)["read"]
+
+        assert data_scopes[0].source_id_pattern not in test_read_data_scopes
+        assert data_scopes[1].source_id_pattern in test_read_data_scopes
