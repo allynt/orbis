@@ -46,7 +46,8 @@ def generate_data_scopes(user):
 
     # TODO: RESTRICT customer_user BY customer
     licences = Licence.objects.filter(
-        id__in=user.customer_users.values("licences")
+        id__in=user.customer_users.values("licences"),
+        orb__is_active=True,
     ).select_related("orb")
 
     restricted_data_scopes = {
