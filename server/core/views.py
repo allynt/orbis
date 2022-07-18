@@ -43,6 +43,7 @@ class AppConfigView(APIView):
                     ("order", openapi.Schema(type=openapi.TYPE_INTEGER)),
                 ))
             )),
+            ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
         ))
     )
 
@@ -66,7 +67,8 @@ class AppConfigView(APIView):
             "commitSha": settings.COMMIT_SHA,
             "dataIndexUrl": settings.DATA_INDEX_URL,
             "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
-            "geometrySet": {type.name: type.order for type in GeometrySet.objects.all()}
+            "geometrySet": {type.name: type.order for type in GeometrySet.objects.all()},
+            "dataIndexUrl": settings.DATA_INDEX_URL,
         }
 
         return Response(config)
