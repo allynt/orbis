@@ -9,6 +9,7 @@ class MapStyleAdmin(admin.ModelAdmin):
         "name",
         "style",
         "thumbnail",
+        "is_default",
     )
     list_display = ("name", )
     search_fields = ("name", )
