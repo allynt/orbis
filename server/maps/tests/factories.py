@@ -12,7 +12,7 @@ from astrosat.tests.providers import GeometryProvider, PrettyLoremProvider
 from astrosat.tests.utils import optional_declaration
 from astrosat_users.tests.factories import UserFactory
 
-from maps.models import Aoi, Bookmark
+from maps.models import Aoi, Bookmark, MapStyle
 
 fake = Faker()
 
@@ -82,3 +82,10 @@ class AoiFactory(factory.django.DjangoModelFactory):
             content=b"I am a fake image",  # Fake binary content.
             content_type="image/png"
         )
+
+class MapStyleFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = MapStyle
+
+    name = FactoryFaker("pretty_sentence", nb_words=3)
+    is_default = FactoryFaker("boolean")
