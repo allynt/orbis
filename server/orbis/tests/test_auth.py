@@ -10,10 +10,10 @@ from rest_framework.test import APIClient
 
 from astrosat.tests.utils import *
 
-from astrosat_users.models import UserSettings
+from astrosat_users.models import UserSettings, Customer
 from astrosat_users.tests.utils import *
 
-from orbis.models import Licence, LicencedCustomer
+from orbis.models import Licence
 
 from .factories import *
 
@@ -126,8 +126,8 @@ class TestOrbisRegistration:
     ):
         # tests that adding a new customer, also assigns default mapstyles
         # to the customer.
-        map_styles = [MapStyleFactory() for _ in range(3)]
-        default_map_styles = [map_style for map_style in map_styles if map_style.is_default]
+        map_style = MapStyleFactory(is_default=False)
+        default_map_styles = [MapStyleFactory(is_default=True) for _ in range(3)]
 
         client = APIClient()
         url = reverse("rest_register")
@@ -142,8 +142,9 @@ class TestOrbisRegistration:
         response = client.post(url, test_data)
         assert status.is_success(response.status_code)
 
-        customer = LicencedCustomer.objects.get(name=test_data["customer_name"])
-        assert len(customer.map_styles.all()) == len(default_map_styles)
+        customer = Customer.objects.get(name=test_data["customer_name"])
+        assert map_style not in customer.map_styles.all()
+        assert set(default_map_styles) == set(customer.map_styles.all())
 
 
 @pytest.mark.django_db

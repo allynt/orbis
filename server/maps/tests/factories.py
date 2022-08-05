@@ -89,3 +89,19 @@ class MapStyleFactory(factory.django.DjangoModelFactory):
 
     name = FactoryFaker("pretty_sentence", nb_words=3)
     is_default = FactoryFaker("boolean")
+
+    @factory.lazy_attribute
+    def style(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}_style",
+            content=b"I am a mapstyle",  # Fake content.
+            content_type="application/json"
+        )
+
+    @factory.lazy_attribute
+    def thumbnail(self):
+        return SimpleUploadedFile(
+            name=f"{self.name}_thumbnail",
+            content=b"I am a fake image",  # Fake content.
+            content_type="image/png"
+        )
