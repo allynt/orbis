@@ -21,6 +21,8 @@ from astrosat_users.models.models_users import UserRegistrationStageType
 
 from orbis.models import Document, LicencedCustomer, Orb
 
+from maps.models import MapStyle
+
 from core.admin import core_admin_site
 
 PRIVACY_DOCUMENT_NAME = "general_privacy"
@@ -394,6 +396,10 @@ class AuthCustomerUserAdmin(
                         msgs.append(
                             (f"created customer: {customer}", messages.SUCCESS)
                         )
+
+                        # Add MapStyle instances to Customer.
+                        map_styles = MapStyle.objects.filter(is_default=True)
+                        customer.map_styles.add(*map_styles)
 
                         # create the user...
                         user = user_form.save(commit=False)
