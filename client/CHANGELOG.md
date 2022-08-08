@@ -1,3 +1,10 @@
+## [2.42.2](https://github.com/astrosat/orbis/compare/v2.42.1...v2.42.2) (2022-08-08)
+
+
+### Bug Fixes
+
+* **backend:** Add mapstyles to customer ([a36f33c](https://github.com/astrosat/orbis/commit/a36f33cb15b7f6708a5a46d7c666ed423ac420b8))
+
 ## [2.42.1](https://github.com/astrosat/orbis/compare/v2.42.0...v2.42.1) (2022-08-08)
 
 
