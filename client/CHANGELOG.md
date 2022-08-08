@@ -1,3 +1,15 @@
+## [2.42.1](https://github.com/astrosat/orbis/compare/v2.42.0...v2.42.1) (2022-08-08)
+
+
+### Bug Fixes
+
+* **backend:** ignore data scopes from licences to inactive orbs ([c14a34d](https://github.com/astrosat/orbis/commit/c14a34dd8127a8ad73e9024bd414d8f93f75647d))
+* **frontend:** Add data index server URl to app config ([45019a5](https://github.com/astrosat/orbis/commit/45019a5ebed3824a66acfe03c5183685ab0ea1b3))
+* **frontend:** Assign default MapStyles to new Customers ([45acd52](https://github.com/astrosat/orbis/commit/45acd521f7a838b0eccfe9a59e36b37bbf17f524))
+* **frontend:** Improve quality of test ([f58ba3f](https://github.com/astrosat/orbis/commit/f58ba3f29e131061ad4884efe6a8b8512d375ecf))
+* **frontend:** Replace jest fetch mocking with alternatives ([81019b3](https://github.com/astrosat/orbis/commit/81019b3edbbbf1871461e8e287a13ed59d8d5645))
+* **frontend:** Test default MapStyles added when customer created ([11d99a3](https://github.com/astrosat/orbis/commit/11d99a3fd0a6770bd7327c92a2f46b9ebd4e350b))
+
 # [2.42.0](https://github.com/astrosat/orbis/compare/v2.41.2...v2.42.0) (2022-07-06)
 
 
