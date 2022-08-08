@@ -6,7 +6,7 @@ from astrosat_users.serializers import (
 )
 
 from orbis.models import LicencedCustomer, Orb, Document
-
+from maps.models import MapStyle
 
 class ValidateDocumentsExistMixin():
     """
@@ -73,6 +73,10 @@ class RegisterSerializer(
                     add_missing=True,
                     ignore_existing=False
                 )
+
+            # Add MapStyle instances to Customer.
+            map_styles = MapStyle.objects.filter(is_default=True)
+            licenced_customer.map_styles.add(*map_styles)
 
 
 class LoginSerializer(

@@ -44,6 +44,11 @@ class MapStyle(models.Model):
         help_text="The customer that uses this map style.",
     )
 
+    is_default = models.BooleanField(
+        default=False,
+        help_text="Whether this is the default map style.",
+    )
+
     def __str__(self):
         return self.name
 

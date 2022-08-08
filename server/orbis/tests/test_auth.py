@@ -1,3 +1,4 @@
+from maps.tests.factories import MapStyleFactory
 import pytest
 
 from django.contrib.auth import get_user_model
@@ -9,7 +10,7 @@ from rest_framework.test import APIClient
 
 from astrosat.tests.utils import *
 
-from astrosat_users.models import UserSettings
+from astrosat_users.models import UserSettings, Customer
 from astrosat_users.tests.utils import *
 
 from orbis.models import Licence
@@ -119,6 +120,31 @@ class TestOrbisRegistration:
             "Cannot find active Terms and Privacy Document"
         ]
         assert UserModel.objects.count() == 0
+
+    def test_registration_adds_default_mapstyles_to_customer(
+        self, user_data, mock_storage
+    ):
+        # tests that adding a new customer, also assigns default mapstyles
+        # to the customer.
+        map_style = MapStyleFactory(is_default=False)
+        default_map_styles = [MapStyleFactory(is_default=True) for _ in range(3)]
+
+        client = APIClient()
+        url = reverse("rest_register")
+
+        test_data = {
+            "email": user_data["email"],
+            "customer_name": "Weyland-Yutani",
+            "password1": user_data["password"],
+            "password2": user_data["password"],
+        }
+
+        response = client.post(url, test_data)
+        assert status.is_success(response.status_code)
+
+        customer = Customer.objects.get(name=test_data["customer_name"])
+        assert map_style not in customer.map_styles.all()
+        assert set(default_map_styles) == set(customer.map_styles.all())
 
 
 @pytest.mark.django_db
