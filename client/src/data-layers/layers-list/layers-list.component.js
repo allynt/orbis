@@ -129,14 +129,16 @@ export const LayersList = ({ dispatch, selectedLayers, sidebarComponents }) => {
           >
             {Component && (
               <React.Suspense fallback={<div>Loading...</div>}>
-                <ButtonBox>
-                  <ZoomButton
-                    size="small"
-                    onClick={() => onClick(selectedLayer)}
-                  >
-                    Zoom to Area
-                  </ZoomButton>
-                </ButtonBox>
+                {selectedLayer.metadata.bounds ? (
+                  <ButtonBox>
+                    <ZoomButton
+                      size="small"
+                      onClick={() => onClick(selectedLayer)}
+                    >
+                      Zoom to Area
+                    </ZoomButton>
+                  </ButtonBox>
+                ) : null}
                 {typeof Component === 'function' ? (
                   <Component
                     selectedLayer={selectedLayer}
