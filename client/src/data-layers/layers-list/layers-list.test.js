@@ -1,14 +1,13 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, userEvent } from 'test/test-utils';
 
 import { LayersList } from './layers-list.component';
 
 describe('<LayersList />', () => {
   it('displays an item for each selected layer', () => {
     const layerNames = ['Layer 1', 'Layer 2'];
-    const { getByText } = render(
+    render(
       <LayersList
         selectedLayers={layerNames.map((layerName, i) => ({
           source_id: `layer-${i}`,
@@ -17,7 +16,7 @@ describe('<LayersList />', () => {
       />,
     );
     layerNames.forEach(layerName =>
-      expect(getByText(layerName)).toBeInTheDocument(),
+      expect(screen.getByText(layerName)).toBeInTheDocument(),
     );
   });
 
@@ -32,13 +31,11 @@ describe('<LayersList />', () => {
         sources: [{ source_id: '456', metadata: { label: 'Hospitals' } }],
       },
     ];
-    const { getByText } = render(
-      <LayersList selectedLayers={selectedLayers} />,
-    );
+    render(<LayersList selectedLayers={selectedLayers} />);
     selectedLayers.forEach(layer => {
-      expect(getByText(layer.category)).toBeInTheDocument();
+      expect(screen.getByText(layer.category)).toBeInTheDocument();
       layer.sources.forEach(source =>
-        expect(getByText(source.metadata.label)).toBeInTheDocument(),
+        expect(screen.getByText(source.metadata.label)).toBeInTheDocument(),
       );
     });
   });
@@ -50,13 +47,13 @@ describe('<LayersList />', () => {
     const selectedLayers = [
       { source_id: 'test/layer/1', metadata: { label: 'Layer 1' } },
     ];
-    const { getByRole, getByText } = render(
+    render(
       <LayersList
         selectedLayers={selectedLayers}
         sidebarComponents={sidebarComponents}
       />,
     );
-    userEvent.click(getByRole('button', { name: /Layer 1/i }));
-    expect(getByText("I'm the component")).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: /Layer 1/i }));
+    expect(screen.getByText("I'm the component")).toBeInTheDocument();
   });
 });
