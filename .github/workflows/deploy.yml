@@ -26,6 +26,7 @@ jobs:
 
       - name: Deploy the app
         run: |
+          git config --local url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
@@ -81,6 +82,7 @@ jobs:
 
       - name: Deploy the app
         run: |
+          git config --local url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
@@ -136,6 +138,7 @@ jobs:
 
       - name: Deploy the app
         run: |
+          git config --local url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
@@ -191,6 +194,7 @@ jobs:
 
       - name: Deploy the app
         run: |
+          git config --local url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
