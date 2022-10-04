@@ -26,7 +26,9 @@ jobs:
 
       - name: Deploy the app
         run: |
-          git config --local url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
+          GITHUB_TOKEN_BASE64="$(echo -n ":${{ github.token }}" | openssl base64 | tr -d '\n')"
+          git config --local http."https://github.com/astrosat".extraheader="Authorization: Basic $GITHUB_TOKEN_BASE64"
+          
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
