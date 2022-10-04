@@ -25,6 +25,7 @@ import {
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
+import FilterLayerView from './filter-layer-view.component';
 
 const useStyles = makeStyles(theme => ({
   tab: { minWidth: '72px' },
@@ -85,6 +86,11 @@ const DataLayersToolbar = ({
             value={Panels.AOI}
           />
         )}
+        <Tab
+          className={styles.tab}
+          icon={<LayersIcon titleAccess="Cross-filtering" />}
+          value={Panels.FILTERING}
+        />
       </Tabs>
 
       <div className={styles.container}>
@@ -107,6 +113,15 @@ const DataLayersToolbar = ({
             selectAoi={aoi => dispatch(selectAoi(aoi))}
             editAoiDetails={aoi => dispatch(updateAoi(aoi))}
             deleteAoi={aoi => dispatch(deleteAoi(aoi))}
+          />
+        )}
+        {visiblePanel === Panels.FILTERING && (
+          <FilterLayerView
+            sidebarComponents={sidebarComponents}
+            activeCategorisedSources={activeCategorisedSources}
+            drawingToolsEnabled={drawingToolsEnabled}
+            isVisible={isVisible}
+            toggle={toggle}
           />
         )}
       </div>

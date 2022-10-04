@@ -306,6 +306,26 @@ export const dataSourcesSelector = createSelector(
   state => state?.sources ?? [],
 );
 
+export const crossFilterDataSourcesSelector = createSelector(
+  dataSourcesSelector,
+  dataSources => {
+    const filterableDataSources = dataSources
+      .filter(source => source.metadata.application.orbis.crossfiltering)
+      .map(source => {
+        const filterableProperties = source.metadata.properties.filter(
+          property => property.application.orbis.crossfiltering,
+        );
+
+        return {
+          ...source,
+          properties: filterableProperties,
+        };
+      });
+
+    return filterableDataSources ?? [];
+  },
+);
+
 export const dashboardSourcesSelector = createSelector(
   dataSourcesSelector,
   state =>
