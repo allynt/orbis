@@ -84,15 +84,17 @@ jobs:
 
       - name: Deploy the app
         run: |
+          git config --global --unset-all "url.*.insteadof" "https://github.com/astrosat"
+          git config --global url."https://${{ github.token }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
+
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
           ./scripts/deploy.sh "${ENVIRONMENT}" "${TAG}"
+
+          git config --global --unset-all "url.*.insteadof" "https://github.com/astrosat"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.ASTROSAT_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.ASTROSAT_AWS_SECRET_ACCESS_KEY }}
-          GIT_CONFIG_COUNT: 1
-          GIT_CONFIG_KEY_1: "url.https://${{ github.token }}@github.com/astrosat.insteadOf"
-          GIT_CONFIG_VALUE_1: "https://github.com/astrosat"
 
       - name: Set the Deployment Status on Success
         if: success()
