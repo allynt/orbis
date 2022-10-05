@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   LayersIcon,
+  FilterIcon,
   makeStyles,
   AoiIcon,
   Tab,
@@ -90,7 +91,7 @@ const DataLayersToolbar = ({
         )}
         <Tab
           className={styles.tab}
-          icon={<LayersIcon titleAccess="Cross-filtering" />}
+          icon={<FilterIcon titleAccess="Cross-filtering" />}
           value={Panels.FILTERING}
         />
       </Tabs>
