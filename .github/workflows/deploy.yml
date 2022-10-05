@@ -85,7 +85,7 @@ jobs:
       - name: Deploy the app
         run: |
           git config --global --list --name-only | grep 'github.com/astrosat.insteadof' | xargs -I'{}' git config --global --unset '{}'
-          git config --global url."https://company-jenkins-ci:${{ secrets.ASTROSAT_APP_DEPLOY_TOKEN }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
+          git config --global url."https://company-jenkins-ci:${{ secrets.ASTROSAT_GITHUB_TF_TOKEN }}@github.com/astrosat".insteadOf "https://github.com/astrosat"
 
           ENVIRONMENT="${{ github.event.deployment.environment }}"
           TAG="${GITHUB_SHA:0:7}"
