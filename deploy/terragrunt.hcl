@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "git@github.com:astrosat/application-deployment-components.git//terraform/components/application-deploy?ref=v1.1.4"
+  source = "git::https://github.com/astrosat/application-deployment-components.git//terraform/components/application-deploy?ref=v1.1.4"
 }
 
 remote_state {
