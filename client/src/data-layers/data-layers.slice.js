@@ -15,6 +15,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
 /**
  * @typedef DataState
  * @property {import('typings').Source['source_id'][]} layers
+ * @property {boolean} isCrossFilteringMode
  * @property {number} pollingPeriod
  * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
@@ -28,6 +29,7 @@ const name = 'data';
 /** @type {DataState} */
 const initialState = {
   layers: [],
+  isCrossFilteringMode: false,
   pollingPeriod: 30000,
   tokens: null,
   sources: null,
@@ -227,6 +229,8 @@ const dataSlice = createSlice({
 
       state.layers = layers;
     },
+    setIsCrossFilteringMode: (state, { payload }) =>
+      (state.isCrossFilteringMode = payload),
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
@@ -289,7 +293,12 @@ const dataSlice = createSlice({
   },
 });
 
-export const { reset, updateLayers, addSource } = dataSlice.actions;
+export const {
+  reset,
+  updateLayers,
+  addSource,
+  setIsCrossFilteringMode,
+} = dataSlice.actions;
 
 /**
  * @param {import('typings').RootState} state

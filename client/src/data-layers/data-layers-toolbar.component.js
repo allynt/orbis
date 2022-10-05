@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   LayersIcon,
@@ -26,6 +26,9 @@ import {
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
+import {
+  setIsCrossFilteringMode,
+} from './data-layers.slice';
 import FilterLayerView from './filter-layer-view.component';
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +71,12 @@ const DataLayersToolbar = ({
     useState(false);
 
   const onDrawAoiClick = () => dispatch(startDrawingAoi());
+
+  useEffect(() => {
+    visiblePanel === Panels.FILTERING
+      ? dispatch(setIsCrossFilteringMode(true))
+      : dispatch(setIsCrossFilteringMode(false));
+  }, [dispatch, visiblePanel]);
 
   return (
     <div className={styles.wrapper}>
