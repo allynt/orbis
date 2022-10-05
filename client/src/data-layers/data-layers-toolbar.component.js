@@ -27,6 +27,8 @@ import {
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
 import {
+  activeCategorisedSourcesSelector,
+  activeCrossFilteringCategorisedSourcesSelector,
   setIsCrossFilteringMode,
 } from './data-layers.slice';
 import FilterLayerView from './filter-layer-view.component';
@@ -55,7 +57,6 @@ const useStyles = makeStyles(theme => ({
 
 const DataLayersToolbar = ({
   sidebarComponents,
-  activeCategorisedSources,
   drawingToolsEnabled,
   aoiDrawMode,
   setAoiDrawMode,
@@ -63,6 +64,13 @@ const DataLayersToolbar = ({
   const styles = useStyles();
   const dispatch = useDispatch();
   const hasAoiFeatureAccess = useOrbFeatureAccess('aoi');
+
+  const activeCategorisedSources = useSelector(
+    activeCategorisedSourcesSelector(1, true),
+  );
+  const activeCrossFilteringCategorisedSources = useSelector(
+    activeCrossFilteringCategorisedSourcesSelector(1, true),
+  );
 
   const visiblePanel = useSelector(visiblePanelSelector);
 
@@ -130,7 +138,7 @@ const DataLayersToolbar = ({
         {visiblePanel === Panels.FILTERING && (
           <FilterLayerView
             sidebarComponents={sidebarComponents}
-            activeCategorisedSources={activeCategorisedSources}
+            activeCategorisedSources={activeCrossFilteringCategorisedSources}
             drawingToolsEnabled={drawingToolsEnabled}
             isVisible={isCrossFilteringDialogVisible}
             toggle={toggleCrossFilteringDialog}

@@ -3,10 +3,8 @@ import React from 'react';
 import { makeStyles } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
 
 import DataLayersToolbar from './data-layers-toolbar.component';
-import { activeCategorisedSourcesSelector } from './data-layers.slice';
 
 const useStyles = makeStyles(theme => ({
   disablingElement: {
@@ -34,10 +32,6 @@ const DataLayers = ({
 }) => {
   const styles = useStyles();
 
-  const activeCategorisedSources = useSelector(
-    activeCategorisedSourcesSelector(1, true),
-  );
-
   return (
     <div
       className={clsx(styles.disablingElement, {
@@ -46,7 +40,6 @@ const DataLayers = ({
     >
       <DataLayersToolbar
         sidebarComponents={sidebarComponents}
-        activeCategorisedSources={activeCategorisedSources}
         drawingToolsEnabled={drawingToolsEnabled}
         aoiDrawMode={aoiDrawMode}
         setAoiDrawMode={setAoiDrawMode}
