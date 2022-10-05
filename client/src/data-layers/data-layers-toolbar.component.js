@@ -62,7 +62,9 @@ const DataLayersToolbar = ({
 
   const visiblePanel = useSelector(visiblePanelSelector);
 
-  const [isVisible, toggle] = useState(false);
+  const [isDataLayerDialogVisible, toggleDataLayerDialog] = useState(false);
+  const [isCrossFilteringDialogVisible, toggleCrossFilteringDialog] =
+    useState(false);
 
   const onDrawAoiClick = () => dispatch(startDrawingAoi());
 
@@ -99,8 +101,8 @@ const DataLayersToolbar = ({
             sidebarComponents={sidebarComponents}
             activeCategorisedSources={activeCategorisedSources}
             drawingToolsEnabled={drawingToolsEnabled}
-            isVisible={isVisible}
-            toggle={toggle}
+            isVisible={isDataLayerDialogVisible}
+            toggle={toggleDataLayerDialog}
           />
         )}
         {visiblePanel === Panels.AOI && (
@@ -120,8 +122,8 @@ const DataLayersToolbar = ({
             sidebarComponents={sidebarComponents}
             activeCategorisedSources={activeCategorisedSources}
             drawingToolsEnabled={drawingToolsEnabled}
-            isVisible={isVisible}
-            toggle={toggle}
+            isVisible={isCrossFilteringDialogVisible}
+            toggle={toggleCrossFilteringDialog}
           />
         )}
       </div>
