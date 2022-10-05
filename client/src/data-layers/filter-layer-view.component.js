@@ -11,8 +11,8 @@ import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg'
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   crossFilterDataSourcesSelector,
-  activeLayersSelector,
-  setLayers,
+  activeCrossFilteringLayersSelector,
+  setCrossFilterLayers,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -55,14 +55,14 @@ const FilterLayerView = ({
   const styles = useStyles();
   const dispatch = useDispatch();
 
-  const selectedLayers = useSelector(activeLayersSelector);
+  const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
 
   const dataSources = useSelector(crossFilterDataSourcesSelector);
 
   const handleDialogSubmit = sources => {
     const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
 
-    dispatch(setLayers(sources));
+    dispatch(setCrossFilterLayers(sources));
     if (layersToBeRemoved.length) {
       dispatch(clearLayerFeatures(layersToBeRemoved));
     }

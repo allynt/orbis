@@ -16,6 +16,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @typedef DataState
  * @property {import('typings').Source['source_id'][]} layers
  * @property {boolean} isCrossFilteringMode
+ * @property {import('typings').Source['source_id'][]} crossFilterLayers
  * @property {number} pollingPeriod
  * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
@@ -30,6 +31,7 @@ const name = 'data';
 const initialState = {
   layers: [],
   isCrossFilteringMode: false,
+  crossFilterLayers: [],
   pollingPeriod: 30000,
   tokens: null,
   sources: null,
@@ -135,6 +137,41 @@ export const setLayers = createAsyncThunk(
   },
 );
 
+export const setCrossFilterLayers = createAsyncThunk(
+  `${name}/setLayers`,
+  async (sourceIds, { rejectWithValue, dispatch, getState }) => {
+    try {
+      if (!sourceIds) return;
+
+      const activeCrossFilterLayers = activeCrossFilteringLayersSelector(
+        getState(),
+      );
+      const crossFilterDataSources = crossFilterDataSourcesSelector(getState());
+      const sourceIdsToLog = sourceIds.filter(
+        sourceId => !activeCrossFilterLayers.includes(sourceId.source_id), // TODO: find out proper data shape...?
+      );
+
+      sourceIdsToLog.forEach(sourceId => {
+        const matchedDataSource = crossFilterDataSources.find(
+          dataSource => dataSource.source_id === sourceId,
+        );
+
+        if (
+          !matchedDataSource.metadata.request_strategy &&
+          matchedDataSource.metadata.request_strategy !== 'manual'
+        ) {
+          dispatch(logDataset({ source_id: sourceId }));
+        }
+      });
+
+      dispatch(updateCrossFilterLayers(sourceIds));
+    } catch (error) {
+      const message = `${error.status} ${error.message}`;
+      return rejectWithValue({ message });
+    }
+  },
+);
+
 export const logProperty = createAsyncThunk(
   `${name}/logProperty`,
   async (
@@ -231,6 +268,16 @@ const dataSlice = createSlice({
     },
     setIsCrossFilteringMode: (state, { payload }) =>
       (state.isCrossFilteringMode = payload),
+    updateCrossFilterLayers: (state, { payload }) => {
+      if (!payload) return;
+      const layers =
+        typeof payload[0] === 'object'
+          ? payload.map(source => source.source_id)
+          : payload;
+      if (layers.some(layer => layer === undefined)) return;
+
+      state.layers = layers;
+    },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
@@ -298,6 +345,7 @@ export const {
   updateLayers,
   addSource,
   setIsCrossFilteringMode,
+  updateCrossFilterLayers,
 } = dataSlice.actions;
 
 /**
@@ -355,8 +403,19 @@ export const activeLayersSelector = createSelector(
   data => data?.layers ?? [],
 );
 
+export const activeCrossFilteringLayersSelector = createSelector(
+  baseSelector,
+  data => data?.crossFilterLayers ?? [],
+);
+
 export const activeDataSourcesSelector = createSelector(
   [dataSourcesSelector, activeLayersSelector],
+  (sources, layers) =>
+    sources ? sources.filter(source => layers.includes(source.source_id)) : [],
+);
+
+export const activeCrossFilterDataSourcesSelector = createSelector(
+  [crossFilterDataSourcesSelector, activeCrossFilteringLayersSelector],
   (sources, layers) =>
     sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
@@ -403,6 +462,34 @@ export const activeCategorisedOrbsAndSourcesSelector = (
 export const activeCategorisedSourcesSelector = (depth, ignoreMultipleOrbs) =>
   createSelector(
     activeCategorisedOrbsAndSourcesSelector(depth, ignoreMultipleOrbs),
+    orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
+  );
+
+/**
+ * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
+ */
+export const activeCrossFilteringCategorisedOrbsAndSourcesSelector = (
+  depth,
+  ignoreMultipleOrbs,
+) =>
+  createSelector(activeCrossFilterDataSourcesSelector, sources =>
+    createOrbsWithCategorisedSources(sources, depth, ignoreMultipleOrbs),
+  );
+
+/**
+ * @param {number} [depth]
+ * @param {boolean} [ignoreMultipleOrbs]
+ */
+export const activeCrossFilteringCategorisedSourcesSelector = (
+  depth,
+  ignoreMultipleOrbs,
+) =>
+  createSelector(
+    activeCrossFilteringCategorisedOrbsAndSourcesSelector(
+      depth,
+      ignoreMultipleOrbs,
+    ),
     orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
   );
 
