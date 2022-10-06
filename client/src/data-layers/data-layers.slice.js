@@ -376,6 +376,11 @@ export const selectDataToken = createSelector(
   state => state?.tokens ?? null,
 );
 
+export const isCrossFilteringMode = createSelector(
+  baseSelector,
+  state => state?.isCrossFilteringMode,
+);
+
 export const dataSourcesSelector = createSelector(
   baseSelector,
   state => state?.sources ?? [],
