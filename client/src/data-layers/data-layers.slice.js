@@ -266,8 +266,9 @@ const dataSlice = createSlice({
 
       state.layers = layers;
     },
-    setIsCrossFilteringMode: (state, { payload }) =>
-      (state.isCrossFilteringMode = payload),
+    setIsCrossFilteringMode: (state, { payload }) => {
+      state.isCrossFilteringMode = payload;
+    },
     updateCrossFilterLayers: (state, { payload }) => {
       if (!payload) return;
       const layers =
