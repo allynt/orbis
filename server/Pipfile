@@ -36,7 +36,7 @@ django-rest-knox = "*"
 # external file storage
 django-storages = "*"
 # API... duh
-djangorestframework = "*"
+djangorestframework = "==3.13.1"
 # API for GIS
 djangorestframework-gis = "*"
 # API authentication
