@@ -10,7 +10,7 @@ import { clearLayerFeatures } from 'map/orbs/layers.slice';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
-  crossFilterDataSourcesSelector,
+  crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
   setCrossFilterLayers,
 } from './data-layers.slice';
@@ -57,7 +57,7 @@ const FilterLayerView = ({
 
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
 
-  const dataSources = useSelector(crossFilterDataSourcesSelector);
+  const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
   const handleDialogSubmit = sources => {
     const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));

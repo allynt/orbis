@@ -20,6 +20,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {number} pollingPeriod
  * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
+ * @property {import('typings').Source[]} [crossFilterableSources]
  * @property {any} [error]
  * @property {import('typings').Orb[]} [orbs]
  * @property {Record<string, 'pending' | 'fulfilled' |'rejected'>} requests
@@ -35,6 +36,7 @@ const initialState = {
   pollingPeriod: 30000,
   tokens: null,
   sources: null,
+  crossFilterableSources: null,
   error: null,
   requests: {},
 };
@@ -146,7 +148,9 @@ export const setCrossFilterLayers = createAsyncThunk(
       const activeCrossFilterLayers = activeCrossFilteringLayersSelector(
         getState(),
       );
-      const crossFilterDataSources = crossFilterDataSourcesSelector(getState());
+      const crossFilterDataSources = crossFilterableDataSourcesSelector(
+        getState(),
+      );
       const sourceIdsToLog = sourceIds.filter(
         sourceId => !activeCrossFilterLayers.includes(sourceId.source_id), // TODO: find out proper data shape...?
       );
@@ -310,6 +314,19 @@ const dataSlice = createSlice({
           ...state.requests,
           fetchSources: 'fulfilled',
         };
+
+        state.crossFilterableSources = sources
+          .filter(source => source.metadata.application.orbis.crossfiltering)
+          .map(source => {
+            const filterableProperties = source.metadata.properties.filter(
+              property => property.application.orbis.crossfiltering,
+            );
+
+            return {
+              ...source,
+              properties: filterableProperties,
+            };
+          });
       })
       .addCase(fetchSources.rejected, (state, { payload }) => {
         state.error = payload;
@@ -364,24 +381,9 @@ export const dataSourcesSelector = createSelector(
   state => state?.sources ?? [],
 );
 
-export const crossFilterDataSourcesSelector = createSelector(
-  dataSourcesSelector,
-  dataSources => {
-    const filterableDataSources = dataSources
-      .filter(source => source.metadata.application.orbis.crossfiltering)
-      .map(source => {
-        const filterableProperties = source.metadata.properties.filter(
-          property => property.application.orbis.crossfiltering,
-        );
-
-        return {
-          ...source,
-          properties: filterableProperties,
-        };
-      });
-
-    return filterableDataSources ?? [];
-  },
+export const crossFilterableDataSourcesSelector = createSelector(
+  baseSelector,
+  state => state?.crossFilterableSources ?? [],
 );
 
 export const dashboardSourcesSelector = createSelector(
@@ -416,7 +418,7 @@ export const activeDataSourcesSelector = createSelector(
 );
 
 export const activeCrossFilterDataSourcesSelector = createSelector(
-  [crossFilterDataSourcesSelector, activeCrossFilteringLayersSelector],
+  [crossFilterableDataSourcesSelector, activeCrossFilteringLayersSelector],
   (sources, layers) =>
     sources ? sources.filter(source => layers.includes(source.source_id)) : [],
 );
