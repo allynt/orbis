@@ -5,6 +5,8 @@ until echo > /dev/tcp/db/5432; do sleep 1; done
 
 cd $APP_HOME
 
+mkdir -p /tmp/orbis/backups
+
 setuser app pipenv run ./server/manage.py migrate
 setuser app pipenv run ./server/manage.py createcachetable
 setuser app pipenv run ./server/manage.py update_site --domain localhost:8000

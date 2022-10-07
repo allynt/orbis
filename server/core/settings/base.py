@@ -96,6 +96,7 @@ THIRD_PARTY_APPS = [
     # healthchecks...
     "health_check",
     "health_check.db",
+    "dbbackup",
 ]  # yapf: disable
 
 LOCAL_APPS = [
@@ -499,3 +500,10 @@ AUTH_PASSWORD_VALIDATORS = [
 #############
 
 # profiling is added in development.py
+
+###########
+# BACKUPS #
+###########
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': '/tmp/orbis/backups/'}

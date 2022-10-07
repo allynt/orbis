@@ -71,6 +71,7 @@ xhtml2pdf = "*"
 django-astrosat-core = {editable = true,git = "https://github.com/astrosat/django-astrosat-core.git",ref = "master"}
 django-astrosat-users = {editable = true,git = "https://github.com/astrosat/django-astrosat-users.git",ref = "master"}
 dat-utils = {editable = true,git = "https://github.com/astrosat/dat-utils.git",ref = "master"}
+django-dbbackup = "*"
 
 [dev-packages]
 # coverage reports for GitHub, GitLab, etc.
