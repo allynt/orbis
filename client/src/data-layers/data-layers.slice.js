@@ -17,6 +17,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {import('typings').Source['source_id'][]} layers
  * @property {boolean} isCrossFilteringMode
  * @property {import('typings').Source['source_id'][]} crossFilterLayers
+ * @property {string} crossFilteringCommonGeometry
  * @property {number} pollingPeriod
  * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
@@ -32,7 +33,11 @@ const name = 'data';
 const initialState = {
   layers: [],
   isCrossFilteringMode: false,
-  crossFilterLayers: [],
+  crossFilterLayers: [
+    'astrosat/isolation_plus_core/childpov2019_breakdown_crossfiltering/dev',
+    'astrosat/isolation_plus_core/benefits_breakdown_crossfiltering/dev',
+  ],
+  crossFilteringCommonGeometry: 'LAD_2019',
   pollingPeriod: 30000,
   tokens: null,
   sources: null,
@@ -389,6 +394,11 @@ export const dataSourcesSelector = createSelector(
 export const crossFilterableDataSourcesSelector = createSelector(
   baseSelector,
   state => state?.crossFilterableSources ?? [],
+);
+
+export const crossFilteringCommonGeometrySelector = createSelector(
+  baseSelector,
+  state => state?.crossFilteringCommonGeometry ?? null,
 );
 
 export const dashboardSourcesSelector = createSelector(
