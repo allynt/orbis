@@ -31,7 +31,9 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   sources: import('typings').Source[]
  *   initialSelectedSources?: import('typings').Source['source_id'][]
+ *   initialSelectedCrossFilterProperties?: string[]
  *   open?: boolean
+ *   isCrossFilteringMode?: boolean,
  *   close: () => void
  *   onSubmit: (sources: import('typings').Source['source_id'][]) => void
  * }} props
@@ -39,6 +41,8 @@ const useStyles = makeStyles(theme => ({
 const DataLayersDialog = ({
   sources,
   initialSelectedSources = [],
+  initialSelectedCrossFilterProperties = [],
+  isCrossFilteringMode,
   open = false,
   close,
   onSubmit,
@@ -49,11 +53,25 @@ const DataLayersDialog = ({
   const [selectedSources, setSelectedSources] = useState(
     initialSelectedSources,
   );
+  const [selectedCrossFilterProperties, setSelectedCrossFilterProperties] =
+    useState(initialSelectedCrossFilterProperties);
   const [hasMadeChanges, setHasMadeChanges] = useState(false);
 
   useEffect(() => {
-    setHasMadeChanges(!isEqual(initialSelectedSources, selectedSources));
-  }, [initialSelectedSources, selectedSources]);
+    const comparison = isCrossFilteringMode
+      ? !isEqual(
+          initialSelectedCrossFilterProperties,
+          selectedCrossFilterProperties,
+        )
+      : !isEqual(initialSelectedSources, selectedSources);
+    setHasMadeChanges(comparison);
+  }, [
+    initialSelectedSources,
+    selectedSources,
+    initialSelectedCrossFilterProperties,
+    selectedCrossFilterProperties,
+    isCrossFilteringMode,
+  ]);
 
   /** @param {{source_ids: import('typings').Source['source_id'][], selected: boolean}} params */
   const handleSourcesChange = ({ source_ids, selected }) => {
@@ -64,7 +82,22 @@ const DataLayersDialog = ({
         );
   };
 
-  const handleSubmit = () => onSubmit && onSubmit(selectedSources);
+  const handleCrossFilterPropertiesChange = ({ property_names, selected }) => {
+    selected
+      ? setSelectedCrossFilterProperties(current => [
+          ...current,
+          ...property_names,
+        ])
+      : setSelectedCrossFilterProperties(current =>
+          current.filter(v => !property_names.includes(v)),
+        );
+  };
+
+  const handleSubmit = () =>
+    onSubmit &&
+    onSubmit(
+      isCrossFilteringMode ? selectedCrossFilterProperties : selectedSources,
+    );
 
   const handleClose = () => {
     setSelectedOrbName(undefined);
@@ -96,8 +129,11 @@ const DataLayersDialog = ({
         <LayerSelect
           sources={sources}
           selectedSources={selectedSources}
+          selectedCrossFilterProperties={selectedCrossFilterProperties}
           selectedOrbName={selectedOrbName}
+          isCrossFilteringMode={isCrossFilteringMode}
           onSourcesChange={handleSourcesChange}
+          onCrossFilterPropertiesChange={handleCrossFilterPropertiesChange}
           onSubmit={handleSubmit}
           hasMadeChanges={hasMadeChanges}
         />
