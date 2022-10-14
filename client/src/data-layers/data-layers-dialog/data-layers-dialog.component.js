@@ -119,7 +119,11 @@ const DataLayersDialog = ({
       </IconButton>
       <div className={styles.content}>
         <OrbSelect
-          orbs={createOrbsWithCategorisedSources(sources)}
+          orbs={createOrbsWithCategorisedSources(
+            sources,
+            undefined,
+            isCrossFilteringMode,
+          )}
           onOrbClick={orbName => setSelectedOrbName(orbName)}
           selectedOrbName={selectedOrbName}
         />

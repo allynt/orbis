@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   createAsyncThunk,
   createSelector,
@@ -151,7 +152,7 @@ export const setLayers = createAsyncThunk(
 );
 
 export const setCrossFilterLayers = createAsyncThunk(
-  `${name}/setLayers`,
+  `${name}/setCrossFilterLayers`,
   async (sourceIds, { rejectWithValue, dispatch, getState }) => {
     try {
       if (!sourceIds) return;

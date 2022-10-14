@@ -288,6 +288,8 @@ export const LayerSelect = ({
   const categorisedSources =
     createOrbsWithCategorisedSources(
       searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
+      undefined,
+      isCrossFiltering,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
   return (
