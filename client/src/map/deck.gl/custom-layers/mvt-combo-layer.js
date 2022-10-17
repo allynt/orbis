@@ -1,6 +1,33 @@
 import { MVTLayer } from '@deck.gl/geo-layers';
-import { getURLFromTemplate } from '@deck.gl/geo-layers/dist/esm/tile-layer/utils';
 import { geojsonToBinary, binaryToGeojson } from '@loaders.gl/gis';
+
+/**
+ * Copied this function directly from deck.gl release v8.5.7, which is what we
+ * use. This function doesn't seem to be exported by the library, which is why
+ * I've copied it from:
+ *
+ * https://github.com/visgl/deck.gl/blob/f08edffb9aac169d7cc08b97f7cd1686ad2983d9/modules/geo-layers/src/tile-layer/utils.js#L57
+ *
+ * @param {*} template
+ * @param {*} properties
+ * @returns
+ */
+function getURLFromTemplate(template, properties) {
+  if (!template || !template.length) {
+    return null;
+  }
+  if (Array.isArray(template)) {
+    const index = Math.abs(properties.x + properties.y) % template.length;
+    template = template[index];
+  }
+
+  const { x, y, z } = properties;
+  return template
+    .replace('{x}', x)
+    .replace('{y}', y)
+    .replace('{z}', z)
+    .replace('{-y}', Math.pow(2, z) - y - 1);
+}
 
 export class MVTComboLayer extends MVTLayer {
   static layerName = 'MVTComboLayer';

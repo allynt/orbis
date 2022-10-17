@@ -160,7 +160,7 @@ export const useOrbs = activeSources => {
 
   /**
    * Create (from metadata) and set in local state, the components to be used
-   * in the map.
+   * in the sidebar.
    */
   useEffect(() => {
     /** @type {[string, JSX.Element][]} */
@@ -204,10 +204,16 @@ export const useOrbs = activeSources => {
     );
   }, [activeSources, dispatch, isCrossFilterMode, makeComponent]);
 
+  /**
+   * Create (from metadata) and set in local state, the components to be used
+   * in the map.
+   */
   useEffect(() => {
     const components = activeSources.map(source => {
-      if (!source?.metadata?.application?.orbis?.map_component?.name)
+      if (!source?.metadata?.application?.orbis?.map_component?.name) {
         return null;
+      }
+
       const Component = lazy(() =>
         import(
           `./components/${source.metadata.application.orbis.map_component.name}`
@@ -225,6 +231,9 @@ export const useOrbs = activeSources => {
     setMapComponents(components);
   }, [activeSources, dispatch]);
 
+  /**
+   * Create (from metadata) the layers to be used on the map.
+   */
   useEffect(() => {
     /**
      * @param {import('typings').Source} source

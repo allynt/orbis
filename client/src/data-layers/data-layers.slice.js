@@ -321,7 +321,9 @@ const dataSlice = createSlice({
         };
 
         state.crossFilterableSources = sources
-          .filter(source => source.metadata.application.orbis.crossfiltering)
+          .filter(
+            source => source?.metadata?.application?.orbis?.crossfiltering,
+          )
           .map(source => {
             const filterableProperties = source.metadata.properties.filter(
               property => property.application.orbis.crossfiltering,
