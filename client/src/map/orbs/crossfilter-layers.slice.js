@@ -212,22 +212,12 @@ const layersSlice = createSlice({
       const { key, data } = payload;
       state[key] = { ...state[key], data };
     },
-    setCrossFilterSelectedProperties: (state, { payload }) => {
-      if (!payload.key) return handleMissingKey();
-      const { key, data } = payload;
-      state[key] = data;
-    },
     setState: (_, { payload }) => payload,
   },
 });
 
-export const {
-  setCrossFilterData,
-  setCrossFilterSelectedProperties,
-  setFilterValue,
-  setOther,
-  setState,
-} = layersSlice.actions;
+export const { setCrossFilterData, setFilterValue, setOther, setState } =
+  layersSlice.actions;
 
 /**
  * @param {import('./orbReducer').OrbState} state
@@ -260,10 +250,5 @@ export const otherSelector = id =>
 
 export const crossFilterUrlsSelector = () =>
   createSelector(baseSelector, state => state?.crossFilterShared?.other);
-
-export const activeCrossFilterPropertiesSelector = createSelector(
-  baseSelector,
-  state => state?.activeCrossFilteringProperties ?? {},
-);
 
 export default layersSlice.reducer;

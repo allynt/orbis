@@ -295,10 +295,7 @@ const dataSlice = createSlice({
       state.crossFilterLayers = crossFilterLayers;
     },
     setCrossFilterSelectedProperties: (state, { payload }) => {
-      state.activeCrossFilteringProperties = {
-        ...state.activeCrossFilteringProperties,
-        ...payload,
-      };
+      state.activeCrossFilteringProperties = payload;
     },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
