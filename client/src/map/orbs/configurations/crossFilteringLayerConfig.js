@@ -21,6 +21,15 @@ export const COLOR_PRIMARY = [246, 190, 0, 255],
   // on the GPU
   FILTER_SCALING_VALUE = 1000;
 
+const GEOMETRY_IDS = {
+  LAD_2016: 'LAD Code',
+  LAD_2019: 'LAD Code',
+  LAD_2020: 'LAD Code',
+  LSOA: 'LSOA/DataZone Code',
+  MSOA: 'MSOA Code',
+  OA: 'OA Code',
+};
+
 /**
  * @param {import('typings').GeoJsonFeature} feature
  * @param {import('typings').Property} selectedProperty
@@ -42,6 +51,7 @@ export const getValue = (feature, selectedProperty, selectedTimestamp) =>
  *   dispatch: import('redux').Dispatch
  *   orbState: import('../orbReducer').OrbState
  *   authToken?: string
+ * crossFilteringCommonGeometry?: object
  * }} parameters
  */
 const configuration = ({
@@ -50,6 +60,7 @@ const configuration = ({
   dispatch,
   orbState,
   authToken,
+  crossFilteringCommonGeometry,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
   const urls = dataSelector(id)(orbState);
@@ -61,8 +72,8 @@ const configuration = ({
     extraData,
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,
-    uniqueIdProperty: 'LAD Code',
-    getFillColor: feature => [0, 128, 200, 150],
+    uniqueIdProperty: GEOMETRY_IDS[crossFilteringCommonGeometry],
+    getFillColor: [0, 128, 200, 150],
     getLineColor: [16, 16, 16],
     getLineWidth: 64,
     loadOptions: {

@@ -268,6 +268,7 @@ export const useOrbs = activeSources => {
           setViewState,
           orbState,
           authToken,
+          crossFilteringCommonGeometry,
           ...metadataConfig,
         });
       }
