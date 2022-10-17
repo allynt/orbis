@@ -5,17 +5,18 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearLayerFeatures } from 'map/orbs/layers.slice';
+import {
+  setCrossFilterSelectedProperties,
+  activeCrossFilterPropertiesSelector,
+} from 'map/orbs/crossfilter-layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
-  activeCrossFilterPropertiesSelector,
   isCrossFilteringModeSelector,
   setCrossFilterLayers,
-  setCrossFilterSelectedProperties,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -61,47 +62,60 @@ const FilterLayerView = ({
   const isCrossFilteringMode = useSelector(isCrossFilteringModeSelector);
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
 
-  const initialSelectedCrossFilterProperties = useSelector(
+  const selectedCrossFilterProperties = useSelector(
     activeCrossFilterPropertiesSelector,
   );
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
+  // Groups selected properties by their parent source_ids
+  // example: { source_id: [propertyMetadata1, propertyMetadata2] }
+  const groupPropertiesAndSourceIds = properties => {
+    const result = properties.reduce((acc, property) => {
+      const propertyParentSourceId = dataSources.find(source =>
+        source.properties.includes(property),
+      ).source_id;
+
+      if (!propertyParentSourceId) return acc;
+      return {
+        ...acc,
+        [propertyParentSourceId]: [
+          ...(acc[propertyParentSourceId] ?? []),
+          property,
+        ],
+      };
+    }, {});
+    return result;
+  };
+
   const handleDialogSubmit = selectedProperties => {
-    const groupedPropertiesAndSourceIds = selectedProperties.reduce(
-      (acc, propertyName) => {
-        const propertyParentSourceId = dataSources.find(source =>
-          source.properties
-            .map(property => property.name)
-            .includes(propertyName),
-        ).source_id;
+    const groupedPropertiesAndSourceIds =
+      groupPropertiesAndSourceIds(selectedProperties);
 
-        return {
-          ...acc,
-          [propertyParentSourceId]: [
-            ...(acc[propertyParentSourceId] ?? []),
-            propertyName,
-          ],
-        };
-      },
-      {},
-    );
-
+    // Non-duplicated array of source_ids for selected properties
     const sourcesIdsOfSelectedProperties = Object.keys(
       groupedPropertiesAndSourceIds,
     );
 
-    const propertiesToBeRemoved = selectedLayers.filter(
-      l => !sourcesIdsOfSelectedProperties.includes(l),
+    // TODO: does this also remove ids?
+    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
+    dispatch(
+      setCrossFilterSelectedProperties({
+        key: 'activeCrossFilteringProperties',
+        data: groupedPropertiesAndSourceIds,
+      }),
     );
 
-    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
-    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
-
-    if (propertiesToBeRemoved.length) {
-      // must also remove selected properties
-      dispatch(clearLayerFeatures(propertiesToBeRemoved));
-    }
+    // if (propertiesToBeRemoved.length) {
+    //   dispatch(
+    //     clearLayerProperties(
+    //       groupPropertiesAndSourceIds(propertiesToBeRemoved),
+    //     ),
+    //   );
+    // }
+    // if (sourceIdsToBeRemoved.length) {
+    //   dispatch(clearLayerFeatures(sourceIdsToBeRemoved));
+    // }
     toggle(false);
   };
 
@@ -137,7 +151,7 @@ const FilterLayerView = ({
           sources={dataSources}
           initialSelectedSources={selectedLayers}
           initialSelectedCrossFilterProperties={Object.values(
-            initialSelectedCrossFilterProperties,
+            selectedCrossFilterProperties,
           )}
           isCrossFilteringMode={isCrossFilteringMode}
           onSubmit={handleDialogSubmit}

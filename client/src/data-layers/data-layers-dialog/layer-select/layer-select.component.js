@@ -35,11 +35,11 @@ import LayerSelectItem from './layer-select-item/layer-select-item.component';
  *    selected: boolean
  *  }) => void
  *  onCrossFilterPropertiesChange?: (params: {
- *    property_names: string[]
+ *    properties: object[]
  *    selected: boolean
  *  }) => void
  *  selectedSources: import('typings').Source['source_id'][],
- *  selectedCrossFilterProperties: string[],
+ *  selectedCrossFilterProperties: object[],
  *  isCrossFilteringMode: boolean
  * }} params
  */
@@ -93,9 +93,7 @@ const renderCategories = ({
         );
       } else {
         return source.properties.map(property => {
-          const selected = selectedCrossFilterProperties?.includes(
-            property.name,
-          );
+          const selected = selectedCrossFilterProperties?.includes(property);
 
           const sourceOrProperty = {
             id: property.name,
@@ -105,7 +103,7 @@ const renderCategories = ({
 
           const onChange = () => {
             onCrossFilterPropertiesChange({
-              property_names: [property.name],
+              properties: [property],
               selected: !selected,
             });
           };
@@ -203,19 +201,23 @@ const Accordion = ({
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
         {source.category}
-        <span className={styles.sourceCount}>
-          ({selectedCount <= 0 ? '' : `${selectedCount}/`}
-          {allSourceIds.length})
-        </span>
-        <Link
-          variant="body2"
-          component="span"
-          role="button"
-          className={styles.selectAll}
-          onClick={handleSelectAllClick}
-        >
-          {allSelected ? 'unselect' : 'select'} all
-        </Link>
+        {!isCrossFilteringMode ? (
+          <>
+            <span className={styles.sourceCount}>
+              ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+              {allSourceIds.length})
+            </span>
+            <Link
+              variant="body2"
+              component="span"
+              role="button"
+              className={styles.selectAll}
+              onClick={handleSelectAllClick}
+            >
+              {allSelected ? 'unselect' : 'select'} all
+            </Link>
+          </>
+        ) : null}
       </ButtonBase>
       <Collapse
         unmountOnExit
@@ -256,7 +258,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   sources: import('typings').Source[]
  *   selectedSources?: import('typings').Source['source_id'][],
- *   selectedCrossFilterProperties?: string[],
+ *   selectedCrossFilterProperties?: object[],
  *   selectedOrbName?: string,
  *   isCrossFilteringMode: boolean,
  *   hasMadeChanges?: boolean
@@ -264,7 +266,7 @@ const useStyles = makeStyles(theme => ({
  *     source_ids: import('typings').Source['source_id'][]
  *     selected: boolean}) => void,
  *   onCrossFilterPropertiesChange?: (params: {
- *     property_names: string[]
+ *     properties: object[]
  *     selected: boolean}) => void,
  *   onSubmit: () => void
  * }} props

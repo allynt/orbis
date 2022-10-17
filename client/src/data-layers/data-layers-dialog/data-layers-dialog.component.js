@@ -82,14 +82,11 @@ const DataLayersDialog = ({
         );
   };
 
-  const handleCrossFilterPropertiesChange = ({ property_names, selected }) => {
+  const handleCrossFilterPropertiesChange = ({ properties, selected }) => {
     selected
-      ? setSelectedCrossFilterProperties(current => [
-          ...current,
-          ...property_names,
-        ])
+      ? setSelectedCrossFilterProperties(current => [...current, ...properties])
       : setSelectedCrossFilterProperties(current =>
-          current.filter(v => !property_names.includes(v)),
+          current.filter(v => !properties.includes(v)),
         );
   };
 
