@@ -67,8 +67,8 @@ const FilterLayerView = ({
 
   // Groups selected properties by their parent source_ids
   // example: { source_id: [propertyMetadata1, propertyMetadata2] }
-  const groupPropertiesAndSourceIds = properties => {
-    const result = properties.reduce((acc, property) => {
+  const groupPropertiesAndSourceIds = properties =>
+    properties.reduce((acc, property) => {
       const propertyParentSourceId = dataSources.find(source =>
         source.properties.includes(property),
       ).source_id;
@@ -82,8 +82,6 @@ const FilterLayerView = ({
         ],
       };
     }, {});
-    return result;
-  };
 
   const handleDialogSubmit = selectedProperties => {
     const groupedPropertiesAndSourceIds =
