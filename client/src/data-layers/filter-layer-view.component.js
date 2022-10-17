@@ -105,17 +105,6 @@ const FilterLayerView = ({
         data: groupedPropertiesAndSourceIds,
       }),
     );
-
-    // if (propertiesToBeRemoved.length) {
-    //   dispatch(
-    //     clearLayerProperties(
-    //       groupPropertiesAndSourceIds(propertiesToBeRemoved),
-    //     ),
-    //   );
-    // }
-    // if (sourceIdsToBeRemoved.length) {
-    //   dispatch(clearLayerFeatures(sourceIdsToBeRemoved));
-    // }
     toggle(false);
   };
 
