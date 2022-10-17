@@ -1,6 +1,8 @@
 import { fitBounds } from '@math.gl/web-mercator';
 import { bbox } from '@turf/turf';
 
+import { limitDecimals } from 'data-layers/aoi/aoi-utils';
+
 export const createViewstateForFeature = ({
   feature,
   viewport,
@@ -26,8 +28,8 @@ export const createViewstateForFeature = ({
   });
 
   return {
-    longitude,
-    latitude,
-    zoom,
+    longitude: limitDecimals(longitude),
+    latitude: limitDecimals(latitude),
+    zoom: limitDecimals(zoom),
   };
 };
