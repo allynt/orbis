@@ -220,10 +220,10 @@ export const { setCrossFilterData, setFilterValue, setOther, setState } =
   layersSlice.actions;
 
 /**
- * @param {import('./orbReducer').OrbState} state
+ * @param {import('./orbReducer').OrbState} orbs
  * @returns {LayersState}
  */
-const baseSelector = state => state?.orbs?.[layersSlice.name];
+const baseSelector = orbs => orbs?.[layersSlice.name];
 
 export const crossFilterLayersWithDataSelector = createSelector(
   baseSelector,
