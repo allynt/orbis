@@ -529,11 +529,6 @@ export const activeCrossFilteringCategorisedSourcesSelector = (
     orbsAndSources => orbsAndSources.flatMap(orb => orb.sources),
   );
 
-export const crossFilterValuesSelector = createSelector(
-  baseSelector,
-  state => state?.crossFilterValues,
-);
-
 /**
  * @param {import('typings').Source['source_id']} source_id
  */

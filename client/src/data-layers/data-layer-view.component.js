@@ -16,88 +16,6 @@ import {
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
-const mockSelectedProperty = {
-  name: 'People on benefits: total',
-  label: 'Number of people claiming benefits',
-  description: 'Test Data',
-  source: 'DWP (2020)',
-  details: 'Test Data',
-  aggregation: 'sum',
-  aggregates: {
-    GB: 7402009,
-    England: 6317185,
-    Scotland: 670478,
-    Wales: 414346,
-  },
-  min: 0,
-  max: 199,
-  clip_min: 0,
-  clip_max: 199,
-  units: 'persons',
-  type: 'continuous',
-  precision: 0,
-  application: {
-    orbis: {
-      label: 'Number of people claiming benefits',
-      display: {
-        colormap_type: 'negative_sequential',
-        colormap_reversed: false,
-        color: 'YlOrRd',
-      },
-      data_visualisation_components: [
-        {
-          name: 'NationalDeviationHistogram',
-          props: {
-            data: [
-              {
-                x: 50,
-                y: 220697,
-              },
-              {
-                x: 151,
-                y: 6902,
-              },
-              {
-                x: 252,
-                y: 136,
-              },
-              {
-                x: 353,
-                y: 18,
-              },
-              {
-                x: 454,
-                y: 4,
-              },
-              {
-                x: 555,
-                y: 0,
-              },
-              {
-                x: 656,
-                y: 1,
-              },
-              {
-                x: 757,
-                y: 0,
-              },
-              {
-                x: 858,
-                y: 0,
-              },
-              {
-                x: 959,
-                y: 1,
-              },
-            ],
-            info: 'The bar chart is a histogram describing the full dataset across Great Britain. The height of each bar indicates the number of areas in GB that have values within the width of the bar on the horizontal axis. The yellow line shows where your selected area (or the average of all selected areas) falls in comparison to the rest of GB.',
-          },
-        },
-      ],
-    },
-  },
-};
-
 const useStyles = makeStyles(theme => ({
   disablingElement: {
     transition: theme.transitions.create(['filter', 'opacity']),
@@ -142,14 +60,13 @@ const DataLayerView = ({
   const dataSources = useSelector(dataSourcesSelector);
 
   const handleDialogSubmit = sources => {
-    dispatch(setLayers(mockSelectedProperty));
-    // const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
+    const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
 
-    // dispatch(setLayers(sources));
-    // if (layersToBeRemoved.length) {
-    //   dispatch(clearLayerFeatures(layersToBeRemoved));
-    // }
-    // toggle(false);
+    dispatch(setLayers(sources));
+    if (layersToBeRemoved.length) {
+      dispatch(clearLayerFeatures(layersToBeRemoved));
+    }
+    toggle(false);
   };
 
   return (
