@@ -39,11 +39,7 @@ const initialState = {
     'astrosat/isolation_plus_core/childpov2019_breakdown_crossfiltering/dev',
     'astrosat/isolation_plus_core/benefits_breakdown_crossfiltering/dev',
   ],
-  // crossFilteringCommonGeometry: 'LAD_2019',
-  // crossFilteringCommonGeometry: 'LAD_2016',
-  // crossFilteringCommonGeometry: 'LSOA',
-  crossFilteringCommonGeometry: 'MSOA',
-  // crossFilteringCommonGeometry: 'OA',
+  crossFilteringCommonGeometry: '',
   activeCrossFilteringProperties: {},
   pollingPeriod: 30000,
   tokens: null,
@@ -298,6 +294,9 @@ const dataSlice = createSlice({
     setCrossFilterSelectedProperties: (state, { payload }) => {
       state.activeCrossFilteringProperties = payload;
     },
+    setCrossFilteringCommonGeometry: (state, { payload }) => {
+      state.crossFilteringCommonGeometry = payload;
+    },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
@@ -381,6 +380,7 @@ export const {
   addSource,
   setIsCrossFilteringMode,
   updateCrossFilterLayers,
+  setCrossFilteringCommonGeometry,
   setCrossFilterSelectedProperties,
 } = dataSlice.actions;
 

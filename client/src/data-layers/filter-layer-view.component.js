@@ -14,6 +14,7 @@ import {
   isCrossFilteringModeSelector,
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
+  setCrossFilteringCommonGeometry,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -46,6 +47,14 @@ const useStyles = makeStyles(theme => ({
   disabled: {},
 }));
 
+const geometry = {
+  OA: 1,
+  LSOA: 2,
+  MSOA: 3,
+  LAD_2016: 4,
+  LAD_2019: 5,
+  LAD_2020: 6,
+};
 const FilterLayerView = ({
   sidebarComponents,
   activeCategorisedSources,
@@ -83,6 +92,16 @@ const FilterLayerView = ({
       };
     }, {});
 
+  const geometryType = geometryTypes => {
+    let result = null;
+    geometryTypes.forEach(element => {
+      if (!result || geometry[element] < geometry[result]) {
+        result = element;
+      }
+    });
+    return result;
+  };
+
   const handleDialogSubmit = selectedProperties => {
     const groupedPropertiesAndSourceIds =
       groupPropertiesAndSourceIds(selectedProperties);
@@ -92,6 +111,18 @@ const FilterLayerView = ({
       groupedPropertiesAndSourceIds,
     );
 
+    const geometryTypes = dataSources
+      .filter(dataSource =>
+        sourcesIdsOfSelectedProperties.includes(dataSource.source_id),
+      )
+      .map(
+        source =>
+          source.metadata.application.orbis.crossfiltering
+            .geometry_types_hierarchy[0],
+      );
+
+    const crossFilteringGeometry = geometryType(geometryTypes);
+    dispatch(setCrossFilteringCommonGeometry(crossFilteringGeometry));
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     toggle(false);
