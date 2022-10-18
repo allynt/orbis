@@ -195,6 +195,11 @@ const layersSlice = createSlice({
       const { key, filterValue } = payload;
       state[key] = { ...state[key], filterValue };
     },
+    // @ts-ignore
+    setCrossFilterValues: (state, { payload }) => {
+      const { key, filterValues } = payload;
+      state[key] = [...state[key], filterValues];
+    },
     /** @type {SetOtherAction} */
     setOther: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();

@@ -5,6 +5,7 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CrossFilteringSliders from 'map/orbs/components/crossFilteringSlider/crossFilteringSlider.component';
 import { clearLayerFeatures } from 'map/orbs/layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -13,8 +14,10 @@ import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
   setCrossFilterLayers,
+  crossFilterValuesSelector,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
+import testData from './test-data';
 
 const useStyles = makeStyles(theme => ({
   disablingElement: {
@@ -59,6 +62,8 @@ const FilterLayerView = ({
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
+  const crossFilterValues = useSelector(crossFilterValuesSelector);
+
   const handleDialogSubmit = sources => {
     const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
 
@@ -67,6 +72,11 @@ const FilterLayerView = ({
       dispatch(clearLayerFeatures(layersToBeRemoved));
     }
     toggle(false);
+  };
+
+  /** @param {array[]} values */
+  const handleCrossFiltersChange = values => {
+    console.log('values: ', values);
   };
 
   return (
@@ -84,6 +94,12 @@ const FilterLayerView = ({
         dispatch={dispatch}
         selectedLayers={activeCategorisedSources}
         sidebarComponents={sidebarComponents}
+      />
+
+      <CrossFilteringSliders
+        data={testData}
+        handleCrossFiltersChange={handleCrossFiltersChange}
+        crossFilterValues={crossFilterValues}
       />
       <Button
         className={styles.button}
