@@ -89,6 +89,7 @@ const renderCategories = ({
             selected={selected}
             sourceOrProperty={sourceOrProperty}
             onChange={onChange}
+            isValid={true}
           />
         );
       } else {
@@ -331,8 +332,9 @@ export const LayerSelect = ({
         <Button
           disabled={
             !hasMadeChanges ||
-            selectedCrossFilterProperties.length < 2 ||
-            selectedCrossFilterProperties.length > 4
+            (isCrossFilteringMode &&
+              (selectedCrossFilterProperties.length < 2 ||
+                selectedCrossFilterProperties.length > 4))
           }
           onClick={onSubmit}
         >
