@@ -97,6 +97,10 @@ const renderCategories = ({
             p => p.label === property.label,
           );
 
+          // we must not allow more than 4 to be selected. Not sure
+          // why we have this off-by-one thing going on here
+          const isValid = selectedCrossFilterProperties.length <= 3;
+
           const sourceOrProperty = {
             id: property.name,
             label: property.label,
@@ -115,6 +119,7 @@ const renderCategories = ({
               selected={selected}
               sourceOrProperty={sourceOrProperty}
               onChange={onChange}
+              isValid={isValid || selected}
             />
           );
         });
