@@ -287,13 +287,13 @@ const dataSlice = createSlice({
     },
     updateCrossFilterLayers: (state, { payload }) => {
       if (!payload) return;
-      const crossFilterLayers =
+      const layers =
         typeof payload[0] === 'object'
           ? payload.map(source => source.source_id)
           : payload;
-      if (crossFilterLayers.some(layer => layer === undefined)) return;
+      if (layers.some(layer => layer === undefined)) return;
 
-      state.crossFilterLayers = crossFilterLayers;
+      state.crossFilterLayers = layers;
     },
     setCrossFilterSelectedProperties: (state, { payload }) => {
       state.activeCrossFilteringProperties = payload;

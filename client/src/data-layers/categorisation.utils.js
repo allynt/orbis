@@ -175,15 +175,16 @@ const createNewCategorisedOrb = (orb, source, depth) => {
 /**
  * Creates an array of orbs with their sources organised by category
  * @param {Source[]} sources
- * @param {number} [depth]
- * @param {boolean} [ignoreMultipleOrbs]
+ * @param {number} depth
+ * @param {boolean} ignoreMultipleOrbs
+ * @param {boolean} isCrossFilteringMode
  * @returns {OrbWithCategorisedSources[]}
  */
 export const createOrbsWithCategorisedSources = (
   sources,
   depth,
-  isCrossFiltering,
   ignoreMultipleOrbs = false,
+  isCrossFilteringMode,
 ) =>
   sources?.reduce(
     /**
@@ -195,16 +196,14 @@ export const createOrbsWithCategorisedSources = (
       }
       const metadata = orbisMetadataSelector(source);
       let extendedSource = cloneDeep(source);
-      if (isCrossFiltering) {
+      if (isCrossFilteringMode) {
         // inject the datalayer name as a new level beneath existing categories
-        if (extendedSource?.metadata?.application?.orbis?.categories?.child) {
-          extendedSource.metadata.application.orbis.categories.child = {
-            ...extendedSource.metadata.application.orbis.categories.child,
-            child: {
-              name: extendedSource.metadata.label,
-            },
-          };
-        }
+        extendedSource.metadata.application.orbis.categories.child = {
+          ...extendedSource.metadata.application.orbis.categories.child,
+          child: {
+            name: extendedSource.metadata.label,
+          },
+        };
       }
       let newOrbs = [...categorisedOrbs];
       let orbs = metadata.orbs;

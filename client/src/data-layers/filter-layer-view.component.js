@@ -70,7 +70,7 @@ const FilterLayerView = ({
   const groupPropertiesAndSourceIds = properties =>
     properties.reduce((acc, property) => {
       const propertyParentSourceId = dataSources.find(source =>
-        source.properties.includes(property),
+        source.properties.find(p => p.label === property.label),
       ).source_id;
 
       if (!propertyParentSourceId) return acc;

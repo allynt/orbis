@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
  * @param {{
  *   sources: import('typings').Source[]
  *   initialSelectedSources?: import('typings').Source['source_id'][]
- *   initialSelectedCrossFilterProperties?: string[]
+ *   initialSelectedCrossFilterProperties?: object[]
  *   open?: boolean
  *   isCrossFilteringMode?: boolean,
  *   close: () => void
@@ -82,11 +82,12 @@ const DataLayersDialog = ({
         );
   };
 
+  /** @param {{properties: object[], selected: boolean}} params */
   const handleCrossFilterPropertiesChange = ({ properties, selected }) => {
     selected
       ? setSelectedCrossFilterProperties(current => [...current, ...properties])
       : setSelectedCrossFilterProperties(current =>
-          current.filter(v => !properties.includes(v)),
+          current.filter(v => !properties.find(p => p.label === v.label)),
         );
   };
 
@@ -122,6 +123,7 @@ const DataLayersDialog = ({
           orbs={createOrbsWithCategorisedSources(
             sources,
             undefined,
+            false,
             isCrossFilteringMode,
           )}
           onOrbClick={orbName => setSelectedOrbName(orbName)}

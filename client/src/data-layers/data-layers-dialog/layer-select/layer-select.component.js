@@ -92,8 +92,10 @@ const renderCategories = ({
           />
         );
       } else {
-        return source.properties.map(property => {
-          const selected = selectedCrossFilterProperties?.includes(property);
+        return source?.properties.map(property => {
+          const selected = !!selectedCrossFilterProperties.find(
+            p => p.label === property.label,
+          );
 
           const sourceOrProperty = {
             id: property.name,
@@ -289,7 +291,8 @@ export const LayerSelect = ({
     createOrbsWithCategorisedSources(
       searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
       undefined,
-      isCrossFiltering,
+      false,
+      isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
   return (
