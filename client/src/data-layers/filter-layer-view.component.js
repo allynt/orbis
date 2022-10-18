@@ -5,23 +5,15 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
-<<<<<<< HEAD
-=======
-import { clearLayerFeatures } from 'map/orbs/layers.slice';
-
->>>>>>> parent of d8c0139f... fix(frontend): Unstash changes
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
+  activeCrossFilterPropertiesSelector,
   isCrossFilteringModeSelector,
   setCrossFilterLayers,
-<<<<<<< HEAD
   setCrossFilterSelectedProperties,
-  activeCrossFilterPropertiesSelector,
-=======
->>>>>>> parent of d8c0139f... fix(frontend): Unstash changes
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -73,7 +65,6 @@ const FilterLayerView = ({
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
-<<<<<<< HEAD
   // Groups selected properties by their parent source_ids
   // example: { source_id: [propertyMetadata1, propertyMetadata2] }
   const groupPropertiesAndSourceIds = properties =>
@@ -91,16 +82,11 @@ const FilterLayerView = ({
         ],
       };
     }, {});
-=======
-  const handleDialogSubmit = sources => {
-    const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
->>>>>>> parent of d8c0139f... fix(frontend): Unstash changes
 
   const handleDialogSubmit = selectedProperties => {
     const groupedPropertiesAndSourceIds =
       groupPropertiesAndSourceIds(selectedProperties);
 
-<<<<<<< HEAD
     // Non-duplicated array of source_ids for selected properties
     const sourcesIdsOfSelectedProperties = Object.keys(
       groupedPropertiesAndSourceIds,
@@ -111,8 +97,6 @@ const FilterLayerView = ({
     toggle(false);
   };
 
-=======
->>>>>>> parent of d8c0139f... fix(frontend): Unstash changes
   return (
     <div
       className={clsx(styles.wrapper, {
