@@ -1,4 +1,5 @@
-import { isEmpty } from 'lodash';
+// @ts-nocheck
+import { isEmpty, cloneDeep } from 'lodash';
 
 const NO_ORB_NAME = 'No Orb';
 const PATH_DELIMITER = '.';
@@ -174,14 +175,16 @@ const createNewCategorisedOrb = (orb, source, depth) => {
 /**
  * Creates an array of orbs with their sources organised by category
  * @param {Source[]} sources
- * @param {number} [depth]
- * @param {boolean} [ignoreMultipleOrbs]
+ * @param {number} depth
+ * @param {boolean} ignoreMultipleOrbs
+ * @param {boolean} isCrossFilteringMode
  * @returns {OrbWithCategorisedSources[]}
  */
 export const createOrbsWithCategorisedSources = (
   sources,
   depth,
   ignoreMultipleOrbs = false,
+  isCrossFilteringMode,
 ) =>
   sources?.reduce(
     /**
@@ -192,6 +195,16 @@ export const createOrbsWithCategorisedSources = (
         return categorisedOrbs;
       }
       const metadata = orbisMetadataSelector(source);
+      let extendedSource = cloneDeep(source);
+      if (isCrossFilteringMode) {
+        // inject the datalayer name as a new level beneath existing categories
+        extendedSource.metadata.application.orbis.categories.child = {
+          ...extendedSource.metadata.application.orbis.categories.child,
+          child: {
+            name: extendedSource.metadata.label,
+          },
+        };
+      }
       let newOrbs = [...categorisedOrbs];
       let orbs = metadata.orbs;
       if (!orbs?.length) orbs = [{ name: NO_ORB_NAME }];
@@ -199,12 +212,16 @@ export const createOrbsWithCategorisedSources = (
       orbs.forEach(orb => {
         const existingOrb = newOrbs.find(o => orb.name === o.name);
         if (existingOrb) {
-          const updatedOrb = addSourceToExistingOrb(existingOrb, source, depth);
+          const updatedOrb = addSourceToExistingOrb(
+            existingOrb,
+            extendedSource,
+            depth,
+          );
           const existingOrbIndex = newOrbs.indexOf(existingOrb);
           newOrbs[existingOrbIndex] = updatedOrb;
           return newOrbs;
         }
-        const newOrb = createNewCategorisedOrb(orb, source, depth);
+        const newOrb = createNewCategorisedOrb(orb, extendedSource, depth);
         newOrbs = [...newOrbs, newOrb];
       });
       return newOrbs;

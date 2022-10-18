@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   createAsyncThunk,
   createSelector,
@@ -18,6 +19,7 @@ import { createOrbsWithCategorisedSources } from './categorisation.utils';
  * @property {boolean} isCrossFilteringMode
  * @property {import('typings').Source['source_id'][]} crossFilterLayers
  * @property {string} crossFilteringCommonGeometry
+ * @property {object} activeCrossFilteringProperties
  * @property {number} pollingPeriod
  * @property {object[]} [tokens]
  * @property {import('typings').Source[]} [sources]
@@ -42,6 +44,7 @@ const initialState = {
   // crossFilteringCommonGeometry: 'LSOA',
   crossFilteringCommonGeometry: 'MSOA',
   // crossFilteringCommonGeometry: 'OA',
+  activeCrossFilteringProperties: {},
   pollingPeriod: 30000,
   tokens: null,
   sources: null,
@@ -149,7 +152,7 @@ export const setLayers = createAsyncThunk(
 );
 
 export const setCrossFilterLayers = createAsyncThunk(
-  `${name}/setLayers`,
+  `${name}/setCrossFilterLayers`,
   async (sourceIds, { rejectWithValue, dispatch, getState }) => {
     try {
       if (!sourceIds) return;
@@ -290,7 +293,10 @@ const dataSlice = createSlice({
           : payload;
       if (layers.some(layer => layer === undefined)) return;
 
-      state.layers = layers;
+      state.crossFilterLayers = layers;
+    },
+    setCrossFilterSelectedProperties: (state, { payload }) => {
+      state.activeCrossFilteringProperties = payload;
     },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
@@ -375,6 +381,7 @@ export const {
   addSource,
   setIsCrossFilteringMode,
   updateCrossFilterLayers,
+  setCrossFilterSelectedProperties,
 } = dataSlice.actions;
 
 /**
@@ -387,7 +394,7 @@ export const selectDataToken = createSelector(
   state => state?.tokens ?? null,
 );
 
-export const isCrossFilteringMode = createSelector(
+export const isCrossFilteringModeSelector = createSelector(
   baseSelector,
   state => state?.isCrossFilteringMode,
 );
@@ -405,6 +412,11 @@ export const crossFilterableDataSourcesSelector = createSelector(
 export const crossFilteringCommonGeometrySelector = createSelector(
   baseSelector,
   state => state?.crossFilteringCommonGeometry ?? null,
+);
+
+export const activeCrossFilterPropertiesSelector = createSelector(
+  baseSelector,
+  state => state?.activeCrossFilteringProperties,
 );
 
 export const dashboardSourcesSelector = createSelector(

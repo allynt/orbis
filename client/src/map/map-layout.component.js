@@ -13,7 +13,7 @@ import {
   fetchSources,
   selectPollingPeriod,
   dataSourcesSelector,
-  isCrossFilteringMode,
+  isCrossFilteringModeSelector,
   activeDataSourcesSelector,
   activeCrossFilterDataSourcesSelector,
 } from 'data-layers/data-layers.slice';
@@ -32,7 +32,7 @@ const Map = React.lazy(() =>
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const isCrossFilterMode = useSelector(isCrossFilteringMode);
+  const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
 
   const activeDataSources = useSelector(activeDataSourcesSelector);
   const activeCrossFilteringDataSources = useSelector(

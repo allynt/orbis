@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   selectDataToken,
   logError,
-  isCrossFilteringMode,
+  isCrossFilteringModeSelector,
   crossFilteringCommonGeometrySelector,
 } from 'data-layers/data-layers.slice';
 import { setIsLoading } from 'map/map.slice';
@@ -24,7 +24,7 @@ export const useOrbs = activeSources => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authTokens = useSelector(selectDataToken);
-  const isCrossFilterMode = useSelector(isCrossFilteringMode);
+  const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
   const crossFilteringCommonGeometry = useSelector(
     crossFilteringCommonGeometrySelector,
   );

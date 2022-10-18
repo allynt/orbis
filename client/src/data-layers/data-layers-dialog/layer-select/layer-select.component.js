@@ -30,37 +30,97 @@ import LayerSelectItem from './layer-select-item/layer-select-item.component';
  * @param {{
  *  sources: import('typings').CategorisedSources
  *  level: number
- *  onSourcesChange: (params: {
+ *  onSourcesChange?: (params: {
  *    source_ids: import('typings').Source['source_id'][]
  *    selected: boolean
  *  }) => void
- *  selectedSources: import('typings').Source['source_id'][]
+ *  onCrossFilterPropertiesChange?: (params: {
+ *    properties: object[]
+ *    selected: boolean
+ *  }) => void
+ *  selectedSources: import('typings').Source['source_id'][],
+ *  selectedCrossFilterProperties: object[],
+ *  isCrossFilteringMode: boolean
  * }} params
  */
 const renderCategories = ({
   sources,
   level,
   onSourcesChange,
+  onCrossFilterPropertiesChange,
   selectedSources,
+  selectedCrossFilterProperties,
+  isCrossFilteringMode,
 }) =>
-  sources?.map(source =>
-    source.category ? (
-      <Accordion
-        key={source.category}
-        source={source}
-        level={level}
-        onSourcesChange={onSourcesChange}
-        selectedSources={selectedSources}
-      />
-    ) : (
-      <LayerSelectItem
-        key={source.source_id}
-        source={source}
-        onChange={onSourcesChange}
-        selected={selectedSources?.includes(source.source_id)}
-      />
-    ),
-  );
+  sources?.map(source => {
+    if (source.category) {
+      return (
+        <Accordion
+          key={source.category}
+          source={source}
+          level={level}
+          onSourcesChange={onSourcesChange}
+          selectedSources={selectedSources}
+          isCrossFilteringMode={isCrossFilteringMode}
+          selectedCrossFilterProperties={selectedCrossFilterProperties}
+          onCrossFilterPropertiesChange={onCrossFilterPropertiesChange}
+        />
+      );
+    } else {
+      if (!isCrossFilteringMode) {
+        const selected = selectedSources?.includes(source.source_id);
+
+        const sourceOrProperty = {
+          id: source.source_id,
+          label: source.metadata.label,
+          description: source?.metadata?.description,
+        };
+
+        const onChange = () => {
+          onSourcesChange({
+            source_ids: [source.source_id],
+            selected: !selected,
+          });
+        };
+
+        return (
+          <LayerSelectItem
+            key={source.source_id}
+            selected={selected}
+            sourceOrProperty={sourceOrProperty}
+            onChange={onChange}
+          />
+        );
+      } else {
+        return source?.properties.map(property => {
+          const selected = !!selectedCrossFilterProperties.find(
+            p => p.label === property.label,
+          );
+
+          const sourceOrProperty = {
+            id: property.name,
+            label: property.label,
+            description: property.description,
+          };
+
+          const onChange = () => {
+            onCrossFilterPropertiesChange({
+              properties: [property],
+              selected: !selected,
+            });
+          };
+          return (
+            <LayerSelectItem
+              key={property.name}
+              selected={selected}
+              sourceOrProperty={sourceOrProperty}
+              onChange={onChange}
+            />
+          );
+        });
+      }
+    }
+  });
 
 const useAccordionStyles = makeStyles(theme => ({
   header: props => ({
@@ -108,7 +168,15 @@ const useAccordionStyles = makeStyles(theme => ({
   open: {},
 }));
 
-const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
+const Accordion = ({
+  source,
+  level,
+  onSourcesChange,
+  selectedSources,
+  isCrossFilteringMode,
+  selectedCrossFilterProperties,
+  onCrossFilterPropertiesChange,
+}) => {
   const styles = useAccordionStyles({ level });
   const [open, setOpen] = useState(false);
   const allSourceIds = useMemo(
@@ -135,19 +203,23 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
         {source.category}
-        <span className={styles.sourceCount}>
-          ({selectedCount <= 0 ? '' : `${selectedCount}/`}
-          {allSourceIds.length})
-        </span>
-        <Link
-          variant="body2"
-          component="span"
-          role="button"
-          className={styles.selectAll}
-          onClick={handleSelectAllClick}
-        >
-          {allSelected ? 'unselect' : 'select'} all
-        </Link>
+        {!isCrossFilteringMode ? (
+          <>
+            <span className={styles.sourceCount}>
+              ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+              {allSourceIds.length})
+            </span>
+            <Link
+              variant="body2"
+              component="span"
+              role="button"
+              className={styles.selectAll}
+              onClick={handleSelectAllClick}
+            >
+              {allSelected ? 'unselect' : 'select'} all
+            </Link>
+          </>
+        ) : null}
       </ButtonBase>
       <Collapse
         unmountOnExit
@@ -161,6 +233,9 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           level: level + 1,
           onSourcesChange,
           selectedSources,
+          isCrossFilteringMode,
+          selectedCrossFilterProperties,
+          onCrossFilterPropertiesChange,
         })}
       </Collapse>
     </React.Fragment>
@@ -184,21 +259,29 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   sources: import('typings').Source[]
- *   selectedSources?: import('typings').Source['source_id'][]
- *   selectedOrbName?: string
+ *   selectedSources?: import('typings').Source['source_id'][],
+ *   selectedCrossFilterProperties?: object[],
+ *   selectedOrbName?: string,
+ *   isCrossFilteringMode: boolean,
  *   hasMadeChanges?: boolean
- *   onSourcesChange: (params: {
+ *   onSourcesChange?: (params: {
  *     source_ids: import('typings').Source['source_id'][]
- *     selected: boolean}) => void
+ *     selected: boolean}) => void,
+ *   onCrossFilterPropertiesChange?: (params: {
+ *     properties: object[]
+ *     selected: boolean}) => void,
  *   onSubmit: () => void
  * }} props
  */
 export const LayerSelect = ({
   sources,
   selectedSources,
+  selectedCrossFilterProperties,
   selectedOrbName,
+  isCrossFilteringMode,
   hasMadeChanges = false,
   onSourcesChange,
+  onCrossFilterPropertiesChange,
   onSubmit,
 }) => {
   const styles = useStyles();
@@ -207,6 +290,9 @@ export const LayerSelect = ({
   const categorisedSources =
     createOrbsWithCategorisedSources(
       searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
+      undefined,
+      false,
+      isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
   return (
@@ -224,7 +310,10 @@ export const LayerSelect = ({
               sources: categorisedSources,
               level: 0,
               onSourcesChange,
+              onCrossFilterPropertiesChange,
               selectedSources,
+              selectedCrossFilterProperties,
+              isCrossFilteringMode,
             })}
           </List>
         </>

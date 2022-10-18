@@ -5,14 +5,15 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearLayerFeatures } from 'map/orbs/layers.slice';
-
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
+  activeCrossFilterPropertiesSelector,
+  isCrossFilteringModeSelector,
   setCrossFilterLayers,
+  setCrossFilterSelectedProperties,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -55,17 +56,44 @@ const FilterLayerView = ({
   const styles = useStyles();
   const dispatch = useDispatch();
 
+  const isCrossFilteringMode = useSelector(isCrossFilteringModeSelector);
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
+
+  const selectedCrossFilterProperties = useSelector(
+    activeCrossFilterPropertiesSelector,
+  );
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
-  const handleDialogSubmit = sources => {
-    const layersToBeRemoved = selectedLayers.filter(l => !sources.includes(l));
+  // Groups selected properties by their parent source_ids
+  // example: { source_id: [propertyMetadata1, propertyMetadata2] }
+  const groupPropertiesAndSourceIds = properties =>
+    properties.reduce((acc, property) => {
+      const propertyParentSourceId = dataSources.find(source =>
+        source.properties.find(p => p.label === property.label),
+      ).source_id;
 
-    dispatch(setCrossFilterLayers(sources));
-    if (layersToBeRemoved.length) {
-      dispatch(clearLayerFeatures(layersToBeRemoved));
-    }
+      if (!propertyParentSourceId) return acc;
+      return {
+        ...acc,
+        [propertyParentSourceId]: [
+          ...(acc[propertyParentSourceId] ?? []),
+          property,
+        ],
+      };
+    }, {});
+
+  const handleDialogSubmit = selectedProperties => {
+    const groupedPropertiesAndSourceIds =
+      groupPropertiesAndSourceIds(selectedProperties);
+
+    // Non-duplicated array of source_ids for selected properties
+    const sourcesIdsOfSelectedProperties = Object.keys(
+      groupedPropertiesAndSourceIds,
+    );
+
+    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
+    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     toggle(false);
   };
 
@@ -100,6 +128,10 @@ const FilterLayerView = ({
         <DataLayersDialog
           sources={dataSources}
           initialSelectedSources={selectedLayers}
+          initialSelectedCrossFilterProperties={Object.values(
+            selectedCrossFilterProperties,
+          )}
+          isCrossFilteringMode={isCrossFilteringMode}
           onSubmit={handleDialogSubmit}
           close={() => toggle(false)}
           open={isVisible}
