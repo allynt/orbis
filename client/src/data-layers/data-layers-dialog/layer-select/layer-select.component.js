@@ -328,7 +328,14 @@ export const LayerSelect = ({
         </Typography>
       )}
       <div className={styles.buttonContainer}>
-        <Button disabled={!hasMadeChanges} onClick={onSubmit}>
+        <Button
+          disabled={
+            !hasMadeChanges ||
+            selectedCrossFilterProperties.length < 2 ||
+            selectedCrossFilterProperties.length > 4
+          }
+          onClick={onSubmit}
+        >
           Confirm
         </Button>
       </div>
