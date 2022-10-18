@@ -301,6 +301,12 @@ export const LayerSelect = ({
       isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
+  const isDisabled =
+    !hasMadeChanges ||
+    (isCrossFilteringMode &&
+      (selectedCrossFilterProperties.length < 2 ||
+        selectedCrossFilterProperties.length > 4));
+
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
@@ -329,15 +335,7 @@ export const LayerSelect = ({
         </Typography>
       )}
       <div className={styles.buttonContainer}>
-        <Button
-          disabled={
-            !hasMadeChanges ||
-            (isCrossFilteringMode &&
-              (selectedCrossFilterProperties.length < 2 ||
-                selectedCrossFilterProperties.length > 4))
-          }
-          onClick={onSubmit}
-        >
+        <Button disabled={isDisabled} onClick={onSubmit}>
           Confirm
         </Button>
       </div>
