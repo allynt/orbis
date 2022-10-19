@@ -37,14 +37,14 @@ const useStyles = makeStyles(theme => ({
  *   selected?: boolean
  *   sourceOrProperty: {id: string, label: string, description: string},
  *   onChange: (params: {source_ids: import('typings').Source['source_id'][]; selected: boolean}) => void
- *   isValidSelection: boolean
+ *   isItemEnabled: boolean
  * }} props
  */
 const LayerSelectItem = ({
   selected,
   sourceOrProperty,
   onChange,
-  isValidSelection = true,
+  isItemEnabled = true,
 }) => {
   const styles = useStyles();
   const { id, label, description } = sourceOrProperty;
@@ -53,7 +53,7 @@ const LayerSelectItem = ({
       className={styles.listItem}
       button
       onClick={onChange}
-      disabled={!isValidSelection}
+      disabled={!isItemEnabled}
     >
       <ListItemIcon className={styles.checkbox}>
         <Checkbox id={id} checked={selected} />

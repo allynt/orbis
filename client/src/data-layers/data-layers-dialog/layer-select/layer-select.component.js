@@ -97,12 +97,12 @@ const renderCategories = ({
         );
       } else {
         return source?.properties.map(property => {
-          const selected = !!selectedCrossFilterProperties.find(
+          const isSelected = !!selectedCrossFilterProperties.find(
             p => p.label === property.label,
           );
 
           // impose limit on number of selected properties.
-          const isValidSelection =
+          const isItemEnabled =
             selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES;
 
           const sourceOrProperty = {
@@ -114,16 +114,16 @@ const renderCategories = ({
           const onChange = () => {
             onCrossFilterPropertiesChange({
               properties: [property],
-              selected: !selected,
+              selected: !isSelected,
             });
           };
           return (
             <LayerSelectItem
               key={property.name}
-              selected={selected}
+              selected={isSelected}
               sourceOrProperty={sourceOrProperty}
               onChange={onChange}
-              isValidSelection={isValidSelection || selected}
+              isItemEnabled={isItemEnabled || isSelected}
             />
           );
         });
