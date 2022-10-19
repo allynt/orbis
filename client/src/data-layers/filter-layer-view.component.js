@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
+import { GEOMETRY_TYPES } from './data-layers.constants';
 import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
@@ -47,14 +48,6 @@ const useStyles = makeStyles(theme => ({
   disabled: {},
 }));
 
-const geometry = {
-  OA: 1,
-  LSOA: 2,
-  MSOA: 3,
-  LAD_2016: 4,
-  LAD_2019: 5,
-  LAD_2020: 6,
-};
 const FilterLayerView = ({
   sidebarComponents,
   activeCategorisedSources,
@@ -92,10 +85,10 @@ const FilterLayerView = ({
       };
     }, {});
 
-  const geometryType = geometryTypes => {
+  const getGeometryType = geometryTypes => {
     let result = null;
     geometryTypes.forEach(element => {
-      if (!result || geometry[element] < geometry[result]) {
+      if (!result || GEOMETRY_TYPES[element] < GEOMETRY_TYPES[result]) {
         result = element;
       }
     });
@@ -121,8 +114,8 @@ const FilterLayerView = ({
             .geometry_types_hierarchy[0],
       );
 
-    const crossFilteringGeometry = geometryType(geometryTypes);
-    dispatch(setCrossFilteringCommonGeometry(crossFilteringGeometry));
+    const selectedPropertiesCommonGeometry = getGeometryType(geometryTypes);
+    dispatch(setCrossFilteringCommonGeometry(selectedPropertiesCommonGeometry));
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     toggle(false);
