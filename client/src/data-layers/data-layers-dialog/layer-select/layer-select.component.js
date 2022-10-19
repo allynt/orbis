@@ -102,7 +102,7 @@ const renderCategories = ({
           );
 
           // impose limit on number of selected properties.
-          const isValid =
+          const isValidSelection =
             selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES;
 
           const sourceOrProperty = {
@@ -123,7 +123,7 @@ const renderCategories = ({
               selected={selected}
               sourceOrProperty={sourceOrProperty}
               onChange={onChange}
-              isValid={isValid || selected}
+              isValidSelection={isValidSelection || selected}
             />
           );
         });
