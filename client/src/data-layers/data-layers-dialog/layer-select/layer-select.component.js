@@ -19,13 +19,13 @@ import {
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
 
-import { Header } from '../components/header.component';
-import { List } from '../components/list.component';
-import { Section } from '../components/section.component';
 import {
   MIN_SELECTED_PROPERTIES,
   MAX_SELECTED_PROPERTIES,
-} from '../data-layers.constants';
+} from '../../data-layers.constants';
+import { Header } from '../components/header.component';
+import { List } from '../components/list.component';
+import { Section } from '../components/section.component';
 import { layerSearchFilter } from './layer-search/layer-search-filter';
 import LayerSearch from './layer-search/layer-search.component';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
