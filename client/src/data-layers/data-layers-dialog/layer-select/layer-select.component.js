@@ -90,7 +90,7 @@ const renderCategories = ({
         return (
           <LayerSelectItem
             key={source.source_id}
-            selected={selected}
+            isSelected={selected}
             sourceOrProperty={sourceOrProperty}
             onChange={onChange}
           />
@@ -102,8 +102,10 @@ const renderCategories = ({
           );
 
           // impose limit on number of selected properties.
+          // But we dont disable selected ones to allow the user to deselect existing ones
           const isItemEnabled =
-            selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES;
+            selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES ||
+            isSelected;
 
           const sourceOrProperty = {
             id: property.name,
@@ -120,10 +122,10 @@ const renderCategories = ({
           return (
             <LayerSelectItem
               key={property.name}
-              selected={isSelected}
+              isSelected={isSelected}
               sourceOrProperty={sourceOrProperty}
               onChange={onChange}
-              isItemEnabled={isItemEnabled || isSelected}
+              isItemEnabled={isItemEnabled}
             />
           );
         });
@@ -304,7 +306,7 @@ export const LayerSelect = ({
       isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
-  const isDisabled =
+  const isConfirmButtonDisabled =
     !hasMadeChanges ||
     (isCrossFilteringMode &&
       (selectedCrossFilterProperties.length < MIN_SELECTED_PROPERTIES ||
@@ -338,7 +340,7 @@ export const LayerSelect = ({
         </Typography>
       )}
       <div className={styles.buttonContainer}>
-        <Button disabled={isDisabled} onClick={onSubmit}>
+        <Button disabled={isConfirmButtonDisabled} onClick={onSubmit}>
           Confirm
         </Button>
       </div>
