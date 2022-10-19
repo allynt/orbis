@@ -40,7 +40,12 @@ const useStyles = makeStyles(theme => ({
  *   isValid: boolean
  * }} props
  */
-const LayerSelectItem = ({ selected, sourceOrProperty, onChange, isValid }) => {
+const LayerSelectItem = ({
+  selected,
+  sourceOrProperty,
+  onChange,
+  isValid = true,
+}) => {
   const styles = useStyles();
   const { id, label, description } = sourceOrProperty;
   return (

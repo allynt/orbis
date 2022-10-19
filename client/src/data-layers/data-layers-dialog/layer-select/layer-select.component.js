@@ -22,6 +22,10 @@ import {
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
+import {
+  MIN_SELECTED_PROPERTIES,
+  MAX_SELECTED_PROPERTIES,
+} from '../data-layers.constants';
 import { layerSearchFilter } from './layer-search/layer-search-filter';
 import LayerSearch from './layer-search/layer-search.component';
 import LayerSelectItem from './layer-select-item/layer-select-item.component';
@@ -89,7 +93,6 @@ const renderCategories = ({
             selected={selected}
             sourceOrProperty={sourceOrProperty}
             onChange={onChange}
-            isValid={true}
           />
         );
       } else {
@@ -98,9 +101,9 @@ const renderCategories = ({
             p => p.label === property.label,
           );
 
-          // we must not allow more than 4 to be selected. Not sure
-          // why we have this off-by-one thing going on here
-          const isValid = selectedCrossFilterProperties.length <= 3;
+          // impose limit on number of selected properties.
+          const isValid =
+            selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES;
 
           const sourceOrProperty = {
             id: property.name,
@@ -304,8 +307,8 @@ export const LayerSelect = ({
   const isDisabled =
     !hasMadeChanges ||
     (isCrossFilteringMode &&
-      (selectedCrossFilterProperties.length < 2 ||
-        selectedCrossFilterProperties.length > 4));
+      (selectedCrossFilterProperties.length < MIN_SELECTED_PROPERTIES ||
+        selectedCrossFilterProperties.length > MAX_SELECTED_PROPERTIES));
 
   return (
     <Section orientation="right">
