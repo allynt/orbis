@@ -72,7 +72,7 @@ const renderCategories = ({
       );
     } else {
       if (!isCrossFilteringMode) {
-        const selected = selectedSources?.includes(source.source_id);
+        const isSelected = selectedSources?.includes(source.source_id);
 
         const sourceOrProperty = {
           id: source.source_id,
@@ -83,14 +83,14 @@ const renderCategories = ({
         const onChange = () => {
           onSourcesChange({
             source_ids: [source.source_id],
-            selected: !selected,
+            selected: !isSelected,
           });
         };
 
         return (
           <LayerSelectItem
             key={source.source_id}
-            isSelected={selected}
+            isSelected={isSelected}
             sourceOrProperty={sourceOrProperty}
             onChange={onChange}
           />
