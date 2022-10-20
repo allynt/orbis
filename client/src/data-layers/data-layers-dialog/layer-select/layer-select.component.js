@@ -52,8 +52,8 @@ const renderCategories = ({
   level,
   onSourcesChange,
   onCrossFilterPropertiesChange,
-  selectedSources,
-  selectedCrossFilterProperties,
+  selectedSources = [],
+  selectedCrossFilterProperties = [],
   isCrossFilteringMode,
 }) =>
   sources?.map(source => {
@@ -80,19 +80,17 @@ const renderCategories = ({
           description: source?.metadata?.description,
         };
 
-        const onChange = () => {
-          onSourcesChange({
-            source_ids: [source.source_id],
-            selected: !isSelected,
-          });
-        };
-
         return (
           <LayerSelectItem
             key={source.source_id}
             isSelected={isSelected}
             sourceOrProperty={sourceOrProperty}
-            onChange={onChange}
+            onChange={() =>
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              })
+            }
           />
         );
       } else {
@@ -286,8 +284,8 @@ const useStyles = makeStyles(theme => ({
  */
 export const LayerSelect = ({
   sources,
-  selectedSources,
-  selectedCrossFilterProperties,
+  selectedSources = [],
+  selectedCrossFilterProperties = [],
   selectedOrbName,
   isCrossFilteringMode,
   hasMadeChanges = false,
