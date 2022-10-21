@@ -62,7 +62,7 @@ describe('Filter-layer-view.component', () => {
       it('check that function selects properties by their parent source_ids', () => {
         const result = groupPropertiesAndSourceIds(properties, dataSources);
         const expected = { test1: [{ label: 'Test Data Source label 1' }] };
-        expect(result).toEqual(expected);
+        expect(result).toEqual(expect.objectContaining(expected));
       });
 
       it('check that function returns an empty object value when properties equal to empty array', () => {
@@ -71,15 +71,13 @@ describe('Filter-layer-view.component', () => {
           dataSources,
         );
         const expected = {};
-        expect(result).toEqual(expected);
+        expect(result).toEqual(expect.objectContaining(expected));
       });
 
       it('check that function returns an empty object when dataSources undefined ', () => {
         const result = groupPropertiesAndSourceIds(properties, undefined);
-        console.log('result: ', result);
         const expected = {};
-        // const expected = { test1: undefined };
-        expect(result).toEqual(expected);
+        expect(result).toEqual(expect.objectContaining(expected));
       });
     });
   });
