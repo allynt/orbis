@@ -195,6 +195,7 @@ const renderComponent = ({
   sources = SOURCES,
   hasMadeChanges = false,
   selectedSources = [],
+  selectedCrossFilterProperties = [],
   selectedOrbName = 'Oil and Gas',
   isCrossFilteringMode = false,
 } = {}) => {
@@ -205,6 +206,7 @@ const renderComponent = ({
     <LayerSelect
       sources={sources}
       selectedSources={selectedSources}
+      selectedCrossFilterProperties={selectedCrossFilterProperties}
       isCrossFilteringMode={isCrossFilteringMode}
       onSourceChange={onSourceChange}
       onSourcesChange={onSourcesChange}
@@ -585,6 +587,7 @@ describe('<LayerSelect /> Crossfiltering tests', () => {
   it('hides sub-categories when heading is clicked again', async () => {
     const { getByRole, queryByRole } = renderComponent({
       isCrossFilteringMode: true,
+      selectedCrossFilterProperties: [],
     });
 
     const categoryHeading = getByRole('button', {

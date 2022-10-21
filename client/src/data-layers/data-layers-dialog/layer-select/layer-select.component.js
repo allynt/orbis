@@ -52,8 +52,8 @@ const renderCategories = ({
   level,
   onSourcesChange,
   onCrossFilterPropertiesChange,
-  selectedSources = [],
-  selectedCrossFilterProperties = [],
+  selectedSources,
+  selectedCrossFilterProperties,
   isCrossFilteringMode,
 }) =>
   sources?.map(source => {
@@ -284,8 +284,8 @@ const useStyles = makeStyles(theme => ({
  */
 export const LayerSelect = ({
   sources,
-  selectedSources = [],
-  selectedCrossFilterProperties = [],
+  selectedSources,
+  selectedCrossFilterProperties,
   selectedOrbName,
   isCrossFilteringMode,
   hasMadeChanges = false,
