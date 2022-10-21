@@ -653,13 +653,41 @@ describe('<LayerSelect />', () => {
       );
     });
 
-    // TODO: fix this. need to set selectedCrossFilteringProperties!
-    xit('enables the submit button when changes have been made', () => {
+    it('enables the submit button when sufficient changes have been made', () => {
       const { getByRole } = renderComponent({
         hasMadeChanges: true,
         isCrossFilteringMode: true,
+        selectedCrossFilterProperties: [
+          'First item',
+          'Second item',
+          'Third item',
+        ],
       });
       expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
+    });
+
+    it('disables the submit button when too few changes have been made', () => {
+      const { getByRole } = renderComponent({
+        hasMadeChanges: true,
+        isCrossFilteringMode: true,
+        selectedCrossFilterProperties: ['First item'],
+      });
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
+    });
+
+    it('disables the submit button when too many changes have been made', () => {
+      const { getByRole } = renderComponent({
+        hasMadeChanges: true,
+        isCrossFilteringMode: true,
+        selectedCrossFilterProperties: [
+          'First item',
+          'Second item',
+          'Third item',
+          'Fourth item',
+          'Fifth item',
+        ],
+      });
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
     });
 
     describe('Select All', () => {
