@@ -135,6 +135,7 @@ const TEMP_SHARED_PROPERTY = {
  *   crossFilterValues: object
  *   crossFilteringLayerData: string[]
  *   selectedProperty: object|null
+ *   crossFilteringCommonGeometry: string|null
  * }} LayersState
  */
 
@@ -172,6 +173,7 @@ const initialState = {
   crossFilteringLayerData: [],
   crossFilterValues: {},
   selectedProperty: TEMP_SHARED_PROPERTY,
+  crossFilteringCommonGeometry: 'MSOA',
 };
 
 const handleMissingKey = () => {
@@ -241,6 +243,11 @@ export const crossFilterValuesSelector = createSelector(
 export const selectedPropertySelector = createSelector(
   baseSelector,
   state => state?.selectedProperty,
+);
+
+export const crossFilteringCommonGeometrySelector = createSelector(
+  baseSelector,
+  state => state?.crossFilteringCommonGeometry ?? null,
 );
 
 export default crossFilterLayersSlice.reducer;

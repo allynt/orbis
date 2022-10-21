@@ -19,6 +19,7 @@ import { isRealValue } from 'utils/isRealValue';
 import {
   selectedPropertySelector,
   crossFilterValuesSelector,
+  crossFilteringCommonGeometrySelector,
   setFilterValue,
   setSelectedProperty,
 } from '../crossfilter-layers.slice';
@@ -36,6 +37,12 @@ const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
   },
 }));
 
+/**
+ * @param {{
+ *   selectedLayer: object
+ *   dispatch: import('redux').Dispatch
+ * }} props
+ */
 const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
   const styles = useStyles();
   const selectedProperty = useSelector(state =>
@@ -44,6 +51,10 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
 
   const filterValues = useSelector(state =>
     crossFilterValuesSelector(state?.orbs),
+  );
+
+  const commonGeometry = useSelector(state =>
+    crossFilteringCommonGeometrySelector(state?.orbs),
   );
 
   /**
@@ -108,14 +119,16 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
                 />
               </Grid>
             </Grid>
-            <Slider
-              key={property.name}
-              property={property}
-              filterRange={filterValues[property.name]}
-              onRangeFilterChange={filterValue =>
-                handleSliderChange(property.name, filterValue)
-              }
-            />
+            <Grid item>
+              <Slider
+                property={property}
+                filterRange={filterValues[property.name]}
+                onRangeFilterChange={filterValue =>
+                  handleSliderChange(property.name, filterValue)
+                }
+                commonGeometry={commonGeometry}
+              />
+            </Grid>
           </Grid>
         );
       })}
@@ -123,10 +136,24 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
   );
 };
 
-const Slider = ({ property, filterRange, onRangeFilterChange }) => {
+/**
+ * @param {{
+ *  property: object
+ *  filterRange: number[]
+ *  onRangeFilterChange: (filterValue: number[]) => void
+ *  commonGeometry: string
+ * }} props
+ */
+const Slider = ({
+  property,
+  filterRange,
+  onRangeFilterChange,
+  commonGeometry,
+}) => {
   const styles = useStyles();
 
-  const { min, max, precision } = property || {};
+  const { min, max } =
+    property?.application.orbis.crossfiltering[commonGeometry] || {};
 
   const { color, colormap_reversed } =
     property?.application?.orbis?.display || {};
@@ -140,7 +167,6 @@ const Slider = ({ property, filterRange, onRangeFilterChange }) => {
     clipMax: 38,
     reversed: colormap_reversed,
     className: styles.slider,
-    precision,
     value: filterRange,
     'data-testid': 'color-slider',
     onChange: onRangeFilterChange,
