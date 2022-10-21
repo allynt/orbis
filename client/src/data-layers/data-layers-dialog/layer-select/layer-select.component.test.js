@@ -202,6 +202,7 @@ const renderComponent = ({
   const onSourceChange = jest.fn();
   const onSourcesChange = jest.fn();
   const onSubmit = jest.fn();
+  const onCrossFilterPropertiesChange = jest.fn();
   const utils = render(
     <LayerSelect
       sources={sources}
@@ -213,452 +214,349 @@ const renderComponent = ({
       onSubmit={onSubmit}
       selectedOrbName={selectedOrbName}
       hasMadeChanges={hasMadeChanges}
+      onCrossFilterPropertiesChange={onCrossFilterPropertiesChange}
     />,
   );
-  return { ...utils, onSourceChange, onSourcesChange };
+  return {
+    ...utils,
+    onSourceChange,
+    onSourcesChange,
+    onCrossFilterPropertiesChange,
+  };
 };
 
-describe('<LayerSelect /> Non-crossfiltering tests', () => {
-  it('shows text when no orb is selected', () => {
-    const { getByText } = renderComponent({
-      orbs: null,
-      selectedOrbName: null,
-    });
-    expect(
-      getByText('Select Your Orb in order to find layers'),
-    ).toBeInTheDocument();
-  });
-
-  it('disables the button when no changes have been made', () => {
-    const { getByRole } = renderComponent();
-    expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
-  });
-
-  it('shows category headings', () => {
-    const { getByRole } = renderComponent();
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    ).toBeInTheDocument();
-    expect(
-      getByRole('button', {
-        name: new RegExp('Gas Parent 1'),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('expands the category headings when clicked', () => {
-    const { getByRole } = renderComponent();
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('hides categories when heading is clicked again', async () => {
-    const { getByRole, queryByRole } = renderComponent();
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    ).toBeInTheDocument();
-
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    await waitFor(() =>
+describe('<LayerSelect />', () => {
+  describe('<LayerSelect /> Non-crossfiltering tests', () => {
+    it('shows text when no orb is selected', () => {
+      const { getByText } = renderComponent({
+        orbs: null,
+        selectedOrbName: null,
+      });
       expect(
-        queryByRole('button', {
+        getByText('Select Your Orb in order to find layers'),
+      ).toBeInTheDocument();
+    });
+
+    it('disables the button when no changes have been made', () => {
+      const { getByRole } = renderComponent();
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
+    });
+
+    it('shows category headings', () => {
+      const { getByRole } = renderComponent();
+      expect(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      ).toBeInTheDocument();
+      expect(
+        getByRole('button', {
+          name: new RegExp('Gas Parent 1'),
+        }),
+      ).toBeInTheDocument();
+    });
+
+    it('expands the category headings when clicked', () => {
+      const { getByRole } = renderComponent();
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
+      expect(
+        getByRole('button', {
           name: new RegExp(OIL_CHILD),
         }),
-      ).not.toBeInTheDocument(),
-    );
-  });
-
-  it('shows sub-category headings', () => {
-    const { getByRole } = renderComponent();
-
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('expands sub-category headings when clicked', async () => {
-    const { getByRole } = renderComponent();
-
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    );
-
-    const checkbox = getByRole('button', {
-      name: 'Oil Source 1',
+      ).toBeInTheDocument();
     });
 
-    await waitFor(() => expect(checkbox).toBeInTheDocument());
-  });
-
-  it('hides sub-categories when heading is clicked again', async () => {
-    const { getByRole, queryByRole } = renderComponent();
-
-    const categoryHeading = getByRole('button', {
-      name: new RegExp(OIL_PARENT),
-    });
-
-    userEvent.click(categoryHeading);
-
-    const subCategoryHeading = getByRole('button', {
-      name: new RegExp(OIL_CHILD),
-    });
-
-    userEvent.click(subCategoryHeading);
-
-    expect(
-      getByRole('button', {
-        name: 'Oil Source 1',
-      }),
-    ).toBeInTheDocument();
-
-    userEvent.click(subCategoryHeading);
-
-    await waitFor(() =>
+    it('hides categories when heading is clicked again', async () => {
+      const { getByRole, queryByRole } = renderComponent();
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
       expect(
-        queryByRole('button', {
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      ).toBeInTheDocument();
+
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
+      await waitFor(() =>
+        expect(
+          queryByRole('button', {
+            name: new RegExp(OIL_CHILD),
+          }),
+        ).not.toBeInTheDocument(),
+      );
+    });
+
+    it('shows sub-category headings', () => {
+      const { getByRole } = renderComponent();
+
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
+
+      expect(
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      ).toBeInTheDocument();
+    });
+
+    it('expands sub-category headings when clicked', async () => {
+      const { getByRole } = renderComponent();
+
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      );
+
+      const checkbox = getByRole('button', {
+        name: 'Oil Source 1',
+      });
+
+      await waitFor(() => expect(checkbox).toBeInTheDocument());
+    });
+
+    it('hides sub-categories when heading is clicked again', async () => {
+      const { getByRole, queryByRole } = renderComponent();
+
+      const categoryHeading = getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      });
+
+      userEvent.click(categoryHeading);
+
+      const subCategoryHeading = getByRole('button', {
+        name: new RegExp(OIL_CHILD),
+      });
+
+      userEvent.click(subCategoryHeading);
+
+      expect(
+        getByRole('button', {
           name: 'Oil Source 1',
         }),
-      ).not.toBeInTheDocument(),
-    );
-  });
+      ).toBeInTheDocument();
 
-  it('calls onSourceChange when a source is clicked', async () => {
-    const { getByRole, onSourcesChange } = renderComponent();
+      userEvent.click(subCategoryHeading);
 
-    userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
-
-    userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
-
-    userEvent.click(
-      getByRole('button', {
-        name: 'Oil Source 1',
-      }),
-    );
-
-    await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
-  });
-
-  it('enables the submit button when changes have been made', () => {
-    const { getByRole } = renderComponent({ hasMadeChanges: true });
-    expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
-  });
-
-  it('shows the count of selected layers in a category', () => {
-    const { getAllByText } = renderComponent({
-      selectedSources: ['oil/source/1'],
-    });
-    // eslint-disable-next-line jest-dom/prefer-in-document
-    expect(getAllByText('(1/2)')).toHaveLength(1);
-  });
-
-  describe('Select All', () => {
-    it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent();
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: true,
-      });
+      await waitFor(() =>
+        expect(
+          queryByRole('button', {
+            name: 'Oil Source 1',
+          }),
+        ).not.toBeInTheDocument(),
+      );
     });
 
-    it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
-      const { onSourcesChange, getByRole, getAllByRole } = renderComponent();
+    it('calls onSourceChange when a source is clicked', async () => {
+      const { getByRole, onSourcesChange } = renderComponent();
+
+      userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
+
+      userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: 'Oil Source 1',
         }),
       );
 
-      userEvent.click(
-        getByRole('button', {
-          name: new RegExp(OIL_CHILD),
-        }),
-      );
-
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
-
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: true,
-      });
+      await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
     });
 
-    it('calls onSourcesChange with all sources within a category when "Unselect All" is clicked', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent({
-        selectedSources: ['oil/source/1', 'oil/source/2'],
-      });
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: false,
-      });
+    it('enables the submit button when changes have been made', () => {
+      const { getByRole } = renderComponent({ hasMadeChanges: true });
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
     });
 
-    it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
-      const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
-        selectedSources: ['oil/source/1', 'oil/source/2'],
-      });
-
-      userEvent.click(
-        getByRole('button', {
-          name: new RegExp(OIL_PARENT),
-        }),
-      );
-
-      userEvent.click(
-        getByRole('button', {
-          name: new RegExp(OIL_CHILD),
-        }),
-      );
-
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: false,
-      });
-    });
-
-    it('calls onSourcesChange with only the sources which have changed', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent({
+    it('shows the count of selected layers in a category', () => {
+      const { getAllByText } = renderComponent({
         selectedSources: ['oil/source/1'],
       });
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/2'],
-        selected: true,
+      // eslint-disable-next-line jest-dom/prefer-in-document
+      expect(getAllByText('(1/2)')).toHaveLength(1);
+    });
+
+    describe('Select All', () => {
+      it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent();
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: true,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
+        const { onSourcesChange, getByRole, getAllByRole } = renderComponent();
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_PARENT),
+          }),
+        );
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_CHILD),
+          }),
+        );
+
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
+
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: true,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a category when "Unselect All" is clicked', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1', 'oil/source/2'],
+        });
+        userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: false,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
+        const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1', 'oil/source/2'],
+        });
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_PARENT),
+          }),
+        );
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_CHILD),
+          }),
+        );
+
+        userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: false,
+        });
+      });
+
+      it('calls onSourcesChange with only the sources which have changed', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1'],
+        });
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/2'],
+          selected: true,
+        });
       });
     });
   });
-});
 
-describe('<LayerSelect /> Crossfiltering tests', () => {
-  it('shows text when no orb is selected', () => {
-    const { getByText } = renderComponent({
-      orbs: null,
-      selectedOrbName: null,
-      isCrossFilteringMode: true,
-    });
-    expect(
-      getByText('Select Your Orb in order to find layers'),
-    ).toBeInTheDocument();
-  });
-
-  it('disables the button when no changes have been made', () => {
-    const { getByRole } = renderComponent({ isCrossFilteringMode: true });
-    expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
-  });
-
-  it('shows category headings', () => {
-    const { getByRole } = renderComponent();
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    ).toBeInTheDocument();
-    expect(
-      getByRole('button', {
-        name: new RegExp('Gas Parent 1'),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('expands the category headings when clicked', () => {
-    const { getByRole } = renderComponent({ isCrossFilteringMode: true });
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('hides sub-categories when heading is clicked again', async () => {
-    const { getByRole, queryByRole } = renderComponent({
-      isCrossFilteringMode: true,
-    });
-
-    const categoryHeading = getByRole('button', {
-      name: new RegExp(OIL_PARENT),
-    });
-
-    userEvent.click(categoryHeading);
-
-    const subCategoryHeading = getByRole('button', {
-      name: new RegExp(OIL_CHILD),
-    });
-
-    userEvent.click(subCategoryHeading);
-
-    expect(
-      getByRole('button', {
-        name: 'Oil Source 1',
-      }),
-    ).toBeInTheDocument();
-
-    userEvent.click(subCategoryHeading);
-
-    await waitFor(() =>
-      expect(
-        queryByRole('button', {
-          name: 'Oil Source 1',
-        }),
-      ).not.toBeInTheDocument(),
-    );
-  });
-
-  it('shows sub-category headings', () => {
-    const { getByRole } = renderComponent({ isCrossFilteringMode: true });
-
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-
-    expect(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    ).toBeInTheDocument();
-  });
-
-  it('expands sub-category headings when clicked', async () => {
-    const { getByRole } = renderComponent({ isCrossFilteringMode: true });
-
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_PARENT),
-      }),
-    );
-    userEvent.click(
-      getByRole('button', {
-        name: new RegExp(OIL_CHILD),
-      }),
-    );
-
-    const checkbox = getByRole('button', {
-      name: 'Oil Source 1',
-    });
-
-    await waitFor(() => expect(checkbox).toBeInTheDocument());
-  });
-
-  it('hides sub-categories when heading is clicked again', async () => {
-    const { getByRole, queryByRole } = renderComponent({
-      isCrossFilteringMode: true,
-      selectedCrossFilterProperties: [],
-    });
-
-    const categoryHeading = getByRole('button', {
-      name: new RegExp(OIL_PARENT),
-    });
-
-    userEvent.click(categoryHeading);
-
-    const subCategoryHeading = getByRole('button', {
-      name: new RegExp(OIL_CHILD),
-    });
-
-    userEvent.click(subCategoryHeading);
-
-    expect(
-      getByRole('button', {
-        name: 'Oil Source 1',
-      }),
-    ).toBeInTheDocument();
-
-    userEvent.click(subCategoryHeading);
-
-    await waitFor(() =>
-      expect(
-        queryByRole('button', {
-          name: 'Oil Source 1',
-        }),
-      ).not.toBeInTheDocument(),
-    );
-  });
-
-  // TODO : fix this (same issue again)
-  xit('calls onSourceChange when a source is clicked', async () => {
-    const { getByRole, onSourcesChange } = renderComponent({
-      isCrossFilteringMode: true,
-    });
-
-    userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
-
-    userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
-
-    userEvent.click(
-      getByRole('button', {
-        name: 'Oil Source 1',
-      }),
-    );
-
-    await waitFor(() => expect(onSourcesChange).toHaveBeenCalled());
-  });
-
-  // TODO: fix this. need to set selectedCrossFilteringProperties!
-  xit('enables the submit button when changes have been made', () => {
-    const { getByRole } = renderComponent({
-      hasMadeChanges: true,
-      isCrossFilteringMode: true,
-    });
-    expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
-  });
-
-  describe('Select All', () => {
-    it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent();
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: true,
+  describe('<LayerSelect /> Crossfiltering tests', () => {
+    it('shows text when no orb is selected', () => {
+      const { getByText } = renderComponent({
+        orbs: null,
+        selectedOrbName: null,
+        isCrossFilteringMode: true,
       });
+      expect(
+        getByText('Select Your Orb in order to find layers'),
+      ).toBeInTheDocument();
     });
 
-    it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
-      const { onSourcesChange, getByRole, getAllByRole } = renderComponent();
+    it('disables the button when no changes have been made', () => {
+      const { getByRole } = renderComponent({ isCrossFilteringMode: true });
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeDisabled();
+    });
+
+    it('shows category headings', () => {
+      const { getByRole } = renderComponent();
+      expect(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      ).toBeInTheDocument();
+      expect(
+        getByRole('button', {
+          name: new RegExp('Gas Parent 1'),
+        }),
+      ).toBeInTheDocument();
+    });
+
+    it('expands the category headings when clicked', () => {
+      const { getByRole } = renderComponent({ isCrossFilteringMode: true });
+      userEvent.click(
+        getByRole('button', {
+          name: new RegExp(OIL_PARENT),
+        }),
+      );
+      expect(
+        getByRole('button', {
+          name: new RegExp(OIL_CHILD),
+        }),
+      ).toBeInTheDocument();
+    });
+
+    it('hides sub-categories when heading is clicked again', async () => {
+      const { getByRole, queryByRole } = renderComponent({
+        isCrossFilteringMode: true,
+      });
+
+      const categoryHeading = getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      });
+
+      userEvent.click(categoryHeading);
+
+      const subCategoryHeading = getByRole('button', {
+        name: new RegExp(OIL_CHILD),
+      });
+
+      userEvent.click(subCategoryHeading);
+
+      expect(
+        getByRole('button', {
+          name: 'Oil Source 1',
+        }),
+      ).toBeInTheDocument();
+
+      userEvent.click(subCategoryHeading);
+
+      await waitFor(() =>
+        expect(
+          queryByRole('button', {
+            name: 'Oil Source 1',
+          }),
+        ).not.toBeInTheDocument(),
+      );
+    });
+
+    it('shows sub-category headings', () => {
+      const { getByRole } = renderComponent({ isCrossFilteringMode: true });
 
       userEvent.click(
         getByRole('button', {
@@ -666,63 +564,181 @@ describe('<LayerSelect /> Crossfiltering tests', () => {
         }),
       );
 
-      userEvent.click(
+      expect(
         getByRole('button', {
           name: new RegExp(OIL_CHILD),
         }),
-      );
-
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
-
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: true,
-      });
+      ).toBeInTheDocument();
     });
 
-    it('calls onSourcesChange with all sources within a category when "Unselect All" is clicked', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent({
-        selectedSources: ['oil/source/1', 'oil/source/2'],
-      });
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: false,
-      });
-    });
-
-    it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
-      const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
-        selectedSources: ['oil/source/1', 'oil/source/2'],
-      });
+    it('expands sub-category headings when clicked', async () => {
+      const { getByRole } = renderComponent({ isCrossFilteringMode: true });
 
       userEvent.click(
         getByRole('button', {
           name: new RegExp(OIL_PARENT),
         }),
       );
-
       userEvent.click(
         getByRole('button', {
           name: new RegExp(OIL_CHILD),
         }),
       );
 
-      userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/1', 'oil/source/2'],
-        selected: false,
+      const checkbox = getByRole('button', {
+        name: 'Oil Source 1',
       });
+
+      await waitFor(() => expect(checkbox).toBeInTheDocument());
     });
 
-    it('calls onSourcesChange with only the sources which have changed', () => {
-      const { onSourcesChange, getAllByRole } = renderComponent({
-        selectedSources: ['oil/source/1'],
+    it('hides sub-categories when heading is clicked again', async () => {
+      const { getByRole, queryByRole } = renderComponent({
+        isCrossFilteringMode: true,
+        selectedCrossFilterProperties: [],
       });
-      userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
-      expect(onSourcesChange).toHaveBeenCalledWith({
-        source_ids: ['oil/source/2'],
-        selected: true,
+
+      const categoryHeading = getByRole('button', {
+        name: new RegExp(OIL_PARENT),
+      });
+
+      userEvent.click(categoryHeading);
+
+      const subCategoryHeading = getByRole('button', {
+        name: new RegExp(OIL_CHILD),
+      });
+
+      userEvent.click(subCategoryHeading);
+
+      expect(
+        getByRole('button', {
+          name: 'Oil Source 1',
+        }),
+      ).toBeInTheDocument();
+
+      userEvent.click(subCategoryHeading);
+
+      await waitFor(() =>
+        expect(
+          queryByRole('button', {
+            name: 'Oil Source 1',
+          }),
+        ).not.toBeInTheDocument(),
+      );
+    });
+
+    it('calls onCrossFilterPropertiesChange when a property is clicked', async () => {
+      const { getByRole, onCrossFilterPropertiesChange } = renderComponent({
+        isCrossFilteringMode: true,
+      });
+
+      userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
+
+      userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
+
+      userEvent.click(
+        getByRole('button', {
+          name: 'Oil Source 1',
+        }),
+      );
+
+      userEvent.click(
+        getByRole('button', {
+          name: 'First item',
+        }),
+      );
+
+      await waitFor(() =>
+        expect(onCrossFilterPropertiesChange).toHaveBeenCalled(),
+      );
+    });
+
+    // TODO: fix this. need to set selectedCrossFilteringProperties!
+    xit('enables the submit button when changes have been made', () => {
+      const { getByRole } = renderComponent({
+        hasMadeChanges: true,
+        isCrossFilteringMode: true,
+      });
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
+    });
+
+    describe('Select All', () => {
+      it('calls onSourcesChange with all sources within a category when "Select All"  is clicked', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent();
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: true,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a sub-category when "Select All" is clicked', () => {
+        const { onSourcesChange, getByRole, getAllByRole } = renderComponent();
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_PARENT),
+          }),
+        );
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_CHILD),
+          }),
+        );
+
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[1]);
+
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: true,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a category when "Unselect All" is clicked', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1', 'oil/source/2'],
+        });
+        userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: false,
+        });
+      });
+
+      it('calls onSourcesChange with all sources within a sub-category when "Unselect All" is clicked', () => {
+        const { onSourcesChange, getByRole, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1', 'oil/source/2'],
+        });
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_PARENT),
+          }),
+        );
+
+        userEvent.click(
+          getByRole('button', {
+            name: new RegExp(OIL_CHILD),
+          }),
+        );
+
+        userEvent.click(getAllByRole('button', { name: UNSELECT_ALL })[1]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/1', 'oil/source/2'],
+          selected: false,
+        });
+      });
+
+      it('calls onSourcesChange with only the sources which have changed', () => {
+        const { onSourcesChange, getAllByRole } = renderComponent({
+          selectedSources: ['oil/source/1'],
+        });
+        userEvent.click(getAllByRole('button', { name: SELECT_ALL })[0]);
+        expect(onSourcesChange).toHaveBeenCalledWith({
+          source_ids: ['oil/source/2'],
+          selected: true,
+        });
       });
     });
   });

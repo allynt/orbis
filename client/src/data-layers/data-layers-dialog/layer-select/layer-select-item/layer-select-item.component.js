@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 /**
  * @param {{
  *   isSelected?: boolean
- *   sourceOrProperty: {id: string, label: string, description: string},
+ *   sourceOrProperty: import('typings').SourceOrProperty
  *   onChange: (params: {source_ids: import('typings').Source['source_id'][]; selected: boolean}) => void
  *   isItemEnabled: boolean
  * }} props
