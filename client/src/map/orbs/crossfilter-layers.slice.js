@@ -157,14 +157,14 @@ const TEMP_SHARED_PROPERTY = {
 
 /**
  * @typedef {GenericOrbAction<{
- *    other?: any
- * }>} SetOtherAction
+ *     selectedProperty: object
+ *   }>} SetSelectedProperty
  */
 
 /**
  * @typedef {GenericOrbAction<{
- *   data?: any
- * }>} SetDataAction
+ *   data: string[]
+ * }>} SetCrossFilterDataAction
  */
 
 /** @type {LayersState} */
@@ -191,13 +191,13 @@ const crossFilterLayersSlice = createSlice({
       const { key, propertyName, filterValue } = payload;
       state[key] = { ...state[key], [propertyName]: filterValue };
     },
-    /** @type {SetOtherAction} */
-    setOther: (state, { payload }) => {
-      if (!payload.key) return handleMissingKey();
-      const { key, other } = payload;
-      state[key] = { ...state[key], other };
+    /** @type {SetSelectedProperty} */
+    setSelectedProperty: (state, { payload }) => {
+      if (!payload) return handleMissingKey();
+      const { key, selectedProperty } = payload;
+      state[key] = selectedProperty;
     },
-    /** @type {SetDataAction} */
+    /** @type {SetCrossFilterDataAction} */
     setCrossFilterData: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
@@ -206,7 +206,7 @@ const crossFilterLayersSlice = createSlice({
   },
 });
 
-export const { setCrossFilterData, setFilterValue, setOther } =
+export const { setCrossFilterData, setFilterValue, setSelectedProperty } =
   crossFilterLayersSlice.actions;
 
 /**

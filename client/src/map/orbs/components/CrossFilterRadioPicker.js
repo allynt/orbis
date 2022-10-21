@@ -20,6 +20,7 @@ import {
   selectedPropertySelector,
   crossFilterValuesSelector,
   setFilterValue,
+  setSelectedProperty,
 } from '../crossfilter-layers.slice';
 
 const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
@@ -58,8 +59,14 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
       }),
     );
 
-  const handleRadioClick = property => {
-    console.log('property: ', property);
+  /** @param {object} selectedProperty */
+  const handleRadioClick = selectedProperty => {
+    dispatch(
+      setSelectedProperty({
+        key: 'selectedProperty',
+        selectedProperty,
+      }),
+    );
   };
 
   const categoryPath = '';
