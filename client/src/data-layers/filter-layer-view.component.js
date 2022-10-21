@@ -48,6 +48,33 @@ const useStyles = makeStyles(theme => ({
   disabled: {},
 }));
 
+// Groups selected properties by their parent source_ids
+// example: { source_id: [propertyMetadata1, propertyMetadata2]
+export const groupPropertiesAndSourceIds = (properties, dataSources) =>
+  properties.reduce((acc, property) => {
+    const propertyParentSourceId = dataSources?.find(
+      source => !!source.properties.find(p => p.label === property.label),
+    ).source_id;
+    if (!propertyParentSourceId) return acc;
+    return {
+      ...acc,
+      [propertyParentSourceId]: [
+        ...(acc[propertyParentSourceId] ?? []),
+        property,
+      ],
+    };
+  }, {});
+
+export const getGeometryType = geometryTypes => {
+  let result = null;
+  geometryTypes.forEach(element => {
+    if (!result || GEOMETRY_TYPES[element] < GEOMETRY_TYPES[result]) {
+      result = element;
+    }
+  });
+  return result;
+};
+
 const FilterLayerView = ({
   sidebarComponents,
   activeCategorisedSources,
@@ -67,43 +94,16 @@ const FilterLayerView = ({
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
-  // Groups selected properties by their parent source_ids
-  // example: { source_id: [propertyMetadata1, propertyMetadata2] }
-  const groupPropertiesAndSourceIds = properties =>
-    properties.reduce((acc, property) => {
-      const propertyParentSourceId = dataSources.find(source =>
-        source.properties.find(p => p.label === property.label),
-      ).source_id;
-
-      if (!propertyParentSourceId) return acc;
-      return {
-        ...acc,
-        [propertyParentSourceId]: [
-          ...(acc[propertyParentSourceId] ?? []),
-          property,
-        ],
-      };
-    }, {});
-
-  const getGeometryType = geometryTypes => {
-    let result = null;
-    geometryTypes.forEach(element => {
-      if (!result || GEOMETRY_TYPES[element] < GEOMETRY_TYPES[result]) {
-        result = element;
-      }
-    });
-    return result;
-  };
-
   const handleDialogSubmit = selectedProperties => {
-    const groupedPropertiesAndSourceIds =
-      groupPropertiesAndSourceIds(selectedProperties);
+    const groupedPropertiesAndSourceIds = groupPropertiesAndSourceIds(
+      selectedProperties,
+      dataSources,
+    );
 
     // Non-duplicated array of source_ids for selected properties
     const sourcesIdsOfSelectedProperties = Object.keys(
       groupedPropertiesAndSourceIds,
     );
-
     const geometryTypes = dataSources
       .filter(dataSource =>
         sourcesIdsOfSelectedProperties.includes(dataSource.source_id),
@@ -113,7 +113,6 @@ const FilterLayerView = ({
           source.metadata.application.orbis.crossfiltering
             .geometry_types_hierarchy[0],
       );
-
     const selectedPropertiesCommonGeometry = getGeometryType(geometryTypes);
     dispatch(setCrossFilteringCommonGeometry(selectedPropertiesCommonGeometry));
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
