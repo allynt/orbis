@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 
 import { logDataset, logError } from 'data-layers/data-layers.slice';
+import { getAuthTokenForSource } from 'utils/tokens';
 
 const initialState = { isLoading: false, visible: true };
 
@@ -13,15 +14,19 @@ const name = 'aisShipping';
 export const fetchResults = createAsyncThunk(
   `${name}/fetchResults`,
   async ({ source, url }, { dispatch, getState, rejectWithValue }) => {
-    const {
-      data: { token },
-    } = getState();
 
     const { source_id } = source;
 
+    const {
+      data: { tokens },
+    } = getState();
+    const authToken = getAuthTokenForSource(tokens, {
+      source_id: source_id,
+    });
+
     try {
       const response = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${authToken}` },
       });
       if (!response.ok) {
         return dispatch(logError({ source_id }));
