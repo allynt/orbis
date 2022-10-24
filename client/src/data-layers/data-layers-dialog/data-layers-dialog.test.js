@@ -21,11 +21,11 @@ const application = {
   },
 };
 
-const TEST_CHILD_NAME = /Test Child Name/i;
-const TEST_PARENT_NAME = /Test Parent Name/i;
-const ORB_1_SOURCE_1 = /Orb 1 Source 1/i;
-const ORB_1_SOURCE_2 = /Orb 1 Source 2/i;
-const TEST_2_PARENT_NAME = /Test 2 Parent Name/i;
+const TEST_CHILD_NAME = /test child name/i;
+const TEST_PARENT_NAME = /test parent name/i;
+const ORB_1_SOURCE_1 = /orb 1 source 1/i;
+const ORB_1_SOURCE_2 = /orb 1 source 2/i;
+const TEST_2_PARENT_NAME = /test 2 parent name/i;
 
 const SOURCES = [
   {

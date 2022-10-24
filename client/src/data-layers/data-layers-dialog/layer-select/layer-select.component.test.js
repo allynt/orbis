@@ -9,10 +9,9 @@ const SUBMIT_BUTTON = /confirm/i;
 const SELECT_ALL = /^select\sall/i;
 const UNSELECT_ALL = /unselect\sall/i;
 
-const OIL_PARENT = /Oil Parent 1/i;
-const OIL_CHILD = /Oil Child 1/i;
-const GAS_PARENT_1 = /Gas Parent 1/i;
-const OIL_SOURCE_1 = /Oil Source 1'/i;
+const OIL_PARENT = /oil parent 1/i;
+const OIL_CHILD = /oil child 1/i;
+const GAS_PARENT_1 = /gas parent 1/i;
 
 const SOURCES = [
   {
