@@ -283,6 +283,7 @@ export const useOrbs = activeSources => {
           orbState,
           authToken,
           crossFilteringCommonGeometry,
+          crossFilteringSelectedProperties,
           ...metadataConfig,
         });
       }
@@ -306,6 +307,8 @@ export const useOrbs = activeSources => {
     orbState,
     authTokens,
     isCrossFilterMode,
+    crossFilteringCommonGeometry,
+    crossFilteringSelectedProperties,
   ]);
 
   return {
