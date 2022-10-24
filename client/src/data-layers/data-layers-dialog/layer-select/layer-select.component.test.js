@@ -29,34 +29,34 @@ const SOURCES = [
           orbs: [{ name: 'Oil and Gas', description: 'test' }],
         },
       },
+      properties: [
+        {
+          name: 'foobar',
+          label: 'First item',
+          description: 'This is a first property',
+        },
+        {
+          name: 'barbaz',
+          label: 'Second Item',
+          description: 'This is a second property',
+        },
+        {
+          name: 'bazgaz',
+          label: 'Third Item',
+          description: 'This is a third property',
+        },
+        {
+          name: 'abbbob',
+          label: 'Fourth Item',
+          description: 'This is a fourth property',
+        },
+        {
+          name: 'bobcob',
+          label: 'Fifth Item',
+          description: 'This is a fifth property',
+        },
+      ],
     },
-    properties: [
-      {
-        name: 'foobar',
-        label: 'First item',
-        description: 'This is a first property',
-      },
-      {
-        name: 'barbaz',
-        label: 'Second Item',
-        description: 'This is a second property',
-      },
-      {
-        name: 'bazgaz',
-        label: 'Third Item',
-        description: 'This is a third property',
-      },
-      {
-        name: 'abbbob',
-        label: 'Fourth Item',
-        description: 'This is a fourth property',
-      },
-      {
-        name: 'bobcob',
-        label: 'Fifth Item',
-        description: 'This is a fifth property',
-      },
-    ],
   },
   {
     source_id: 'oil/source/2',
@@ -73,34 +73,34 @@ const SOURCES = [
           orbs: [{ name: 'Oil and Gas', description: 'test' }],
         },
       },
+      properties: [
+        {
+          name: 'foobar',
+          label: 'First item',
+          description: 'This is a first property',
+        },
+        {
+          name: 'barbaz',
+          label: 'Second Item',
+          description: 'This is a second property',
+        },
+        {
+          name: 'bazgaz',
+          label: 'Third Item',
+          description: 'This is a third property',
+        },
+        {
+          name: 'abbbob',
+          label: 'Fourth Item',
+          description: 'This is a fourth property',
+        },
+        {
+          name: 'bobcob',
+          label: 'Fifth Item',
+          description: 'This is a fifth property',
+        },
+      ],
     },
-    properties: [
-      {
-        name: 'foobar',
-        label: 'First item',
-        description: 'This is a first property',
-      },
-      {
-        name: 'barbaz',
-        label: 'Second Item',
-        description: 'This is a second property',
-      },
-      {
-        name: 'bazgaz',
-        label: 'Third Item',
-        description: 'This is a third property',
-      },
-      {
-        name: 'abbbob',
-        label: 'Fourth Item',
-        description: 'This is a fourth property',
-      },
-      {
-        name: 'bobcob',
-        label: 'Fifth Item',
-        description: 'This is a fifth property',
-      },
-    ],
   },
   {
     source_id: 'gas/source/1',
@@ -117,34 +117,34 @@ const SOURCES = [
           orbs: [{ name: 'Oil and Gas', description: 'test' }],
         },
       },
+      properties: [
+        {
+          name: 'foobar',
+          label: 'First item',
+          description: 'This is a first property',
+        },
+        {
+          name: 'barbaz',
+          label: 'Second Item',
+          description: 'This is a second property',
+        },
+        {
+          name: 'bazgaz',
+          label: 'Third Item',
+          description: 'This is a third property',
+        },
+        {
+          name: 'abbbob',
+          label: 'Fourth Item',
+          description: 'This is a fourth property',
+        },
+        {
+          name: 'bobcob',
+          label: 'Fifth Item',
+          description: 'This is a fifth property',
+        },
+      ],
     },
-    properties: [
-      {
-        name: 'foobar',
-        label: 'First item',
-        description: 'This is a first property',
-      },
-      {
-        name: 'barbaz',
-        label: 'Second Item',
-        description: 'This is a second property',
-      },
-      {
-        name: 'bazgaz',
-        label: 'Third Item',
-        description: 'This is a third property',
-      },
-      {
-        name: 'abbbob',
-        label: 'Fourth Item',
-        description: 'This is a fourth property',
-      },
-      {
-        name: 'bobcob',
-        label: 'Fifth Item',
-        description: 'This is a fifth property',
-      },
-    ],
   },
   {
     source_id: 'gas/source/2',
@@ -161,34 +161,34 @@ const SOURCES = [
           orbs: [{ name: 'Oil and Gas', description: 'test' }],
         },
       },
+      properties: [
+        {
+          name: 'foobar',
+          label: 'First item',
+          description: 'This is a first property',
+        },
+        {
+          name: 'barbaz',
+          label: 'Second Item',
+          description: 'This is a second property',
+        },
+        {
+          name: 'bazgaz',
+          label: 'Third Item',
+          description: 'This is a third property',
+        },
+        {
+          name: 'abbbob',
+          label: 'Fourth Item',
+          description: 'This is a fourth property',
+        },
+        {
+          name: 'bobcob',
+          label: 'Fifth Item',
+          description: 'This is a fifth property',
+        },
+      ],
     },
-    properties: [
-      {
-        name: 'foobar',
-        label: 'First item',
-        description: 'This is a first property',
-      },
-      {
-        name: 'barbaz',
-        label: 'Second Item',
-        description: 'This is a second property',
-      },
-      {
-        name: 'bazgaz',
-        label: 'Third Item',
-        description: 'This is a third property',
-      },
-      {
-        name: 'abbbob',
-        label: 'Fourth Item',
-        description: 'This is a fourth property',
-      },
-      {
-        name: 'bobcob',
-        label: 'Fifth Item',
-        description: 'This is a fifth property',
-      },
-    ],
   },
 ];
 

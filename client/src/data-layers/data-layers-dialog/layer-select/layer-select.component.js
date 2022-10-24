@@ -94,7 +94,7 @@ const renderCategories = ({
           />
         );
       } else {
-        return source?.properties.map(property => {
+        return source?.metadata?.properties.map(property => {
           const isSelected = !!selectedCrossFilterProperties.find(
             p => p.label === property.label,
           );
