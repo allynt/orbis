@@ -8,6 +8,7 @@ import {
   logError,
   isCrossFilteringModeSelector,
   crossFilteringCommonGeometrySelector,
+  activeCrossFilterPropertiesSelector,
 } from 'data-layers/data-layers.slice';
 import { setIsLoading } from 'map/map.slice';
 import { useMap } from 'MapContext';
@@ -27,6 +28,9 @@ export const useOrbs = activeSources => {
   const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
   const crossFilteringCommonGeometry = useSelector(
     crossFilteringCommonGeometrySelector,
+  );
+  const crossFilteringSelectedProperties = useSelector(
+    activeCrossFilterPropertiesSelector,
   );
 
   const layersWithDataIds = useSelector(state =>
@@ -100,7 +104,7 @@ export const useOrbs = activeSources => {
 
       dispatch(
         setCrossFilterData({
-          key: 'crossfilteringLayerData',
+          key: 'crossFilteringLayerData',
           data,
         }),
       );
@@ -166,12 +170,16 @@ export const useOrbs = activeSources => {
     /** @type {[string, JSX.Element][]} */
     const components = activeSources.map(source => {
       if (isCrossFilterMode) {
+        const newSource = {
+          ...source,
+          properties: crossFilteringSelectedProperties[source.source_id],
+        };
         return [
           source.source_id,
           makeComponent(
             source?.metadata?.application?.orbis?.crossfiltering
               ?.sidebar_component,
-            source,
+            newSource,
           ),
         ];
       } else {
@@ -202,7 +210,13 @@ export const useOrbs = activeSources => {
         {},
       ),
     );
-  }, [activeSources, dispatch, isCrossFilterMode, makeComponent]);
+  }, [
+    activeSources,
+    crossFilteringSelectedProperties,
+    dispatch,
+    isCrossFilterMode,
+    makeComponent,
+  ]);
 
   /**
    * Create (from metadata) and set in local state, the components to be used

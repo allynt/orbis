@@ -63,7 +63,7 @@ const configuration = ({
   crossFilteringCommonGeometry,
 }) => {
   const source = activeSources?.find(source => source.source_id === id);
-  const urls = dataSelector(id)(orbState);
+  const urls = dataSelector(orbState);
   const data = urls ? urls[0] : [];
   const extraData = urls ? urls.slice(1) : [];
 

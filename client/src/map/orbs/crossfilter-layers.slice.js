@@ -132,17 +132,10 @@ const TEMP_SHARED_PROPERTY = {
 
 /**
  * @typedef {{
- *   [key: string]: {
- *     visible?: boolean,
- *     clickedFeatures?: GeoJsonFeature[]
- *     hoveredFeatures?: GeoJsonFeature[],
- *     filterValue?: any
- *     other?: any
- *     timestamp?: number
- *     data?: any
- *   },
- *   extrudedMode: boolean
- *   extrusionScale: number
+ *   crossFilterValues: object
+ *   crossFilteringLayerData: string[]
+ *   selectedProperty: object|null
+ *   crossFilteringCommonGeometry: string|null
  * }} LayersState
  */
 
@@ -158,29 +151,29 @@ const TEMP_SHARED_PROPERTY = {
 
 /**
  * @typedef {GenericOrbAction<{
- *     filterValue?: any
+ *     propertyName: string
+ *     filterValue?: number[]
  *   }>} SetFilterValueAction
  */
 
 /**
  * @typedef {GenericOrbAction<{
- *    other?: any
- * }>} SetOtherAction
+ *     selectedProperty: object
+ *   }>} SetSelectedProperty
  */
 
 /**
  * @typedef {GenericOrbAction<{
- *   data?: any
- * }>} SetDataAction
+ *   data: string[]
+ * }>} SetCrossFilterDataAction
  */
 
 /** @type {LayersState} */
 const initialState = {
-  crossFilterShared: {
-    other: {
-      property: TEMP_SHARED_PROPERTY,
-    },
-  },
+  crossFilteringLayerData: [],
+  crossFilterValues: {},
+  selectedProperty: TEMP_SHARED_PROPERTY,
+  crossFilteringCommonGeometry: 'MSOA',
 };
 
 const handleMissingKey = () => {
@@ -190,40 +183,39 @@ const handleMissingKey = () => {
   return;
 };
 
-const layersSlice = createSlice({
+const crossFilterLayersSlice = createSlice({
   name: 'crossFilterLayers',
   initialState,
   reducers: {
     /** @type {SetFilterValueAction} */
     setFilterValue: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key, filterValue } = payload;
-      state[key] = { ...state[key], filterValue };
+      const { key, propertyName, filterValue } = payload;
+      state[key] = { ...state[key], [propertyName]: filterValue };
     },
-    /** @type {SetOtherAction} */
-    setOther: (state, { payload }) => {
-      if (!payload.key) return handleMissingKey();
-      const { key, other } = payload;
-      state[key] = { ...state[key], other };
+    /** @type {SetSelectedProperty} */
+    setSelectedProperty: (state, { payload }) => {
+      if (!payload) return handleMissingKey();
+      const { key, selectedProperty } = payload;
+      state[key] = selectedProperty;
     },
-    /** @type {SetDataAction} */
+    /** @type {SetCrossFilterDataAction} */
     setCrossFilterData: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
-      state[key] = { ...state[key], data };
+      state[key] = [...state[key], ...data];
     },
-    setState: (_, { payload }) => payload,
   },
 });
 
-export const { setCrossFilterData, setFilterValue, setOther, setState } =
-  layersSlice.actions;
+export const { setCrossFilterData, setFilterValue, setSelectedProperty } =
+  crossFilterLayersSlice.actions;
 
 /**
  * @param {import('./orbReducer').OrbState} orbs
  * @returns {LayersState}
  */
-const baseSelector = orbs => orbs?.[layersSlice.name];
+const baseSelector = orbs => orbs?.[crossFilterLayersSlice.name];
 
 export const crossFilterLayersWithDataSelector = createSelector(
   baseSelector,
@@ -237,18 +229,25 @@ export const crossFilterLayersWithDataSelector = createSelector(
     ),
 );
 
-export const dataSelector = () =>
-  createSelector(baseSelector, state => state?.crossfilteringLayerData?.data);
+/**@param {string} id */
+export const dataSelector = createSelector(
+  baseSelector,
+  state => state?.crossFilteringLayerData,
+);
 
-/** @param {string} id */
-export const filterValueSelector = id =>
-  createSelector(baseSelector, state => state?.[id]?.filterValue);
+export const crossFilterValuesSelector = createSelector(
+  baseSelector,
+  state => state?.crossFilterValues,
+);
 
-/** @param {string} id */
-export const otherSelector = id =>
-  createSelector(baseSelector, state => state?.[id]?.other);
+export const selectedPropertySelector = createSelector(
+  baseSelector,
+  state => state?.selectedProperty,
+);
 
-export const crossFilterUrlsSelector = () =>
-  createSelector(baseSelector, state => state?.crossFilterShared?.other);
+export const crossFilteringCommonGeometrySelector = createSelector(
+  baseSelector,
+  state => state?.crossFilteringCommonGeometry ?? null,
+);
 
-export default layersSlice.reducer;
+export default crossFilterLayersSlice.reducer;
