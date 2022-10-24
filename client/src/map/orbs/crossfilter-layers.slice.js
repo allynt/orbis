@@ -171,7 +171,11 @@ const TEMP_SHARED_PROPERTY = {
 /** @type {LayersState} */
 const initialState = {
   crossFilteringLayerData: [],
-  crossFilterValues: {},
+  crossFilterValues: {
+    'Alternative Claimant Count: Total': [5, 1777],
+    'Alternative Claimant Count: Change': [8, 1777],
+    'Children in low income families: total': [0, 3182],
+  },
   selectedProperty: TEMP_SHARED_PROPERTY,
   crossFilteringCommonGeometry: 'MSOA',
 };
