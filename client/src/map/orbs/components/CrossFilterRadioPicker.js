@@ -71,67 +71,64 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
     );
 
   /** @param {object} selectedProperty */
-  const handleRadioClick = selectedProperty => {
+  const handleRadioClick = selectedProperty =>
     dispatch(
       setSelectedProperty({
         key: 'selectedProperty',
         selectedProperty,
       }),
     );
-  };
 
   const categoryPath = '';
 
   return (
     <Grid container direction="column">
-      {selectedLayer?.properties.map(property => {
-        return (
-          <Grid
-            key={property.name}
-            item
-            container
-            className={styles.slidersGridItem}
-          >
-            <Grid item container className={styles.radioIconContainer}>
-              <Grid item xs={11}>
-                <FormControlLabel
-                  checked={selectedProperty.name === property.name}
-                  label={property?.application?.orbis?.label || property?.label}
-                  control={
-                    <Radio
-                      onClick={() => handleRadioClick(property)}
-                      name="isolationPlus"
-                    />
-                  }
-                />
-              </Grid>
-              <Grid item xs={1}>
-                <InfoButtonTooltip
-                  tooltipContent={
-                    <TooltipContent
-                      categoryPath={categoryPath}
-                      description={
-                        property?.application?.orbis?.description ||
-                        property?.description
-                      }
-                    />
-                  }
-                />
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Slider
-                property={property}
-                filterRange={filterValues[property.name]}
-                onRangeFilterChange={filterValue =>
-                  handleSliderChange(property.name, filterValue)
+      {selectedLayer?.properties.map(property => (
+        <Grid
+          key={property.name}
+          item
+          container
+          className={styles.slidersGridItem}
+        >
+          <Grid item container className={styles.radioIconContainer}>
+            <Grid item xs={11}>
+              <FormControlLabel
+                checked={selectedProperty.name === property.name}
+                label={property?.application?.orbis?.label || property?.label}
+                control={
+                  <Radio
+                    onClick={() => handleRadioClick(property)}
+                    name="isolationPlus"
+                  />
                 }
-                commonGeometry={commonGeometry}
+              />
+            </Grid>
+            <Grid item xs={1}>
+              <InfoButtonTooltip
+                tooltipContent={
+                  <TooltipContent
+                    categoryPath={categoryPath}
+                    description={
+                      property?.application?.orbis?.description ||
+                      property?.description
+                    }
+                  />
+                }
               />
             </Grid>
           </Grid>
-        );
-      })}
+          <Grid item>
+            <Slider
+              property={property}
+              filterRange={filterValues[property.name]}
+              onRangeFilterChange={filterValue =>
+                handleSliderChange(property.name, filterValue)
+              }
+              commonGeometry={commonGeometry}
+            />
+          </Grid>
+        </Grid>
+      ))}
     </Grid>
   );
 };
@@ -163,8 +160,6 @@ const Slider = ({
     filterRange,
     min: isRealValue(min) ? min : 0,
     max: isRealValue(max) ? max : 1,
-    clipMin: 22,
-    clipMax: 38,
     reversed: colormap_reversed,
     className: styles.slider,
     value: filterRange,
