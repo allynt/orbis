@@ -203,6 +203,13 @@ type CategoryHierarchy = {
   sources: CategorisedSources;
 };
 
+// following used to display leaf nodes in data layer dialog
+type SourceOrProperty = {
+  id: string;
+  label: string;
+  description: string;
+};
+
 type CategorisedSources = (CategoryHierarchy | Source)[];
 
 type OrbWithCategorisedSources = Orb & { sources: CategorisedSources };
