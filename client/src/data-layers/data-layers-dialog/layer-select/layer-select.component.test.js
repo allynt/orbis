@@ -9,8 +9,10 @@ const SUBMIT_BUTTON = /confirm/i;
 const SELECT_ALL = /^select\sall/i;
 const UNSELECT_ALL = /unselect\sall/i;
 
-const OIL_PARENT = 'Oil Parent 1';
-const OIL_CHILD = 'Oil Child 1';
+const OIL_PARENT = /Oil Parent 1/i;
+const OIL_CHILD = /Oil Child 1/i;
+const GAS_PARENT_1 = /Gas Parent 1/i;
+const OIL_SOURCE_1 = /Oil Source 1'/i;
 
 const SOURCES = [
   {
@@ -246,12 +248,12 @@ describe('<LayerSelect />', () => {
       const { getByRole } = renderComponent();
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       ).toBeInTheDocument();
       expect(
         getByRole('button', {
-          name: new RegExp('Gas Parent 1'),
+          name: GAS_PARENT_1,
         }),
       ).toBeInTheDocument();
     });
@@ -260,12 +262,12 @@ describe('<LayerSelect />', () => {
       const { getByRole } = renderComponent();
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       ).toBeInTheDocument();
     });
@@ -274,24 +276,24 @@ describe('<LayerSelect />', () => {
       const { getByRole, queryByRole } = renderComponent();
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       ).toBeInTheDocument();
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       await waitFor(() =>
         expect(
           queryByRole('button', {
-            name: new RegExp(OIL_CHILD),
+            name: OIL_CHILD,
           }),
         ).not.toBeInTheDocument(),
       );
@@ -302,13 +304,13 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
 
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       ).toBeInTheDocument();
     });
@@ -318,12 +320,12 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       );
 
@@ -338,13 +340,13 @@ describe('<LayerSelect />', () => {
       const { getByRole, queryByRole } = renderComponent();
 
       const categoryHeading = getByRole('button', {
-        name: new RegExp(OIL_PARENT),
+        name: OIL_PARENT,
       });
 
       userEvent.click(categoryHeading);
 
       const subCategoryHeading = getByRole('button', {
-        name: new RegExp(OIL_CHILD),
+        name: OIL_CHILD,
       });
 
       userEvent.click(subCategoryHeading);
@@ -369,9 +371,9 @@ describe('<LayerSelect />', () => {
     it('calls onSourceChange when a source is clicked', async () => {
       const { getByRole, onSourcesChange } = renderComponent();
 
-      userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
+      userEvent.click(getByRole('button', { name: OIL_PARENT }));
 
-      userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
+      userEvent.click(getByRole('button', { name: OIL_CHILD }));
 
       userEvent.click(
         getByRole('button', {
@@ -410,13 +412,13 @@ describe('<LayerSelect />', () => {
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_PARENT),
+            name: OIL_PARENT,
           }),
         );
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_CHILD),
+            name: OIL_CHILD,
           }),
         );
 
@@ -446,13 +448,13 @@ describe('<LayerSelect />', () => {
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_PARENT),
+            name: OIL_PARENT,
           }),
         );
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_CHILD),
+            name: OIL_CHILD,
           }),
         );
 
@@ -497,12 +499,12 @@ describe('<LayerSelect />', () => {
       const { getByRole } = renderComponent();
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       ).toBeInTheDocument();
       expect(
         getByRole('button', {
-          name: new RegExp('Gas Parent 1'),
+          name: GAS_PARENT_1,
         }),
       ).toBeInTheDocument();
     });
@@ -511,12 +513,12 @@ describe('<LayerSelect />', () => {
       const { getByRole } = renderComponent({ isCrossFilteringMode: true });
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       ).toBeInTheDocument();
     });
@@ -527,13 +529,13 @@ describe('<LayerSelect />', () => {
       });
 
       const categoryHeading = getByRole('button', {
-        name: new RegExp(OIL_PARENT),
+        name: OIL_PARENT,
       });
 
       userEvent.click(categoryHeading);
 
       const subCategoryHeading = getByRole('button', {
-        name: new RegExp(OIL_CHILD),
+        name: OIL_CHILD,
       });
 
       userEvent.click(subCategoryHeading);
@@ -560,13 +562,13 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
 
       expect(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       ).toBeInTheDocument();
     });
@@ -576,12 +578,12 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_PARENT),
+          name: OIL_PARENT,
         }),
       );
       userEvent.click(
         getByRole('button', {
-          name: new RegExp(OIL_CHILD),
+          name: OIL_CHILD,
         }),
       );
 
@@ -599,13 +601,13 @@ describe('<LayerSelect />', () => {
       });
 
       const categoryHeading = getByRole('button', {
-        name: new RegExp(OIL_PARENT),
+        name: OIL_PARENT,
       });
 
       userEvent.click(categoryHeading);
 
       const subCategoryHeading = getByRole('button', {
-        name: new RegExp(OIL_CHILD),
+        name: OIL_CHILD,
       });
 
       userEvent.click(subCategoryHeading);
@@ -632,9 +634,9 @@ describe('<LayerSelect />', () => {
         isCrossFilteringMode: true,
       });
 
-      userEvent.click(getByRole('button', { name: new RegExp(OIL_PARENT) }));
+      userEvent.click(getByRole('button', { name: OIL_PARENT }));
 
-      userEvent.click(getByRole('button', { name: new RegExp(OIL_CHILD) }));
+      userEvent.click(getByRole('button', { name: OIL_CHILD }));
 
       userEvent.click(
         getByRole('button', {
@@ -705,13 +707,13 @@ describe('<LayerSelect />', () => {
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_PARENT),
+            name: OIL_PARENT,
           }),
         );
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_CHILD),
+            name: OIL_CHILD,
           }),
         );
 
@@ -741,13 +743,13 @@ describe('<LayerSelect />', () => {
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_PARENT),
+            name: OIL_PARENT,
           }),
         );
 
         userEvent.click(
           getByRole('button', {
-            name: new RegExp(OIL_CHILD),
+            name: OIL_CHILD,
           }),
         );
 
