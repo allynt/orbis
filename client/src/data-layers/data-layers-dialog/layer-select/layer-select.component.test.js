@@ -27,6 +27,40 @@ const SOURCES = [
             child: { name: 'Oil Child 1' },
           },
           orbs: [{ name: 'Oil and Gas', description: 'test' }],
+          crossfiltering: {
+            layer: {
+              name: 'MVTComboLayer',
+              props: {
+                config: 'isolationPlusLayerConfig',
+              },
+            },
+            geometry_types_hierarchy: ['OA', 'LSOA', 'MSOA', 'LAD16', 'LAD19'],
+            OA: {
+              tiles: [
+                'https://staticdata.testing.astrosat.net/astrosat/isolation_plus/dwp_benefits/crossfiltering/oa_gb_benefits_breakdown_raw_crossfilter__mvt/{z}/{x}/{y}.pbf',
+              ],
+            },
+            LSOA: {
+              tiles: [
+                'https://staticdata.testing.astrosat.net/astrosat/isolation_plus/dwp_benefits/crossfiltering/lsoa_gb_benefits_breakdown_raw_crossfilter__mvt/{z}/{x}/{y}.pbf',
+              ],
+            },
+            MSOA: {
+              tiles: [
+                'https://staticdata.testing.astrosat.net/astrosat/isolation_plus/dwp_benefits/crossfiltering/msoa_gb_benefits_breakdown_raw_crossfilter__mvt/{z}/{x}/{y}.pbf',
+              ],
+            },
+            LAD16: {
+              tiles: [
+                'https://staticdata.testing.astrosat.net/astrosat/isolation_plus/dwp_benefits/crossfiltering/lad16_gb_benefits_breakdown_raw_crossfilter__mvt/{z}/{x}/{y}.pbf',
+              ],
+            },
+            LAD19: {
+              tiles: [
+                'https://staticdata.testing.astrosat.net/astrosat/isolation_plus/dwp_benefits/crossfiltering/lad19_gb_benefits_breakdown_raw_crossfilter__mvt/{z}/{x}/{y}.pbf',
+              ],
+            },
+          },
         },
       },
       properties: [
