@@ -21,6 +21,12 @@ const application = {
   },
 };
 
+const TEST_CHILD_NAME = /Test Child Name/i;
+const TEST_PARENT_NAME = /Test Parent Name/i;
+const ORB_1_SOURCE_1 = /Orb 1 Source 1/i;
+const ORB_1_SOURCE_2 = /Orb 1 Source 2/i;
+const TEST_2_PARENT_NAME = /Test 2 Parent Name/i;
+
 const SOURCES = [
   {
     source_id: 'orb/1/source/1',
@@ -114,17 +120,17 @@ describe('<DataLayersDialog />', () => {
     userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Parent Name', 'i'),
+        name: TEST_PARENT_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Child Name', 'i'),
+        name: TEST_CHILD_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Orb 1 Source 1', 'i'),
+        name: ORB_1_SOURCE_1,
       }),
     );
     userEvent.click(getByRole('button', { name: /confirm/i }));
@@ -139,22 +145,22 @@ describe('<DataLayersDialog />', () => {
     userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Parent Name'),
+        name: TEST_PARENT_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Child Name'),
+        name: TEST_CHILD_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Orb 1 Source 1'),
+        name: ORB_1_SOURCE_1,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Orb 1 Source 2'),
+        name: ORB_1_SOURCE_2,
       }),
     );
 
@@ -170,17 +176,17 @@ describe('<DataLayersDialog />', () => {
     userEvent.click(getByRole('button', { name: 'Test Orb Name' }));
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Parent Name'),
+        name: TEST_PARENT_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Test Child Name'),
+        name: TEST_CHILD_NAME,
       }),
     );
     userEvent.click(
       getByRole('button', {
-        name: new RegExp('Orb 1 Source 2'),
+        name: ORB_1_SOURCE_2,
       }),
     );
 
@@ -199,12 +205,12 @@ describe('<DataLayersDialog />', () => {
 
     expect(
       getByRole('button', {
-        name: new RegExp('Test Parent Name'),
+        name: TEST_PARENT_NAME,
       }),
     ).toBeInTheDocument();
     expect(
       getByRole('button', {
-        name: new RegExp('Test 2 Parent Name'),
+        name: TEST_2_PARENT_NAME,
       }),
     ).toBeInTheDocument();
 
@@ -240,12 +246,12 @@ describe('<DataLayersDialog />', () => {
 
     expect(
       getByRole('button', {
-        name: new RegExp('Test Parent Name'),
+        name: TEST_PARENT_NAME,
       }),
     ).toBeInTheDocument();
     expect(
       getByRole('button', {
-        name: new RegExp('Test 2 Parent Name'),
+        name: TEST_2_PARENT_NAME,
       }),
     ).toBeInTheDocument();
   });
