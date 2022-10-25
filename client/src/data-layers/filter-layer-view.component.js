@@ -5,6 +5,8 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { setFilterValues } from 'map/orbs/crossfilter-layers.slice';
+
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
@@ -14,6 +16,7 @@ import {
   isCrossFilteringModeSelector,
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
+  crossFilteringCommonGeometrySelector,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -63,6 +66,8 @@ const FilterLayerView = ({
     activeCrossFilterPropertiesSelector,
   );
 
+  const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
+
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
   // Groups selected properties by their parent source_ids
@@ -92,8 +97,19 @@ const FilterLayerView = ({
       groupedPropertiesAndSourceIds,
     );
 
+    const crossFilterValues = selectedProperties.reduce((acc, property) => {
+      const { min, max } =
+        property?.application?.orbis?.crossfiltering[commonGeometry];
+
+      return {
+        ...acc,
+        [property.name]: [min, max],
+      };
+    }, {});
+
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
+    dispatch(setFilterValues(crossFilterValues));
     toggle(false);
   };
 
