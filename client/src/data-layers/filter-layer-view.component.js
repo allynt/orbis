@@ -107,9 +107,9 @@ const FilterLayerView = ({
       };
     }, {});
 
-    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
-    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     dispatch(setFilterValues(crossFilterValues));
+    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
+    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
     toggle(false);
   };
 
