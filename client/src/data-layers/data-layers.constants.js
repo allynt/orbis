@@ -5,12 +5,12 @@ export const Panels = {
 };
 
 export const GEOMETRY_TYPES = {
-  OA: 1,
-  LSOA: 2,
-  MSOA: 3,
-  LAD_2016: 4,
-  LAD_2019: 5,
-  LAD_2020: 6,
+  OA: 6,
+  LSOA: 5,
+  MSOA: 4,
+  LAD_2016: 3,
+  LAD_2019: 2,
+  LAD_2020: 1,
 };
 
 export const MIN_SELECTED_PROPERTIES = 2;

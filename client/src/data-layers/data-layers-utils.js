@@ -1,6 +1,9 @@
 export const getGeometryType = (geometryTypes, geometryTypesHierarchy) => {
   let result = null;
   geometryTypes.forEach(element => {
+    if (!geometryTypesHierarchy[element]) {
+      throw new Error(`invalidGeometryType ${element}`);
+    }
     if (
       !result ||
       geometryTypesHierarchy[element] < geometryTypesHierarchy[result]

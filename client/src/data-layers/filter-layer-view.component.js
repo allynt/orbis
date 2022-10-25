@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
+import {
+  groupPropertiesAndSourceIds,
+  getGeometryType,
+} from './data-layers-utils';
 import { GEOMETRY_TYPES } from './data-layers.constants';
 import {
   crossFilterableDataSourcesSelector,
@@ -18,7 +22,6 @@ import {
   setCrossFilteringCommonGeometry,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
-import { groupPropertiesAndSourceIds, getGeometryType } from './utils';
 
 const useStyles = makeStyles(theme => ({
   disablingElement: {
@@ -82,11 +85,12 @@ const FilterLayerView = ({
       .filter(dataSource =>
         sourcesIdsOfSelectedProperties.includes(dataSource.source_id),
       )
-      .map(
-        source =>
+      .map(source => {
+        const hierarchy =
           source.metadata.application.orbis.crossfiltering
-            .geometry_types_hierarchy[0],
-      );
+            .geometry_types_hierarchy;
+        return hierarchy[hierarchy.length - 1];
+      });
     const selectedPropertiesCommonGeometry = getGeometryType(
       geometryTypes,
       GEOMETRY_TYPES,
