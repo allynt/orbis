@@ -106,6 +106,11 @@ const baseSelector = state => state?.app;
 
 export const configSelector = createSelector(baseSelector, app => app?.config);
 
+export const geometryHierarchySelector = createSelector(
+  configSelector,
+  config => config?.geometrySet,
+);
+
 export const passwordConfigSelector = createSelector(
   configSelector,
   /** @param {{passwordMinLength: number; passwordMaxLength: number; passwordStrength: number}} config */
