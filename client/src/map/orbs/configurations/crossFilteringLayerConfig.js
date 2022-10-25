@@ -1,8 +1,14 @@
+import { DataFilterExtension } from '@deck.gl/extensions';
 import { get } from 'lodash';
 
-import { getValueForTimestamp } from 'utils/data';
+import { getColorScaleForProperty } from 'utils/color';
+import { isRealValue } from 'utils/isRealValue';
 
-import { dataSelector } from '../crossfilter-layers.slice';
+import {
+  dataSelector,
+  crossFilterValuesSelector,
+  selectedPropertySelector,
+} from '../crossfilter-layers.slice';
 
 /** @typedef {import('typings').GeoJsonFeature<import('typings').IsoPlusCommonProperties>} AccessorFeature */
 
@@ -35,13 +41,8 @@ const GEOMETRY_IDS = {
  * @param {import('typings').Property} selectedProperty
  * @param {number} [selectedTimestamp]
  */
-export const getValue = (feature, selectedProperty, selectedTimestamp) =>
-  selectedProperty.timeseries
-    ? getValueForTimestamp(
-        feature.properties[selectedProperty.name],
-        selectedTimestamp ?? selectedProperty.timeseries_latest_timestamp,
-      )
-    : get(feature.properties, selectedProperty.name);
+export const getValue = (feature, selectedProperty) =>
+  get(feature.properties, selectedProperty.name);
 
 /**
  * @param {{
@@ -52,20 +53,64 @@ export const getValue = (feature, selectedProperty, selectedTimestamp) =>
  *   orbState: import('../orbReducer').OrbState
  *   authToken?: string
  * crossFilteringCommonGeometry?: object
+ * crossFilteringSelectedProperties?: object
  * }} parameters
  */
 const configuration = ({
   id,
   activeSources,
-  dispatch,
   orbState,
   authToken,
   crossFilteringCommonGeometry,
+  crossFilteringSelectedProperties,
 }) => {
+  const filterableProperties = Object.values(
+    crossFilteringSelectedProperties,
+  ).reduce((acc, val) => {
+    return [...acc, ...val];
+  }, []);
+
   const source = activeSources?.find(source => source.source_id === id);
-  const urls = dataSelector(id)(orbState);
+
+  const urls = dataSelector(orbState);
   const data = urls ? urls[0] : [];
   const extraData = urls ? urls.slice(1) : [];
+
+  const filterRanges = crossFilterValuesSelector(orbState);
+  const filterRangeValues = Object.values(filterRanges);
+
+  const getFilterValue = feature =>
+    filterableProperties.map(property => feature.properties[property.name]);
+
+  const selectedProperty = selectedPropertySelector(orbState);
+
+  const colorScale =
+    selectedProperty && getColorScaleForProperty(selectedProperty, 'array');
+
+  const getFillOpacity = feature => {
+    const value = feature.properties[selectedProperty.name];
+
+    // Zero is a valid value, so we need to ensure we don't accidentally
+    // set it to transparent, in that situation.
+    if (!value && value !== 0) {
+      return OPACITY_TRANSPARENT;
+    }
+
+    return OPACITY_EXTRUDED;
+  };
+
+  const getFillColor = feature => {
+    if (!isRealValue(feature.properties[selectedProperty.name])) {
+      return COLOR_TRANSPARENT;
+    }
+
+    const opacity = getFillOpacity(feature);
+
+    const colorValue = feature.properties[selectedProperty.name];
+    let color = colorScale ? colorScale.get(colorValue) : COLOR_TRANSPARENT;
+
+    return [...color, opacity];
+  };
 
   return {
     data,
@@ -73,9 +118,20 @@ const configuration = ({
     minZoom: source?.metadata?.minZoom,
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: GEOMETRY_IDS[crossFilteringCommonGeometry],
-    getFillColor: [0, 128, 200, 150],
+    getFillColor,
     getLineColor: [16, 16, 16],
     getLineWidth: 64,
+    extensions: [
+      new DataFilterExtension({
+        filterSize: filterableProperties.length,
+      }),
+    ],
+    getFilterValue,
+    filterRange: filterRangeValues,
+    updateTriggers: {
+      getFillColor,
+      getFilterValue,
+    },
     loadOptions: {
       fetch: {
         headers: {

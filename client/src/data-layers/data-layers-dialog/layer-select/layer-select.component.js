@@ -19,6 +19,10 @@ import {
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
 
+import {
+  MIN_SELECTED_PROPERTIES,
+  MAX_SELECTED_PROPERTIES,
+} from '../../data-layers.constants';
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
@@ -68,7 +72,7 @@ const renderCategories = ({
       );
     } else {
       if (!isCrossFilteringMode) {
-        const selected = selectedSources?.includes(source.source_id);
+        const isSelected = selectedSources?.includes(source.source_id);
 
         const sourceOrProperty = {
           id: source.source_id,
@@ -76,26 +80,30 @@ const renderCategories = ({
           description: source?.metadata?.description,
         };
 
-        const onChange = () => {
-          onSourcesChange({
-            source_ids: [source.source_id],
-            selected: !selected,
-          });
-        };
-
         return (
           <LayerSelectItem
             key={source.source_id}
-            selected={selected}
+            isSelected={isSelected}
             sourceOrProperty={sourceOrProperty}
-            onChange={onChange}
+            onChange={() =>
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              })
+            }
           />
         );
       } else {
-        return source?.properties.map(property => {
-          const selected = !!selectedCrossFilterProperties.find(
+        return source?.metadata?.properties.map(property => {
+          const isSelected = !!selectedCrossFilterProperties.find(
             p => p.label === property.label,
           );
+
+          // impose limit on number of selected properties.
+          // But we dont disable selected ones to allow the user to deselect existing ones
+          const isItemEnabled =
+            selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES ||
+            isSelected;
 
           const sourceOrProperty = {
             id: property.name,
@@ -106,15 +114,16 @@ const renderCategories = ({
           const onChange = () => {
             onCrossFilterPropertiesChange({
               properties: [property],
-              selected: !selected,
+              selected: !isSelected,
             });
           };
           return (
             <LayerSelectItem
               key={property.name}
-              selected={selected}
+              isSelected={isSelected}
               sourceOrProperty={sourceOrProperty}
               onChange={onChange}
+              isItemEnabled={isItemEnabled}
             />
           );
         });
@@ -295,6 +304,12 @@ export const LayerSelect = ({
       isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
+  const isConfirmButtonDisabled =
+    !hasMadeChanges ||
+    (isCrossFilteringMode &&
+      (selectedCrossFilterProperties.length < MIN_SELECTED_PROPERTIES ||
+        selectedCrossFilterProperties.length > MAX_SELECTED_PROPERTIES));
+
   return (
     <Section orientation="right">
       <Header>Add Data Layers</Header>
@@ -323,7 +338,7 @@ export const LayerSelect = ({
         </Typography>
       )}
       <div className={styles.buttonContainer}>
-        <Button disabled={!hasMadeChanges} onClick={onSubmit}>
+        <Button disabled={isConfirmButtonDisabled} onClick={onSubmit}>
           Confirm
         </Button>
       </div>
