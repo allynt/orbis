@@ -25,7 +25,15 @@ import reducer, {
   fetchOrbs,
   orbsSelector,
   logProperty,
+  isCrossFilteringModeSelector,
+  crossFilterableDataSourcesSelector,
+  activeCrossFilterPropertiesSelector,
+  activeCrossFilteringLayersSelector,
+  activeCrossFilterDataSourcesSelector,
+  activeCrossFilteringCategorisedOrbsAndSourcesSelector,
+  activeCrossFilteringCategorisedSourcesSelector,
 } from './data-layers.slice';
+
 const mockStore = configureMockStore([thunk]);
 
 describe('Data Slice', () => {
@@ -1057,6 +1065,260 @@ describe('Data Slice', () => {
           ];
 
           const result = activeCategorisedSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
+      });
+    });
+
+    describe('isCrossFilteringModeSelector', () => {
+      it('should return the cross-filtering mode from state', () => {
+        const state = {
+          data: {
+            isCrossFilteringMode: true,
+          },
+        };
+        const result = isCrossFilteringModeSelector(state);
+        expect(result).toBe(state.data.isCrossFilteringMode);
+      });
+
+      it('should return undefined if no data state is present', () => {
+        const state = {};
+        const result = isCrossFilteringModeSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('should return undefined if no cross-filtering mode is present', () => {
+        const state = {
+          data: {},
+        };
+        const result = isCrossFilteringModeSelector(state);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('crossFilterableDataSourcesSelector', () => {
+      it('should return the cross-filtering data sources from state', () => {
+        const state = {
+          data: {
+            crossFilterableSources: [{ sourceId: 1 }, { sourceId: 2 }],
+          },
+        };
+        const result = crossFilterableDataSourcesSelector(state);
+        expect(result).toBe(state.data.crossFilterableSources);
+      });
+
+      it('should return an empty array if no data state is present', () => {
+        const state = {};
+        const result = crossFilterableDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return an empty array if no cross-filtering mode is present', () => {
+        const state = {
+          data: {},
+        };
+        const result = crossFilterableDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('activeCrossFilterPropertiesSelector', () => {
+      it('should return the cross-filtering data sources from state', () => {
+        const state = {
+          data: {
+            activeCrossFilteringProperties: [{ id: 1 }, { id: 2 }],
+          },
+        };
+        const result = activeCrossFilterPropertiesSelector(state);
+        expect(result).toBe(state.data.activeCrossFilteringProperties);
+      });
+
+      it('should return undefined if no data state is present', () => {
+        const state = {};
+        const result = activeCrossFilterPropertiesSelector(state);
+        expect(result).toBeUndefined();
+      });
+
+      it('should return undefined if no cross-filtering mode is present', () => {
+        const state = {
+          data: {},
+        };
+        const result = activeCrossFilterPropertiesSelector(state);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('activeCrossFilteringLayersSelector', () => {
+      it('should return the cross-filtering data sources from state', () => {
+        const state = {
+          data: {
+            crossFilterLayers: [{ id: 1 }, { id: 2 }],
+          },
+        };
+        const result = activeCrossFilteringLayersSelector(state);
+        expect(result).toBe(state.data.crossFilterLayers);
+      });
+
+      it('should return undefined if no data state is present', () => {
+        const state = {};
+        const result = activeCrossFilteringLayersSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('should return undefined if no cross-filtering mode is present', () => {
+        const state = {
+          data: {},
+        };
+        const result = activeCrossFilteringLayersSelector(state);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('activeCrossFilterDataSourcesSelector', () => {
+      it('returns only data sources which are loaded and visible', () => {
+        const state = {
+          data: {
+            crossFilterableSources: [
+              { source_id: 'Source 1' },
+              { source_id: 'Source 2' },
+              { source_id: 'Source 3' },
+            ],
+            crossFilterLayers: ['Source 1', 'source 2', 'Source 3'],
+          },
+        };
+        const expected = [
+          state.data.crossFilterableSources[0],
+          state.data.crossFilterableSources[2],
+        ];
+        const result = activeCrossFilterDataSourcesSelector(state);
+        expect(result).toEqual(expected);
+      });
+
+      it('returns an empty array when no layers are selected', () => {
+        const state = {
+          data: {
+            crossFilterableSources: [
+              { source_id: 'Source 1' },
+              { source_id: 'Source 2' },
+              { source_id: 'Source 3' },
+            ],
+            crossFilterLayers: [],
+          },
+        };
+        const result = activeCrossFilterDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if sources is empty', () => {
+        const state = {
+          data: {
+            crossFilterableSources: [],
+            crossFilterLayers: [],
+          },
+        };
+        const result = activeCrossFilterDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it('returns an empty array if sources is undefined', () => {
+        const state = {
+          data: {
+            crossFilterLayers: [],
+          },
+        };
+        const result = activeCrossFilterDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+
+      it("returns an empty array if layers are present but sources aren't", () => {
+        const state = {
+          data: {
+            sources: [],
+            crossFilterLayers: ['Source 1', 'Source 3'],
+          },
+        };
+        const result = activeCrossFilterDataSourcesSelector(state);
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('Cross-filtering active categorised selectors', () => {
+      const sources = [
+        {
+          source_id: 'orb/1/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb1' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+        {
+          source_id: 'orb/2/cat/1/source/1',
+          metadata: {
+            application: {
+              orbis: {
+                orbs: [{ name: 'Orb2' }],
+                categories: { name: 'Cat1' },
+              },
+            },
+          },
+        },
+      ];
+
+      describe('activeCrossFilteringCategorisedOrbsAndSourcesSelector', () => {
+        it('returns sources organised by orb and category if active', () => {
+          const state = {
+            data: {
+              crossFilterLayers: ['orb/1/cat/1/source/1'],
+              crossFilterableSources: sources,
+            },
+          };
+          const expected = [
+            {
+              name: 'Orb1',
+              sources: [
+                {
+                  category: 'Cat1',
+                  sources: [
+                    expect.objectContaining({
+                      source_id: 'orb/1/cat/1/source/1',
+                    }),
+                  ],
+                },
+              ],
+            },
+          ];
+
+          const result =
+            activeCrossFilteringCategorisedOrbsAndSourcesSelector()(state);
+          expect(result).toEqual(expected);
+        });
+      });
+
+      describe('activeCrossFilteringCategorisedSourcesSelector', () => {
+        it('returns only active categories and sources', () => {
+          const state = {
+            data: {
+              crossFilterLayers: ['orb/1/cat/1/source/1'],
+              crossFilterableSources: sources,
+            },
+          };
+          const expected = [
+            {
+              category: 'Cat1',
+              sources: [
+                expect.objectContaining({
+                  source_id: 'orb/1/cat/1/source/1',
+                }),
+              ],
+            },
+          ];
+
+          const result =
+            activeCrossFilteringCategorisedSourcesSelector()(state);
           expect(result).toEqual(expected);
         });
       });

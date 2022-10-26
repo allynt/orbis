@@ -93,7 +93,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
           <Grid item container className={styles.radioIconContainer}>
             <Grid item xs={11}>
               <FormControlLabel
-                checked={selectedProperty.name === property.name}
+                checked={selectedProperty?.name === property.name}
                 label={property?.application?.orbis?.label || property?.label}
                 control={
                   <Radio
