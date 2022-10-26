@@ -51,18 +51,6 @@ describe('data-layers-utils', () => {
         const expected = { test1: [{ label: 'Test Data Source label 1' }] };
         expect(result).toEqual(expect.objectContaining(expected));
       });
-
-      it('check that function returns an empty object value when properties equal to empty array', () => {
-        const result = groupPropertiesAndSourceIds([], DATA_SOURCES);
-        const expected = {};
-        expect(result).toEqual(expect.objectContaining(expected));
-      });
-
-      it('check that function returns an empty object when dataSources undefined ', () => {
-        const result = groupPropertiesAndSourceIds(PROPERTIES, undefined);
-        const expected = {};
-        expect(result).toEqual(expect.objectContaining(expected));
-      });
     });
   });
 });
