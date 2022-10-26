@@ -399,7 +399,7 @@ const initialState = {
     'astrosat/isolation_plus_core/childpov2019_breakdown_crossfiltering/dev',
     'astrosat/isolation_plus_core/benefits_breakdown_crossfiltering/dev',
   ],
-  crossFilteringCommonGeometry: '',
+  crossFilteringCommonGeometry: null,
   activeCrossFilteringProperties: MOCK_ACTIVE_CROSSFILTERING_PROPERTIES,
   pollingPeriod: 30000,
   tokens: null,

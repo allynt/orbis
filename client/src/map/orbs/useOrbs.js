@@ -96,7 +96,7 @@ export const useOrbs = activeSources => {
           source?.metadata?.application?.orbis?.crossfiltering?.tiles[0];
         url = url.replace(
           '{geometryType}',
-          crossFilteringCommonGeometry.toLowerCase(),
+          crossFilteringCommonGeometry?.toLowerCase() || '',
         );
 
         return url;
