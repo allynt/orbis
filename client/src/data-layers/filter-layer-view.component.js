@@ -21,7 +21,6 @@ import {
   isCrossFilteringModeSelector,
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
-  crossFilteringCommonGeometrySelector,
   setCrossFilteringCommonGeometry,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
@@ -72,8 +71,6 @@ const FilterLayerView = ({
     activeCrossFilterPropertiesSelector,
   );
 
-  const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
-
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
   const handleDialogSubmit = selectedProperties => {
@@ -104,7 +101,9 @@ const FilterLayerView = ({
 
     const crossFilterValues = selectedProperties.reduce((acc, property) => {
       const { min, max } =
-        property?.application?.orbis?.crossfiltering[commonGeometry];
+        property?.application?.orbis?.crossfiltering[
+          selectedPropertiesCommonGeometry
+        ];
 
       return {
         ...acc,
@@ -119,8 +118,9 @@ const FilterLayerView = ({
         crossFilterValues,
       }),
     );
-    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
+    dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
+
     toggle(false);
   };
 
