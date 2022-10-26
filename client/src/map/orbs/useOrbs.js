@@ -88,7 +88,7 @@ export const useOrbs = activeSources => {
    * more investigation)/
    */
   useEffect(() => {
-    if (isCrossFilterMode) {
+    if (isCrossFilterMode && !!crossFilteringCommonGeometry) {
       // Get all active cross-filterable dataset URLs to set in state, so
       // they can be passed to the layer.
       const data = activeSources.map(source => {
@@ -96,7 +96,7 @@ export const useOrbs = activeSources => {
           source?.metadata?.application?.orbis?.crossfiltering?.tiles[0];
         url = url.replace(
           '{geometryType}',
-          crossFilteringCommonGeometry.toLowerCase(),
+          crossFilteringCommonGeometry?.toLowerCase() || '',
         );
 
         return url;

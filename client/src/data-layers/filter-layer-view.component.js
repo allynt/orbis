@@ -10,6 +10,11 @@ import { setFilterValues } from 'map/orbs/crossfilter-layers.slice';
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
 import {
+  groupPropertiesAndSourceIds,
+  getGeometryType,
+} from './data-layers-utils';
+import { GEOMETRY_TYPES } from './data-layers.constants';
+import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
   activeCrossFilterPropertiesSelector,
@@ -17,6 +22,7 @@ import {
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
   crossFilteringCommonGeometrySelector,
+  setCrossFilteringCommonGeometry,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -70,31 +76,29 @@ const FilterLayerView = ({
 
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
-  // Groups selected properties by their parent source_ids
-  // example: { source_id: [propertyMetadata1, propertyMetadata2] }
-  const groupPropertiesAndSourceIds = properties =>
-    properties.reduce((acc, property) => {
-      const propertyParentSourceId = dataSources.find(source =>
-        source.properties.find(p => p.label === property.label),
-      ).source_id;
-
-      if (!propertyParentSourceId) return acc;
-      return {
-        ...acc,
-        [propertyParentSourceId]: [
-          ...(acc[propertyParentSourceId] ?? []),
-          property,
-        ],
-      };
-    }, {});
-
   const handleDialogSubmit = selectedProperties => {
-    const groupedPropertiesAndSourceIds =
-      groupPropertiesAndSourceIds(selectedProperties);
+    const groupedPropertiesAndSourceIds = groupPropertiesAndSourceIds(
+      selectedProperties,
+      dataSources,
+    );
 
     // Non-duplicated array of source_ids for selected properties
     const sourcesIdsOfSelectedProperties = Object.keys(
       groupedPropertiesAndSourceIds,
+    );
+    const geometryTypes = dataSources
+      .filter(dataSource =>
+        sourcesIdsOfSelectedProperties.includes(dataSource.source_id),
+      )
+      .map(source => {
+        const hierarchy =
+          source.metadata.application.orbis.crossfiltering
+            .geometry_types_hierarchy;
+        return hierarchy[hierarchy.length - 1];
+      });
+    const selectedPropertiesCommonGeometry = getGeometryType(
+      geometryTypes,
+      GEOMETRY_TYPES,
     );
 
     const crossFilterValues = selectedProperties.reduce((acc, property) => {
@@ -107,9 +111,11 @@ const FilterLayerView = ({
       };
     }, {});
 
+    dispatch(setCrossFilteringCommonGeometry(selectedPropertiesCommonGeometry));
     dispatch(setFilterValues(crossFilterValues));
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
+
     toggle(false);
   };
 

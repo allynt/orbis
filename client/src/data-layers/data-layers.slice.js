@@ -34,13 +34,8 @@ const name = 'data';
 /** @type {DataState} */
 const initialState = {
   layers: [],
-  isCrossFilteringMode: false,
   crossFilterLayers: [],
-  // crossFilteringCommonGeometry: 'LAD_2019',
-  // crossFilteringCommonGeometry: 'LAD_2016',
-  // crossFilteringCommonGeometry: 'LSOA',
-  crossFilteringCommonGeometry: 'MSOA',
-  // crossFilteringCommonGeometry: 'OA',
+  crossFilteringCommonGeometry: null,
   activeCrossFilteringProperties: {},
   pollingPeriod: 30000,
   tokens: null,
@@ -295,6 +290,9 @@ const dataSlice = createSlice({
     setCrossFilterSelectedProperties: (state, { payload }) => {
       state.activeCrossFilteringProperties = payload;
     },
+    setCrossFilteringCommonGeometry: (state, { payload }) => {
+      state.crossFilteringCommonGeometry = payload;
+    },
     /**
      * @type {import('@reduxjs/toolkit').CaseReducer<
      *  DataState,
@@ -378,6 +376,7 @@ export const {
   addSource,
   setIsCrossFilteringMode,
   updateCrossFilterLayers,
+  setCrossFilteringCommonGeometry,
   setCrossFilterSelectedProperties,
 } = dataSlice.actions;
 
