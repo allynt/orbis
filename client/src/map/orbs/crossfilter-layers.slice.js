@@ -8,10 +8,9 @@ export const SHARED_STATE_KEY = 'shared';
 
 /**
  * @typedef {{
- *   crossFilterValues: object
  *   crossFilteringLayerData: string[]
+ *   crossFilterValues: object
  *   selectedProperty: object|null
- *   crossFilteringCommonGeometry: string|null
  * }} LayersState
  */
 
@@ -27,15 +26,15 @@ export const SHARED_STATE_KEY = 'shared';
 
 /**
  * @typedef {GenericOrbAction<{
- *     propertyName: string
- *     filterValue?: number[]
- *   }>} SetFilterValueAction
+ *     crossFilterValues: object[]
+ *   }>} SetFilterValuesAction
  */
 
 /**
  * @typedef {GenericOrbAction<{
- *     selectedProperty: object
- *   }>} SetSelectedProperty
+ *     propertyName: string
+ *     filterValue?: number[]
+ *   }>} SetFilterValueAction
  */
 
 /**
@@ -44,12 +43,17 @@ export const SHARED_STATE_KEY = 'shared';
  * }>} SetCrossFilterDataAction
  */
 
+/**
+ * @typedef {GenericOrbAction<{
+ *     selectedProperty: object
+ *   }>} SetSelectedProperty
+ */
+
 /** @type {LayersState} */
 const initialState = {
   crossFilteringLayerData: [],
   crossFilterValues: {},
   selectedProperty: null,
-  crossFilteringCommonGeometry: 'MSOA',
 };
 
 const handleMissingKey = () => {
@@ -63,26 +67,31 @@ const crossFilterLayersSlice = createSlice({
   name: 'crossFilterLayers',
   initialState,
   reducers: {
-    /** @type {SetFilterValueAction} */
+    /** @type {SetFilterValuesAction} */
     setFilterValues: (state, { payload }) => {
-      state.crossFilterValues = payload;
+      if (!payload.key) return handleMissingKey();
+      const { key, crossFilterValues } = payload;
+      console.log('payload: ', payload);
+      state[key] = crossFilterValues;
     },
+    /** @type {SetFilterValueAction} */
     setFilterValue: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, propertyName, filterValue } = payload;
       state[key] = { ...state[key], [propertyName]: filterValue };
-    },
-    /** @type {SetSelectedProperty} */
-    setSelectedProperty: (state, { payload }) => {
-      if (!payload) return handleMissingKey();
-      const { key, selectedProperty } = payload;
-      state[key] = selectedProperty;
     },
     /** @type {SetCrossFilterDataAction} */
     setCrossFilterData: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
       state[key] = [...state[key], ...data];
+    },
+
+    /** @type {SetSelectedProperty} */
+    setSelectedProperty: (state, { payload }) => {
+      if (!payload) return handleMissingKey();
+      const { key, selectedProperty } = payload;
+      state[key] = selectedProperty;
     },
   },
 });
@@ -100,20 +109,8 @@ export const {
  */
 const baseSelector = orbs => orbs?.[crossFilterLayersSlice.name];
 
-export const crossFilterLayersWithDataSelector = createSelector(
-  baseSelector,
-  state =>
-    Object.entries(state ?? {}).reduce(
-      (acc, [key, value]) =>
-        value != null && typeof value === 'object' && 'data' in value
-          ? [...acc, key]
-          : acc,
-      [],
-    ),
-);
-
 /**@param {string} id */
-export const dataSelector = createSelector(
+export const activeCrossFilteringLayersSelector = createSelector(
   baseSelector,
   state => state?.crossFilteringLayerData,
 );
@@ -126,11 +123,6 @@ export const crossFilterValuesSelector = createSelector(
 export const selectedPropertySelector = createSelector(
   baseSelector,
   state => state?.selectedProperty,
-);
-
-export const crossFilteringCommonGeometrySelector = createSelector(
-  baseSelector,
-  state => state?.crossFilteringCommonGeometry ?? null,
 );
 
 export default crossFilterLayersSlice.reducer;

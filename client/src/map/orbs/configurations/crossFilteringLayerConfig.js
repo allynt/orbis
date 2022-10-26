@@ -5,9 +5,9 @@ import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 
 import {
-  dataSelector,
   crossFilterValuesSelector,
   selectedPropertySelector,
+  activeCrossFilteringLayersSelector,
 } from '../crossfilter-layers.slice';
 
 /** @typedef {import('typings').GeoJsonFeature<import('typings').IsoPlusCommonProperties>} AccessorFeature */
@@ -72,7 +72,7 @@ const configuration = ({
 
   const source = activeSources?.find(source => source.source_id === id);
 
-  const urls = dataSelector(orbState);
+  const urls = activeCrossFilteringLayersSelector(orbState);
   const data = urls ? urls[0] : [];
   const extraData = urls ? urls.slice(1) : [];
 

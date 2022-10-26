@@ -14,12 +14,12 @@ import {
   InfoButtonTooltip,
   TooltipContent,
 } from 'components';
+import { crossFilteringCommonGeometrySelector } from 'data-layers/data-layers.slice';
 import { isRealValue } from 'utils/isRealValue';
 
 import {
   selectedPropertySelector,
   crossFilterValuesSelector,
-  crossFilteringCommonGeometrySelector,
   setFilterValue,
   setSelectedProperty,
 } from '../crossfilter-layers.slice';
@@ -53,9 +53,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
     crossFilterValuesSelector(state?.orbs),
   );
 
-  const commonGeometry = useSelector(state =>
-    crossFilteringCommonGeometrySelector(state?.orbs),
-  );
+  const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
 
   /**
    * @param {string} propertyName

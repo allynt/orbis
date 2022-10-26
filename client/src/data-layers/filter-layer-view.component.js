@@ -96,6 +96,7 @@ const FilterLayerView = ({
             .geometry_types_hierarchy;
         return hierarchy[hierarchy.length - 1];
       });
+
     const selectedPropertiesCommonGeometry = getGeometryType(
       geometryTypes,
       GEOMETRY_TYPES,
@@ -112,10 +113,14 @@ const FilterLayerView = ({
     }, {});
 
     dispatch(setCrossFilteringCommonGeometry(selectedPropertiesCommonGeometry));
-    dispatch(setFilterValues(crossFilterValues));
-    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
+    dispatch(
+      setFilterValues({
+        key: 'crossFilterValues',
+        crossFilterValues,
+      }),
+    );
     dispatch(setCrossFilterLayers(sourcesIdsOfSelectedProperties));
-
+    dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));
     toggle(false);
   };
 
