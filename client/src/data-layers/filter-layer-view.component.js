@@ -5,6 +5,7 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { geometryHierarchySelector } from 'app.slice';
 import { setFilterValues } from 'map/orbs/crossfilter-layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -13,7 +14,6 @@ import {
   groupPropertiesAndSourceIds,
   getGeometryType,
 } from './data-layers-utils';
-import { GEOMETRY_TYPES } from './data-layers.constants';
 import {
   crossFilterableDataSourcesSelector,
   activeCrossFilteringLayersSelector,
@@ -66,6 +66,7 @@ const FilterLayerView = ({
 
   const isCrossFilteringMode = useSelector(isCrossFilteringModeSelector);
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
+  const geometryHierarchy = useSelector(geometryHierarchySelector);
 
   const selectedCrossFilterProperties = useSelector(
     activeCrossFilterPropertiesSelector,
@@ -96,7 +97,7 @@ const FilterLayerView = ({
 
     const selectedPropertiesCommonGeometry = getGeometryType(
       geometryTypes,
-      GEOMETRY_TYPES,
+      geometryHierarchy,
     );
 
     const crossFilterValues = selectedProperties.reduce((acc, property) => {
