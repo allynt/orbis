@@ -336,7 +336,10 @@ const dataSlice = createSlice({
 
             return {
               ...source,
-              properties: filterableProperties,
+              metadata: {
+                ...source.metadata,
+                properties: filterableProperties,
+              },
             };
           });
       })
