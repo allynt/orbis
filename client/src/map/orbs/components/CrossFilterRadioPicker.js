@@ -150,7 +150,7 @@ const Slider = ({
   const styles = useStyles();
 
   const { min, max } =
-    property?.application.orbis.crossfiltering[commonGeometry] || {};
+    property?.application?.orbis?.crossfiltering[commonGeometry] || {};
 
   const { color, colormap_reversed } =
     property?.application?.orbis?.display || {};
