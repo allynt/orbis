@@ -701,6 +701,16 @@ describe('<LayerSelect />', () => {
       expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
     });
 
+    it('enables the submit button when changes made and no properties are selected', () => {
+      const { getByRole } = renderComponent({
+        hasMadeChanges: true,
+        isCrossFilteringMode: true,
+        selectedCrossFilterProperties: [],
+      });
+
+      expect(getByRole('button', { name: SUBMIT_BUTTON })).toBeEnabled();
+    });
+
     it('disables the submit button when too few changes have been made', () => {
       const { getByRole } = renderComponent({
         hasMadeChanges: true,

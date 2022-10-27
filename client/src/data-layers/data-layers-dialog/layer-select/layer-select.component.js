@@ -304,11 +304,18 @@ export const LayerSelect = ({
       isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
 
+  const areCrossFilteringPropertiesValid =
+    isCrossFilteringMode &&
+    selectedCrossFilterProperties.length >= MIN_SELECTED_PROPERTIES &&
+    selectedCrossFilterProperties.length <= MAX_SELECTED_PROPERTIES;
+
+  // enables button if changes have been made since opening
+  // or all checkboxes are empty after making changes (unselecting all)
+  // or the number of checkboxes fulfils `areCrossFilteringPropertiesValid`
   const isConfirmButtonDisabled =
     !hasMadeChanges ||
-    (isCrossFilteringMode &&
-      (selectedCrossFilterProperties.length < MIN_SELECTED_PROPERTIES ||
-        selectedCrossFilterProperties.length > MAX_SELECTED_PROPERTIES));
+    (!!selectedCrossFilterProperties.length &&
+      !areCrossFilteringPropertiesValid);
 
   return (
     <Section orientation="right">
