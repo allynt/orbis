@@ -88,7 +88,7 @@ const configuration = ({
     selectedProperty && getColorScaleForProperty(selectedProperty, 'array');
 
   const getFillOpacity = feature => {
-    const value = feature.properties[selectedProperty.name];
+    const value = feature.properties[selectedProperty?.name];
 
     // Zero is a valid value, so we need to ensure we don't accidentally
     // set it to transparent, in that situation.
@@ -100,13 +100,13 @@ const configuration = ({
   };
 
   const getFillColor = feature => {
-    if (!isRealValue(feature.properties[selectedProperty.name])) {
+    if (!isRealValue(feature.properties[selectedProperty?.name])) {
       return COLOR_TRANSPARENT;
     }
 
     const opacity = getFillOpacity(feature);
 
-    const colorValue = feature.properties[selectedProperty.name];
+    const colorValue = feature.properties[selectedProperty?.name];
     let color = colorScale ? colorScale.get(colorValue) : COLOR_TRANSPARENT;
 
     return [...color, opacity];
