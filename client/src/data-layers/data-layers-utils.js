@@ -17,7 +17,8 @@ export const getGeometryType = (geometryTypes, geometryTypesHierarchy) => {
 export const groupPropertiesAndSourceIds = (properties, dataSources) =>
   properties.reduce((acc, property) => {
     const propertyParentSourceId = dataSources?.find(
-      source => !!source.properties.find(p => p.label === property.label),
+      source =>
+        !!source.metadata.properties.find(p => p.label === property.label),
     ).source_id;
     if (!propertyParentSourceId) return acc;
     return {

@@ -14,11 +14,13 @@ const GEOMETRY_TYPES = {
 
 const DATA_SOURCES = [
   {
-    properties: [
-      { label: 'Test Data Source label 1' },
-      { label: 'Test Data Source label 2' },
-      { label: 'Test Data Source label 3' },
-    ],
+    metadata: {
+      properties: [
+        { label: 'Test Data Source label 1' },
+        { label: 'Test Data Source label 2' },
+        { label: 'Test Data Source label 3' },
+      ],
+    },
     source_id: 'test1',
   },
 ];
