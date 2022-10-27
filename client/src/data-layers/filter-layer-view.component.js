@@ -158,7 +158,7 @@ const FilterLayerView = ({
           initialSelectedSources={selectedLayers}
           initialSelectedCrossFilterProperties={Object.values(
             selectedCrossFilterProperties,
-          )}
+          ).flat()}
           isCrossFilteringMode={isCrossFilteringMode}
           onSubmit={handleDialogSubmit}
           close={() => toggle(false)}
