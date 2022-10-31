@@ -18,7 +18,7 @@ export const groupPropertiesAndSourceIds = (properties, dataSources) =>
   properties.reduce((acc, property) => {
     const propertyParentSourceId = dataSources?.find(
       source =>
-        !!source.metadata.properties.find(p => p.label === property.label),
+        !!source.metadata.properties.find(p => p.name === property.name),
     ).source_id;
     if (!propertyParentSourceId) return acc;
     return {

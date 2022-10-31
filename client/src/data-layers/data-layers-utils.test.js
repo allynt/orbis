@@ -16,16 +16,16 @@ const DATA_SOURCES = [
   {
     metadata: {
       properties: [
-        { label: 'Test Data Source label 1' },
-        { label: 'Test Data Source label 2' },
-        { label: 'Test Data Source label 3' },
+        { name: 'Test Data Source name 1' },
+        { name: 'Test Data Source name 2' },
+        { name: 'Test Data Source name 3' },
       ],
     },
     source_id: 'test1',
   },
 ];
 
-const PROPERTIES = [{ label: 'Test Data Source label 1' }];
+const PROPERTIES = [{ name: 'Test Data Source name 1' }];
 
 describe('data-layers-utils', () => {
   describe('getGeometryType', () => {
@@ -59,7 +59,7 @@ describe('data-layers-utils', () => {
     describe('groupPropertiesAndSourceIds', () => {
       it('check that function selects properties by their parent source_ids', () => {
         const result = groupPropertiesAndSourceIds(PROPERTIES, DATA_SOURCES);
-        const expected = { test1: [{ label: 'Test Data Source label 1' }] };
+        const expected = { test1: [{ name: 'Test Data Source name 1' }] };
         expect(result).toEqual(expect.objectContaining(expected));
       });
     });
