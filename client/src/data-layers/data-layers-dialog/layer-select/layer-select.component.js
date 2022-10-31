@@ -96,7 +96,7 @@ const renderCategories = ({
       } else {
         return source?.metadata?.properties.map(property => {
           const isSelected = !!selectedCrossFilterProperties.find(
-            p => p.label === property.label,
+            p => p.name === property.name,
           );
 
           // impose limit on number of selected properties.
