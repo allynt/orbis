@@ -92,7 +92,7 @@ const FilterLayerView = ({
         const hierarchy =
           source.metadata.application.orbis.crossfiltering
             .geometry_types_hierarchy;
-        return hierarchy[hierarchy.length - 1];
+        return hierarchy[0];
       });
 
     const selectedPropertiesCommonGeometry = getGeometryType(
