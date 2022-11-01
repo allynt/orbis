@@ -113,6 +113,7 @@ const configuration = ({
   };
 
   return {
+    id: source?.name,
     data,
     extraData,
     minZoom: source?.metadata?.minZoom,
