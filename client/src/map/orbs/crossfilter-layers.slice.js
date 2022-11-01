@@ -83,7 +83,7 @@ const crossFilterLayersSlice = createSlice({
     setCrossFilterData: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, data } = payload;
-      state[key] = [...state[key], ...data];
+      state[key] = [...data];
     },
 
     /** @type {SetSelectedProperty} */
