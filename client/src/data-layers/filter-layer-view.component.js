@@ -6,7 +6,10 @@ import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { geometryHierarchySelector } from 'app.slice';
-import { setFilterValues } from 'map/orbs/crossfilter-layers.slice';
+import {
+  setFilterValues,
+  resetSelectedProperty,
+} from 'map/orbs/crossfilter-layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
 import DataLayersDialog from './data-layers-dialog/data-layers-dialog.component';
@@ -75,6 +78,8 @@ const FilterLayerView = ({
   const dataSources = useSelector(crossFilterableDataSourcesSelector);
 
   const handleDialogSubmit = selectedProperties => {
+    dispatch(resetSelectedProperty());
+
     const groupedPropertiesAndSourceIds = groupPropertiesAndSourceIds(
       selectedProperties,
       dataSources,

@@ -92,6 +92,9 @@ const crossFilterLayersSlice = createSlice({
       const { key, selectedProperty } = payload;
       state[key] = selectedProperty;
     },
+    resetSelectedProperty: (state, { payload }) => {
+      state.selectedProperty = null;
+    },
   },
 });
 
@@ -100,6 +103,7 @@ export const {
   setFilterValues,
   setFilterValue,
   setSelectedProperty,
+  resetSelectedProperty,
 } = crossFilterLayersSlice.actions;
 
 /**
