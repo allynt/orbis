@@ -5,6 +5,7 @@ import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import apiClient from 'api-client';
 import { geometryHierarchySelector } from 'app.slice';
 import {
   setFilterValues,
@@ -141,6 +142,17 @@ const FilterLayerView = ({
         range filters and combine them to find areas with a certain set of
         qualities
       </p>
+
+      <div>
+        <Link
+          href={apiClient.documents.userGuideUrl('cross-filtering')}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more about cross-filtering
+        </Link>
+      </div>
+
       <LayersList
         dispatch={dispatch}
         selectedLayers={activeCategorisedSources}
