@@ -120,8 +120,8 @@ const configuration = ({
     maxZoom: source?.metadata?.maxZoom,
     uniqueIdProperty: GEOMETRY_IDS[crossFilteringCommonGeometry],
     getFillColor,
-    getLineColor: [16, 16, 16],
-    getLineWidth: 64,
+    getLineColor: COLOR_PRIMARY,
+    getLineWidth: LINE_WIDTH,
     extensions: [
       new DataFilterExtension({
         filterSize: filterableProperties.length,
