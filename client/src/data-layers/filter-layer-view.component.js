@@ -26,6 +26,7 @@ import {
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
   setCrossFilteringCommonGeometry,
+  crossFilteringCommonGeometrySelector,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -71,6 +72,7 @@ const FilterLayerView = ({
   const isCrossFilteringMode = useSelector(isCrossFilteringModeSelector);
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
   const geometryHierarchy = useSelector(geometryHierarchySelector);
+  const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
 
   const selectedCrossFilterProperties = useSelector(
     activeCrossFilterPropertiesSelector,
@@ -142,6 +144,13 @@ const FilterLayerView = ({
         range filters and combine them to find areas with a certain set of
         qualities
       </p>
+
+      {commonGeometry ? (
+        <p>
+          Aggregated to Geometry:{' '}
+          <strong>{commonGeometry?.replace('_', ' ')}</strong>
+        </p>
+      ) : null}
 
       <div>
         <Link
