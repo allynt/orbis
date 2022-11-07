@@ -175,7 +175,7 @@ const FilterLayerView = ({
         startIcon={<AddNewCategoryIcon />}
       >
         <Link className={styles.link} color="textPrimary" component="span">
-          Add filterable Layers
+          Add Filterable Layers
         </Link>
       </Button>
       <ThemeProvider theme="light">
