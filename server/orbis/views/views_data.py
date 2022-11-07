@@ -173,6 +173,7 @@ class DataSourceView(APIView):
 
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
         data_scopes = generate_data_scopes(user)
+        duplicated_data_sources_ids = set()
         data_sources = []
 
         # chunk the data_scopes to reduce the size of the request.header sent to `data-sources-directory`
@@ -201,7 +202,18 @@ class DataSourceView(APIView):
                 raise APIException(
                     f"Unable to retrieve data sources at '{url}': {str(e)}"
                 )
-            data_sources += response.json()["results"]
+
+            # b/c I am chunking these responses I could wind up w/ duplicate data_sources, so
+            # I filter data_sources_results by duplicated_data_sources_ids from previous iterations
+            data_sources_results = response.json()["results"]
+            data_sources += filter(
+                lambda data_source: data_source["source_id"] not in
+                duplicated_data_sources_ids,
+                data_sources_results
+            )
+            duplicated_data_sources_ids.update([
+                data_source["source_id"] for data_source in data_sources_results
+            ])
 
         # find all active orbs that this user has a licence to...
         orbs = Orb.objects.filter(
