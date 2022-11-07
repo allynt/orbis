@@ -112,11 +112,16 @@ const renderCategories = ({
           };
 
           const onChange = () => {
+            onSourcesChange({
+              source_ids: [source.source_id],
+              selected: !isSelected,
+            });
             onCrossFilterPropertiesChange({
               properties: [property],
               selected: !isSelected,
             });
           };
+
           return (
             <LayerSelectItem
               key={property.name}
@@ -199,6 +204,27 @@ const Accordion = ({
   const selectedCount = allSourceIds.length - notYetSelected.length;
   const allSelected = isEmpty(notYetSelected);
 
+  const propertiesCount = source.sources.reduce(
+    (acc, val) => acc + val?.metadata?.properties.length,
+    0,
+  );
+  // calculate the number of properties selected for an individual dataset.
+  const noOfSelectedPropertiesForDataset = source.sources.reduce((acc, val) => {
+    if (val?.metadata) {
+      acc = selectedCrossFilterProperties.reduce((propAcc, propVal) => {
+        if (
+          val?.metadata?.properties.includes(
+            val?.metadata?.properties.find(item => item.name === propVal.name),
+          )
+        ) {
+          propAcc += 1;
+        }
+        return propAcc;
+      }, 0);
+    }
+    return acc;
+  }, 0);
+
   /** @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} e */
   const handleSelectAllClick = e => {
     e.stopPropagation();
@@ -212,23 +238,52 @@ const Accordion = ({
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
         {source.category}
-        {!isCrossFilteringMode ? (
-          <>
-            <span className={styles.sourceCount}>
-              ({selectedCount <= 0 ? '' : `${selectedCount}/`}
-              {allSourceIds.length})
-            </span>
-            <Link
-              variant="body2"
-              component="span"
-              role="button"
-              className={styles.selectAll}
-              onClick={handleSelectAllClick}
-            >
-              {allSelected ? 'unselect' : 'select'} all
-            </Link>
-          </>
-        ) : null}
+        <>
+          {!isCrossFilteringMode ? (
+            <>
+              <span className={styles.sourceCount}>
+                ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+                {allSourceIds.length})
+              </span>
+              <Link
+                variant="body2"
+                component="span"
+                role="button"
+                className={styles.selectAll}
+                onClick={handleSelectAllClick}
+              >
+                {allSelected ? 'unselect' : 'select'} all
+              </Link>
+            </>
+          ) : (
+            <>
+              {isNaN(propertiesCount) ? (
+                <span className={styles.sourceCount}>
+                  ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+                  {allSourceIds.length})
+                </span>
+              ) : (
+                <span className={styles.sourceCount}>
+                  (
+                  {selectedCrossFilterProperties.length <= 0
+                    ? ''
+                    : `${noOfSelectedPropertiesForDataset}/`}
+                  {isNaN(propertiesCount) ? 0 : propertiesCount})
+                </span>
+              )}
+              {/* <Link
+                variant="body2"
+                component="button"
+                role="button"
+                className={styles.selectAll}
+                onClick={handleCrossfilterUnselectAllClick}
+                disabled={false}
+              >
+                unselect all
+              </Link> */}
+            </>
+          )}
+        </>
       </ButtonBase>
       <Collapse
         unmountOnExit
