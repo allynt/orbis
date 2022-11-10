@@ -240,3 +240,12 @@ export const collectSourceIds = categorisedSources =>
     if (sourceOrCategory.source_id) return [...acc, sourceOrCategory.source_id];
     return [...acc, ...collectSourceIds(sourceOrCategory.sources)];
   }, []);
+
+export const collectSourceProperties = sources => {
+  return sources.reduce((acc, sourceOrCategory) => {
+    if (sourceOrCategory.source_id)
+      return [...acc, ...sourceOrCategory?.metadata.properties];
+
+    return [...acc, ...collectSourceProperties(sourceOrCategory.sources)];
+  }, []);
+};

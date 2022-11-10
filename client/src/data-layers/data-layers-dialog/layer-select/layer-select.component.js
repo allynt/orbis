@@ -16,6 +16,7 @@ import { difference, isEmpty } from 'lodash';
 
 import {
   collectSourceIds,
+  collectSourceProperties,
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
 
@@ -209,7 +210,7 @@ const Accordion = ({
   const allSelected = isEmpty(notYetSelected);
 
   const propertiesCount = source.sources.reduce(
-    (acc, val) => acc + val?.metadata?.properties.length,
+    (acc, val) => acc + val?.metadata?.properties?.length,
     0,
   );
   // calculate the number of properties selected for an individual dataset.
@@ -235,6 +236,18 @@ const Accordion = ({
     if (allSelected)
       onSourcesChange({ source_ids: allSourceIds, selected: false });
     else onSourcesChange({ source_ids: notYetSelected, selected: true });
+  };
+
+  const handleCrossfilterUnselectAllClick = e => {
+    e.stopPropagation();
+
+    onSourcesChange({ source_ids: allSourceIds, selected: false });
+
+    const properties = collectSourceProperties(source.sources);
+    onCrossFilterPropertiesChange({
+      properties,
+      selected: false,
+    });
   };
 
   return (
@@ -275,16 +288,16 @@ const Accordion = ({
                   {isNaN(propertiesCount) ? 0 : propertiesCount})
                 </span>
               )}
-              {/* <Link
+              <Link
                 variant="body2"
-                component="button"
+                component="span"
                 role="button"
                 className={styles.selectAll}
                 onClick={handleCrossfilterUnselectAllClick}
                 disabled={false}
               >
                 unselect all
-              </Link> */}
+              </Link>
             </>
           )}
         </>
