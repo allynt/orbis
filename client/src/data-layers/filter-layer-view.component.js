@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  CircularProgress,
+  Link,
+  makeStyles,
+  ThemeProvider,
+} from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +16,7 @@ import { geometryHierarchySelector } from 'app.slice';
 import {
   setFilterValues,
   resetSelectedProperty,
+  isViewportLoadedSelector,
 } from 'map/orbs/crossfilter-layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -57,6 +64,11 @@ const useStyles = makeStyles(theme => ({
     margin: '0 auto',
   },
   disabled: {},
+  spinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '3rem',
+  },
 }));
 
 const FilterLayerView = ({
@@ -73,6 +85,9 @@ const FilterLayerView = ({
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
   const geometryHierarchy = useSelector(geometryHierarchySelector);
   const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
+  const isViewportLoaded = useSelector(state =>
+    isViewportLoadedSelector(state?.orbs),
+  );
 
   const selectedCrossFilterProperties = useSelector(
     activeCrossFilterPropertiesSelector,
@@ -162,11 +177,18 @@ const FilterLayerView = ({
         </Link>
       </div>
 
-      <LayersList
-        dispatch={dispatch}
-        selectedLayers={activeCategorisedSources}
-        sidebarComponents={sidebarComponents}
-      />
+      {isViewportLoaded && selectedLayers.length > 0 ? (
+        <LayersList
+          dispatch={dispatch}
+          selectedLayers={activeCategorisedSources}
+          sidebarComponents={sidebarComponents}
+        />
+      ) : selectedLayers.length > 0 ? (
+        <div className={styles.spinner}>
+          <CircularProgress size={22} color="inherit" />
+        </div>
+      ) : null}
+
       <Button
         className={styles.button}
         variant="text"

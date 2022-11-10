@@ -8,6 +8,7 @@ import {
   crossFilterValuesSelector,
   selectedPropertySelector,
   activeCrossFilteringLayersSelector,
+  setIsViewportLoaded,
 } from '../crossfilter-layers.slice';
 
 /** @typedef {import('typings').GeoJsonFeature<import('typings').IsoPlusCommonProperties>} AccessorFeature */
@@ -63,6 +64,7 @@ const configuration = ({
   authToken,
   crossFilteringCommonGeometry,
   crossFilteringSelectedProperties,
+  dispatch,
 }) => {
   const filterableProperties = Object.values(
     crossFilteringSelectedProperties,
@@ -140,6 +142,7 @@ const configuration = ({
         },
       },
     },
+    onViewportLoad: () => dispatch(setIsViewportLoaded(true)),
   };
 };
 
