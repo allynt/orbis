@@ -4,12 +4,24 @@ import {
 } from './data-layers-utils';
 
 const GEOMETRY_TYPES = {
-  OA: 6,
-  LSOA: 5,
-  MSOA: 4,
-  LAD_2016: 3,
-  LAD_2019: 2,
-  LAD_2020: 1,
+  OA: {
+    order: 6,
+  },
+  LSOA: {
+    order: 5,
+  },
+  MSOA: {
+    order: 4,
+  },
+  LAD_2016: {
+    order: 3,
+  },
+  LAD_2019: {
+    order: 2,
+  },
+  LAD_2020: {
+    order: 1,
+  },
 };
 
 const DATA_SOURCES = [

@@ -6,7 +6,8 @@ export const getGeometryType = (geometryTypes, geometryTypesHierarchy) => {
     }
     if (
       !result ||
-      geometryTypesHierarchy[element] < geometryTypesHierarchy[result]
+      geometryTypesHierarchy[element].order <
+        geometryTypesHierarchy[result].order
     ) {
       result = element;
     }
