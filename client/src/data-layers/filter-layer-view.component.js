@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import apiClient from 'api-client';
 import { geometryHierarchySelector } from 'app.slice';
+import { InfoButtonTooltip } from 'components';
 import {
   setFilterValues,
   resetSelectedProperty,
@@ -69,6 +70,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     padding: '3rem',
   },
+  geometry: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  docLink: {
+    padding: '1rem',
+  },
 }));
 
 const FilterLayerView = ({
@@ -85,6 +94,8 @@ const FilterLayerView = ({
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
   const geometryHierarchy = useSelector(geometryHierarchySelector);
   const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
+  const commonGeometryDescription =
+    geometryHierarchy[commonGeometry]?.description;
   const isViewportLoaded = useSelector(state =>
     isViewportLoadedSelector(state?.orbs),
   );
@@ -161,13 +172,16 @@ const FilterLayerView = ({
       </p>
 
       {commonGeometry ? (
-        <p>
-          Aggregated to Geometry:{' '}
-          <strong>{commonGeometry?.replace('_', ' ')}</strong>
-        </p>
+        <div className={styles.geometry}>
+          <p>
+            Aggregated to Geometry:{' '}
+            <strong>{commonGeometry?.replace('_', ' ')}</strong>
+          </p>
+          <InfoButtonTooltip tooltipContent={commonGeometryDescription} />
+        </div>
       ) : null}
 
-      <div>
+      <div className={styles.docLink}>
         <Link
           href={apiClient.documents.userGuideUrl('cross-filtering')}
           rel="noopener noreferrer"
