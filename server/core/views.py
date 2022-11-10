@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from django.conf import settings
 
 from rest_framework import status
@@ -26,25 +24,26 @@ class AppConfigView(APIView):
     # so I define one here just to make the generated documentation work
     _config_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        properties=OrderedDict((
-            ("trackingId", openapi.Schema(type=openapi.TYPE_STRING)),
-            ("mapbox_token", openapi.Schema(type=openapi.TYPE_STRING)),
-            ("passwordMinLength", openapi.Schema(type=openapi.TYPE_INTEGER)),
-            ("passwordMaxLength", openapi.Schema(type=openapi.TYPE_INTEGER)),
-            ("isRegistrationOpen", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
-            ("isVerificationRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
-            ("isApprovalRequired", openapi.Schema(type=openapi.TYPE_BOOLEAN)),
-            ("mapStyles", openapi.Schema(type=openapi.TYPE_STRING, example="[{'id': 'streets', 'uri': 'mapbox://styles/mapbox/streets-v11', 'title': 'Streets'}]")),
-            ("maximumAoiArea", openapi.Schema(type=openapi.TYPE_INTEGER, example=500)),
-            ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
-            ("commitSha", openapi.Schema(type=openapi.TYPE_STRING)),
-            ("geometrySet", openapi.Schema(type=openapi.TYPE_OBJECT, properties=OrderedDict((
-                    ("name", openapi.Schema(type=openapi.TYPE_STRING)),
-                    ("order", openapi.Schema(type=openapi.TYPE_INTEGER)),
-                ))
-            )),
-            ("dataIndexUrl", openapi.Schema(type=openapi.TYPE_STRING)),
-        ))
+        example={
+            "trackingId": "string",
+            "mapbox_token": "string",
+            "passwordMinLength": 6,
+            "passwordMaxLength": 255,
+            "passwordStrength": 2,
+            "isRegistrationOpen": True,
+            "isVerificationRequired": True,
+            "isApprovalRequired": False,
+            "mapStyles": [
+                { "id": "slug", "uri": "uri", "title": "string" },
+            ],
+            "maximumAoiArea": 500,
+            "commitSha": "uuid",
+            "dataIndexUrl": "uri",
+            "userTrackingInterval": 60000,
+            "geometrySet": {
+                "OA": { "order": 0, "description": "string" },
+            }
+        }
     )
 
     @swagger_auto_schema(responses={status.HTTP_200_OK: _config_schema})
@@ -67,7 +66,7 @@ class AppConfigView(APIView):
             "commitSha": settings.COMMIT_SHA,
             "dataIndexUrl": settings.DATA_INDEX_URL,
             "userTrackingInterval": settings.USER_TRACKING_INTERVAL,
-            "geometrySet": {type.name: type.order for type in GeometrySet.objects.all()},
+            "geometrySet": {type.name: {"order": type.order, "description": type.description} for type in GeometrySet.objects.all()},
             "dataIndexUrl": settings.DATA_INDEX_URL,
         }
 

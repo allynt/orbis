@@ -17,8 +17,15 @@ class GeometrySet(models.Model):
         unique=True,
         blank=False,
         null=False,
-        help_text="Name of dataset type e.g. oa, lsoa, msoa, lad"
+        help_text="Name of dataset type e.g. oa, lsoa, msoa, lad",
     )
     order = models.PositiveSmallIntegerField(
-        default=1, help_text="Order of the dataset type's specificity"
+        default=1,
+        help_text="Order of the dataset type's specificity",
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="A description of what the GeometrySet name means.",
     )
