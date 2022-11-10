@@ -322,6 +322,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end',
     padding: theme.spacing(2, 4),
   },
+  strapline: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 /**
@@ -378,7 +382,19 @@ export const LayerSelect = ({
 
   return (
     <Section orientation="right">
-      <Header>Add Data Layers</Header>
+      <Header>
+        {isCrossFilteringMode ? (
+          <>
+            <div>Filter up to 4 Data Layer Properties</div>
+          </>
+        ) : (
+          <div>Add Data Layers</div>
+        )}
+      </Header>
+
+      <div className={styles.strapline}>
+        {selectedCrossFilterProperties.length} of 4 properties selected
+      </div>
       {selectedOrbName ? (
         <>
           <LayerSearch
