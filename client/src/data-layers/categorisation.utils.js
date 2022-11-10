@@ -201,7 +201,9 @@ export const createOrbsWithCategorisedSources = (
         extendedSource.metadata.application.orbis.categories.child = {
           ...extendedSource.metadata.application.orbis.categories.child,
           child: {
-            name: extendedSource.metadata.label,
+            name:
+              extendedSource.metadata.application.orbis?.crossfiltering
+                ?.label ?? extendedSource.metadata.label,
           },
         };
       }

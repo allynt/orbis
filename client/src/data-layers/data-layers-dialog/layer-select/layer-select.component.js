@@ -107,8 +107,12 @@ const renderCategories = ({
 
           const sourceOrProperty = {
             id: property.name,
-            label: property.label,
-            description: property.description,
+            label:
+              property?.application?.orbis?.crossfiltering?.label ??
+              property.label,
+            description:
+              property?.application?.orbis?.crossfiltering?.description ??
+              property.description,
           };
 
           const onChange = () => {
