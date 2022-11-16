@@ -166,9 +166,9 @@ const FilterLayerView = ({
       })}
     >
       <p>
-        You need first to add a data layer in order to get access to all the
-        range filters and combine them to find areas with a certain set of
-        qualities
+        Select datasets to combine filters on up to 4 properties. Datasets which
+        are defined in different sets of geometries will be aggregated to a
+        common set of geometries to allow cross-filtering.
       </p>
 
       {commonGeometry ? (
