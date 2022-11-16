@@ -11,6 +11,7 @@ export const SHARED_STATE_KEY = 'shared';
  *   crossFilteringLayerData: string[]
  *   crossFilterValues: object
  *   selectedProperty: object|null
+ *   isViewportLoaded: boolean
  * }} LayersState
  */
 
@@ -54,6 +55,7 @@ const initialState = {
   crossFilteringLayerData: [],
   crossFilterValues: {},
   selectedProperty: null,
+  isViewportLoaded: false,
 };
 
 const handleMissingKey = () => {
@@ -95,6 +97,9 @@ const crossFilterLayersSlice = createSlice({
     resetSelectedProperty: (state, { payload }) => {
       state.selectedProperty = null;
     },
+    setIsViewportLoaded: (state, { payload }) => {
+      state.isViewportLoaded = payload;
+    },
   },
 });
 
@@ -104,6 +109,7 @@ export const {
   setFilterValue,
   setSelectedProperty,
   resetSelectedProperty,
+  setIsViewportLoaded,
 } = crossFilterLayersSlice.actions;
 
 /**
@@ -126,6 +132,11 @@ export const crossFilterValuesSelector = createSelector(
 export const selectedPropertySelector = createSelector(
   baseSelector,
   state => state?.selectedProperty,
+);
+
+export const isViewportLoadedSelector = createSelector(
+  baseSelector,
+  state => state?.isViewportLoaded,
 );
 
 export default crossFilterLayersSlice.reducer;

@@ -1,14 +1,23 @@
 import React from 'react';
 
-import { Button, Link, makeStyles, ThemeProvider } from '@astrosat/astrosat-ui';
+import {
+  Button,
+  CircularProgress,
+  Link,
+  makeStyles,
+  ThemeProvider,
+} from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 
+import apiClient from 'api-client';
 import { geometryHierarchySelector } from 'app.slice';
+import { InfoButtonTooltip } from 'components';
 import {
   setFilterValues,
   resetSelectedProperty,
+  isViewportLoadedSelector,
 } from 'map/orbs/crossfilter-layers.slice';
 
 import { ReactComponent as AddNewCategoryIcon } from './add-more-categories.svg';
@@ -25,6 +34,7 @@ import {
   setCrossFilterLayers,
   setCrossFilterSelectedProperties,
   setCrossFilteringCommonGeometry,
+  crossFilteringCommonGeometrySelector,
 } from './data-layers.slice';
 import { LayersList } from './layers-list/layers-list.component';
 
@@ -55,6 +65,19 @@ const useStyles = makeStyles(theme => ({
     margin: '0 auto',
   },
   disabled: {},
+  spinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '3rem',
+  },
+  geometry: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  docLink: {
+    padding: '1rem',
+  },
 }));
 
 const FilterLayerView = ({
@@ -70,6 +93,12 @@ const FilterLayerView = ({
   const isCrossFilteringMode = useSelector(isCrossFilteringModeSelector);
   const selectedLayers = useSelector(activeCrossFilteringLayersSelector);
   const geometryHierarchy = useSelector(geometryHierarchySelector);
+  const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
+  const commonGeometryDescription =
+    geometryHierarchy[commonGeometry]?.description;
+  const isViewportLoaded = useSelector(state =>
+    isViewportLoadedSelector(state?.orbs),
+  );
 
   const selectedCrossFilterProperties = useSelector(
     activeCrossFilterPropertiesSelector,
@@ -141,11 +170,39 @@ const FilterLayerView = ({
         range filters and combine them to find areas with a certain set of
         qualities
       </p>
-      <LayersList
-        dispatch={dispatch}
-        selectedLayers={activeCategorisedSources}
-        sidebarComponents={sidebarComponents}
-      />
+
+      {commonGeometry ? (
+        <div className={styles.geometry}>
+          <p>
+            Aggregated to Geometry:{' '}
+            <strong>{commonGeometry?.replace('_', ' ')}</strong>
+          </p>
+          <InfoButtonTooltip tooltipContent={commonGeometryDescription} />
+        </div>
+      ) : null}
+
+      <div className={styles.docLink}>
+        <Link
+          href={apiClient.documents.userGuideUrl('cross-filtering')}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more about cross-filtering
+        </Link>
+      </div>
+
+      {isViewportLoaded && selectedLayers.length > 0 ? (
+        <LayersList
+          dispatch={dispatch}
+          selectedLayers={activeCategorisedSources}
+          sidebarComponents={sidebarComponents}
+        />
+      ) : selectedLayers.length > 0 ? (
+        <div className={styles.spinner}>
+          <CircularProgress size={22} color="inherit" />
+        </div>
+      ) : null}
+
       <Button
         className={styles.button}
         variant="text"
@@ -154,7 +211,7 @@ const FilterLayerView = ({
         startIcon={<AddNewCategoryIcon />}
       >
         <Link className={styles.link} color="textPrimary" component="span">
-          Add filterable Layers
+          Add Filterable Layers
         </Link>
       </Button>
       <ThemeProvider theme="light">

@@ -201,7 +201,9 @@ export const createOrbsWithCategorisedSources = (
         extendedSource.metadata.application.orbis.categories.child = {
           ...extendedSource.metadata.application.orbis.categories.child,
           child: {
-            name: extendedSource.metadata.label,
+            name:
+              extendedSource.metadata.application.orbis?.crossfiltering
+                ?.label ?? extendedSource.metadata.label,
           },
         };
       }
@@ -238,3 +240,12 @@ export const collectSourceIds = categorisedSources =>
     if (sourceOrCategory.source_id) return [...acc, sourceOrCategory.source_id];
     return [...acc, ...collectSourceIds(sourceOrCategory.sources)];
   }, []);
+
+export const collectSourceProperties = sources => {
+  return sources.reduce((acc, sourceOrCategory) => {
+    if (sourceOrCategory.source_id)
+      return [...acc, ...sourceOrCategory?.metadata.properties];
+
+    return [...acc, ...collectSourceProperties(sourceOrCategory.sources)];
+  }, []);
+};

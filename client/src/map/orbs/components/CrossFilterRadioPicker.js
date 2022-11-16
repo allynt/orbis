@@ -32,8 +32,14 @@ const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
     padding: spacing(2),
   },
   slider: {
-    width: `calc(320px - ${spacing(6)})`,
+    width: `calc(310px - ${spacing(6)})`,
     margin: spacing(1, 'auto', 2),
+  },
+  isActive: {
+    backgroundColor: 'rgba(211, 211, 211, 0.5)',
+    borderRadius: '0.3rem',
+    padding: '0 0.3rem 0 1rem',
+    color: 'black',
   },
 }));
 
@@ -86,13 +92,18 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
           key={property.name}
           item
           container
-          className={styles.slidersGridItem}
+          className={`${styles.slidersGridItem} ${
+            selectedProperty?.name === property.name ? styles.isActive : ''
+          }`}
         >
           <Grid item container className={styles.radioIconContainer}>
             <Grid item xs={11}>
               <FormControlLabel
                 checked={selectedProperty?.name === property.name}
-                label={property?.label}
+                label={
+                  property?.application?.orbis?.crossfiltering?.label ??
+                  property?.label
+                }
                 control={
                   <Radio
                     onClick={() => handleRadioClick(property)}

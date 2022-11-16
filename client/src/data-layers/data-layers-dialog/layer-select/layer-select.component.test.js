@@ -557,9 +557,11 @@ describe('<LayerSelect />', () => {
     });
 
     it('hides sub-categories when heading is clicked again', async () => {
-      const { getByRole, queryByRole } = renderComponent({
+      const { debug, getByRole, queryByRole } = renderComponent({
         isCrossFilteringMode: true,
       });
+
+      debug();
 
       const categoryHeading = getByRole('button', {
         name: OIL_PARENT,
@@ -575,7 +577,7 @@ describe('<LayerSelect />', () => {
 
       expect(
         getByRole('button', {
-          name: 'Oil Source 1',
+          name: 'Oil Source 1 (5) unselect all',
         }),
       ).toBeInTheDocument();
 
@@ -621,7 +623,7 @@ describe('<LayerSelect />', () => {
       );
 
       const checkbox = getByRole('button', {
-        name: 'Oil Source 1',
+        name: 'Oil Source 1 (5) unselect all',
       });
 
       await waitFor(() => expect(checkbox).toBeInTheDocument());
@@ -647,7 +649,7 @@ describe('<LayerSelect />', () => {
 
       expect(
         getByRole('button', {
-          name: 'Oil Source 1',
+          name: 'Oil Source 1 (5) unselect all',
         }),
       ).toBeInTheDocument();
 
@@ -673,7 +675,7 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: 'Oil Source 1',
+          name: 'Oil Source 1 (5) unselect all',
         }),
       );
 
