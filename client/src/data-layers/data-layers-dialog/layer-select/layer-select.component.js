@@ -185,6 +185,10 @@ const useAccordionStyles = makeStyles(theme => ({
     },
   },
   open: {},
+  category: {
+    textAlign: 'left',
+    margin: 'unset',
+  },
 }));
 
 const Accordion = ({
@@ -254,7 +258,7 @@ const Accordion = ({
     <React.Fragment key={source.category}>
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
-        {source.category}
+        <p className={styles.category}>{source.category}</p>
         <>
           {!isCrossFilteringMode ? (
             <>
