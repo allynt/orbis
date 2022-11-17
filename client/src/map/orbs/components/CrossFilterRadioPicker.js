@@ -18,6 +18,7 @@ import {
   InfoButtonTooltip,
   TooltipContent,
 } from 'components';
+import { createCategorisationPath } from 'data-layers/categorisation.utils';
 import { crossFilteringCommonGeometrySelector } from 'data-layers/data-layers.slice';
 import { isRealValue } from 'utils/isRealValue';
 
@@ -107,7 +108,9 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
       }),
     );
 
-  const categoryPath = '';
+  const categoryPath = createCategorisationPath({
+    categories: selectedLayer?.metadata?.application?.orbis?.categories,
+  }).replace('.', ' > ');
 
   return (
     <Grid container direction="column">
@@ -142,8 +145,16 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
                   <TooltipContent
                     categoryPath={categoryPath}
                     description={
-                      property?.application?.orbis?.description ||
-                      property?.description
+                      <>
+                        <h4>Property Description:</h4>
+                        <p>
+                          {property?.application?.orbis?.description ??
+                            property.description}
+                        </p>
+
+                        <h4>Source Description:</h4>
+                        <p>{selectedLayer?.metadata?.description}</p>
+                      </>
                     }
                   />
                 }

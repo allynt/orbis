@@ -106,14 +106,28 @@ const renderCategories = ({
             selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES ||
             isSelected;
 
+          const description = (
+            <>
+              <h4>Property Description:</h4>
+              <p>
+                {property?.application?.orbis?.crossfiltering?.description ??
+                  property.description}
+              </p>
+
+              <h4>Source Description:</h4>
+              <p>{source?.metadata?.description}</p>
+
+              <h4>Granularity:</h4>
+              <p>{source?.metadata?.granularity}</p>
+            </>
+          );
+
           const sourceOrProperty = {
             id: property.name,
             label:
               property?.application?.orbis?.crossfiltering?.label ??
               property.label,
-            description:
-              property?.application?.orbis?.crossfiltering?.description ??
-              property.description,
+            description,
           };
 
           const onChange = () => {
