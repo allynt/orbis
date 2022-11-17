@@ -27,7 +27,7 @@ export const SHARED_STATE_KEY = 'shared';
 
 /**
  * @typedef {GenericOrbAction<{
- *     crossFilterValues: object[]
+ *     crossFilterValues: object
  *   }>} SetFilterValuesAction
  */
 
@@ -36,6 +36,13 @@ export const SHARED_STATE_KEY = 'shared';
  *     propertyName: string
  *     filterValue?: number[]
  *   }>} SetFilterValueAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *     propertyName: string
+ *     clipValue?: number[]
+ *   }>} SetClipValueAction
  */
 
 /**
@@ -79,7 +86,19 @@ const crossFilterLayersSlice = createSlice({
     setFilterValue: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
       const { key, propertyName, filterValue } = payload;
-      state[key] = { ...state[key], [propertyName]: filterValue };
+      state[key] = {
+        ...state[key],
+        [propertyName]: { ...(state[key][propertyName] ?? {}), filterValue },
+      };
+    },
+    /** @type {SetClipValueAction} */
+    setClipValue: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, propertyName, clipValue } = payload;
+      state[key] = {
+        ...state[key],
+        [propertyName]: { ...(state[key][propertyName] ?? {}), clipValue },
+      };
     },
     /** @type {SetCrossFilterDataAction} */
     setCrossFilterData: (state, { payload }) => {
@@ -107,6 +126,7 @@ export const {
   setCrossFilterData,
   setFilterValues,
   setFilterValue,
+  setClipValue,
   setSelectedProperty,
   resetSelectedProperty,
   setIsViewportLoaded,

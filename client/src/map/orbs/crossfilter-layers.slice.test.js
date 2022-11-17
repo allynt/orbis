@@ -3,6 +3,7 @@
 import reducer, {
   setFilterValues,
   setFilterValue,
+  setClipValue,
   setSelectedProperty,
   crossFilterValuesSelector,
   selectedPropertySelector,
@@ -16,8 +17,8 @@ describe('crossfilter-layers slice', () => {
     describe('setFilterValues', () => {
       it('initialises filter values in state', () => {
         const crossFilterValues = {
-          property1: [10, 99],
-          property2: [33, 44],
+          property1: { filterValue: [10, 99], clipValue: [22, 88] },
+          property2: { filterValue: [33, 44], clipValue: [11, 99] },
         };
 
         const initialState = {
@@ -44,7 +45,7 @@ describe('crossfilter-layers slice', () => {
 
         const payload = {
           crossFilterValues: {
-            property1: [10, 99],
+            property1: { filterValue: [10, 99] },
           },
         };
 
@@ -60,7 +61,7 @@ describe('crossfilter-layers slice', () => {
         const initialState = {
           selectedProperty: null,
           crossFilterValues: {
-            property1: [10, 99],
+            property1: { filterValue: [10, 99] },
           },
         };
 
@@ -75,8 +76,8 @@ describe('crossfilter-layers slice', () => {
         expect(result).toEqual({
           ...initialState,
           crossFilterValues: {
-            property1: [10, 99],
-            property2: [33, 44],
+            property1: { filterValue: [10, 99] },
+            property2: { filterValue: [33, 44] },
           },
         });
       });
@@ -88,10 +89,53 @@ describe('crossfilter-layers slice', () => {
 
         const payload = {
           propertyName: 'property1',
-          filterValue: [33, 44],
+          filterValue: { filterValue: [33, 44] },
         };
 
         const result = reducer(initialState, setFilterValue(payload));
+
+        expect(result).toEqual(initialState);
+        expect(console.error).toHaveBeenCalledWith(errorMessage);
+      });
+    });
+
+    describe('setClipValue', () => {
+      it('updates an individual clip value', () => {
+        const initialState = {
+          selectedProperty: null,
+          crossFilterValues: {
+            property1: { clipValue: [10, 99] },
+          },
+        };
+
+        const payload = {
+          key: 'crossFilterValues',
+          propertyName: 'property2',
+          clipValue: [33, 44],
+        };
+
+        const result = reducer(initialState, setClipValue(payload));
+
+        expect(result).toEqual({
+          ...initialState,
+          crossFilterValues: {
+            property1: { clipValue: [10, 99] },
+            property2: { clipValue: [33, 44] },
+          },
+        });
+      });
+
+      it('logs error if no key found', () => {
+        console.error = jest.fn();
+
+        const initialState = { crossFilterValues: {} };
+
+        const payload = {
+          propertyName: 'property1',
+          filterValue: { clipValue: [33, 44] },
+        };
+
+        const result = reducer(initialState, setClipValue(payload));
 
         expect(result).toEqual(initialState);
         expect(console.error).toHaveBeenCalledWith(errorMessage);
@@ -141,8 +185,8 @@ describe('crossfilter-layers slice', () => {
     describe('crossFilterValuesSelector', () => {
       it('selects the cross-filter values', () => {
         const crossFilterValues = {
-          property1: [12, 34],
-          property2: [56, 78],
+          property1: { filterValue: [12, 34] },
+          property2: { filterValue: [56, 78] },
         };
 
         const state = {
