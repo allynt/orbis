@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   makeStyles,
   Grid,
   FormControlLabel,
   Radio,
+  ToggleButtonGroup,
+  ToggleButton,
+  Fade,
 } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
 
 import {
   ColormapRangeSlider,
+  ColorAdjustSlider,
   InfoButtonTooltip,
   TooltipContent,
 } from 'components';
@@ -21,8 +25,14 @@ import {
   selectedPropertySelector,
   crossFilterValuesSelector,
   setFilterValue,
+  setClipValue,
   setSelectedProperty,
 } from '../crossfilter-layers.slice';
+
+const SCALE_VALUES = {
+  filter: 'Adjust Filter',
+  colour: 'Adjust Colour',
+};
 
 const useStyles = makeStyles(({ spacing, typography: { pxToRem } }) => ({
   radioIconContainer: {
@@ -63,7 +73,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
 
   /**
    * @param {string} propertyName
-   * @param {number[]} filterValue
+   * @param {[number, number]} filterValue
    */
   const handleSliderChange = (propertyName, filterValue) =>
     dispatch(
@@ -73,6 +83,20 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
         filterValue,
       }),
     );
+
+  /**
+   * @param {string} propertyName
+   * @param {[number, number]} clipValue
+   */
+  const handleClipChange = (propertyName, clipValue) => {
+    dispatch(
+      setClipValue({
+        key: 'crossFilterValues',
+        propertyName,
+        clipValue,
+      }),
+    );
+  };
 
   /** @param {object} selectedProperty */
   const handleRadioClick = selectedProperty =>
@@ -129,9 +153,12 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
           <Grid item>
             <Slider
               property={property}
-              filterRange={filterValues[property.name]}
+              filterValues={filterValues[property.name]}
               onRangeFilterChange={filterValue =>
                 handleSliderChange(property.name, filterValue)
+              }
+              onClipRangeChange={clipValue =>
+                handleClipChange(property.name, clipValue)
               }
               commonGeometry={commonGeometry}
             />
@@ -145,20 +172,28 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
 /**
  * @param {{
  *  property: object
- *  filterRange: number[]
- *  onRangeFilterChange: (filterValue: number[]) => void
+ *  filterValues: { filterRange: [number, number], clipRange: [number, number] }
+ *  onRangeFilterChange: (filterValue: [number, number]) => void
+ *  onClipRangeChange: (clipValue: [number, number]) => void
  *  commonGeometry: string
  * }} props
  */
 const Slider = ({
   property,
-  filterRange,
+  filterValues,
   onRangeFilterChange,
+  onClipRangeChange,
   commonGeometry,
 }) => {
   const styles = useStyles();
+  const [scale, setScale] = useState(SCALE_VALUES.filter);
 
-  const { min, max } =
+  const handleToggleChange = (_, newValue) => {
+    if (!newValue || scale === newValue) return;
+    return setScale(newValue);
+  };
+
+  const { min, max, clip_min, clip_max } =
     property?.application?.orbis?.crossfiltering[commonGeometry] ?? {};
 
   const { color, colormap_reversed } =
@@ -166,17 +201,48 @@ const Slider = ({
 
   const sliderProps = {
     colorMap: color,
-    filterRange,
     min: isRealValue(min) ? min : 0,
     max: isRealValue(max) ? max : 1,
+    clip_min,
+    clip_max,
     reversed: colormap_reversed,
     className: styles.slider,
-    value: filterRange,
-    'data-testid': 'color-slider',
-    onChange: onRangeFilterChange,
   };
 
-  return <ColormapRangeSlider {...sliderProps} />;
+  return (
+    <Grid container direction="column" gap={1}>
+      <Grid item xs={12}>
+        <ToggleButtonGroup
+          size="small"
+          value={scale}
+          onChange={handleToggleChange}
+        >
+          <ToggleButton value={SCALE_VALUES.filter}>
+            {SCALE_VALUES.filter}
+          </ToggleButton>
+          <ToggleButton value={SCALE_VALUES.colour}>
+            {SCALE_VALUES.colour}
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Grid>
+      <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
+        <ColormapRangeSlider
+          {...sliderProps}
+          data-testid="color-slider"
+          value={filterValues.filterValue}
+          onChange={onRangeFilterChange}
+        />
+      </Fade>
+      <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>
+        <ColorAdjustSlider
+          {...sliderProps}
+          data-testid="color-slider"
+          value={filterValues.clipValue}
+          onChange={onClipRangeChange}
+        />
+      </Fade>
+    </Grid>
+  );
 };
 
 export default CrossFilterRadioPicker;

@@ -135,14 +135,17 @@ const FilterLayerView = ({
     );
 
     const crossFilterValues = selectedProperties.reduce((acc, property) => {
-      const { min, max } =
+      const { min, max, clip_min, clip_max } =
         property?.application?.orbis?.crossfiltering[
           selectedPropertiesCommonGeometry
         ];
 
       return {
         ...acc,
-        [property.name]: [min, max],
+        [property.name]: {
+          filterValue: [min, max],
+          clipValue: [clip_min, clip_max],
+        },
       };
     }, {});
 

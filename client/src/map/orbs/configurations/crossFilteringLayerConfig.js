@@ -1,5 +1,4 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { get } from 'lodash';
 
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
@@ -38,14 +37,6 @@ const GEOMETRY_IDS = {
 };
 
 /**
- * @param {import('typings').GeoJsonFeature} feature
- * @param {import('typings').Property} selectedProperty
- * @param {number} [selectedTimestamp]
- */
-export const getValue = (feature, selectedProperty) =>
-  get(feature.properties, selectedProperty.name);
-
-/**
  * @param {{
  *   id: string
  *   data: GeoJSON.FeatureCollection
@@ -79,15 +70,34 @@ const configuration = ({
   const extraData = urls ? urls.slice(1) : [];
 
   const filterRanges = crossFilterValuesSelector(orbState);
-  const filterRangeValues = Object.values(filterRanges);
 
   const getFilterValue = feature =>
     filterableProperties.map(property => feature.properties[property.name]);
 
   const selectedProperty = selectedPropertySelector(orbState);
 
+  // example: [{ filterValue: [1, 2], clipValue: [3, 4] }]
+  const filterRangeValues = Object.values(filterRanges);
+
+  const filterValues = filterRangeValues.reduce(
+    (acc, cur) => [...acc, cur.filterValue],
+    [],
+  );
+
+  const clipValues = filterRanges?.[selectedProperty?.name]?.clipValue;
+
   const colorScale =
-    selectedProperty && getColorScaleForProperty(selectedProperty, 'array');
+    selectedProperty &&
+    getColorScaleForProperty(
+      clipValues
+        ? {
+            ...selectedProperty,
+            clip_min: clipValues[0],
+            clip_max: clipValues[1],
+          }
+        : selectedProperty,
+      'array',
+    );
 
   const getFillOpacity = feature => {
     const value = feature.properties[selectedProperty?.name];
@@ -130,7 +140,8 @@ const configuration = ({
       }),
     ],
     getFilterValue,
-    filterRange: filterRangeValues,
+    filterRange: filterValues,
+    clipRange: clipValues,
     updateTriggers: {
       getFillColor,
       getFilterValue,
