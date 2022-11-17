@@ -292,16 +292,18 @@ const Accordion = ({
                   {isNaN(propertiesCount) ? 0 : propertiesCount})
                 </span>
               )}
-              <Link
-                variant="body2"
-                component="span"
-                role="button"
-                className={styles.selectAll}
-                onClick={handleCrossfilterUnselectAllClick}
-                disabled={false}
-              >
-                unselect all
-              </Link>
+              {selectedCount > 0 ? (
+                <Link
+                  variant="body2"
+                  component="span"
+                  role="button"
+                  className={styles.selectAll}
+                  onClick={handleCrossfilterUnselectAllClick}
+                  disabled={false}
+                >
+                  unselect all
+                </Link>
+              ) : null}
             </>
           )}
         </>
