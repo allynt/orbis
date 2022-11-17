@@ -409,9 +409,12 @@ export const LayerSelect = ({
         )}
       </Header>
 
-      <div className={styles.strapline}>
-        {selectedCrossFilterProperties.length} of 4 properties selected
-      </div>
+      {isCrossFilteringMode ? (
+        <div className={styles.strapline}>
+          {selectedCrossFilterProperties.length} of 4 properties selected
+        </div>
+      ) : null}
+
       {selectedOrbName ? (
         <>
           <LayerSearch
