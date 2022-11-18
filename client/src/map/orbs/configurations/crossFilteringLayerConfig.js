@@ -77,22 +77,21 @@ const configuration = ({
   const selectedProperty = selectedPropertySelector(orbState);
 
   // object values example: [{ filterValue: [1, 2], clipValue: [3, 4] }]
-  const filterRanges = Object.values(crossFilterRanges).reduce(
+  const filterRange = Object.values(crossFilterRanges).reduce(
     (acc, cur) => [...acc, cur.filterRange],
     [],
   );
 
-  const selectedPropertyClipRange =
-    crossFilterRanges?.[selectedProperty?.name]?.clipRange;
+  const clipRange = crossFilterRanges?.[selectedProperty?.name]?.clipRange;
 
   const colorScale =
     selectedProperty &&
     getColorScaleForProperty(
-      selectedPropertyClipRange
+      clipRange
         ? {
             ...selectedProperty,
-            clip_min: selectedPropertyClipRange[0],
-            clip_max: selectedPropertyClipRange[1],
+            clip_min: clipRange[0],
+            clip_max: clipRange[1],
           }
         : selectedProperty,
       'array',
@@ -139,8 +138,8 @@ const configuration = ({
       }),
     ],
     getFilterValue,
-    filterRange: filterRanges,
-    clipRange: selectedPropertyClipRange,
+    filterRange,
+    clipRange,
     updateTriggers: {
       getFillColor,
       getFilterValue,
