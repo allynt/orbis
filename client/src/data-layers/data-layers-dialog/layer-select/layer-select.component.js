@@ -131,13 +131,17 @@ const renderCategories = ({
           };
 
           const onChange = () => {
-            onSourcesChange({
-              source_ids: [source.source_id],
-              selected: !isSelected,
-            });
+            if (!isSelected) {
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              });
+            }
+
             onCrossFilterPropertiesChange({
               properties: [property],
               selected: !isSelected,
+              source,
             });
           };
 
@@ -231,6 +235,7 @@ const Accordion = ({
     (acc, val) => acc + val?.metadata?.properties?.length,
     0,
   );
+
   // calculate the number of properties selected for an individual dataset.
   const noOfSelectedPropertiesForDataset = source.sources.reduce((acc, val) => {
     if (val?.metadata) {
@@ -259,12 +264,13 @@ const Accordion = ({
   const handleCrossfilterUnselectAllClick = e => {
     e.stopPropagation();
 
-    onSourcesChange({ source_ids: allSourceIds, selected: false });
+    onSourcesChange({ source_ids: allSourceIds, selected: false, source });
 
     const properties = collectSourceProperties(source.sources);
     onCrossFilterPropertiesChange({
       properties,
       selected: false,
+      source,
     });
   };
 
