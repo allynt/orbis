@@ -4,7 +4,7 @@ import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 
 import {
-  crossFilterValuesSelector,
+  crossFilterRangesSelector,
   selectedPropertySelector,
   activeCrossFilteringLayersSelector,
   setIsViewportLoaded,
@@ -69,31 +69,30 @@ const configuration = ({
   const data = urls ? urls[0] : [];
   const extraData = urls ? urls.slice(1) : [];
 
-  const filterRanges = crossFilterValuesSelector(orbState);
+  const crossFilterRanges = crossFilterRangesSelector(orbState);
 
   const getFilterValue = feature =>
     filterableProperties.map(property => feature.properties[property.name]);
 
   const selectedProperty = selectedPropertySelector(orbState);
 
-  // example: [{ filterValue: [1, 2], clipValue: [3, 4] }]
-  const filterRangeValues = Object.values(filterRanges);
-
-  const filterValues = filterRangeValues.reduce(
-    (acc, cur) => [...acc, cur.filterValue],
+  // object values example: [{ filterValue: [1, 2], clipValue: [3, 4] }]
+  const filterRanges = Object.values(crossFilterRanges).reduce(
+    (acc, cur) => [...acc, cur.filterRange],
     [],
   );
 
-  const clipValues = filterRanges?.[selectedProperty?.name]?.clipValue;
+  const selectedPropertyClipRange =
+    crossFilterRanges?.[selectedProperty?.name]?.clipRange;
 
   const colorScale =
     selectedProperty &&
     getColorScaleForProperty(
-      clipValues
+      selectedPropertyClipRange
         ? {
             ...selectedProperty,
-            clip_min: clipValues[0],
-            clip_max: clipValues[1],
+            clip_min: selectedPropertyClipRange[0],
+            clip_max: selectedPropertyClipRange[1],
           }
         : selectedProperty,
       'array',
@@ -140,8 +139,8 @@ const configuration = ({
       }),
     ],
     getFilterValue,
-    filterRange: filterValues,
-    clipRange: clipValues,
+    filterRange: filterRanges,
+    clipRange: selectedPropertyClipRange,
     updateTriggers: {
       getFillColor,
       getFilterValue,

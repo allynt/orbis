@@ -23,9 +23,9 @@ import { isRealValue } from 'utils/isRealValue';
 
 import {
   selectedPropertySelector,
-  crossFilterValuesSelector,
-  setFilterValue,
-  setClipValue,
+  crossFilterRangesSelector,
+  setFilterRange,
+  setClipRange,
   setSelectedProperty,
 } from '../crossfilter-layers.slice';
 
@@ -65,35 +65,35 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
     selectedPropertySelector(state?.orbs),
   );
 
-  const filterValues = useSelector(state =>
-    crossFilterValuesSelector(state?.orbs),
+  const filterRanges = useSelector(state =>
+    crossFilterRangesSelector(state?.orbs),
   );
 
   const commonGeometry = useSelector(crossFilteringCommonGeometrySelector);
 
   /**
    * @param {string} propertyName
-   * @param {[number, number]} filterValue
+   * @param {[number, number]} filterRange
    */
-  const handleSliderChange = (propertyName, filterValue) =>
+  const handleSliderChange = (propertyName, filterRange) =>
     dispatch(
-      setFilterValue({
-        key: 'crossFilterValues',
+      setFilterRange({
+        key: 'crossFilterRanges',
         propertyName,
-        filterValue,
+        filterRange,
       }),
     );
 
   /**
    * @param {string} propertyName
-   * @param {[number, number]} clipValue
+   * @param {[number, number]} clipRange
    */
-  const handleClipChange = (propertyName, clipValue) => {
+  const handleClipChange = (propertyName, clipRange) => {
     dispatch(
-      setClipValue({
-        key: 'crossFilterValues',
+      setClipRange({
+        key: 'crossFilterRanges',
         propertyName,
-        clipValue,
+        clipRange,
       }),
     );
   };
@@ -153,7 +153,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
           <Grid item>
             <Slider
               property={property}
-              filterValues={filterValues[property.name]}
+              filterRanges={filterRanges[property.name]}
               onRangeFilterChange={filterValue =>
                 handleSliderChange(property.name, filterValue)
               }
@@ -172,7 +172,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
 /**
  * @param {{
  *  property: object
- *  filterValues: { filterRange: [number, number], clipRange: [number, number] }
+ *  filterRanges: { filterRange: [number, number], clipRange: [number, number] }
  *  onRangeFilterChange: (filterValue: [number, number]) => void
  *  onClipRangeChange: (clipValue: [number, number]) => void
  *  commonGeometry: string
@@ -180,7 +180,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
  */
 const Slider = ({
   property,
-  filterValues,
+  filterRanges,
   onRangeFilterChange,
   onClipRangeChange,
   commonGeometry,
@@ -229,7 +229,7 @@ const Slider = ({
         <ColormapRangeSlider
           {...sliderProps}
           data-testid="color-slider"
-          value={filterValues.filterValue}
+          value={filterRanges.filterRange}
           onChange={onRangeFilterChange}
         />
       </Fade>
@@ -237,7 +237,7 @@ const Slider = ({
         <ColorAdjustSlider
           {...sliderProps}
           data-testid="color-slider"
-          value={filterValues.clipValue}
+          value={filterRanges.clipRange}
           onChange={onClipRangeChange}
         />
       </Fade>
