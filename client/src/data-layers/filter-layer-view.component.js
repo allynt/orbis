@@ -15,7 +15,7 @@ import apiClient from 'api-client';
 import { geometryHierarchySelector } from 'app.slice';
 import { InfoButtonTooltip } from 'components';
 import {
-  setFilterValues,
+  setInitialCrossFilterRanges,
   resetSelectedProperty,
   isViewportLoadedSelector,
 } from 'map/orbs/crossfilter-layers.slice';
@@ -134,23 +134,26 @@ const FilterLayerView = ({
       geometryHierarchy,
     );
 
-    const crossFilterValues = selectedProperties.reduce((acc, property) => {
-      const { min, max } =
+    const crossFilterRanges = selectedProperties.reduce((acc, property) => {
+      const { min, max, clip_min, clip_max } =
         property?.application?.orbis?.crossfiltering[
           selectedPropertiesCommonGeometry
         ];
 
       return {
         ...acc,
-        [property.name]: [min, max],
+        [property.name]: {
+          filterRange: [min, max],
+          clipRange: [clip_min, clip_max],
+        },
       };
     }, {});
 
     dispatch(setCrossFilteringCommonGeometry(selectedPropertiesCommonGeometry));
     dispatch(
-      setFilterValues({
-        key: 'crossFilterValues',
-        crossFilterValues,
+      setInitialCrossFilterRanges({
+        key: 'crossFilterRanges',
+        crossFilterRanges,
       }),
     );
     dispatch(setCrossFilterSelectedProperties(groupedPropertiesAndSourceIds));

@@ -1,11 +1,10 @@
 import { DataFilterExtension } from '@deck.gl/extensions';
-import { get } from 'lodash';
 
 import { getColorScaleForProperty } from 'utils/color';
 import { isRealValue } from 'utils/isRealValue';
 
 import {
-  crossFilterValuesSelector,
+  crossFilterRangesSelector,
   selectedPropertySelector,
   activeCrossFilteringLayersSelector,
   setIsViewportLoaded,
@@ -36,14 +35,6 @@ const GEOMETRY_IDS = {
   MSOA: 'MSOA Code',
   OA: 'OA Code',
 };
-
-/**
- * @param {import('typings').GeoJsonFeature} feature
- * @param {import('typings').Property} selectedProperty
- * @param {number} [selectedTimestamp]
- */
-export const getValue = (feature, selectedProperty) =>
-  get(feature.properties, selectedProperty.name);
 
 /**
  * @param {{
@@ -78,16 +69,33 @@ const configuration = ({
   const data = urls ? urls[0] : [];
   const extraData = urls ? urls.slice(1) : [];
 
-  const filterRanges = crossFilterValuesSelector(orbState);
-  const filterRangeValues = Object.values(filterRanges);
+  const crossFilterRanges = crossFilterRangesSelector(orbState);
 
   const getFilterValue = feature =>
     filterableProperties.map(property => feature.properties[property.name]);
 
   const selectedProperty = selectedPropertySelector(orbState);
 
+  // object values example: [{ filterValue: [1, 2], clipValue: [3, 4] }]
+  const filterRange = Object.values(crossFilterRanges).reduce(
+    (acc, cur) => [...acc, cur.filterRange],
+    [],
+  );
+
+  const clipRange = crossFilterRanges?.[selectedProperty?.name]?.clipRange;
+
   const colorScale =
-    selectedProperty && getColorScaleForProperty(selectedProperty, 'array');
+    selectedProperty &&
+    getColorScaleForProperty(
+      clipRange
+        ? {
+            ...selectedProperty,
+            clip_min: clipRange[0],
+            clip_max: clipRange[1],
+          }
+        : selectedProperty,
+      'array',
+    );
 
   const getFillOpacity = feature => {
     const value = feature.properties[selectedProperty?.name];
@@ -130,7 +138,8 @@ const configuration = ({
       }),
     ],
     getFilterValue,
-    filterRange: filterRangeValues,
+    filterRange,
+    clipRange,
     updateTriggers: {
       getFillColor,
       getFilterValue,

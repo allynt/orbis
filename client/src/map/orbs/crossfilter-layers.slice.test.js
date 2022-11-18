@@ -1,10 +1,11 @@
 // @ts-nocheck
 
 import reducer, {
-  setFilterValues,
-  setFilterValue,
+  setInitialCrossFilterRanges,
+  setFilterRange,
+  setClipRange,
   setSelectedProperty,
-  crossFilterValuesSelector,
+  crossFilterRangesSelector,
   selectedPropertySelector,
 } from './crossfilter-layers.slice';
 
@@ -13,70 +14,76 @@ const errorMessage =
 
 describe('crossfilter-layers slice', () => {
   describe('actions', () => {
-    describe('setFilterValues', () => {
+    describe('setInitialCrossFilterRanges', () => {
       it('initialises filter values in state', () => {
-        const crossFilterValues = {
-          property1: [10, 99],
-          property2: [33, 44],
+        const crossFilterRanges = {
+          property1: { filterRange: [10, 99], clipRange: [22, 88] },
+          property2: { filterRange: [33, 44], clipRange: [11, 99] },
         };
 
         const initialState = {
           selectedProperty: null,
-          crossFilterValues: {},
+          crossFilterRanges: {},
         };
 
         const payload = {
-          key: 'crossFilterValues',
-          crossFilterValues,
+          key: 'crossFilterRanges',
+          crossFilterRanges,
         };
 
-        const result = reducer(initialState, setFilterValues(payload));
+        const result = reducer(
+          initialState,
+          setInitialCrossFilterRanges(payload),
+        );
         expect(result).toEqual({
           ...initialState,
-          crossFilterValues,
+          crossFilterRanges,
         });
       });
 
       it('logs error if no key found', () => {
         console.error = jest.fn();
 
-        const initialState = { crossFilterValues: {} };
+        const initialState = { crossFilterRanges: {} };
 
         const payload = {
-          crossFilterValues: {
-            property1: [10, 99],
+          crossFilterRanges: {
+            property1: { filterRange: [10, 99] },
           },
         };
 
-        const result = reducer(initialState, setFilterValues(payload));
+        const result = reducer(
+          initialState,
+          setInitialCrossFilterRanges(payload),
+        );
 
         expect(result).toEqual(initialState);
         expect(console.error).toHaveBeenCalledWith(errorMessage);
       });
     });
 
-    describe('setFilterValue', () => {
+    describe('setFilterRange', () => {
       it('updates an individual filter value', () => {
         const initialState = {
           selectedProperty: null,
-          crossFilterValues: {
-            property1: [10, 99],
+          crossFilterRanges: {
+            property1: { filterRange: [10, 99] },
           },
         };
 
         const payload = {
-          key: 'crossFilterValues',
+          key: 'crossFilterRanges',
           propertyName: 'property2',
-          filterValue: [33, 44],
+          filterRange: [33, 44],
         };
 
-        const result = reducer(initialState, setFilterValue(payload));
+        const result = reducer(initialState, setFilterRange(payload));
 
         expect(result).toEqual({
           ...initialState,
-          crossFilterValues: {
-            property1: [10, 99],
-            property2: [33, 44],
+          crossFilterRanges: {
+            property1: { filterRange: [10, 99] },
+            property2: { filterRange: [33, 44] },
           },
         });
       });
@@ -84,14 +91,57 @@ describe('crossfilter-layers slice', () => {
       it('logs error if no key found', () => {
         console.error = jest.fn();
 
-        const initialState = { crossFilterValues: {} };
+        const initialState = { crossFilterRanges: {} };
 
         const payload = {
           propertyName: 'property1',
-          filterValue: [33, 44],
+          filterRange: { filterRange: [33, 44] },
         };
 
-        const result = reducer(initialState, setFilterValue(payload));
+        const result = reducer(initialState, setFilterRange(payload));
+
+        expect(result).toEqual(initialState);
+        expect(console.error).toHaveBeenCalledWith(errorMessage);
+      });
+    });
+
+    describe('setClipRange', () => {
+      it('updates an individual clip value', () => {
+        const initialState = {
+          selectedProperty: null,
+          crossFilterRanges: {
+            property1: { clipRange: [10, 99] },
+          },
+        };
+
+        const payload = {
+          key: 'crossFilterRanges',
+          propertyName: 'property2',
+          clipRange: [33, 44],
+        };
+
+        const result = reducer(initialState, setClipRange(payload));
+
+        expect(result).toEqual({
+          ...initialState,
+          crossFilterRanges: {
+            property1: { clipRange: [10, 99] },
+            property2: { clipRange: [33, 44] },
+          },
+        });
+      });
+
+      it('logs error if no key found', () => {
+        console.error = jest.fn();
+
+        const initialState = { crossFilterRanges: {} };
+
+        const payload = {
+          propertyName: 'property1',
+          filterRange: { clipRange: [33, 44] },
+        };
+
+        const result = reducer(initialState, setClipRange(payload));
 
         expect(result).toEqual(initialState);
         expect(console.error).toHaveBeenCalledWith(errorMessage);
@@ -104,7 +154,7 @@ describe('crossfilter-layers slice', () => {
 
         const initialState = {
           selectedProperty: null,
-          crossFilterValues: {},
+          crossFilterRanges: {},
         };
 
         const payload = {
@@ -129,7 +179,7 @@ describe('crossfilter-layers slice', () => {
           selectedProperty: { name: 'test-property' },
         };
 
-        const result = reducer(initialState, setFilterValue(payload));
+        const result = reducer(initialState, setFilterRange(payload));
 
         expect(result).toEqual(initialState);
         expect(console.error).toHaveBeenCalledWith(errorMessage);
@@ -138,25 +188,25 @@ describe('crossfilter-layers slice', () => {
   });
 
   describe('selectors', () => {
-    describe('crossFilterValuesSelector', () => {
+    describe('crossFilterRangesSelector', () => {
       it('selects the cross-filter values', () => {
-        const crossFilterValues = {
-          property1: [12, 34],
-          property2: [56, 78],
+        const crossFilterRanges = {
+          property1: { filterRange: [12, 34] },
+          property2: { filterRange: [56, 78] },
         };
 
         const state = {
           crossFilterLayers: {
-            crossFilterValues,
+            crossFilterRanges,
           },
         };
 
-        const result = crossFilterValuesSelector(state);
-        expect(result).toEqual(crossFilterValues);
+        const result = crossFilterRangesSelector(state);
+        expect(result).toEqual(crossFilterRanges);
       });
 
       it('returns undefined if state is undefined', () => {
-        const result = crossFilterValuesSelector(undefined);
+        const result = crossFilterRangesSelector(undefined);
         expect(result).toBeUndefined();
       });
     });

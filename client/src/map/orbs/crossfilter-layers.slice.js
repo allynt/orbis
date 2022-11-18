@@ -9,7 +9,7 @@ export const SHARED_STATE_KEY = 'shared';
 /**
  * @typedef {{
  *   crossFilteringLayerData: string[]
- *   crossFilterValues: object
+ *   crossFilterRanges: object
  *   selectedProperty: object|null
  *   isViewportLoaded: boolean
  * }} LayersState
@@ -27,15 +27,22 @@ export const SHARED_STATE_KEY = 'shared';
 
 /**
  * @typedef {GenericOrbAction<{
- *     crossFilterValues: object[]
- *   }>} SetFilterValuesAction
+ *     crossFilterRanges: object
+ *   }>} SetInitialCrossFilterRangesAction
  */
 
 /**
  * @typedef {GenericOrbAction<{
  *     propertyName: string
- *     filterValue?: number[]
- *   }>} SetFilterValueAction
+ *     filterRange?: number[]
+ *   }>} SetFilterRangeAction
+ */
+
+/**
+ * @typedef {GenericOrbAction<{
+ *     propertyName: string
+ *     clipRange?: number[]
+ *   }>} SetClipRangeAction
  */
 
 /**
@@ -53,7 +60,7 @@ export const SHARED_STATE_KEY = 'shared';
 /** @type {LayersState} */
 const initialState = {
   crossFilteringLayerData: [],
-  crossFilterValues: {},
+  crossFilterRanges: {},
   selectedProperty: null,
   isViewportLoaded: false,
 };
@@ -69,17 +76,29 @@ const crossFilterLayersSlice = createSlice({
   name: 'crossFilterLayers',
   initialState,
   reducers: {
-    /** @type {SetFilterValuesAction} */
-    setFilterValues: (state, { payload }) => {
+    /** @type {SetInitialCrossFilterRangesAction} */
+    setInitialCrossFilterRanges: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key, crossFilterValues } = payload;
-      state[key] = crossFilterValues;
+      const { key, crossFilterRanges } = payload;
+      state[key] = crossFilterRanges;
     },
-    /** @type {SetFilterValueAction} */
-    setFilterValue: (state, { payload }) => {
+    /** @type {SetFilterRangeAction} */
+    setFilterRange: (state, { payload }) => {
       if (!payload.key) return handleMissingKey();
-      const { key, propertyName, filterValue } = payload;
-      state[key] = { ...state[key], [propertyName]: filterValue };
+      const { key, propertyName, filterRange } = payload;
+      state[key] = {
+        ...state[key],
+        [propertyName]: { ...(state[key][propertyName] ?? {}), filterRange },
+      };
+    },
+    /** @type {SetClipRangeAction} */
+    setClipRange: (state, { payload }) => {
+      if (!payload.key) return handleMissingKey();
+      const { key, propertyName, clipRange } = payload;
+      state[key] = {
+        ...state[key],
+        [propertyName]: { ...(state[key][propertyName] ?? {}), clipRange },
+      };
     },
     /** @type {SetCrossFilterDataAction} */
     setCrossFilterData: (state, { payload }) => {
@@ -105,8 +124,9 @@ const crossFilterLayersSlice = createSlice({
 
 export const {
   setCrossFilterData,
-  setFilterValues,
-  setFilterValue,
+  setInitialCrossFilterRanges,
+  setFilterRange,
+  setClipRange,
   setSelectedProperty,
   resetSelectedProperty,
   setIsViewportLoaded,
@@ -124,9 +144,9 @@ export const activeCrossFilteringLayersSelector = createSelector(
   state => state?.crossFilteringLayerData,
 );
 
-export const crossFilterValuesSelector = createSelector(
+export const crossFilterRangesSelector = createSelector(
   baseSelector,
-  state => state?.crossFilterValues,
+  state => state?.crossFilterRanges,
 );
 
 export const selectedPropertySelector = createSelector(
