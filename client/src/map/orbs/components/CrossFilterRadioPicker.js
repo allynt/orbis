@@ -193,7 +193,7 @@ const Slider = ({
     return setScale(newValue);
   };
 
-  const { min, max, clip_min, clip_max } =
+  const { min, max } =
     property?.application?.orbis?.crossfiltering[commonGeometry] ?? {};
 
   const { color, colormap_reversed } =
@@ -203,14 +203,14 @@ const Slider = ({
     colorMap: color,
     min: isRealValue(min) ? min : 0,
     max: isRealValue(max) ? max : 1,
-    clip_min,
-    clip_max,
+    clipMin: filterRanges.clipRange[0],
+    clipMax: filterRanges.clipRange[1],
     reversed: colormap_reversed,
     className: styles.slider,
   };
 
   return (
-    <Grid container direction="column" gap={1}>
+    <Grid container direction="column">
       <Grid item xs={12}>
         <ToggleButtonGroup
           size="small"
@@ -225,22 +225,23 @@ const Slider = ({
           </ToggleButton>
         </ToggleButtonGroup>
       </Grid>
-      <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
-        <ColormapRangeSlider
-          {...sliderProps}
-          data-testid="color-slider"
-          value={filterRanges.filterRange}
-          onChange={onRangeFilterChange}
-        />
-      </Fade>
-      <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>
-        <ColorAdjustSlider
-          {...sliderProps}
-          data-testid="color-slider"
-          value={filterRanges.clipRange}
-          onChange={onClipRangeChange}
-        />
-      </Fade>
+      <Grid item>
+        <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
+          <ColormapRangeSlider
+            {...sliderProps}
+            data-testid="color-slider"
+            value={filterRanges.filterRange}
+            onChange={onRangeFilterChange}
+          />
+        </Fade>
+        <Fade in={scale === SCALE_VALUES.colour} unmountOnExit>
+          <ColorAdjustSlider
+            {...sliderProps}
+            data-testid="color-slider"
+            onChange={onClipRangeChange}
+          />
+        </Fade>
+      </Grid>
     </Grid>
   );
 };
