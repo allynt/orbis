@@ -87,7 +87,7 @@ const DataLayersDialog = ({
     selected
       ? setSelectedCrossFilterProperties(current => [...current, ...properties])
       : setSelectedCrossFilterProperties(current =>
-          current.filter(v => !properties.find(p => p.label === v.label)),
+          current.filter(v => !properties.find(p => p.name === v.name)),
         );
   };
 
