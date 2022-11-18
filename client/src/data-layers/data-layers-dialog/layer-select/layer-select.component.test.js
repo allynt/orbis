@@ -577,7 +577,7 @@ describe('<LayerSelect />', () => {
 
       expect(
         getByRole('button', {
-          name: 'Oil Source 1 (5) unselect all',
+          name: 'Oil Source 1 (5)',
         }),
       ).toBeInTheDocument();
 
@@ -623,7 +623,7 @@ describe('<LayerSelect />', () => {
       );
 
       const checkbox = getByRole('button', {
-        name: 'Oil Source 1 (5) unselect all',
+        name: 'Oil Source 1 (5)',
       });
 
       await waitFor(() => expect(checkbox).toBeInTheDocument());
@@ -649,7 +649,7 @@ describe('<LayerSelect />', () => {
 
       expect(
         getByRole('button', {
-          name: 'Oil Source 1 (5) unselect all',
+          name: 'Oil Source 1 (5)',
         }),
       ).toBeInTheDocument();
 
@@ -675,7 +675,7 @@ describe('<LayerSelect />', () => {
 
       userEvent.click(
         getByRole('button', {
-          name: 'Oil Source 1 (5) unselect all',
+          name: 'Oil Source 1 (5)',
         }),
       );
 
