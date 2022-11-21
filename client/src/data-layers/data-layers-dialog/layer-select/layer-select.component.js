@@ -106,24 +106,42 @@ const renderCategories = ({
             selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES ||
             isSelected;
 
+          const description = (
+            <>
+              <h4>Property Description:</h4>
+              <p>
+                {property?.application?.orbis?.crossfiltering?.description ??
+                  property.description}
+              </p>
+
+              <h4>Source Description:</h4>
+              <p>{source?.metadata?.description}</p>
+
+              <h4>Granularity:</h4>
+              <p>{source?.metadata?.granularity}</p>
+            </>
+          );
+
           const sourceOrProperty = {
             id: property.name,
             label:
               property?.application?.orbis?.crossfiltering?.label ??
               property.label,
-            description:
-              property?.application?.orbis?.crossfiltering?.description ??
-              property.description,
+            description,
           };
 
           const onChange = () => {
-            onSourcesChange({
-              source_ids: [source.source_id],
-              selected: !isSelected,
-            });
+            if (!isSelected) {
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              });
+            }
+
             onCrossFilterPropertiesChange({
               properties: [property],
               selected: !isSelected,
+              source,
             });
           };
 
@@ -217,6 +235,7 @@ const Accordion = ({
     (acc, val) => acc + val?.metadata?.properties?.length,
     0,
   );
+
   // calculate the number of properties selected for an individual dataset.
   const noOfSelectedPropertiesForDataset = source.sources.reduce((acc, val) => {
     if (val?.metadata) {
@@ -245,12 +264,13 @@ const Accordion = ({
   const handleCrossfilterUnselectAllClick = e => {
     e.stopPropagation();
 
-    onSourcesChange({ source_ids: allSourceIds, selected: false });
+    onSourcesChange({ source_ids: allSourceIds, selected: false, source });
 
     const properties = collectSourceProperties(source.sources);
     onCrossFilterPropertiesChange({
       properties,
       selected: false,
+      source,
     });
   };
 

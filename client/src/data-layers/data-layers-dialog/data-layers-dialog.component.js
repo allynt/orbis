@@ -82,13 +82,32 @@ const DataLayersDialog = ({
         );
   };
 
-  /** @param {{properties: object[], selected: boolean}} params */
-  const handleCrossFilterPropertiesChange = ({ properties, selected }) => {
-    selected
-      ? setSelectedCrossFilterProperties(current => [...current, ...properties])
-      : setSelectedCrossFilterProperties(current =>
-          current.filter(v => !properties.find(p => p.label === v.label)),
+  /** @param {{properties: object[], selected: boolean, source: import('typings').Source}} params */
+  const handleCrossFilterPropertiesChange = ({
+    properties,
+    selected,
+    source,
+  }) => {
+    if (selected) {
+      setSelectedCrossFilterProperties(current => [...current, ...properties]);
+    } else {
+      setSelectedCrossFilterProperties(current => {
+        // filter current list, to find if any properties are still selected
+        const filtered = current.filter(
+          v => !properties.find(p => p.name === v.name),
         );
+
+        // If none are selected, then de-select the source as well.
+        if (filtered.length === 0) {
+          handleSourcesChange({
+            source_ids: [source.source_id],
+            selected: false,
+          });
+        }
+
+        return filtered;
+      });
+    }
   };
 
   const handleSubmit = () =>
