@@ -191,6 +191,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
 /**
  * @param {{
  *  property: object
+ *  selectedProperty: object
  *  filterRanges: { filterRange: [number, number], clipRange: [number, number] }
  *  onRangeFilterChange: (filterValue: [number, number]) => void
  *  onClipRangeChange: (clipValue: [number, number]) => void
@@ -215,6 +216,7 @@ const Slider = ({
 
   const { min, max } =
     property?.application?.orbis?.crossfiltering[commonGeometry] ?? {};
+  const { precision } = property || {};
 
   const { color, colormap_reversed } =
     property?.application?.orbis?.display || {};
@@ -227,6 +229,7 @@ const Slider = ({
     clipMax: filterRanges.clipRange[1],
     reversed: colormap_reversed,
     className: styles.slider,
+    precision,
   };
 
   return (
