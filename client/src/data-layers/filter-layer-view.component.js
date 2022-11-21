@@ -6,6 +6,7 @@ import {
   Link,
   makeStyles,
   ThemeProvider,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import clsx from 'clsx';
@@ -168,11 +169,15 @@ const FilterLayerView = ({
         [styles.disabled]: drawingToolsEnabled,
       })}
     >
-      <p>
+      <Typography variant="h3" component="h1">
+        Cross-Filtering
+      </Typography>
+
+      <Typography paragraph>
         Select datasets to combine filters on up to 4 properties. Datasets which
         are defined in different sets of geometries will be aggregated to a
         common set of geometries to allow cross-filtering.
-      </p>
+      </Typography>
 
       {commonGeometry ? (
         <div className={styles.geometry}>
