@@ -108,17 +108,23 @@ const renderCategories = ({
 
           const description = (
             <>
-              <h4>Property Description:</h4>
-              <p>
+              <Typography variant="h3" component="h3">
+                Property Description:
+              </Typography>
+              <Typography paragraph>
                 {property?.application?.orbis?.crossfiltering?.description ??
                   property.description}
-              </p>
+              </Typography>
 
-              <h4>Source Description:</h4>
-              <p>{source?.metadata?.description}</p>
+              <Typography variant="h3" component="h3">
+                Source Description:
+              </Typography>
+              <Typography paragraph>{source?.metadata?.description}</Typography>
 
-              <h4>Granularity:</h4>
-              <p>{source?.metadata?.granularity}</p>
+              <Typography variant="h3" component="h3">
+                Granularity:
+              </Typography>
+              <Typography paragraph>{source?.metadata?.granularity}</Typography>
             </>
           );
 

@@ -8,6 +8,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Fade,
+  Typography,
 } from '@astrosat/astrosat-ui';
 
 import { useSelector } from 'react-redux';
@@ -146,14 +147,20 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
                     categoryPath={categoryPath}
                     description={
                       <>
-                        <h4>Property Description:</h4>
-                        <p>
+                        <Typography variant="h3" component="h3">
+                          Property Description:
+                        </Typography>
+                        <Typography paragraph>
                           {property?.application?.orbis?.description ??
                             property.description}
-                        </p>
+                        </Typography>
 
-                        <h4>Source Description:</h4>
-                        <p>{selectedLayer?.metadata?.description}</p>
+                        <Typography variant="h3" component="h3">
+                          Source Description:
+                        </Typography>
+                        <Typography paragraph>
+                          {selectedLayer?.metadata?.description}
+                        </Typography>
                       </>
                     }
                   />
