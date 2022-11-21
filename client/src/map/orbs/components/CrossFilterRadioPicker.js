@@ -164,6 +164,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
           <Grid item>
             <Slider
               property={property}
+              selectedProperty={selectedProperty}
               filterRanges={filterRanges[property.name]}
               onRangeFilterChange={filterValue =>
                 handleSliderChange(property.name, filterValue)
@@ -191,6 +192,7 @@ const CrossFilterRadioPicker = ({ selectedLayer, dispatch }) => {
  */
 const Slider = ({
   property,
+  selectedProperty,
   filterRanges,
   onRangeFilterChange,
   onClipRangeChange,
@@ -222,20 +224,22 @@ const Slider = ({
 
   return (
     <Grid container direction="column">
-      <Grid item xs={12}>
-        <ToggleButtonGroup
-          size="small"
-          value={scale}
-          onChange={handleToggleChange}
-        >
-          <ToggleButton value={SCALE_VALUES.filter}>
-            {SCALE_VALUES.filter}
-          </ToggleButton>
-          <ToggleButton value={SCALE_VALUES.colour}>
-            {SCALE_VALUES.colour}
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Grid>
+      {property.name === selectedProperty?.name ? (
+        <Grid item xs={12}>
+          <ToggleButtonGroup
+            size="small"
+            value={scale}
+            onChange={handleToggleChange}
+          >
+            <ToggleButton value={SCALE_VALUES.filter}>
+              {SCALE_VALUES.filter}
+            </ToggleButton>
+            <ToggleButton value={SCALE_VALUES.colour}>
+              {SCALE_VALUES.colour}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+      ) : null}
       <Grid item>
         <Fade in={scale === SCALE_VALUES.filter} unmountOnExit>
           <ColormapRangeSlider
