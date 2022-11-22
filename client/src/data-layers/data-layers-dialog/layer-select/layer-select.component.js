@@ -318,7 +318,7 @@ const Accordion = ({
                   {isNaN(propertiesCount) ? 0 : propertiesCount})
                 </span>
               )}
-              {selectedCount > 0 ? (
+              {noOfSelectedPropertiesForDataset > 0 ? (
                 <Link
                   variant="body2"
                   component="span"
