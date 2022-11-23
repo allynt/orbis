@@ -1,8 +1,6 @@
-version: "2"
-
 services:
 
-  db:
+  orbis-db:
     image: kartoza/postgis:12.4
     environment:
       POSTGRES_USER: orbis
@@ -11,8 +9,10 @@ services:
       ALLOW_IP_RANGE: 0.0.0.0/0
     ports:
       - "5666:5432"
+    networks:
+      - orbis
 
-  server:
+  orbis-server:
     build:
       context: .
     tty: true
@@ -27,8 +27,11 @@ services:
       - ./server:/home/app/server
     ports:
       - "8000:8000"
+    networks:
+      - orbis
+      - orbis-shared
 
-  client:
+  orbis-client:
     image: node:16.13.1
     tty: true
     environment:
@@ -42,16 +45,20 @@ services:
     ports:
       - "3000:3000"
       - "35729:35729"
+    networks:
+      - orbis
 
-  broker:
+  orbis-broker:
     image: "public.ecr.aws/bitnami/redis:6.2"
     environment:
       REDIS_PASSWORD: "itsasecret"
       ALLOW_EMPTY_PASSWORD: "no"
       REDIS_EXTRA_FLAGS: "--appendonly no --save \"\""
       REDIS_DISABLE_COMMANDS: "FLUSHALL"
+    networks:
+      - orbis
 
-  runner:
+  orbis-runner:
     build: .
     environment:
       SYS_ENV: development
@@ -61,5 +68,20 @@ services:
     volumes:
       - ./server:/home/app/server
     depends_on:
-      - server
-      - broker
+      - orbis-server
+      - orbis-broker
+    networks:
+      - orbis
+      - orbis-shared
+
+networks:
+  # 2 networks: 
+  #  one for communication among services defined in _this_ docker-compose file, 
+  #  one for communication among services defined in in _different_ docker-compose files.
+  orbis:
+    name: orbis
+    driver: bridge
+  orbis-shared:
+    name: orbis-shared
+    driver: bridge
+    attachable: true

@@ -87,7 +87,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: core.settings
         DJANGO_DB_HOST: 127.0.0.1:5666
     services:
-      db:
+      orbis-db:
         image: kartoza/postgis:11.0-2.5
         env:
           POSTGRES_DBNAME: orbis
@@ -178,12 +178,7 @@ jobs:
           docker push ${AWS_REGISTRY}/${AWS_SERVER_REPOSITORY}:${GIT_SHA}
 
   deploy-to-testing:
-    needs:
-      [
-        build-client-docker,
-        build-server-docker,
-        check-trigger-type,
-      ]
+    needs: [build-client-docker, build-server-docker, check-trigger-type]
     name: Request a Deployment to Testing
     runs-on: ubuntu-20.04
     timeout-minutes: 10
