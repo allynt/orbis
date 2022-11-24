@@ -9,9 +9,11 @@
     - [How to start](#how-to-start)
     - [Troubleshooting](#troubleshooting)
       - [Server 500 on /api/data/sources](#server-500-on-apidatasources)
-      - [Missing documents](#unable-to-registerlogin-due-to-missing-documents)
+        - [Connecting to local instance of data-sources-directory](#connecting-to-local-instance-of-data-sources-directory)
+      - [Unable to register/login due to missing documents](#unable-to-registerlogin-due-to-missing-documents)
     - [Testing](#testing)
       - [End-to-End Testing](#end-to-end-testing)
+    - [Backups](#backups)
   - [Releases](#releases)
     - [Setup GitHub Token](#setup-github-token)
     - [Releasing Code](#releasing-code)
@@ -143,6 +145,13 @@ $ kubectl get secret --context staging data-sources-directory-staging-primary-de
 
 The output from the `kubectl` command, will include the `data token`, copy/paste that to the Django env variable in `.env.local` file. Restart your docker containers and once they are all up and running, you should get a successful response from `/api/data/sources` when you go to the **map**.
 
+##### Connecting to local instance of data-sources-directory
+
+Instead of connecting to the TESTING instance of **data-sources-directory** via the VPN, you can run a local instance of **data-sources-directory** and connect to that (b/c you are actively developing **data-sources-directory** or the TESTING environment is unavailable).  The local instance of **data-sources-directory** can be started using docker-compose as usual.  There is already configuration setup to allow network communication from a local instance of **orbis** to a local instance of **data-sources-directory** across different docker-compose files.  As above, you will have to update the settings in you ".env.local" file but this time the value would be:
+
+```bash
+DJANGO_DATA_SOURCES_DIRECTORY_URL="http://dsd-server:8000"
+```
 #### Unable to register/login due to missing documents
 
 In order to authenticate with **ORBIS** certain key `Documents` must exist in the db:
@@ -157,6 +166,32 @@ In order to authenticate with **ORBIS** certain key `Documents` must exist in th
 #### End-to-End Testing
 
 We use [Cypress](https://www.cypress.io/) to run our End-to-End tests. We augment Cypress with the [Cypress Cucumber Preprocessor](https://github.com/TheBrainFamily/cypress-cucumber-preprocessor). This allows us to use the `cucumber`/`gherkin` syntax to write **Feature** files. The idea is, **BAs** write the **Feature** files to define the requirements of the app, while the **developers** take these and implement a solution to each **Scenario**. Running and passing the tests, is proof, we have developed what was asked for.
+
+### Backups
+
+Database dumps can be created using the `dbbackup` and `mediabackup` management commands.  This will create dumps named `/tmp/orbis/backups/<db-name>-<uuid>-<timestamp>.psql` (for the db content) and `/tmp/orbis/backups/<db-name>-<uuid>-<timestamp>.tar` (for the media storage).  These dumps can be restored using the `dbrestore` and `mediarestore` management commands.  
+
+By default, b/c most of our apps use PostGIS, a non-binary dump will be created.  If a different format is preferred then a custom connector can be defined in "settings.py":
+
+```
+DBBACKUP_CONNECTORS = DATABASES
+DATABASES["default"]["CONNECTOR"] = "dbbackup.db.postgresql.PgDumpBinaryConnector"
+```
+
+If any errors ocurr during the restore command, a (non-binary) dump can be edited by hand and passed directly to the database using psql: `psql -h localhost -U <db-user> -d <db-name> -a -f <db-dump>`.
+
+The workflow for creating dumps remotely and restoring them locally is as follows:
+
+1. generate a dump of the remote database: `kubectl exec -it <remote-pod> -- bash -c "cd server && pipenv run ./manage.py dbbackup"`
+2. generate a dump of the remote media storage: `kubectl exec -it <remote-pod> -- bash -c "cd server && pipenv run ./manage.py mediabackup"`
+3. copy those dumps to the local filesystem: `kubectl cp <remote-pod>:/tmp/orbis/backups/ ./backups`
+4. copy the db dump into the local docker db container: `docker cp ./backups/<db-dump> orbis_orbis-db_1:/tmp/dump.psql`
+5. copy the media dump into the local docker server container: `docker cp ./backups/<media-dump> orbis_orbis-server_1:/tmp/media.tar`
+6. restore the db dump: `docker-compose exec orbis-db psql -h localhost -U <db-user> -d <db-name> -a -f /tmp/dump.psql` (where &lt;db-user&gt; etc. are defined in the ".env" file)
+7. restore the media dump: `docker-compose exec orbis-server pipenv run ./server/manage.py mediarestore -I /tmp/dump.tar --noinput`
+8. you may have to update the permissions on your media directory after this: `sudo find <media-dir> -exec chmod 777 {} \;`
+
+* _Note that this will overwrite any existing data in your local database - including users._
 
 ## Releases
 

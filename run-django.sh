@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-until echo > /dev/tcp/db/5432; do sleep 1; done
+until echo > /dev/tcp/orbis-db/5432; do sleep 1; done
 
 cd $APP_HOME
 

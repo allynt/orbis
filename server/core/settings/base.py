@@ -58,6 +58,8 @@ DATABASES = {
     }
 }
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240  # allows bulk-delete of LogRecords
+
 ########
 # Apps #
 ########
