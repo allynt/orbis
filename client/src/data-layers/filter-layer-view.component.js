@@ -174,9 +174,10 @@ const FilterLayerView = ({
       </Typography>
 
       <Typography paragraph>
-        Select datasets to combine filters on up to 4 properties. Datasets which
-        are defined in different sets of geometries will be aggregated to a
-        common set of geometries to allow cross-filtering.
+        Select up to 4 properties from available data layers and filter areas on
+        the map by any combination of properties. Data layers derived from
+        different sets of geometries, will be aggregated to a common set, to
+        allow cross-filtering.
       </Typography>
 
       {commonGeometry ? (
