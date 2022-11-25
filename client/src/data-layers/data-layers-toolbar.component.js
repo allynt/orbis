@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   LayersIcon,
+  FilterIcon,
   makeStyles,
   AoiIcon,
   Tab,
@@ -25,6 +26,12 @@ import {
 } from './aoi/aoi.slice';
 import DataLayerView from './data-layer-view.component';
 import { Panels } from './data-layers.constants';
+import {
+  activeCategorisedSourcesSelector,
+  activeCrossFilteringCategorisedSourcesSelector,
+  setIsCrossFilteringMode,
+} from './data-layers.slice';
+import FilterLayerView from './filter-layer-view.component';
 
 const useStyles = makeStyles(theme => ({
   tab: { minWidth: '72px' },
@@ -50,7 +57,6 @@ const useStyles = makeStyles(theme => ({
 
 const DataLayersToolbar = ({
   sidebarComponents,
-  activeCategorisedSources,
   drawingToolsEnabled,
   aoiDrawMode,
   setAoiDrawMode,
@@ -59,11 +65,26 @@ const DataLayersToolbar = ({
   const dispatch = useDispatch();
   const hasAoiFeatureAccess = useOrbFeatureAccess('aoi');
 
+  const activeCategorisedSources = useSelector(
+    activeCategorisedSourcesSelector(1, true),
+  );
+  const activeCrossFilteringCategorisedSources = useSelector(
+    activeCrossFilteringCategorisedSourcesSelector(1, true),
+  );
+
   const visiblePanel = useSelector(visiblePanelSelector);
 
-  const [isVisible, toggle] = useState(false);
+  const [isDataLayerDialogVisible, toggleDataLayerDialog] = useState(false);
+  const [isCrossFilteringDialogVisible, toggleCrossFilteringDialog] =
+    useState(false);
 
   const onDrawAoiClick = () => dispatch(startDrawingAoi());
+
+  useEffect(() => {
+    visiblePanel === Panels.FILTERING
+      ? dispatch(setIsCrossFilteringMode(true))
+      : dispatch(setIsCrossFilteringMode(false));
+  }, [dispatch, visiblePanel]);
 
   return (
     <div className={styles.wrapper}>
@@ -85,6 +106,11 @@ const DataLayersToolbar = ({
             value={Panels.AOI}
           />
         )}
+        <Tab
+          className={styles.tab}
+          icon={<FilterIcon titleAccess="Cross-filtering" />}
+          value={Panels.FILTERING}
+        />
       </Tabs>
 
       <div className={styles.container}>
@@ -93,8 +119,8 @@ const DataLayersToolbar = ({
             sidebarComponents={sidebarComponents}
             activeCategorisedSources={activeCategorisedSources}
             drawingToolsEnabled={drawingToolsEnabled}
-            isVisible={isVisible}
-            toggle={toggle}
+            isVisible={isDataLayerDialogVisible}
+            toggle={toggleDataLayerDialog}
           />
         )}
         {visiblePanel === Panels.AOI && (
@@ -107,6 +133,15 @@ const DataLayersToolbar = ({
             selectAoi={aoi => dispatch(selectAoi(aoi))}
             editAoiDetails={aoi => dispatch(updateAoi(aoi))}
             deleteAoi={aoi => dispatch(deleteAoi(aoi))}
+          />
+        )}
+        {visiblePanel === Panels.FILTERING && (
+          <FilterLayerView
+            sidebarComponents={sidebarComponents}
+            activeCategorisedSources={activeCrossFilteringCategorisedSources}
+            drawingToolsEnabled={drawingToolsEnabled}
+            isVisible={isCrossFilteringDialogVisible}
+            toggle={toggleCrossFilteringDialog}
           />
         )}
       </div>

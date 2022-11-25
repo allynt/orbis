@@ -34,36 +34,38 @@ const useStyles = makeStyles(theme => ({
 
 /**
  * @param {{
- *   selected?: boolean
- *   source: import('typings').Source
+ *   isSelected?: boolean
+ *   sourceOrProperty: import('typings').SourceOrProperty
  *   onChange: (params: {source_ids: import('typings').Source['source_id'][]; selected: boolean}) => void
+ *   isItemEnabled: boolean
  * }} props
  */
-const LayerSelectItem = ({ selected, source, onChange }) => {
+const LayerSelectItem = ({
+  isSelected,
+  sourceOrProperty,
+  onChange,
+  isItemEnabled = true,
+}) => {
   const styles = useStyles();
-
+  const { id, label, description } = sourceOrProperty;
   return (
     <ListItem
       className={styles.listItem}
       button
-      onClick={() =>
-        onChange({
-          source_ids: [source.source_id],
-          selected: !selected,
-        })
-      }
+      onClick={onChange}
+      disabled={!isItemEnabled}
     >
       <ListItemIcon className={styles.checkbox}>
-        <Checkbox id={source.source_id} checked={selected} />
+        <Checkbox id={id} checked={isSelected} />
       </ListItemIcon>
       <ListItemText
         className={styles.text}
         primaryTypographyProps={{ variant: 'body1' }}
-        primary={source.metadata.label}
+        primary={label}
       />
-      {source?.metadata?.description && (
+      {description && (
         <ListItemSecondaryAction className={styles.info}>
-          <InfoButtonTooltip tooltipContent={source?.metadata?.description} />
+          <InfoButtonTooltip tooltipContent={description} />
         </ListItemSecondaryAction>
       )}
     </ListItem>

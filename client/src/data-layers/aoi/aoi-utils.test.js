@@ -42,9 +42,9 @@ describe('AOI Utils', () => {
       });
 
       const expected = {
-        longitude: -3.1667656905901116,
-        latitude: 55.961768115171544,
-        zoom: 17.820312588386436,
+        longitude: -3.166766,
+        latitude: 55.961768,
+        zoom: 17.820313,
       };
 
       expect(result).toEqual(expected);
@@ -62,9 +62,9 @@ describe('AOI Utils', () => {
       });
 
       const expected = {
-        longitude: -3.175713850000975,
-        latitude: 55.94815320395862,
-        zoom: 13.669734167128674,
+        longitude: -3.175714,
+        latitude: 55.948153,
+        zoom: 13.669734,
       };
 
       expect(result).toEqual(expected);
@@ -82,9 +82,9 @@ describe('AOI Utils', () => {
       });
 
       const expected = {
-        longitude: -3.1990840000008354,
-        latitude: 57.613391272177445,
-        zoom: 10.218467041851993,
+        longitude: -3.199084,
+        latitude: 57.613391,
+        zoom: 10.218467,
       };
 
       expect(result).toEqual(expected);
@@ -114,8 +114,8 @@ describe('AOI Utils', () => {
 
       expect(setViewState).toHaveBeenCalledWith(
         expect.objectContaining({
-          latitude: 57.613391272177445,
-          longitude: -3.1990840000008354,
+          latitude: 57.613391,
+          longitude: -3.199084,
         }),
       );
     });

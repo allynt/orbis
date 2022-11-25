@@ -32,6 +32,7 @@ export const IsolationPlusPropertyRadioGroup = ({
   const other = useSelector(state =>
     otherSelector(SHARED_STATE_KEY)(state?.orbs),
   );
+
   const selectedProperty = get(other, 'property');
 
   const propertyStateKey = `${selectedProperty?.source_id}/${selectedProperty?.name}`;

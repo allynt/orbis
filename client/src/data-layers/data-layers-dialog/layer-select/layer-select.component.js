@@ -16,9 +16,14 @@ import { difference, isEmpty } from 'lodash';
 
 import {
   collectSourceIds,
+  collectSourceProperties,
   createOrbsWithCategorisedSources,
 } from 'data-layers/categorisation.utils';
 
+import {
+  MIN_SELECTED_PROPERTIES,
+  MAX_SELECTED_PROPERTIES,
+} from '../../data-layers.constants';
 import { Header } from '../components/header.component';
 import { List } from '../components/list.component';
 import { Section } from '../components/section.component';
@@ -30,37 +35,135 @@ import LayerSelectItem from './layer-select-item/layer-select-item.component';
  * @param {{
  *  sources: import('typings').CategorisedSources
  *  level: number
- *  onSourcesChange: (params: {
+ *  onSourcesChange?: (params: {
  *    source_ids: import('typings').Source['source_id'][]
  *    selected: boolean
  *  }) => void
- *  selectedSources: import('typings').Source['source_id'][]
+ *  onCrossFilterPropertiesChange?: (params: {
+ *    properties: object[]
+ *    selected: boolean
+ *  }) => void
+ *  selectedSources: import('typings').Source['source_id'][],
+ *  selectedCrossFilterProperties: object[],
+ *  isCrossFilteringMode: boolean
  * }} params
  */
 const renderCategories = ({
   sources,
   level,
   onSourcesChange,
+  onCrossFilterPropertiesChange,
   selectedSources,
+  selectedCrossFilterProperties,
+  isCrossFilteringMode,
 }) =>
-  sources?.map(source =>
-    source.category ? (
-      <Accordion
-        key={source.category}
-        source={source}
-        level={level}
-        onSourcesChange={onSourcesChange}
-        selectedSources={selectedSources}
-      />
-    ) : (
-      <LayerSelectItem
-        key={source.source_id}
-        source={source}
-        onChange={onSourcesChange}
-        selected={selectedSources?.includes(source.source_id)}
-      />
-    ),
-  );
+  sources?.map(source => {
+    if (source.category) {
+      return (
+        <Accordion
+          key={source.category}
+          source={source}
+          level={level}
+          onSourcesChange={onSourcesChange}
+          selectedSources={selectedSources}
+          isCrossFilteringMode={isCrossFilteringMode}
+          selectedCrossFilterProperties={selectedCrossFilterProperties}
+          onCrossFilterPropertiesChange={onCrossFilterPropertiesChange}
+        />
+      );
+    } else {
+      if (!isCrossFilteringMode) {
+        const isSelected = selectedSources?.includes(source.source_id);
+
+        const sourceOrProperty = {
+          id: source.source_id,
+          label: source.metadata.label,
+          description: source?.metadata?.description,
+        };
+
+        return (
+          <LayerSelectItem
+            key={source.source_id}
+            isSelected={isSelected}
+            sourceOrProperty={sourceOrProperty}
+            onChange={() =>
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              })
+            }
+          />
+        );
+      } else {
+        return source?.metadata?.properties.map(property => {
+          const isSelected = !!selectedCrossFilterProperties.find(
+            p => p.name === property.name,
+          );
+
+          // impose limit on number of selected properties.
+          // But we dont disable selected ones to allow the user to deselect existing ones
+          const isItemEnabled =
+            selectedCrossFilterProperties.length < MAX_SELECTED_PROPERTIES ||
+            isSelected;
+
+          const description = (
+            <>
+              <Typography variant="h3" component="h3">
+                Property Description:
+              </Typography>
+              <Typography paragraph>
+                {property?.application?.orbis?.crossfiltering?.description ??
+                  property.description}
+              </Typography>
+
+              <Typography variant="h3" component="h3">
+                Source Description:
+              </Typography>
+              <Typography paragraph>{source?.metadata?.description}</Typography>
+
+              <Typography variant="h3" component="h3">
+                Granularity:
+              </Typography>
+              <Typography paragraph>{source?.metadata?.granularity}</Typography>
+            </>
+          );
+
+          const sourceOrProperty = {
+            id: property.name,
+            label:
+              property?.application?.orbis?.crossfiltering?.label ??
+              property.label,
+            description,
+          };
+
+          const onChange = () => {
+            if (!isSelected) {
+              onSourcesChange({
+                source_ids: [source.source_id],
+                selected: !isSelected,
+              });
+            }
+
+            onCrossFilterPropertiesChange({
+              properties: [property],
+              selected: !isSelected,
+              source,
+            });
+          };
+
+          return (
+            <LayerSelectItem
+              key={property.name}
+              isSelected={isSelected}
+              sourceOrProperty={sourceOrProperty}
+              onChange={onChange}
+              isItemEnabled={isItemEnabled}
+            />
+          );
+        });
+      }
+    }
+  });
 
 const useAccordionStyles = makeStyles(theme => ({
   header: props => ({
@@ -106,9 +209,21 @@ const useAccordionStyles = makeStyles(theme => ({
     },
   },
   open: {},
+  category: {
+    textAlign: 'left',
+    margin: 'unset',
+  },
 }));
 
-const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
+const Accordion = ({
+  source,
+  level,
+  onSourcesChange,
+  selectedSources,
+  isCrossFilteringMode,
+  selectedCrossFilterProperties,
+  onCrossFilterPropertiesChange,
+}) => {
   const styles = useAccordionStyles({ level });
   const [open, setOpen] = useState(false);
   const allSourceIds = useMemo(
@@ -122,6 +237,28 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
   const selectedCount = allSourceIds.length - notYetSelected.length;
   const allSelected = isEmpty(notYetSelected);
 
+  const propertiesCount = source.sources.reduce(
+    (acc, val) => acc + val?.metadata?.properties?.length,
+    0,
+  );
+
+  // calculate the number of properties selected for an individual dataset.
+  const noOfSelectedPropertiesForDataset = source.sources.reduce((acc, val) => {
+    if (val?.metadata) {
+      acc = selectedCrossFilterProperties.reduce((propAcc, propVal) => {
+        if (
+          val?.metadata?.properties.includes(
+            val?.metadata?.properties.find(item => item.name === propVal.name),
+          )
+        ) {
+          propAcc += 1;
+        }
+        return propAcc;
+      }, 0);
+    }
+    return acc;
+  }, 0);
+
   /** @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} e */
   const handleSelectAllClick = e => {
     e.stopPropagation();
@@ -130,24 +267,72 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
     else onSourcesChange({ source_ids: notYetSelected, selected: true });
   };
 
+  const handleCrossfilterUnselectAllClick = e => {
+    e.stopPropagation();
+
+    onSourcesChange({ source_ids: allSourceIds, selected: false, source });
+
+    const properties = collectSourceProperties(source.sources);
+    onCrossFilterPropertiesChange({
+      properties,
+      selected: false,
+      source,
+    });
+  };
+
   return (
     <React.Fragment key={source.category}>
       <ButtonBase className={styles.header} onClick={() => setOpen(c => !c)}>
         <TriangleIcon className={clsx(styles.icon, { [styles.open]: open })} />
-        {source.category}
-        <span className={styles.sourceCount}>
-          ({selectedCount <= 0 ? '' : `${selectedCount}/`}
-          {allSourceIds.length})
-        </span>
-        <Link
-          variant="body2"
-          component="span"
-          role="button"
-          className={styles.selectAll}
-          onClick={handleSelectAllClick}
-        >
-          {allSelected ? 'unselect' : 'select'} all
-        </Link>
+        <p className={styles.category}>{source.category}</p>
+        <>
+          {!isCrossFilteringMode ? (
+            <>
+              <span className={styles.sourceCount}>
+                ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+                {allSourceIds.length})
+              </span>
+              <Link
+                variant="body2"
+                component="span"
+                role="button"
+                className={styles.selectAll}
+                onClick={handleSelectAllClick}
+              >
+                {allSelected ? 'unselect' : 'select'} all
+              </Link>
+            </>
+          ) : (
+            <>
+              {isNaN(propertiesCount) ? (
+                <span className={styles.sourceCount}>
+                  ({selectedCount <= 0 ? '' : `${selectedCount}/`}
+                  {allSourceIds.length})
+                </span>
+              ) : (
+                <span className={styles.sourceCount}>
+                  (
+                  {selectedCrossFilterProperties.length <= 0
+                    ? ''
+                    : `${noOfSelectedPropertiesForDataset}/`}
+                  {isNaN(propertiesCount) ? 0 : propertiesCount})
+                </span>
+              )}
+              {noOfSelectedPropertiesForDataset > 0 ? (
+                <Link
+                  variant="body2"
+                  component="span"
+                  role="button"
+                  className={styles.selectAll}
+                  onClick={handleCrossfilterUnselectAllClick}
+                  disabled={false}
+                >
+                  unselect all
+                </Link>
+              ) : null}
+            </>
+          )}
+        </>
       </ButtonBase>
       <Collapse
         unmountOnExit
@@ -161,6 +346,9 @@ const Accordion = ({ source, level, onSourcesChange, selectedSources }) => {
           level: level + 1,
           onSourcesChange,
           selectedSources,
+          isCrossFilteringMode,
+          selectedCrossFilterProperties,
+          onCrossFilterPropertiesChange,
         })}
       </Collapse>
     </React.Fragment>
@@ -179,26 +367,38 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-end',
     padding: theme.spacing(2, 4),
   },
+  strapline: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 /**
  * @param {{
  *   sources: import('typings').Source[]
- *   selectedSources?: import('typings').Source['source_id'][]
- *   selectedOrbName?: string
+ *   selectedSources?: import('typings').Source['source_id'][],
+ *   selectedCrossFilterProperties?: object[],
+ *   selectedOrbName?: string,
+ *   isCrossFilteringMode: boolean,
  *   hasMadeChanges?: boolean
- *   onSourcesChange: (params: {
+ *   onSourcesChange?: (params: {
  *     source_ids: import('typings').Source['source_id'][]
- *     selected: boolean}) => void
+ *     selected: boolean}) => void,
+ *   onCrossFilterPropertiesChange?: (params: {
+ *     properties: object[]
+ *     selected: boolean}) => void,
  *   onSubmit: () => void
  * }} props
  */
 export const LayerSelect = ({
   sources,
   selectedSources,
+  selectedCrossFilterProperties,
   selectedOrbName,
+  isCrossFilteringMode,
   hasMadeChanges = false,
   onSourcesChange,
+  onCrossFilterPropertiesChange,
   onSubmit,
 }) => {
   const styles = useStyles();
@@ -207,11 +407,42 @@ export const LayerSelect = ({
   const categorisedSources =
     createOrbsWithCategorisedSources(
       searchTerm ? layerSearchFilter(sources, searchTerm) : sources,
+      undefined,
+      false,
+      isCrossFilteringMode,
     )?.find(orb => orb.name === selectedOrbName)?.sources || [];
+
+  const areCrossFilteringPropertiesValid =
+    isCrossFilteringMode &&
+    selectedCrossFilterProperties.length >= MIN_SELECTED_PROPERTIES &&
+    selectedCrossFilterProperties.length <= MAX_SELECTED_PROPERTIES;
+
+  // enables button if changes have been made since opening
+  // or all checkboxes are empty after making changes (unselecting all)
+  // or the number of checkboxes fulfils `areCrossFilteringPropertiesValid`
+  const isConfirmButtonDisabled =
+    !hasMadeChanges ||
+    (!!selectedCrossFilterProperties.length &&
+      !areCrossFilteringPropertiesValid);
 
   return (
     <Section orientation="right">
-      <Header>Add Data Layers</Header>
+      <Header>
+        {isCrossFilteringMode ? (
+          <>
+            <div>Filter up to 4 Data Layer Properties</div>
+          </>
+        ) : (
+          <div>Add Data Layers</div>
+        )}
+      </Header>
+
+      {isCrossFilteringMode ? (
+        <div className={styles.strapline}>
+          {selectedCrossFilterProperties.length} of 4 properties selected
+        </div>
+      ) : null}
+
       {selectedOrbName ? (
         <>
           <LayerSearch
@@ -224,7 +455,10 @@ export const LayerSelect = ({
               sources: categorisedSources,
               level: 0,
               onSourcesChange,
+              onCrossFilterPropertiesChange,
               selectedSources,
+              selectedCrossFilterProperties,
+              isCrossFilteringMode,
             })}
           </List>
         </>
@@ -234,7 +468,7 @@ export const LayerSelect = ({
         </Typography>
       )}
       <div className={styles.buttonContainer}>
-        <Button disabled={!hasMadeChanges} onClick={onSubmit}>
+        <Button disabled={isConfirmButtonDisabled} onClick={onSubmit}>
           Confirm
         </Button>
       </div>

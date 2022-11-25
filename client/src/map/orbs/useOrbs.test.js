@@ -14,8 +14,8 @@ import { useOrbs } from './useOrbs';
 
 const mockStore = configureMockStore([thunk]);
 
-const setup = async source => {
-  const utils = renderHook(() => useOrbs(), {
+const setup = async (source, activeSources) => {
+  const utils = renderHook(() => useOrbs(activeSources), {
     wrapper: ({ children }) => (
       <Provider
         store={mockStore({
@@ -26,6 +26,8 @@ const setup = async source => {
               'test/layer': 'testAuthToken',
               'test/layer2': 'testAuthToken2',
             },
+            isCrossFilteringMode: false,
+            crossFilteringCommonGeometry: 'LAD_2019',
           },
         })}
       >
@@ -61,7 +63,8 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = await setup(source);
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       expect(result.current.sidebarComponents['test/layer']).toBeNull();
     });
 
@@ -82,7 +85,8 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = await setup(source);
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       expect(result.current.sidebarComponents['test/layer']).toBeTruthy();
     });
 
@@ -103,7 +107,8 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = await setup(source);
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       expect(result.current.sidebarComponents['test/layer'].props).toEqual(
         expect.objectContaining(
           source.metadata.application.orbis.sidebar_component.props,
@@ -136,7 +141,8 @@ describe('useOrbs', () => {
           },
         },
       };
-      const { result } = await setup(source);
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       expect(result.current.sidebarComponents['test/layer'].length).toBe(2);
       expect(result.current.sidebarComponents['test/layer'][0].props).toEqual(
         expect.objectContaining(
@@ -152,24 +158,27 @@ describe('useOrbs', () => {
   });
 
   describe('mapComponents', () => {
-    const source = {
-      source_id: 'test/layer',
-      metadata: {
-        url: 'api/test/url',
-        application: {
-          orbis: {
-            map_component: {
-              name: 'Something',
-              props: {
-                hello: 'Test',
+    let source = null;
+    let activeSources = null;
+
+    beforeEach(() => {
+      source = {
+        source_id: 'test/layer',
+        metadata: {
+          url: 'api/test/url',
+          application: {
+            orbis: {
+              map_component: {
+                name: 'Something',
+                props: {
+                  hello: 'Test',
+                },
               },
             },
           },
         },
-      },
-    };
-
-    beforeEach(() => {
+      };
+      activeSources = [source];
       server.use(
         rest.get('*/api/test/url', (req, res, ctx) => {
           return res(ctx.status(200), ctx.json({}));
@@ -178,12 +187,12 @@ describe('useOrbs', () => {
     });
 
     it('Adds a component to the array for the source', async () => {
-      const { result } = await setup(source);
+      const { result } = await setup(source, activeSources);
       expect(result.current.mapComponents[0]).toBeTruthy();
     });
 
     it('Spreads the props from metadata onto the component', async () => {
-      const { result } = await setup(source);
+      const { result } = await setup(source, activeSources);
       expect(result.current.mapComponents[0].props).toEqual(
         expect.objectContaining(
           source.metadata.application.orbis.map_component.props,
@@ -192,7 +201,7 @@ describe('useOrbs', () => {
     });
 
     it('Puts null into the array if source does not have a map component name', async () => {
-      const { result } = await setup({
+      const mapSource = {
         source_id: 'test/layer',
         metadata: {
           url: 'api/test/url',
@@ -202,7 +211,9 @@ describe('useOrbs', () => {
             },
           },
         },
-      });
+      };
+      const mapActiveSources = [mapSource];
+      const { result } = await setup(mapSource, mapActiveSources);
       expect(result.current.mapComponents[0]).toBeNull();
     });
   });
@@ -217,7 +228,7 @@ describe('useOrbs', () => {
     });
 
     it('Returns undefined if the layer name is missing', async () => {
-      const { result } = await setup({
+      const source = {
         source_id: 'test/layer',
         metadata: {
           url: 'api/test/url',
@@ -227,12 +238,14 @@ describe('useOrbs', () => {
             },
           },
         },
-      });
+      };
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       await waitFor(() => expect(result.current.layers[0]).toBeUndefined());
     });
 
     it('Returns a layer if name is present', async () => {
-      const { result } = await setup({
+      const source = {
         source_id: 'test/layer',
         metadata: {
           url: 'api/test/url',
@@ -245,7 +258,9 @@ describe('useOrbs', () => {
             },
           },
         },
-      });
+      };
+      const activeSources = [source];
+      const { result } = await setup(source, activeSources);
       await waitFor(() => expect(result.current.layers[0]).toBeTruthy());
     });
   });

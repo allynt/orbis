@@ -7,7 +7,7 @@ import clsx from 'clsx';
 const useStyles = makeStyles({
   section: {
     display: 'grid',
-    gridTemplateRows: 'max-content max-content 1fr max-content',
+    gridTemplateRows: 'max-content max-content max-content 1fr max-content',
     width: '60%',
   },
   left: {

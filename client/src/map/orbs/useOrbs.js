@@ -4,9 +4,11 @@ import { isArray } from 'lodash';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  activeDataSourcesSelector,
   selectDataToken,
   logError,
+  isCrossFilteringModeSelector,
+  crossFilteringCommonGeometrySelector,
+  activeCrossFilterPropertiesSelector,
 } from 'data-layers/data-layers.slice';
 import { setIsLoading } from 'map/map.slice';
 import { useMap } from 'MapContext';
@@ -15,14 +17,21 @@ import { getData } from 'utils/http';
 import { getAuthTokenForSource } from 'utils/tokens';
 
 import { LayerFactory } from '../deck.gl/LayerFactory';
+import { setCrossFilterData } from './crossfilter-layers.slice';
 import { setData, layersWithDataSelector } from './layers.slice';
 import { orbsSelector } from './orbsSelectors';
 
-export const useOrbs = () => {
+export const useOrbs = activeSources => {
   const { setViewState } = useMap();
   const dispatch = useDispatch();
   const authTokens = useSelector(selectDataToken);
-  const activeSources = useSelector(activeDataSourcesSelector);
+  const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
+  const crossFilteringCommonGeometry = useSelector(
+    crossFilteringCommonGeometrySelector,
+  );
+  const crossFilteringSelectedProperties = useSelector(
+    activeCrossFilterPropertiesSelector,
+  );
 
   const layersWithDataIds = useSelector(state =>
     layersWithDataSelector(state?.orbs),
@@ -73,31 +82,67 @@ export const useOrbs = () => {
     [authTokens, dispatch],
   );
 
+  /**
+   * Set data state to either tiles/url metadata value, or fetch the actual data
+   * and set it in state (not sure when this last one is ever used, would need
+   * more investigation)/
+   */
   useEffect(() => {
-    for (let source of activeSources) {
-      if (
-        !layersWithDataIds?.includes(source.source_id) &&
-        source.metadata.request_strategy !== 'manual'
-      ) {
-        if (source.metadata.tiles)
-          dispatch(
-            setData({
-              key: source.source_id,
-              data: source.metadata.tiles,
-            }),
-          );
-        else if (source.type === 'raster')
-          dispatch(
-            setData({
-              key: source.source_id,
-              data: source.metadata.url,
-            }),
-          );
-        else fetchData(source);
+    if (isCrossFilterMode && !!crossFilteringCommonGeometry) {
+      // Get all active cross-filterable dataset URLs to set in state, so
+      // they can be passed to the layer.
+      const data = activeSources.map(source => {
+        let url =
+          source?.metadata?.application?.orbis?.crossfiltering?.tiles[0];
+        url = url.replace(
+          '{geometryType}',
+          crossFilteringCommonGeometry?.toLowerCase() || '',
+        );
+
+        return url;
+      });
+
+      dispatch(
+        setCrossFilterData({
+          key: 'crossFilteringLayerData',
+          data,
+        }),
+      );
+    } else {
+      for (let source of activeSources) {
+        if (
+          !layersWithDataIds?.includes(source.source_id) &&
+          source.metadata.request_strategy !== 'manual'
+        ) {
+          if (source.metadata.tiles)
+            dispatch(
+              setData({
+                key: source.source_id,
+                data: source.metadata.tiles,
+              }),
+            );
+          else if (source.type === 'raster')
+            dispatch(
+              setData({
+                key: source.source_id,
+                data: source.metadata.url,
+              }),
+            );
+          else fetchData(source);
+        }
       }
     }
-  }, [activeSources, layersWithDataIds, fetchData, dispatch]);
+  }, [
+    activeSources,
+    layersWithDataIds,
+    fetchData,
+    dispatch,
+    isCrossFilterMode,
+    crossFilteringCommonGeometry,
+  ]);
 
+  // Instantiate a component with the selected layer and other props and
+  // return it.
   const makeComponent = useCallback(
     (componentDefinition, source) => {
       if (!componentDefinition?.name) return null;
@@ -117,25 +162,45 @@ export const useOrbs = () => {
     [dispatch],
   );
 
+  /**
+   * Create (from metadata) and set in local state, the components to be used
+   * in the sidebar.
+   */
   useEffect(() => {
     /** @type {[string, JSX.Element][]} */
     const components = activeSources.map(source => {
-      if (isArray(source?.metadata?.application?.orbis?.sidebar_component)) {
+      if (isCrossFilterMode) {
+        const newSource = {
+          ...source,
+          properties: crossFilteringSelectedProperties[source.source_id],
+        };
         return [
           source.source_id,
-          source?.metadata?.application?.orbis?.sidebar_component.map(
-            componentDefinition => makeComponent(componentDefinition, source),
+          makeComponent(
+            source?.metadata?.application?.orbis?.crossfiltering
+              ?.sidebar_component,
+            newSource,
+          ),
+        ];
+      } else {
+        if (isArray(source?.metadata?.application?.orbis?.sidebar_component)) {
+          return [
+            source.source_id,
+            source?.metadata?.application?.orbis?.sidebar_component.map(
+              componentDefinition => makeComponent(componentDefinition, source),
+            ),
+          ];
+        }
+        return [
+          source.source_id,
+          makeComponent(
+            source?.metadata?.application?.orbis?.sidebar_component,
+            source,
           ),
         ];
       }
-      return [
-        source.source_id,
-        makeComponent(
-          source?.metadata?.application?.orbis?.sidebar_component,
-          source,
-        ),
-      ];
     });
+
     setSidebarComponents(
       components.reduce(
         (acc, [source_id, component]) => ({
@@ -145,12 +210,24 @@ export const useOrbs = () => {
         {},
       ),
     );
-  }, [activeSources, dispatch, makeComponent]);
+  }, [
+    activeSources,
+    crossFilteringSelectedProperties,
+    dispatch,
+    isCrossFilterMode,
+    makeComponent,
+  ]);
 
+  /**
+   * Create (from metadata) and set in local state, the components to be used
+   * in the map.
+   */
   useEffect(() => {
     const components = activeSources.map(source => {
-      if (!source?.metadata?.application?.orbis?.map_component?.name)
+      if (!source?.metadata?.application?.orbis?.map_component?.name) {
         return null;
+      }
+
       const Component = lazy(() =>
         import(
           `./components/${source.metadata.application.orbis.map_component.name}`
@@ -168,13 +245,20 @@ export const useOrbs = () => {
     setMapComponents(components);
   }, [activeSources, dispatch]);
 
+  /**
+   * Create (from metadata) the layers to be used on the map.
+   */
   useEffect(() => {
     /**
      * @param {import('typings').Source} source
      */
     const createLayer = async source => {
       if (!source?.metadata?.application?.orbis?.layer?.name) return undefined;
-      const { props, name } = source.metadata.application.orbis.layer;
+
+      const { props, name } = isCrossFilterMode
+        ? source?.metadata?.application?.orbis?.crossfiltering?.layer
+        : source?.metadata?.application?.orbis?.layer;
+
       const { config, ...metadataConfig } = props;
 
       const authToken = getAuthTokenForSource(authTokens, source);
@@ -198,6 +282,8 @@ export const useOrbs = () => {
           setViewState,
           orbState,
           authToken,
+          crossFilteringCommonGeometry,
+          crossFilteringSelectedProperties,
           ...metadataConfig,
         });
       }
@@ -220,6 +306,9 @@ export const useOrbs = () => {
     setViewState,
     orbState,
     authTokens,
+    isCrossFilterMode,
+    crossFilteringCommonGeometry,
+    crossFilteringSelectedProperties,
   ]);
 
   return {

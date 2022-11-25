@@ -48,9 +48,9 @@ describe('createViewstateForFeature', () => {
     const result = createViewstateForFeature(props);
 
     expect(result).toEqual({
-      longitude: -78.00000000000072,
-      latitude: 38.585216077470605,
-      zoom: 6.103610629190256,
+      longitude: -78.0,
+      latitude: 38.585216,
+      zoom: 6.103611,
     });
   });
 });

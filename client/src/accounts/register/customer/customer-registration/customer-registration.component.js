@@ -10,7 +10,7 @@ import {
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { format } from 'date-fns';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { object as yupObject } from 'yup';
 
 import { ErrorWell } from 'accounts/error-well.component';
@@ -136,26 +136,21 @@ const CustomerRegistration = ({
         />
       </Form.Row>
       <Form.Row>
-        <Controller
-          control={control}
-          render={() => (
-            <TextField
-              id={FIELD_NAMES.customerType}
-              name={FIELD_NAMES.customerType}
-              {...register(FIELD_NAMES.customerType)}
-              select
-              label="Type of Organisation"
-              error={!!errors[FIELD_NAMES.customerType]}
-              helperText={errors[FIELD_NAMES.customerType]?.message}
-            >
-              {ORGANISATION_TYPES.map(({ name, value }) => (
-                <MenuItem key={name} value={value}>
-                  {name}
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        />
+        <TextField
+          id={FIELD_NAMES.customerType}
+          name={FIELD_NAMES.customerType}
+          {...register(FIELD_NAMES.customerType)}
+          select
+          label="Type of Organisation"
+          error={!!errors[FIELD_NAMES.customerType]}
+          helperText={errors[FIELD_NAMES.customerType]?.message}
+        >
+          {ORGANISATION_TYPES.map(({ name, value }) => (
+            <MenuItem key={name} value={value}>
+              {name}
+            </MenuItem>
+          ))}
+        </TextField>
       </Form.Row>
       <Form.Row>
         <TextField

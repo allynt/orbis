@@ -4,6 +4,9 @@ import { bbox, bboxPolygon, buffer, point } from '@turf/turf';
 
 import { easeInOutCubic } from 'utils/easingFunctions';
 
+export const limitDecimals = (value, limit = 6) =>
+  Math.round(value * Math.pow(10, limit)) / Math.pow(10, limit);
+
 export const createViewstateForSuggestion = ({
   suggestion,
   viewport,
@@ -48,9 +51,9 @@ export const createViewstateForSuggestion = ({
   });
 
   return {
-    longitude,
-    latitude,
-    zoom,
+    longitude: limitDecimals(longitude),
+    latitude: limitDecimals(latitude),
+    zoom: limitDecimals(zoom),
   };
 };
 

@@ -26,7 +26,7 @@ export class DocumentsClient extends SubClient {
   }
 
   /**
-   * @param {'general' | 'analysis-toolbar'} guideName
+   * @param {'general' | 'analysis-toolbar' | 'cross-filtering'} guideName
    */
   userGuideUrl(guideName = 'general') {
     return `${this.apiHost}/api${this.endpoint}/?type=GUIDE&has_orb=false&name=${guideName}`;

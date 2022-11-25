@@ -13,6 +13,9 @@ import {
   fetchSources,
   selectPollingPeriod,
   dataSourcesSelector,
+  isCrossFilteringModeSelector,
+  activeDataSourcesSelector,
+  activeCrossFilterDataSourcesSelector,
 } from 'data-layers/data-layers.slice';
 import { useDrawingTools } from 'drawing-tools';
 
@@ -29,7 +32,18 @@ const Map = React.lazy(() =>
 
 const MapLayout = () => {
   const dispatch = useDispatch();
-  const { layers, mapComponents, sidebarComponents } = useOrbs();
+  const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
+
+  const activeDataSources = useSelector(activeDataSourcesSelector);
+  const activeCrossFilteringDataSources = useSelector(
+    activeCrossFilterDataSourcesSelector,
+  );
+  const activeSources = isCrossFilterMode
+    ? activeCrossFilteringDataSources
+    : activeDataSources;
+
+  const { layers, mapComponents, sidebarComponents } = useOrbs(activeSources);
+
   const drawingToolsProps = useDrawingTools();
   const aoiProps = useAoiLayer();
   const pollingPeriod = useSelector(selectPollingPeriod);
