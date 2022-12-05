@@ -328,13 +328,17 @@ const configuration = ({
           (prev, [key, value]) => {
             let result = null;
             try {
-              result = JSON.parse(value);
+              const firstChar = value.charAt(0);
+              if (firstChar === '[' || firstChar === '{') {
+                result = JSON.parse(value);
+              }
             } catch (error) {}
             return {
               ...prev,
               [key]: result ?? value,
             };
           },
+          {},
         ),
       })),
     onError: () => dispatch(logError({ source_id: id })),
