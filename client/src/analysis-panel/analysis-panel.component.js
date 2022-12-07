@@ -15,7 +15,10 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ErrorFallback, LoadingTextFallback, SidePanel } from 'components';
-import { activeDataSourcesSelector } from 'data-layers/data-layers.slice';
+import {
+  activeDataSourcesSelector,
+  isCrossFilteringModeSelector,
+} from 'data-layers/data-layers.slice';
 import {
   clickedFeaturesSelector,
   hoveredFeaturesSelector,
@@ -119,6 +122,8 @@ export const AnalysisPanel = () => {
       }),
     [selectedProperty, sources],
   );
+  const isCrossFilterMode = useSelector(isCrossFilteringModeSelector);
+
   const clickedFeatures = useSelector(state =>
     clickedFeaturesSelector(selectedProperty?.source_id)(state?.orbs),
   );
@@ -137,7 +142,10 @@ export const AnalysisPanel = () => {
       orientation="right"
       contentClassName={styles.content}
       open={
-        !!dataVisualisationComponents && !!clickedFeatures?.length && !minimized
+        !!dataVisualisationComponents &&
+        !!clickedFeatures?.length &&
+        !minimized &&
+        !isCrossFilterMode
       }
       header={
         <div className={styles.header}>
