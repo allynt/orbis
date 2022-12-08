@@ -93,7 +93,10 @@ export const AnalysisPanelProvider = ({
           );
           return {
             value,
-            name: breakdownPropertyName,
+            name: breakdownPropertyName.substring(
+              breakdownPropertyName.indexOf('|') + 1,
+              breakdownPropertyName.length,
+            ),
           };
         })
         .filter(v => v.value > 0),
