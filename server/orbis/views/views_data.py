@@ -170,7 +170,6 @@ class DataSourceView(APIView):
         url = urljoin(
             settings.DATA_SOURCES_DIRECTORY_URL, "/api/data-sources/v1/"
         )
-
         data_token_timeout = settings.DATA_TOKEN_TIMEOUT
         data_scopes = generate_data_scopes(user)
         duplicated_data_sources_ids = set()
@@ -192,8 +191,7 @@ class DataSourceView(APIView):
                         "https": settings.REQUESTS_PROXY,
                     } if settings.REQUESTS_PROXY else None
                 )
-                if not status.is_success(response.status_code):
-                    raise APIException("Error retrieving data sources")
+                response.raise_for_status()
             except Timeout as e:
                 raise APIException(
                     f"Request {url} timed out, exception was: {str(e)}"
