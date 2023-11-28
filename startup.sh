@@ -3,6 +3,9 @@ set -euo pipefail
 
 # startup script to determine which service(s) to run at container startup
 
+# generate ASCII banner
+figlet -t "ORBIS Server"
+
 cd "${APP_HOME}"
 
 if [[ "${ENABLE_CELERY}" -eq 1 ]]; then

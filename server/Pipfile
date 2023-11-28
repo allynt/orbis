@@ -15,8 +15,8 @@ celery = "*"
 # django... duh
 django = "~=3.0"
 # users
-django-allauth = "*"
-dj-rest-auth = "*"
+django-allauth = "==0.54.0"
+dj-rest-auth = "==2.2.7"
 # task scheduler
 django-celery-beat = "*"
 # task db access
@@ -74,8 +74,6 @@ dat-utils = {editable = true,git = "https://github.com/astrosat/dat-utils.git",r
 django-dbbackup = "*"
 
 [dev-packages]
-# coverage reports for GitHub, GitLab, etc.
-codecov = "*"
 # live debug info
 django-debug-toolbar = "*"
 # test fixtures replacement
@@ -93,4 +91,4 @@ pytest-watch = "*"
 yapf = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3"
